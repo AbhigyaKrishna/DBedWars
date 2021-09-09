@@ -1,0 +1,57 @@
+trap-queue-limit: 3
+queued-trap-cost:
+  - 1: '1:DIAMOND'
+  - 2: '2:DIAMOND'
+  - 3: '4:DIAMOND'
+
+traps:
+
+  miner-fatigue:
+    id: 'miner-fatigue'
+    trigger: 'EnemyBaseEnterEvent'
+    action:
+      '1':
+        target: '%EnemyAtBase%'
+        executable:
+          - '[EFFECT] MINER_FATIGUE:1:8'
+      '2':
+        target: '%team%'
+        executable:
+          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Miner Fatigue was set off'
+          - '[SOUND] ENDERMAN_TELEPORT:1:1'
+
+  its-a-trap:
+    id: 'its-a-trap'
+    trigger: 'EnemyBaseEnterEvent'
+    action:
+      '1':
+        target: '%team%'
+        executable:
+          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your It\'s a trap was set off'
+          - '[SOUND] ENDERMAN_TELEPORT:1:1'
+
+  alarm-trap:
+    id: 'alarm-trap'
+    trigger: 'EnemyBaseEnterEvent'
+    action:
+      '1':
+        target: '%enemyatbase%'
+        executable:
+          - '[CLEAREFFECT] INVISIBILTY'
+      '2':
+        target: '%team%'
+        executable:
+          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your alarm trap was set off'
+          - '[SONG] alarm.nbs:1'
+
+  counter-offensive-trap:
+    id: 'counter-offensive-trap'
+    trigger: 'EnemyBaseEnterEvent'
+    action:
+      '1':
+        target: '%teamatbase%'
+        executable:
+          - '[EFFECT] SPEED:1:10'
+          - '[EFFECT] JUMP_BOOST:2:10'
+          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your counter offensive trap was set off'
+          - '[SOUND] ENDERMAN_TELEPORT:1:1'

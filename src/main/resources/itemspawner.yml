@@ -1,0 +1,107 @@
+#diamond:
+#  material: diamond:0
+#  delay-per-spawn: 5
+#  spawn-sound: ENTITY_CAT_HURT
+#  spawn-effect: BLOCK_DUST
+#  hologram:
+#    material: diamond_block
+#    text:
+#      - 'Next diamond spawn in {time}'
+#  radius: 1
+#  max-spawn: 4
+#  timed-upgrade: true
+#  team-spawner: false
+#  upgrades:
+#    '1':
+#      # in seconds
+#      time: 300
+#      message: 'Diamond spawner upgraded to level II'
+#iron:
+#  material: iron_ingot:0
+#  delay-per-spawn: 1.5
+#  spawn-sound: ENTITY_CAT_HURT
+#  spawn-effect: BLOCK_DUST
+#  radius: 3
+#  max-spawn: 30
+#  timed-upgrade: false
+#  team-spawner: true
+#  upgrades:
+#    '1':
+#      message: 'Diamond spawner upgraded to level II'
+
+team-spawner:
+  id: 'Team spawner'
+  icon: IRON_INGOT:0
+  spawn-sound: DIG_WOOD
+  spawn-effect: CRIT
+  radius: 2
+  merge: false
+  team-spawner: true
+  timed-upgrade: false
+
+  hologram:
+    enabled: false
+
+  tiers:
+    '1':
+      action:
+        iron:
+          material: IRON_INGOT:0
+          delay: 2
+          limit: 32
+        gold:
+          material: GOLD_INGOT:0
+          delay: 8
+          limit: 8
+    '2':
+      upgrade-effect: HEART
+      upgrade-sound: VILLAGER_HURT
+      message: '-all Spawner upgrade to level 2'
+      action:
+        iron:
+          material: IRON_INGOT:0
+          delay: 1
+          limit: 32
+        gold:
+          material: GOLD_INGOT:0
+          delay: 4
+          limit: 12
+
+diamond-spawner:
+  id: 'Diamond Spawner'
+  icon: DIAMOND:0
+  spawn-sound: NOTE_PLING
+  spawn-effect: FIREWORKS_SPARK
+  radius: 1
+  merge: true
+  team-spawner: false
+  timed-upgrade: true
+
+  hologram:
+    enabled: false
+
+  tiers:
+    '1':
+      action:
+        diamond:
+          material: DIAMOND:0
+          delay: 30
+          limit: 10
+    '2':
+      upgrade-effect: EXPLOSION
+      upgrade-sound: LEVEL_UP
+      message: '-all &bDiamond spawners are now tier II'
+      action:
+        diamond:
+          material: DIAMOND:0
+          delay: 15
+          limit: 20
+    '3':
+      upgrade-effect: EXPLOSION
+      upgrade-sound: LEVEL_UP
+      message: '-all &bDiamond spawners are now tier III'
+      action:
+        diamond:
+          material: DIAMOND:0
+          delay: 10
+          limit: 32

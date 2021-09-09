@@ -1,0 +1,35 @@
+enabled: true
+config: 'plugins/SlimeWorldManager/sources.yml'
+configure-slime-sources: true
+disable-configure-message: false
+
+# 1. file
+# 2. mysql
+# 3. mongodb
+slime-loader: 'file'
+
+default:
+  allow-animals: false
+  allow-monsters: false
+  difficulty: 'easy'
+  environment: 'NORMAL'
+
+sources:
+  file:
+    path: 'plugins/DBedwars/arena/data/arenacache'
+  mysql:
+    enabled: false
+    host: '127.0.0.1'
+    port: 3306
+    username: 'slimeworldmanager'
+    password: ''
+    database: 'slimeworldmanager'
+  mongodb:
+    enabled: false
+    host: '127.0.0.1'
+    port: 27017
+    auth: 'admin'
+    username: 'slimeworldmanager'
+    password: ''
+    database: 'slimeworldmanager'
+    collection: 'worlds'

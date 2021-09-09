@@ -1,0 +1,6 @@
+enabled: true
+config-path: '/plugins/Multiverse-Core/config.yml'
+default:
+  environment: 'NORMAL'
+  difficulty: 'EASY'
+  generator-plugin: 'DBedwars'

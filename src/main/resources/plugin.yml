@@ -1,0 +1,13 @@
+name: DBedwars
+version: ${project.version}
+main: me.abhigya.dbedwars.DBedwars
+softdepend:
+  - CoreAPI
+  - Multiverse-Core
+  - SlimeWorldManager
+  - PlaceholderAPI
+commands:
+  bedwars:
+    aliases:
+      - bw
+      - bedwar

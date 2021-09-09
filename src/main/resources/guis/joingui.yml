@@ -1,0 +1,60 @@
+title: '&aPP'
+pattern:
+  - 'X X X X X X X X X'
+  - 'X M M M M M M M X'
+  - 'X M M M M M M M X'
+  - 'X M M M M M M M X'
+  - 'X X X R X F X X X'
+  - 'X X X X B X X X X'
+items:
+  'M':
+    type: PAPER
+    data: 0
+    name: '&a%map_name%'
+    lore:
+      - '&8%arena_type%'
+      - ''
+      - '&7Times Joined: %arena_times_joined%'
+      - ''
+      - '&aClick to Play'
+      - '&eRight Click to toggle favourite!'
+  'R':
+    type: FIREWORK
+    data: 0
+    name: '&aRandom Map'
+    lore:
+      - '&8%arena_type%'
+      - ''
+      - '&aClick to Play'
+  'B':
+    type: ARROW
+    data: 0
+    name: '&cGo Back'
+    lore:
+      - '&7To Play Bed Wars'
+  'F':
+    type: DIAMOND
+    data: 0
+    name: '&aRandom Favourite'
+    lore:
+      - '&8%arena_type%'
+      - ''
+      - '&aClick to Play'
+  '!':
+    type: STAINED_GLASS_PANE
+    data: 0
+    name: '&ePlains Biome &a(Available)'
+    lore:
+      - '&7Change your island biome to plains.'
+#  '~M':
+#    type: AIR
+#    data: 1
+#    name: ''
+#    lore:
+#      - ''
+#  '~':
+#    type: AIR
+#    data: 1
+#    name: ''
+#    lore:
+#      - ''
