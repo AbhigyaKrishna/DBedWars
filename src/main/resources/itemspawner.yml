@@ -1,34 +1,3 @@
-#diamond:
-#  material: diamond:0
-#  delay-per-spawn: 5
-#  spawn-sound: ENTITY_CAT_HURT
-#  spawn-effect: BLOCK_DUST
-#  hologram:
-#    material: diamond_block
-#    text:
-#      - 'Next diamond spawn in {time}'
-#  radius: 1
-#  max-spawn: 4
-#  timed-upgrade: true
-#  team-spawner: false
-#  upgrades:
-#    '1':
-#      # in seconds
-#      time: 300
-#      message: 'Diamond spawner upgraded to level II'
-#iron:
-#  material: iron_ingot:0
-#  delay-per-spawn: 1.5
-#  spawn-sound: ENTITY_CAT_HURT
-#  spawn-effect: BLOCK_DUST
-#  radius: 3
-#  max-spawn: 30
-#  timed-upgrade: false
-#  team-spawner: true
-#  upgrades:
-#    '1':
-#      message: 'Diamond spawner upgraded to level II'
-
 team-spawner:
   id: 'Team spawner'
   icon: IRON_INGOT:0
@@ -36,6 +5,7 @@ team-spawner:
   spawn-effect: CRIT
   radius: 2
   merge: false
+  split: true
   team-spawner: true
   timed-upgrade: false
 
@@ -74,6 +44,7 @@ diamond-spawner:
   spawn-effect: FIREWORKS_SPARK
   radius: 1
   merge: true
+  split: false
   team-spawner: false
   timed-upgrade: true
 

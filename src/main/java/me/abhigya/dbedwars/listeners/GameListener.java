@@ -8,9 +8,11 @@ import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.DeathCause;
 import me.abhigya.dbedwars.api.game.Team;
+import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,9 +20,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class GameListener extends PluginHandler {
@@ -32,7 +38,6 @@ public class GameListener extends PluginHandler {
         super(plugin);
         this.plugin = plugin;
         this.arena = arena;
-        this.register();
     }
 
     @EventHandler
@@ -100,6 +105,13 @@ public class GameListener extends PluginHandler {
         if (!event.getBlock().getWorld().equals(this.arena.getWorld()))
             return;
 
+        ArenaPlayer player = this.arena.getAsArenaPlayer(event.getPlayer()).orElse(null);
+
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+
         Block block = event.getBlock();
         block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.arena.getSettings().getName()));
     }
@@ -157,14 +169,43 @@ public class GameListener extends PluginHandler {
         event.setCancelled(true);
     }
 
-//    @EventHandler
-//    public void handlePickup(EntityPickupItemEvent event) {
-//        if (!event.getEntity().getWorld().equals(this.arena.getWorld()))
-//            return;
-//
-//        if (!(event.getEntity() instanceof Player))
-//            return;
-//    }
+    @EventHandler
+    public void handlePickup(PlayerPickupItemEvent event) {
+        if (!event.getPlayer().getWorld().equals(this.arena.getWorld()))
+            return;
+
+        if (!this.arena.isArenaPlayer(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (event.getItem().hasMetadata("split")) {
+            Optional<Spawner> spawner = this.arena.getSpawner(LocationXYZ.valueOf(event.getItem().getLocation()), 1);
+            spawner.ifPresent(s -> {
+                Collection<Entity> entities = this.arena.getWorld().getNearbyEntities(s.getLocation(),
+                        s.getDropType().getSpawnRadius(), s.getDropType().getSpawnRadius(), s.getDropType().getSpawnRadius());
+                entities.remove(event.getPlayer());
+                for (Entity entity : entities) {
+                    if (entity instanceof Player && this.arena.isArenaPlayer((Player) entity)) {
+                        ((Player) entity).getInventory().addItem(event.getItem().getItemStack());
+                    }
+                }
+            });
+        }
+    }
+
+    @EventHandler
+    public void handleInventoryAdd(InventoryPickupItemEvent event) {
+        if (!event.getItem().getWorld().equals(this.arena.getWorld()))
+            return;
+
+        if (Utils.hasNBTData(event.getItem().getItemStack(), "split")) {
+            ItemStack item = Utils.removeNBTData(event.getItem().getItemStack(), "split");
+            event.setCancelled(true);
+            event.getItem().remove();
+            event.getInventory().addItem(item);
+        }
+    }
 
     @EventHandler
     public void handlePlayerFall(PlayerMoveEvent event) {
@@ -194,6 +235,11 @@ public class GameListener extends PluginHandler {
     @Override
     protected boolean isAllowMultipleInstances() {
         return true;
+    }
+
+    @Override
+    public void register() {
+        super.register();
     }
 
     @Override

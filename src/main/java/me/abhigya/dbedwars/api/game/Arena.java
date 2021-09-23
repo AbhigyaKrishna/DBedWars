@@ -4,6 +4,7 @@ import me.abhigya.dbedwars.api.game.settings.ArenaSettings;
 import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.KickReason;
+import me.abhigya.dbedwars.api.util.LocationXYZ;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -48,6 +49,8 @@ public interface Arena {
     void removeSpawner(Spawner spawner);
 
     List<Spawner> getSpawners();
+
+    Optional<Spawner> getSpawner(LocationXYZ location, float range);
 
     boolean isCurrentlyRegenerating();
 

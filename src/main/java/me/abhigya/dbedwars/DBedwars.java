@@ -8,6 +8,7 @@ import me.Abhigya.core.plugin.PluginDependence;
 import me.Abhigya.core.util.ServerPropertiesUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
 import me.Abhigya.core.util.hologram.HologramFactory;
+import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.version.CoreVersion;
 import me.abhigya.dbedwars.addon.AddonManager;
@@ -25,7 +26,6 @@ import me.abhigya.dbedwars.listeners.ArenaListener;
 import me.abhigya.dbedwars.nms.NMSAdaptor;
 import me.abhigya.dbedwars.nms.v1_8_R3.NMSUtils;
 import me.abhigya.dbedwars.utils.PluginFileUtils;
-import net.jitse.npclib.NPCLib;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,7 +54,7 @@ public final class DBedwars extends PluginAdapter {
     private GuiHandler guiHandler;
     private ThreadHandler threadHandler;
     private ConfigHandler configHandler;
-    private NPCLib npcHandler;
+    private NPCPool npcHandler;
     private HologramFactory hologramFactory;
     
     private NMSAdaptor nmsAdaptor;
@@ -85,7 +85,6 @@ public final class DBedwars extends PluginAdapter {
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
         this.addonManager.enableAddon();
-        this.npcHandler = new NPCLib(this);
         this.hologramFactory = new HologramFactory(this);
 
         this.mainWorld = ServerPropertiesUtils.getStringProperty("level-name", "world");
@@ -203,6 +202,7 @@ public final class DBedwars extends PluginAdapter {
             this.guiHandler.loadMenus();
             this.guiHandler.loadAnvilMenus();
             this.guiHandler.loadItems();
+            this.npcHandler = NPCPool.createDefault(this);
         });
 
         return true;
@@ -218,7 +218,6 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpListeners() {
         this.listeners = new ArrayList<>();
-        this.listeners.add(new ArenaListener(this));
 
         this.listeners.forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
         return true;
@@ -272,7 +271,7 @@ public final class DBedwars extends PluginAdapter {
         return nmsAdaptor;
     }
 
-    public NPCLib getNpcHandler() {
+    public NPCPool getNpcHandler() {
         return npcHandler;
     }
 

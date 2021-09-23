@@ -2,8 +2,14 @@ package me.abhigya.dbedwars.game.arena;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.npc.NPC;
+import me.Abhigya.core.util.npc.Profile;
+import me.Abhigya.core.util.packet.packetevents.utils.player.Skin;
+import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.events.game.PlayerJoinTeamEvent;
 import me.abhigya.dbedwars.api.events.game.PlayerLeaveTeamEvent;
+import me.abhigya.dbedwars.api.events.game.PlayerOpenShopEvent;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.spawner.DropType;
@@ -13,9 +19,7 @@ import me.abhigya.dbedwars.api.util.LocationXYZYP;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableTeam;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Team implements me.abhigya.dbedwars.api.game.Team {
 
@@ -24,14 +28,16 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
     private final Color color;
     private LocationXYZ bedLocation;
     private LocationXYZYP spawn;
-    private LocationXYZYP shopNpc;
-    private LocationXYZYP upgradesNpc;
+    private LocationXYZYP shopNpcLocation;
+    private LocationXYZYP upgradesNpcLocation;
     private Multimap<DropType, LocationXYZ> spawners;
 
     private Arena arena;
     private boolean bedBroken;
     private boolean eliminated;
     private Set<ArenaPlayer> players;
+    private NPC shopNpc;
+    private NPC upgradesNpc;
 
     public Team(Color color) {
         this.color = color;
@@ -86,22 +92,22 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
 
     @Override
     public void setShopNpc(LocationXYZYP location) {
-        this.shopNpc = location;
+        this.shopNpcLocation = location;
     }
 
     @Override
     public LocationXYZYP getShopNpc() {
-        return this.shopNpc;
+        return this.shopNpcLocation;
     }
 
     @Override
     public void setUpgradesNpc(LocationXYZYP location) {
-        this.upgradesNpc = location;
+        this.upgradesNpcLocation = location;
     }
 
     @Override
     public LocationXYZYP getUpgradesNpc() {
-        return this.upgradesNpc;
+        return this.upgradesNpcLocation;
     }
 
     @Override
@@ -111,14 +117,14 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
 
         this.bedLocation = this.cfgTeam.getBedLocation();
         this.spawn = this.cfgTeam.getSpawn();
-        this.shopNpc = this.cfgTeam.getShopNpc();
-        this.upgradesNpc = this.cfgTeam.getUpgrades();
+        this.shopNpcLocation = this.cfgTeam.getShopNpc();
+        this.upgradesNpcLocation = this.cfgTeam.getUpgrades();
         this.spawners = this.cfgTeam.getSpawners();
     }
 
     @Override
     public boolean isConfigured() {
-        return this.bedLocation != null && this.spawn != null && this.shopNpc != null && this.upgradesNpc != null;
+        return this.bedLocation != null && this.spawn != null && this.shopNpcLocation != null && this.upgradesNpcLocation != null;
     }
 
     @Override
@@ -196,5 +202,35 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
 
             this.eliminated = false;
         }
+    }
+
+    @Override
+    public void spawnShopNpc(LocationXYZYP location) {
+        this.shopNpc = NPC.builder().location(this.shopNpcLocation.toBukkit(this.arena.getWorld()))
+                .profile(new Profile(UUID.randomUUID(), StringUtils.translateAlternateColorCodes("&eShop"), new Skin("", "")))
+                .lookAtPlayer(true)
+                .imitatePlayer(false)
+                .build(DBedwars.getInstance().getNpcHandler());
+        this.shopNpc.addInteractAction((npc, player, clickType) -> {
+            Optional<ArenaPlayer> ap = this.arena.getAsArenaPlayer(player);
+            ap.ifPresent(arenaPlayer -> {
+                PlayerOpenShopEvent event = new PlayerOpenShopEvent(arenaPlayer, this.arena, arenaPlayer.getShopView());
+                event.call();
+
+                if (event.isCancelled())
+                    return;
+
+                DBedwars.getInstance().getGuiHandler().getGuis().get("SHOP").open(null, Collections.singletonMap("player", arenaPlayer), player);
+            });
+        });
+    }
+
+    @Override
+    public void spawnUpgradesNpc(LocationXYZYP location) {
+        this.upgradesNpc = NPC.builder().location(this.upgradesNpcLocation.toBukkit(this.arena.getWorld()))
+                .profile(new Profile(UUID.randomUUID(), StringUtils.translateAlternateColorCodes("&eUpgrades"), new Skin("", "")))
+                .lookAtPlayer(true)
+                .imitatePlayer(false)
+                .build(DBedwars.getInstance().getNpcHandler());
     }
 }

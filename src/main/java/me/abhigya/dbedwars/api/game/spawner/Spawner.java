@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.api.game.spawner;
 
 import me.Abhigya.core.particle.particlelib.ParticleBuilder;
+import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.Team;
 import org.bukkit.Location;
@@ -28,6 +29,8 @@ public interface Spawner {
     Arena getArena();
 
     Team getTeam();
+
+    BoundingBox getBoundingBox();
 
     int getLevel();
 

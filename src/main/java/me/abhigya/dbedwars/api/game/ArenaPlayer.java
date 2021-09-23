@@ -1,8 +1,11 @@
 package me.abhigya.dbedwars.api.game;
 
+import me.Abhigya.core.util.entity.UUIDPlayer;
+import me.abhigya.dbedwars.api.game.view.ShopView;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
 
@@ -44,6 +47,8 @@ public interface ArenaPlayer {
 
     void setFinalKilled(boolean flag);
 
+    UUIDPlayer getUUIDPlayer();
+
     Player getPlayer();
 
     void spawn(Location location);
@@ -61,6 +66,8 @@ public interface ArenaPlayer {
     void setLastHitTime(Instant instant);
 
     boolean isRespawning();
+
+    ShopView getShopView();
 
     void queueRespawn();
 

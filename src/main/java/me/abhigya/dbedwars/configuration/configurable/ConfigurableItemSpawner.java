@@ -37,6 +37,9 @@ public class ConfigurableItemSpawner implements Loadable {
     @LoadableEntry(key = "merge")
     private boolean merge;
 
+    @LoadableEntry(key = "split")
+    private boolean split;
+
     @LoadableEntry(key = "timed-upgrade")
     private boolean timedUpgrade;
 
@@ -117,6 +120,10 @@ public class ConfigurableItemSpawner implements Loadable {
 
     public boolean isMerge() {
         return this.merge;
+    }
+
+    public boolean isSplit() {
+        return split;
     }
 
     public boolean isTimedUpgrade() {

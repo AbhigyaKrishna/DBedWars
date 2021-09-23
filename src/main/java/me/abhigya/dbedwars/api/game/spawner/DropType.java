@@ -37,6 +37,10 @@ public interface DropType extends Cloneable {
 
     void setMerging(boolean flag);
 
+    boolean isSplitable();
+
+    void setSplitable(boolean flag);
+
     boolean isHologramEnabled();
 
     void setHologramEnabled(boolean flag);

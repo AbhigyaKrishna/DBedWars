@@ -1,8 +1,9 @@
 package me.abhigya.dbedwars.nms;
 
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public interface NMSAdaptor {
 
@@ -12,18 +13,9 @@ public interface NMSAdaptor {
 
     void refreshPlayerChunk(Player player);
 
-    void setMetadata(ItemStack item, String metadata, Object value);
+    void clearDefaultPathFinding(LivingEntity entity);
 
-    boolean hasMetadata(ItemStack item, String metadata);
+    void clearDefaultPathFinding(Object entityCreature);
 
-    Object getMetadata(ItemStack item, String metadata);
-
-    default void setPluginMetaValue(ItemStack item) {
-        this.setMetadata(item, "plugin", "dbedwars");
-    }
-
-    default boolean hasPluginMetaValue(ItemStack item) {
-        return this.hasMetadata(item, "plugin") && this.getMetadata(item, "plugin").equals("dbedwars");
-    }
-
+    IVillager spawnNPCVillager(Location location);
 }

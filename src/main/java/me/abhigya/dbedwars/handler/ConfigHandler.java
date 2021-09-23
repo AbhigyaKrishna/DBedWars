@@ -4,6 +4,8 @@ import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableItemSpawner;
+import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
+import me.abhigya.dbedwars.configuration.configurabletrap.ConfigurableTrap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,16 +19,22 @@ public class ConfigHandler {
 
     private final Set<ConfigurableItemSpawner> dropTypes;
     private final Set<ConfigurableArena> arenas;
+    private final Set<ConfigurableTrap> traps;
+    private ConfigurableShop shop;
 
     public ConfigHandler(DBedwars plugin) {
         this.plugin = plugin;
         this.dropTypes = new HashSet<>();
         this.arenas = new HashSet<>();
+        this.traps = new HashSet<>();
     }
 
     public void loadConfigurations() {
         this.loadArena();
         this.loadItemSpawners();
+        this.loadTraps();
+        this.shop = new ConfigurableShop();
+        this.shop.load(YamlConfiguration.loadConfiguration(PluginFiles.SHOP.getFile()));
         this.plugin.getGameManager().load();
     }
 
@@ -50,11 +58,29 @@ public class ConfigHandler {
         }
     }
 
+    private void loadTraps() {
+        File file = PluginFiles.TRAPS.getFile();
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        for (String key : config.getConfigurationSection("traps").getKeys(false)) {
+            ConfigurableTrap trap = new ConfigurableTrap(key);
+            trap.load(config.getConfigurationSection("traps." + key));
+            this.traps.add(trap);
+        }
+    }
+
     public Set<ConfigurableItemSpawner> getDropTypes() {
-        return dropTypes;
+        return this.dropTypes;
     }
 
     public Set<ConfigurableArena> getArenas() {
-        return arenas;
+        return this.arenas;
+    }
+
+    public Set<ConfigurableTrap> getTraps() {
+        return this.traps;
+    }
+
+    public ConfigurableShop getShop() {
+        return this.shop;
     }
 }

@@ -4,14 +4,18 @@ import me.Abhigya.core.util.loadable.Loadable;
 import me.Abhigya.core.util.loadable.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ConfigurableTrap implements Loadable {
 
-    private String key;
+    private final String key;
 
     @LoadableEntry(key = "id")
     private String id;
+
+    @LoadableEntry(key = "trigger")
+    private String trigger;
 
     @LoadableEntry(key = "actions")
     private List<ConfigurableTrapAction> trapActions;
@@ -27,7 +31,7 @@ public class ConfigurableTrap implements Loadable {
 
     @Override
     public boolean isValid() {
-        return this.id != null;
+        return this.id != null && this.getTrigger() != null && !this.trapActions.isEmpty() && this.trapActions.stream().allMatch(ConfigurableTrapAction::isValid);
     }
 
     @Override
@@ -43,6 +47,10 @@ public class ConfigurableTrap implements Loadable {
         return id;
     }
 
+    public TrapEnum.TriggerType getTrigger() {
+        return TrapEnum.TriggerType.matchTrigger(this.trigger);
+    }
+
     public List<ConfigurableTrapAction> getTrapActions() {
         return trapActions;
     }
@@ -52,11 +60,12 @@ public class ConfigurableTrap implements Loadable {
         @LoadableEntry(key = "target")
         private String target;
 
-        @LoadableEntry(key = "trigger")
-        private String trigger;
-
         @LoadableEntry(key = "executable")
         private List<String> executables;
+
+        protected ConfigurableTrapAction() {
+            this.executables = new LinkedList<>();
+        }
 
         @Override
         public Loadable load(ConfigurationSection section) {
@@ -65,7 +74,7 @@ public class ConfigurableTrap implements Loadable {
 
         @Override
         public boolean isValid() {
-            return this.target != null && this.trigger != null && this.executables != null;
+            return this.target != null && !this.executables.isEmpty();
         }
 
         @Override
@@ -75,10 +84,6 @@ public class ConfigurableTrap implements Loadable {
 
         public String getTarget() {
             return target;
-        }
-
-        public String getTrigger() {
-            return trigger;
         }
 
         public List<String> getExecutables() {

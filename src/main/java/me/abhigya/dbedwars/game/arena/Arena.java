@@ -1,8 +1,11 @@
 package me.abhigya.dbedwars.game.arena;
 
 import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.hologram.Hologram;
+import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.Abhigya.core.util.tasks.workload.FixedRateWorkload;
+import me.Abhigya.core.util.world.GameRule;
+import me.Abhigya.core.util.world.GameRuleDisableDaylightCycle;
+import me.Abhigya.core.util.world.GameRuleType;
 import me.Abhigya.core.util.world.WorldUtils;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.events.game.*;
@@ -14,9 +17,11 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.task.Regeneration;
 import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.KickReason;
+import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
 import me.abhigya.dbedwars.game.TeamAssigner;
+import me.abhigya.dbedwars.game.arena.view.ShopView;
 import me.abhigya.dbedwars.listeners.ArenaListener;
 import me.abhigya.dbedwars.listeners.GameListener;
 import me.abhigya.dbedwars.task.WorldRegenerator;
@@ -64,6 +69,8 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         this.players = new HashSet<>();
         this.regenerator = new WorldRegenerator(this.plugin, this.settings.getRegenerationType(), this);
         this.status = ArenaStatus.STOPPED;
+        this.arenaHandler = new ArenaListener(this.plugin, this);
+        this.gameHandler = new GameListener(this.plugin, this);
     }
 
     public Arena(DBedwars plugin, ConfigurableArena cfg) {
@@ -170,12 +177,20 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         if (!this.enabled)
             throw new IllegalStateException("Tried loading arena which isn't enabled!");
 
-        this.plugin.getThreadHandler().addAsyncWork(() -> {
-            Arena.this.setStatus(ArenaStatus.REGENERATING);
-            World world = Arena.this.loadWorld();
-            Arena.this.setWorld(world);
-            Arena.this.setStatus(ArenaStatus.IDLING);
-        });
+        this.setStatus(ArenaStatus.REGENERATING);
+        World world = this.loadWorld();
+        GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
+        GameRuleType.MOB_GRIEFING.apply(world, false);
+        GameRuleType.MOB_SPAWNING.apply(world, false);
+        GameRuleType.FIRE_TICK.apply(world, false);
+        GameRuleType.KEEP_INVENTORY.apply(world, true);
+        GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
+        GameRuleType.SPECTATORS_GENERATE_CHUNKS.apply(world, false);
+        GameRuleDisableDaylightCycle gameRule = new GameRuleDisableDaylightCycle(8000);
+        gameRule.apply(world);
+        this.setWorld(world);
+        this.arenaHandler.register();
+        this.setStatus(ArenaStatus.IDLING);
     }
 
     @Override
@@ -235,6 +250,17 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
     }
 
     @Override
+    public Optional<Spawner> getSpawner(LocationXYZ location, float range) {
+        if (range <= 1) {
+            return this.spawners.stream().filter(s -> s.getBoundingBox().contains(location.toVector())).findFirst();
+        }
+
+        BoundingBox box = new BoundingBox(location.getX() - range, location.getY() - range, location.getZ() - range,
+                location.getX() + range, location.getY() + range, location.getZ() + range);
+        return this.spawners.stream().filter(s -> s.getBoundingBox().intersects(box)).findFirst();
+    }
+
+    @Override
     public boolean isCurrentlyRegenerating() {
         return this.status == ArenaStatus.REGENERATING;
     }
@@ -270,15 +296,20 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         if (event.isCancelled())
             return false;
 
-        this.gameHandler = new GameListener(this.plugin, this);
-        this.players.forEach(p -> p.spawn(p.getTeam().getSpawn().toBukkit(this.world)));
+        this.gameHandler.register();
+        this.arenaHandler.unregister();
+        this.players.forEach(p -> {
+            p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
+            ((ShopView) p.getShopView()).load();
+        });
         this.teams.forEach(t -> t.getSpawners().entries().forEach(e ->
                 new me.abhigya.dbedwars.game.arena.Spawner(this.plugin, e.getKey(), e.getValue().toBukkit(this.getWorld()), this, t).init()));
         this.settings.getDrops().entries().forEach(e ->
                 new me.abhigya.dbedwars.game.arena.Spawner(this.plugin, e.getKey(), e.getValue().toBukkit(this.getWorld()), this, null).init());
 
         this.teams.forEach(t -> {
-            //TODO: spawn npc
+            t.spawnShopNpc(t.getShopNpc());
+            t.spawnUpgradesNpc(t.getUpgradesNpc());
         });
 
         this.status = ArenaStatus.RUNNING;

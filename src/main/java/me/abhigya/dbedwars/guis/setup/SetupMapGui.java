@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.guis;
+package me.abhigya.dbedwars.guis.setup;
 
 import me.Abhigya.core.menu.inventory.Item;
 import me.Abhigya.core.menu.inventory.action.ItemClickAction;
@@ -13,7 +13,6 @@ import me.Abhigya.core.util.world.WorldUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Arena;
-import me.abhigya.dbedwars.api.game.ArenaStatus;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import org.bukkit.World;

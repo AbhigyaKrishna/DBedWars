@@ -58,4 +58,7 @@ public interface Team {
 
     void setEliminated(boolean flag);
 
+    void spawnShopNpc(LocationXYZYP location);
+
+    void spawnUpgradesNpc(LocationXYZYP location);
 }

@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.guis;
+package me.abhigya.dbedwars.guis.setup;
 
 import me.Abhigya.core.menu.inventory.Item;
 import me.Abhigya.core.menu.inventory.action.ItemClickAction;
