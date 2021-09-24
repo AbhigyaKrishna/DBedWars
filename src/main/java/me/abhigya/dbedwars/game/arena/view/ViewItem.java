@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
     private ArenaPlayer player;
+    private ConfigurableShop.ConfigurablePage.BwGUIItem cfgItem;
+
     private BwItemStack material;
     private int amount;
     private String name;
@@ -44,6 +46,7 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
     public ViewItem(ArenaPlayer p, ConfigurableShop.ConfigurablePage.BwGUIItem item) {
         this.player = p;
+        this.cfgItem = item;
         this.material = ConfigurationUtils.parseShopItem(p, item.getMaterial());
         this.amount = item.getAmount();
         this.name = item.getItemName();
@@ -156,11 +159,11 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
                     @Override
                     public void onClick(ItemClickAction itemClickAction) {
-                        event.call();
-                        if (event.isCancelled())
-                            return;
-
                         if (event.getCost().stream().allMatch(i -> BwItemStack.playerHas(itemClickAction.getPlayer(), i))) {
+                            event.call();
+                            if (event.isCancelled())
+                                return;
+
                             items.forEach((s, i) -> {
                                 int x = index.getOrDefault(s, -1);
                                 if (x > -1) {
@@ -181,11 +184,11 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
                     @Override
                     public void onClick(ItemClickAction itemClickAction) {
-                        event.call();
-                        if (event.isCancelled())
-                            return;
-
                         if (event.getCost().stream().allMatch(i -> BwItemStack.playerHas(itemClickAction.getPlayer(), i))) {
+                            event.call();
+                            if (event.isCancelled())
+                                return;
+
                             items.values().forEach(i -> itemClickAction.getPlayer().getInventory().addItem(i.toItemStack()));
                         }
                     }
@@ -232,10 +235,10 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
                         @Override
                         public void onClick(ItemClickAction itemClickAction) {
-                            if (event.isCancelled())
-                                return;
-
                             if (event.getCost().stream().allMatch(i -> BwItemStack.playerHas(itemClickAction.getPlayer(), i))) {
+                                if (event.isCancelled())
+                                    return;
+
                                 itemClickAction.getMenu().setItem(itemClickAction.getSlot(), nextItem);
                                 itemClickAction.setUpdate(true);
                                 itemClickAction.getMenu().update(itemClickAction.getPlayer());
@@ -347,12 +350,7 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
     @Override
     public ViewItem clone() {
-        try {
-            return (ViewItem) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new ViewItem(this.player, this.cfgItem);
     }
 
     public class Attribute implements me.abhigya.dbedwars.api.game.view.ViewItem.Attribute {
