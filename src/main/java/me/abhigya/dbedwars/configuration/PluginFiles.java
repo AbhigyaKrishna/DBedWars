@@ -26,7 +26,8 @@ public enum PluginFiles {
     /* Files */
     CONFIG(new File(PLUGIN_DATA_FOLDER.getFile(), "config.yml")),
     ITEM_SPAWNERS(new File(PLUGIN_DATA_FOLDER.getFile(), "itemspawner.yml")),
-    TRAPS(new File(PLUGIN_DATA_FOLDER.getFile(), "traps.yml"))
+    TRAPS(new File(PLUGIN_DATA_FOLDER.getFile(), "traps.yml")),
+    CUSTOM_ITEMS(new File(PLUGIN_DATA_FOLDER.getFile(),"custom-items.yml"))
     ;
 
     private File file;
@@ -53,6 +54,6 @@ public enum PluginFiles {
     }
 
     public static PluginFiles[] getFiles() {
-        return new PluginFiles[]{CONFIG, ITEM_SPAWNERS, TRAPS};
+        return new PluginFiles[]{CONFIG, ITEM_SPAWNERS, TRAPS,CUSTOM_ITEMS};
     }
 }

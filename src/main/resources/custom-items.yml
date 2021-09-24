@@ -1,0 +1,33 @@
+fireball:
+  name: 'Fireball'
+  lore: []
+  left-click-throw: false
+  fix-direction: true
+  explosion-yield: 4
+  speed-multiplier: 5
+  throw-effects:
+    - 'SLOW:1:25'
+  explosion-fire: true
+  knockback:
+    radius-entities: 3
+    distance-modifier: 16
+    height-force: 1.5
+    horizontal-force: 3
+tnt:
+  name: 'TNT'
+  lore: []
+  auto-ignite-tnt: true
+  fix-random-explosion: true
+  better-tnt-ignite-animation: true
+  explosion-fire: true
+  fuse-ticks: 52
+  knockback:
+    radius-entities: 4
+    distance-modifier: 16
+    height-force: 1.5
+    horizontal-force: 3
+
+
+
+
+
