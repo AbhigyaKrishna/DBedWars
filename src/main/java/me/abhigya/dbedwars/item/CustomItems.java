@@ -43,7 +43,8 @@ public enum CustomItems {
                 DBedwars.getInstance().getGuiHandler().getGuis().get("ADVANCED_SETUP").open(null, info, player);
         }
     }),
-    FIREBALL(new FireballItem(DBedwars.getInstance()))
+    FIREBALL(new FireballItem(DBedwars.getInstance())),
+    TNT(new TNTItem(DBedwars.getInstance()))
     ;
 
     private final ActionItem item;

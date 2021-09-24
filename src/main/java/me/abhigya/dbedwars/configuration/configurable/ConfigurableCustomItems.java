@@ -35,6 +35,10 @@ public class ConfigurableCustomItems implements Loadable {
         return fireball;
     }
 
+    public ConfigurableTNT getTNT() {
+        return TNT;
+    }
+
     public static class ConfigurableTNT implements Loadable{
 
         @LoadableEntry(key = "name")
@@ -52,6 +56,9 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "explosion-fire")
         private boolean explosionFire;
 
+        @LoadableEntry(key = "better-tnt-ignite-animation")
+        private boolean isBetterTNTAnimationEnabled;
+
         @LoadableEntry(key = "fuse-ticks")
         private int fuseTicks;
 
@@ -65,6 +72,7 @@ public class ConfigurableCustomItems implements Loadable {
             explosionFire = false;
             fuseTicks = 52;
             knockBack = new KnockBack();
+            isBetterTNTAnimationEnabled = true;
         }
 
         @Override
@@ -87,6 +95,10 @@ public class ConfigurableCustomItems implements Loadable {
             return explosionFire;
         }
 
+        public boolean isBetterTNTAnimationEnabled() {
+            return isBetterTNTAnimationEnabled;
+        }
+
         public List<String> getLore() {
             return lore;
         }
@@ -105,6 +117,10 @@ public class ConfigurableCustomItems implements Loadable {
 
         public String getName() {
             return name;
+        }
+
+        public KnockBack getKnockBack() {
+            return knockBack;
         }
     }
 
