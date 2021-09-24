@@ -4,6 +4,7 @@ import me.Abhigya.core.particle.particlelib.ParticleBuilder;
 import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.hologram.Hologram;
+import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.events.game.SpawnerDropItemEvent;
 import me.abhigya.dbedwars.api.events.game.SpawnerUpgradeEvent;
@@ -19,6 +20,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
@@ -35,6 +38,7 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
     private final Arena arena;
     private final Team team;
     private Location location;
+    private BoundingBox box;
 
     private boolean registered;
     private int level;
@@ -50,6 +54,8 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
         this.plugin = plugin;
         this.drop = type;
         this.location = location;
+        this.box = new BoundingBox(this.location.getX() - this.drop.getSpawnRadius(), this.location.getY() - 2, this.location.getZ() - this.drop.getSpawnRadius(),
+                this.location.getX() + this.drop.getSpawnRadius(), this.location.getY() + 2, this.location.getZ() + this.drop.getSpawnRadius());
         this.arena = arena;
         this.team = team;
         this.items = new ConcurrentHashMap<>();
@@ -68,7 +74,6 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
             for (String line : this.drop.getHologramText()) {
                 this.hologram.add(StringUtils.translateAlternateColorCodes(line));
             }
-            System.out.println("ArmorStand Packet Sent");
 
             this.hologram.spawn();
         }
@@ -120,7 +125,9 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
             if (!Spawner.this.getDropType().isMerging())
                 stack.setUnMergeable();
 
-            this.location.getWorld().dropItemNaturally(this.location, stack.toItemStack());
+            Item item = this.location.getWorld().dropItemNaturally(this.location, stack.toItemStack());
+            if (Spawner.this.getDropType().isSplitable())
+                item.setMetadata("split", new FixedMetadataValue(this.plugin, true));
             if (this.drop.getSpawnSound() != null)
                 this.drop.getSpawnSound().play(this.location);
             if (this.drop.getSpawnEffect() != null)
@@ -230,6 +237,8 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
     @Override
     public void setLocation(Location location) {
         this.location = location;
+        this.box = new BoundingBox(this.location.getX() - this.drop.getSpawnRadius(), this.location.getY() - 2, this.location.getZ() - this.drop.getSpawnRadius(),
+                this.location.getX() + this.drop.getSpawnRadius(), this.location.getY() + 2, this.location.getZ() + this.drop.getSpawnRadius());
     }
 
     @Override
@@ -240,6 +249,11 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
     @Override
     public Team getTeam() {
         return this.team;
+    }
+
+    @Override
+    public BoundingBox getBoundingBox() {
+        return this.box;
     }
 
     @Override

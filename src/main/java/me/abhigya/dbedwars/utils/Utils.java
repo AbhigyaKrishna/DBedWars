@@ -9,17 +9,13 @@ import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.util.BwItemStack;
-import me.abhigya.dbedwars.api.util.LocationXYZ;
-import me.abhigya.dbedwars.api.util.LocationXYZYP;
-import net.jitse.npclib.api.NPC;
-import net.jitse.npclib.api.skin.Skin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -90,6 +86,15 @@ public class Utils {
         return nbti.getObject(key, clazz);
     }
 
+    public static ItemStack removeNBTData(ItemStack item, String key) {
+        if (!hasNBTData(item, key))
+            return item;
+
+        NBTItem nbti = new NBTItem(item);
+        nbti.removeKey(key);
+        return nbti.getItem();
+    }
+
     public static boolean isUnMergeable(ItemStack item) {
         return hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
     }
@@ -108,7 +113,7 @@ public class Utils {
         return stack;
     }
 
-    public static void setSpawnInventory(Player player, Team team) {
+    public static void setSpawnInventory(Player player, Team team, @Nullable ItemStack[] previousContent, @Nullable ItemStack[] previousArmor) {
         BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET.parseMaterial());
         BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
         BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS.parseMaterial());
@@ -142,6 +147,10 @@ public class Utils {
         player.getInventory().setItem(0, new BwItemStack(XMaterial.WOODEN_SWORD.parseItem()).toItemStack());
     }
 
+    public static void clearInventory(Player player) {
+        ItemStack[] items = player.getInventory().getContents();
+    }
+
     public static Block findBed(Location location, byte x, byte y, byte z) {
         Location corner = location.clone().add(x, y, z);
         Location corner2 = location.clone().subtract(x, y, z);
@@ -154,15 +163,7 @@ public class Utils {
     }
 
     public static boolean isBed(Block block) {
-        return BEDS.contains(block.getType());
-    }
-
-    public static NPC spawnShopNpc(Team team) {
-        NPC npc = DBedwars.getInstance().getNpcHandler().createNPC();
-        npc.setLocation(team.getShopNpc().toBukkit(team.getArena().getWorld()));
-//        Skin skin = new Skin()
-        npc.create();
-        return npc;
+        return BEDS.contains(block.getType()) || block.getType().name().equals("BED_BLOCK");
     }
 
 }

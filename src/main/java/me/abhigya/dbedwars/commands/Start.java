@@ -47,8 +47,7 @@ public class Start implements CommandArgument {
         Arena arena = this.plugin.getGameManager().getArena(args[0]);
         this.plugin.getThreadHandler().addAsyncWork(() -> {
             if (arena.getWorld() == null) {
-                World world = arena.loadWorld();
-                arena.setWorld(world);
+                arena.load();
             }
             this.plugin.getThreadHandler().addSyncWork(() -> arena.addPlayer(player));
         });

@@ -25,6 +25,7 @@ public class DropType implements me.abhigya.dbedwars.api.game.spawner.DropType {
     private int radius;
     private boolean teamSpawner;
     private boolean merge;
+    private boolean split;
     private boolean hologramEnabled;
     private BwItemStack hologramItem;
     private List<String> hologramText;
@@ -43,6 +44,7 @@ public class DropType implements me.abhigya.dbedwars.api.game.spawner.DropType {
         this.radius = this.cfgSpawner.getRadius();
         this.teamSpawner = this.cfgSpawner.isTeamSpawner();
         this.merge = this.cfgSpawner.isMerge();
+        this.split = this.cfgSpawner.isSplit();
         this.hologramEnabled = this.cfgSpawner.isHologramEnabled();
         this.hologramItem = this.cfgSpawner.getHologramMaterial();
         this.hologramText = this.cfgSpawner.getHologramText();
@@ -117,6 +119,16 @@ public class DropType implements me.abhigya.dbedwars.api.game.spawner.DropType {
     @Override
     public void setMerging(boolean flag) {
         this.merge = flag;
+    }
+
+    @Override
+    public boolean isSplitable() {
+        return split;
+    }
+
+    @Override
+    public void setSplitable(boolean flag) {
+        this.split = flag;
     }
 
     @Override

@@ -1,0 +1,991 @@
+default-page: 'page-1'
+pages:
+  page-1:
+    title: '&7Quick buy'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'A W W W W W W W W'
+      - 'X Q Q Q Q Q Q Q X'
+      - 'X Q Q Q Q Q Q Q X'
+      - 'X Q Q Q Q Q Q Q X'
+      - 'X X X X X X X X X'
+    items:
+      N1:
+        name: '&bQuick buy'
+        material: 'NETHER_STAR'
+        amount: 1
+        lore: []
+        attribute:
+          type: ''
+
+  page-2:
+    title: '&7Blocks'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W A W W W W W W W'
+      - 'X B C D E F G H X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N2:
+        material: 'STAINED_CLAY:%team%'
+        name: '&bBlocks'
+        lore: []
+        attribute:
+          type: ''
+
+      B:
+        material: 'WOOL:%team%' #%team%_WOOL
+        amount: 16
+        name: '&aWool'
+        lore:
+          - '&7Cost: &f4 Iron'
+          - ''
+          - '&7Great for bridging across'
+          - '&7islands. Turns into your team''s'
+          - '&7color.'
+        attribute:
+          type: 'purchasable'
+          cost: '4:IRON_INGOT'
+          item:
+            '1':
+              material: 'WOOL:%team%'
+              amount: 16
+      C:
+        material: 'STAINED_CLAY:%team%'
+        amount: 16
+        name: '&aHardened Clay'
+        lore:
+          - '&7Cost: &f12 Iron'
+          - ''
+          - '&7Basic block to defend your bed.'
+        attribute:
+          type: 'purchasable'
+          cost: '12:IRON_INGOT'
+          item:
+            '1':
+              material: 'STAINED_CLAY:%team%'
+              amount: 16
+      D:
+        material: 'GLASS:%team%'
+        amount: 4
+        name: '&aBlast-Proof Glass'
+        lore:
+          - '&7Cost: &f12 Iron'
+          - ''
+          - '&7Immune to explosions.'
+        attribute:
+          type: 'purchasable'
+          cost: '12:IRON_INGOT'
+          item:
+            '1':
+              material: 'GLASS:%team%'
+              amount: 4
+      E:
+        material: 'END_STONE'
+        amount: 12
+        name: '&aEnd Stone'
+        lore:
+          - '&7Cost: &f24 Iron'
+          - ''
+          - '&7Solid block to defend your bed.'
+        attribute:
+          type: 'purchasable'
+          cost: '24:IRON_INGOT'
+          item:
+            '1':
+              material: 'END_STONE'
+              amount: 12
+      F:
+        material: 'LADDER'
+        amount: 16
+        name: '&aLadder'
+        lore:
+          - '&7Cost: &f4 Iron'
+          - ''
+          - '&7Useful to save cats stuck in'
+          - '&7trees.'
+        attribute:
+          type: 'purchasable'
+          cost: '4:IRON_INGOT'
+          item:
+            '1':
+              material: 'LADDER'
+              amount: 16
+      G:
+        material: 'WOOD:0'
+        amount: 16
+        name: '&aOak Wood Planks'
+        lore:
+          - '&7Cost: &64 Gold'
+          - ''
+          - '&7Good block to defend your bed.'
+          - '&7Strong against pickaxes.'
+        attribute:
+          type: 'purchasable'
+          cost: '4:GOLD_INGOT_INGOT'
+          item:
+            '1':
+              material: 'WOOD:0'
+              amount: 16
+      H:
+        material: 'OBSIDIAN'
+        amount: 4
+        name: '&aObsidian'
+        lore:
+          - '&7Cost: &24 Emerald'
+          - ''
+          - '&7Extreme protection for your bed.'
+        attribute:
+          type: 'purchasable'
+          cost: '4:EMERALD'
+          item:
+            '1':
+              material: 'OBSIDIAN'
+              amount: 4
+
+  page-3:
+    title: '&7Melee'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W A W W W W W W'
+      - 'X B C D E X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N3:
+        material: 'GOLDEN_SWORD'
+        name: '&bMelee'
+        lore: [ ]
+        attribute:
+          type: ''
+
+      B:
+        material: 'STONE_SWORD'
+        amount: 1
+        name: '&aStone Sword'
+        lore:
+          - '&7Cost: &f10 Iron'
+        attribute:
+          type: 'purchasable'
+          cost: '10:IRON_INGOT'
+          item:
+            '1':
+              material: 'STONE_SWORD'
+              amount: 1
+      C:
+        material: 'IRON_SWORD'
+        amount: 1
+        name: '&aIron Sword'
+        lore:
+          - '&7Cost: &67 Gold'
+        attribute:
+          type: 'purchasable'
+          cost: '7:GOLD_INGOT'
+          item:
+            '1':
+              material: 'IRON_SWORD'
+              amount: 1
+      D:
+        material: 'DIAMOND_SWORD'
+        amount: 1
+        name: '&aDiamond Sword'
+        lore:
+          - '&7Cost: &24 Emerald'
+        attribute:
+          type: 'purchasable'
+          cost: '4:EMERALD'
+          item:
+            '1':
+              material: 'DIAMOND_SWORD'
+              amount: 1
+      E:
+        material: 'STICK'
+        amount: 1
+        name: '&aStick (Knockback I)'
+        lore:
+          - '&7Cost: &65 Gold'
+        enchantment:
+          - 'KNOCKBACK:1'
+        attribute:
+          type: 'purchasable'
+          cost: '5:GOLD_INGOT'
+          item:
+            '1':
+              material: 'STICK'
+              amount: 1
+              enchantment:
+                - 'KNOCKBACK:1'
+
+  page-4:
+    title: '&7Armor'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W W A W W W W W'
+      - 'X B C D X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N4:
+        material: 'CHAINMAIL_BOOTS'
+        name: '&bArmor'
+        lore: [ ]
+        attribute:
+          type: ''
+
+      B:
+        material: 'CHAINMAIL_BOOTS'
+        amount: 1
+        name: '&aPermanent Chainmail Armor'
+        lore:
+          - '&7Cost: &f40 Iron'
+          - ''
+          - '&7Chainmail leggings and boots'
+          - '&7which you will always spawn'
+          - '&7with.'
+        attribute:
+          type: 'purchasable, permanent, upgradable, auto-equip'
+          cost: '40:IRON_INGOT'
+          item:
+            '1':
+              material: 'CHAINMAIL_LEGGINGS'
+              amount: 1
+              auto-equip-slot: 37
+            '2':
+              material: 'CHAINMAIL_BOOTS'
+              amount: 1
+              auto-equip-slot: 36
+      C:
+        material: 'IRON_BOOTS'
+        amount: 1
+        name: '&aPermanent Iron Armor'
+        lore:
+          - '&7Cost: &612 Gold'
+          - ''
+          - '&7Iron leggings and boots which'
+          - '&7you will always spawn with.'
+        attribute:
+          type: 'purchasable, permanent, upgradable, auto-equip'
+          cost: '12:GOLD_INGOT'
+          item:
+            '1':
+              material: 'IRON_LEGGINGS'
+              amount: 1
+              auto-equip-slot: 37
+            '2':
+              material: 'IRON_BOOTS'
+              amount: 1
+              auto-equip-slot: 36
+      D:
+        material: 'DIAMOND_BOOTS'
+        amount: 1
+        name: '&aPermanent Diamond Armor'
+        lore:
+          - '&7Cost: &26 Emerald'
+          - ''
+          - '&7Diamond leggings and boots which'
+          - '&7you will always spawn with.'
+        attribute:
+          type: 'purchasable, permanent, auto-equip'
+          cost: '6:EMERALD'
+          item:
+            '1':
+              material: 'DIAMOND_LEGGINGS'
+              amount: 1
+              auto-equip-slot: 37
+            '2':
+              material: 'DIAMOND_BOOTS'
+              amount: 1
+              auto-equip-slot: 36
+
+  page-5:
+    title: '&7Tools'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W W W A W W W W'
+      - 'X B C D X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N5:
+        material: 'STONE_PICKAXE'
+        name: '&bTools'
+        lore: [ ]
+        attribute:
+          type: ''
+
+      B:
+        material: 'SHEARS'
+        amount: 1
+        name: '&aPermanent Shears'
+        lore:
+          - '&7Cost: &f20 Iron'
+          - ''
+          - '&7Great to get rid of wool. You'
+          - '&7will always spawn with these'
+          - '&7shears.'
+        attribute:
+          type: 'purchasable, permanent'
+          cost: '20:IRON_INGOT'
+          item:
+            '1':
+              material: 'CHAINMAIL_LEGGINGS'
+              amount: 1
+      C:
+        material: 'WOODEN_PICKAXE'
+        amount: 1
+        name: '&aWooden Pickaxe (Efficiency I)'
+        lore:
+          - '&7Cost: &f10 Iron'
+          - '&7Tier: &eI'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:1'
+        attribute:
+          type: 'purchasable, permanent, upgradeable-tier'
+          cost: '10:IRON_INGOT'
+          next-tier: 'C-2'
+          item:
+            '1':
+              material: 'WOODEN_PICKAXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:1'
+      C-2:
+        material: 'IRON_PICKAXE'
+        amount: 1
+        name: '&aIron Pickaxe (Efficiency II)'
+        lore:
+          - '&7Cost: &f10 Iron'
+          - '&7Tier: &eII'
+          - ''
+          - '&This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:2'
+        attribute:
+          type: 'purchasable, upgradeable-tier, downgradeable-tier'
+          cost: '10:IRON_INGOT'
+          next-tier: 'C-3'
+          previous-tier: 'C-1'
+          downgrade-event: 'PLAYER_DEATH' #optional
+          item:
+            '1':
+              material: 'IRON_PICKAXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:2'
+      C-3:
+        material: 'GOLDEN_PICKAXE'
+        amount: 1
+        name: '&aGold Pickaxe (Efficiency III, Sharpness II)'
+        lore:
+          - '&7Cost: &63 Gold'
+          - '&7Tier: &eIII'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:3'
+          - 'SHARPNESS:2'
+        attribute:
+          type: 'purchasable, upgradeable-tier, downgradeable-tier'
+          cost: '3:GOLD_INGOT'
+          next-tier: 'C-4'
+          previous-tier: 'C-2'
+          downgrade-event: 'PLAYER_DEATH'
+          item:
+            '1':
+              material: 'GOLDEN_PICKAXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:3'
+                - 'SHARPNESS:2'
+      C-4:
+        material: 'DIAMOND_PICKAXE'
+        amount: 1
+        name: '&aDiamond Pickaxe (Efficiency III)'
+        lore:
+          - '&7Cost: &66 Gold'
+          - '&7Tier: &eIV'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:3'
+        attribute:
+          type: 'purchasable, downgradeable-tier'
+          cost: '6:GOLD_INGOT'
+          previous-tier: 'C-3'
+          downgrade-event: 'PLAYER_DEATH'
+          item:
+            '1':
+              material: 'DIAMOND_PICKAXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:3'
+
+      D:
+        material: 'WOODEN_AXE'
+        amount: 1
+        name: '&aWooden Axe (Efficiency I)'
+        lore:
+          - '&7Cost: &f10 Iron'
+          - '&7Tier: &eI'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:1'
+        attribute:
+          type: 'purchasable, permanent, upgradeable-tier'
+          cost: '10:IRON_INGOT'
+          next-tier: 'D-2'
+          item:
+            '1':
+              material: 'WOODEN_AXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:1'
+      D-2:
+        material: 'STONE_AXE'
+        amount: 1
+        name: '&aStone Axe (Efficiency I)'
+        lore:
+          - '&7Cost: &f10 Iron'
+          - '&7Tier: &eII'
+          - ''
+          - '&This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:1'
+        attribute:
+          type: 'purchasable, upgradeable-tier, downgradeable-tier'
+          cost: '10:IRON_INGOT'
+          next-tier: 'D-3'
+          previous-tier: 'D-1'
+          downgrade-event: 'PLAYER_DEATH'
+          item:
+            '1':
+              material: 'STONE_AXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:1'
+      D-3:
+        material: 'IRON_AXE'
+        amount: 1
+        name: '&aIron Axe (Efficiency II)'
+        lore:
+          - '&7Cost: &63 Gold'
+          - '&7Tier: &eIII'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:2'
+        attribute:
+          type: 'purchasable, upgradeable-tier, downgradeable-tier'
+          cost: '3:GOLD_INGOT'
+          next-tier: 'D-3'
+          previous-tier: 'D-2'
+          downgrade-event: 'PLAYER_DEATH'
+          item:
+            '1':
+              material: 'IRON_AXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:2'
+      D-4:
+        material: 'DIAMOND_AXE'
+        amount: 1
+        name: '&aDiamond Axe (Efficiency III)'
+        lore:
+          - '&7Cost: &66 Gold'
+          - '&7Tier: &eIV'
+          - ''
+          - '&7This is an upgradable item.'
+          - '&7It will lose 1 tier upon death!'
+          - ''
+          - '&7You will permanently respawn'
+          - '&7with at least the lowest tier.'
+        enchantment:
+          - 'EFFICIENCY:3'
+        attribute:
+          type: 'purchasable, downgradeable-tier'
+          cost: '6:GOLD_INGOT'
+          previous-tier: 'D-3'
+          downgrade-event: 'PLAYER_DEATH'
+          item:
+            '1':
+              material: 'DIAMOND_AXE'
+              amount: 1
+              enchantment:
+                - 'EFFICIENCY:3'
+
+  page-6:
+    title: '&7Ranged'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W W W W A W W W'
+      - 'X B C D E X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N6:
+        material: 'BOW'
+        amount: 1
+        name: '&aRanged'
+        lore:
+          - '&eClick to view!'
+        attribute:
+          type: 'change-page'
+          page: 'page-6'
+
+      B:
+        material: 'ARROW'
+        amount: 8
+        name: '&aArrow'
+        lore:
+          - '&7Cost: &62 Gold'
+        attribute:
+          type: 'purchasable'
+          cost: '2:GOLD_INGOT'
+          item:
+            '1':
+              material: 'ARROW'
+              amount: 8
+      C:
+        material: 'BOW'
+        amount: 1
+        name: '&aBow'
+        lore:
+          - '&7Cost: &612 Gold'
+        attribute:
+          type: 'purchasable'
+          cost: '12:GOLD_INGOT'
+          item:
+            '1':
+              material: 'BOW'
+              amount: 1
+      D:
+        material: 'BOW'
+        amount: 1
+        name: '&aBow (Power I)'
+        lore:
+          - '&7Cost: &624 Gold'
+        enchantment:
+          - 'POWER:1'
+        attribute:
+          type: 'purchasable'
+          cost: '24:GOLD_INGOT'
+          item:
+            '1':
+              material: 'BOW'
+              amount: 1
+              enchantment:
+                - 'POWER:1'
+      E:
+        material: 'BOW'
+        amount: 1
+        name: '&aBow (Power I, Punch I)'
+        lore:
+          - '&7Cost: &26 Emerald'
+        enchantment:
+          - 'POWER:1'
+          - 'PUNCH:1'
+        attribute:
+          type: 'purchasable'
+          cost: '6:EMERALD'
+          item:
+            '1':
+              material: 'BOW'
+              amount: 1
+              enchantment:
+                - 'POWER:1'
+                - 'PUNCH:1'
+
+  page-7:
+    title: '&7Potions'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W W W W W A W W'
+      - 'X B C D X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N7:
+        material: 'BREWING_STAND'
+        amount: 1
+        name: '&aPotions'
+        lore:
+          - '&eClick to view!'
+        attribute:
+          type: 'change-page'
+          page: 'page-7'
+
+      B:
+        material: 'POTION'
+        amount: 1
+        name: '&aSpeed II Potion (45 seconds)'
+        lore:
+          - '&7Cost: &21 Emerald'
+          - ''
+          - '&3Speed II (0:45)'
+        attribute:
+          type: 'purchasable'
+          cost: '1:EMERALD'
+          item:
+            '1':
+              material: 'POTION'
+              name: '&aSpeed Potion'
+              amount: 1
+              potion: 'SPEED:2:45'
+      C:
+        material: 'POTION'
+        amount: 1
+        name: '&aJump V Potion (45 seconds)'
+        lore:
+          - '&7Cost: &21 Emerald'
+          - ''
+          - '&3Jump Boost V (0:45)'
+        attribute:
+          type: 'purchasable'
+          cost: '1:EMERALD'
+          item:
+            '1':
+              material: 'POTION'
+              name: '&aJump V Potion'
+              amount: 1
+              potion: 'JUMP:5:45'
+      D:
+        material: 'POTION'
+        amount: 1
+        name: '&aInvisibility Potion (30 seconds)'
+        lore:
+          - '&7Cost: &22 Emerald'
+          - ''
+          - '&3Complete Invisibility (0:30)'
+        attribute:
+          type: 'purchasable'
+          cost: '2:EMERALD'
+          item:
+            '1':
+              material: 'POTION'
+              amount: 1
+              potion: 'INVISIBILITY:1:30'
+
+  page-8:
+    title: '&7Utilities'
+    pattern:
+      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - 'W W W W W W W A W'
+      - 'X B C D E F G H X'
+      - 'X I J K L X X X X'
+      - 'X X X X X X X X X'
+      - 'X X X X X X X X X'
+    items:
+      N8:
+        material: 'TNT'
+        amount: 1
+        name: '&bUtilities'
+        lore: [ ]
+        attribute:
+          type: ''
+
+      B:
+        material: 'GOLDEN_APPLE'
+        amount: 1
+        name: '&aGolden Apple'
+        lore:
+          - '&7Cost: &63 Gold'
+          - ''
+          - '&7Well-rounded healing.'
+        attribute:
+          type: 'purchasable'
+          cost: '3:GOLD_INGOT'
+          item:
+            '1':
+              material: 'GOLDEN_APPLE'
+              amount: 1
+      C:
+        material: 'SNOWBALL'
+        amount: 1
+        name: '&aBedbug'
+        lore:
+          - '&7Cost: &f40 Iron'
+          - ''
+          - '&7Spawns silverfish where the'
+          - '&7snowball lands to distract your'
+          - '&7enemies. Lasts 15 seconds.'
+        attribute:
+          type: 'purchasable'
+          cost: '40:IRON_INGOT'
+          item:
+            '1':
+              custom-item: 'BEDBUG'
+              amount: 1
+      D:
+        material: 'WOLF_SPAWN_EGG'
+        amount: 1
+        name: '&aDream Defender'
+        lore:
+          - '&7Cost: &f120 Iron'
+          - ''
+          - '&7Iron Golem to help defend your'
+          - '&7base. Lasts 4 minutes.'
+        attribute:
+          type: 'purchasable'
+          cost: '120:IRON_INGOT'
+          item:
+            '1':
+              custom-item: 'DREAM_DEFENDER'
+              amount: 1
+      E:
+        material: 'FIRE_CHARGE'
+        amount: 1
+        name: '&aFireball'
+        lore:
+          - '&7Cost: &f40 Iron'
+          - ''
+          - '&7Right-click to launch! Great to'
+          - '&7knock back enemies walking on'
+          - 'thin bridges.'
+        attribute:
+          type: 'purchasable'
+          cost: '40:IRON_INGOT'
+          item:
+            '1':
+              custom-item: 'FIREBALL'
+              amount: 1
+      F:
+        material: 'TNT'
+        amount: 1
+        name: '&aTNT'
+        lore:
+          - '&7Cost: &64 Gold'
+          - ''
+          - '&7Instantly ignites, appropriate'
+          - '&7to explode things!'
+        attribute:
+          type: 'purchasable'
+          cost: '4:GOLD_INGOT'
+          item:
+            '1':
+              custom-item: 'TNT'
+              amount: 1
+      G:
+        material: 'ENDER_PEARL'
+        amount: 1
+        name: '&aEnder Pearl'
+        lore:
+          - '&7Cost: &24 Emerald'
+          - ''
+          - '&7The quickest way to invade enemy'
+          - '&7bases.'
+        attribute:
+          type: 'purchasable'
+          cost: '4:EMERALD'
+          item:
+            '1':
+              material: 'ENDER_PEARL'
+              amount: 1
+      H:
+        material: 'WATER_BUCKET'
+        amount: 1
+        name: '&aWater Bucket'
+        lore:
+          - '&7Cost: &63 Gold'
+          - ''
+          - '&7Great to slow down approaching'
+          - '&7enemies. Can also protect'
+          - 'against TNT.'
+        attribute:
+          type: 'purchasable'
+          cost: '3:GOLD_INGOT'
+          item:
+            '1':
+              custom-item: 'WATER_BUCKET'
+              amount: 1
+      I:
+        material: 'EGG'
+        amount: 1
+        name: '&aBridge Egg'
+        lore:
+          - '&7Cost: &22 Emerald'
+          - ''
+          - '&7This egg creates a bridge in its'
+          - '&7trail after being thrown.'
+        attribute:
+          type: 'purchasable'
+          cost: '2:EMERALD'
+          item:
+            '1':
+              custom-item: 'BRIDGE_EGG'
+              amount: 1
+      J:
+        material: 'MILK_BUCKET'
+        amount: 1
+        name: '&aMagic Milk'
+        lore:
+          - '&7Cost: &64 Gold'
+          - ''
+          - '&7Avoid triggering traps for 30'
+          - '&7seconds after consuming'
+        attribute:
+          type: 'purchasable'
+          cost: '4:GOLD_INGOT'
+          item:
+            '1':
+              custom-item: 'MAGIC_MILK'
+              amount: 1
+      K:
+        material: 'SPONGE'
+        amount: 1
+        name: '&aSponge'
+        lore:
+          - '&7Cost: &63 Gold'
+          - ''
+          - '&7Great for soaking up water.'
+        attribute:
+          type: 'purchasable'
+          cost: '3:GOLD_INGOT'
+          item:
+            '1':
+              material: 'SPONGE'
+              amount: 1
+      L:
+        material: 'TRAPPED_CHEST'
+        amount: 1
+        name: '&aCompact Pop-up Tower'
+        lore:
+          - '&7Cost: &f24 Iron'
+          - ''
+          - '&7Place a pop-up defence!'
+        attribute:
+          type: 'purchasable'
+          cost: '24:IRON_INGOT'
+          item:
+            '1':
+              custom-item: 'POPUP_TOWER'
+              amount: 1
+
+common:
+  A:
+    material: 'GREEN_STAINED_GLASS_PANE'
+    amount: 1
+    name: ''
+    lore: [ ]
+  W:
+    material: 'WHITE_STAINED_GLASS_PANE'
+    amount: 1
+    name: ''
+    lore: [ ]
+
+  N1:
+    material: 'NETHER_STAR'
+    amount: 1
+    name: '&aQuick buy'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-1'
+
+  N2:
+    material: 'STAINED_CLAY'
+    amount: 1
+    name: '&aBlocks'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-2'
+
+  N3:
+    material: 'GOLDEN_SWORD'
+    amount: 1
+    name: '&aMelee'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-3'
+
+  N4:
+    material: 'CHAINMAIL_BOOTS'
+    amount: 1
+    name: '&eArmor'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-4'
+
+  N5:
+    material: 'STONE_PICKAXE'
+    amount: 1
+    name: '&aTools'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-5'
+
+  N6:
+    material: 'BOW'
+    amount: 1
+    name: '&aRanged'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-6'
+
+  N7:
+    material: 'BREWING_STAND'
+    amount: 1
+    name: '&aPotions'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-7'
+
+  N8:
+    material: 'TNT'
+    amount: 1
+    name: '&aUtility'
+    lore:
+      - '&eClick to view!'
+    attribute:
+      type: 'change-page'
+      page: 'page-8'

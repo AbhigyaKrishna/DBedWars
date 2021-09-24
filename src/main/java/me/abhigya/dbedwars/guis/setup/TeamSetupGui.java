@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.guis;
+package me.abhigya.dbedwars.guis.setup;
 
 import me.Abhigya.core.menu.inventory.ItemMenu;
 import me.Abhigya.core.menu.inventory.action.ItemClickAction;
@@ -8,7 +8,6 @@ import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
 import me.Abhigya.core.menu.inventory.item.voidaction.VoidActionItem;
 import me.Abhigya.core.menu.inventory.size.ItemMenuSize;
 import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.math.LocationUtils;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
@@ -18,7 +17,6 @@ import me.abhigya.dbedwars.api.util.gui.IMenu;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.api.util.LocationXYZYP;
 import me.abhigya.dbedwars.utils.Utils;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

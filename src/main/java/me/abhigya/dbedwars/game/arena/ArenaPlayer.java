@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.game.arena;
 
 import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.entity.UUIDPlayer;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.events.game.ArenaEndEvent;
 import me.abhigya.dbedwars.api.events.game.PlayerFinalKillEvent;
@@ -9,19 +10,21 @@ import me.abhigya.dbedwars.api.events.game.TeamEliminateEvent;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.DeathCause;
 import me.abhigya.dbedwars.api.game.Team;
+import me.abhigya.dbedwars.api.game.view.ShopView;
 import me.abhigya.dbedwars.task.RespawnTask;
 import me.abhigya.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
 import java.util.Optional;
 
 public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
 
-    private final Player player;
+    private final UUIDPlayer player;
     private Arena arena;
     private Team team;
 
@@ -33,10 +36,14 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     private boolean finalKilled;
     private me.abhigya.dbedwars.api.game.ArenaPlayer lastHitTag;
     private Instant lastHitTime;
+    private ShopView shopView;
+    private ItemStack[] previousInv;
+    private ItemStack[] previousArmor;
 
     public ArenaPlayer(Player player, Arena arena) {
-        this.player = player;
+        this.player = new UUIDPlayer(player);
         this.arena = arena;
+        this.shopView = new me.abhigya.dbedwars.game.arena.view.ShopView(this);
     }
 
     @Override
@@ -63,10 +70,10 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     public void setSpectator(boolean spectator) {
         if (spectator) {
             this.spectator = true;
-            this.player.setGameMode(GameMode.SPECTATOR);
+            this.getPlayer().setGameMode(GameMode.SPECTATOR);
         } else {
             this.spectator = false;
-            this.player.setGameMode(GameMode.SURVIVAL);
+            this.getPlayer().setGameMode(GameMode.SURVIVAL);
         }
     }
 
@@ -133,6 +140,8 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
 
             event.getVictim().addDeath();
             event.getVictim().setSpectator(true);
+            this.previousInv = event.getVictim().getPlayer().getInventory().getContents();
+            this.previousArmor = event.getVictim().getPlayer().getInventory().getArmorContents();
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
                 event.getVictim().getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
@@ -148,7 +157,6 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
                 if (oTeam.isPresent() && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count() == 1) {
                     ArenaEndEvent ev = new ArenaEndEvent(this.arena, oTeam.get().getPlayers());
                     ev.call();
-
                     if (ev.isCancelled())
                         return;
 
@@ -166,7 +174,7 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
             this.addDeath();
             this.setSpectator(true);
             event.getVictim().getPlayer().getInventory().clear();
-            this.player.teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
+            this.getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
             this.arena.broadcast(event.getKillMessage());
             this.setRespawning(true);
             DBedwars.getInstance().getThreadHandler().addAsyncWork(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
@@ -184,25 +192,30 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     }
 
     @Override
-    public Player getPlayer() {
+    public UUIDPlayer getUUIDPlayer() {
         return this.player;
     }
 
     @Override
+    public Player getPlayer() {
+        return this.player.get();
+    }
+
+    @Override
     public void spawn(Location location) {
-        Utils.setSpawnInventory(this.player, this.team);
-        this.player.teleport(location);
-        this.player.setHealth(20);
+        Utils.setSpawnInventory(this.getPlayer(), this.team, this.previousInv, this.previousArmor);
+        this.getPlayer().teleport(location);
+        this.getPlayer().setHealth(20);
     }
 
     @Override
     public void sendMessage(String msg) {
-        this.player.sendMessage(msg);
+        this.getPlayer().sendMessage(msg);
     }
 
     @Override
     public void sendMessage(BaseComponent[] component) {
-        this.player.spigot().sendMessage(component);
+        this.getPlayer().spigot().sendMessage(component);
     }
 
     @Override
@@ -233,6 +246,11 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     @Override
     public boolean isRespawning() {
         return this.respawning;
+    }
+
+    @Override
+    public ShopView getShopView() {
+        return this.shopView;
     }
 
     public void setRespawning(boolean flag) {
