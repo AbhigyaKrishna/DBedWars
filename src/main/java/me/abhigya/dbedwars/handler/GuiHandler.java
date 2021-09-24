@@ -6,6 +6,8 @@ import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.gui.IAnvilMenu;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
 import me.abhigya.dbedwars.item.CustomItems;
+import me.abhigya.dbedwars.item.FireballItem;
+import me.abhigya.dbedwars.listeners.FireBallListener;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
@@ -60,6 +62,7 @@ public class GuiHandler {
         for (CustomItems item : CustomItems.values()) {
             ActionItemHandler.register(item.getItem());
         }
+        new FireBallListener(plugin).register();
     }
 
     public Map<String, IMenu> getGuis() {

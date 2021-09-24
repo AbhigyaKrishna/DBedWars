@@ -3,6 +3,7 @@ package me.abhigya.dbedwars.handler;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
+import me.abhigya.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
 import me.abhigya.dbedwars.configuration.configurabletrap.ConfigurableTrap;
@@ -21,6 +22,7 @@ public class ConfigHandler {
     private final Set<ConfigurableArena> arenas;
     private final Set<ConfigurableTrap> traps;
     private ConfigurableShop shop;
+    private ConfigurableCustomItems customItems;
 
     public ConfigHandler(DBedwars plugin) {
         this.plugin = plugin;
@@ -36,6 +38,8 @@ public class ConfigHandler {
         this.shop = new ConfigurableShop();
         this.shop.load(YamlConfiguration.loadConfiguration(PluginFiles.SHOP.getFile()));
         this.plugin.getGameManager().load();
+        this.customItems = new ConfigurableCustomItems();
+        this.customItems.load(YamlConfiguration.loadConfiguration(PluginFiles.CUSTOM_ITEMS.getFile()));
     }
 
     private void loadArena() {
@@ -82,5 +86,9 @@ public class ConfigHandler {
 
     public ConfigurableShop getShop() {
         return this.shop;
+    }
+
+    public ConfigurableCustomItems getCustomItems() {
+        return customItems;
     }
 }
