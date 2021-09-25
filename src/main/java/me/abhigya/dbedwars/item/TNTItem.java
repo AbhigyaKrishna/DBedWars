@@ -1,5 +1,6 @@
 package me.abhigya.dbedwars.item;
 
+import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.math.VectorUtils;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.item.PluginActionItem;
@@ -25,7 +26,7 @@ public class TNTItem extends PluginActionItem implements Listener {
     ConfigurableCustomItems.ConfigurableTNT tnt;
 
     public TNTItem(DBedwars plugin) {
-        super(plugin, plugin.getConfigHandler().getCustomItems().getTNT().getName(), (plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>() : plugin.getConfigHandler().getCustomItems().getTNT().getLore()), Material.TNT);
+        super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getTNT().getName()), StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>() : plugin.getConfigHandler().getCustomItems().getTNT().getLore()), Material.TNT);
         this.tnt = plugin.getConfigHandler().getCustomItems().getTNT();
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
     }
@@ -44,7 +45,7 @@ public class TNTItem extends PluginActionItem implements Listener {
             return;
         }
         event.getBlockPlaced().setType(Material.AIR);
-        TNTPrimed tntPrimed = ((TNTPrimed) event.getPlayer().getWorld().spawn(event.getBlockPlaced().getLocation().add(0.5,0,0.5), TNTPrimed.class));
+        TNTPrimed tntPrimed = event.getPlayer().getWorld().spawn(event.getBlockPlaced().getLocation().add(0.5,0,0.5), TNTPrimed.class);
         tntPrimed.setFuseTicks(tnt.getFuseTicks());
         if (!tnt.isBetterTNTAnimationEnabled()){
             return;

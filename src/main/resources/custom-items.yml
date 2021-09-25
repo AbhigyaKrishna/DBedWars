@@ -25,6 +25,13 @@ tnt:
     distance-modifier: 16
     height-force: 1.5
     horizontal-force: 3
+popup-tower:
+  name: "&bCompact Pop-up Tower"
+  lore: []
+
+  sound: ''
+  particle: ''
+  main-block: 'WOOL:%team%'
 
 
 

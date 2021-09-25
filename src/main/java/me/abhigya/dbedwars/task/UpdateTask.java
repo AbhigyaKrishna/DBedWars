@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.task;
 
 import me.Abhigya.core.util.scheduler.SchedulerUtils;
+import me.Abhigya.core.util.tasks.Workload;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaStatus;
@@ -8,6 +9,8 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class UpdateTask implements Runnable {
 
@@ -52,6 +55,24 @@ public final class UpdateTask implements Runnable {
                     }
                 }
             });
+            /*List<PopupTowerBuilder> builders = plugin.getGameManager().getPopupTowerBuilders();
+            List<PopupTowerBuilder> buildersClone = new ArrayList<>(builders);
+            for (int i = 0; i < builders.size(); i++) {
+                Workload workload = buildersClone.get(i).getBlockQueue().poll();
+                if(workload == null){
+                    builders.remove(buildersClone.get(i));
+                    continue;
+                }
+                plugin.getThreadHandler().addSyncWork(workload);
+                i++;
+                workload = buildersClone.get(i).getBlockQueue().poll();
+                if(workload == null){
+                    builders.remove(buildersClone.get(i));
+                    continue;
+                }
+                plugin.getThreadHandler().addSyncWork(workload);
+            }*/
+
         } catch (Exception ignored) {}
     }
 
