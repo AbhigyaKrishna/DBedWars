@@ -3,7 +3,6 @@ package me.abhigya.dbedwars.game.arena;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.Abhigya.core.util.tasks.workload.FixedRateWorkload;
-import me.Abhigya.core.util.world.GameRule;
 import me.Abhigya.core.util.world.GameRuleDisableDaylightCycle;
 import me.Abhigya.core.util.world.GameRuleType;
 import me.Abhigya.core.util.world.WorldUtils;
@@ -29,11 +28,13 @@ import me.abhigya.dbedwars.utils.ConfigurationUtils;
 import me.abhigya.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.File;
 import java.io.IOException;
@@ -469,6 +470,24 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
     @Override
     public void broadcast(BaseComponent[] components) {
         this.players.forEach(p -> p.getPlayer().spigot().sendMessage(components));
+    }
+
+    @Override
+    public Block setBlock(LocationXYZ location, Material material) {
+        Block block = this.world.getBlockAt(location.toBukkit(this.world));
+        block.setType(material);
+        block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
+        return block;
+    }
+
+    @Override
+    public Block setBlock(Block block, Material material) {
+        if (!block.getWorld().getName().equals(this.world.getName()))
+            return null;
+
+        block.setType(material);
+        block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
+        return block;
     }
 
     @Override

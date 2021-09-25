@@ -8,13 +8,13 @@ traps:
   miner-fatigue:
     id: 'miner-fatigue'
     trigger: 'EnemyBaseEnterEvent'
-    action:
+    actions:
       '1':
-        target: '%EnemyAtBase%'
+        target: 'EnemyAtBase'
         executable:
           - '[EFFECT] MINER_FATIGUE:1:8'
       '2':
-        target: '%team%'
+        target: 'Team'
         executable:
           - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Miner Fatigue was set off'
           - '[SOUND] ENDERMAN_TELEPORT:1:1'
@@ -22,9 +22,9 @@ traps:
   its-a-trap:
     id: 'its-a-trap'
     trigger: 'EnemyBaseEnterEvent'
-    action:
+    actions:
       '1':
-        target: '%team%'
+        target: 'Team'
         executable:
           - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Its a trap was set off'
           - '[SOUND] ENDERMAN_TELEPORT:1:1'
@@ -32,7 +32,7 @@ traps:
   alarm-trap:
     id: 'alarm-trap'
     trigger: 'EnemyBaseEnterEvent'
-    action:
+    actions:
       '1':
         target: '%enemyatbase%'
         executable:
@@ -46,7 +46,7 @@ traps:
   counter-offensive-trap:
     id: 'counter-offensive-trap'
     trigger: 'EnemyBaseEnterEvent'
-    action:
+    actions:
       '1':
         target: '%teamatbase%'
         executable:

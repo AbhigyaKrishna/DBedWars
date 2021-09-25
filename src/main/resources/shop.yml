@@ -333,7 +333,7 @@ pages:
           cost: '20:IRON_INGOT'
           item:
             '1':
-              material: 'CHAINMAIL_LEGGINGS'
+              material: 'SHEARS'
               amount: 1
       C:
         material: 'WOODEN_PICKAXE'
@@ -513,7 +513,7 @@ pages:
         attribute:
           type: 'purchasable, upgradeable-tier, downgradeable-tier'
           cost: '3:GOLD_INGOT'
-          next-tier: 'D-3'
+          next-tier: 'D-4'
           previous-tier: 'D-2'
           downgrade-event: 'PLAYER_DEATH'
           item:
@@ -563,11 +563,9 @@ pages:
         material: 'BOW'
         amount: 1
         name: '&aRanged'
-        lore:
-          - '&eClick to view!'
+        lore: []
         attribute:
-          type: 'change-page'
-          page: 'page-6'
+          type: ''
 
       B:
         material: 'ARROW'
@@ -646,11 +644,9 @@ pages:
         material: 'BREWING_STAND'
         amount: 1
         name: '&aPotions'
-        lore:
-          - '&eClick to view!'
+        lore: []
         attribute:
-          type: 'change-page'
-          page: 'page-7'
+          type: ''
 
       B:
         material: 'POTION'
@@ -778,7 +774,7 @@ pages:
           - ''
           - '&7Right-click to launch! Great to'
           - '&7knock back enemies walking on'
-          - 'thin bridges.'
+          - '&7thin bridges.'
         attribute:
           type: 'purchasable'
           cost: '40:IRON_INGOT'
@@ -827,7 +823,7 @@ pages:
           - ''
           - '&7Great to slow down approaching'
           - '&7enemies. Can also protect'
-          - 'against TNT.'
+          - '&7against TNT.'
         attribute:
           type: 'purchasable'
           cost: '3:GOLD_INGOT'
