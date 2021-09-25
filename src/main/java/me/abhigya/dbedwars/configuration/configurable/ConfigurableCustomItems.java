@@ -53,9 +53,6 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "fix-random-explosion")
         private boolean fixRandomExplosion;
 
-        @LoadableEntry(key = "explosion-fire")
-        private boolean explosionFire;
-
         @LoadableEntry(key = "better-tnt-ignite-animation")
         private boolean isBetterTNTAnimationEnabled;
 
@@ -69,7 +66,6 @@ public class ConfigurableCustomItems implements Loadable {
             lore = new ArrayList<>();
             autoIgniteTNT = true;
             fixRandomExplosion = true;
-            explosionFire = false;
             fuseTicks = 52;
             knockBack = new KnockBack();
             isBetterTNTAnimationEnabled = true;
@@ -89,10 +85,6 @@ public class ConfigurableCustomItems implements Loadable {
         @Override
         public boolean isInvalid() {
             return false;
-        }
-
-        public boolean isExplosionFireEnabled() {
-            return explosionFire;
         }
 
         public boolean isBetterTNTAnimationEnabled() {

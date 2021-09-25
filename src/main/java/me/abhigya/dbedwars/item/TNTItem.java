@@ -1,7 +1,6 @@
 package me.abhigya.dbedwars.item;
 
 import me.Abhigya.core.util.math.VectorUtils;
-import me.Abhigya.core.util.packet.packetevents.PacketEvents;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.item.PluginActionItem;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableCustomItems;
@@ -62,7 +61,6 @@ public class TNTItem extends PluginActionItem implements Listener {
         if (tnt.isFixRandomExplosionEnabled()){
             event.getEntity().teleport(event.getEntity().getLocation().clone().getBlock().getLocation().add(0.5,0,0.5));
         }
-        ((TNTPrimed)event.getEntity()).setIsIncendiary(tnt.isExplosionFireEnabled());
         double radius = tnt.getKnockBack().getRadiusEntities();
         List<Entity> nearbyEntities = (List<Entity>) event.getLocation().getWorld().getNearbyEntities(event.getLocation(), radius, radius, radius);
         for (Entity entity : nearbyEntities) {

@@ -19,7 +19,6 @@ tnt:
   auto-ignite-tnt: true
   fix-random-explosion: true
   better-tnt-ignite-animation: true
-  explosion-fire: true
   fuse-ticks: 52
   knockback:
     radius-entities: 4
