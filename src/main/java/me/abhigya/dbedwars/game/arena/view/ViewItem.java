@@ -12,9 +12,9 @@ import me.abhigya.dbedwars.api.exceptions.OverrideException;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.LEnchant;
+import me.abhigya.dbedwars.api.util.Overridable;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
-import me.abhigya.dbedwars.api.util.Overridable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -125,7 +125,12 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
         if (!recreate && this.actionItem != null)
             return this.actionItem;
 
-        ActionItem item = new ActionItem(this.getFormatted().toItemStack());
+        ActionItem item = new ActionItem(this.getFormatted().toItemStack()) {
+            @Override
+            public ItemStack getDisplayIcon() {
+                return this.getIcon();
+            }
+        };
         if (this.attributes.containsKey(AttributeType.PURCHASABLE)) {
             me.abhigya.dbedwars.api.game.view.ViewItem.Attribute purchasable = this.attributes.get(AttributeType.PURCHASABLE);
             Set<ItemStack> cost = ConfigurationUtils.parseCost((String) purchasable.getKeyEntry().get("cost"));
@@ -198,7 +203,6 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
             if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER)) {
                 me.abhigya.dbedwars.api.game.view.ViewItem.Attribute upgradeTier = this.attributes.get(AttributeType.UPGRADEABLE_TIER);
                 String nextTier = (String) upgradeTier.getKeyEntry().get(AttributeType.UPGRADEABLE_TIER.getConfigKeys()[0]);
-                System.out.println(nextTier);
                 me.abhigya.dbedwars.api.game.view.ViewItem vi = null;
                 if (this.player.getShopView().getCommons().containsKey(nextTier)) {
                     System.out.println("Found in common");
@@ -207,7 +211,6 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
                 for (Map.Entry<String, ShopPage> entry : this.player.getShopView().getShopPages().entrySet()) {
                     if (entry.getValue().getItems().containsKey(nextTier)) {
-                        System.out.println("Found in page");
                         if (vi != null) {
                             vi = vi.clone();
                             try {
@@ -225,7 +228,6 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
 
                 if (vi != null) {
-                    System.out.println("Seggs");
                     ActionItem nextItem = vi.getActionItem(false);
                     item.addAction(new ItemAction() {
                         @Override

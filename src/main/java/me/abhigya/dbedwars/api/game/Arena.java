@@ -6,7 +6,9 @@ import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.KickReason;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -83,6 +85,10 @@ public interface Arena {
     void broadcast(String msg, Predicate<ArenaPlayer> condition);
 
     void broadcast(BaseComponent[] components);
+
+    Block setBlock(LocationXYZ location, Material material);
+
+    Block setBlock(Block block, Material material);
 
     long getGameStartTime();
 

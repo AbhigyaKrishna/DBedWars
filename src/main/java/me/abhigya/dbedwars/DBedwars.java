@@ -22,8 +22,7 @@ import me.abhigya.dbedwars.handler.ConfigHandler;
 import me.abhigya.dbedwars.handler.GuiHandler;
 import me.abhigya.dbedwars.handler.ThreadHandler;
 import me.abhigya.dbedwars.handler.WorldHandler;
-import me.abhigya.dbedwars.item.TNTItem;
-import me.abhigya.dbedwars.listeners.ArenaListener;
+import me.abhigya.dbedwars.item.ChestListener;
 import me.abhigya.dbedwars.nms.NMSAdaptor;
 import me.abhigya.dbedwars.nms.v1_8_R3.NMSUtils;
 import me.abhigya.dbedwars.utils.PluginFileUtils;
@@ -219,7 +218,7 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpListeners() {
         this.listeners = new ArrayList<>();
-        /*this.listeners.add(new TNTItem(this));*/
+        this.listeners.add(new ChestListener());
         this.listeners.forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
         return true;
     }

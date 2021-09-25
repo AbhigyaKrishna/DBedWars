@@ -7,7 +7,6 @@ import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 public class ShopPage {
 
     private ArenaPlayer player;
@@ -37,17 +36,6 @@ public class ShopPage {
             }
             this.items.put(s, viewItem);
         });
-        this.loadActionItems();
-    }
-
-    private void parsePattern() {
-        this.pattern = new String[this.page.getPattern().size()][9];
-        for (byte i = 0; i < this.page.getPattern().size(); i++) {
-            this.pattern[i] = this.page.getPattern().get(i).split(" ");
-        }
-    }
-
-    private void loadActionItems() {
         for (String[] str : this.pattern) {
             for (byte j = 0; j < 9; j++) {
                 me.abhigya.dbedwars.api.game.view.ViewItem viewItem = this.items.getOrDefault(str[j], null);
@@ -55,12 +43,16 @@ public class ShopPage {
                     if (this.common.containsKey(str[j])) {
                         viewItem = this.common.get(str[j]).clone();
                         this.items.put(str[j], viewItem);
-                        viewItem.getActionItem(true);
                     }
-                } else {
-                    viewItem.getActionItem(true);
                 }
             }
+        }
+    }
+
+    private void parsePattern() {
+        this.pattern = new String[this.page.getPattern().size()][9];
+        for (byte i = 0; i < this.page.getPattern().size(); i++) {
+            this.pattern[i] = this.page.getPattern().get(i).split(" ");
         }
     }
 

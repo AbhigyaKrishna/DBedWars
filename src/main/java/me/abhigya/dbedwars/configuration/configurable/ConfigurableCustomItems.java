@@ -11,6 +11,7 @@ public class ConfigurableCustomItems implements Loadable {
 
     private ConfigurableFireball fireball;
     private ConfigurableTNT TNT;
+    private ConfigurablePopupTower popupTower;
 
     @Override
     public Loadable load(ConfigurationSection section) {
@@ -18,6 +19,8 @@ public class ConfigurableCustomItems implements Loadable {
         fireball.load(section.getConfigurationSection("fireball"));
         TNT = new ConfigurableTNT();
         TNT.load(section.getConfigurationSection("tnt"));
+        popupTower = new ConfigurablePopupTower();
+        popupTower.load(section.getConfigurationSection("popup-tower"));
         return this.loadEntries(section);
     }
 
@@ -37,6 +40,69 @@ public class ConfigurableCustomItems implements Loadable {
 
     public ConfigurableTNT getTNT() {
         return TNT;
+    }
+
+    public ConfigurablePopupTower getPopupTower() {
+        return popupTower;
+    }
+
+    public static class ConfigurablePopupTower implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String name;
+
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
+
+        @LoadableEntry(key = "sound")
+        private String sound;
+
+        @LoadableEntry(key = "particle")
+        private String particle;
+
+        @LoadableEntry(key = "main-block")
+        private String mainBlock;
+
+        protected ConfigurablePopupTower(){
+            name = "&bCompact Pop-up Tower";
+            lore = new ArrayList<>();
+            mainBlock = "WOOL%team%";
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<String> getLore() {
+            return lore;
+        }
+
+        public String getMainBlock() {
+            return mainBlock;
+        }
+
+        public String getParticle() {
+            return particle;
+        }
+
+        public String getSound() {
+            return sound;
+        }
     }
 
     public static class ConfigurableTNT implements Loadable{

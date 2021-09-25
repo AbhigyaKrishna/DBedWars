@@ -9,6 +9,7 @@ import me.abhigya.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import me.abhigya.dbedwars.task.CountdownTask;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameManager {
 
@@ -16,6 +17,7 @@ public class GameManager {
 
     private final Set<DropType> dropTypes;
     private final Map<String, Arena> arenas;
+    /*private List<PopupTowerBuilder> popupTowerBuilders = new ArrayList<>();*/
 
     public GameManager(DBedwars plugin) {
         this.plugin = plugin;
@@ -70,4 +72,8 @@ public class GameManager {
             return null;
         }
     }
+
+    /*public List<PopupTowerBuilder> getPopupTowerBuilders() {
+        return popupTowerBuilders;
+    }*/
 }

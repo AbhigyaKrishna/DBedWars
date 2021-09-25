@@ -44,7 +44,8 @@ public enum CustomItems {
         }
     }),
     FIREBALL(new FireballItem(DBedwars.getInstance())),
-    TNT(new TNTItem(DBedwars.getInstance()))
+    TNT(new TNTItem(DBedwars.getInstance())),
+    /*POPUP_TOWER(new PopupTowerChest(DBedwars.getInstance()))*/
     ;
 
     private final ActionItem item;
