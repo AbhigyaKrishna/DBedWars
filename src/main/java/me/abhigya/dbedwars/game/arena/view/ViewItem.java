@@ -7,6 +7,7 @@ import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
 import me.Abhigya.core.util.loadable.LoadableEntry;
+import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.events.game.PlayerPurchaseItemEvent;
 import me.abhigya.dbedwars.api.exceptions.OverrideException;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
@@ -14,9 +15,9 @@ import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.LEnchant;
 import me.abhigya.dbedwars.api.util.Overridable;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
+import me.abhigya.dbedwars.guis.ShopGui;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
@@ -29,6 +30,8 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
     private ArenaPlayer player;
     private ConfigurableShop.ConfigurablePage.BwGUIItem cfgItem;
+    private String key;
+    private ShopPage page;
 
     private BwItemStack material;
     private int amount;
@@ -38,26 +41,34 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
     private Map<AttributeType, me.abhigya.dbedwars.api.game.view.ViewItem.Attribute> attributes;
     private ActionItem actionItem;
 
-    public ViewItem() {
+    public ViewItem(ShopPage page) {
         this.lore = new ArrayList<>();
         this.enchants = new ArrayList<>();
         this.attributes = new ConcurrentHashMap<>();
+        this.page = page;
     }
 
-    public ViewItem(ArenaPlayer p, ConfigurableShop.ConfigurablePage.BwGUIItem item) {
+    public ViewItem(ArenaPlayer p, ShopPage page, ConfigurableShop.ConfigurablePage.BwGUIItem item, String key) {
         this.player = p;
         this.cfgItem = item;
+        this.key = key;
         this.material = ConfigurationUtils.parseShopItem(p, item.getMaterial());
         this.amount = item.getAmount();
         this.name = item.getItemName();
         this.lore = item.getItemLore();
         this.enchants = item.getEnchant().stream().map(LEnchant::valueOf).collect(Collectors.toList());
         this.attributes = new ConcurrentHashMap<>();
+        this.page = page;
         ConfigurationUtils.getAttributeTypes(item.getAttribute().getAttributeType()).forEach(t -> {
             Attribute attribute = new Attribute(t);
             attribute.load(item.getAttribute());
             this.attributes.put(t, attribute);
         });
+    }
+
+    @Override
+    public ShopPage getPage() {
+        return page;
     }
 
     @Override
@@ -141,7 +152,9 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
                 if (entry.getKey().startsWith("item")) {
                     String key = entry.getKey().replace("item-", "");
                     BwItemStack i = (BwItemStack) entry.getValue();
-                    i.addNBT("shopKey", key);
+                    i.addNBT("shopKey", this.key + ":" + key);
+                    if (this.page != null)
+                        i.addNBT("page", this.page.getKey());
                     if (b)
                         i.addNBT("permanent", true);
                     items.put(key, i);
@@ -205,7 +218,6 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
                 String nextTier = (String) upgradeTier.getKeyEntry().get(AttributeType.UPGRADEABLE_TIER.getConfigKeys()[0]);
                 me.abhigya.dbedwars.api.game.view.ViewItem vi = null;
                 if (this.player.getShopView().getCommons().containsKey(nextTier)) {
-                    System.out.println("Found in common");
                     vi = this.player.getShopView().getCommons().get(nextTier);
                 }
 
@@ -228,7 +240,8 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
 
                 if (vi != null) {
-                    ActionItem nextItem = vi.getActionItem(false);
+                    me.abhigya.dbedwars.api.game.view.ViewItem finalVi = vi;
+                    ActionItem nextItem = finalVi.getActionItem(false);
                     item.addAction(new ItemAction() {
                         @Override
                         public ItemActionPriority getPriority() {
@@ -242,6 +255,7 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
                                     return;
 
                                 itemClickAction.getMenu().setItem(itemClickAction.getSlot(), nextItem);
+                                ViewItem.this.getPage().getPattern()[itemClickAction.getSlot() / 9][itemClickAction.getSlot() % 9] = ((ViewItem) finalVi).key;
                                 itemClickAction.setUpdate(true);
                                 itemClickAction.getMenu().update(itemClickAction.getPlayer());
                             }
@@ -305,20 +319,24 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
                 @Override
                 public void onClick(ItemClickAction itemClickAction) {
-                    if (ViewItem.this.player.getShopView().getShopPages().containsKey(p)) {
-                        ShopPage shopPage = ViewItem.this.player.getShopView().getShopPages().get(p);
-                        for (byte i = 0; i < shopPage.getPattern().length; i++) {
-                            for (byte j = 0; j < 9; j++) {
-                                me.abhigya.dbedwars.api.game.view.ViewItem item = shopPage.getItems().getOrDefault(shopPage.getPattern()[i][j], null);
-                                if (item != null) {
-                                    itemClickAction.getMenu().setItem(i * 9 + j, item.getActionItem(false));
-                                } else {
-                                    itemClickAction.getMenu().setItem(i * 9 + j, new ActionItem(new ItemStack(Material.AIR)));
-                                }
-                            }
-                        }
-                        itemClickAction.getMenu().setTitle(StringUtils.translateAlternateColorCodes(ViewItem.this.player.getShopView().getShopPages().get(p).getTitle()));
-                    }
+//                    if (ViewItem.this.player.getShopView().getShopPages().containsKey(p)) {
+//                        ShopPage shopPage = ViewItem.this.player.getShopView().getShopPages().get(p);
+//                        for (byte i = 0; i < shopPage.getPattern().length; i++) {
+//                            for (byte j = 0; j < 9; j++) {
+//                                me.abhigya.dbedwars.api.game.view.ViewItem item = shopPage.getItems().getOrDefault(shopPage.getPattern()[i][j], null);
+//                                if (item != null) {
+//                                    itemClickAction.getMenu().setItem(i * 9 + j, item.getActionItem(false));
+//                                } else {
+//                                    itemClickAction.getMenu().setItem(i * 9 + j, new ActionItem(new ItemStack(Material.AIR)));
+//                                }
+//                            }
+//                        }
+//                        itemClickAction.getMenu().setTitle(StringUtils.translateAlternateColorCodes(ViewItem.this.player.getShopView().getShopPages().get(p).getTitle()));
+//                    }
+                    Map<String, Object> info = new HashMap<>();
+                    info.put("player", ViewItem.this.player);
+                    info.put("page", p);
+                    ((ShopGui) DBedwars.getInstance().getGuiHandler().getGuis().get("SHOP")).setUpMenu(itemClickAction.getPlayer(), itemClickAction, info);
                     itemClickAction.getMenu().update(itemClickAction.getPlayer());
                     itemClickAction.setUpdate(true);
                 }
@@ -335,6 +353,8 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
             throw new OverrideException("Wrong override");
 
         ViewItem item = (ViewItem) override;
+        if (item.getPage() != null)
+            this.page = item.getPage();
         if (item.getMaterial() != null)
             this.material = item.getMaterial();
         if (item.getAmount() != this.getAmount() && item.getAmount() > 1)
@@ -348,11 +368,31 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
 
         this.attributes.clear();
         this.attributes = new ConcurrentHashMap<>(item.getAttributes());
+        this.actionItem = null;
+    }
+
+    public List<String> getAllUpgradeTier() {
+        List<String> tiers = new ArrayList<>();
+        if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER)) {
+            me.abhigya.dbedwars.api.game.view.ViewItem viewItem = this;
+            do {
+                me.abhigya.dbedwars.api.game.view.ViewItem.Attribute upgradeTier = viewItem.getAttributes().get(AttributeType.UPGRADEABLE_TIER);
+                String nextTier = (String) upgradeTier.getKeyEntry().get(AttributeType.UPGRADEABLE_TIER.getConfigKeys()[0]);
+                if (this.page.getItems().containsKey(nextTier)) {
+                    tiers.add(nextTier);
+                    viewItem = this.page.getItems().get(nextTier);
+                } else {
+                    break;
+                }
+            } while (viewItem.getAttributes().containsKey(AttributeType.UPGRADEABLE_TIER));
+        }
+
+        return tiers;
     }
 
     @Override
     public ViewItem clone() {
-        return new ViewItem(this.player, this.cfgItem);
+        return new ViewItem(this.player, this.page, this.cfgItem, this.key);
     }
 
     public class Attribute implements me.abhigya.dbedwars.api.game.view.ViewItem.Attribute {

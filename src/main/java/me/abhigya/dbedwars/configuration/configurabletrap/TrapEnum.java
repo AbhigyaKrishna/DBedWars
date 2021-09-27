@@ -2,11 +2,19 @@ package me.abhigya.dbedwars.configuration.configurabletrap;
 
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.acionbar.ActionBarUtils;
+import me.Abhigya.core.util.bossbar.BarColor;
+import me.Abhigya.core.util.bossbar.BarFlag;
+import me.Abhigya.core.util.bossbar.BarStyle;
 import me.Abhigya.core.util.bossbar.BossBar;
 import me.Abhigya.core.util.titles.TitleUtils;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
+import me.abhigya.dbedwars.api.util.PotionEffectAT;
+import me.abhigya.dbedwars.api.util.SoundVP;
 import org.apache.commons.lang.math.NumberUtils;
+import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class TrapEnum {
@@ -14,6 +22,7 @@ public class TrapEnum {
     public enum ActionType {
 
         TITLE {
+            // [TITLE:{FADE_IN}:{STAY}:{FADE_OUT}] Title\nSubtitle
             @Override
             public Consumer<ArenaPlayer> getAction(String statement) {
                 String sub = statement.substring(statement.indexOf("["), statement.indexOf("]"));
@@ -40,6 +49,7 @@ public class TrapEnum {
             }
         },
         ACTION_BAR {
+            // [ACTIONBAR] msg
             @Override
             public Consumer<ArenaPlayer> getAction(String statement) {
                 String sub = statement.substring(statement.indexOf("["), statement.indexOf("]"));
@@ -47,17 +57,103 @@ public class TrapEnum {
                 return player -> ActionBarUtils.send(player.getPlayer(), StringUtils.translateAlternateColorCodes(main));
             }
         },
+        @Deprecated
         BOSS_BAR {
+            // [BOSSBAR:{PROGRESS}:{COLOR}:{STYLE}:{FLAG}] Text
+            @Override
+            public Consumer<ArenaPlayer> getAction(String statement) {
+                String sub = statement.substring(statement.indexOf("["), statement.indexOf("]"));
+                String main = statement.replace(sub, "").trim();
+                sub = sub.replace("[", "").replace("]", "").trim();
+                String[] split = sub.split(":");
+                double progress = 1.0D;
+                BarColor barColor = BarColor.PINK;
+                BarStyle barStyle = BarStyle.SOLID;
+                List<BarFlag> flags = new ArrayList<>();
+                if (split.length > 1) {
+                    if (NumberUtils.isNumber(split[1])) {
+                        double d = Double.parseDouble(split[1]);
+                        if (d > 1) {
+                            d = d / 100;
+                        }
+                        progress = d;
+                    }
+                }
+                if (split.length > 2) {
+                    try {
+                        barColor = BarColor.valueOf(split[2]);
+                    } catch (IllegalArgumentException ignored) {}
+                }
+                if (split.length > 3) {
+                    try {
+                        barStyle = BarStyle.valueOf(split[3]);
+                    } catch (IllegalArgumentException ignored) {}
+                }
+                if (split.length > 4) {
+                    String[] flagSplit = split[4].split(",");
+                    for (String s : flagSplit) {
+                        try {
+                            BarFlag flag = BarFlag.valueOf(s.trim());
+                            flags.add(flag);
+                        } catch (IllegalArgumentException ignored) {}
+                    }
+                }
+                double finalProgress = progress;
+                BarColor finalBarColor = barColor;
+                BarStyle finalBarStyle = barStyle;
+                return player -> {
+                    BossBar bossBar = BossBar.createBossBar(player.getPlayer(), StringUtils.translateAlternateColorCodes(main), finalProgress, finalBarColor, finalBarStyle, flags.toArray(new BarFlag[0]));
+                    bossBar.show();
+                };
+            }
+        },
+        COMMAND {
+            // [COMMAND:{CONSOLE/PLAYER}] cmd
+            @Override
+            public Consumer<ArenaPlayer> getAction(String statement) {
+                String sub = statement.substring(statement.indexOf("["), statement.indexOf("]"));
+                String main = statement.replace(sub, "").trim();
+                sub = sub.replace("[", "").replace("]", "").trim();
+                String[] split = sub.split(":");
+                if (split.length > 1 && split[1].equalsIgnoreCase("CONSOLE")) {
+                    return player -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), main);
+                } else {
+                    return player -> player.getPlayer().performCommand(main);
+                }
+            }
+        },
+        SOUND {
+            // [SOUND] soundName:{volume}:{pitch}
+            @Override
+            public Consumer<ArenaPlayer> getAction(String statement) {
+                String str = statement.replace("[SOUND]", "").trim();
+                SoundVP sound = SoundVP.valueOf(str);
+                if (sound != null)
+                    return player -> sound.play(player.getPlayer());
+                else
+                    return super.getAction(statement);
+            }
+        },
+        MUSIC,
+        EFFECT {
+            // [EFFECT] effectName:{amplifier}:{duration}
+            @Override
+            public Consumer<ArenaPlayer> getAction(String statement) {
+                String str = statement.replace("[EFFECT]", "").trim();
+                PotionEffectAT effect = PotionEffectAT.valueOf(str);
+                if (effect != null)
+                    return player -> effect.applyTo(player.getPlayer());
+                else
+                    return super.getAction(statement);
+            }
+        },
+        PARTICLE {
+            // [PARTICLE]
             @Override
             public Consumer<ArenaPlayer> getAction(String statement) {
                 return super.getAction(statement);
             }
         },
-        COMMAND,
-        DELAY,
-        SOUND,
-        MUSIC,
-        EFFECT,
         ENCHANT,
         ;
 

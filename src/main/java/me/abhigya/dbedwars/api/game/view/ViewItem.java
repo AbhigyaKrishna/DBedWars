@@ -8,11 +8,14 @@ import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.LEnchant;
 import me.abhigya.dbedwars.game.arena.view.AttributeType;
 import me.abhigya.dbedwars.api.util.Overridable;
+import me.abhigya.dbedwars.game.arena.view.ShopPage;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ViewItem extends Cloneable, Overridable {
+
+    ShopPage getPage();
 
     ArenaPlayer getPlayer();
 

@@ -21,7 +21,7 @@ public class ShopGui extends IMenu<ItemMenu> {
     }
 
     @Override
-    protected void setUpMenu(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info) {
+    public void setUpMenu(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info) {
         if (info == null)
             return;
 
@@ -30,7 +30,7 @@ public class ShopGui extends IMenu<ItemMenu> {
         ArenaPlayer ap = (ArenaPlayer) info.get("player");
         if (page == null)
             page = ap.getShopView().getDefaultPage();
-        ShopPage shopPage = ap.getShopView().getShopPages().get("page-7");
+        ShopPage shopPage = ap.getShopView().getShopPages().get(page);
         this.menu.setTitle(StringUtils.translateAlternateColorCodes(shopPage.getTitle()));
         for (byte i = 0; i < shopPage.getPattern().length; i++) {
             for (byte j = 0; j < 9; j++) {
