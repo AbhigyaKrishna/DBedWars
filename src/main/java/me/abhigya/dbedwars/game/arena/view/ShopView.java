@@ -14,7 +14,7 @@ public class ShopView implements me.abhigya.dbedwars.api.game.view.ShopView {
 
     private final ArenaPlayer player;
     private final ConfigurableShop cfgShop;
-    private String defaultPage;
+    private final String defaultPage;
     private final Map<String, me.abhigya.dbedwars.api.game.view.ViewItem> commons;
     private final Map<String, ShopPage> shopPages;
 
@@ -28,11 +28,11 @@ public class ShopView implements me.abhigya.dbedwars.api.game.view.ShopView {
 
     public void load() {
         this.cfgShop.getCommonItems().forEach((s, item) -> {
-            ViewItem viewItem = new ViewItem(this.player, item);
+            ViewItem viewItem = new ViewItem(this.player, null, item, s);
             this.commons.put(s, viewItem);
         });
         this.cfgShop.getPages().forEach((s, page) -> {
-            ShopPage shopPage = new ShopPage(page, this.player, this.commons);
+            ShopPage shopPage = new ShopPage(s, page, this.player, this.commons);
             shopPage.load();
             this.shopPages.put(s, shopPage);
         });

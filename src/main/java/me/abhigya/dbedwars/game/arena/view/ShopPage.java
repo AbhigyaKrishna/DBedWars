@@ -9,13 +9,16 @@ import java.util.Map;
 
 public class ShopPage {
 
+    private final String key;
+
     private ArenaPlayer player;
     private ConfigurableShop.ConfigurablePage page;
     private String[][] pattern;
     private Map<String, me.abhigya.dbedwars.api.game.view.ViewItem> items;
     private Map<String, me.abhigya.dbedwars.api.game.view.ViewItem> common;
 
-    public ShopPage(ConfigurableShop.ConfigurablePage page, ArenaPlayer player, Map<String, me.abhigya.dbedwars.api.game.view.ViewItem> common) {
+    public ShopPage(String key, ConfigurableShop.ConfigurablePage page, ArenaPlayer player, Map<String, me.abhigya.dbedwars.api.game.view.ViewItem> common) {
+        this.key = key;
         this.items = new HashMap<>();
         this.page = page;
         this.player = player;
@@ -29,10 +32,10 @@ public class ShopPage {
             if (common.containsKey(s)) {
                 viewItem = common.get(s).clone();
                 try {
-                    viewItem.override(new ViewItem(this.player, item));
+                    viewItem.override(new ViewItem(this.player, this, item, s));
                 } catch (OverrideException ignored) {}
             } else {
-                viewItem = new ViewItem(this.player, item);
+                viewItem = new ViewItem(this.player, this, item, s);
             }
             this.items.put(s, viewItem);
         });
@@ -54,6 +57,10 @@ public class ShopPage {
         for (byte i = 0; i < this.page.getPattern().size(); i++) {
             this.pattern[i] = this.page.getPattern().get(i).split(" ");
         }
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getTitle() {

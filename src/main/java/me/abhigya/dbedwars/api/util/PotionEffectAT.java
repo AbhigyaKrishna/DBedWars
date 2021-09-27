@@ -1,6 +1,10 @@
 package me.abhigya.dbedwars.api.util;
 
+import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.util.xseries.XPotion;
+import me.abhigya.dbedwars.DBedwars;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -98,6 +102,16 @@ public class PotionEffectAT {
 
     public void setParticle(boolean particle) {
         this.particleOff = particle;
+    }
+
+    public void applyTo(LivingEntity entity) {
+        if (DBedwars.getInstance().getServerVersion().isOlderEquals(Version.v1_8_R3)) {
+            PotionEffect effect = new PotionEffect(this.potion.parsePotionEffectType(), this.duration, this.amplifier);
+            effect.apply(entity);
+        } else {
+            PotionEffect effect = new PotionEffect(this.potion.parsePotionEffectType(), this.duration, this.amplifier, true, this.particleOff);
+            effect.apply(entity);
+        }
     }
 
     @Override
