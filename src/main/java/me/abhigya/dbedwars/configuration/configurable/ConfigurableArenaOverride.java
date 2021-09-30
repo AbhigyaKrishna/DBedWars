@@ -7,6 +7,7 @@ import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.spawner.DropType;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.SoundVP;
+import me.abhigya.dbedwars.configuration.MainConfiguration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -19,16 +20,21 @@ public class ConfigurableArenaOverride implements Loadable {
     private final DBedwars plugin;
 
     private SpawnerOverride spawnerOverride;
+    private ConfigOverride configOverride;
 
     public ConfigurableArenaOverride(DBedwars plugin) {
         this.plugin = plugin;
+        this.spawnerOverride = new SpawnerOverride();
+        this.configOverride = new ConfigOverride();
     }
 
     @Override
     public Loadable load(ConfigurationSection section) {
-        this.spawnerOverride = new SpawnerOverride();
-        if (section.isConfigurationSection(SECTION_KEY))
-            this.spawnerOverride.load(section.getConfigurationSection(SECTION_KEY));
+        if (section.isConfigurationSection(SECTION_KEY)) {
+            ConfigurationSection s = section.getConfigurationSection(SECTION_KEY);
+            this.spawnerOverride.load(s);
+            this.configOverride.load(s);
+        }
 
         return this;
     }
@@ -45,6 +51,7 @@ public class ConfigurableArenaOverride implements Loadable {
 
     public void apply(Arena arena) {
         this.spawnerOverride.apply(arena);
+        this.configOverride.apply(arena);
     }
 
     public class SpawnerOverride implements Loadable {
@@ -149,6 +156,59 @@ public class ConfigurableArenaOverride implements Loadable {
                     }
                 }
             }
+        }
+    }
+
+    public class ConfigOverride implements Loadable {
+
+        private static final String SECTION_KEY = "config";
+
+        private MainConfiguration.ArenaSection config;
+
+        protected ConfigOverride() {
+            this.config = new MainConfiguration.ArenaSection();
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            if (!section.isConfigurationSection(SECTION_KEY))
+                return this;
+
+            this.config.load(section.getConfigurationSection(SECTION_KEY));
+            return this;
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public void apply(Arena arena) {
+            if (this.config.getStartTimer() != -1)
+                arena.getSettings().setStartTimer(this.config.getStartTimer());
+            if (this.config.getRespawnTime() != -1)
+                arena.getSettings().setRespawnTime(this.config.getRespawnTime());
+            if (this.config.getIslandRadius() != -1)
+                arena.getSettings().setIslandRadius(this.config.getIslandRadius());
+            if (this.config.getMinYAxis() != Integer.MAX_VALUE)
+                arena.getSettings().setMinYAxis(this.config.getMinYAxis());
+            if (this.config.getPlayerHitTagLength() != -1)
+                arena.getSettings().setPlayerHitTagLength(this.config.getPlayerHitTagLength());
+            if (this.config.getGameEndDelay() != -1)
+                arena.getSettings().setGameEndDelay(this.config.getGameEndDelay());
+            if (this.config.getBedDestroyPoint() != Integer.MIN_VALUE)
+                arena.getSettings().setBedDestroyPoint(this.config.getBedDestroyPoint());
+            if (this.config.getKillPoint() != Integer.MIN_VALUE)
+                arena.getSettings().setKillPoint(this.config.getKillPoint());
+            if (this.config.getFinalKillPoint() != Integer.MIN_VALUE)
+                arena.getSettings().setFinalKillPoint(this.config.getFinalKillPoint());
+            if (this.config.getDeathPoint() != Integer.MIN_VALUE)
+                arena.getSettings().setDeathPoint(this.config.getDeathPoint());
         }
     }
 

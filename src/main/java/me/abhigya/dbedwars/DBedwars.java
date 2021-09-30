@@ -15,7 +15,6 @@ import me.abhigya.dbedwars.addon.AddonManager;
 import me.abhigya.dbedwars.commands.Setup;
 import me.abhigya.dbedwars.commands.Start;
 import me.abhigya.dbedwars.configuration.Lang;
-import me.abhigya.dbedwars.configuration.MainConfiguration;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.game.GameManager;
 import me.abhigya.dbedwars.handler.ConfigHandler;
@@ -28,7 +27,6 @@ import me.abhigya.dbedwars.nms.v1_8_R3.NMSUtils;
 import me.abhigya.dbedwars.utils.PluginFileUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +44,6 @@ public final class DBedwars extends PluginAdapter {
     private AddonManager addonManager;
     private GameManager gameManager;
     private List<Listener> listeners;
-    private MainConfiguration mainConfiguration;
 
     private String mainWorld;
 
@@ -179,9 +176,6 @@ public final class DBedwars extends PluginAdapter {
             this.saveResource(path + file.getFile().getName(), file.getFile().getParentFile(), false);
         }
 
-        this.mainConfiguration = new MainConfiguration(this);
-        this.mainConfiguration.load(YamlConfiguration.loadConfiguration(PluginFiles.CONFIG.getFile()));
-
         return true;
     }
 
@@ -241,10 +235,6 @@ public final class DBedwars extends PluginAdapter {
 
     public GameManager getGameManager() {
         return gameManager;
-    }
-
-    public MainConfiguration getMainConfiguration() {
-        return mainConfiguration;
     }
 
     public String getMainWorld() {

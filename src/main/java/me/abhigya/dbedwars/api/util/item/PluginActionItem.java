@@ -2,6 +2,7 @@ package me.abhigya.dbedwars.api.util.item;
 
 import me.Abhigya.core.item.ActionItemBase;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +20,11 @@ public abstract class PluginActionItem extends ActionItemBase {
 
     @Override
     public ItemStack toItemStack() {
-        ItemStack stack = super.toItemStack();
-        return Utils.addPluginData(stack);
+        return this.toBwItemStack().toItemStack();
+    }
+
+    public BwItemStack toBwItemStack() {
+        return new BwItemStack(super.toItemStack());
     }
 
     @Override

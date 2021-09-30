@@ -65,7 +65,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
 
     public Arena(DBedwars plugin) {
         this.plugin = plugin;
-        this.settings = new me.abhigya.dbedwars.game.arena.settings.ArenaSettings(this);
+        this.settings = new me.abhigya.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.regenerator = new WorldRegenerator(this.plugin, this.settings.getRegenerationType(), this);
@@ -77,7 +77,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
     public Arena(DBedwars plugin, ConfigurableArena cfg) {
         this(plugin);
         this.cfgArena = cfg;
-        this.settings = new me.abhigya.dbedwars.game.arena.settings.ArenaSettings(this, cfg);
+        this.settings = new me.abhigya.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this, cfg);
         this.enabled = this.isConfigured() && cfg.isEnabled();
     }
 

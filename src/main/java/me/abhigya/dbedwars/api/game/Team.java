@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.api.game;
 
 import com.google.common.collect.Multimap;
+import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.abhigya.dbedwars.api.game.spawner.DropType;
 import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
@@ -57,6 +58,8 @@ public interface Team {
     boolean isEliminated();
 
     void setEliminated(boolean flag);
+
+    BoundingBox getIslandArea();
 
     void spawnShopNpc(LocationXYZYP location);
 

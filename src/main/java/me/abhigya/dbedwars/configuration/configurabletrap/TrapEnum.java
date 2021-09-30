@@ -156,9 +156,19 @@ public class TrapEnum {
         },
         ENCHANT,
         ;
+        
+        public static final ActionType[] VALUES = values();
 
         public Consumer<ArenaPlayer> getAction(String statement) {
             return player -> {};
+        }
+
+        public static Consumer<ArenaPlayer> parseAction(String str) {
+            for (ActionType value : VALUES) {
+                if (str.startsWith("[" + value.name()))
+                    return value.getAction(str);
+            }
+            return null;
         }
 
     }

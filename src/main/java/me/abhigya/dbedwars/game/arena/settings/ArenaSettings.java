@@ -2,6 +2,7 @@ package me.abhigya.dbedwars.game.arena.settings;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.RegenerationType;
 import me.abhigya.dbedwars.api.game.Team;
@@ -18,6 +19,7 @@ import java.util.*;
 
 public class ArenaSettings implements me.abhigya.dbedwars.api.game.settings.ArenaSettings {
 
+    private final DBedwars plugin;
     private final Arena arena;
 
     private String name;
@@ -32,20 +34,47 @@ public class ArenaSettings implements me.abhigya.dbedwars.api.game.settings.Aren
     private int teamPlayers;
     private int minPlayers;
 
+    /* Overridable settings */
+    private int startTimer;
+    private int respawnTime;
+    private int islandRadius;
+    private int minYAxis;
+    private int playerHitTagLength;
+    private int gameEndDelay;
+    private boolean disableHunger;
+    // Points
+    private int bedDestroyPoint;
+    private int killPoint;
+    private int finalKillPoint;
+    private int deathPoint;
+
     private Multimap<DropType, LocationXYZ> drops;
     private Set<Team> availableTeams;
 
-    public ArenaSettings(Arena arena) {
+    public ArenaSettings(DBedwars plugin, Arena arena) {
+        this.plugin = plugin;
         this.arena = arena;
         this.teamPlayers = 1;
         this.worldEnv = World.Environment.NORMAL;
         this.regenerationType = RegenerationType.MULTI_THREADED_SYNC;
         this.drops = ArrayListMultimap.create();
         this.availableTeams = new HashSet<>();
+
+        this.startTimer = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer();
+        this.respawnTime = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getRespawnTime();
+        this.islandRadius = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getIslandRadius();
+        this.minYAxis = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getMinYAxis();
+        this.playerHitTagLength = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getPlayerHitTagLength();
+        this.gameEndDelay = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getGameEndDelay();
+        this.disableHunger = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().isDisableHunger();
+        this.bedDestroyPoint = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getBedDestroyPoint();
+        this.killPoint = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getKillPoint();
+        this.finalKillPoint = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getFinalKillPoint();
+        this.deathPoint = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getDeathPoint();
     }
 
-    public ArenaSettings(Arena arena, ConfigurableArena cfgArena) {
-        this(arena);
+    public ArenaSettings(DBedwars plugin, Arena arena, ConfigurableArena cfgArena) {
+        this(plugin, arena);
         this.update(cfgArena);
     }
 
@@ -247,6 +276,116 @@ public class ArenaSettings implements me.abhigya.dbedwars.api.game.settings.Aren
     @Override
     public void disableTeam(Team team) {
         this.availableTeams.remove(team);
+    }
+
+    @Override
+    public int getStartTimer() {
+        return startTimer;
+    }
+
+    @Override
+    public void setStartTimer(int startTimer) {
+        this.startTimer = startTimer;
+    }
+
+    @Override
+    public int getRespawnTime() {
+        return respawnTime;
+    }
+
+    @Override
+    public void setRespawnTime(int respawnTime) {
+        this.respawnTime = respawnTime;
+    }
+
+    @Override
+    public int getIslandRadius() {
+        return islandRadius;
+    }
+
+    @Override
+    public void setIslandRadius(int islandRadius) {
+        this.islandRadius = islandRadius;
+    }
+
+    @Override
+    public int getMinYAxis() {
+        return minYAxis;
+    }
+
+    @Override
+    public void setMinYAxis(int minYAxis) {
+        this.minYAxis = minYAxis;
+    }
+
+    @Override
+    public int getPlayerHitTagLength() {
+        return playerHitTagLength;
+    }
+
+    @Override
+    public void setPlayerHitTagLength(int playerHitTagLength) {
+        this.playerHitTagLength = playerHitTagLength;
+    }
+
+    @Override
+    public int getGameEndDelay() {
+        return gameEndDelay;
+    }
+
+    @Override
+    public void setGameEndDelay(int gameEndDelay) {
+        this.gameEndDelay = gameEndDelay;
+    }
+
+    @Override
+    public boolean isDisableHunger() {
+        return disableHunger;
+    }
+
+    @Override
+    public void setDisableHunger(boolean flag) {
+        this.disableHunger = flag;
+    }
+
+    @Override
+    public int getBedDestroyPoint() {
+        return bedDestroyPoint;
+    }
+
+    @Override
+    public void setBedDestroyPoint(int bedDestroyPoint) {
+        this.bedDestroyPoint = bedDestroyPoint;
+    }
+
+    @Override
+    public int getKillPoint() {
+        return killPoint;
+    }
+
+    @Override
+    public void setKillPoint(int killPoint) {
+        this.killPoint = killPoint;
+    }
+
+    @Override
+    public int getFinalKillPoint() {
+        return finalKillPoint;
+    }
+
+    @Override
+    public void setFinalKillPoint(int finalKillPoint) {
+        this.finalKillPoint = finalKillPoint;
+    }
+
+    @Override
+    public int getDeathPoint() {
+        return deathPoint;
+    }
+
+    @Override
+    public void setDeathPoint(int deathPoint) {
+        this.deathPoint = deathPoint;
     }
 
     public void update(ConfigurableArena cfgArena) {

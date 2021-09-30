@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.handler;
 
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.configuration.MainConfiguration;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableCustomItems;
@@ -18,6 +19,7 @@ public class ConfigHandler {
 
     private final DBedwars plugin;
 
+    private MainConfiguration mainConfiguration;
     private final Set<ConfigurableItemSpawner> dropTypes;
     private final Set<ConfigurableArena> arenas;
     private final Set<ConfigurableTrap> traps;
@@ -32,6 +34,10 @@ public class ConfigHandler {
     }
 
     public void loadConfigurations() {
+        this.mainConfiguration = new MainConfiguration(this.plugin);
+        this.mainConfiguration.load(YamlConfiguration.loadConfiguration(PluginFiles.CONFIG.getFile()));
+        this.mainConfiguration.isValid();
+
         this.loadArena();
         this.loadItemSpawners();
         this.loadTraps();
@@ -65,11 +71,15 @@ public class ConfigHandler {
     private void loadTraps() {
         File file = PluginFiles.TRAPS.getFile();
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String key : config.getConfigurationSection("traps").getKeys(false)) {
+        for (String key : config.getKeys(false)) {
             ConfigurableTrap trap = new ConfigurableTrap(key);
-            trap.load(config.getConfigurationSection("traps." + key));
+            trap.load(config.getConfigurationSection(key));
             this.traps.add(trap);
         }
+    }
+
+    public MainConfiguration getMainConfiguration() {
+        return this.mainConfiguration;
     }
 
     public Set<ConfigurableItemSpawner> getDropTypes() {

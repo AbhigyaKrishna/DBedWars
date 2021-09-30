@@ -3,6 +3,7 @@ package me.abhigya.dbedwars.configuration;
 import me.Abhigya.core.util.loadable.Loadable;
 import me.Abhigya.core.util.loadable.LoadableEntry;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.exceptions.IllegalConfigException;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class MainConfiguration implements Loadable {
@@ -71,8 +72,19 @@ public class MainConfiguration implements Loadable {
         @LoadableEntry(key = "disable-hunger")
         private boolean disableHunger;
 
-        @LoadableEntry(key = "disable-vanilla-achievement")
-        private boolean disableAchievement;
+        public ArenaSection() {
+            this.startTimer = -1;
+            this.respawnTime = -1;
+            this.islandRadius = -1;
+            this.minYAxis = Integer.MIN_VALUE;
+            this.playerHitTagLength = -1;
+            this.gameEndDelay = -1;
+            this.bedDestroyPoint = Integer.MIN_VALUE;
+            this.killPoint = Integer.MIN_VALUE;
+            this.finalKillPoint = Integer.MIN_VALUE;
+            this.deathPoint = Integer.MIN_VALUE;
+            this.disableHunger = true;
+        }
 
         @Override
         public Loadable load(ConfigurationSection section) {
@@ -81,12 +93,32 @@ public class MainConfiguration implements Loadable {
 
         @Override
         public boolean isValid() {
+            if (this.startTimer <= -1)
+                throw new IllegalConfigException("arena.start-timer", "lower than 0", "config.yml");
+            else if (this.respawnTime <= -1)
+                throw new IllegalConfigException("arena.respawn-delay", "lower than 0", "config.yml");
+            else if (this.islandRadius <= -1)
+                throw new IllegalConfigException("arena.island-radius", "lower than 0", "config.yml");
+            else if (this.minYAxis == Integer.MIN_VALUE)
+                throw new IllegalConfigException("arena.min-y-axis", "Integer#MIN_VALUE", "config.yml");
+            else if (this.playerHitTagLength <= -1)
+                throw new IllegalConfigException("arena.player-hit-tag-length", "lower than 0", "config.yml");
+            else if (this.gameEndDelay <= -1)
+                throw new IllegalConfigException("arena.game-end-delay", "lower than 0", "config.yml");
+            else if (this.bedDestroyPoint == Integer.MIN_VALUE)
+                throw new IllegalConfigException("arena.points.bed-destroy", "Integer#MIN_VALUE", "config.yml");
+            else if (this.killPoint == Integer.MIN_VALUE)
+                throw new IllegalConfigException("arena.points.kill", "Integer#MIN_VALUE", "config.yml");
+            else if (this.finalKillPoint == Integer.MIN_VALUE)
+                throw new IllegalConfigException("arena.points.final-kill", "Integer#MIN_VALUE", "config.yml");
+            else if (this.deathPoint == Integer.MIN_VALUE)
+                throw new IllegalConfigException("arena.points.death", "Integer#MIN_VALUE", "config.yml");
             return true;
         }
 
         @Override
         public boolean isInvalid() {
-            return false;
+            return !this.isValid();
         }
 
         public int getStartTimer() {
@@ -131,10 +163,6 @@ public class MainConfiguration implements Loadable {
 
         public boolean isDisableHunger() {
             return disableHunger;
-        }
-
-        public boolean isDisableAchievement() {
-            return disableAchievement;
         }
     }
 }

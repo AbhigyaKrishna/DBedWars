@@ -4,6 +4,7 @@ import me.Abhigya.core.handler.PluginHandler;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.events.game.PlayerBaseEnterEvent;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.DeathCause;
@@ -12,10 +13,12 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
@@ -68,17 +71,17 @@ public class GameListener extends PluginHandler {
 
         if (event.getBlock().hasMetadata("placed")) {
             // This should not happen but anyways
-            if (!player.getArena().equals(this.arena) || !player.getArena().getSettings().getName().equals(((FixedMetadataValue) event.getBlock().getMetadata("placed").get(0)).value()))
+            if (!player.getArena().getSettings().getName().equals(((FixedMetadataValue) event.getBlock().getMetadata("placed").get(0)).value()))
                 event.setCancelled(true);
 
         } else if (Utils.isBed(event.getBlock())) {
             event.setCancelled(true);
 
             Optional<Team> oTeam = this.arena.getTeams().stream().filter(t -> {
-                LocationXYZ loc = LocationXYZ.valueOf(event.getBlock().getLocation());
-                return  (t.getBedLocation().equals(loc) || t.getBedLocation().equals(loc.clone().addX(1)) ||
-                        t.getBedLocation().equals(loc.clone().addZ(1)) || t.getBedLocation().equals(loc.clone().subtractX(1)) ||
-                        t.getBedLocation().equals(loc.clone().subtractZ(1)));
+                Block block = t.getBedLocation().getBlock(this.arena.getWorld());
+                return  (block.equals(event.getBlock()) || block.equals(event.getBlock().getRelative(BlockFace.EAST)) ||
+                        block.equals(event.getBlock().getRelative(BlockFace.WEST)) || block.equals(event.getBlock().getRelative(BlockFace.NORTH)) ||
+                        block.equals(event.getBlock().getRelative(BlockFace.SOUTH)));
             }).findFirst();
 
             if (!oTeam.isPresent())
@@ -156,7 +159,7 @@ public class GameListener extends PluginHandler {
         if (!event.getEntity().getWorld().equals(this.arena.getWorld()))
             return;
 
-        if (this.plugin.getMainConfiguration().getArenaSection().isDisableHunger())
+        if (this.arena.getSettings().isDisableHunger())
             event.setCancelled(true);
     }
 
@@ -207,18 +210,44 @@ public class GameListener extends PluginHandler {
         }
     }
 
-    @EventHandler
-    public void handlePlayerFall(PlayerMoveEvent event) {
-        if (!event.getPlayer().getWorld().equals(this.arena.getWorld()))
+    @EventHandler(priority = EventPriority.LOW)
+    public void handlePlayerFall(EntityChangeBlockEvent event) {
+        if (!(event.getEntity() instanceof Player))
             return;
 
-        if (event.getPlayer().getLocation().getY() <= this.plugin.getMainConfiguration().getArenaSection().getMinYAxis()) {
-            ArenaPlayer player = this.arena.getAsArenaPlayer(event.getPlayer()).orElse(null);
-            if (player == null)
-                return;
+        Player player = (Player) event.getEntity();
 
-            player.kill(DeathCause.VOID);
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld()))
+            return;
+
+        if (player.getLocation().getY() <= this.arena.getSettings().getMinYAxis()) {
+            this.arena.getAsArenaPlayer(player).ifPresent(p -> {
+                p.kill(DeathCause.VOID);
+            });
+
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void handlePlayerMove(EntityChangeBlockEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity();
+
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld()))
+            return;
+
+        this.arena.getAsArenaPlayer(player).ifPresent(p -> {
+            for (Team team : this.arena.getTeams()) {
+                if (team.getIslandArea().contains(event.getBlock().getLocation().toVector())) {
+                    PlayerBaseEnterEvent e = new PlayerBaseEnterEvent(p, this.arena, team);
+                    e.call();
+
+
+                }
+            }
+        });
     }
 
     @EventHandler

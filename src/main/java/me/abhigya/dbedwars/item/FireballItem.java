@@ -12,6 +12,7 @@ import me.abhigya.dbedwars.utils.FireBallUtil;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
@@ -19,25 +20,33 @@ import java.util.ArrayList;
 
 public class FireballItem extends PluginActionItem {
 
-    ConfigurableCustomItems.ConfigurableFireball configurableFireball;
+    private ConfigurableCustomItems.ConfigurableFireball configurableFireball;
+    private ItemStack fireball;
 
     public FireballItem(DBedwars plugin) {
-        super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),(DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>() : DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore()), XMaterial.FIRE_CHARGE.parseMaterial());
+        super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                (DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>() : DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore()),
+                XMaterial.FIRE_CHARGE.parseMaterial());
         this.configurableFireball = plugin.getConfigHandler().getCustomItems().getFireball();
+        this.fireball = this.toItemStack();
     }
 
     @Override
     public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-        if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (configurableFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))){
+        if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (configurableFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
             playerInteractEvent.setCancelled(true);
-            BwItemStack.removeItem(player,CustomItems.FIREBALL.getItem().toItemStack());
+            BwItemStack.removeItem(player, this.fireball);
             Fireball fireball = player.launchProjectile(Fireball.class);
-            fireball.setMetadata("plugin",new FixedMetadataValue(DBedwars.getInstance(),DBedwars.getInstance().getName()));
+            fireball.setMetadata("plugin", new FixedMetadataValue(DBedwars.getInstance(), DBedwars.getInstance().getName()));
             fireball.setVelocity(fireball.getVelocity().multiply(configurableFireball.getSpeedMultiplier()));
             if (this.configurableFireball.isFixDirectionEnabled())
-                FireBallUtil.setDirection(fireball,player.getEyeLocation().getDirection());
+                FireBallUtil.setDirection(fireball, player.getEyeLocation().getDirection());
             fireball.setYield(configurableFireball.getExplosionYield());
-            configurableFireball.getPotionEffects().forEach(s -> player.addPotionEffect(PotionEffectAT.valueOf(s).getPotion().parsePotion(PotionEffectAT.valueOf(s).getDuration(),PotionEffectAT.valueOf(s).getAmplifier())));
+            configurableFireball.getPotionEffects().forEach(s -> {
+                PotionEffectAT effect = PotionEffectAT.valueOf(s);
+                if (effect != null)
+                    effect.applyTo(player);
+            });
             fireball.setIsIncendiary(configurableFireball.isExplosionFireEnabled());
         }
     }

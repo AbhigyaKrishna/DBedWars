@@ -243,6 +243,9 @@ public class ConfigurableShop implements Loadable {
 
         public static class AttributeItems implements Loadable {
 
+            @LoadableEntry(key = "custom-item")
+            private String customItem;
+
             @LoadableEntry(key = "material")
             private String material;
 
@@ -279,6 +282,10 @@ public class ConfigurableShop implements Loadable {
             @Override
             public boolean isInvalid() {
                 return false;
+            }
+
+            public String getCustomItem() {
+                return customItem;
             }
 
             public int getAmount() {

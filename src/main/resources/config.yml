@@ -21,4 +21,13 @@ arena:
     death: -1
 
   disable-hunger: true
-  disable-vanilla-achievement: true
+
+# Traps
+
+traps:
+  enabled: true
+  trap-queue-limit: 3
+  queued-trap-cost:
+    - '1:DIAMOND'
+    - '2:DIAMOND'
+    - '4:DIAMOND'

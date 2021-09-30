@@ -3,6 +3,7 @@ package me.abhigya.dbedwars.game.arena;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.Abhigya.core.util.npc.NPC;
 import me.Abhigya.core.util.npc.Profile;
 import me.Abhigya.core.util.packet.packetevents.utils.player.Skin;
@@ -20,6 +21,7 @@ import me.abhigya.dbedwars.configuration.configurable.ConfigurableTeam;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Team implements me.abhigya.dbedwars.api.game.Team {
 
@@ -36,12 +38,16 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
     private boolean bedBroken;
     private boolean eliminated;
     private Set<ArenaPlayer> players;
+    private BoundingBox islandArea;
     private NPC shopNpc;
     private NPC upgradesNpc;
+
+    private Queue<Trap> trapQueue;
 
     public Team(Color color) {
         this.color = color;
         this.spawners = ArrayListMultimap.create();
+        this.trapQueue = new ConcurrentLinkedQueue<>();
     }
 
     public Team(ConfigurableTeam cfgTeam) {
@@ -133,6 +139,12 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
         this.players = new HashSet<>();
         this.bedBroken = false;
         this.eliminated = false;
+        this.islandArea = new BoundingBox(this.spawn.getX() - this.arena.getSettings().getIslandRadius(),
+                this.spawn.getY() - this.arena.getSettings().getIslandRadius(),
+                this.spawn.getZ() - this.arena.getSettings().getIslandRadius(),
+                this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
+                this.spawn.getY() + this.arena.getSettings().getIslandRadius(),
+                this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
     }
 
     @Override
@@ -202,6 +214,11 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
 
             this.eliminated = false;
         }
+    }
+
+    @Override
+    public BoundingBox getIslandArea() {
+        return this.islandArea;
     }
 
     @Override

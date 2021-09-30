@@ -1,6 +1,5 @@
 package me.abhigya.dbedwars.item;
 
-import me.Abhigya.core.item.ActionItem;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
@@ -43,18 +42,20 @@ public enum CustomItems {
                 DBedwars.getInstance().getGuiHandler().getGuis().get("ADVANCED_SETUP").open(null, info, player);
         }
     }),
+
     FIREBALL(new FireballItem(DBedwars.getInstance())),
+
     TNT(new TNTItem(DBedwars.getInstance())),
     /*POPUP_TOWER(new PopupTowerChest(DBedwars.getInstance()))*/
     ;
 
-    private final ActionItem item;
+    private final PluginActionItem item;
 
-    CustomItems(ActionItem item) {
+    CustomItems(PluginActionItem item) {
         this.item = item;
     }
 
-    public ActionItem getItem() {
+    public PluginActionItem getItem() {
         return item;
     }
 }

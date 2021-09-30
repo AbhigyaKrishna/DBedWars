@@ -92,4 +92,48 @@ public interface ArenaSettings {
 
     void disableTeam(Team team);
 
+    int getStartTimer();
+
+    void setStartTimer(int startTimer);
+
+    int getRespawnTime();
+
+    void setRespawnTime(int respawnTime);
+
+    int getIslandRadius();
+
+    void setIslandRadius(int islandRadius);
+
+    int getMinYAxis();
+
+    void setMinYAxis(int minYAxis);
+
+    int getPlayerHitTagLength();
+
+    void setPlayerHitTagLength(int playerHitTagLength);
+
+    int getGameEndDelay();
+
+    void setGameEndDelay(int gameEndDelay);
+
+    boolean isDisableHunger();
+
+    void setDisableHunger(boolean flag);
+
+    int getBedDestroyPoint();
+
+    void setBedDestroyPoint(int bedDestroyPoint);
+
+    int getKillPoint();
+
+    void setKillPoint(int killPoint);
+
+    int getFinalKillPoint();
+
+    void setFinalKillPoint(int finalKillPoint);
+
+    int getDeathPoint();
+
+    void setDeathPoint(int deathPoint);
+
 }
