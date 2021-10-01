@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 public class ConfigurableArena implements Configurable {
 
     private Arena arena;
-
     @SaveableEntry(key = "name")
     @LoadableEntry(key = "name")
     private String identifier;

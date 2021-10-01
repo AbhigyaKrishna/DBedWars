@@ -14,9 +14,9 @@ public class RespawnTask extends FixedRateScheduleTask {
     private long lastExecuted;
 
     public RespawnTask(DBedwars plugin, ArenaPlayer player) {
-        super(20, plugin.getMainConfiguration().getArenaSection().getRespawnTime());
+        super(20, plugin.getConfigHandler().getMainConfiguration().getArenaSection().getRespawnTime());
         this.plugin = plugin;
-        this.time = this.plugin.getMainConfiguration().getArenaSection().getRespawnTime();
+        this.time = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getRespawnTime();
         this.player = player;
         TitleUtils.send(player.getPlayer(), StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time +"s"), "");
         this.lastExecuted = System.currentTimeMillis();

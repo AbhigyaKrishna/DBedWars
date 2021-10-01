@@ -54,7 +54,7 @@ public class GameManager {
             return;
 
         arena.setStatus(ArenaStatus.STARTING);
-        this.plugin.getThreadHandler().addAsyncWork(new CountdownTask(arena, (short) this.plugin.getMainConfiguration().getArenaSection().getStartTimer()));
+        this.plugin.getThreadHandler().addAsyncWork(new CountdownTask(arena, (short) this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer()));
     }
 
     public Set<DropType> getDropTypes() {

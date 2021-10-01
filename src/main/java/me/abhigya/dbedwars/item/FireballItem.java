@@ -23,6 +23,9 @@ public class FireballItem extends PluginActionItem {
     private ConfigurableCustomItems.ConfigurableFireball configurableFireball;
     private ItemStack fireball;
 
+    //TODO MERGE EXPLOSION HERE
+    //TODO ADD A CHECK FOR KNOCKBACK SETTINGS ENABLED
+
     public FireballItem(DBedwars plugin) {
         super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
                 (DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>() : DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore()),

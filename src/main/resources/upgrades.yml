@@ -1,0 +1,74 @@
+#TODO RECONFIGURE SOUNDS TO SOUNDS.YML
+#TODO ADD COMMANDS HERE
+#TODO ADD MESSAGES HERE
+sharpness:
+  goals:
+    1:
+      target-for-enchants/effects: 'team' #team/buyer/allenemies/nearestemeny
+      source-for-sounds/particles: 'team' #spawn/bed/base/ <- of target's team
+      actions:
+        - '[SHARPNESS:1] SWORD' #sword/pickaxe/axe/shears/tools/item/ARMOR/boots/chestplate/leggings/helmet
+        - '[SOUND] NOTE_PLING:1:2' #sound
+protection:
+  tiers:
+    1:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[PROTECTION:1] ARMOR'
+            - '[SOUND] NOTE_PLING:1:2'
+    2:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[PROTECTION:2] ARMOR'
+            - '[SOUND]'
+    3:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[PROTECTION:3] ARMOR'
+            - '[SOUND] NOTE_PLING:1:2'
+    4:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[PROTECTION:1] ARMOR'
+            - '[SOUND] NOTE_PLING:1:2'
+maniac-miner:
+  tiers:
+    1:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[EFFECT] HASTE:1:PERMANENT'
+            - '[SOUND] NOTE_PLING:1:2'
+    2:
+      goals:
+        1:
+          target-for-enchants/effects: 'team'
+          source-for-sounds/particles: 'team'
+          actions:
+            - '[EFFECT] HASTE:2:PERMANENT'
+            - '[SOUND] NOTE_PLING:1:2'
+iron-forge:
+  #AMK LODU WILL DO IT
+heal-pool:
+  goals:
+    1:
+      target-for-enchants/effects: 'team'
+      source-for-sounds/particles: 'home-base'
+      actions:
+        - '[EFFECT] REGENERATION:1:200'
+        - '[SOUND] NOTE_PLING:1:2'
+dragon-buff:

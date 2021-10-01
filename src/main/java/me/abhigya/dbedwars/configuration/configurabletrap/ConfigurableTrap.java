@@ -1,9 +1,11 @@
 package me.abhigya.dbedwars.configuration.configurabletrap;
 
 import me.Abhigya.core.util.loadable.Loadable;
+import me.Abhigya.core.util.loadable.LoadableCollectionEntry;
 import me.Abhigya.core.util.loadable.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,10 +19,11 @@ public class ConfigurableTrap implements Loadable {
     @LoadableEntry(key = "trigger")
     private String trigger;
 
-    @LoadableEntry(key = "actions")
+    @LoadableCollectionEntry(subsection = "actions")
     private List<ConfigurableTrapAction> trapActions;
 
     public ConfigurableTrap(String key) {
+        trapActions = new ArrayList<>();
         this.key = key;
     }
 

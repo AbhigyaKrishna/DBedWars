@@ -12,6 +12,7 @@ public class ConfigurableCustomItems implements Loadable {
     private ConfigurableFireball fireball;
     private ConfigurableTNT TNT;
     private ConfigurablePopupTower popupTower;
+    private ConfigurableBridgeEgg bridgeEgg;
 
     @Override
     public Loadable load(ConfigurationSection section) {
@@ -21,6 +22,10 @@ public class ConfigurableCustomItems implements Loadable {
         TNT.load(section.getConfigurationSection("tnt"));
         popupTower = new ConfigurablePopupTower();
         popupTower.load(section.getConfigurationSection("popup-tower"));
+        bridgeEgg = new ConfigurableBridgeEgg();
+        bridgeEgg.load(section.getConfigurationSection("bridge-egg"));
+        System.out.println(bridgeEgg.displayName);
+        System.out.println(bridgeEgg.lore);
         return this.loadEntries(section);
     }
 
@@ -44,6 +49,10 @@ public class ConfigurableCustomItems implements Loadable {
 
     public ConfigurablePopupTower getPopupTower() {
         return popupTower;
+    }
+
+    public ConfigurableBridgeEgg getBridgeEgg() {
+        return bridgeEgg;
     }
 
     public static class ConfigurablePopupTower implements Loadable{
@@ -275,6 +284,78 @@ public class ConfigurableCustomItems implements Loadable {
         }
     }
 
+    public static class ConfigurableBridgeEgg implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String displayName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
+
+        @LoadableEntry(key = "keep-alive-timeout")
+        private int keepAliveTimeOut;
+
+        @LoadableEntry(key = "min-distance-from-player-to-start-placing-blocks")
+        private int minDistanceFromPlayer;
+
+        @LoadableEntry(key = "max-distance-from-player-to-keep-placing-blocks")
+        private int maxDistanceFromPlayer;
+
+        @LoadableEntry(key = "max-down-stack")
+        private int maxDownStack;
+
+        @LoadableEntry(key = "flip-bridge")
+        private boolean flipBridgeEnabled;
+
+        public ConfigurableBridgeEgg(){
+            lore = new ArrayList<>();
+            flipBridgeEnabled = true;
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public String getName() {
+            return displayName;
+        }
+
+        public List<String> getLore() {
+            return lore;
+        }
+
+        public int getKeepAliveTimeOut() {
+            return keepAliveTimeOut;
+        }
+
+        public int getMinDistanceFromPlayer() {
+            return minDistanceFromPlayer;
+        }
+
+        public int getMaxDistanceFromPlayer() {
+            return maxDistanceFromPlayer;
+        }
+
+        public int getMaxDownStack() {
+            return maxDownStack;
+        }
+
+        public boolean isFlipBridgeEnabled() {
+            return flipBridgeEnabled;
+        }
+    }
+
     public static class KnockBack implements Loadable{
 
         @LoadableEntry(key = "radius-entities")
@@ -327,4 +408,5 @@ public class ConfigurableCustomItems implements Loadable {
             return radiusEntities;
         }
     }
+
 }
