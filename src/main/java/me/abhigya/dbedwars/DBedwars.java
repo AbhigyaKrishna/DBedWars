@@ -43,7 +43,7 @@ public final class DBedwars extends PluginAdapter {
     private Version serverVersion;
     private AddonManager addonManager;
     private GameManager gameManager;
-    private List<Listener> listeners;
+    private List< Listener > listeners;
 
     private String mainWorld;
 
@@ -53,52 +53,56 @@ public final class DBedwars extends PluginAdapter {
     private ConfigHandler configHandler;
     private NPCPool npcHandler;
     private HologramFactory hologramFactory;
-    
+
     private NMSAdaptor nmsAdaptor;
 
-    @Override
-    public void onLoad() {
-        if (!PluginFiles.ADDON.getFile().isDirectory())
-            PluginFiles.ADDON.getFile().mkdirs();
-
-        if (!PluginFiles.LANGUAGES.getFile().isDirectory())
-            PluginFiles.LANGUAGES.getFile().mkdirs();
-
-        for (PluginFiles files : PluginFiles.getLanguageFiles()) {
-            if (!files.getFile().exists()) {
-                this.saveResource("languages/" + files.getFile().getName(), PluginFiles.LANGUAGES.getFile(), false);
-            }
-        }
-
-        Lang.setLangFile(PluginFiles.ENGLISH.getFile());
-
-        this.alias = Lang.PREFIX.toString();
-        this.addonManager = new AddonManager(this);
-        this.addonManager.loadAddon();
+    public static DBedwars getInstance( ) {
+        return Plugin.getPlugin( DBedwars.class );
     }
 
     @Override
-    protected boolean setUp() {
-        this.serverVersion = Version.getServerVersion();
-        this.nmsAdaptor = this.registerNMSAdaptor();
-        this.addonManager.enableAddon();
-        this.hologramFactory = new HologramFactory(this);
+    public void onLoad( ) {
+        if ( !PluginFiles.ADDON.getFile( ).isDirectory( ) )
+            PluginFiles.ADDON.getFile( ).mkdirs( );
 
-        this.mainWorld = ServerPropertiesUtils.getStringProperty("level-name", "world");
+        if ( !PluginFiles.LANGUAGES.getFile( ).isDirectory( ) )
+            PluginFiles.LANGUAGES.getFile( ).mkdirs( );
 
-        boolean spawnNpc = ServerPropertiesUtils.getBooleanProperty("spawn-npcs", false);
-        int spawnProt = ServerPropertiesUtils.getIntProperty("spawn-protection", -1);
+        for ( PluginFiles files : PluginFiles.getLanguageFiles( ) ) {
+            if ( !files.getFile( ).exists( ) ) {
+                this.saveResource( "languages/" + files.getFile( ).getName( ), PluginFiles.LANGUAGES.getFile( ), false );
+            }
+        }
+
+        Lang.setLangFile( PluginFiles.ENGLISH.getFile( ) );
+
+        this.alias = Lang.PREFIX.toString( );
+        this.addonManager = new AddonManager( this );
+        this.addonManager.loadAddon( );
+    }
+
+    @Override
+    protected boolean setUp( ) {
+        this.serverVersion = Version.getServerVersion( );
+        this.nmsAdaptor = this.registerNMSAdaptor( );
+        this.addonManager.enableAddon( );
+        this.hologramFactory = new HologramFactory( this );
+
+        this.mainWorld = ServerPropertiesUtils.getStringProperty( "level-name", "world" );
+
+        boolean spawnNpc = ServerPropertiesUtils.getBooleanProperty( "spawn-npcs", false );
+        int spawnProt = ServerPropertiesUtils.getIntProperty( "spawn-protection", -1 );
         return true;
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable( ) {
 //        this.addonManager.disableAddon();
 //        this.threadHandler.destroyAllThreads();
     }
 
     @Override
-    public CoreVersion getRequiredCoreVersion() {
+    public CoreVersion getRequiredCoreVersion( ) {
         return CoreVersion.v1_2_1;
     }
 
@@ -109,45 +113,45 @@ public final class DBedwars extends PluginAdapter {
      * </ul>
      */
     @Override
-    public PluginDependence[] getDependences() {
-        if (!PluginFiles.HOOKS.getFile().isDirectory()) {
-            if (!PluginFiles.HOOKS.getFile().mkdirs()) {
-                ConsoleUtils.sendPluginMessage(ChatColor.RED + Lang.ERROR_WRITE_FILES.toString(), this.getAlias());
+    public PluginDependence[] getDependences( ) {
+        if ( !PluginFiles.HOOKS.getFile( ).isDirectory( ) ) {
+            if ( !PluginFiles.HOOKS.getFile( ).mkdirs( ) ) {
+                ConsoleUtils.sendPluginMessage( ChatColor.RED + Lang.ERROR_WRITE_FILES.toString( ), this.getAlias( ) );
             }
         }
-        PlaceholderUtil.tryHook(this);
+        PlaceholderUtil.tryHook( this );
         return new PluginDependence[]{
-                new PluginDependence("MultiVerse-Core") {
+                new PluginDependence( "MultiVerse-Core" ) {
 
-                    private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
+                    private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile( );
 
                     @Override
-                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                        if (plugin != null) {
-                            ConsoleUtils.sendPluginMessage(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()), DBedwars.this.getAlias());
-                            DBedwars.this.saveResource("hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                            PluginFileUtils.set(this.file, "enabled", true);
+                    public Boolean apply( org.bukkit.plugin.Plugin plugin ) {
+                        if ( plugin != null ) {
+                            ConsoleUtils.sendPluginMessage( Lang.HOOK_FOUND.toString( ).replace( "{hook}", this.getName( ) ), DBedwars.this.getAlias( ) );
+                            DBedwars.this.saveResource( "hooks/" + this.file.getName( ), this.file.getParentFile( ), false );
+                            PluginFileUtils.set( this.file, "enabled", true );
                         } else {
-                            if (this.file.exists()) {
-                                PluginFileUtils.set(this.file, "enabled", false);
+                            if ( this.file.exists( ) ) {
+                                PluginFileUtils.set( this.file, "enabled", false );
                             }
                         }
                         return true;
                     }
                 },
-                new PluginDependence("SlimeWorldManager") {
+                new PluginDependence( "SlimeWorldManager" ) {
 
-                    private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
+                    private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile( );
 
                     @Override
-                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                        if (plugin != null && DBedwars.this.checkSWM(plugin)) {
-                            ConsoleUtils.sendPluginMessage(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()), DBedwars.this.getAlias());
-                            DBedwars.this.saveResource("hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                            PluginFileUtils.set(this.file, "enabled", true);
+                    public Boolean apply( org.bukkit.plugin.Plugin plugin ) {
+                        if ( plugin != null && DBedwars.this.checkSWM( plugin ) ) {
+                            ConsoleUtils.sendPluginMessage( Lang.HOOK_FOUND.toString( ).replace( "{hook}", this.getName( ) ), DBedwars.this.getAlias( ) );
+                            DBedwars.this.saveResource( "hooks/" + this.file.getName( ), this.file.getParentFile( ), false );
+                            PluginFileUtils.set( this.file, "enabled", true );
                         } else {
-                            if (this.file.exists()) {
-                                PluginFileUtils.set(this.file, "enabled", false);
+                            if ( this.file.exists( ) ) {
+                                PluginFileUtils.set( this.file, "enabled", false );
                             }
                         }
                         return true;
@@ -157,129 +161,125 @@ public final class DBedwars extends PluginAdapter {
     }
 
     @Override
-    protected boolean setUpConfig() {
-        for (PluginFiles folder : PluginFiles.getDirectories()) {
-            if (!folder.getFile().isDirectory())
-                if (!folder.getFile().mkdirs()) {
-                    ConsoleUtils.sendPluginMessage(Lang.ERROR_WRITE_FILES.toString(), this.getAlias());
+    protected boolean setUpConfig( ) {
+        for ( PluginFiles folder : PluginFiles.getDirectories( ) ) {
+            if ( !folder.getFile( ).isDirectory( ) )
+                if ( !folder.getFile( ).mkdirs( ) ) {
+                    ConsoleUtils.sendPluginMessage( Lang.ERROR_WRITE_FILES.toString( ), this.getAlias( ) );
                     return false;
                 }
         }
 
-        for (PluginFiles file : PluginFiles.getFiles()) {
+        for ( PluginFiles file : PluginFiles.getFiles( ) ) {
             String path = "";
-            File parent = file.getFile().getParentFile();
-            while (!parent.getName().equals(PluginFiles.PLUGIN_DATA_FOLDER.getFile().getName())) {
-                path = parent.getName() + "/" + path;
-                parent = parent.getParentFile();
+            File parent = file.getFile( ).getParentFile( );
+            while ( !parent.getName( ).equals( PluginFiles.PLUGIN_DATA_FOLDER.getFile( ).getName( ) ) ) {
+                path = parent.getName( ) + "/" + path;
+                parent = parent.getParentFile( );
             }
-            this.saveResource(path + file.getFile().getName(), file.getFile().getParentFile(), false);
+            this.saveResource( path + file.getFile( ).getName( ), file.getFile( ).getParentFile( ), false );
         }
 
         return true;
     }
 
     @Override
-    protected boolean setUpHandlers() {
-        this.worldHandler = new WorldHandler(this);
+    protected boolean setUpHandlers( ) {
+        this.worldHandler = new WorldHandler( this );
 
-        this.threadHandler = new ThreadHandler(this, 4, 3);
-        this.threadHandler.runThreads();
+        this.threadHandler = new ThreadHandler( this, 4, 3 );
+        this.threadHandler.runThreads( );
 
-        this.threadHandler.addAsyncWork(() -> {
-            this.gameManager = new GameManager(this);
+        this.threadHandler.addAsyncWork( ( ) -> {
+            this.gameManager = new GameManager( this );
 
-            this.configHandler = new ConfigHandler(this);
-            this.configHandler.loadConfigurations();
+            this.configHandler = new ConfigHandler( this );
+            this.configHandler.loadConfigurations( );
 
-            this.guiHandler = new GuiHandler(this);
-            this.guiHandler.loadMenus();
-            this.guiHandler.loadAnvilMenus();
-            this.guiHandler.loadItems();
-            this.npcHandler = NPCPool.createDefault(this);
-        });
-
-        return true;
-    }
-
-    @Override
-    protected boolean setUpCommands() {
-        new CommandHandler(this, "bedwars", new Setup(this), new Start(this));
+            this.guiHandler = new GuiHandler( this );
+            this.guiHandler.loadMenus( );
+            this.guiHandler.loadAnvilMenus( );
+            this.guiHandler.loadItems( );
+            this.npcHandler = NPCPool.createDefault( this );
+        } );
 
         return true;
     }
 
     @Override
-    protected boolean setUpListeners() {
-        this.listeners = new ArrayList<>();
-        this.listeners.add(new ChestListener());
-        this.listeners.forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
+    protected boolean setUpCommands( ) {
+        new CommandHandler( this, "bedwars", new Setup( this ), new Start( this ) );
+
         return true;
     }
 
-    public static DBedwars getInstance() {
-        return Plugin.getPlugin(DBedwars.class);
+    @Override
+    protected boolean setUpListeners( ) {
+        this.listeners = new ArrayList<>( );
+        this.listeners.add( new ChestListener( ) );
+        this.listeners.forEach( l -> this.getServer( ).getPluginManager( ).registerEvents( l, this ) );
+        return true;
     }
 
-    public Version getServerVersion() {
+    public Version getServerVersion( ) {
         return this.serverVersion;
     }
 
-    public String getAlias() {
+    public String getAlias( ) {
         return this.alias;
     }
 
-    public String getVersion() {
-        return this.getDescription().getVersion();
+    public String getVersion( ) {
+        return this.getDescription( ).getVersion( );
     }
 
-    public GameManager getGameManager() {
+    public GameManager getGameManager( ) {
         return gameManager;
     }
 
-    public String getMainWorld() {
+    public String getMainWorld( ) {
         return this.mainWorld;
     }
 
-    public WorldHandler getGeneratorHandler() {
+    public WorldHandler getGeneratorHandler( ) {
         return this.worldHandler;
     }
 
-    public GuiHandler getGuiHandler() {
+    public GuiHandler getGuiHandler( ) {
         return this.guiHandler;
     }
 
-    public ThreadHandler getThreadHandler() {
+    public ThreadHandler getThreadHandler( ) {
         return this.threadHandler;
     }
 
-    public ConfigHandler getConfigHandler() {
+    public ConfigHandler getConfigHandler( ) {
         return this.configHandler;
     }
 
-    public NMSAdaptor getNMSAdaptor() {
+    public NMSAdaptor getNMSAdaptor( ) {
         return nmsAdaptor;
     }
 
-    public NPCPool getNpcHandler() {
+    public NPCPool getNpcHandler( ) {
         return npcHandler;
     }
 
-    public HologramFactory getHologramFactory() {
+    public HologramFactory getHologramFactory( ) {
         return hologramFactory;
     }
 
-    private NMSAdaptor registerNMSAdaptor() {
-        switch (this.serverVersion) {
+    private NMSAdaptor registerNMSAdaptor( ) {
+        switch ( this.serverVersion ) {
             case v1_8_R3:
-                return new NMSUtils();
+                return new NMSUtils( );
             default:
                 return null;
         }
     }
 
-    private boolean checkSWM(org.bukkit.plugin.Plugin plugin) {
-        switch (plugin.getDescription().getVersion()) {
+    private boolean checkSWM( org.bukkit.plugin.Plugin plugin ) {
+        switch ( plugin.getDescription( ).getVersion( ) ) {
             case "2.2.0":
             case "2.1.3":
             case "2.1.2":
@@ -299,20 +299,22 @@ public final class DBedwars extends PluginAdapter {
             case "1.0.2":
             case "1.0.1":
             case "1.0.0-BETA":
-                ConsoleUtils.sendPluginMessage(ChatColor.DARK_RED + "Could not hook into SlimeWorldManager support! You are running an unsupported version", this.getAlias());
+                ConsoleUtils.sendPluginMessage( ChatColor.DARK_RED + "Could not hook into SlimeWorldManager support! You are running an unsupported version", this.getAlias( ) );
                 return false;
         }
         return true;
     }
 
     @Override
-    public @NotNull ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
-        return new ChunkGenerator() {
+    public @NotNull
+    ChunkGenerator getDefaultWorldGenerator( @NotNull String worldName, @Nullable String id ) {
+        return new ChunkGenerator( ) {
             @NotNull
             @Override
-            public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull ChunkGenerator.BiomeGrid biome) {
-                return this.createChunkData(world);
+            public ChunkData generateChunkData( @NotNull World world, @NotNull Random random, int x, int z, @NotNull ChunkGenerator.BiomeGrid biome ) {
+                return this.createChunkData( world );
             }
         };
     }
+
 }

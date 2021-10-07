@@ -10,38 +10,38 @@ import java.time.Instant;
 
 public interface Spawner {
 
-    void init();
+    void init( );
 
-    void tick();
+    void tick( );
 
-    void spawn(DropType.Drop drop);
+    void spawn( DropType.Drop drop );
 
-    boolean upgrade(int level);
+    boolean upgrade( int level );
 
-    DropType getDropType();
+    DropType getDropType( );
 
-    Instant getStartTime();
+    Instant getStartTime( );
 
-    Location getLocation();
+    Location getLocation( );
 
-    void setLocation(Location location);
+    void setLocation( Location location );
 
-    Arena getArena();
+    Arena getArena( );
 
-    Team getTeam();
+    Team getTeam( );
 
-    BoundingBox getBoundingBox();
+    BoundingBox getBoundingBox( );
 
-    int getLevel();
+    int getLevel( );
 
-    DropType.Tier getTier();
+    DropType.Tier getTier( );
 
-    Instant getLastUpgrade();
+    Instant getLastUpgrade( );
 
-    ParticleBuilder getParticle();
+    ParticleBuilder getParticle( );
 
-    boolean exists();
+    boolean exists( );
 
-    boolean remove();
+    boolean remove( );
 
 }

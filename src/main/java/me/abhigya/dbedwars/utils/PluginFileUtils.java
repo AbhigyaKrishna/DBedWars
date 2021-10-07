@@ -14,150 +14,150 @@ import java.util.zip.ZipOutputStream;
 
 public class PluginFileUtils {
 
-    public static FileConfiguration set(File file, String key, Object value) {
-        FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-        configuration.set(key, value);
+    public static FileConfiguration set( File file, String key, Object value ) {
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration( file );
+        configuration.set( key, value );
         try {
-            configuration.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+            configuration.save( file );
+        } catch ( IOException e ) {
+            e.printStackTrace( );
         }
 
         return configuration;
     }
 
-    public static boolean saveWorldRegions(String worldName, String fileName) {
-        File file = new File(PluginFiles.ARENA_DATA_ARENACACHE.getFile(), fileName + ".zip");
-        if (file.exists())
-            file.delete();
+    public static boolean saveWorldRegions( String worldName, String fileName ) {
+        File file = new File( PluginFiles.ARENA_DATA_ARENACACHE.getFile( ), fileName + ".zip" );
+        if ( file.exists( ) )
+            file.delete( );
 
-        File region = new File(worldName, "region/");
-        File poi = new File(worldName, "poi/");
+        File region = new File( worldName, "region/" );
+        File poi = new File( worldName, "poi/" );
 
         try {
-            ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(file));
+            ZipOutputStream zip = new ZipOutputStream( new FileOutputStream( file ) );
 
-            File[] files = region.listFiles();
-            if (region.isDirectory()) {
+            File[] files = region.listFiles( );
+            if ( region.isDirectory( ) ) {
 
-                for (File current : files) {
-                    if (current.getName().endsWith(".mca")) {
+                for ( File current : files ) {
+                    if ( current.getName( ).endsWith( ".mca" ) ) {
                         try {
-                            zip.putNextEntry(new ZipEntry(current.getName()));
-                            FileUtils.copyFile(current, zip);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            zip.putNextEntry( new ZipEntry( current.getName( ) ) );
+                            FileUtils.copyFile( current, zip );
+                        } catch ( IOException e ) {
+                            e.printStackTrace( );
                         }
                     }
                 }
             }
 
-            if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1) && poi.isDirectory()) {
+            if ( DBedwars.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_14_R1 ) && poi.isDirectory( ) ) {
 
-                files = poi.listFiles();
-                for (File current : files) {
-                    if (current.getName().endsWith(".mca")) {
+                files = poi.listFiles( );
+                for ( File current : files ) {
+                    if ( current.getName( ).endsWith( ".mca" ) ) {
                         try {
-                            zip.putNextEntry(new ZipEntry("poi/" + current.getName()));
-                            FileUtils.copyFile(current, zip);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            zip.putNextEntry( new ZipEntry( "poi/" + current.getName( ) ) );
+                            FileUtils.copyFile( current, zip );
+                        } catch ( IOException e ) {
+                            e.printStackTrace( );
                         }
                     }
                 }
             }
 
-            File worldFolder = new File(worldName);
-            for (File current : worldFolder.listFiles()) {
-                if (!current.isFile() && current.getName().startsWith("DIM")) {
-                    PluginFileUtils.saveZip(current, worldFolder, zip);
+            File worldFolder = new File( worldName );
+            for ( File current : worldFolder.listFiles( ) ) {
+                if ( !current.isFile( ) && current.getName( ).startsWith( "DIM" ) ) {
+                    PluginFileUtils.saveZip( current, worldFolder, zip );
                 }
             }
 
-            zip.close();
+            zip.close( );
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace( );
         }
 
         return false;
     }
 
-    public static void copyWorldRegion(String worldName, String fileName) {
-        File region = new File(worldName, "region/");
-        File region_dbw = new File(worldName, "region_dbw/");
-        File poi = new File(worldName, "poi/");
+    public static void copyWorldRegion( String worldName, String fileName ) {
+        File region = new File( worldName, "region/" );
+        File region_dbw = new File( worldName, "region_dbw/" );
+        File poi = new File( worldName, "poi/" );
 
         try {
-            FileUtils.deleteDirectory(region);
-            FileUtils.deleteDirectory(region_dbw);
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileUtils.deleteDirectory( region );
+            FileUtils.deleteDirectory( region_dbw );
+        } catch ( IOException e ) {
+            e.printStackTrace( );
         }
 
-        if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1) && poi.exists()) {
-            for (File current : poi.listFiles()) {
-                if (current != null && current.getName() != null && current.getName().endsWith(".mca")) {
-                    current.delete();
+        if ( DBedwars.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_14_R1 ) && poi.exists( ) ) {
+            for ( File current : poi.listFiles( ) ) {
+                if ( current != null && current.getName( ) != null && current.getName( ).endsWith( ".mca" ) ) {
+                    current.delete( );
                 }
             }
         }
 
-        File worldFolder = new File(worldName);
-        for (File current : worldFolder.listFiles()) {
-            if (!current.isFile() && current.getName().startsWith("DIM")) {
+        File worldFolder = new File( worldName );
+        for ( File current : worldFolder.listFiles( ) ) {
+            if ( !current.isFile( ) && current.getName( ).startsWith( "DIM" ) ) {
                 try {
-                    FileUtils.deleteDirectory(current);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    FileUtils.deleteDirectory( current );
+                } catch ( IOException e ) {
+                    e.printStackTrace( );
                 }
             }
         }
 
         try {
-            File f = new File(PluginFiles.ARENA_DATA_ARENACACHE.getFile(), fileName + ".zip");
-            ZipInputStream zip = new ZipInputStream(new FileInputStream(f));
+            File f = new File( PluginFiles.ARENA_DATA_ARENACACHE.getFile( ), fileName + ".zip" );
+            ZipInputStream zip = new ZipInputStream( new FileInputStream( f ) );
 
             ZipEntry entry;
             int count;
-            while((entry = zip.getNextEntry()) != null) {
+            while ( ( entry = zip.getNextEntry( ) ) != null ) {
 
-                String sub = (!entry.getName().contains("/") && !entry.getName().contains("\\") ? region_dbw.getName() + "/" : "") + entry.getName();
-                File subFile = new File(worldFolder, sub);
-                if (subFile.exists()) {
-                    subFile.delete();
+                String sub = ( !entry.getName( ).contains( "/" ) && !entry.getName( ).contains( "\\" ) ? region_dbw.getName( ) + "/" : "" ) + entry.getName( );
+                File subFile = new File( worldFolder, sub );
+                if ( subFile.exists( ) ) {
+                    subFile.delete( );
                 }
-                subFile.getParentFile().mkdirs();
+                subFile.getParentFile( ).mkdirs( );
                 byte[] data = new byte[1024];
-                FileOutputStream outputStream = new FileOutputStream(subFile);
-                BufferedOutputStream buffer = new BufferedOutputStream(outputStream,1024);
-                while ((count = zip.read(data, 0, 1024)) != -1) {
-                    buffer.write(data, 0, count);
+                FileOutputStream outputStream = new FileOutputStream( subFile );
+                BufferedOutputStream buffer = new BufferedOutputStream( outputStream, 1024 );
+                while ( ( count = zip.read( data, 0, 1024 ) ) != -1 ) {
+                    buffer.write( data, 0, count );
                 }
-                buffer.flush();
-                buffer.close();
-                outputStream.close();
+                buffer.flush( );
+                buffer.close( );
+                outputStream.close( );
             }
 
-            FileUtils.deleteDirectory(region);
-            if (region_dbw.exists()) {
-                region_dbw.renameTo(region);
+            FileUtils.deleteDirectory( region );
+            if ( region_dbw.exists( ) ) {
+                region_dbw.renameTo( region );
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace( );
         }
     }
 
-    public static void saveZip(File folder, File worldFolder, ZipOutputStream zip) {
-        for (File current : folder.listFiles()) {
-            if (current.isDirectory())
-                saveZip(current, worldFolder, zip);
+    public static void saveZip( File folder, File worldFolder, ZipOutputStream zip ) {
+        for ( File current : folder.listFiles( ) ) {
+            if ( current.isDirectory( ) )
+                saveZip( current, worldFolder, zip );
             else {
                 try {
-                    zip.putNextEntry(new ZipEntry(current.getAbsolutePath().replace(worldFolder.getAbsolutePath(), "")));
-                    FileUtils.copyFile(current, zip);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    zip.putNextEntry( new ZipEntry( current.getAbsolutePath( ).replace( worldFolder.getAbsolutePath( ), "" ) ) );
+                    FileUtils.copyFile( current, zip );
+                } catch ( IOException e ) {
+                    e.printStackTrace( );
                 }
             }
         }

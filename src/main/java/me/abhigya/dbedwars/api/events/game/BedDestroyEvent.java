@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BedDestroyEvent extends CustomEventCancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList( );
 
     private final Arena arena;
     private final Block bed;
@@ -19,7 +19,7 @@ public class BedDestroyEvent extends CustomEventCancellable {
     private String bedBrokenMessage;
     private String bedBrokenTeamMessage;
 
-    public BedDestroyEvent(ArenaPlayer destroyer, Team affectedTeam, Block bed, Arena arena, String msg, String teamMsg) {
+    public BedDestroyEvent( ArenaPlayer destroyer, Team affectedTeam, Block bed, Arena arena, String msg, String teamMsg ) {
         this.arena = arena;
         this.bed = bed;
         this.destroyer = destroyer;
@@ -28,53 +28,54 @@ public class BedDestroyEvent extends CustomEventCancellable {
         this.bedBrokenTeamMessage = teamMsg;
     }
 
-    public Arena getArena() {
+    public static HandlerList getHandlerList( ) {
+        return HANDLER_LIST;
+    }
+
+    public Arena getArena( ) {
         return arena;
     }
 
-    public Block getBed() {
+    public Block getBed( ) {
         return bed;
     }
 
-    public ArenaPlayer getDestroyer() {
+    public ArenaPlayer getDestroyer( ) {
         return destroyer;
     }
 
-    public void setDestroyer(ArenaPlayer destroyer) {
+    public void setDestroyer( ArenaPlayer destroyer ) {
         this.destroyer = destroyer;
     }
 
-    public Team getAffectedTeam() {
+    public Team getAffectedTeam( ) {
         return affectedTeam;
     }
 
-    public void setAffectedTeam(Team affectedTeam) {
+    public void setAffectedTeam( Team affectedTeam ) {
         this.affectedTeam = affectedTeam;
     }
 
-    public String getBedBrokenMessage() {
+    public String getBedBrokenMessage( ) {
         return bedBrokenMessage;
     }
 
-    public void setBedBrokenMessage(String bedBrokenMessage) {
+    public void setBedBrokenMessage( String bedBrokenMessage ) {
         this.bedBrokenMessage = bedBrokenMessage;
     }
 
-    public String getBedBrokenTeamMessage() {
+    public String getBedBrokenTeamMessage( ) {
         return bedBrokenTeamMessage;
     }
 
-    public void setBedBrokenTeamMessage(String bedBrokenTeamMessage) {
+    public void setBedBrokenTeamMessage( String bedBrokenTeamMessage ) {
         this.bedBrokenTeamMessage = bedBrokenTeamMessage;
     }
 
     @NotNull
     @Override
-    public HandlerList getHandlers() {
+    public HandlerList getHandlers( ) {
         return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
-    }
 }

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpawnerUpgradeEvent extends CustomEventCancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList( );
 
     private final Arena arena;
     private final DropType dropType;
@@ -22,8 +22,8 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
     private DropType.Tier currentTier;
     private DropType.Tier nextTier;
 
-    public SpawnerUpgradeEvent(Arena arena, DropType dropType, Spawner spawner, Team team, int currentLevel, int nextLevel,
-                               DropType.Tier currentTier, DropType.Tier nextTier) {
+    public SpawnerUpgradeEvent( Arena arena, DropType dropType, Spawner spawner, Team team, int currentLevel, int nextLevel,
+                                DropType.Tier currentTier, DropType.Tier nextTier ) {
         this.arena = arena;
         this.dropType = dropType;
         this.spawner = spawner;
@@ -34,55 +34,56 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
         this.nextTier = nextTier;
     }
 
-    public Arena getArena() {
+    public static HandlerList getHandlerList( ) {
+        return HANDLER_LIST;
+    }
+
+    public Arena getArena( ) {
         return arena;
     }
 
-    public DropType getDropType() {
+    public DropType getDropType( ) {
         return dropType;
     }
 
-    public Spawner getSpawner() {
+    public Spawner getSpawner( ) {
         return spawner;
     }
 
-    public boolean isTeamSpawner() {
+    public boolean isTeamSpawner( ) {
         return this.team != null;
     }
 
     @Nullable
-    public Team getTeam() {
+    public Team getTeam( ) {
         return team;
     }
 
-    public int getCurrentLevel() {
+    public int getCurrentLevel( ) {
         return currentLevel;
     }
 
-    public int getNextLevel() {
+    public int getNextLevel( ) {
         return nextLevel;
     }
 
-    public void setNextLevel(int nextLevel) {
+    public void setNextLevel( int nextLevel ) {
         this.nextLevel = nextLevel;
-        this.nextTier = this.dropType.getTier(this.nextLevel);
+        this.nextTier = this.dropType.getTier( this.nextLevel );
     }
 
-    public DropType.Tier getCurrentTier() {
+    public DropType.Tier getCurrentTier( ) {
         return currentTier;
     }
 
-    public DropType.Tier getNextTier() {
+    public DropType.Tier getNextTier( ) {
         return nextTier;
     }
 
     @NotNull
     @Override
-    public HandlerList getHandlers() {
+    public HandlerList getHandlers( ) {
         return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
-    }
 }

@@ -27,150 +27,152 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class SetupMapGui extends IMenu<BookItemMenu> {
+public class SetupMapGui extends IMenu< BookItemMenu > {
 
-    private final VoidActionItem noMapItem = new VoidActionItem(StringUtils.translateAlternateColorCodes("&cNo map found :("),
-            XMaterial.PAPER.parseItem(), StringUtils.translateAlternateColorCodes(new String[]{"&cAdd some arena world to",
-            "&cthe root directory!"}));
+    private final VoidActionItem noMapItem = new VoidActionItem( StringUtils.translateAlternateColorCodes( "&cNo map found :(" ),
+            XMaterial.PAPER.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{"&cAdd some arena world to",
+            "&cthe root directory!"} ) );
 
-    public SetupMapGui(DBedwars plugin) {
-        super(plugin, "MAP_SETUP", new BookItemMenu(StringUtils.translateAlternateColorCodes("&3Select map to setup!"), ItemMenuSize.SIX_LINE,
-                ItemMenuSize.ONE_LINE, null));
+    public SetupMapGui( DBedwars plugin ) {
+        super( plugin, "MAP_SETUP", new BookItemMenu( StringUtils.translateAlternateColorCodes( "&3Select map to setup!" ), ItemMenuSize.SIX_LINE,
+                ItemMenuSize.ONE_LINE, null ) );
     }
 
     @Override
-    public void setUpMenu(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info) {
-        ArrayList<File> worldDirs = new ArrayList<>();
-        Arena arena = (Arena) info.get("arena");
-        String mainWorld = SetupMapGui.this.getPlugin().getMainWorld();
-        this.menu.setTitle(StringUtils.translateAlternateColorCodes("&eSelect map to setup! &7(" + arena.getSettings().getName() + ")"));
-        if (action != null)
-            this.menu.setParent(action.getMenu());
+    public void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info ) {
+        ArrayList< File > worldDirs = new ArrayList<>( );
+        Arena arena = (Arena) info.get( "arena" );
+        String mainWorld = SetupMapGui.this.getPlugin( ).getMainWorld( );
+        this.menu.setTitle( StringUtils.translateAlternateColorCodes( "&eSelect map to setup! &7(" + arena.getSettings( ).getName( ) + ")" ) );
+        if ( action != null )
+            this.menu.setParent( action.getMenu( ) );
 
-        for (File f : new File("./").listFiles()) {
-            if (f.isDirectory() && WorldUtils.worldFolderCheck(f)) {
-                if (f.getName().equals(mainWorld) || f.getName().equals(mainWorld + "_nether") || f.getName().equals(mainWorld + "_the_end"))
+        for ( File f : new File( "./" ).listFiles( ) ) {
+            if ( f.isDirectory( ) && WorldUtils.worldFolderCheck( f ) ) {
+                if ( f.getName( ).equals( mainWorld ) || f.getName( ).equals( mainWorld + "_nether" ) || f.getName( ).equals( mainWorld + "_the_end" ) )
                     continue;
-                worldDirs.add(f);
+                worldDirs.add( f );
             }
         }
 
-        menu.clear();
+        menu.clear( );
         Item[] items = new Item[45];
         VoidActionItem bar;
-        if (worldDirs.isEmpty()) {
-            Arrays.fill(items, VOID_ITEM);
+        if ( worldDirs.isEmpty( ) ) {
+            Arrays.fill( items, VOID_ITEM );
             items[22] = noMapItem;
-            bar = new VoidActionItem(StringUtils.translateAlternateColorCodes("&7"), XMaterial.RED_STAINED_GLASS_PANE.parseItem());
-            for (byte b = 0; b < 9; b++) {
-                this.menu.setBarButton(b, bar);
+            bar = new VoidActionItem( StringUtils.translateAlternateColorCodes( "&7" ), XMaterial.RED_STAINED_GLASS_PANE.parseItem( ) );
+            for ( byte b = 0; b < 9; b++ ) {
+                this.menu.setBarButton( b, bar );
             }
-            this.menu.addItems(items);
+            this.menu.addItems( items );
             return;
         }
 
-        bar = new VoidActionItem(StringUtils.translateAlternateColorCodes("&7"), XMaterial.WHITE_STAINED_GLASS_PANE.parseItem());
-        for (byte b = 0; b < 9; b++) {
-            switch (b) {
+        bar = new VoidActionItem( StringUtils.translateAlternateColorCodes( "&7" ), XMaterial.WHITE_STAINED_GLASS_PANE.parseItem( ) );
+        for ( byte b = 0; b < 9; b++ ) {
+            switch ( b ) {
                 case 2:
-                    if (info.get("type").equals("final") && SetupMapGui.this.getPlugin().getGeneratorHandler().getWorldAdaptor().saveExist(arena.getSettings().getName())) {
-                        ActionItem world = new ActionItem(StringUtils.translateAlternateColorCodes("&eGenerate arena world!"),
-                                XMaterial.OAK_TRAPDOOR.parseItem());
-                        world.addAction(new ItemAction() {
+                    if ( info.get( "type" ).equals( "final" ) && SetupMapGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).saveExist( arena.getSettings( ).getName( ) ) ) {
+                        ActionItem world = new ActionItem( StringUtils.translateAlternateColorCodes( "&eGenerate arena world!" ),
+                                XMaterial.OAK_TRAPDOOR.parseItem( ) );
+                        world.addAction( new ItemAction( ) {
                             @Override
-                            public ItemActionPriority getPriority() {
+                            public ItemActionPriority getPriority( ) {
                                 return ItemActionPriority.NORMAL;
                             }
 
                             @Override
-                            public void onClick(ItemClickAction itemClickAction) {
-                                SetupMapGui.this.getPlugin().getThreadHandler().addAsyncWork(() -> {
-                                    if (arena.isEnabled()) {
-                                        itemClickAction.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes("&cPlease disable the arena to make changes in the world or load world!"));
+                            public void onClick( ItemClickAction itemClickAction ) {
+                                SetupMapGui.this.getPlugin( ).getThreadHandler( ).addAsyncWork( ( ) -> {
+                                    if ( arena.isEnabled( ) ) {
+                                        itemClickAction.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&cPlease disable the arena to make changes in the world or load world!" ) );
                                         return;
                                     }
-                                    if (arena.getWorld() == null) {
-                                        World world = arena.loadWorld();
-                                        arena.setWorld(world);
+                                    if ( arena.getWorld( ) == null ) {
+                                        World world = arena.loadWorld( );
+                                        arena.setWorld( world );
                                     }
-                                    SetupMapGui.this.getPlugin().getThreadHandler().addSyncWork(() -> {
-                                        if (arena.getSettings().hasLobby()) {
-                                            action.getPlayer().teleport(arena.getSettings().getLobby().toBukkit(arena.getWorld()));
+                                    SetupMapGui.this.getPlugin( ).getThreadHandler( ).addSyncWork( ( ) -> {
+                                        if ( arena.getSettings( ).hasLobby( ) ) {
+                                            action.getPlayer( ).teleport( arena.getSettings( ).getLobby( ).toBukkit( arena.getWorld( ) ) );
                                         } else {
-                                            action.getPlayer().teleport(arena.getWorld().getSpawnLocation());
+                                            action.getPlayer( ).teleport( arena.getWorld( ).getSpawnLocation( ) );
                                         }
-                                    });
-                                });
+                                    } );
+                                } );
                             }
-                        });
-                        this.menu.setBarButton(b, world);
+                        } );
+                        this.menu.setBarButton( b, world );
                     }
                     break;
                 case 4:
-                    this.menu.setBarButton(b, BACK);
+                    this.menu.setBarButton( b, BACK );
                     break;
                 case 6:
-                    this.menu.setBarButton(b, PREVIOUS_PAGE);
+                    this.menu.setBarButton( b, PREVIOUS_PAGE );
                     break;
                 case 7:
-                    this.menu.setBarButton(b, NEXT_PAGE);
+                    this.menu.setBarButton( b, NEXT_PAGE );
                     break;
                 default:
-                    this.menu.setBarButton(b, bar);
+                    this.menu.setBarButton( b, bar );
             }
         }
 
-        File[] configured = PluginFiles.ARENA_DATA_ARENACACHE.getFile().listFiles();
-        for (File file : worldDirs) {
+        File[] configured = PluginFiles.ARENA_DATA_ARENACACHE.getFile( ).listFiles( );
+        for ( File file : worldDirs ) {
             ActionItem item;
-            if (Arrays.stream(configured).anyMatch(c -> c.getName().contains(file.getName()))) {
-                item = new ActionItem(StringUtils.translateAlternateColorCodes("&c" + file.getName()), XMaterial.RED_WOOL.parseItem());
+            if ( Arrays.stream( configured ).anyMatch( c -> c.getName( ).contains( file.getName( ) ) ) ) {
+                item = new ActionItem( StringUtils.translateAlternateColorCodes( "&c" + file.getName( ) ), XMaterial.RED_WOOL.parseItem( ) );
             } else {
-                item = new ActionItem(StringUtils.translateAlternateColorCodes("&a" + file.getName()), XMaterial.GREEN_WOOL.parseItem());
+                item = new ActionItem( StringUtils.translateAlternateColorCodes( "&a" + file.getName( ) ), XMaterial.GREEN_WOOL.parseItem( ) );
             }
 
-            item.addAction(new ItemAction() {
+            item.addAction( new ItemAction( ) {
                 @Override
-                public ItemActionPriority getPriority() {
+                public ItemActionPriority getPriority( ) {
                     return ItemActionPriority.NORMAL;
                 }
 
                 @Override
-                public void onClick(ItemClickAction action) {
-                    if (info.get("type").equals("initial")) {
+                public void onClick( ItemClickAction action ) {
+                    if ( info.get( "type" ).equals( "initial" ) ) {
 
-                        SetupMapGui.this.getPlugin().getThreadHandler().addAsyncWork(() -> {
-                            CompletableFuture<Boolean> future = new CompletableFuture<>();
-                            SetupMapGui.this.getPlugin().getThreadHandler().getLeastWorkSyncWorker().add(() -> {
-                                World world = SetupMapGui.this.getPlugin().getServer().getWorld(file.getName());
-                                if (world != null) {
-                                    world.getPlayers().forEach(p -> p.teleport(SetupMapGui.this.getPlugin().getServer()
-                                            .getWorld(mainWorld).getSpawnLocation()));
-                                    SetupMapGui.this.getPlugin().getGeneratorHandler().getWorldAdaptor().unloadWorld(file.getName(), true);
-                                    future.complete(true);
+                        SetupMapGui.this.getPlugin( ).getThreadHandler( ).addAsyncWork( ( ) -> {
+                            CompletableFuture< Boolean > future = new CompletableFuture<>( );
+                            SetupMapGui.this.getPlugin( ).getThreadHandler( ).getLeastWorkSyncWorker( ).add( ( ) -> {
+                                World world = SetupMapGui.this.getPlugin( ).getServer( ).getWorld( file.getName( ) );
+                                if ( world != null ) {
+                                    world.getPlayers( ).forEach( p -> p.teleport( SetupMapGui.this.getPlugin( ).getServer( )
+                                            .getWorld( mainWorld ).getSpawnLocation( ) ) );
+                                    SetupMapGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).unloadWorld( file.getName( ), true );
+                                    future.complete( true );
                                 }
-                            });
+                            } );
 
                             try {
-                                future.get();
-                            } catch (InterruptedException | ExecutionException ignored) {}
-                            arena.saveWorld(file.getName(), true);
-                            action.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes("&aWorld set successfully!"));
-                        });
+                                future.get( );
+                            } catch ( InterruptedException | ExecutionException ignored ) {
+                            }
+                            arena.saveWorld( file.getName( ), true );
+                            action.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&aWorld set successfully!" ) );
+                        } );
 
-                        Map<String, Object> info = new HashMap<>();
-                        info.put("arena", arena.getSettings().getName());
-                        SetupMapGui.this.getPlugin().getGuiHandler().getGuis().get("TYPE_SETUP").open(null, info, action.getPlayer());
+                        Map< String, Object > info = new HashMap<>( );
+                        info.put( "arena", arena.getSettings( ).getName( ) );
+                        SetupMapGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "TYPE_SETUP" ).open( null, info, action.getPlayer( ) );
                     } else {
-                        SetupMapGui.this.getPlugin().getThreadHandler().getLeastWorkSyncWorker().add(() -> {
-                            World world = SetupMapGui.this.getPlugin().getGeneratorHandler().getWorldAdaptor().loadWorldFromFolder(file.getName());
-                            action.getPlayer().teleport(world.getSpawnLocation());
-                        });
+                        SetupMapGui.this.getPlugin( ).getThreadHandler( ).getLeastWorkSyncWorker( ).add( ( ) -> {
+                            World world = SetupMapGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).loadWorldFromFolder( file.getName( ) );
+                            action.getPlayer( ).teleport( world.getSpawnLocation( ) );
+                        } );
                     }
                 }
-            });
+            } );
 
-            this.menu.addItem(item);
+            this.menu.addItem( item );
         }
     }
+
 }

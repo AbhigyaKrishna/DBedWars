@@ -9,28 +9,30 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class FireBallCommand implements CommandArgument {
+
     @Override
-    public String getName() {
+    public String getName( ) {
         return "give";
     }
 
     @Override
-    public String getUsage() {
+    public String getUsage( ) {
         return null;
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (strings.length>0 && strings[0].equalsIgnoreCase("fireball")){
-            if (commandSender instanceof Player){
-                ((Player) commandSender).getInventory().addItem(CustomItems.FIREBALL.getItem().toItemStack());
+    public boolean execute( CommandSender commandSender, Command command, String s, String[] strings ) {
+        if ( strings.length > 0 && strings[0].equalsIgnoreCase( "fireball" ) ) {
+            if ( commandSender instanceof Player ) {
+                ( (Player) commandSender ).getInventory( ).addItem( CustomItems.FIREBALL.getItem( ).toItemStack( ) );
             }
         }
         return true;
     }
 
     @Override
-    public List<String> tab(CommandSender commandSender, Command command, String s, String[] strings) {
+    public List< String > tab( CommandSender commandSender, Command command, String s, String[] strings ) {
         return null;
     }
+
 }

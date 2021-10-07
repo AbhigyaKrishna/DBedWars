@@ -8,39 +8,40 @@ import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.view.ViewItem;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
-import me.abhigya.dbedwars.game.arena.view.ShopPage;
+import me.abhigya.dbedwars.game.arena.view.shop.ShopPage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ShopGui extends IMenu<ItemMenu> {
+public class ShopGui extends IMenu< ItemMenu > {
 
-    public ShopGui(DBedwars plugin) {
-        super(plugin, "SHOP", new ItemMenu("Shop", ItemMenuSize.SIX_LINE, null));
+    public ShopGui( DBedwars plugin ) {
+        super( plugin, "SHOP", new ItemMenu( "Shop", ItemMenuSize.SIX_LINE, null ) );
     }
 
     @Override
-    public void setUpMenu(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info) {
-        if (info == null)
+    public void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info ) {
+        if ( info == null )
             return;
 
-        this.menu.clear();
-        String page = (String) info.getOrDefault("page", null);
-        ArenaPlayer ap = (ArenaPlayer) info.get("player");
-        if (page == null)
-            page = ap.getShopView().getDefaultPage();
-        ShopPage shopPage = ap.getShopView().getShopPages().get(page);
-        this.menu.setTitle(StringUtils.translateAlternateColorCodes(shopPage.getTitle()));
-        for (byte i = 0; i < shopPage.getPattern().length; i++) {
-            for (byte j = 0; j < 9; j++) {
-                ViewItem item = shopPage.getItems().getOrDefault(shopPage.getPattern()[i][j], null);
-                if (item != null) {
-                    this.menu.setItem(i * 9 + j, item.getActionItem(false));
+        this.menu.clear( );
+        String page = (String) info.getOrDefault( "page", null );
+        ArenaPlayer ap = (ArenaPlayer) info.get( "player" );
+        if ( page == null )
+            page = ap.getShopView( ).getDefaultPage( );
+        ShopPage shopPage = ap.getShopView( ).getShopPages( ).get( page );
+        this.menu.setTitle( StringUtils.translateAlternateColorCodes( shopPage.getTitle( ) ) );
+        for ( byte i = 0; i < shopPage.getPattern( ).length; i++ ) {
+            for ( byte j = 0; j < 9; j++ ) {
+                ViewItem item = shopPage.getItems( ).getOrDefault( shopPage.getPattern( )[i][j], null );
+                if ( item != null ) {
+                    this.menu.setItem( i * 9 + j, item.getActionItem( false ) );
                 } else {
-                    this.menu.setItem(i * 9 + j, null);
+                    this.menu.setItem( i * 9 + j, null );
                 }
             }
         }
     }
+
 }

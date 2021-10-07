@@ -3,47 +3,47 @@ miner-fatigue:
   trigger: 'EnemyBaseEnterEvent'
   actions:
     '1':
-      target: 'EnemyAtBase'
+      target: 'ENEMY_AT_BASE'
       executable:
         - '[EFFECT] MINER_FATIGUE:1:8'
     '2':
-      target: 'Team'
+      target: 'TEAM'
       executable:
         - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Miner Fatigue was set off'
         - '[SOUND] ENDERMAN_TELEPORT:1:1'
 
-  its-a-trap:
-    id: 'its-a-trap'
-    trigger: 'EnemyBaseEnterEvent'
-    actions:
-      '1':
-        target: 'Team'
-        executable:
-          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Its a trap was set off'
-          - '[SOUND] ENDERMAN_TELEPORT:1:1'
+its-a-trap:
+  id: 'its-a-trap'
+  trigger: 'EnemyBaseEnterEvent'
+  actions:
+    '1':
+      target: 'TEAM'
+      executable:
+        - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your Its a trap was set off'
+        - '[SOUND] ENDERMAN_TELEPORT:1:1'
 
-  alarm-trap:
-    id: 'alarm-trap'
-    trigger: 'EnemyBaseEnterEvent'
-    actions:
-      '1':
-        target: '%enemyatbase%'
-        executable:
-          - '[CLEAREFFECT] INVISIBILTY'
-      '2':
-        target: '%team%'
-        executable:
-          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your alarm trap was set off'
-          - '[SONG] alarm.nbs:1'
+alarm-trap:
+  id: 'alarm-trap'
+  trigger: 'EnemyBaseEnterEvent'
+  actions:
+    '1':
+      target: 'ENEMY_AT_BASE'
+      executable:
+        - '[CLEAREFFECT] INVISIBILTY'
+    '2':
+      target: 'TEAM'
+      executable:
+        - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your alarm trap was set off'
+        - '[SONG] alarm.nbs:1'
 
-  counter-offensive-trap:
-    id: 'counter-offensive-trap'
-    trigger: 'EnemyBaseEnterEvent'
-    actions:
-      '1':
-        target: '%teamatbase%'
-        executable:
-          - '[EFFECT] SPEED:1:10'
-          - '[EFFECT] JUMP_BOOST:2:10'
-          - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your counter offensive trap was set off'
-          - '[SOUND] ENDERMAN_TELEPORT:1:1'
+counter-offensive-trap:
+  id: 'counter-offensive-trap'
+  trigger: 'EnemyBaseEnterEvent'
+  actions:
+    '1':
+      target: 'TEAM_AT_BASE'
+      executable:
+        - '[EFFECT] SPEED:1:10'
+        - '[EFFECT] JUMP_BOOST:2:10'
+        - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your counter offensive trap was set off'
+        - '[SOUND] ENDERMAN_TELEPORT:1:1'

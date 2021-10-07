@@ -7,8 +7,8 @@ public enum RegenerationType {
     MULTI_THREADED_SYNC,
     ;
 
-    public boolean isMultiThreaded() {
-        switch (this) {
+    public boolean isMultiThreaded( ) {
+        switch ( this ) {
             case SINGLE_THREADED:
                 return false;
             case MULTI_THREADED_ASYNC:
@@ -19,8 +19,8 @@ public enum RegenerationType {
         return false;
     }
 
-    public boolean isSync() {
-        switch (this) {
+    public boolean isSync( ) {
+        switch ( this ) {
             case SINGLE_THREADED:
             case MULTI_THREADED_SYNC:
                 return true;

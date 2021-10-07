@@ -14,29 +14,30 @@ public abstract class IAnvilMenu {
     private final String identifier;
     protected AnvilMenu menu;
 
-    protected IAnvilMenu(DBedwars plugin, String identifier, AnvilMenu menu) {
+    protected IAnvilMenu( DBedwars plugin, String identifier, AnvilMenu menu ) {
         this.plugin = plugin;
         this.identifier = identifier;
         this.menu = menu;
-        this.menu.registerListener(plugin);
+        this.menu.registerListener( plugin );
     }
 
-    protected abstract void setUpMenu(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info);
+    protected abstract void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info );
 
-    public void open(Player player, @Nullable ItemClickAction action, @Nullable Map<String, Object> info) {
-        this.setUpMenu(player, action, info);
-        this.menu.open(player);
+    public void open( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info ) {
+        this.setUpMenu( player, action, info );
+        this.menu.open( player );
     }
 
-    public DBedwars getPlugin() {
+    public DBedwars getPlugin( ) {
         return plugin;
     }
 
-    public String getIdentifier() {
+    public String getIdentifier( ) {
         return identifier;
     }
 
-    public AnvilMenu getMenu() {
+    public AnvilMenu getMenu( ) {
         return menu;
     }
+
 }

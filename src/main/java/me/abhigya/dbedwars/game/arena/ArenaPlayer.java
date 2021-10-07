@@ -40,226 +40,227 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     private ItemStack[] previousInv;
     private ItemStack[] previousArmor;
 
-    public ArenaPlayer(Player player, Arena arena) {
-        this.player = new UUIDPlayer(player);
+    public ArenaPlayer( Player player, Arena arena ) {
+        this.player = new UUIDPlayer( player );
         this.arena = arena;
-        this.shopView = new me.abhigya.dbedwars.game.arena.view.ShopView(this);
+        this.shopView = new me.abhigya.dbedwars.game.arena.view.shop.ShopView( this );
     }
 
     @Override
-    public void setArena(Arena arena) {
-        this.arena = arena;
-    }
-
-    @Override
-    public Arena getArena() {
+    public Arena getArena( ) {
         return this.arena;
     }
 
     @Override
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setArena( Arena arena ) {
+        this.arena = arena;
     }
 
     @Override
-    public Team getTeam() {
+    public Team getTeam( ) {
         return this.team;
     }
 
     @Override
-    public void setSpectator(boolean spectator) {
-        if (spectator) {
-            this.spectator = true;
-            this.getPlayer().setGameMode(GameMode.SPECTATOR);
-        } else {
-            this.spectator = false;
-            this.getPlayer().setGameMode(GameMode.SURVIVAL);
-        }
+    public void setTeam( Team team ) {
+        this.team = team;
     }
 
     @Override
-    public boolean isSpectator() {
+    public boolean isSpectator( ) {
         return this.spectator;
     }
 
     @Override
-    public void addKill() {
-        this.kill++;
-    }
-
-    @Override
-    public void setKill(int count) {
-        this.kill = count;
-    }
-
-    @Override
-    public int getKills() {
-        return this.kill;
-    }
-
-    @Override
-    public void addFinalKills() {
-        this.finalKill++;
-    }
-
-    @Override
-    public void setFinalKills(int count) {
-        this.finalKill = count;
-    }
-
-    @Override
-    public int getFinalKills() {
-        return this.finalKill;
-    }
-
-    @Override
-    public void addDeath() {
-        this.death++;
-    }
-
-    @Override
-    public void setDeath(int count) {
-        this.death = count;
-    }
-
-    @Override
-    public int getDeath() {
-        return this.death;
-    }
-
-    @Override
-    public void kill(DeathCause reason) {
-        // TODO: revamp this
-        if (this.team.isBedBroken()) {
-            PlayerFinalKillEvent event = new PlayerFinalKillEvent(this, this.getLastHitTagged(), this.arena, reason,
-                    StringUtils.translateAlternateColorCodes("&" + this.getTeam().getColor().getChatSymbol() + this.getPlayer().getName() + " &7died. &bFINAL KILL"));
-            event.call();
-
-            if (event.isCancelled())
-                return;
-
-            event.getVictim().addDeath();
-            event.getVictim().setSpectator(true);
-            this.previousInv = event.getVictim().getPlayer().getInventory().getContents();
-            this.previousArmor = event.getVictim().getPlayer().getInventory().getArmorContents();
-            event.getVictim().getPlayer().getInventory().clear();
-            if (reason == DeathCause.VOID)
-                event.getVictim().getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
-            event.getVictim().setFinalKilled(true);
-            event.getVictim().getArena().broadcast(event.getKillMessage());
-            if (event.getVictim().getTeam().getPlayers().stream().allMatch(me.abhigya.dbedwars.api.game.ArenaPlayer::isFinalKilled)) {
-                TeamEliminateEvent e = new TeamEliminateEvent(this.arena, event.getVictim().getTeam());
-                e.call();
-
-                e.getTeam().setEliminated(true);
-
-                Optional<Team> oTeam = this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
-                if (oTeam.isPresent() && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count() == 1) {
-                    ArenaEndEvent ev = new ArenaEndEvent(this.arena, oTeam.get().getPlayers());
-                    ev.call();
-                    if (ev.isCancelled())
-                        return;
-
-                    this.arena.end();
-                }
-            }
+    public void setSpectator( boolean spectator ) {
+        if ( spectator ) {
+            this.spectator = true;
+            this.getPlayer( ).setGameMode( GameMode.SPECTATOR );
         } else {
-            PlayerKillEvent event = new PlayerKillEvent(this, this.getLastHitTagged(), this.arena, reason, StringUtils.translateAlternateColorCodes(
-                    "&" + this.getTeam().getColor().getChatSymbol() + this.getPlayer().getName() + " &7died."));
-            event.call();
-
-            if (event.isCancelled())
-                return;
-
-            this.addDeath();
-            this.setSpectator(true);
-            event.getVictim().getPlayer().getInventory().clear();
-            this.getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
-            this.arena.broadcast(event.getKillMessage());
-            this.setRespawning(true);
-            DBedwars.getInstance().getThreadHandler().addAsyncWork(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
+            this.spectator = false;
+            this.getPlayer( ).setGameMode( GameMode.SURVIVAL );
         }
     }
 
     @Override
-    public boolean isFinalKilled() {
+    public void addKill( ) {
+        this.kill++;
+    }
+
+    @Override
+    public void setKill( int count ) {
+        this.kill = count;
+    }
+
+    @Override
+    public int getKills( ) {
+        return this.kill;
+    }
+
+    @Override
+    public void addFinalKills( ) {
+        this.finalKill++;
+    }
+
+    @Override
+    public int getFinalKills( ) {
+        return this.finalKill;
+    }
+
+    @Override
+    public void setFinalKills( int count ) {
+        this.finalKill = count;
+    }
+
+    @Override
+    public void addDeath( ) {
+        this.death++;
+    }
+
+    @Override
+    public int getDeath( ) {
+        return this.death;
+    }
+
+    @Override
+    public void setDeath( int count ) {
+        this.death = count;
+    }
+
+    @Override
+    public void kill( DeathCause reason ) {
+        // TODO: revamp this
+        if ( this.team.isBedBroken( ) ) {
+            PlayerFinalKillEvent event = new PlayerFinalKillEvent( this, this.getLastHitTagged( ), this.arena, reason,
+                    StringUtils.translateAlternateColorCodes( "&" + this.getTeam( ).getColor( ).getChatSymbol( ) + this.getPlayer( ).getName( ) + " &7died. &bFINAL KILL" ) );
+            event.call( );
+
+            if ( event.isCancelled( ) )
+                return;
+
+            event.getVictim( ).addDeath( );
+            event.getVictim( ).setSpectator( true );
+            this.previousInv = event.getVictim( ).getPlayer( ).getInventory( ).getContents( );
+            this.previousArmor = event.getVictim( ).getPlayer( ).getInventory( ).getArmorContents( );
+            event.getVictim( ).getPlayer( ).getInventory( ).clear( );
+            if ( reason == DeathCause.VOID )
+                event.getVictim( ).getPlayer( ).teleport( this.arena.getSettings( ).getSpectatorLocation( ).toBukkit( this.arena.getWorld( ) ) );
+            event.getVictim( ).setFinalKilled( true );
+            event.getVictim( ).getArena( ).broadcast( event.getKillMessage( ) );
+            if ( event.getVictim( ).getTeam( ).getPlayers( ).stream( ).allMatch( me.abhigya.dbedwars.api.game.ArenaPlayer::isFinalKilled ) ) {
+                TeamEliminateEvent e = new TeamEliminateEvent( this.arena, event.getVictim( ).getTeam( ) );
+                e.call( );
+
+                e.getTeam( ).setEliminated( true );
+
+                Optional< Team > oTeam = this.arena.getTeams( ).stream( ).filter( t -> !t.isEliminated( ) ).findFirst( );
+                if ( oTeam.isPresent( ) && this.arena.getTeams( ).stream( ).filter( t -> !t.isEliminated( ) ).count( ) == 1 ) {
+                    ArenaEndEvent ev = new ArenaEndEvent( this.arena, oTeam.get( ).getPlayers( ) );
+                    ev.call( );
+                    if ( ev.isCancelled( ) )
+                        return;
+
+                    this.arena.end( );
+                }
+            }
+        } else {
+            PlayerKillEvent event = new PlayerKillEvent( this, this.getLastHitTagged( ), this.arena, reason, StringUtils.translateAlternateColorCodes(
+                    "&" + this.getTeam( ).getColor( ).getChatSymbol( ) + this.getPlayer( ).getName( ) + " &7died." ) );
+            event.call( );
+
+            if ( event.isCancelled( ) )
+                return;
+
+            this.addDeath( );
+            this.setSpectator( true );
+            event.getVictim( ).getPlayer( ).getInventory( ).clear( );
+            this.getPlayer( ).teleport( this.arena.getSettings( ).getSpectatorLocation( ).toBukkit( this.arena.getWorld( ) ) );
+            this.arena.broadcast( event.getKillMessage( ) );
+            this.setRespawning( true );
+            DBedwars.getInstance( ).getThreadHandler( ).addAsyncWork( new RespawnTask( DBedwars.getInstance( ), event.getVictim( ) ) );
+        }
+    }
+
+    @Override
+    public boolean isFinalKilled( ) {
         return this.finalKilled;
     }
 
     @Override
-    public void setFinalKilled(boolean flag) {
+    public void setFinalKilled( boolean flag ) {
         this.finalKilled = flag;
     }
 
     @Override
-    public UUIDPlayer getUUIDPlayer() {
+    public UUIDPlayer getUUIDPlayer( ) {
         return this.player;
     }
 
     @Override
-    public Player getPlayer() {
-        return this.player.get();
+    public Player getPlayer( ) {
+        return this.player.get( );
     }
 
     @Override
-    public void spawn(Location location) {
-        Utils.setSpawnInventory(this.getPlayer(), this.team, this.previousInv, this.previousArmor);
-        this.getPlayer().teleport(location);
-        this.getPlayer().setHealth(20);
+    public void spawn( Location location ) {
+        Utils.setSpawnInventory( this.getPlayer( ), this.team, this.previousInv, this.previousArmor );
+        this.getPlayer( ).teleport( location );
+        this.getPlayer( ).setHealth( 20 );
     }
 
     @Override
-    public void sendMessage(String msg) {
-        this.getPlayer().sendMessage(msg);
+    public void sendMessage( String msg ) {
+        this.getPlayer( ).sendMessage( msg );
     }
 
     @Override
-    public void sendMessage(BaseComponent[] component) {
-        this.getPlayer().spigot().sendMessage(component);
+    public void sendMessage( BaseComponent[] component ) {
+        this.getPlayer( ).spigot( ).sendMessage( component );
     }
 
     @Override
-    public me.abhigya.dbedwars.api.game.ArenaPlayer getLastHitTagged() {
-        if (this.lastHitTime == null)
+    public me.abhigya.dbedwars.api.game.ArenaPlayer getLastHitTagged( ) {
+        if ( this.lastHitTime == null )
             return null;
 
-        return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000 > DBedwars.getInstance().getMainConfiguration().getArenaSection().getPlayerHitTagLength()
+        return ( System.currentTimeMillis( ) - this.lastHitTime.toEpochMilli( ) ) / 1000 > DBedwars.getInstance( ).getMainConfiguration( ).getArenaSection( ).getPlayerHitTagLength( )
                 ? null : this.lastHitTag;
     }
 
     @Override
-    public void setLastHitTag(me.abhigya.dbedwars.api.game.ArenaPlayer player) {
+    public void setLastHitTag( me.abhigya.dbedwars.api.game.ArenaPlayer player ) {
         this.lastHitTag = player;
-        this.setLastHitTime(Instant.now());
+        this.setLastHitTime( Instant.now( ) );
     }
 
     @Override
-    public Instant getLastHitTime() {
+    public Instant getLastHitTime( ) {
         return this.lastHitTime;
     }
 
     @Override
-    public void setLastHitTime(Instant instant) {
+    public void setLastHitTime( Instant instant ) {
         this.lastHitTime = instant;
     }
 
     @Override
-    public boolean isRespawning() {
+    public boolean isRespawning( ) {
         return this.respawning;
     }
 
-    @Override
-    public ShopView getShopView() {
-        return this.shopView;
-    }
-
-    public void setRespawning(boolean flag) {
+    public void setRespawning( boolean flag ) {
         this.respawning = flag;
     }
 
     @Override
-    public void queueRespawn() {
-        this.respawning = true;
-        DBedwars.getInstance().getThreadHandler().addAsyncWork(new RespawnTask(DBedwars.getInstance(), this));
+    public ShopView getShopView( ) {
+        return this.shopView;
     }
+
+    @Override
+    public void queueRespawn( ) {
+        this.respawning = true;
+        DBedwars.getInstance( ).getThreadHandler( ).addAsyncWork( new RespawnTask( DBedwars.getInstance( ), this ) );
+    }
+
 }

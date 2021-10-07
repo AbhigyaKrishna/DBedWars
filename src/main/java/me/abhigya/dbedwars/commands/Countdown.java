@@ -2,7 +2,6 @@ package me.abhigya.dbedwars.commands;
 
 import me.Abhigya.core.commands.CommandArgument;
 import me.abhigya.dbedwars.DBedwars;
-import me.abhigya.dbedwars.task.CountdownTask;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,31 +14,31 @@ public class Countdown implements CommandArgument {
 
     private final DBedwars plugin;
 
-    private Map<String, me.abhigya.dbedwars.api.game.spawner.Spawner> spawners = new HashMap<>();
+    private Map< String, me.abhigya.dbedwars.api.game.spawner.Spawner > spawners = new HashMap<>( );
 
-    public Countdown(DBedwars plugin) {
+    public Countdown( DBedwars plugin ) {
         this.plugin = plugin;
     }
 
     @Override
-    public String getName() {
+    public String getName( ) {
         return "countdown";
     }
 
     @Override
-    public String getUsage() {
+    public String getUsage( ) {
         return null;
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute( CommandSender sender, Command command, String label, String[] args ) {
 
-        if (!(sender instanceof Player))
+        if ( !( sender instanceof Player ) )
             return false;
 
         Player player = (Player) sender;
 
-        if (args.length < 1)
+        if ( args.length < 1 )
             return false;
 
 
@@ -47,7 +46,8 @@ public class Countdown implements CommandArgument {
     }
 
     @Override
-    public List<String> tab(CommandSender commandSender, Command command, String s, String[] strings) {
+    public List< String > tab( CommandSender commandSender, Command command, String s, String[] strings ) {
         return null;
     }
+
 }

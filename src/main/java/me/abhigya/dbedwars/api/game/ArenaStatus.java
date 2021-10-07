@@ -12,8 +12,8 @@ public enum ArenaStatus {
     STOPPED,
     ;
 
-    public int getId() {
-        return this.ordinal() + 1;
+    public int getId( ) {
+        return this.ordinal( ) + 1;
     }
 
 }

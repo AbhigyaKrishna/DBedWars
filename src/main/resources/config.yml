@@ -25,9 +25,10 @@ arena:
 # Traps
 
 traps:
-  enabled: true
-  trap-queue-limit: 3
-  queued-trap-cost:
-    - '1:DIAMOND'
-    - '2:DIAMOND'
-    - '4:DIAMOND'
+  trap-queue:
+    enabled: true
+    queue-limit: 3
+    queued-trap-cost:
+      - '1:DIAMOND'
+      - '2:DIAMOND'
+      - '4:DIAMOND'

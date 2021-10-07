@@ -11,17 +11,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpawnerDropItemEvent extends CustomEventCancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList( );
 
     private final Arena arena;
     private final DropType dropType;
-    private DropType.Drop drop;
     private final Spawner spawner;
     private final Team team;
     private final int level;
     private final DropType.Tier tier;
+    private DropType.Drop drop;
 
-    public SpawnerDropItemEvent(Arena arena, DropType dropType, DropType.Drop drop, Spawner spawner, Team team, int level, DropType.Tier tier) {
+    public SpawnerDropItemEvent( Arena arena, DropType dropType, DropType.Drop drop, Spawner spawner, Team team, int level, DropType.Tier tier ) {
         this.arena = arena;
         this.dropType = dropType;
         this.drop = drop;
@@ -31,50 +31,50 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
         this.tier = tier;
     }
 
-    public Arena getArena() {
+    public static HandlerList getHandlerList( ) {
+        return HANDLER_LIST;
+    }
+
+    public Arena getArena( ) {
         return arena;
     }
 
-    public DropType getDropType() {
+    public DropType getDropType( ) {
         return dropType;
     }
 
-    public DropType.Drop getDrop() {
+    public DropType.Drop getDrop( ) {
         return drop;
     }
 
-    public void setDrop(DropType.Drop drop) {
+    public void setDrop( DropType.Drop drop ) {
         this.drop = drop;
     }
 
-    public Spawner getSpawner() {
+    public Spawner getSpawner( ) {
         return spawner;
     }
 
-    public boolean isTeamSpawner() {
+    public boolean isTeamSpawner( ) {
         return this.team != null;
     }
 
     @Nullable
-    public Team getTeam() {
+    public Team getTeam( ) {
         return team;
     }
 
-    public int getLevel() {
+    public int getLevel( ) {
         return level;
     }
 
-    public DropType.Tier getTier() {
+    public DropType.Tier getTier( ) {
         return tier;
     }
 
     @NotNull
     @Override
-    public HandlerList getHandlers() {
-        return HANDLER_LIST;
-    }
-
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlers( ) {
         return HANDLER_LIST;
     }
 

@@ -1,7 +1,6 @@
 package me.abhigya.dbedwars.task;
 
 import me.Abhigya.core.util.scheduler.SchedulerUtils;
-import me.Abhigya.core.util.tasks.Workload;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaStatus;
@@ -9,8 +8,6 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class UpdateTask implements Runnable {
 
@@ -22,39 +19,39 @@ public final class UpdateTask implements Runnable {
 
     private Instant current;
 
-    public UpdateTask(DBedwars plugin) {
+    public UpdateTask( DBedwars plugin ) {
         this.plugin = plugin;
     }
 
-    public boolean start() {
-        if (this.task != null)
+    public boolean start( ) {
+        if ( this.task != null )
             return false;
 
-        this.started = Instant.now();
-        this.startedMillis = this.started.toEpochMilli();
-        this.task = SchedulerUtils.runTaskTimerAsynchronously(this, 0L, 1L, this.plugin);
+        this.started = Instant.now( );
+        this.startedMillis = this.started.toEpochMilli( );
+        this.task = SchedulerUtils.runTaskTimerAsynchronously( this, 0L, 1L, this.plugin );
         return true;
     }
 
-    public boolean stop() {
-        if (this.task == null)
+    public boolean stop( ) {
+        if ( this.task == null )
             return false;
 
-        this.task.cancel();
+        this.task.cancel( );
         return true;
     }
 
     @Override
-    public void run() {
-        this.current = Instant.now();
+    public void run( ) {
+        this.current = Instant.now( );
         try {
-            this.plugin.getThreadHandler().addAsyncWork(() -> {
-                for (Arena a : this.plugin.getGameManager().getArenas().values()) {
-                    if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
-                        a.getSpawners().forEach(Spawner::tick);
+            this.plugin.getThreadHandler( ).addAsyncWork( ( ) -> {
+                for ( Arena a : this.plugin.getGameManager( ).getArenas( ).values( ) ) {
+                    if ( a.isEnabled( ) && a.getStatus( ) == ArenaStatus.RUNNING ) {
+                        a.getSpawners( ).forEach( Spawner::tick );
                     }
                 }
-            });
+            } );
             /*List<PopupTowerBuilder> builders = plugin.getGameManager().getPopupTowerBuilders();
             List<PopupTowerBuilder> buildersClone = new ArrayList<>(builders);
             for (int i = 0; i < builders.size(); i++) {
@@ -73,22 +70,24 @@ public final class UpdateTask implements Runnable {
                 plugin.getThreadHandler().addSyncWork(workload);
             }*/
 
-        } catch (Exception ignored) {}
+        } catch ( Exception ignored ) {
+        }
     }
 
-    public int getTaskId() {
-        return task.getTaskId();
+    public int getTaskId( ) {
+        return task.getTaskId( );
     }
 
-    public Instant getStarted() {
+    public Instant getStarted( ) {
         return started;
     }
 
-    public long getStartedMillis() {
+    public long getStartedMillis( ) {
         return startedMillis;
     }
 
-    public Instant getCurrent() {
+    public Instant getCurrent( ) {
         return current;
     }
+
 }

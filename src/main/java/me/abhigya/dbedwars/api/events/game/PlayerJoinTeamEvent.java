@@ -10,42 +10,43 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayerJoinTeamEvent extends CustomPlayerEventCancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList( );
 
     private final Arena arena;
     private final ArenaPlayer arenaPlayer;
     private Team team;
 
-    public PlayerJoinTeamEvent(Player player, ArenaPlayer arenaPlayer, Arena arena, Team team) {
-        super(player);
+    public PlayerJoinTeamEvent( Player player, ArenaPlayer arenaPlayer, Arena arena, Team team ) {
+        super( player );
         this.arena = arena;
         this.arenaPlayer = arenaPlayer;
         this.team = team;
     }
 
-    public Arena getArena() {
+    public static HandlerList getHandlerList( ) {
+        return HANDLER_LIST;
+    }
+
+    public Arena getArena( ) {
         return arena;
     }
 
-    public ArenaPlayer getAsArenaPlayer() {
+    public ArenaPlayer getAsArenaPlayer( ) {
         return arenaPlayer;
     }
 
-    public Team getTeam() {
+    public Team getTeam( ) {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam( Team team ) {
         this.team = team;
     }
 
     @NotNull
     @Override
-    public HandlerList getHandlers() {
+    public HandlerList getHandlers( ) {
         return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
-    }
 }

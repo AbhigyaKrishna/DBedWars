@@ -4,18 +4,18 @@ import org.bukkit.World;
 
 public interface WorldAdaptor {
 
-    World createWorld(String worldName, World.Environment environment);
+    World createWorld( String worldName, World.Environment environment );
 
-    World loadWorldFromFolder(String worldName);
+    World loadWorldFromFolder( String worldName );
 
-    World loadWorldFromSave(String fileName);
+    World loadWorldFromSave( String fileName );
 
-    boolean saveWorld(String worldName, String name);
+    boolean saveWorld( String worldName, String name );
 
-    boolean saveExist(String name);
+    boolean saveExist( String name );
 
-    void unloadWorld(String worldName, boolean save);
+    void unloadWorld( String worldName, boolean save );
 
-    void deleteWorld(String worldName);
+    void deleteWorld( String worldName );
 
 }

@@ -7,15 +7,16 @@ import org.bukkit.entity.Player;
 
 public interface NMSAdaptor {
 
-    void clearRegionFileCache(World world);
+    void clearRegionFileCache( World world );
 
-    void clearChunkCache(World world);
+    void clearChunkCache( World world );
 
-    void refreshPlayerChunk(Player player);
+    void refreshPlayerChunk( Player player );
 
-    void clearDefaultPathFinding(LivingEntity entity);
+    void clearDefaultPathFinding( LivingEntity entity );
 
-    void clearDefaultPathFinding(Object entityCreature);
+    void clearDefaultPathFinding( Object entityCreature );
 
-    IVillager spawnNPCVillager(Location location);
+    IVillager spawnNPCVillager( Location location );
+
 }

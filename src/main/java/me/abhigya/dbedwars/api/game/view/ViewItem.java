@@ -6,61 +6,63 @@ import me.abhigya.dbedwars.api.exceptions.OverrideException;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.LEnchant;
-import me.abhigya.dbedwars.game.arena.view.AttributeType;
 import me.abhigya.dbedwars.api.util.Overridable;
-import me.abhigya.dbedwars.game.arena.view.ShopPage;
+import me.abhigya.dbedwars.game.arena.view.shop.AttributeType;
+import me.abhigya.dbedwars.game.arena.view.shop.ShopPage;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ViewItem extends Cloneable, Overridable {
 
-    ShopPage getPage();
+    ShopPage getPage( );
 
-    ArenaPlayer getPlayer();
+    ArenaPlayer getPlayer( );
 
-    BwItemStack getMaterial();
+    BwItemStack getMaterial( );
 
-    void setMaterial(BwItemStack material);
+    void setMaterial( BwItemStack material );
 
-    int getAmount();
+    int getAmount( );
 
-    void setAmount(int amount);
+    void setAmount( int amount );
 
-    String getName();
+    String getName( );
 
-    void setName(String name);
+    void setName( String name );
 
-    List<String> getLore();
+    List< String > getLore( );
 
-    List<LEnchant> getEnchants();
+    List< LEnchant > getEnchants( );
 
-    Map<AttributeType, Attribute> getAttributes();
+    Map< AttributeType, Attribute > getAttributes( );
 
-    BwItemStack getFormatted();
+    BwItemStack getFormatted( );
 
-    ActionItem getActionItem(boolean recreate);
+    ActionItem getActionItem( boolean recreate );
 
     @Override
-    void override(Overridable override) throws OverrideException;
+    void override( Overridable override ) throws OverrideException;
 
-    ViewItem clone();
+    ViewItem clone( );
 
     interface Attribute extends Validable, Cloneable, Overridable {
 
-        AttributeType getType();
+        AttributeType getType( );
 
-        Map<String, Object> getKeyEntry();
-
-        @Override
-        boolean isValid();
+        Map< String, Object > getKeyEntry( );
 
         @Override
-        boolean isInvalid();
+        boolean isValid( );
 
         @Override
-        void override(Overridable override) throws OverrideException;
+        boolean isInvalid( );
 
-        Attribute clone();
+        @Override
+        void override( Overridable override ) throws OverrideException;
+
+        Attribute clone( );
+
     }
+
 }

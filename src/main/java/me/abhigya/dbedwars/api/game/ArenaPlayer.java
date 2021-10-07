@@ -5,70 +5,69 @@ import me.abhigya.dbedwars.api.game.view.ShopView;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
 
 public interface ArenaPlayer {
 
-    void setArena(Arena arena);
+    Arena getArena( );
 
-    Arena getArena();
+    void setArena( Arena arena );
 
-    void setTeam(Team team);
+    Team getTeam( );
 
-    Team getTeam();
+    void setTeam( Team team );
 
-    void setSpectator(boolean spectator);
+    boolean isSpectator( );
 
-    boolean isSpectator();
+    void setSpectator( boolean spectator );
 
-    void addKill();
+    void addKill( );
 
-    void setKill(int count);
+    void setKill( int count );
 
-    int getKills();
+    int getKills( );
 
-    void addFinalKills();
+    void addFinalKills( );
 
-    void setFinalKills(int count);
+    int getFinalKills( );
 
-    int getFinalKills();
+    void setFinalKills( int count );
 
-    void addDeath();
+    void addDeath( );
 
-    void setDeath(int count);
+    int getDeath( );
 
-    int getDeath();
+    void setDeath( int count );
 
-    void kill(DeathCause reason);
+    void kill( DeathCause reason );
 
-    boolean isFinalKilled();
+    boolean isFinalKilled( );
 
-    void setFinalKilled(boolean flag);
+    void setFinalKilled( boolean flag );
 
-    UUIDPlayer getUUIDPlayer();
+    UUIDPlayer getUUIDPlayer( );
 
-    Player getPlayer();
+    Player getPlayer( );
 
-    void spawn(Location location);
+    void spawn( Location location );
 
-    void sendMessage(String msg);
+    void sendMessage( String msg );
 
-    void sendMessage(BaseComponent[] component);
+    void sendMessage( BaseComponent[] component );
 
-    ArenaPlayer getLastHitTagged();
+    ArenaPlayer getLastHitTagged( );
 
-    void setLastHitTag(ArenaPlayer player);
+    void setLastHitTag( ArenaPlayer player );
 
-    Instant getLastHitTime();
+    Instant getLastHitTime( );
 
-    void setLastHitTime(Instant instant);
+    void setLastHitTime( Instant instant );
 
-    boolean isRespawning();
+    boolean isRespawning( );
 
-    ShopView getShopView();
+    ShopView getShopView( );
 
-    void queueRespawn();
+    void queueRespawn( );
 
 }

@@ -17,78 +17,79 @@ public class ArenaListener extends PluginHandler {
 
     private final Arena arena;
 
-    public ArenaListener(DBedwars plugin, Arena arena) {
-        super(plugin);
+    public ArenaListener( DBedwars plugin, Arena arena ) {
+        super( plugin );
         this.arena = arena;
     }
 
     @EventHandler
-    public void handleBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled())
+    public void handleBlockBreak( BlockBreakEvent event ) {
+        if ( event.isCancelled( ) )
             return;
 
-        if (this.arena.getWorld().equals(event.getBlock().getWorld()))
-            event.setCancelled(true);
+        if ( this.arena.getWorld( ).equals( event.getBlock( ).getWorld( ) ) )
+            event.setCancelled( true );
     }
 
     @EventHandler
-    public void handleBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled())
+    public void handleBlockPlace( BlockPlaceEvent event ) {
+        if ( event.isCancelled( ) )
             return;
 
-        if (this.arena.getWorld().equals(event.getBlock().getWorld()))
-            event.setCancelled(true);
+        if ( this.arena.getWorld( ).equals( event.getBlock( ).getWorld( ) ) )
+            event.setCancelled( true );
     }
 
     @EventHandler
-    public void handleEntitySpawn(EntitySpawnEvent event) {
-        if (event.isCancelled())
+    public void handleEntitySpawn( EntitySpawnEvent event ) {
+        if ( event.isCancelled( ) )
             return;
 
-        if (this.arena.getWorld().equals(event.getEntity().getWorld())) {
-            if (event.getEntity() instanceof Player)
+        if ( this.arena.getWorld( ).equals( event.getEntity( ).getWorld( ) ) ) {
+            if ( event.getEntity( ) instanceof Player )
                 return;
 
-            else if (event.getEntity() instanceof Item)
+            else if ( event.getEntity( ) instanceof Item )
                 return;
 
-            else if (event.getEntity() instanceof ArmorStand)
+            else if ( event.getEntity( ) instanceof ArmorStand )
                 return;
 
-            event.setCancelled(true);
+            event.setCancelled( true );
         }
     }
 
     @EventHandler
-    public void handleEntityDamage(EntityDamageEvent event) {
-        if (event.isCancelled())
+    public void handleEntityDamage( EntityDamageEvent event ) {
+        if ( event.isCancelled( ) )
             return;
 
-        if (this.arena.getWorld().equals(event.getEntity().getWorld()))
-            event.setCancelled(true);
+        if ( this.arena.getWorld( ).equals( event.getEntity( ).getWorld( ) ) )
+            event.setCancelled( true );
     }
 
     @EventHandler
-    public void handleItemDrop(PlayerDropItemEvent event) {
-        if (event.isCancelled())
+    public void handleItemDrop( PlayerDropItemEvent event ) {
+        if ( event.isCancelled( ) )
             return;
 
-        if (this.arena.getWorld().equals(event.getPlayer().getWorld()))
-            event.setCancelled(true);
+        if ( this.arena.getWorld( ).equals( event.getPlayer( ).getWorld( ) ) )
+            event.setCancelled( true );
     }
 
     @Override
-    protected boolean isAllowMultipleInstances() {
+    protected boolean isAllowMultipleInstances( ) {
         return true;
     }
 
     @Override
-    public void register() {
-        super.register();
+    public void register( ) {
+        super.register( );
     }
 
     @Override
-    public void unregister() {
-        super.unregister();
+    public void unregister( ) {
+        super.unregister( );
     }
+
 }
