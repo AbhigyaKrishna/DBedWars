@@ -173,4 +173,19 @@ public class Utils {
         return list.toArray( arrays[0] );
     }
 
+    public static boolean containsGlass(List<Material> materials){
+        List<Material> list = new ArrayList<>(materials);
+        list.removeIf(material -> !material.name().contains("GLASS"));
+        return list.size()>=1;
+    }
+
+    public static boolean containsGlassOrEndstone(List<Material> materials){
+        if (containsGlass(materials))
+            return true;
+        List<Material> list = new ArrayList<>(materials);
+        materials.removeIf(material -> XMaterial.matchXMaterial(material) != XMaterial.END_STONE);
+        return list.size()>=1;
+    }
+
+
 }

@@ -876,8 +876,8 @@ pages:
           cost: '3:GOLD_INGOT'
           item:
             '1':
-              material: 'SPONGE'
-              amount: 1
+              custom-item: 'SPONGE'
+              amount: 3
       L:
         material: 'TRAPPED_CHEST'
         amount: 1

@@ -13,368 +13,606 @@ public class ConfigurableCustomItems implements Loadable {
     private ConfigurableTNT TNT;
     private ConfigurablePopupTower popupTower;
     private ConfigurableBridgeEgg bridgeEgg;
+    private ConfigurableWaterBucket waterBucket;
+    private ConfigurableSponge sponge;
+    private ConfigurableDreamDefender dreamDefender;
 
     @Override
-    public Loadable load( ConfigurationSection section ) {
-        fireball = new ConfigurableFireball( );
-        fireball.load( section.getConfigurationSection( "fireball" ) );
-        TNT = new ConfigurableTNT( );
-        TNT.load( section.getConfigurationSection( "tnt" ) );
-        popupTower = new ConfigurablePopupTower( );
-        popupTower.load( section.getConfigurationSection( "popup-tower" ) );
-        bridgeEgg = new ConfigurableBridgeEgg( );
-        bridgeEgg.load( section.getConfigurationSection( "bridge-egg" ) );
-        System.out.println( bridgeEgg.displayName );
-        System.out.println( bridgeEgg.lore );
-        return this.loadEntries( section );
+    public Loadable load(ConfigurationSection section) {
+        fireball = new ConfigurableFireball();
+        fireball.load(section.getConfigurationSection("fireball"));
+        TNT = new ConfigurableTNT();
+        TNT.load(section.getConfigurationSection("tnt"));
+        popupTower = new ConfigurablePopupTower();
+        popupTower.load(section.getConfigurationSection("popup-tower"));
+        bridgeEgg = new ConfigurableBridgeEgg();
+        bridgeEgg.load(section.getConfigurationSection("bridge-egg"));
+        waterBucket = new ConfigurableWaterBucket();
+        waterBucket.load(section.getConfigurationSection("water-bucket"));
+        sponge = new ConfigurableSponge();
+        sponge.load(section.getConfigurationSection("sponge"));
+        dreamDefender = new ConfigurableDreamDefender();
+        dreamDefender.load(section.getConfigurationSection("dream-defender"));
+        return this.loadEntries(section);
     }
 
     @Override
-    public boolean isValid( ) {
+    public boolean isValid() {
         return true;
     }
 
     @Override
-    public boolean isInvalid( ) {
+    public boolean isInvalid() {
         return false;
     }
 
-    public ConfigurableFireball getFireball( ) {
+    public ConfigurableFireball getFireball() {
         return fireball;
     }
 
-    public ConfigurableTNT getTNT( ) {
+    public ConfigurableTNT getTNT() {
         return TNT;
     }
 
-    public ConfigurablePopupTower getPopupTower( ) {
+    public ConfigurablePopupTower getPopupTower() {
         return popupTower;
     }
 
-    public ConfigurableBridgeEgg getBridgeEgg( ) {
+    public ConfigurableBridgeEgg getBridgeEgg() {
         return bridgeEgg;
     }
 
-    public static class ConfigurablePopupTower implements Loadable {
+    public ConfigurableWaterBucket getWaterBucket() {
+        return waterBucket;
+    }
 
-        @LoadableEntry( key = "name" )
+    public ConfigurableSponge getSponge() {
+        return sponge;
+    }
+
+    public ConfigurableDreamDefender getDreamDefender() {
+        return dreamDefender;
+    }
+
+    public static class ConfigurablePopupTower implements Loadable{
+
+        @LoadableEntry(key = "name")
         private String name;
 
-        @LoadableEntry( key = "lore" )
-        private List< String > lore;
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
 
-        @LoadableEntry( key = "sound" )
+        @LoadableEntry(key = "sound")
         private String sound;
 
-        @LoadableEntry( key = "particle" )
+        @LoadableEntry(key = "particle")
         private String particle;
 
-        @LoadableEntry( key = "main-block" )
+        @LoadableEntry(key = "main-block")
         private String mainBlock;
 
-        protected ConfigurablePopupTower( ) {
+        protected ConfigurablePopupTower(){
             name = "&bCompact Pop-up Tower";
-            lore = new ArrayList<>( );
+            lore = new ArrayList<>();
             mainBlock = "WOOL%team%";
         }
 
         @Override
-        public Loadable load( ConfigurationSection section ) {
-            return this.loadEntries( section );
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
         }
 
         @Override
-        public boolean isValid( ) {
+        public boolean isValid() {
             return true;
         }
 
         @Override
-        public boolean isInvalid( ) {
+        public boolean isInvalid() {
             return false;
         }
 
-        public String getName( ) {
+        public String getName() {
             return name;
         }
 
-        public List< String > getLore( ) {
+        public List<String> getLore() {
             return lore;
         }
 
-        public String getMainBlock( ) {
+        public String getMainBlock() {
             return mainBlock;
         }
 
-        public String getParticle( ) {
+        public String getParticle() {
             return particle;
         }
 
-        public String getSound( ) {
+        public String getSound() {
             return sound;
         }
-
     }
 
-    public static class ConfigurableTNT implements Loadable {
+    public static class ConfigurableTNT implements Loadable{
 
-        @LoadableEntry( key = "name" )
+        @LoadableEntry(key = "name")
         private String name;
 
-        @LoadableEntry( key = "lore" )
-        private List< String > lore;
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
 
-        @LoadableEntry( key = "auto-ignite-tnt" )
+        @LoadableEntry(key = "auto-ignite-tnt")
         private boolean autoIgniteTNT;
 
-        @LoadableEntry( key = "fix-random-explosion" )
+        @LoadableEntry(key = "fix-random-explosion")
         private boolean fixRandomExplosion;
 
-        @LoadableEntry( key = "better-tnt-ignite-animation" )
+        @LoadableEntry(key = "better-tnt-ignite-animation")
         private boolean isBetterTNTAnimationEnabled;
 
-        @LoadableEntry( key = "fuse-ticks" )
+        @LoadableEntry(key = "fuse-ticks")
         private int fuseTicks;
 
         private KnockBack knockBack;
 
-        protected ConfigurableTNT( ) {
+        protected ConfigurableTNT(){
             name = "";
-            lore = new ArrayList<>( );
+            lore = new ArrayList<>();
             autoIgniteTNT = true;
             fixRandomExplosion = true;
             fuseTicks = 52;
-            knockBack = new KnockBack( );
+            knockBack = new KnockBack();
             isBetterTNTAnimationEnabled = true;
         }
 
         @Override
-        public Loadable load( ConfigurationSection section ) {
-            knockBack.load( section.getConfigurationSection( "knockback" ) );
-            return this.loadEntries( section );
+        public Loadable load(ConfigurationSection section) {
+            knockBack.load(section.getConfigurationSection("knockback"));
+            return this.loadEntries(section);
         }
 
         @Override
-        public boolean isValid( ) {
+        public boolean isValid() {
             return true;
         }
 
         @Override
-        public boolean isInvalid( ) {
+        public boolean isInvalid() {
             return false;
         }
 
-        public boolean isBetterTNTAnimationEnabled( ) {
+        public boolean isBetterTNTAnimationEnabled() {
             return isBetterTNTAnimationEnabled;
         }
 
-        public List< String > getLore( ) {
+        public List<String> getLore() {
             return lore;
         }
 
-        public boolean isAutoIgniteTNTEnabled( ) {
+        public boolean isAutoIgniteTNTEnabled() {
             return autoIgniteTNT;
         }
 
-        public boolean isFixRandomExplosionEnabled( ) {
+        public boolean isFixRandomExplosionEnabled() {
             return fixRandomExplosion;
         }
 
-        public int getFuseTicks( ) {
+        public int getFuseTicks() {
             return fuseTicks;
         }
 
-        public String getName( ) {
+        public String getName() {
             return name;
         }
 
-        public KnockBack getKnockBack( ) {
+        public KnockBack getKnockBack() {
             return knockBack;
         }
-
     }
 
-    public static class ConfigurableFireball implements Loadable {
+    public static class ConfigurableFireball implements Loadable{
 
-        @LoadableEntry( key = "name" )
+        @LoadableEntry(key = "name")
         private String displayName;
 
-        @LoadableEntry( key = "lore" )
-        private List< String > lore;
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
 
-        @LoadableEntry( key = "left-click-throw" )
+        @LoadableEntry(key = "left-click-throw")
         private boolean leftClickThrow;
 
-        @LoadableEntry( key = "fix-direction" )
+        @LoadableEntry(key = "fix-direction")
         private boolean fixDirection;
 
-        @LoadableEntry( key = "explosion-yield" )
+        @LoadableEntry(key = "explosion-yield")
         private float explosionYield;
 
-        @LoadableEntry( key = "speed-multiplier" )
+        @LoadableEntry(key = "speed-multiplier")
         private double speedMultiplier;
 
-        @LoadableEntry( key = "throw-effects" )
-        private List< String > potionEffects;
+        @LoadableEntry(key = "throw-effects")
+        private List<String> potionEffects;
 
-        @LoadableEntry( key = "explosion-fire" )
+        @LoadableEntry(key = "explosion-fire")
         private boolean explosionFire;
 
         private KnockBack knockBack;
 
-        protected ConfigurableFireball( ) {
+        protected ConfigurableFireball(){
             displayName = "";
-            lore = new ArrayList<>( );
+            lore = new ArrayList<>();
             leftClickThrow = false;
             fixDirection = true;
             explosionYield = 4;
             speedMultiplier = 5;
             explosionFire = true;
-            potionEffects = new ArrayList<>( );
+            potionEffects = new ArrayList<>();
         }
 
         @Override
-        public Loadable load( ConfigurationSection section ) {
-            knockBack = new KnockBack( );
-            knockBack.load( section.getConfigurationSection( "knockback" ) );
-            return this.loadEntries( section );
+        public Loadable load(ConfigurationSection section) {
+            knockBack = new KnockBack();
+            knockBack.load(section.getConfigurationSection("knockback"));
+            return this.loadEntries(section);
         }
 
         @Override
-        public boolean isValid( ) {
+        public boolean isValid() {
             return true;
         }
 
         @Override
-        public boolean isInvalid( ) {
+        public boolean isInvalid() {
             return false;
         }
 
-        public List< String > getLore( ) {
+        public List<String> getLore() {
             return lore;
         }
 
-        public boolean isFixDirectionEnabled( ) {
+        public boolean isFixDirectionEnabled() {
             return fixDirection;
         }
 
-        public boolean isLeftClickThrowEnabled( ) {
+        public boolean isLeftClickThrowEnabled() {
             return leftClickThrow;
         }
 
-        public float getExplosionYield( ) {
+        public float getExplosionYield() {
             return explosionYield;
         }
 
-        public double getSpeedMultiplier( ) {
+        public double getSpeedMultiplier() {
             return speedMultiplier;
         }
 
-        public KnockBack getKnockBack( ) {
+        public KnockBack getKnockBack() {
             return knockBack;
         }
 
-        public List< String > getPotionEffects( ) {
+        public List<String> getPotionEffects() {
             return potionEffects;
         }
 
-        public String getDisplayName( ) {
+        public String getDisplayName() {
             return displayName;
         }
 
-        public boolean isExplosionFireEnabled( ) {
+        public boolean isExplosionFireEnabled() {
             return explosionFire;
         }
-
     }
 
-    public static class ConfigurableBridgeEgg implements Loadable {
+    public static class ConfigurableBridgeEgg implements Loadable{
 
-        @LoadableEntry( key = "name" )
+        @LoadableEntry(key = "name")
         private String displayName;
 
-        @LoadableEntry( key = "lore" )
-        private List< String > lore;
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
 
-        @LoadableEntry( key = "keep-alive-timeout" )
+        @LoadableEntry(key = "keep-alive-timeout")
         private int keepAliveTimeOut;
 
-        @LoadableEntry( key = "min-distance-from-player-to-start-placing-blocks" )
+        @LoadableEntry(key = "min-distance-from-player-to-start-placing-blocks")
         private int minDistanceFromPlayer;
 
-        @LoadableEntry( key = "max-distance-from-player-to-keep-placing-blocks" )
+        @LoadableEntry(key = "max-distance-from-player-to-keep-placing-blocks")
         private int maxDistanceFromPlayer;
 
-        @LoadableEntry( key = "max-down-stack" )
+        @LoadableEntry(key = "max-down-stack")
         private int maxDownStack;
 
-        @LoadableEntry( key = "flip-bridge" )
+        @LoadableEntry(key = "flip-bridge")
         private boolean flipBridgeEnabled;
 
-        public ConfigurableBridgeEgg( ) {
-            lore = new ArrayList<>( );
+        public ConfigurableBridgeEgg(){
+            lore = new ArrayList<>();
             flipBridgeEnabled = true;
         }
 
         @Override
-        public Loadable load( ConfigurationSection section ) {
-            return this.loadEntries( section );
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
         }
 
         @Override
-        public boolean isValid( ) {
+        public boolean isValid() {
             return true;
         }
 
         @Override
-        public boolean isInvalid( ) {
+        public boolean isInvalid() {
             return false;
         }
 
-        public String getName( ) {
+        public String getName() {
             return displayName;
         }
 
-        public List< String > getLore( ) {
+        public List<String> getLore() {
             return lore;
         }
 
-        public int getKeepAliveTimeOut( ) {
+        public int getKeepAliveTimeOut() {
             return keepAliveTimeOut;
         }
 
-        public int getMinDistanceFromPlayer( ) {
+        public int getMinDistanceFromPlayer() {
             return minDistanceFromPlayer;
         }
 
-        public int getMaxDistanceFromPlayer( ) {
+        public int getMaxDistanceFromPlayer() {
             return maxDistanceFromPlayer;
         }
 
-        public int getMaxDownStack( ) {
+        public int getMaxDownStack() {
             return maxDownStack;
         }
 
-        public boolean isFlipBridgeEnabled( ) {
+        public boolean isFlipBridgeEnabled() {
             return flipBridgeEnabled;
         }
-
     }
 
-    public static class KnockBack implements Loadable {
+    public static class ConfigurableWaterBucket implements Loadable{
 
-        @LoadableEntry( key = "radius-entities" )
+        @LoadableEntry(key = "name")
+        private String displayName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
+
+        @LoadableEntry(key = "remove-on-use")
+        private boolean removeOnUse;
+
+        public ConfigurableWaterBucket() {
+            this.displayName = "Water Bucket";
+            this.lore = new ArrayList<>();
+            this.removeOnUse = true;
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public boolean shouldRemoveOnUse() {
+            return removeOnUse;
+        }
+
+        public List<String> getLore() {
+            return lore;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    public static class ConfigurableSponge implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String displayName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> lore;
+
+        @LoadableEntry(key = "radius-for-particles")
+        private int radiusForParticles;
+
+        @LoadableEntry(key = "remove-on-animation-end")
+        private boolean removeSpongeOnAnimationEnd;
+
+        @LoadableEntry(key = "sound-on-box-increase")
+        private String soundBoxIncrease;
+
+        @LoadableEntry(key = "sound-on-end")
+        private String soundOnAnimationEnd;
+
+        @LoadableEntry(key = "allow-breaking")
+        private boolean allowBreaking;
+
+        @LoadableEntry(key = "break-message")
+        private String breakTryMessage;
+
+        public ConfigurableSponge(){
+            displayName = "SpongeBoy";
+            lore = new ArrayList<>();
+            radiusForParticles = 4;
+            removeSpongeOnAnimationEnd = true;
+            soundBoxIncrease = "CLICK:0.2:0.5";
+            soundOnAnimationEnd = "SPLASH2:1:1";
+            allowBreaking = false;
+            breakTryMessage = "";
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public List<String> getLore() {
+            return lore;
+        }
+
+        public boolean shouldRemoveSpongeOnAnimationEnd() {
+            return removeSpongeOnAnimationEnd;
+        }
+
+        public int getRadiusForParticles() {
+            return radiusForParticles;
+        }
+
+        public String getSoundBoxIncrease() {
+            return soundBoxIncrease;
+        }
+
+        public String getSoundOnAnimationEnd() {
+            return soundOnAnimationEnd;
+        }
+
+        public boolean isBreakingAllowed() {
+            return allowBreaking;
+        }
+
+        public String getBreakTryMessage() {
+            return breakTryMessage;
+        }
+    }
+
+    public static class ConfigurableDreamDefender implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String itemName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> itemLore;
+
+        @LoadableEntry(key = "golem-display-name")
+        private String golemDisplayName;
+
+        @LoadableEntry(key = "health-symbol")
+        private String healthSymbol;
+
+        @LoadableEntry(key = "health-color-codes")
+        private String healthColorCodes;
+
+        @LoadableEntry(key = "health-indicator-count")
+        private int healthIndicatorCount;
+
+        @LoadableEntry(key = "reach")
+        private double reach;
+
+        @LoadableEntry(key = "effect")
+        private List<String> golemPotionEffects;
+
+        @LoadableEntry(key = "time-until-despawn")
+        private int ticksUntilDespawn;
+
+        public ConfigurableDreamDefender(){
+            itemName = "Dream Defender";
+            itemLore = new ArrayList<>();
+            golemDisplayName = "&f%time_left% &0[ %health_bar% &0]";
+            healthSymbol = "●";
+            healthColorCodes = "&f:&8";
+            healthIndicatorCount = 10;
+            reach = 2.5;
+            golemPotionEffects = new ArrayList<>();
+            ticksUntilDespawn = 4800;
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public List<String> getItemLore() {
+            return itemLore;
+        }
+
+        public String getGolemDisplayName() {
+            return golemDisplayName;
+        }
+
+        public String getHealthSymbol() {
+            return healthSymbol;
+        }
+
+        public String getHealthColorCodes() {
+            return healthColorCodes;
+        }
+
+        public int getHealthIndicatorCount() {
+            return healthIndicatorCount;
+        }
+
+        public double getReach() {
+            return reach;
+        }
+
+        public List<String> getGolemPotionEffects() {
+            return golemPotionEffects;
+        }
+
+        public int getTicksUntilDespawn() {
+            return ticksUntilDespawn;
+        }
+    }
+
+    public static class KnockBack implements Loadable{
+
+        @LoadableEntry(key = "radius-entities")
         private int radiusEntities;
 
-        @LoadableEntry( key = "distance-modifier" )
+        @LoadableEntry(key = "distance-modifier")
         private double distanceModifier;
 
-        @LoadableEntry( key = "height-force" )
+        @LoadableEntry(key = "height-force")
         private double heightForce;
 
-        @LoadableEntry( key = "horizontal-force" )
+        @LoadableEntry(key = "horizontal-force")
         private double horizontalForce;
 
-        protected KnockBack( ) {
+        protected KnockBack(){
             radiusEntities = 3;
             distanceModifier = 16;
             heightForce = 1.5;
@@ -382,36 +620,35 @@ public class ConfigurableCustomItems implements Loadable {
         }
 
         @Override
-        public Loadable load( ConfigurationSection section ) {
-            return this.loadEntries( section );
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
         }
 
         @Override
-        public boolean isValid( ) {
+        public boolean isValid() {
             return true;
         }
 
         @Override
-        public boolean isInvalid( ) {
+        public boolean isInvalid() {
             return false;
         }
 
-        public double getDistanceModifier( ) {
+        public double getDistanceModifier() {
             return distanceModifier;
         }
 
-        public double getHeightForce( ) {
+        public double getHeightForce() {
             return heightForce;
         }
 
-        public double getHorizontalForce( ) {
+        public double getHorizontalForce() {
             return horizontalForce;
         }
 
-        public int getRadiusEntities( ) {
+        public int getRadiusEntities() {
             return radiusEntities;
         }
-
     }
 
 }

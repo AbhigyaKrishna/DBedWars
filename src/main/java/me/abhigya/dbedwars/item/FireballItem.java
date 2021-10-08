@@ -20,38 +20,36 @@ import java.util.ArrayList;
 
 public class FireballItem extends PluginActionItem {
 
-    private ConfigurableCustomItems.ConfigurableFireball configurableFireball;
-    private ItemStack fireball;
-
-    //TODO MERGE EXPLOSION HERE
+    private final ConfigurableCustomItems.ConfigurableFireball configurableFireball;
+    private final ItemStack fireball;
+    public static final FixedMetadataValue fireballMeta = new FixedMetadataValue(DBedwars.getInstance(), DBedwars.getInstance().getName());
     //TODO ADD A CHECK FOR KNOCKBACK SETTINGS ENABLED
 
-    public FireballItem( DBedwars plugin ) {
-        super( plugin, StringUtils.translateAlternateColorCodes( plugin.getConfigHandler( ).getCustomItems( ).getFireball( ).getDisplayName( ) ),
-                ( DBedwars.getInstance( ).getConfigHandler( ).getCustomItems( ).getFireball( ).getLore( ) == null ? new ArrayList<>( ) : DBedwars.getInstance( ).getConfigHandler( ).getCustomItems( ).getFireball( ).getLore( ) ),
-                XMaterial.FIRE_CHARGE.parseMaterial( ) );
-        this.configurableFireball = plugin.getConfigHandler( ).getCustomItems( ).getFireball( );
-        this.fireball = this.toItemStack( );
+    public FireballItem(DBedwars plugin) {
+        super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                (DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>() : DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore()),
+                XMaterial.FIRE_CHARGE.parseMaterial());
+        this.configurableFireball = plugin.getConfigHandler().getCustomItems().getFireball();
+        this.fireball = this.toItemStack();
     }
 
     @Override
-    public void onActionPerform( Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent ) {
-        if ( EventUtils.isRightClick( playerInteractEvent.getAction( ) ) || ( configurableFireball.isLeftClickThrowEnabled( ) && EventUtils.isClickingBlock( playerInteractEvent.getAction( ) ) ) ) {
-            playerInteractEvent.setCancelled( true );
-            BwItemStack.removeItem( player, this.fireball );
-            Fireball fireball = player.launchProjectile( Fireball.class );
-            fireball.setMetadata( "plugin", new FixedMetadataValue( DBedwars.getInstance( ), DBedwars.getInstance( ).getName( ) ) );
-            fireball.setVelocity( fireball.getVelocity( ).multiply( configurableFireball.getSpeedMultiplier( ) ) );
-            if ( this.configurableFireball.isFixDirectionEnabled( ) )
-                FireBallUtil.setDirection( fireball, player.getEyeLocation( ).getDirection( ) );
-            fireball.setYield( configurableFireball.getExplosionYield( ) );
-            configurableFireball.getPotionEffects( ).forEach( s -> {
-                PotionEffectAT effect = PotionEffectAT.valueOf( s );
-                if ( effect != null )
-                    effect.applyTo( player );
-            } );
-            fireball.setIsIncendiary( configurableFireball.isExplosionFireEnabled( ) );
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+        if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (configurableFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
+            playerInteractEvent.setCancelled(true);
+            BwItemStack.removeItem(player, this.fireball);
+            Fireball fireball = player.launchProjectile(Fireball.class);
+            fireball.setMetadata("plugin", fireballMeta);
+            fireball.setVelocity(fireball.getVelocity().multiply(configurableFireball.getSpeedMultiplier()));
+            if (this.configurableFireball.isFixDirectionEnabled())
+                FireBallUtil.setDirection(fireball, player.getEyeLocation().getDirection());
+            fireball.setYield(configurableFireball.getExplosionYield());
+            configurableFireball.getPotionEffects().forEach(s -> {
+                PotionEffectAT effect = PotionEffectAT.valueOf(s);
+                if (effect != null)
+                    effect.applyTo(player);
+            });
+            fireball.setIsIncendiary(configurableFireball.isExplosionFireEnabled());
         }
     }
-
 }

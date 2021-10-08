@@ -7,7 +7,7 @@ fireball:
   explosion-yield: 4
   speed-multiplier: 5
   throw-effects:
-    - 'SLOW:1:25'
+    - 'SLOW:0:20'
   explosion-fire: true
   knockback:
     radius-entities: 3
@@ -40,6 +40,34 @@ bridge-egg:
   max-distance-from-player-to-keep-placing-blocks: 27
   max-down-stack: 9
   flip-bridge: true
+water-bucket:
+  name: 'Water Bucket'
+  lore: []
+  remove-on-use: true
+sponge:
+  name: 'Sponge'
+  lore: []
+  radius-for-particles: 4
+  remove-on-animation-end: true
+  allow-breaking: false
+  break-message: '' #sent only is allow-breaking is set to false
+  sound-on-box-increase: 'CLICK:0.2:0.5'
+  sound-on-end: 'SPLASH2:1:1'
+dream-defender:
+  name: ''
+  lore: []
+  golem-display-name: '&f%time_left% &0[ %health_bar% &0]'
+  health-symbol: ●
+  health-color-codes: '&f:&8'
+  health-indicator-count: 10
+  reach:
+  effects:
+    - ''
+  time-until-despawn: 4800
+
+
+
+
 
 
 
