@@ -13,7 +13,10 @@ import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.api.util.TrapEnum;
+import me.abhigya.dbedwars.item.CustomItems;
+import me.abhigya.dbedwars.item.TNTItem;
 import me.abhigya.dbedwars.utils.Utils;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -119,6 +122,10 @@ public class GameListener extends PluginHandler {
 
         Block block = event.getBlock( );
         block.setMetadata( "placed", new FixedMetadataValue( this.plugin, this.arena.getSettings( ).getName( ) ) );
+
+        if ( block.getType( ) == Material.TNT ) {
+            ( (TNTItem) CustomItems.TNT.getItem( ) ).onTNTPlace( event );
+        }
     }
 
     @EventHandler

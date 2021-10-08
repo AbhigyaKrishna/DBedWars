@@ -22,7 +22,7 @@ public class UpgradeView {
     }
 
     public void load( ) {
-        this.cfgUpgrade.getPages().forEach( ( s, page ) -> {
+        this.cfgUpgrade.getPages( ).forEach( ( s, page ) -> {
             UpgradePage upgradePage = new UpgradePage( s, this.team, page );
             upgradePage.load( );
             this.upgradePages.put( s, upgradePage );

@@ -164,8 +164,8 @@ public class Utils {
     }
 
     @SafeVarargs
-    public static <T> T[] mergeArray( T[]... arrays ) {
-        List<T> list = new ArrayList<>( );
+    public static < T > T[] mergeArray( T[]... arrays ) {
+        List< T > list = new ArrayList<>( );
         for ( T[] array : arrays ) {
             list.addAll( Arrays.asList( array ) );
         }

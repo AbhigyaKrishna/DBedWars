@@ -9,8 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -21,14 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TNTItem extends PluginActionItem implements Listener {
+public class TNTItem extends PluginActionItem {
 
     ConfigurableCustomItems.ConfigurableTNT tnt;
 
     public TNTItem( DBedwars plugin ) {
         super( plugin, StringUtils.translateAlternateColorCodes( plugin.getConfigHandler( ).getCustomItems( ).getTNT( ).getName( ) ), StringUtils.translateAlternateColorCodes( plugin.getConfigHandler( ).getCustomItems( ).getTNT( ).getLore( ) == null ? new ArrayList<>( ) : plugin.getConfigHandler( ).getCustomItems( ).getTNT( ).getLore( ) ), Material.TNT );
         this.tnt = plugin.getConfigHandler( ).getCustomItems( ).getTNT( );
-        plugin.getServer( ).getPluginManager( ).registerEvents( this, plugin );
     }
 
     @Override
@@ -36,11 +33,10 @@ public class TNTItem extends PluginActionItem implements Listener {
 
     }
 
-    @EventHandler
     public void onTNTPlace( BlockPlaceEvent event ) {
-        if ( event.getBlockPlaced( ).getType( ) != Material.TNT ) {
-            return;
-        }
+
+        //TODO PLACE A CHECK TO MAKE SURE THE TNT IS OUT TNT BOUGHT FROM SHOP OR GOTTEN BY COMMAND
+
         if ( !tnt.isAutoIgniteTNTEnabled( ) ) {
             return;
         }
@@ -54,7 +50,6 @@ public class TNTItem extends PluginActionItem implements Listener {
 
     }
 
-    @EventHandler
     public void onTNTExplode( EntityExplodeEvent event ) {
         if ( event.getEntityType( ) != EntityType.PRIMED_TNT ) {
             return;

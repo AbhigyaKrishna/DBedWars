@@ -43,7 +43,7 @@ counter-offensive-trap:
     '1':
       target: 'TEAM_AT_BASE'
       executable:
-        - '[EFFECT] SPEED:1:10'
-        - '[EFFECT] JUMP_BOOST:2:10'
+        - '[EFFECT] SPEED:1:200'
+        - '[EFFECT] JUMP_BOOST:2:200'
         - '[TITLE:1:30:1] &cTRAP TRIGGERED\n&7Your counter offensive trap was set off'
         - '[SOUND] ENDERMAN_TELEPORT:1:1'

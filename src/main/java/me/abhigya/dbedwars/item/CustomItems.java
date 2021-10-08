@@ -15,6 +15,8 @@ import java.util.Map;
 
 public enum CustomItems {
 
+    //TODO BLACKLIST THESE 2 ITEMS
+
     SIMPLE_SETUP_ITEM( new PluginActionItem( DBedwars.getInstance( ), StringUtils.translateAlternateColorCodes( "&bSimple Arena Setup" ),
             StringUtils.translateAlternateColorCodes( new ArrayList<>( Collections.singletonList( "&7Right click to view arena settings panel." ) ) ),
             XMaterial.NETHER_STAR.parseMaterial( ) ) {
@@ -46,6 +48,7 @@ public enum CustomItems {
     FIREBALL( new FireballItem( DBedwars.getInstance( ) ) ),
 
     TNT( new TNTItem( DBedwars.getInstance( ) ) ),
+    BRIDGE_EGG( new BridgeEgg( DBedwars.getInstance( ) ) )
     /*POPUP_TOWER(new PopupTowerChest(DBedwars.getInstance()))*/;
 
     private final PluginActionItem item;

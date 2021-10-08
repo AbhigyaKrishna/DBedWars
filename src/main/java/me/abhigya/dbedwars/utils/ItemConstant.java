@@ -14,7 +14,7 @@ public enum ItemConstant {
 
     HOE( XMaterial.WOODEN_HOE, XMaterial.IRON_HOE, XMaterial.GOLDEN_HOE, XMaterial.DIAMOND_HOE, XMaterial.NETHERITE_HOE ),
 
-    TOOLS( Utils.mergeArray( AXE.getItems( ), PICKAXE.getItems( ), SHOVEL.getItems( ), HOE.getItems( ), new XMaterial[]{ XMaterial.SHEARS } ) ),
+    TOOLS( Utils.mergeArray( AXE.getItems( ), PICKAXE.getItems( ), SHOVEL.getItems( ), HOE.getItems( ), new XMaterial[]{XMaterial.SHEARS} ) ),
 
     LEATHER_ARMOR( XMaterial.LEATHER_HELMET, XMaterial.LEATHER_CHESTPLATE, XMaterial.LEATHER_LEGGINGS, XMaterial.LEATHER_BOOTS ),
 
@@ -29,7 +29,7 @@ public enum ItemConstant {
     NETHERITE_ARMOR( XMaterial.NETHERITE_HELMET, XMaterial.NETHERITE_CHESTPLATE, XMaterial.NETHERITE_LEGGINGS, XMaterial.NETHERITE_BOOTS ),
 
     ARMOR( Utils.mergeArray( LEATHER_ARMOR.getItems( ), CHAINMAIL_ARMOR.getItems( ), IRON_ARMOR.getItems( ), GOLDEN_ARMOR.getItems( ), DIAMOND_ARMOR.getItems( ),
-        NETHERITE_ARMOR.getItems( ) ) ),
+            NETHERITE_ARMOR.getItems( ) ) ),
 
     ;
 

@@ -223,7 +223,7 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
         if ( this.lastHitTime == null )
             return null;
 
-        return ( System.currentTimeMillis( ) - this.lastHitTime.toEpochMilli( ) ) / 1000 > DBedwars.getInstance( ).getMainConfiguration( ).getArenaSection( ).getPlayerHitTagLength( )
+        return ( System.currentTimeMillis( ) - this.lastHitTime.toEpochMilli( ) ) / 1000 > DBedwars.getInstance( ).getConfigHandler( ).getMainConfiguration( ).getArenaSection( ).getPlayerHitTagLength( )
                 ? null : this.lastHitTag;
     }
 

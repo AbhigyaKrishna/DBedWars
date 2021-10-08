@@ -328,7 +328,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         event.call( );
 
         this.status = ArenaStatus.ENDING;
-        this.plugin.getThreadHandler( ).addSyncWork( new FixedRateWorkload( this.plugin.getMainConfiguration( ).getArenaSection( ).getGameEndDelay( ) * 20 ) {
+        this.plugin.getThreadHandler( ).addSyncWork( new FixedRateWorkload( this.plugin.getConfigHandler( ).getMainConfiguration( ).getArenaSection( ).getGameEndDelay( ) * 20 ) {
             @Override
             public void compute( ) {
                 Arena.this.world.getPlayers( ).forEach( p -> p.teleport( Arena.this.plugin.getServer( ).getWorlds( ).get( 0 ).getSpawnLocation( ) ) );
