@@ -13,12 +13,10 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.item.*;
 import me.abhigya.dbedwars.utils.Utils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -79,7 +77,7 @@ public class GameListener extends PluginHandler {
                 return;
             }
             if (event.getBlock().getType() == XMaterial.SPONGE.parseMaterial())
-                ((Sponge) CustomItems.SPONGE.getItem()).onSpongeBreak(event);
+                ((Sponge) ( (DBedwars) this.getPlugin() ).getCustomItemHandler().getItem( "SPONGE" )).onSpongeBreak(event);
         } else if (Utils.isBed(event.getBlock())) {
             event.setCancelled(true);
 
@@ -125,10 +123,11 @@ public class GameListener extends PluginHandler {
         block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.arena.getSettings().getName()));
         //TODO ADDITIONAL CHECK FOR TNT
         if (block.getType() == XMaterial.TNT.parseMaterial()) {
-            ((TNTItem) CustomItems.TNT.getItem()).onTNTPlace(event);
+            ((TNTItem) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "TNT" )).onTNTPlace(event);
         }
-        if (block.getType() == XMaterial.SPONGE.parseMaterial() && CustomItems.SPONGE.getItem().isThis(player.getPlayer().getItemInHand())){
-            ((Sponge) CustomItems.SPONGE.getItem()).onSpongePlace(event);
+        if (block.getType() == XMaterial.SPONGE.parseMaterial() && ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "SPONGE" )
+                .isThis(player.getPlayer().getItemInHand())){
+            ((Sponge) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "SPONGE" )).onSpongePlace(event);
         }
     }
 
@@ -165,7 +164,7 @@ public class GameListener extends PluginHandler {
         if (entity.getType() == EntityType.IRON_GOLEM
                 && entity.hasMetadata("isDBedwarsGolem")
                 && entity.getMetadata("isDBedwarsGolem").contains(DreamDefenderSpawnEgg.golemMetaValue)){
-            ((DreamDefenderSpawnEgg)CustomItems.DREAM_DEFENDER.getItem()).onDeath(event);
+            ((DreamDefenderSpawnEgg) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "DREAM_DEFENDER" )).onDeath(event);
         }
 
     }
@@ -281,20 +280,11 @@ public class GameListener extends PluginHandler {
     }
 
     @EventHandler
-    public void handleEntitySpawn(EntitySpawnEvent event) {
-        if (!event.getLocation().getWorld().equals(this.arena.getWorld()))
-            return;
-
-        if (event.getEntity() instanceof Player || event.getEntity() instanceof Item || event.getEntity().hasMetadata("spawnable"))
-            return;
-    }
-
-    @EventHandler
     public void handleWaterBucketPlace(PlayerBucketEmptyEvent event){
         if (!event.getPlayer().getWorld().equals(this.arena.getWorld()))
             return;
-        if (event.getItemStack().isSimilar(CustomItems.WATER_BUCKET.getItem().toItemStack())){
-            ((WaterBucket) CustomItems.WATER_BUCKET.getItem()).onWaterBucketUse(event);
+        if (event.getItemStack().isSimilar(((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "WATER_BUCKET" ).toItemStack())){
+            ((WaterBucket) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "WATER_BUCKET" )).onWaterBucketUse(event);
         }
     }
 
@@ -305,7 +295,7 @@ public class GameListener extends PluginHandler {
         Entity entity = event.getEntity();
         if (event.getEntityType() == EntityType.SNOWBALL){
             if (entity.hasMetadata("isDBedWarsBedBugBall") && entity.getMetadata("isDBedWarsBedBugBall").contains(BedBugSnowball.bedBugBallMeta)){
-                ((BedBugSnowball) CustomItems.BED_BUG.getItem()).onLand(event);
+                ((BedBugSnowball) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "BED_BUG" )).onLand(event);
             }
         }
     }

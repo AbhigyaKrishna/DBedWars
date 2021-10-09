@@ -25,7 +25,7 @@ public class SQLite extends DatabaseBridge {
     public void init( ) {
         try {
             this.db.connect( );
-            this.querySQLFile( this.db, "sql.database_init.sql" );
+            this.querySQLFile( this.db, "sql.stats_database_init.sql" );
         } catch ( IOException | SQLException e ) {
             e.printStackTrace( );
         }

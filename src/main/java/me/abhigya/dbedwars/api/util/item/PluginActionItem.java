@@ -5,6 +5,9 @@ import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -30,6 +33,10 @@ public abstract class PluginActionItem extends ActionItemBase {
     @Override
     public boolean isThis( ItemStack item ) {
         return super.isThis( item ) && Utils.hasPluginData( item );
+    }
+
+    @Override
+    public void onActionPerform( Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent ) {
     }
 
 }

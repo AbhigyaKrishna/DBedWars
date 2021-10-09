@@ -13,9 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum CustomItems {
-
-    //TODO BLACKLIST THESE 2 ITEMS
+public enum InnerCustomItem {
 
     SIMPLE_SETUP_ITEM(new PluginActionItem(DBedwars.getInstance(), StringUtils.translateAlternateColorCodes("&bSimple Arena Setup"),
             StringUtils.translateAlternateColorCodes(new ArrayList<>(Collections.singletonList("&7Right click to view arena settings panel."))),
@@ -45,20 +43,11 @@ public enum CustomItems {
         }
     }),
 
-    FIREBALL(new FireballItem(DBedwars.getInstance())),
-
-    TNT(new TNTItem(DBedwars.getInstance())),
-    BRIDGE_EGG(new BridgeEgg(DBedwars.getInstance())),
-    /*POPUP_TOWER(new PopupTowerChest(DBedwars.getInstance()))*/
-    WATER_BUCKET(new WaterBucket(DBedwars.getInstance())),
-    SPONGE(new Sponge(DBedwars.getInstance())),
-    DREAM_DEFENDER(new DreamDefenderSpawnEgg(DBedwars.getInstance())),
-    BED_BUG(new BedBugSnowball(DBedwars.getInstance()))
     ;
 
     private final PluginActionItem item;
 
-    CustomItems(PluginActionItem item) {
+    InnerCustomItem( PluginActionItem item) {
         this.item = item;
     }
 

@@ -14,9 +14,9 @@ import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import me.abhigya.dbedwars.api.util.LEnchant;
 import me.abhigya.dbedwars.api.util.Overridable;
+import me.abhigya.dbedwars.api.util.item.PluginActionItem;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableShop;
 import me.abhigya.dbedwars.guis.ShopGui;
-import me.abhigya.dbedwars.item.CustomItems;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -433,8 +433,8 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
                         this.keyEntry.put( "item-" + atrItem.getKey( ), stack );
                     } else if ( atrItem.getValue( ).getCustomItem( ) != null ) {
                         try {
-                            CustomItems item = CustomItems.valueOf( atrItem.getValue( ).getCustomItem( ) );
-                            this.keyEntry.put( "item-" + atrItem.getKey( ), item.getItem( ).toBwItemStack( ) );
+                            PluginActionItem item = DBedwars.getInstance().getCustomItemHandler().getItem( atrItem.getValue( ).getCustomItem( ) );
+                            this.keyEntry.put( "item-" + atrItem.getKey( ), item.toBwItemStack( ) );
                         } catch ( IllegalArgumentException ignored ) {
                         }
                     }

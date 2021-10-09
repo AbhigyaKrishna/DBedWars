@@ -10,7 +10,7 @@ import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
-import me.abhigya.dbedwars.item.CustomItems;
+import me.abhigya.dbedwars.item.InnerCustomItem;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +40,7 @@ public class SetupTypeGui extends IMenu< ItemMenu > {
 
             @Override
             public void onClick( ItemClickAction itemClickAction ) {
-                itemClickAction.getPlayer( ).getInventory( ).addItem( Utils.addNbtData( Utils.setUnStackable( CustomItems.SIMPLE_SETUP_ITEM.getItem( ).toItemStack( ) ),
+                itemClickAction.getPlayer( ).getInventory( ).addItem( Utils.addNbtData( Utils.setUnStackable( InnerCustomItem.SIMPLE_SETUP_ITEM.getItem( ).toItemStack( ) ),
                         "arena", info.get( "arena" ) ) );
                 itemClickAction.setClose( true );
             }
@@ -58,7 +58,7 @@ public class SetupTypeGui extends IMenu< ItemMenu > {
 
             @Override
             public void onClick( ItemClickAction itemClickAction ) {
-                itemClickAction.getPlayer( ).getInventory( ).addItem( Utils.addNbtData( Utils.setUnStackable( CustomItems.ADVANCED_SETUP_ITEM.getItem( ).toItemStack( ) ),
+                itemClickAction.getPlayer( ).getInventory( ).addItem( Utils.addNbtData( Utils.setUnStackable( InnerCustomItem.ADVANCED_SETUP_ITEM.getItem( ).toItemStack( ) ),
                         "arena", info.get( "arena" ) ) );
                 itemClickAction.setClose( true );
             }

@@ -20,10 +20,10 @@ public class MySQL extends DatabaseBridge {
 
     public MySQL( DBedwars plugin, String host, int port, String database, @NotNull String username, @NotNull String password, boolean reconnect, boolean ssl ) {
         super( plugin );
-        this.db = new HikariClientBuilder( String.format("jdbc:mysql://%s:%d/%s?autoReconnect=%s&useSSL=%s", host, port, database, reconnect, ssl), username, password, reconnect )
-                .addProperty( "cachePrepStmts" , "true" )
-                .addProperty( "prepStmtCacheSize" , "250" )
-                .addProperty( "prepStmtCacheSqlLimit" , "2048" )
+        this.db = new HikariClientBuilder( String.format( "jdbc:mysql://%s:%d/%s?autoReconnect=%s&useSSL=%s", host, port, database, reconnect, ssl ), username, password, reconnect )
+                .addProperty( "cachePrepStmts", "true" )
+                .addProperty( "prepStmtCacheSize", "250" )
+                .addProperty( "prepStmtCacheSqlLimit", "2048" )
                 .build( );
     }
 
@@ -31,7 +31,7 @@ public class MySQL extends DatabaseBridge {
     public void init( ) {
         try {
             this.db.connect( );
-            this.querySQLFile( this.db, "sql.database_init.sql" );
+            this.querySQLFile( this.db, "sql.stats_database_init.sql" );
         } catch ( SQLException | IOException e ) {
             e.printStackTrace( );
         }

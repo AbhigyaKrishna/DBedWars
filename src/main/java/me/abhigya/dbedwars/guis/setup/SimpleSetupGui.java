@@ -16,7 +16,7 @@ import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.LocationXYZYP;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
-import me.abhigya.dbedwars.item.CustomItems;
+import me.abhigya.dbedwars.item.InnerCustomItem;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -68,7 +68,7 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
                 arena.saveData( true );
 
                 itemClickAction.setClose( true );
-                itemClickAction.getPlayer( ).getInventory( ).remove( CustomItems.SIMPLE_SETUP_ITEM.getItem( ).toItemStack( ) );
+                itemClickAction.getPlayer( ).getInventory( ).remove( InnerCustomItem.SIMPLE_SETUP_ITEM.getItem( ).toItemStack( ) );
                 itemClickAction.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&aArena Saved!" ) );
             }
         } );
