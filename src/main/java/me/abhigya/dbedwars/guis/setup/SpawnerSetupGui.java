@@ -79,7 +79,7 @@ public class SpawnerSetupGui extends IMenu< BookItemMenu > {
             builder.delete( builder.length( ) - 1, builder.length( ) );
 
             ActionItem item = new ActionItem( StringUtils.translateAlternateColorCodes( "&6" + d.getSimpleName( ) ), d.getIcon( ).toItemStack( ),
-                    StringUtils.translateAlternateColorCodes( new String[]{"&bId: " + d.getId( ), builder.toString( )} ) );
+                    StringUtils.translateAlternateColorCodes( new String[]{ "&bId: " + d.getId( ), builder.toString( ) } ) );
             item.addAction( new ItemAction( ) {
                 @Override
                 public ItemActionPriority getPriority( ) {

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class CountdownTask implements Workload {
 
-    private static final short[] TRIGGERS = new short[]{1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
+    private static final short[] TRIGGERS = new short[]{ 1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120 };
     private final Arena arena;
     private short countdown;
     private boolean started;

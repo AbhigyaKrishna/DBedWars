@@ -30,8 +30,8 @@ import java.util.concurrent.ExecutionException;
 public class SetupMapGui extends IMenu< BookItemMenu > {
 
     private final VoidActionItem noMapItem = new VoidActionItem( StringUtils.translateAlternateColorCodes( "&cNo map found :(" ),
-            XMaterial.PAPER.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{"&cAdd some arena world to",
-            "&cthe root directory!"} ) );
+            XMaterial.PAPER.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{ "&cAdd some arena world to",
+            "&cthe root directory!" } ) );
 
     public SetupMapGui( DBedwars plugin ) {
         super( plugin, "MAP_SETUP", new BookItemMenu( StringUtils.translateAlternateColorCodes( "&3Select map to setup!" ), ItemMenuSize.SIX_LINE,

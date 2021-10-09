@@ -29,8 +29,8 @@ public class SetupTypeGui extends IMenu< ItemMenu > {
     @Override
     public void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info ) {
         ActionItem simple = new ActionItem( StringUtils.translateAlternateColorCodes( "&e&lSimple Setup" ),
-                XMaterial.REPEATER.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{"",
-                "&7Easy and quick arena setup!", "", "&dOnly essential options for setup."} ) );
+                XMaterial.REPEATER.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{ "",
+                "&7Easy and quick arena setup!", "", "&dOnly essential options for setup." } ) );
 
         simple.addAction( new ItemAction( ) {
             @Override
@@ -47,8 +47,8 @@ public class SetupTypeGui extends IMenu< ItemMenu > {
         } );
 
         ActionItem advanced = new ActionItem( StringUtils.translateAlternateColorCodes( "&c&lAdvanced Setup" ),
-                XMaterial.COMPARATOR.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{"",
-                "&7Advanced detailed setup", "&7for customizing whole arena!", "", "&dAll customization options for setup."} ) );
+                XMaterial.COMPARATOR.parseItem( ), StringUtils.translateAlternateColorCodes( new String[]{ "",
+                "&7Advanced detailed setup", "&7for customizing whole arena!", "", "&dAll customization options for setup." } ) );
 
         advanced.addAction( new ItemAction( ) {
             @Override

@@ -1,12 +1,10 @@
 package me.abhigya.dbedwars.database;
 
-import me.Abhigya.core.database.sql.hikaricp.HikariCP;
-import me.Abhigya.core.database.sql.hikaricp.HikariClientBuilder;
 import me.Abhigya.core.util.json.Json;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.utils.JSONBuilder;
-import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,17 +12,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class MySQL extends DatabaseBridge {
+public class SQLite extends DatabaseBridge {
 
-    private final HikariCP db;
+    private me.Abhigya.core.database.sql.sqlite.SQLite db;
 
-    public MySQL( DBedwars plugin, String host, int port, String database, @NotNull String username, @NotNull String password, boolean reconnect, boolean ssl ) {
+    public SQLite( DBedwars plugin ) {
         super( plugin );
-        this.db = new HikariClientBuilder( String.format("jdbc:mysql://%s:%d/%s?autoReconnect=%s&useSSL=%s", host, port, database, reconnect, ssl), username, password, reconnect )
-                .addProperty( "cachePrepStmts" , "true" )
-                .addProperty( "prepStmtCacheSize" , "250" )
-                .addProperty( "prepStmtCacheSqlLimit" , "2048" )
-                .build( );
+        this.db = new me.Abhigya.core.database.sql.sqlite.SQLite( this.getPlugin( ), new File( this.getPlugin( ).getDataFolder( ), "database.db" ), true );
     }
 
     @Override
@@ -32,7 +26,7 @@ public class MySQL extends DatabaseBridge {
         try {
             this.db.connect( );
             this.querySQLFile( this.db, "sql.database_init.sql" );
-        } catch ( SQLException | IOException e ) {
+        } catch ( IOException | SQLException e ) {
             e.printStackTrace( );
         }
     }
@@ -75,7 +69,7 @@ public class MySQL extends DatabaseBridge {
                     return found ? jsonBuilder.getRawJson( ) : null;
                 }
             }
-        } catch ( SQLException e ) {
+        } catch ( SQLException | IOException e ) {
             e.printStackTrace( );
         }
 

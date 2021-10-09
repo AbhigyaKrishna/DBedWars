@@ -57,7 +57,7 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
                 }
                 this.configureSlimeConfig( );
             }
-            String[] availableLoaders = new String[]{"file", "mysql", "mongodb"};
+            String[] availableLoaders = new String[]{ "file", "mysql", "mongodb" };
             String l = config.getString( "slime-loader" );
             l = l != null ? ( Arrays.stream( availableLoaders ).anyMatch( x -> x.equalsIgnoreCase( config.getString( "slime-loader" ) ) ) ? l.toLowerCase( Locale.ROOT )
                     : "file" ) : "file";
