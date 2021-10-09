@@ -6,7 +6,7 @@ public interface IGolem {
 
     IGolem addCustomDefaults();
 
-    IGolem initTargets();
+    IGolem initTargets(double reachModifier);
 
     IGolem setChaseRadius(float radius);
 

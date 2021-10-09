@@ -11,15 +11,13 @@ import me.abhigya.dbedwars.api.game.DeathCause;
 import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
-import me.abhigya.dbedwars.item.CustomItems;
-import me.abhigya.dbedwars.item.Sponge;
-import me.abhigya.dbedwars.item.TNTItem;
-import me.abhigya.dbedwars.item.WaterBucket;
+import me.abhigya.dbedwars.item.*;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -154,6 +152,25 @@ public class GameListener extends PluginHandler {
     }
 
     @EventHandler
+    public void handleEntityDeath(EntityDeathEvent event){
+
+        //TODO ADD MORE CHECKS IF NECESSARY
+
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld())){
+            return;
+        }
+
+        Entity entity = event.getEntity();
+
+        if (entity.getType() == EntityType.IRON_GOLEM
+                && entity.hasMetadata("isDBedwarsGolem")
+                && entity.getMetadata("isDBedwarsGolem").contains(DreamDefenderSpawnEgg.golemMetaValue)){
+            ((DreamDefenderSpawnEgg)CustomItems.DREAM_DEFENDER.getItem()).onDeath(event);
+        }
+
+    }
+
+    @EventHandler
     public void handlePlayerDamageTag(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player))
             return;
@@ -270,8 +287,6 @@ public class GameListener extends PluginHandler {
 
         if (event.getEntity() instanceof Player || event.getEntity() instanceof Item || event.getEntity().hasMetadata("spawnable"))
             return;
-
-        event.setCancelled(true);
     }
 
     @EventHandler
@@ -280,6 +295,18 @@ public class GameListener extends PluginHandler {
             return;
         if (event.getItemStack().isSimilar(CustomItems.WATER_BUCKET.getItem().toItemStack())){
             ((WaterBucket) CustomItems.WATER_BUCKET.getItem()).onWaterBucketUse(event);
+        }
+    }
+
+    @EventHandler
+    public void handleProjectileLand(ProjectileHitEvent event){
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld()))
+            return;
+        Entity entity = event.getEntity();
+        if (event.getEntityType() == EntityType.SNOWBALL){
+            if (entity.hasMetadata("isDBedWarsBedBugBall") && entity.getMetadata("isDBedWarsBedBugBall").contains(BedBugSnowball.bedBugBallMeta)){
+                ((BedBugSnowball) CustomItems.BED_BUG.getItem()).onLand(event);
+            }
         }
     }
 

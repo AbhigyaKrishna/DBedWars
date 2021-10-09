@@ -16,6 +16,7 @@ public class ConfigurableCustomItems implements Loadable {
     private ConfigurableWaterBucket waterBucket;
     private ConfigurableSponge sponge;
     private ConfigurableDreamDefender dreamDefender;
+    private ConfigurableBedBug bedBug;
 
     @Override
     public Loadable load(ConfigurationSection section) {
@@ -33,6 +34,8 @@ public class ConfigurableCustomItems implements Loadable {
         sponge.load(section.getConfigurationSection("sponge"));
         dreamDefender = new ConfigurableDreamDefender();
         dreamDefender.load(section.getConfigurationSection("dream-defender"));
+        bedBug = new ConfigurableBedBug();
+        bedBug.load(section.getConfigurationSection("bed-bug"));
         return this.loadEntries(section);
     }
 
@@ -72,6 +75,10 @@ public class ConfigurableCustomItems implements Loadable {
 
     public ConfigurableDreamDefender getDreamDefender() {
         return dreamDefender;
+    }
+
+    public ConfigurableBedBug getBedBug() {
+        return bedBug;
     }
 
     public static class ConfigurablePopupTower implements Loadable{
@@ -525,10 +532,7 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "health-indicator-count")
         private int healthIndicatorCount;
 
-        @LoadableEntry(key = "reach")
-        private double reach;
-
-        @LoadableEntry(key = "effect")
+        @LoadableEntry(key = "potion-effects")
         private List<String> golemPotionEffects;
 
         @LoadableEntry(key = "time-until-despawn")
@@ -538,10 +542,9 @@ public class ConfigurableCustomItems implements Loadable {
             itemName = "Dream Defender";
             itemLore = new ArrayList<>();
             golemDisplayName = "&f%time_left% &0[ %health_bar% &0]";
-            healthSymbol = "●";
-            healthColorCodes = "&f:&8";
+            healthSymbol = "● ";
+            healthColorCodes = "f:8";
             healthIndicatorCount = 10;
-            reach = 2.5;
             golemPotionEffects = new ArrayList<>();
             ticksUntilDespawn = 4800;
         }
@@ -585,16 +588,97 @@ public class ConfigurableCustomItems implements Loadable {
             return healthIndicatorCount;
         }
 
-        public double getReach() {
-            return reach;
-        }
-
         public List<String> getGolemPotionEffects() {
             return golemPotionEffects;
         }
 
         public int getTicksUntilDespawn() {
             return ticksUntilDespawn;
+        }
+    }
+
+    public static class ConfigurableBedBug implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String itemName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> itemLore;
+
+        @LoadableEntry(key = "bed-bug-display-name")
+        private String bedBugDisplayName;
+
+        @LoadableEntry(key = "health-symbol")
+        private String healthSymbol;
+
+        @LoadableEntry(key = "health-color-codes")
+        private String healthColorCodes;
+
+        @LoadableEntry(key = "health-indicator-count")
+        private int healthIndicatorCount;
+
+        @LoadableEntry(key = "potion-effects")
+        private List<String> bedBugPotionEffects;
+
+        @LoadableEntry(key = "time-until-despawn")
+        private int ticksUntilDespawn;
+
+        public ConfigurableBedBug(){
+            itemName = "Snowball";
+            itemLore = new ArrayList<>();
+            bedBugDisplayName = "&0[ %health_bar% &0]";
+            healthSymbol = "⏹ ";
+            healthColorCodes = "%team_color%:8";
+            healthIndicatorCount = 5;
+            bedBugPotionEffects = new ArrayList<>();
+            ticksUntilDespawn = 300;
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public int getHealthIndicatorCount() {
+            return healthIndicatorCount;
+        }
+
+        public int getTicksUntilDespawn() {
+            return ticksUntilDespawn;
+        }
+
+        public String getBedBugDisplayName() {
+            return bedBugDisplayName;
+        }
+
+        public List<String> getBedBugPotionEffects() {
+            return bedBugPotionEffects;
+        }
+
+        public List<String> getItemLore() {
+            return itemLore;
+        }
+
+        public String getHealthColorCodes() {
+            return healthColorCodes;
+        }
+
+        public String getHealthSymbol() {
+            return healthSymbol;
+        }
+
+        public String getItemName() {
+            return itemName;
         }
     }
 

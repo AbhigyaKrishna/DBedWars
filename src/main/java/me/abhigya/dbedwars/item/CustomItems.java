@@ -52,7 +52,8 @@ public enum CustomItems {
     /*POPUP_TOWER(new PopupTowerChest(DBedwars.getInstance()))*/
     WATER_BUCKET(new WaterBucket(DBedwars.getInstance())),
     SPONGE(new Sponge(DBedwars.getInstance())),
-    DREAM_DEFENDER(new DreamDefenderSpawnEgg(DBedwars.getInstance()))
+    DREAM_DEFENDER(new DreamDefenderSpawnEgg(DBedwars.getInstance())),
+    BED_BUG(new BedBugSnowball(DBedwars.getInstance()))
     ;
 
     private final PluginActionItem item;

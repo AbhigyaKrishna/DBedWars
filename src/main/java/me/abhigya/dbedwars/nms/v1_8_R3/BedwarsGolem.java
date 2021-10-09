@@ -6,9 +6,7 @@ import me.abhigya.dbedwars.nms.IGolem;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftIronGolem;
 import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Optional;
 
 public class BedwarsGolem implements IGolem {
@@ -33,6 +31,7 @@ public class BedwarsGolem implements IGolem {
     public IGolem addCustomDefaults() {
         golem.goalSelector.a(0, new PathfinderGoalFloat(golem));
         golem.goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(golem,0.9D,radius));
+
         golem.goalSelector.a(6, new PathfinderGoalRandomStroll(golem,0.6D));
         golem.goalSelector.a(7, new PathfinderGoalLookAtPlayer(golem, EntityHuman.class, 6.0F));
         golem.goalSelector.a(8, new PathfinderGoalRandomLookaround(golem));
@@ -40,8 +39,9 @@ public class BedwarsGolem implements IGolem {
     }
 
     @Override
-    public IGolem initTargets() {
-        golem.targetSelector.a(2, new PathFindingNearestAttackableTarget<>(golem,EntityHuman.class,true,false,spawningPlayerTeam));
+    public IGolem initTargets(double reachModifier) {
+        golem.goalSelector.a(1, new PathfinderGoalMeleeAttack(golem, reachModifier, true));
+        golem.targetSelector.a(2, new PathFindingNearestAttackableTarget<>(golem, EntityHuman.class, true, false, spawningPlayerTeam));
         return this;
     }
 
@@ -51,7 +51,7 @@ public class BedwarsGolem implements IGolem {
         return this;
     }
 
-    public static class PathFindingNearestAttackableTarget<T extends EntityLiving > extends PathfinderGoalNearestAttackableTarget<T> {
+    private static class PathFindingNearestAttackableTarget<T extends EntityLiving > extends PathfinderGoalNearestAttackableTarget<T> {
 
         private final Team spawningTeam;
 
@@ -64,7 +64,7 @@ public class BedwarsGolem implements IGolem {
         protected boolean a( EntityLiving entityLiving, boolean b ) {
             if (!(entityLiving instanceof EntityPlayer))
                 return false;
-            Optional<ArenaPlayer> optionalPlayer = spawningTeam.getArena().getAsArenaPlayer((Player) entityLiving);
+            Optional<ArenaPlayer> optionalPlayer = spawningTeam.getArena().getAsArenaPlayer(((EntityPlayer) entityLiving).getBukkitEntity());
             if (!optionalPlayer.isPresent())
                 return false;
             if (optionalPlayer.get().isSpectator())

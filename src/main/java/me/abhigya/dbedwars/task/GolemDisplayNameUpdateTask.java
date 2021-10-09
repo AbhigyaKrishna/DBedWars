@@ -1,23 +1,29 @@
 package me.abhigya.dbedwars.task;
 
+import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.tasks.Workload;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import me.abhigya.dbedwars.game.arena.Team;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.IronGolem;
 
+import java.text.DecimalFormat;
+
 public class GolemDisplayNameUpdateTask implements Workload {
 
-    IronGolem golem;
-    ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
-    ChatColor teamColor;
+    private final IronGolem golem;
+    private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
+    private final ChatColor teamColor;
+    private final DecimalFormat formatter;
 
-    public GolemDisplayNameUpdateTask(DBedwars plugin, IronGolem golem, Team team){
+    public GolemDisplayNameUpdateTask(IronGolem golem, Team team, ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem){
         this.golem = golem;
-        this.cfgGolem = plugin.getConfigHandler().getCustomItems().getDreamDefender();
+        this.cfgGolem = cfgGolem;
         this.teamColor = team.getColor().getChatColor();
         golem.setCustomNameVisible(true);
+        this.formatter = new DecimalFormat("###");
+        this.formatter.setMinimumFractionDigits(1);
     }
 
     private long timestamp = System.currentTimeMillis();
@@ -25,26 +31,21 @@ public class GolemDisplayNameUpdateTask implements Workload {
 
     @Override
     public void compute() {
-        golem.setCustomName(displayNameParser());
-        if (tick>=cfgGolem.getTicksUntilDespawn())
+        if (tick>=cfgGolem.getTicksUntilDespawn()){
             golem.setHealth(0);
+            return;
+        }
+        golem.setCustomName(displayNameParser());
     }
 
-    private double getTimeLeft(){
-        return (cfgGolem.getTicksUntilDespawn()-tick)/20;
+    private String getTimeLeft(){
+        return formatter.format((cfgGolem.getTicksUntilDespawn()-tick)/20.0);
     }
 
-    private String getHealthLeftString(String healthSymbol,int healthIndicatorCount,String color1,String color2){
-        String returnString = "";
-        int k = 0;
-        for (int i = 0; i < ((int) (golem.getHealth() / golem.getMaxHealth()))*cfgGolem.getHealthIndicatorCount(); i++) {
-            returnString = returnString.concat(color1 + healthSymbol + " ");
-            k++;
-        }
-        for (int i = k; i < healthIndicatorCount; i++) {
-            returnString = returnString.concat(color2 + healthSymbol + " ");
-        }
-        return returnString;
+    private String getHealthLeftString(){
+        return (StringUtils.getProgressBar(golem.getHealth(),golem.getMaxHealth(),cfgGolem.getHealthIndicatorCount(),cfgGolem.getHealthSymbol(),
+                ChatColor.getByChar(cfgGolem.getHealthColorCodes().split(":")[0].replaceAll("%team_color%", String.valueOf(teamColor.getChar()))),
+                ChatColor.getByChar(cfgGolem.getHealthColorCodes().split(":")[1].replaceAll("%team_color%", String.valueOf(teamColor.getChar())))));
     }
 
     private String displayNameParser(){
@@ -53,11 +54,8 @@ public class GolemDisplayNameUpdateTask implements Workload {
                 .replaceAll("%team_color%","&" + teamColor.toString())
                 .replaceAll("%time_left%", getTimeLeft() + "s")
                 .replaceAll("%health_bar%",
-                        getHealthLeftString(cfgGolem.getHealthSymbol(),
-                                cfgGolem.getHealthIndicatorCount(),
-                                cfgGolem.getHealthColorCodes().split(":")[0],
-                                cfgGolem.getHealthColorCodes().split(":")[1]));
-        return s;
+                        getHealthLeftString());
+        return StringUtils.translateAlternateColorCodes(s);
     }
 
     @Override

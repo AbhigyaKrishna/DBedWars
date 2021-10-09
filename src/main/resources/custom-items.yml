@@ -56,14 +56,23 @@ sponge:
 dream-defender:
   name: ''
   lore: []
-  golem-display-name: '&f%time_left% &0[ %health_bar% &0]'
-  health-symbol: ●
-  health-color-codes: '&f:&8'
+  golem-display-name: '&f%time_left% &0[ &l%health_bar% &0]' # %time_left%, %team_color%, %health_bar%
+  health-symbol: '● ' #add intentional space to add space between health symbols
+  health-color-codes: '%team_color%:8'
   health-indicator-count: 10
-  reach:
-  effects:
+  potion-effects:
     - ''
   time-until-despawn: 4800
+bed-bug:
+  name: ''
+  lore: []
+  bed-bug-display-name: '&0[ %health_bar% &0]'
+  health-symbol: '● ' #add intentional space to add space between health symbols
+  health-color-codes: '%team_color%:8'
+  health-indicator-count: 5
+  potion-effects: []
+  time-until-despawn: 300
+
 
 
 

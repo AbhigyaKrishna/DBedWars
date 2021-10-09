@@ -62,19 +62,4 @@ public class FireBallListener implements Listener {
                 player.damage(DamageEvent.getFinalDamage());
         }
     }
-
-    @Override
-    public void register() {
-        super.register();
-    }
-
-    @Override
-    public void unregister() {
-        super.unregister();
-    }
-
-    @Override
-    protected boolean isAllowMultipleInstances() {
-        return false;
-    }
 }

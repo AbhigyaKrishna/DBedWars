@@ -244,7 +244,7 @@ public class ArenaSettings implements me.abhigya.dbedwars.api.game.settings.Aren
 
     @Override
     public void enableTeam( Color teamColor ) {
-        this.availableTeams.add( new me.abhigya.dbedwars.game.arena.Team( teamColor ) );
+        this.availableTeams.add( new me.abhigya.dbedwars.game.arena.Team( plugin,teamColor ) );
     }
 
     @Override

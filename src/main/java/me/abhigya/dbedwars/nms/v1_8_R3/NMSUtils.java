@@ -1,6 +1,10 @@
 package me.abhigya.dbedwars.nms.v1_8_R3;
 
 import me.Abhigya.core.util.reflection.general.FieldReflection;
+import me.abhigya.dbedwars.api.game.ArenaPlayer;
+import me.abhigya.dbedwars.api.game.Team;
+import me.abhigya.dbedwars.nms.IBedBug;
+import me.abhigya.dbedwars.nms.IGolem;
 import me.abhigya.dbedwars.nms.IVillager;
 import me.abhigya.dbedwars.nms.NMSAdaptor;
 import net.minecraft.server.v1_8_R3.*;
@@ -11,8 +15,10 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.util.LongObjectHashMap;
 import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
 
 import java.io.File;
 
@@ -94,6 +100,16 @@ public class NMSUtils implements NMSAdaptor {
         IVillager villager = new Villager( this, location );
         villager.spawn( );
         return villager;
+    }
+
+    @Override
+    public IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer) {
+        return new BedwarsGolem(golem,chaseRadius,spawningPlayer);
+    }
+
+    @Override
+    public IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam) {
+        return new BedwarsBedBug(bedBug,spawningTeam);
     }
 
 }

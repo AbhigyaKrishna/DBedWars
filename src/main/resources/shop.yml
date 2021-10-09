@@ -747,7 +747,7 @@ pages:
           cost: '40:IRON_INGOT'
           item:
             '1':
-              custom-item: 'BEDBUG'
+              custom-item: 'BED_BUG'
               amount: 1
       D:
         material: 'WOLF_SPAWN_EGG'

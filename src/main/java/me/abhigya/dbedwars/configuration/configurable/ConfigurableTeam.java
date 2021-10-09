@@ -6,6 +6,7 @@ import me.Abhigya.core.util.configurable.Configurable;
 import me.Abhigya.core.util.loadable.Loadable;
 import me.Abhigya.core.util.loadable.LoadableEntry;
 import me.Abhigya.core.util.saveable.SaveableEntry;
+import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.game.spawner.DropType;
 import me.abhigya.dbedwars.api.util.Color;
@@ -116,7 +117,7 @@ public class ConfigurableTeam implements Configurable {
 
     public Team toTeam( ) {
         if ( this.team == null )
-            return this.team = new me.abhigya.dbedwars.game.arena.Team( this );
+            return this.team = new me.abhigya.dbedwars.game.arena.Team(DBedwars.getInstance(),this);
 
         return this.team;
     }
