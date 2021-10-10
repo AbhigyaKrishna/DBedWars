@@ -15,9 +15,7 @@ import me.abhigya.dbedwars.item.*;
 import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -122,7 +120,7 @@ public class GameListener extends PluginHandler {
         Block block = event.getBlock();
         block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.arena.getSettings().getName()));
         //TODO ADDITIONAL CHECK FOR TNT
-        if (block.getType() == XMaterial.TNT.parseMaterial()) {
+        if (block.getType() == XMaterial.TNT.parseMaterial() && ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("TNT").isThis(player.getPlayer().getItemInHand())) {
             ((TNTItem) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "TNT" )).onTNTPlace(event);
         }
         if (block.getType() == XMaterial.SPONGE.parseMaterial() && ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "SPONGE" )
@@ -182,6 +180,19 @@ public class GameListener extends PluginHandler {
             return;
 
         this.arena.getAsArenaPlayer((Player) event.getDamager()).ifPresent(player::setLastHitTag);
+    }
+
+    @EventHandler
+    public void handleEntityExplosions(EntityExplodeEvent event){
+        if (event.getEntity() == null || !event.getEntity().getWorld().equals(this.arena.getWorld()))
+            return;
+        Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.FIREBALL && entity.hasMetadata("isDBedwarsFireball") && entity.getMetadata("isDBedwarsFireball").contains(FireballItem.fireballMeta)){
+            ((FireballItem) plugin.getCustomItemHandler().getItem("FIREBALL")).onFireBallExplode(event);
+        }
+        if (entity.getType() == EntityType.PRIMED_TNT && entity.hasMetadata("isDBedwarsTNT") && entity.getMetadata("isDBedwarsTNT").contains(TNTItem.tntPrimedMeta)){
+            ((TNTItem) plugin.getCustomItemHandler().getItem("TNT")).onTNTExplode(event);
+        }
     }
 
     // TODO: revamp this

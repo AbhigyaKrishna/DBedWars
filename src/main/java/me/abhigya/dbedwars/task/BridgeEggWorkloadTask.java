@@ -3,6 +3,7 @@ package me.abhigya.dbedwars.task;
 import me.Abhigya.core.util.tasks.Workload;
 import me.Abhigya.core.util.xseries.XBlock;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.game.Arena;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
 public class BridgeEggWorkloadTask implements Workload {
-    //TODO USE BRIDGE EGG THROW EVENT HERE
     private final DBedwars plugin;
     private int tick;
     private final int keepAliveTimeout;
@@ -25,10 +25,12 @@ public class BridgeEggWorkloadTask implements Workload {
     private final DyeColor dyeColor;
     private long timestamp;
     private Block lastBlock;
-    BlockFace[] faces;
+    private final BlockFace[] faces;
+    private final Arena arena;
 
-    public BridgeEggWorkloadTask(DBedwars plugin, Player player, DyeColor dyeColor, Projectile egg, double minDistanceToPlaceBlocks, int ticksToKeepEggAliveFor, double distanceToKeepEggAliveFor, double maxDownStack, boolean flipBridge) {
+    public BridgeEggWorkloadTask(DBedwars plugin, Arena arena, Player player, DyeColor dyeColor, Projectile egg, double minDistanceToPlaceBlocks, int ticksToKeepEggAliveFor, double distanceToKeepEggAliveFor, double maxDownStack, boolean flipBridge) {
         this.plugin = plugin;
+        this.arena = arena;
         tick = 0;
         keepAliveTimeout = ticksToKeepEggAliveFor;
         maxEggDistance = distanceToKeepEggAliveFor;
@@ -51,7 +53,6 @@ public class BridgeEggWorkloadTask implements Workload {
         placeBlock(block.getRelative(faces[0]), dyeColor);
         placeBlock(block.getRelative(faces[1]), dyeColor);
     }
-    //TODO REMOVE EGG ON RETURN FALSE
     @Override
     public boolean reSchedule() {
         if (egg.isDead()) {
@@ -86,11 +87,11 @@ public class BridgeEggWorkloadTask implements Workload {
         }
         return !(player.getLocation().getY() - egg.getLocation().getY() >= maxDownStack);
     }
-    //TODO USE ARENA SETBLOCK HERE
+
     private void placeBlock(Block block, DyeColor dyeColor) {
         if (block.getType()==Material.AIR){
             plugin.getThreadHandler().addSyncWork(() -> {
-                block.setType(Material.WOOL);
+                arena.setBlock(block,Material.WOOL);
                 block.getWorld().playSound(block.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 XBlock.setColor(block, dyeColor);
             });
@@ -137,37 +138,37 @@ public class BridgeEggWorkloadTask implements Workload {
             int yDiff = block.getY() - this.lastBlock.getY();
             if (xDiff >= 2) {
                 Block temp = this.lastBlock.getLocation().add(1, 0, 0).getBlock();
-                placeEggBlock(block);
+                placeEggBlock(temp);
                 this.lastBlock = block;
             }else if (xDiff <=-2) {
                 Block temp = this.lastBlock.getLocation().add(-1, 0, 0).getBlock();
-                placeEggBlock(block);
+                placeEggBlock(temp);
                 this.lastBlock = block;
             }
             if (zDiff >= 2.0) {
                 Block temp = this.lastBlock.getLocation().add(0, 0, 1).getBlock();
-                placeEggBlock(block);
+                placeEggBlock(temp);
                 this.lastBlock = block;
             }else if (zDiff <= -2.0) {
                 Block temp = this.lastBlock.getLocation().add(0, 0, -1).getBlock();
-                placeEggBlock(block);
+                placeEggBlock(temp);
                 this.lastBlock = block;
             }
             if (yDiff > 1.1) {
                 Block temp = this.lastBlock.getLocation().add(0, 1, 0).getBlock();
-                placeEggBlock(block);
+                placeEggBlock(temp);
                 this.lastBlock = block;
             }
             if (yDiff < -1.1) {
                 Block temp = this.lastBlock.getLocation().add(0, -1, 0).getBlock();
-                placeEggBlock(block);
-                this.lastBlock = block;
+                placeEggBlock(temp);
             }
         }
         this.lastBlock = block;
     }
 
     public void placeEggBlock(Block block){
+        skipBlockFill(block);
         if (block.getType() == Material.AIR){
             placeBlock(block,dyeColor);
             placeBlock(block.getRelative(faces[0]),dyeColor);

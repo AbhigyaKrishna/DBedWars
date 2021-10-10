@@ -12,6 +12,7 @@ import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.version.CoreVersion;
 import me.abhigya.dbedwars.commands.HoloTestCommand;
+import me.abhigya.dbedwars.commands.ImageParticleTestCommand;
 import me.abhigya.dbedwars.commands.Setup;
 import me.abhigya.dbedwars.commands.Start;
 import me.abhigya.dbedwars.configuration.Lang;
@@ -200,7 +201,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands( ) {
-        new CommandHandler( this, "bedwars", new Setup( this ), new Start( this ), new HoloTestCommand( ) );
+        new CommandHandler( this, "bedwars", new Setup( this ), new Start( this ), new HoloTestCommand( ), new ImageParticleTestCommand());
 
         return true;
     }
@@ -313,7 +314,7 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler.registerItem( "WATER_BUCKET", new WaterBucket( this ) );
         this.customItemHandler.registerItem( "SPONGE", new Sponge( this ) );
         this.customItemHandler.registerItem( "DREAM_DEFENDER", new DreamDefenderSpawnEgg( this ) );
-        this.customItemHandler.registerItem( "BEDBUG", new BedBugSnowball( this ) );
+        this.customItemHandler.registerItem( "BED_BUG", new BedBugSnowball( this ) );
 //        this.customItemHandler.registerItem( "POPUP_TOWER", new PopupTowerChest( this ) );
     }
 

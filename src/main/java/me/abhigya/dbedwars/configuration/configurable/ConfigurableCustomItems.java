@@ -435,6 +435,9 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "lore")
         private List<String> lore;
 
+        @LoadableEntry(key = "animation-enabled")
+        private boolean animationEnabled;
+
         @LoadableEntry(key = "radius-for-particles")
         private int radiusForParticles;
 
@@ -456,6 +459,7 @@ public class ConfigurableCustomItems implements Loadable {
         public ConfigurableSponge(){
             displayName = "SpongeBoy";
             lore = new ArrayList<>();
+            animationEnabled = true;
             radiusForParticles = 4;
             removeSpongeOnAnimationEnd = true;
             soundBoxIncrease = "CLICK:0.2:0.5";
@@ -509,6 +513,10 @@ public class ConfigurableCustomItems implements Loadable {
 
         public String getBreakTryMessage() {
             return breakTryMessage;
+        }
+
+        public boolean isAnimationEnabled() {
+            return animationEnabled;
         }
     }
 
@@ -684,6 +692,9 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class KnockBack implements Loadable{
 
+        @LoadableEntry(key = "enabled")
+        private boolean enabled;
+
         @LoadableEntry(key = "radius-entities")
         private int radiusEntities;
 
@@ -697,6 +708,7 @@ public class ConfigurableCustomItems implements Loadable {
         private double horizontalForce;
 
         protected KnockBack(){
+            enabled = true;
             radiusEntities = 3;
             distanceModifier = 16;
             heightForce = 1.5;
@@ -732,6 +744,10 @@ public class ConfigurableCustomItems implements Loadable {
 
         public int getRadiusEntities() {
             return radiusEntities;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
         }
     }
 

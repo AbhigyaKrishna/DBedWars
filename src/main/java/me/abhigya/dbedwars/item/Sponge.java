@@ -5,7 +5,7 @@ import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.item.PluginActionItem;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import me.abhigya.dbedwars.task.SpongeAnimationTaskNoConfig;
+import me.abhigya.dbedwars.task.SpongeAnimationTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class Sponge extends PluginActionItem{
 
     private final DBedwars plugin;
-    public final ConfigurableCustomItems.ConfigurableSponge cfgSponge;
+    private final ConfigurableCustomItems.ConfigurableSponge cfgSponge;
     private final FixedMetadataValue spongeMeta = new FixedMetadataValue(DBedwars.getInstance(),true);
 
     public Sponge(DBedwars plugin) {
@@ -36,14 +36,15 @@ public class Sponge extends PluginActionItem{
 
     public void onSpongePlace(BlockPlaceEvent event){
         event.getBlock().setMetadata("isBedwarsSponge",spongeMeta);
-        plugin.getThreadHandler().addAsyncWork(new SpongeAnimationTaskNoConfig(
-                plugin,
-                event.getBlock(),
-                cfgSponge.getRadiusForParticles(),
-                cfgSponge.shouldRemoveSpongeOnAnimationEnd(),
-                cfgSponge.getSoundBoxIncrease(),
-                cfgSponge.getSoundOnAnimationEnd()
-                ));
+        if (cfgSponge.isAnimationEnabled())
+            plugin.getThreadHandler().addAsyncWork(new SpongeAnimationTask(
+                    plugin,
+                    event.getBlock(),
+                    cfgSponge.getRadiusForParticles(),
+                    cfgSponge.shouldRemoveSpongeOnAnimationEnd(),
+                    cfgSponge.getSoundBoxIncrease(),
+                    cfgSponge.getSoundOnAnimationEnd()
+                    ));
     }
 
     public void onSpongeBreak(BlockBreakEvent event){

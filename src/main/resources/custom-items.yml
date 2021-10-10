@@ -10,6 +10,7 @@ fireball:
     - 'SLOW:0:20'
   explosion-fire: true
   knockback:
+    enabled: true
     radius-entities: 3
     distance-modifier: 16
     height-force: 1.5
@@ -22,6 +23,7 @@ tnt:
   better-tnt-ignite-animation: true
   fuse-ticks: 52
   knockback:
+    enabled: true
     radius-entities: 4
     distance-modifier: 16
     height-force: 1.5
@@ -47,6 +49,7 @@ water-bucket:
 sponge:
   name: 'Sponge'
   lore: []
+  animation-enabled: true
   radius-for-particles: 4
   remove-on-animation-end: true
   allow-breaking: false

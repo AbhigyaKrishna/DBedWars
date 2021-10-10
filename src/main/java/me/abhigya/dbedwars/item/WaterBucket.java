@@ -13,10 +13,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 
 public class WaterBucket extends PluginActionItem{
+
+    private final boolean removeOnUse;
+
     public WaterBucket(DBedwars plugin) {
         super(plugin, StringUtils.translateAlternateColorCodes(plugin.getConfigHandler().getCustomItems().getWaterBucket().getDisplayName()),
                 ((DBedwars.getInstance().getConfigHandler().getCustomItems().getWaterBucket().getLore() == null ? new ArrayList<>() : DBedwars.getInstance().getConfigHandler().getCustomItems().getWaterBucket().getLore())),
                 XMaterial.WATER_BUCKET.parseMaterial());
+        this.removeOnUse = plugin.getConfigHandler().getCustomItems().getWaterBucket().shouldRemoveOnUse();
     }
 
     @Override
@@ -24,9 +28,8 @@ public class WaterBucket extends PluginActionItem{
     }
 
     public void onWaterBucketUse(PlayerBucketEmptyEvent event){
-        if (!event.getItemStack().isSimilar(this.toItemStack()))
-            return;
-        event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(),new ItemStack(Material.AIR));
+        if (removeOnUse)
+            event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(),new ItemStack(Material.AIR));
     }
 
 }
