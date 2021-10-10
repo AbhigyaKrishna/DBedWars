@@ -4,6 +4,7 @@ import me.Abhigya.core.database.sql.hikaricp.HikariCP;
 import me.Abhigya.core.database.sql.hikaricp.HikariClientBuilder;
 import me.Abhigya.core.util.json.Json;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.cache.DataCache;
 import me.abhigya.dbedwars.utils.JSONBuilder;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,7 @@ public class MySQL extends DatabaseBridge {
     @Override
     public Json getData( String key, Object gate, String database ) {
         try {
-            for ( Map.Entry< String, List< String > > entry : DATABASE_NAME_COLUMNS.entrySet( ) ) {
+            for ( Map.Entry< String, Map.Entry< List< String >, Class< ? extends DataCache > > > entry : DATABASE_NAME_COLUMNS.entrySet( ) ) {
                 if ( database.equals( entry.getKey( ) ) ) {
                     PreparedStatement ps = this.db.getConnection( ).prepareStatement( "SELECT * FROM " + database + " WHERE " + key + " = ?" );
                     ps.setObject( 1, gate );
@@ -60,7 +62,7 @@ public class MySQL extends DatabaseBridge {
                     while ( rs.next( ) ) {
                         found = true;
                         JSONBuilder inner = new JSONBuilder( );
-                        for ( String col : entry.getValue( ) ) {
+                        for ( String col : entry.getValue( ).getKey( ) ) {
                             Object object = rs.getObject( col );
                             inner.add( col, object );
                         }
@@ -80,6 +82,37 @@ public class MySQL extends DatabaseBridge {
         }
 
         return null;
+    }
+
+    @Override
+    public List< DataCache > getAsDataCache( String key, Object gate, String database ) {
+        List< DataCache > caches = new ArrayList<>( );
+        try {
+            for ( Map.Entry< String, Map.Entry< List< String >, Class< ? extends DataCache > > > entry : DATABASE_NAME_COLUMNS.entrySet( ) ) {
+                if ( database.equals( entry.getKey( ) ) ) {
+                    PreparedStatement ps = this.db.getConnection( ).prepareStatement( "SELECT * FROM " + database + " WHERE " + key + " = ?" );
+                    ps.setObject( 1, gate );
+                    ResultSet rs = this.db.query( ps );
+                    while ( rs.next( ) ) {
+                        JSONBuilder builder = new JSONBuilder( );
+                        for ( String col : entry.getValue( ).getKey( ) ) {
+                            Object object = rs.getObject( col );
+                            builder.add( col, object );
+                        }
+
+                        caches.add( this.getGson( ).fromJson( builder.getRawJson( ).toString( ), entry.getValue( ).getValue( ) ) );
+                    }
+
+                    rs.close( );
+                    ps.close( );
+                    break;
+                }
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace( );
+        }
+
+        return caches;
     }
 
 }

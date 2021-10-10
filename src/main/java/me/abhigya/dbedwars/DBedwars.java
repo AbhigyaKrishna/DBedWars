@@ -11,7 +11,6 @@ import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.version.CoreVersion;
-import me.abhigya.dbedwars.addon.AddonManager;
 import me.abhigya.dbedwars.commands.HoloTestCommand;
 import me.abhigya.dbedwars.commands.Setup;
 import me.abhigya.dbedwars.commands.Start;
@@ -40,7 +39,6 @@ public final class DBedwars extends PluginAdapter {
 
     private String alias;
     private Version serverVersion;
-    private AddonManager addonManager;
     private GameManager gameManager;
     private List< Listener > listeners;
 
@@ -73,15 +71,12 @@ public final class DBedwars extends PluginAdapter {
         Lang.setLangFile( PluginFiles.ENGLISH.getFile( ) );
 
         this.alias = Lang.PREFIX.toString( );
-        this.addonManager = new AddonManager( this );
-        this.addonManager.loadAddon( );
     }
 
     @Override
     protected boolean setUp( ) {
         this.serverVersion = Version.getServerVersion( );
         this.nmsAdaptor = this.registerNMSAdaptor( );
-        this.addonManager.enableAddon( );
         this.hologramFactory = new HologramFactory( this );
 
         this.mainWorld = ServerPropertiesUtils.getStringProperty( "level-name", "world" );
@@ -248,7 +243,7 @@ public final class DBedwars extends PluginAdapter {
     }
 
     public CustomItemHandler getCustomItemHandler( ) {
-        return customItemHandler;
+        return this.customItemHandler;
     }
 
     public GuiHandler getGuiHandler( ) {
@@ -264,15 +259,15 @@ public final class DBedwars extends PluginAdapter {
     }
 
     public NMSAdaptor getNMSAdaptor( ) {
-        return nmsAdaptor;
+        return this.nmsAdaptor;
     }
 
     public NPCPool getNpcHandler( ) {
-        return npcHandler;
+        return this.npcHandler;
     }
 
     public HologramFactory getHologramFactory( ) {
-        return hologramFactory;
+        return this.hologramFactory;
     }
 
     private NMSAdaptor registerNMSAdaptor( ) {
