@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.task;
 
 import me.Abhigya.core.particle.particlelib.ParticleBuilder;
+import me.Abhigya.core.util.itemstack.wool.WoolItemStack;
 import me.Abhigya.core.util.tasks.Workload;
 import me.Abhigya.core.util.xseries.XBlock;
 import me.Abhigya.core.util.xseries.XMaterial;
@@ -36,7 +37,7 @@ public class PopupTowerWorkload implements Workload {
         this.sound = soundVP;
         this.particle = particleWithoutLocation;
         this.chest = chest;
-        this.color = DyeColor.getByData(player.getTeam().getColor().getData());
+        this.color = player.getTeam().getColor().getDyeColor();
         this.blocksPerTick = blocksPerTick;
         this.face = (((Directional) chest.getState().getData()).getFacing().getOppositeFace());
         this.arena = player.getArena();

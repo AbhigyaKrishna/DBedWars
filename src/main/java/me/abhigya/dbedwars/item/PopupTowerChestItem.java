@@ -33,7 +33,7 @@ public class PopupTowerChestItem extends PluginActionItem {
 
 
     public void onChestPlace(BlockPlaceEvent event, ArenaPlayer player){
-        event.getPlayer().sendMessage("YET TO BE FIXED");
+        event.getPlayer().sendMessage("YET TO BE FIXED FOR PAPER");
         if (!XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).isPresent())
             return;
         plugin.getThreadHandler().addSyncWork(new PopupTowerWorkload(XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).get(),

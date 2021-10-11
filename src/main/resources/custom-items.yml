@@ -33,7 +33,7 @@ popup-tower:
   lore: []
   sound: ''
   particle: ''
-  main-block: 'WOOL:%team%'
+  main-block: 'WOOL'
 bridge-egg:
   name: ' Bridge Egg'
   lore: []
