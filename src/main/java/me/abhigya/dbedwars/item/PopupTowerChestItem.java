@@ -40,7 +40,7 @@ public class PopupTowerChestItem extends PluginActionItem {
                 (cfgPopupTower.getSound() == null ? new SoundVP(XSound.ENTITY_CHICKEN_EGG,0,0) : cfgPopupTower.getSound().equals("") ? new SoundVP(XSound.ENTITY_CHICKEN_EGG,0,0) : SoundVP.valueOf(cfgPopupTower.getSound())),
                 new ParticleBuilder(ParticleEffect.CLOUD).setAmount(1).setSpeed(0.2F),
                 event.getBlockPlaced(),
-                player.getTeam().getColor(), 2));
+                player, 2));
         plugin.getThreadHandler().addSyncWork(() -> event.getBlock().setType(XMaterial.AIR.parseMaterial()));
     }
 

@@ -4,7 +4,8 @@ import me.Abhigya.core.particle.particlelib.ParticleBuilder;
 import me.Abhigya.core.util.tasks.Workload;
 import me.Abhigya.core.util.xseries.XBlock;
 import me.Abhigya.core.util.xseries.XMaterial;
-import me.abhigya.dbedwars.api.util.Color;
+import me.abhigya.dbedwars.api.game.Arena;
+import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.util.SoundVP;
 import me.abhigya.dbedwars.item.PopupTowerChestItem;
 import org.bukkit.DyeColor;
@@ -28,15 +29,17 @@ public class PopupTowerWorkload implements Workload {
     private final BlockFace face;
     private Block[] blocks;
     private final int blocksPerTick;
+    private final Arena arena;
 
-    public PopupTowerWorkload(XMaterial material, SoundVP soundVP, ParticleBuilder particleWithoutLocation, Block chest, Color color, int blocksPerTick) {
+    public PopupTowerWorkload(XMaterial material, SoundVP soundVP, ParticleBuilder particleWithoutLocation, Block chest, ArenaPlayer player, int blocksPerTick) {
         this.material = material;
         this.sound = soundVP;
         this.particle = particleWithoutLocation;
         this.chest = chest;
-        this.color = DyeColor.getByData(color.getData());
+        this.color = DyeColor.getByData(player.getTeam().getColor().getData());
         this.blocksPerTick = blocksPerTick;
         this.face = (((Directional) chest.getState().getData()).getFacing().getOppositeFace());
+        this.arena = player.getArena();
         initBlockMap();
     }
 
@@ -69,7 +72,7 @@ public class PopupTowerWorkload implements Workload {
                 Block block = blocks[t * blocksPerTick + i];
                 Material material = blockMap.get(block);
                 if (block.isEmpty()) {
-                    block.setType(blockMap.get(block));
+                    arena.setBlock(block,blockMap.get(block));
                     if (block.getState().getData() instanceof Colorable) {
                         XBlock.setColor(block, color);
                     }
