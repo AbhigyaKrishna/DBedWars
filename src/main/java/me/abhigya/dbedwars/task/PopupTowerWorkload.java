@@ -34,7 +34,6 @@ public class PopupTowerWorkload implements Workload {
         this.sound = soundVP;
         this.particle = particleWithoutLocation;
         this.chest = chest;
-        System.out.println(color.getData());
         this.color = DyeColor.getByData(color.getData());
         this.blocksPerTick = blocksPerTick;
         this.face = (((Directional) chest.getState().getData()).getFacing().getOppositeFace());
