@@ -127,6 +127,10 @@ public class GameListener extends PluginHandler {
                 .isThis(player.getPlayer().getItemInHand())){
             ((Sponge) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "SPONGE" )).onSpongePlace(event);
         }
+        if (block.getType() == XMaterial.TRAPPED_CHEST.parseMaterial() && ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "POPUP_TOWER" )
+                .isThis(player.getPlayer().getItemInHand())){
+            ((PopupTowerChestItem) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem( "POPUP_TOWER" )).onChestPlace(event, player);
+        }
     }
 
     @EventHandler

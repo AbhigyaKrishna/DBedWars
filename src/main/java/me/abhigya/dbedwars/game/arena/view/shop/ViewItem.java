@@ -434,6 +434,8 @@ public class ViewItem implements me.abhigya.dbedwars.api.game.view.ViewItem {
                     } else if ( atrItem.getValue( ).getCustomItem( ) != null ) {
                         try {
                             PluginActionItem item = DBedwars.getInstance().getCustomItemHandler().getItem( atrItem.getValue( ).getCustomItem( ) );
+                            if (item == null)
+                                continue;
                             this.keyEntry.put( "item-" + atrItem.getKey( ), item.toBwItemStack( ) );
                         } catch ( IllegalArgumentException ignored ) {
                         }

@@ -209,7 +209,7 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpListeners( ) {
         this.listeners = new ArrayList<>( );
-        this.listeners.add( new ChestListener( ) );
+        /*this.listeners.add( new ChestListener( ) );*/
         this.listeners.add( new BlastProofGlassListener( ) );
         this.listeners.forEach( l -> this.getServer( ).getPluginManager( ).registerEvents( l, this ) );
         return true;
@@ -315,6 +315,7 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler.registerItem( "SPONGE", new Sponge( this ) );
         this.customItemHandler.registerItem( "DREAM_DEFENDER", new DreamDefenderSpawnEgg( this ) );
         this.customItemHandler.registerItem( "BED_BUG", new BedBugSnowball( this ) );
+        this.customItemHandler.registerItem("POPUP_TOWER", new PopupTowerChestItem(this));
 //        this.customItemHandler.registerItem( "POPUP_TOWER", new PopupTowerChest( this ) );
     }
 
