@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
-public class ThreadHandler {
+public class ThreadHandler implements me.abhigya.dbedwars.api.handler.ThreadHandler {
 
     private final DBedwars plugin;
     private final WorkloadDistributor distributor;
@@ -103,10 +103,12 @@ public class ThreadHandler {
         return results;
     }
 
+    @Override
     public WorkloadThread[] getSyncThreads( ) {
         return syncThreads;
     }
 
+    @Override
     public WorkloadThread getLeastWorkSyncWorker( ) {
         WorkloadThread thread = null;
         for ( WorkloadThread t : syncThreads ) {
@@ -122,10 +124,12 @@ public class ThreadHandler {
         return thread;
     }
 
+    @Override
     public void addSyncWork( Workload work ) {
         this.getLeastWorkSyncWorker( ).add( work );
     }
 
+    @Override
     public void addSyncWork( Collection< Workload > work ) {
         WorkloadThread thread = this.getLeastWorkSyncWorker( );
         for ( Workload w : work ) {
@@ -133,10 +137,12 @@ public class ThreadHandler {
         }
     }
 
+    @Override
     public WorkloadThread[] getAsyncThreads( ) {
         return asyncThreads;
     }
 
+    @Override
     public WorkloadThread getLeastWorkAsyncWorker( ) {
         WorkloadThread thread = null;
         for ( WorkloadThread t : asyncThreads ) {
@@ -152,10 +158,12 @@ public class ThreadHandler {
         return thread;
     }
 
+    @Override
     public void addAsyncWork( Workload work ) {
         this.getLeastWorkAsyncWorker( ).add( work );
     }
 
+    @Override
     public void addAsyncWork( Collection< Workload > work ) {
         WorkloadThread thread = this.getLeastWorkAsyncWorker( );
         for ( Workload w : work ) {

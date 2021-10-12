@@ -15,24 +15,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings( "unchecked" )
 public class ArenaNameGui extends IAnvilMenu {
 
+    private final DBedwars plugin;
+
     public ArenaNameGui( DBedwars plugin ) {
-        super( plugin, "ARENA_NAME_SETUP", new AnvilMenu( new AnvilItem( StringUtils.translateAlternateColorCodes( "Enter name" ),
+        super( "ARENA_NAME_SETUP", new AnvilMenu( new AnvilItem( StringUtils.translateAlternateColorCodes( "Enter name" ),
                 XMaterial.PAPER.parseItem( ) ) {
             @Override
             public void onClick( AnvilItemClickAction anvilItemClickAction ) {
             }
         }, null ) );
 
+        this.plugin = plugin;
+
         this.menu.setOutputAction( action -> {
             if ( action.getClickedItem( ).getItemMeta( ) != null && action.getClickedItem( ).getItemMeta( ).hasDisplayName( ) ) {
                 String name = action.getClickedItem( ).getItemMeta( ).getDisplayName( );
 
-                if ( ArenaNameGui.this.getPlugin( ).getGameManager( ).containsArena( name ) ) {
+                if ( ArenaNameGui.this.plugin.getGameManager( ).containsArena( name ) ) {
                     action.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&cArena with this name already exist!" ) );
                 } else {
-                    Arena arena = ArenaNameGui.this.getPlugin( ).getGameManager( ).createArena( name );
+                    Arena arena = ArenaNameGui.this.plugin.getGameManager( ).createArena( name );
                     arena.saveData( false );
 
                     Map< String, Object > info = new HashMap<>( );
@@ -40,7 +45,7 @@ public class ArenaNameGui extends IAnvilMenu {
                     info.put( "type", "initial" );
 
                     ArenaNameGui.this.menu.close( action.getPlayer( ) );
-                    ArenaNameGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "MAP_SETUP" ).open( null, info, action.getPlayer( ) );
+                    ArenaNameGui.this.plugin.getGuiHandler( ).getGui( "MAP_SETUP" ).open( null, info, action.getPlayer( ) );
                 }
             } else {
                 action.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&cAn error occurred while getting name!" ) );

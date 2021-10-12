@@ -17,11 +17,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings( "unchecked" )
 public class SetupTypeGui extends IMenu< ItemMenu > {
 
+    private final DBedwars plugin;
+
     public SetupTypeGui( DBedwars plugin ) {
-        super( plugin, "TYPE_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&3Choose type of setup" ),
+        super( "TYPE_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&3Choose type of setup" ),
                 ItemMenuSize.THREE_LINE, null ) );
+        this.plugin = plugin;
 
         this.menu.fillToAll( VOID_ITEM );
     }

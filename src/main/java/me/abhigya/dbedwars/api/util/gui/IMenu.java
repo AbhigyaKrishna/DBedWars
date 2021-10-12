@@ -8,7 +8,7 @@ import me.Abhigya.core.menu.inventory.item.voidaction.VoidActionItem;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.itemstack.ItemStackUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
-import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.DBedWarsAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,29 +26,19 @@ public abstract class IMenu< T extends ItemMenu > {
             XMaterial.BLACK_STAINED_GLASS_PANE.parseItem( ) );
     protected static final BackActionItem BACK = new BackActionItem( StringUtils.translateAlternateColorCodes( "&9Back" ), XMaterial.ARROW.parseItem( ), new String[0] );
 
-    private final DBedwars plugin;
-
     private final String identifier;
     protected T menu;
 
-    protected IMenu( DBedwars plugin, String identifier, T menu ) {
-        this.plugin = plugin;
+    protected IMenu( String identifier, T menu ) {
         this.identifier = identifier;
         this.menu = menu;
-        this.menu.registerListener( plugin );
     }
 
     protected abstract void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info );
 
     public void open( @Nullable ItemClickAction action, @Nullable Map< String, Object > info, Player player ) {
-        this.getPlugin( ).getThreadHandler( ).addAsyncWork( ( ) -> {
-            this.setUpMenu( player, action, info );
-            this.menu.open( player );
-        } );
-    }
-
-    public DBedwars getPlugin( ) {
-        return plugin;
+        this.setUpMenu( player, action, info );
+        this.menu.open( player );
     }
 
     public T getMenu( ) {

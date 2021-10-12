@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CustomItemHandler extends PluginHandler {
+public class CustomItemHandler extends PluginHandler implements me.abhigya.dbedwars.api.handler.CustomItemHandler {
 
     private final Map< String, PluginActionItem > items;
 
@@ -23,6 +23,7 @@ public class CustomItemHandler extends PluginHandler {
         return false;
     }
 
+    @Override
     public synchronized void registerItem( String id, PluginActionItem item ) {
         if ( items.containsKey( id ) )
             throw new IllegalStateException( "Custom item with id: `" + id + "` is already present!" );
@@ -31,6 +32,7 @@ public class CustomItemHandler extends PluginHandler {
         ActionItemHandler.register( item );
     }
 
+    @Override
     public synchronized void unregisterItem( String id ) {
         PluginActionItem item = this.items.getOrDefault( id, null );
         if ( item != null ) {
@@ -39,6 +41,7 @@ public class CustomItemHandler extends PluginHandler {
         }
     }
 
+    @Override
     public synchronized PluginActionItem getItem( String id ) {
         return this.items.getOrDefault( id, null );
     }

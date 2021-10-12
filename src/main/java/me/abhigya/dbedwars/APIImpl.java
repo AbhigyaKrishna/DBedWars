@@ -3,11 +3,7 @@ package me.abhigya.dbedwars;
 import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.server.Version;
 import me.abhigya.dbedwars.api.DBedWarsAPI;
-import me.abhigya.dbedwars.game.GameManager;
-import me.abhigya.dbedwars.handler.CustomItemHandler;
-import me.abhigya.dbedwars.handler.GuiHandler;
-import me.abhigya.dbedwars.handler.ThreadHandler;
-import me.abhigya.dbedwars.handler.WorldHandler;
+import me.abhigya.dbedwars.api.handler.*;
 
 public final class APIImpl extends DBedWarsAPI {
 
@@ -33,8 +29,8 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public WorldHandler getGeneratorHandler( ) {
-        return this.plugin.getGeneratorHandler( );
+    public WorldAdaptor getGeneratorHandler( ) {
+        return this.plugin.getGeneratorHandler( ).getWorldAdaptor( );
     }
 
     @Override

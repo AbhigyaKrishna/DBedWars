@@ -26,11 +26,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings( "unchecked" )
 public class TeamSetupGui extends IMenu< ItemMenu > {
 
+    private final DBedwars plugin;
+
     protected TeamSetupGui( DBedwars plugin ) {
-        super( plugin, "TEAM_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&eTeam Setup" ),
+        super( "TEAM_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&eTeam Setup" ),
                 ItemMenuSize.FOUR_LINE, null ) );
+        this.plugin = plugin;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class TeamSetupGui extends IMenu< ItemMenu > {
         this.menu.setItem( 4, new VoidActionItem( icon.getItemMeta( ).getDisplayName( ), icon ) );
 
         ActionItem bed = new ActionItem( StringUtils.translateAlternateColorCodes( "&eSet bed location" ),
-                ( this.getPlugin( ).getServerVersion( ).isOlderEquals( Version.v1_8_R3 ) ) ? new ItemStack( Material.valueOf( "BED" ) ) : XMaterial.RED_BED.parseItem( ) );
+                ( this.plugin.getServerVersion( ).isOlderEquals( Version.v1_8_R3 ) ) ? new ItemStack( Material.valueOf( "BED" ) ) : XMaterial.RED_BED.parseItem( ) );
         bed.addAction( new ItemAction( ) {
             @Override
             public ItemActionPriority getPriority( ) {
@@ -91,7 +95,7 @@ public class TeamSetupGui extends IMenu< ItemMenu > {
                 info.put( "type", info.get( "type" ) );
                 info.put( "team-spawner", true );
                 info.put( "team", team );
-                TeamSetupGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "SPAWNER_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
+                TeamSetupGui.this.plugin.getGuiHandler( ).getGui( "SPAWNER_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
             }
         } );
 

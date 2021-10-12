@@ -21,7 +21,7 @@ public class WorldHandler {
     }
 
     public WorldAdaptor getWorldAdaptor( ) {
-        return worldAdaptor;
+        return this.worldAdaptor;
     }
 
 }

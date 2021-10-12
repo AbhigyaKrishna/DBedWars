@@ -27,20 +27,20 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+@SuppressWarnings( "unchecked" )
 public class SimpleSetupGui extends IMenu< ItemMenu > {
 
+    private final DBedwars plugin;
+
     public SimpleSetupGui( DBedwars plugin ) {
-        super( plugin, "SIMPLE_SETUP", new ItemMenu( "Basic Setup", ItemMenuSize.SIX_LINE, null ) );
+        super( "SIMPLE_SETUP", new ItemMenu( "Basic Setup", ItemMenuSize.SIX_LINE, null ) );
+        this.plugin = plugin;
     }
 
     @Override
     protected void setUpMenu( Player player, @Nullable ItemClickAction action, @Nullable Map< String, Object > info ) {
         this.menu.fillToAll( VOID_ITEM );
         Arena arena = (Arena) info.get( "arena" );
-        if ( arena == null )
-            System.out.println( "arena is null" );
-        else if ( arena.getSettings( ) == null )
-            System.out.println( "settings is null" );
         this.menu.setTitle( StringUtils.translateAlternateColorCodes( "&eBasic Setup &7(" + arena.getSettings( ).getName( ) + ")" ) );
         if ( action != null ) {
             this.menu.setParent( action.getMenu( ) );
@@ -96,12 +96,12 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
                     itemClickAction.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&aLobby location set!" ) );
                 } else if ( itemClickAction.getClickType( ).equals( ClickType.RIGHT ) ) {
                     if ( arena.getSettings( ).hasLobby( ) ) {
-                        if ( SimpleSetupGui.this.getPlugin( ).getServer( ).getWorld( arena.getSettings( ).getName( ) ) == null ) {
-                            if ( SimpleSetupGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).saveExist( arena.getSettings( ).getName( ) ) ) {
-                                SimpleSetupGui.this.getPlugin( ).getThreadHandler( ).getLeastWorkAsyncWorker( ).add( ( ) -> {
+                        if ( SimpleSetupGui.this.plugin.getServer( ).getWorld( arena.getSettings( ).getName( ) ) == null ) {
+                            if ( SimpleSetupGui.this.plugin.getGeneratorHandler( ).getWorldAdaptor( ).saveExist( arena.getSettings( ).getName( ) ) ) {
+                                SimpleSetupGui.this.plugin.getThreadHandler( ).getLeastWorkAsyncWorker( ).add( ( ) -> {
                                     World world = arena.loadWorld( );
                                     arena.setWorld( world );
-                                    SimpleSetupGui.this.getPlugin( ).getThreadHandler( ).addSyncWork( ( ) ->
+                                    SimpleSetupGui.this.plugin.getThreadHandler( ).addSyncWork( ( ) ->
                                             itemClickAction.getPlayer( ).teleport( arena.getSettings( ).getLobby( ).toBukkit( world ) ) );
                                 } );
                             } else {
@@ -129,7 +129,7 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
                 info.put( "arena", arena );
                 info.put( "type", "simple" );
                 info.put( "team-spawner", false );
-                SimpleSetupGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "SPAWNER_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
+                SimpleSetupGui.this.plugin.getGuiHandler( ).getGui( "SPAWNER_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
             }
         } );
 
@@ -145,7 +145,7 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
 
             @Override
             public void onClick( ItemClickAction itemClickAction ) {
-                SimpleSetupGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "TEAM_SIZE_SETUP" ).open( itemClickAction,
+                SimpleSetupGui.this.plugin.getGuiHandler( ).getGui( "TEAM_SIZE_SETUP" ).open( itemClickAction,
                         Collections.singletonMap( "arena", arena ), itemClickAction.getPlayer( ) );
             }
         } );
@@ -162,26 +162,26 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
             @Override
             public void onClick( ItemClickAction itemClickAction ) {
                 String world = itemClickAction.getPlayer( ).getWorld( ).getName( );
-                if ( world.equals( SimpleSetupGui.this.getPlugin( ).getMainWorld( ) ) || world.equals( SimpleSetupGui.this.getPlugin( ).getMainWorld( ) + "_nether" ) ||
-                        world.equals( SimpleSetupGui.this.getPlugin( ).getMainWorld( ) + "_the_end" ) ) {
+                if ( world.equals( SimpleSetupGui.this.plugin.getMainWorld( ) ) || world.equals( SimpleSetupGui.this.plugin.getMainWorld( ) + "_nether" ) ||
+                        world.equals( SimpleSetupGui.this.plugin.getMainWorld( ) + "_the_end" ) ) {
                     itemClickAction.getPlayer( ).sendMessage( StringUtils.translateAlternateColorCodes( "&cCannot set main world to arena!" ) );
                     return;
                 }
 
                 CompletableFuture< Boolean > future = new CompletableFuture<>( );
-                SimpleSetupGui.this.getPlugin( ).getThreadHandler( ).getLeastWorkSyncWorker( ).add( ( ) -> {
+                SimpleSetupGui.this.plugin.getThreadHandler( ).getLeastWorkSyncWorker( ).add( ( ) -> {
                     itemClickAction.getPlayer( ).getWorld( ).getPlayers( ).forEach( p -> p.teleport( SimpleSetupGui.this
-                            .getPlugin( ).getServer( ).getWorld( SimpleSetupGui.this.getPlugin( ).getMainWorld( ) ).getSpawnLocation( ) ) );
-                    SimpleSetupGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).unloadWorld( world, true );
+                            .plugin.getServer( ).getWorld( SimpleSetupGui.this.plugin.getMainWorld( ) ).getSpawnLocation( ) ) );
+                    SimpleSetupGui.this.plugin.getGeneratorHandler( ).getWorldAdaptor( ).unloadWorld( world, true );
                     future.complete( true );
                 } );
-                SimpleSetupGui.this.getPlugin( ).getThreadHandler( ).getLeastWorkAsyncWorker( ).add( ( ) -> {
+                SimpleSetupGui.this.plugin.getThreadHandler( ).getLeastWorkAsyncWorker( ).add( ( ) -> {
                     try {
                         future.get( );
                     } catch ( InterruptedException | ExecutionException ignored ) {
                     }
                     if ( arena.getWorld( ) != null )
-                        SimpleSetupGui.this.getPlugin( ).getGeneratorHandler( ).getWorldAdaptor( ).unloadWorld( arena.getWorld( ).getName( ), false );
+                        SimpleSetupGui.this.plugin.getGeneratorHandler( ).getWorldAdaptor( ).unloadWorld( arena.getWorld( ).getName( ), false );
                     arena.saveWorld( world, true );
                 } );
             }
@@ -202,7 +202,7 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
                 Map< String, Object > info = new HashMap<>( );
                 info.put( "arena", arena );
                 info.put( "type", "final" );
-                SimpleSetupGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "MAP_SETUP" ).open( itemClickAction, info,
+                SimpleSetupGui.this.plugin.getGuiHandler( ).getGui( "MAP_SETUP" ).open( itemClickAction, info,
                         itemClickAction.getPlayer( ) );
             }
         } );
@@ -235,7 +235,7 @@ public class SimpleSetupGui extends IMenu< ItemMenu > {
                             info.put( "arena", arena );
                             info.put( "type", "simple" );
                             info.put( "team", arena.getSettings( ).getAvailableTeams( ).stream( ).filter( t -> t.getColor( ).equals( colors[finalI1] ) ).findFirst( ).get( ) );
-                            SimpleSetupGui.this.getPlugin( ).getGuiHandler( ).getGuis( ).get( "TEAM_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
+                            SimpleSetupGui.this.plugin.getGuiHandler( ).getGui( "TEAM_SETUP" ).open( itemClickAction, info, itemClickAction.getPlayer( ) );
                         } else if ( itemClickAction.getClickType( ).equals( ClickType.RIGHT ) ) {
                             arena.getSettings( ).disableTeam( colors[finalI] );
                         }

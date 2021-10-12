@@ -1,19 +1,21 @@
 package me.abhigya.dbedwars.handler;
 
+import me.Abhigya.core.menu.inventory.ItemMenu;
 import me.Abhigya.core.util.reflection.general.ConstructorReflection;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.gui.IAnvilMenu;
 import me.abhigya.dbedwars.api.util.gui.IMenu;
+import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings( "rawtypes" )
-public class GuiHandler {
+public class GuiHandler implements me.abhigya.dbedwars.api.handler.GuiHandler {
 
     private static final String GUI_PACKAGE = "me.abhigya.dbedwars.guis";
 
@@ -23,8 +25,8 @@ public class GuiHandler {
 
     public GuiHandler( DBedwars plugin ) {
         this.plugin = plugin;
-        this.guis = new HashMap<>( );
-        this.anvilGuis = new HashMap<>( );
+        this.guis = new ConcurrentHashMap<>( );
+        this.anvilGuis = new ConcurrentHashMap<>( );
     }
 
     public void loadMenus( ) {
@@ -33,7 +35,7 @@ public class GuiHandler {
             Set< Class< ? extends IMenu > > classes = ref.getSubTypesOf( IMenu.class );
             for ( Class< ? extends IMenu > clazz : classes ) {
                 IMenu menu = ConstructorReflection.newInstance( clazz, new Class< ? >[]{ DBedwars.class }, this.plugin );
-                guis.put( menu.getIdentifier( ), menu );
+                this.registerGui( menu.getIdentifier( ), menu );
             }
 
         } catch ( NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e ) {
@@ -47,19 +49,59 @@ public class GuiHandler {
             Set< Class< ? extends IAnvilMenu > > classes = ref.getSubTypesOf( IAnvilMenu.class );
             for ( Class< ? extends IAnvilMenu > clazz : classes ) {
                 IAnvilMenu menu = ConstructorReflection.newInstance( clazz, new Class< ? >[]{ DBedwars.class }, this.plugin );
-                anvilGuis.put( menu.getIdentifier( ), menu );
+                this.registerAnvilGui( menu.getIdentifier( ), menu );
             }
         } catch ( InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e ) {
             e.printStackTrace( );
         }
     }
 
-    public Map< String, IMenu > getGuis( ) {
-        return Collections.unmodifiableMap( guis );
+    @Override
+    public void registerGui( String name, IMenu< ? extends ItemMenu > menu ) {
+        this.guis.put( name, menu );
+        menu.getMenu( ).registerListener( this.plugin );
     }
 
+    @Override
+    public void unRegisterGui( String name ) {
+        IMenu menu = this.guis.remove( name );
+        if ( menu != null )
+            menu.getMenu( ).registerListener( this.plugin );
+    }
+
+    @Nullable
+    @Override
+    public IMenu getGui( String name ) {
+        return this.guis.getOrDefault( name, null );
+    }
+
+    @Override
+    public void registerAnvilGui( String name, IAnvilMenu menu ) {
+        this.anvilGuis.put( name, menu );
+        menu.getMenu( ).registerListener( this.plugin );
+    }
+
+    @Override
+    public void unRegisterAnvilGui( String name ) {
+        IAnvilMenu menu = this.anvilGuis.remove( name );
+        if ( menu != null )
+            menu.getMenu( ).registerListener( this.plugin );
+    }
+
+    @Nullable
+    @Override
+    public IAnvilMenu getAnvilGui( String name ) {
+        return this.anvilGuis.getOrDefault( name, null );
+    }
+
+    @Override
+    public Map< String, IMenu > getGuis( ) {
+        return Collections.unmodifiableMap( this.guis );
+    }
+
+    @Override
     public Map< String, IAnvilMenu > getAnvilGuis( ) {
-        return anvilGuis;
+        return Collections.unmodifiableMap( this.anvilGuis );
     }
 
 }

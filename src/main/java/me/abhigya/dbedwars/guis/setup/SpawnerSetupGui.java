@@ -22,11 +22,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings( "unchecked" )
 public class SpawnerSetupGui extends IMenu< BookItemMenu > {
 
+    private final DBedwars plugin;
+
     protected SpawnerSetupGui( DBedwars plugin ) {
-        super( plugin, "SPAWNER_SETUP", new BookItemMenu( StringUtils.translateAlternateColorCodes( "&eSpawner Setup" ),
+        super( "SPAWNER_SETUP", new BookItemMenu( StringUtils.translateAlternateColorCodes( "&eSpawner Setup" ),
                 ItemMenuSize.THREE_LINE, ItemMenuSize.ONE_LINE, null ) );
+        this.plugin = plugin;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class SpawnerSetupGui extends IMenu< BookItemMenu > {
         this.menu.clear( );
         Arena arena = (Arena) info.get( "arena" );
         boolean teamSpawner = (boolean) info.get( "team-spawner" );
-        Set< DropType > dropTypes = this.getPlugin( ).getGameManager( ).getDropTypes( );
+        Set< DropType > dropTypes = this.plugin.getGameManager( ).getDropTypes( );
         this.menu.setParent( action.getMenu( ) );
 
         Item bar = new VoidActionItem( StringUtils.translateAlternateColorCodes( "&7" ), XMaterial.WHITE_STAINED_GLASS_PANE.parseItem( ) );

@@ -14,10 +14,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings( "unchecked" )
 public class ShopGui extends IMenu< ItemMenu > {
 
+    private final DBedwars plugin;
+
     public ShopGui( DBedwars plugin ) {
-        super( plugin, "SHOP", new ItemMenu( "Shop", ItemMenuSize.SIX_LINE, null ) );
+        super( "SHOP", new ItemMenu( "Shop", ItemMenuSize.SIX_LINE, null ) );
+        this.plugin = plugin;
     }
 
     @Override

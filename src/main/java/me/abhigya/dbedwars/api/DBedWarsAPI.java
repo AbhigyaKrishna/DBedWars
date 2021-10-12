@@ -2,11 +2,7 @@ package me.abhigya.dbedwars.api;
 
 import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.server.Version;
-import me.abhigya.dbedwars.game.GameManager;
-import me.abhigya.dbedwars.handler.CustomItemHandler;
-import me.abhigya.dbedwars.handler.GuiHandler;
-import me.abhigya.dbedwars.handler.ThreadHandler;
-import me.abhigya.dbedwars.handler.WorldHandler;
+import me.abhigya.dbedwars.api.handler.*;
 
 public abstract class DBedWarsAPI {
 
@@ -26,7 +22,7 @@ public abstract class DBedWarsAPI {
 
     public abstract GameManager getGameManager( );
 
-    public abstract WorldHandler getGeneratorHandler( );
+    public abstract WorldAdaptor getGeneratorHandler( );
 
     public abstract CustomItemHandler getCustomItemHandler( );
 

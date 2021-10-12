@@ -10,13 +10,12 @@ import me.abhigya.dbedwars.task.CountdownTask;
 
 import java.util.*;
 
-public class GameManager {
+public class GameManager implements me.abhigya.dbedwars.api.handler.GameManager {
 
     private final DBedwars plugin;
 
     private final Set< DropType > dropTypes;
     private final Map< String, Arena > arenas;
-    /*private List<PopupTowerBuilder> popupTowerBuilders = new ArrayList<>();*/
 
     public GameManager( DBedwars plugin ) {
         this.plugin = plugin;
@@ -37,6 +36,7 @@ public class GameManager {
         }
     }
 
+    @Override
     public Arena createArena( String name ) {
         Arena a = new me.abhigya.dbedwars.game.arena.Arena( this.plugin );
         this.arenas.put( name, a );
@@ -44,6 +44,7 @@ public class GameManager {
         return a;
     }
 
+    @Override
     public boolean containsArena( String name ) {
         return this.arenas.containsKey( name );
     }
@@ -60,19 +61,13 @@ public class GameManager {
         return Collections.unmodifiableSet( this.dropTypes );
     }
 
+    @Override
     public Map< String, Arena > getArenas( ) {
         return Collections.unmodifiableMap( this.arenas );
     }
 
+    @Override
     public Arena getArena( String name ) {
-        try {
-            return arenas.get( name );
-        } catch ( NullPointerException e ) {
-            return null;
-        }
+        return arenas.getOrDefault( name, null );
     }
-
-    /*public List<PopupTowerBuilder> getPopupTowerBuilders() {
-        return popupTowerBuilders;
-    }*/
 }

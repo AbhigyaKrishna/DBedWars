@@ -16,11 +16,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings( "unchecked" )
 public class TeamSizeGui extends IMenu< ItemMenu > {
 
+    private final DBedwars plugin;
+
     public TeamSizeGui( DBedwars plugin ) {
-        super( plugin, "TEAM_SIZE_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&7Select Number of Teams" ),
+        super( "TEAM_SIZE_SETUP", new ItemMenu( StringUtils.translateAlternateColorCodes( "&7Select Number of Teams" ),
                 ItemMenuSize.THREE_LINE, null ) );
+        this.plugin = plugin;
     }
 
     @Override
