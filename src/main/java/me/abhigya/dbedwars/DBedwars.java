@@ -11,6 +11,7 @@ import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.version.CoreVersion;
+import me.abhigya.dbedwars.api.DBedWarsAPI;
 import me.abhigya.dbedwars.commands.HoloTestCommand;
 import me.abhigya.dbedwars.commands.ImageParticleTestCommand;
 import me.abhigya.dbedwars.commands.Setup;
@@ -28,6 +29,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +81,8 @@ public final class DBedwars extends PluginAdapter {
         this.serverVersion = Version.getServerVersion( );
         this.nmsAdaptor = this.registerNMSAdaptor( );
         this.hologramFactory = new HologramFactory( this );
+
+        this.getServer( ).getServicesManager( ).register( DBedWarsAPI.class, new APIImpl( this ), this, ServicePriority.Normal );
 
         this.mainWorld = ServerPropertiesUtils.getStringProperty( "level-name", "world" );
 

@@ -106,6 +106,12 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+
+        <!-- PepeDevs -->
+        <repository>
+            <id>pepedevs</id>
+            <url>http://13.233.67.205:8080/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -120,11 +126,10 @@
 
         <!-- CoreAPI -->
         <dependency>
-            <groupId>me.abhigya</groupId>
-            <artifactId>coreapi</artifactId>
-            <version>1.2.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/CoreAPI.jar</systemPath>
+            <groupId>me.Abhigya</groupId>
+            <artifactId>CoreAPI</artifactId>
+            <version>1.2.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- MultiVerse Core -->
