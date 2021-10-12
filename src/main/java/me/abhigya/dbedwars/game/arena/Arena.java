@@ -2,6 +2,8 @@ package me.abhigya.dbedwars.game.arena;
 
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.math.collision.BoundingBox;
+import me.Abhigya.core.util.scheduler.SchedulerUtils;
+import me.Abhigya.core.util.tasks.Workload;
 import me.Abhigya.core.util.tasks.workload.FixedRateWorkload;
 import me.Abhigya.core.util.world.GameRuleDisableDaylightCycle;
 import me.Abhigya.core.util.world.GameRuleType;
@@ -19,12 +21,14 @@ import me.abhigya.dbedwars.api.util.KickReason;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
+import me.abhigya.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import me.abhigya.dbedwars.game.TeamAssigner;
 import me.abhigya.dbedwars.game.arena.view.shop.ShopView;
 import me.abhigya.dbedwars.listeners.ArenaListener;
 import me.abhigya.dbedwars.listeners.GameListener;
 import me.abhigya.dbedwars.task.WorldRegenerator;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
+import me.abhigya.dbedwars.utils.ScoreboardImpl;
 import me.abhigya.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.Validate;
@@ -55,6 +59,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
     private ArenaStatus status;
     private boolean enabled;
     private Instant startTime;
+    private ScoreboardImpl scoreboard;
     private ArenaListener arenaHandler;
     private GameListener gameHandler;
 
@@ -303,6 +308,18 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
             p.spawn( p.getTeam( ).getSpawn( ).toBukkit( this.world ) );
             ( (ShopView) p.getShopView( ) ).load( );
         } );
+
+        // TODO manage scoreboard
+        this.plugin.getThreadHandler().addSyncWork( new Workload( ) {
+            @Override
+            public void compute( ) {
+                Arena.this.scoreboard = new ScoreboardImpl( Arena.this.plugin, new ArrayList< ConfigurableScoreboard >( Arena.this.plugin.getConfigHandler().getScoreboards() ).get( 0 ) );
+                Arena.this.scoreboard.createScoreboard( );
+                Arena.this.players.forEach( p -> Arena.this.scoreboard.show( p.getPlayer( ) ) );
+                Arena.this.scoreboard.getHandle( ).update( );
+            }
+        } );
+
         this.teams.forEach( t -> t.getSpawners( ).entries( ).forEach( e ->
                 new me.abhigya.dbedwars.game.arena.Spawner( this.plugin, e.getKey( ), e.getValue( ).toBukkit( this.getWorld( ) ), this, t ).init( ) ) );
         this.settings.getDrops( ).entries( ).forEach( e ->

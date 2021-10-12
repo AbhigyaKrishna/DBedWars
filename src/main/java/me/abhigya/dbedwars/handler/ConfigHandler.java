@@ -17,6 +17,7 @@ public class ConfigHandler {
     private final Set< ConfigurableItemSpawner > dropTypes;
     private final Set< ConfigurableArena > arenas;
     private final Set< ConfigurableTrap > traps;
+    private final Set< ConfigurableScoreboard > scoreboards;
     private MainConfiguration mainConfiguration;
     private ConfigurableShop shop;
     private ConfigurableUpgrade upgrade;
@@ -27,6 +28,7 @@ public class ConfigHandler {
         this.dropTypes = new HashSet<>( );
         this.arenas = new HashSet<>( );
         this.traps = new HashSet<>( );
+        this.scoreboards = new HashSet<>( );
     }
 
     public void loadConfigurations( ) {
@@ -37,6 +39,7 @@ public class ConfigHandler {
         this.loadArena( );
         this.loadItemSpawners( );
         this.loadTraps( );
+        this.loadScoreBoards( );
         this.shop = new ConfigurableShop( );
         this.shop.load( YamlConfiguration.loadConfiguration( PluginFiles.SHOP.getFile( ) ) );
         this.upgrade = new ConfigurableUpgrade( );
@@ -76,6 +79,16 @@ public class ConfigHandler {
         }
     }
 
+    private void loadScoreBoards( ) {
+        File file = PluginFiles.SCOREBOARD.getFile( );
+        FileConfiguration config = YamlConfiguration.loadConfiguration( file );
+        for ( String key : config.getKeys( false ) ) {
+            ConfigurableScoreboard scoreboard = new ConfigurableScoreboard( key );
+            scoreboard.load( config.getConfigurationSection( key ) );
+            this.scoreboards.add( scoreboard );
+        }
+    }
+
     public MainConfiguration getMainConfiguration( ) {
         return this.mainConfiguration;
     }
@@ -90,6 +103,10 @@ public class ConfigHandler {
 
     public Set< ConfigurableTrap > getTraps( ) {
         return this.traps;
+    }
+
+    public Set< ConfigurableScoreboard > getScoreboards( ) {
+        return this.scoreboards;
     }
 
     public ConfigurableShop getShop( ) {

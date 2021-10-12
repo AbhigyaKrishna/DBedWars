@@ -10,7 +10,6 @@ import me.Abhigya.core.util.console.ConsoleUtils;
 import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
-import me.Abhigya.core.version.CoreVersion;
 import me.abhigya.dbedwars.api.DBedWarsAPI;
 import me.abhigya.dbedwars.commands.HoloTestCommand;
 import me.abhigya.dbedwars.commands.ImageParticleTestCommand;
@@ -93,13 +92,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     public void onDisable( ) {
-//        this.addonManager.disableAddon();
 //        this.threadHandler.destroyAllThreads();
-    }
-
-    @Override
-    public CoreVersion getRequiredCoreVersion( ) {
-        return CoreVersion.v1_2_1;
     }
 
     /**
@@ -320,7 +313,6 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler.registerItem( "DREAM_DEFENDER", new DreamDefenderSpawnEgg( this ) );
         this.customItemHandler.registerItem( "BED_BUG", new BedBugSnowball( this ) );
         this.customItemHandler.registerItem("POPUP_TOWER", new PopupTowerChestItem(this));
-//        this.customItemHandler.registerItem( "POPUP_TOWER", new PopupTowerChest( this ) );
     }
 
     @Override

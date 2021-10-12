@@ -30,6 +30,8 @@ public enum PluginFiles {
     CUSTOM_ITEMS( new File( PLUGIN_DATA_FOLDER.getFile( ), "custom-items.yml" ) ),
     SHOP( new File( PLUGIN_DATA_FOLDER.getFile( ), "shop.yml" ) ),
     UPGRADES( new File( PLUGIN_DATA_FOLDER.getFile( ), "upgrades.yml" ) ),
+    HOLOGRAM( new File( PLUGIN_DATA_FOLDER.getFile( ), "hologram.yml" ) ),
+    SCOREBOARD( new File( PLUGIN_DATA_FOLDER.getFile( ), "scoreboard.yml" ) ),
     ;
 
     private File file;
@@ -52,7 +54,7 @@ public enum PluginFiles {
     }
 
     public static PluginFiles[] getFiles( ) {
-        return new PluginFiles[]{ CONFIG, ITEM_SPAWNERS, TRAPS, SHOP, UPGRADES, CUSTOM_ITEMS };
+        return new PluginFiles[]{ CONFIG, ITEM_SPAWNERS, TRAPS, SHOP, UPGRADES, CUSTOM_ITEMS, HOLOGRAM, SCOREBOARD };
     }
 
     public File getFile( ) {
