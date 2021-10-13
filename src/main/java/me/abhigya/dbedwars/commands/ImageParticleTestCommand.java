@@ -1,15 +1,15 @@
 package me.abhigya.dbedwars.commands;
 
 import me.Abhigya.core.commands.CommandArgument;
+import me.Abhigya.core.particle.particlelib.ParticleBuilder;
+import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.abhigya.dbedwars.DBedwars;
-import me.abhigya.dbedwars.utils.BetterImageDisplayer;
+import me.abhigya.dbedwars.task.ParticleImageDisplayTask;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class ImageParticleTestCommand implements CommandArgument {
@@ -25,13 +25,9 @@ public class ImageParticleTestCommand implements CommandArgument {
 
     @Override
     public boolean execute(CommandSender commandSender, Command command, String s, String[] strings) {
-
-        try {
-            new BetterImageDisplayer(new File(DBedwars.getInstance().getDataFolder(),"test.png"),new Dimension(50,50)).start(DBedwars.getInstance(),0,1,((Player) commandSender).getLocation(),0.1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        DBedwars.getInstance().getImageHandler().getLoadedImages().forEach((key, colors) -> {
+            DBedwars.getInstance().getThreadHandler().addAsyncWork(new ParticleImageDisplayTask(100,new Dimension(2,2),((Player) commandSender).getLocation(), "x",colors,new ParticleBuilder(ParticleEffect.REDSTONE).setAmount(1).setSpeed(0)));
+        });
         return true;
     }
 

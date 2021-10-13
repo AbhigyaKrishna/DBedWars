@@ -15,6 +15,9 @@ public enum PluginFiles {
     ARENA_DATA_SETTINGS( new File( ARENA_DATA.getFile( ), "settings" ) ),
     HOOKS( new File( PLUGIN_DATA_FOLDER.getFile( ), "hooks" ) ),
     LANGUAGES( new File( PLUGIN_DATA_FOLDER.getFile( ), "languages" ) ),
+    GRAPHICS(new File(PLUGIN_DATA_FOLDER.getFile(), "graphics")),
+    IMAGES(new File(GRAPHICS.getFile(),"images")),
+    PARTICLE_IMAGES_CACHE(new File(GRAPHICS.getFile(),"particle-images-cache")),
 
     /* Hook Files */
     MULTIVERSE_CORE_HOOK( new File( HOOKS.getFile( ), "Multiverse-Core-Hook.yml" ) ),
@@ -30,8 +33,12 @@ public enum PluginFiles {
     CUSTOM_ITEMS( new File( PLUGIN_DATA_FOLDER.getFile( ), "custom-items.yml" ) ),
     SHOP( new File( PLUGIN_DATA_FOLDER.getFile( ), "shop.yml" ) ),
     UPGRADES( new File( PLUGIN_DATA_FOLDER.getFile( ), "upgrades.yml" ) ),
+
     HOLOGRAM( new File( PLUGIN_DATA_FOLDER.getFile( ), "hologram.yml" ) ),
     SCOREBOARD( new File( PLUGIN_DATA_FOLDER.getFile( ), "scoreboard.yml" ) ),
+
+    PARTICLE_IMAGES(new File(GRAPHICS.getFile(),"particle-images.yml"))
+
     ;
 
     private File file;

@@ -22,6 +22,7 @@ public class ConfigHandler {
     private ConfigurableShop shop;
     private ConfigurableUpgrade upgrade;
     private ConfigurableCustomItems customItems;
+    private ConfigurableParticleImages particleImages;
 
     public ConfigHandler( DBedwars plugin ) {
         this.plugin = plugin;
@@ -47,6 +48,8 @@ public class ConfigHandler {
         this.plugin.getGameManager( ).load( );
         this.customItems = new ConfigurableCustomItems( );
         this.customItems.load( YamlConfiguration.loadConfiguration( PluginFiles.CUSTOM_ITEMS.getFile( ) ) );
+        this.particleImages = new ConfigurableParticleImages();
+        this.particleImages.load(YamlConfiguration.loadConfiguration(PluginFiles.PARTICLE_IMAGES.getFile()));
     }
 
     private void loadArena( ) {
@@ -121,4 +124,7 @@ public class ConfigHandler {
         return this.customItems;
     }
 
+    public ConfigurableParticleImages getParticleImages() {
+        return particleImages;
+    }
 }

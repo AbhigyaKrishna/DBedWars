@@ -36,6 +36,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 public final class DBedwars extends PluginAdapter {
 
@@ -52,6 +55,7 @@ public final class DBedwars extends PluginAdapter {
     private ThreadHandler threadHandler;
     private ConfigHandler configHandler;
     private NPCPool npcHandler;
+    private ImageHandler imageHandler;
     private HologramFactory hologramFactory;
 
     private NMSAdaptor nmsAdaptor;
@@ -179,10 +183,14 @@ public final class DBedwars extends PluginAdapter {
         this.configHandler = new ConfigHandler( this );
         this.guiHandler = new GuiHandler( this );
         this.customItemHandler = new CustomItemHandler( this );
+        this.imageHandler = new ImageHandler(this);
         this.npcHandler = NPCPool.createDefault( this );
+
 
         this.threadHandler = new ThreadHandler( this, 4, 3 );
         this.threadHandler.runThreads( );
+
+        CompletableFuture<Boolean> configLoaded = new CompletableFuture<>();
 
         this.threadHandler.addAsyncWork( ( ) -> {
             this.configHandler.loadConfigurations( );
@@ -191,7 +199,19 @@ public final class DBedwars extends PluginAdapter {
             this.guiHandler.loadAnvilMenus( );
 
             this.registerCustomItems( );
+            configLoaded.complete(true);
         } );
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                configLoaded.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            imageHandler.clearCache();
+            imageHandler.formatAllImagesToPNG();
+            imageHandler.loadAllFormattedImages();
+        });
 
         return true;
     }
@@ -262,6 +282,10 @@ public final class DBedwars extends PluginAdapter {
 
     public NPCPool getNpcHandler( ) {
         return this.npcHandler;
+    }
+
+    public ImageHandler getImageHandler() {
+        return imageHandler;
     }
 
     public HologramFactory getHologramFactory( ) {

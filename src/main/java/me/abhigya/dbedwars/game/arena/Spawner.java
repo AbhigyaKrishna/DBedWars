@@ -94,7 +94,6 @@ public class Spawner implements me.abhigya.dbedwars.api.game.spawner.Spawner {
         for ( Map.Entry< DropType.Drop, Long > entry : this.items.entrySet( ) ) {
             if ( ( (double) ( System.currentTimeMillis( ) - entry.getValue( ) ) / ( 50 * 20 ) ) < entry.getKey( ).getDelay( ) )
                 continue;
-
             this.items.put( entry.getKey( ), System.currentTimeMillis( ) );
             if ( entry.getKey( ).getMaxSpawn( ) != -1 ) {
                 int count = this.location.getWorld( ).getNearbyEntities( this.location,
