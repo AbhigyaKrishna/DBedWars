@@ -7,6 +7,7 @@ import me.Abhigya.core.util.reflection.general.MethodReflection;
 import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
+import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.Team;
 import me.abhigya.dbedwars.api.util.BwItemStack;
 import org.bukkit.Location;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Utils {
 
@@ -173,19 +175,47 @@ public class Utils {
         return list.toArray( arrays[0] );
     }
 
-    public static boolean containsGlass(List<Material> materials){
-        List<Material> list = new ArrayList<>(materials);
-        list.removeIf(material -> !material.name().contains("GLASS"));
-        return list.size()>=1;
+    public static boolean containsGlass( List< Material > materials ) {
+        List< Material > list = new ArrayList<>( materials );
+        list.removeIf( material -> !material.name( ).contains( "GLASS" ) );
+        return list.size( ) >= 1;
     }
 
-    public static boolean containsGlassOrEndstone(List<Material> materials){
-        if (containsGlass(materials))
+    public static boolean containsGlassOrEndstone( List< Material > materials ) {
+        if ( containsGlass( materials ) )
             return true;
-        List<Material> list = new ArrayList<>(materials);
-        materials.removeIf(material -> XMaterial.matchXMaterial(material) != XMaterial.END_STONE);
-        return list.size()>=1;
+        List< Material > list = new ArrayList<>( materials );
+        materials.removeIf( material -> XMaterial.matchXMaterial( material ) != XMaterial.END_STONE );
+        return list.size( ) >= 1;
     }
 
+    public static LinkedHashMap< ArenaPlayer, Integer > getGameLeaderBoard( Collection< ArenaPlayer > players ) {
+        LinkedHashMap< ArenaPlayer, Integer > map = new LinkedHashMap<>( );
+        players.stream( ).sorted( new Comparator< ArenaPlayer >( ) {
+            @Override
+            public int compare( ArenaPlayer o1, ArenaPlayer o2 ) {
+                int p1 = calculatePoint( o1 );
+                int p2 = calculatePoint( o2 );
+
+                return Integer.compare( p1, p2 );
+            }
+        } ).forEach( new Consumer< ArenaPlayer >( ) {
+            @Override
+            public void accept( ArenaPlayer player ) {
+                int point = calculatePoint( player );
+                map.put( player, point );
+            }
+        } );
+
+        return map;
+
+    }
+
+    public static int calculatePoint( ArenaPlayer player ) {
+        return ( player.getKills( ) * player.getArena( ).getSettings( ).getKillPoint( ) )
+                + ( player.getFinalKills( ) * player.getArena( ).getSettings( ).getFinalKillPoint( ) )
+                + ( player.getDeath( ) * player.getArena( ).getSettings( ).getDeathPoint( ) )
+                + ( player.getBedDestroy( ) * player.getArena( ).getSettings( ).getBedDestroyPoint( ) );
+    }
 
 }

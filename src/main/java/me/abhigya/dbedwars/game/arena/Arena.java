@@ -181,9 +181,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         this.setStatus( ArenaStatus.REGENERATING );
         World world = this.loadWorld( );
         GameRuleType.SHOW_DEATH_MESSAGES.apply( world, false );
-        GameRuleType.MOB_GRIEFING.apply( world, false );
         GameRuleType.MOB_SPAWNING.apply( world, false );
-        GameRuleType.FIRE_TICK.apply( world, false );
         GameRuleType.KEEP_INVENTORY.apply( world, true );
         GameRuleType.SHOW_DEATH_MESSAGES.apply( world, false );
         GameRuleType.SPECTATORS_GENERATE_CHUNKS.apply( world, false );
@@ -344,15 +342,53 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         ArenaEndEvent event = new ArenaEndEvent( this, this.players.stream( ).filter( p -> !p.isFinalKilled( ) ).collect( Collectors.toSet( ) ) );
         event.call( );
 
+        if ( event.isCancelled() )
+            return false;
+
         this.status = ArenaStatus.ENDING;
-        this.plugin.getThreadHandler( ).addSyncWork( new FixedRateWorkload( this.plugin.getConfigHandler( ).getMainConfiguration( ).getArenaSection( ).getGameEndDelay( ) * 20 ) {
+        this.plugin.getThreadHandler( ).addSyncWork( new Workload( ) {
+            final long time = System.currentTimeMillis( );
+            final int delay = Arena.this.getSettings( ).getGameEndDelay( ) * 20;
+            boolean b = false;
+
             @Override
             public void compute( ) {
+                b = true;
+                Arena.this.clearCache( );
                 Arena.this.world.getPlayers( ).forEach( p -> p.teleport( Arena.this.plugin.getServer( ).getWorlds( ).get( 0 ).getSpawnLocation( ) ) );
-                Arena.this.plugin.getThreadHandler( ).addAsyncWork( Arena.this::loadWorld );
+                Arena.this.plugin.getThreadHandler( ).addAsyncWork( Arena.this::load );
+            }
+
+            @Override
+            public boolean shouldExecute( ) {
+                return System.currentTimeMillis( ) - this.time >= this.delay;
+            }
+
+            @Override
+            public boolean reSchedule( ) {
+                return !b;
             }
         } );
-        this.world.getPlayers( ).forEach( p -> p.sendMessage( "You won!" ) );
+
+        // TODO: give config?
+        LinkedHashMap< ArenaPlayer, Integer > leaderboard = Utils.getGameLeaderBoard( this.players );
+        StringBuilder builder = new StringBuilder( "&6" + StringUtils.repeat( "⏹", 15 ) );
+        byte b = 0;
+        for ( Map.Entry< ArenaPlayer, Integer > entry : leaderboard.entrySet( ) ) {
+            if ( b == 4 )
+                break;
+
+            b++;
+            builder.append( "\n&a" ).append( b ).append( ". " ).append( entry.getKey().getPlayer().getName() )
+                    .append( "   " ).append( entry.getValue( ) ).append( "pts" );
+        }
+        builder.append( "&6" ).append( StringUtils.repeat( "⏹", 15 ) );
+        for ( ArenaPlayer player : this.players ) {
+            if ( player.getArena( ).getWorld( ).equals( player.getPlayer( ).getWorld( ) ) ) {
+                player.sendMessage( StringUtils.translateAlternateColorCodes( builder.toString( ) ) );
+            }
+        }
+
         this.gameHandler.unregister( );
         return true;
     }
@@ -607,6 +643,24 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
                 return !hasRun;
             }
         } );
+    }
+
+    private void clearCache( ) {
+        for ( Team team : this.teams ) {
+            team = null;
+        }
+        for ( ArenaPlayer player : this.players ) {
+            player = null;
+        }
+        for ( Spawner spawner : this.spawners ) {
+            spawner = null;
+        }
+        this.teams.clear( );
+        this.players.clear( );
+        this.spawners.clear( );
+        this.removed.clear( );
+        this.scoreboard.getHandle( ).getViewers( ).clear( );
+        this.scoreboard.getHandle( ).update( );
     }
 
 }

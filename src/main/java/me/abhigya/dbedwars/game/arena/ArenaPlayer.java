@@ -29,6 +29,7 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     private Team team;
 
     private boolean spectator;
+    private short bedDestroy;
     private int kill;
     private int finalKill;
     private int death;
@@ -128,6 +129,21 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     }
 
     @Override
+    public void addBedDestroy( ) {
+        this.bedDestroy++;
+    }
+
+    @Override
+    public short getBedDestroy( ) {
+        return this.bedDestroy;
+    }
+
+    @Override
+    public void setBedDestroy( short bedDestroy ) {
+        this.bedDestroy = bedDestroy;
+    }
+
+    @Override
     public void kill( DeathCause reason ) {
         // TODO: revamp this
         if ( this.team.isBedBroken( ) ) {
@@ -155,11 +171,6 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
 
                 Optional< Team > oTeam = this.arena.getTeams( ).stream( ).filter( t -> !t.isEliminated( ) ).findFirst( );
                 if ( oTeam.isPresent( ) && this.arena.getTeams( ).stream( ).filter( t -> !t.isEliminated( ) ).count( ) == 1 ) {
-                    ArenaEndEvent ev = new ArenaEndEvent( this.arena, oTeam.get( ).getPlayers( ) );
-                    ev.call( );
-                    if ( ev.isCancelled( ) )
-                        return;
-
                     this.arena.end( );
                 }
             }

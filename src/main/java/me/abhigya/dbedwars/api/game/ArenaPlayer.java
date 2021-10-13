@@ -40,6 +40,12 @@ public interface ArenaPlayer {
 
     void setDeath( int count );
 
+    void addBedDestroy( );
+
+    short getBedDestroy( );
+
+    void setBedDestroy( short bedDestroy );
+
     void kill( DeathCause reason );
 
     boolean isFinalKilled( );
