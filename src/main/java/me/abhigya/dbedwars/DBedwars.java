@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars;
 
 import me.Abhigya.core.commands.CommandHandler;
+import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.placeholder.PlaceholderUtil;
 import me.Abhigya.core.plugin.Plugin;
 import me.Abhigya.core.plugin.PluginAdapter;
@@ -17,12 +18,18 @@ import me.abhigya.dbedwars.commands.Setup;
 import me.abhigya.dbedwars.commands.Start;
 import me.abhigya.dbedwars.configuration.Lang;
 import me.abhigya.dbedwars.configuration.PluginFiles;
+import me.abhigya.dbedwars.configuration.configurable.ConfigurableDatabase;
+import me.abhigya.dbedwars.database.DatabaseBridge;
+import me.abhigya.dbedwars.database.MongoDB;
+import me.abhigya.dbedwars.database.MySQL;
+import me.abhigya.dbedwars.database.SQLite;
 import me.abhigya.dbedwars.game.GameManager;
 import me.abhigya.dbedwars.handler.*;
 import me.abhigya.dbedwars.item.*;
 import me.abhigya.dbedwars.listeners.BlastProofGlassListener;
 import me.abhigya.dbedwars.nms.NMSAdaptor;
 import me.abhigya.dbedwars.nms.v1_8_R3.NMSUtils;
+import me.abhigya.dbedwars.utils.ConfigurationUtils;
 import me.abhigya.dbedwars.utils.PluginFileUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -59,6 +66,7 @@ public final class DBedwars extends PluginAdapter {
     private HologramFactory hologramFactory;
 
     private NMSAdaptor nmsAdaptor;
+    private DatabaseBridge database;
 
     @Override
     public void onLoad( ) {
@@ -192,13 +200,15 @@ public final class DBedwars extends PluginAdapter {
 
         CompletableFuture<Boolean> configLoaded = new CompletableFuture<>();
 
-        this.threadHandler.addAsyncWork( ( ) -> {
+        this.threadHandler.getUpdaterThread( ).add( ( ) -> {
             this.configHandler.loadConfigurations( );
 
             this.guiHandler.loadMenus( );
             this.guiHandler.loadAnvilMenus( );
 
             this.registerCustomItems( );
+            this.initDatabase( );
+
             configLoaded.complete(true);
         } );
 
@@ -226,7 +236,6 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpListeners( ) {
         this.listeners = new ArrayList<>( );
-        /*this.listeners.add( new ChestListener( ) );*/
         this.listeners.add( new BlastProofGlassListener( ) );
         this.listeners.forEach( l -> this.getServer( ).getPluginManager( ).registerEvents( l, this ) );
         return true;
@@ -280,6 +289,10 @@ public final class DBedwars extends PluginAdapter {
         return this.nmsAdaptor;
     }
 
+    public DatabaseBridge getDatabaseBridge( ) {
+        return this.database;
+    }
+
     public NPCPool getNpcHandler( ) {
         return this.npcHandler;
     }
@@ -290,6 +303,26 @@ public final class DBedwars extends PluginAdapter {
 
     public HologramFactory getHologramFactory( ) {
         return this.hologramFactory;
+    }
+
+    private void initDatabase( ) {
+        DatabaseType type;
+        if ( this.getConfigHandler( ).getDatabase( ).isValid( ) )
+            type = ConfigurationUtils.matchEnum( this.getConfigHandler( ).getDatabase( ).getDatabase( ), DatabaseType.values( ) );
+        else
+            type = DatabaseType.SQLite;
+
+        if ( type == DatabaseType.MYSQL ) {
+            ConfigurableDatabase.ConfigurableMySQL cfg = this.getConfigHandler( ).getDatabase( ).getMySQL( );
+            this.database = new MySQL( this, cfg.getHost( ), cfg.getPort( ), cfg.getDatabaseName( ), cfg.getUsername( ), cfg.getPassword( ), cfg.isReconnect( ), cfg.isSsl( ) );
+        } else if ( type == DatabaseType.MongoDB ) {
+            ConfigurableDatabase.ConfigurableMongoDB cfg = this.getConfigHandler( ).getDatabase( ).getMongoDB( );
+            this.database = new MongoDB( this, cfg.getHost( ), cfg.getPort( ), cfg.getDatabaseName( ) );
+        } else {
+            this.database = new SQLite( this );
+        }
+
+        this.database.init( );
     }
 
     private NMSAdaptor registerNMSAdaptor( ) {

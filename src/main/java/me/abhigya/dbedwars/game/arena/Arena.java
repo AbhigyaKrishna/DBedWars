@@ -2,14 +2,13 @@ package me.abhigya.dbedwars.game.arena;
 
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.math.collision.BoundingBox;
-import me.Abhigya.core.util.scheduler.SchedulerUtils;
 import me.Abhigya.core.util.tasks.Workload;
 import me.Abhigya.core.util.tasks.workload.FixedRateWorkload;
 import me.Abhigya.core.util.world.GameRuleDisableDaylightCycle;
 import me.Abhigya.core.util.world.GameRuleType;
 import me.Abhigya.core.util.world.WorldUtils;
 import me.abhigya.dbedwars.DBedwars;
-import me.abhigya.dbedwars.api.events.game.*;
+import me.abhigya.dbedwars.api.events.*;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.ArenaStatus;
 import me.abhigya.dbedwars.api.game.Team;
@@ -372,7 +371,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
 
         // TODO: give config?
         LinkedHashMap< ArenaPlayer, Integer > leaderboard = Utils.getGameLeaderBoard( this.players );
-        StringBuilder builder = new StringBuilder( "&6" + StringUtils.repeat( "⏹", 15 ) );
+        StringBuilder builder = new StringBuilder( "&6" + StringUtils.repeat( "⬛", 50 ) );
         byte b = 0;
         for ( Map.Entry< ArenaPlayer, Integer > entry : leaderboard.entrySet( ) ) {
             if ( b == 4 )
@@ -382,7 +381,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
             builder.append( "\n&a" ).append( b ).append( ". " ).append( entry.getKey().getPlayer().getName() )
                     .append( "   " ).append( entry.getValue( ) ).append( "pts" );
         }
-        builder.append( "&6" ).append( StringUtils.repeat( "⏹", 15 ) );
+        builder.append( "\n&6" ).append( StringUtils.repeat( "⬛", 50 ) );
         for ( ArenaPlayer player : this.players ) {
             if ( player.getArena( ).getWorld( ).equals( player.getPlayer( ).getWorld( ) ) ) {
                 player.sendMessage( StringUtils.translateAlternateColorCodes( builder.toString( ) ) );
@@ -602,9 +601,10 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         if ( event.isCancelled( ) )
             return;
 
-        bed.breakNaturally( );
         bed.getDrops( ).clear( );
+        bed.breakNaturally( );
         event.getAffectedTeam( ).setBedBroken( true );
+        event.getDestroyer( ).addBedDestroy( );
         // TODO: change message
         // TODO: Add more effect
         this.broadcast( event.getBedBrokenMessage( ), p -> !p.getTeam( ).equals( event.getAffectedTeam( ) ) );
@@ -647,6 +647,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
 
     private void clearCache( ) {
         for ( Team team : this.teams ) {
+            ( ( me.abhigya.dbedwars.game.arena.Team ) team ).clearCache( );
             team = null;
         }
         for ( ArenaPlayer player : this.players ) {
@@ -659,8 +660,15 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
         this.players.clear( );
         this.spawners.clear( );
         this.removed.clear( );
-        this.scoreboard.getHandle( ).getViewers( ).clear( );
-        this.scoreboard.getHandle( ).update( );
+        this.plugin.getThreadHandler( ).addSyncWork( new Workload( ) {
+            @Override
+            public void compute( ) {
+                for ( Player player : new ArrayList<>( Arena.this.scoreboard.getHandle( ).getViewers( ) ) ) {
+                    Arena.this.scoreboard.hide( player );
+                }
+                Arena.this.scoreboard.getHandle( ).update( );
+            }
+        } );
     }
 
 }

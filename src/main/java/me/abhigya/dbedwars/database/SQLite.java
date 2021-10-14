@@ -1,5 +1,6 @@
 package me.abhigya.dbedwars.database;
 
+import me.Abhigya.core.database.Database;
 import me.Abhigya.core.util.json.Json;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.cache.DataCache;
@@ -27,7 +28,7 @@ public class SQLite extends DatabaseBridge {
     public void init( ) {
         try {
             this.db.connect( );
-            this.querySQLFile( this.db, "sql.stats_database_init.sql" );
+            this.querySQLFile( this.db, "sql/stats_database_init.sql" );
         } catch ( IOException | SQLException e ) {
             e.printStackTrace( );
         }
@@ -107,6 +108,11 @@ public class SQLite extends DatabaseBridge {
         }
 
         return caches;
+    }
+
+    @Override
+    public Database getHandle( ) {
+        return this.db;
     }
 
 }

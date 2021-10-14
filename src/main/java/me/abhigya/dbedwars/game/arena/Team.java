@@ -8,10 +8,10 @@ import me.Abhigya.core.util.npc.NPC;
 import me.Abhigya.core.util.npc.Profile;
 import me.Abhigya.core.util.packet.packetevents.utils.player.Skin;
 import me.abhigya.dbedwars.DBedwars;
-import me.abhigya.dbedwars.api.events.game.PlayerJoinTeamEvent;
-import me.abhigya.dbedwars.api.events.game.PlayerLeaveTeamEvent;
-import me.abhigya.dbedwars.api.events.game.PlayerOpenShopEvent;
-import me.abhigya.dbedwars.api.events.game.TrapTriggerEvent;
+import me.abhigya.dbedwars.api.events.PlayerJoinTeamEvent;
+import me.abhigya.dbedwars.api.events.PlayerLeaveTeamEvent;
+import me.abhigya.dbedwars.api.events.PlayerOpenShopEvent;
+import me.abhigya.dbedwars.api.events.TrapTriggerEvent;
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.Trap;
@@ -294,6 +294,18 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
                 .lookAtPlayer( true )
                 .imitatePlayer( false )
                 .build( DBedwars.getInstance( ).getNpcHandler( ) );
+    }
+
+    public void clearCache( ) {
+        this.spawners.clear( );
+        this.arena = null;
+        this.players = null;
+        this.islandArea = null;
+        this.plugin.getNpcHandler( ).removeNPC( this.shopNpc.getEntityId( ) );
+        this.shopNpc = null;
+        this.plugin.getNpcHandler( ).removeNPC( this.upgradesNpc.getEntityId( ) );
+        this.upgradesNpc = null;
+        this.trapQueue.clear( );
     }
 
 }

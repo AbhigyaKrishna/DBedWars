@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.api.events.game;
+package me.abhigya.dbedwars.api.events;
 
 import me.Abhigya.core.events.CustomEvent;
 import me.abhigya.dbedwars.api.game.Arena;
@@ -6,7 +6,7 @@ import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.Team;
 import org.bukkit.event.HandlerList;
 
-public class PlayerBaseEnterEvent extends CustomEvent {
+public class PlayerBaseExitEvent extends CustomEvent {
 
     private static final HandlerList HANDLER_LIST = new HandlerList( );
 
@@ -14,7 +14,7 @@ public class PlayerBaseEnterEvent extends CustomEvent {
     private Arena arena;
     private Team team;
 
-    public PlayerBaseEnterEvent( ArenaPlayer player, Arena arena, Team team ) {
+    public PlayerBaseExitEvent( ArenaPlayer player, Arena arena, Team team ) {
         this.player = player;
         this.arena = arena;
         this.team = team;

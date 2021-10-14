@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.api.events.game;
+package me.abhigya.dbedwars.api.events;
 
 import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;

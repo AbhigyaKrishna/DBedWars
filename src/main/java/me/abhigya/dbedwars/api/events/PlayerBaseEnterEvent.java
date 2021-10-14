@@ -1,22 +1,22 @@
-package me.abhigya.dbedwars.api.events.game;
+package me.abhigya.dbedwars.api.events;
 
-import me.Abhigya.core.events.CustomEventCancellable;
+import me.Abhigya.core.events.CustomEvent;
+import me.abhigya.dbedwars.api.game.Arena;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.Team;
-import me.abhigya.dbedwars.api.game.Trap;
 import org.bukkit.event.HandlerList;
 
-public class TrapTriggerEvent extends CustomEventCancellable {
+public class PlayerBaseEnterEvent extends CustomEvent {
 
     private static final HandlerList HANDLER_LIST = new HandlerList( );
 
-    private Trap trap;
-    private ArenaPlayer target;
+    private ArenaPlayer player;
+    private Arena arena;
     private Team team;
 
-    public TrapTriggerEvent( Trap trap, ArenaPlayer target, Team team ) {
-        this.trap = trap;
-        this.target = target;
+    public PlayerBaseEnterEvent( ArenaPlayer player, Arena arena, Team team ) {
+        this.player = player;
+        this.arena = arena;
         this.team = team;
     }
 
@@ -24,12 +24,12 @@ public class TrapTriggerEvent extends CustomEventCancellable {
         return HANDLER_LIST;
     }
 
-    public Trap getTrap( ) {
-        return trap;
+    public ArenaPlayer getPlayer( ) {
+        return player;
     }
 
-    public ArenaPlayer getTarget( ) {
-        return target;
+    public Arena getArena( ) {
+        return arena;
     }
 
     public Team getTeam( ) {

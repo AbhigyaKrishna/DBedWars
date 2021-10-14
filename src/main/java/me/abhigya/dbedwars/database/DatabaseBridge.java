@@ -1,6 +1,7 @@
 package me.abhigya.dbedwars.database;
 
 import com.google.gson.Gson;
+import me.Abhigya.core.database.Database;
 import me.Abhigya.core.database.sql.SQLConsumer;
 import me.Abhigya.core.database.sql.SQLDatabase;
 import me.Abhigya.core.util.json.Json;
@@ -12,9 +13,11 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class DatabaseBridge {
 
@@ -41,20 +44,30 @@ public abstract class DatabaseBridge {
 
     public abstract List< DataCache > getAsDataCache( String key, Object gate, String database );
 
+    public abstract Database getHandle( );
+
     public DBedwars getPlugin( ) {
-        return plugin;
+        return this.plugin;
     }
 
     public Gson getGson( ) {
-        return gson;
+        return this.gson;
     }
 
     protected void querySQLFile( SQLDatabase db, String fileName ) throws IOException {
         InputStream sql = this.getPlugin( ).getResource( fileName );
         String s = IOUtils.toString( sql, StandardCharsets.UTF_8 );
-        db.queryAsync( s, new SQLConsumer< ResultSet >( ) {
+        sql.close( );
+        CompletableFuture.runAsync( new Runnable( ) {
             @Override
-            public void accept( ResultSet resultSet ) throws SQLException {
+            public void run( ) {
+                try {
+                    PreparedStatement ps = db.getConnection( ).prepareStatement( s );
+                    ps.execute();
+                    ps.close( );
+                } catch ( SQLException | IOException e ) {
+                    e.printStackTrace( );
+                }
             }
         } );
     }

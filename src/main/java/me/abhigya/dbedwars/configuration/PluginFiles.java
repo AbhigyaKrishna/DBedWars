@@ -8,7 +8,6 @@ public enum PluginFiles {
 
     /* Folder */
     PLUGIN_DATA_FOLDER( DBedwars.getInstance( ).getDataFolder( ) ),
-    ADDON( new File( PLUGIN_DATA_FOLDER.getFile( ), "addons" ) ),
     ARENA( new File( PLUGIN_DATA_FOLDER.getFile( ), "arena" ) ),
     ARENA_DATA( new File( ARENA.getFile( ), "data" ) ),
     ARENA_DATA_ARENACACHE( new File( ARENA_DATA.getFile( ), "arenacache" ) ),
@@ -33,15 +32,14 @@ public enum PluginFiles {
     CUSTOM_ITEMS( new File( PLUGIN_DATA_FOLDER.getFile( ), "custom-items.yml" ) ),
     SHOP( new File( PLUGIN_DATA_FOLDER.getFile( ), "shop.yml" ) ),
     UPGRADES( new File( PLUGIN_DATA_FOLDER.getFile( ), "upgrades.yml" ) ),
-
     HOLOGRAM( new File( PLUGIN_DATA_FOLDER.getFile( ), "hologram.yml" ) ),
     SCOREBOARD( new File( PLUGIN_DATA_FOLDER.getFile( ), "scoreboard.yml" ) ),
-
-    PARTICLE_IMAGES(new File(GRAPHICS.getFile(),"particle-images.yml"))
+    DATABASE( new File( PLUGIN_DATA_FOLDER.getFile( ), "database.yml" ) ),
+    PARTICLE_IMAGES( new File( GRAPHICS.getFile(),"particle-images.yml" ) )
 
     ;
 
-    private File file;
+    private final File file;
 
     PluginFiles( File file ) {
         this.file = file;
@@ -61,10 +59,10 @@ public enum PluginFiles {
     }
 
     public static PluginFiles[] getFiles( ) {
-        return new PluginFiles[]{ CONFIG, ITEM_SPAWNERS, TRAPS, SHOP, UPGRADES, CUSTOM_ITEMS, HOLOGRAM, SCOREBOARD };
+        return new PluginFiles[]{ CONFIG, ITEM_SPAWNERS, TRAPS, SHOP, UPGRADES, CUSTOM_ITEMS, HOLOGRAM, SCOREBOARD, DATABASE };
     }
 
     public File getFile( ) {
-        return file;
+        return this.file;
     }
 }

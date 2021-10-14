@@ -19,6 +19,7 @@ public class ConfigHandler {
     private final Set< ConfigurableTrap > traps;
     private final Set< ConfigurableScoreboard > scoreboards;
     private MainConfiguration mainConfiguration;
+    private ConfigurableDatabase database;
     private ConfigurableShop shop;
     private ConfigurableUpgrade upgrade;
     private ConfigurableCustomItems customItems;
@@ -41,6 +42,8 @@ public class ConfigHandler {
         this.loadItemSpawners( );
         this.loadTraps( );
         this.loadScoreBoards( );
+        this.database = new ConfigurableDatabase( );
+        this.database.load( YamlConfiguration.loadConfiguration( PluginFiles.DATABASE.getFile( ) ) );
         this.shop = new ConfigurableShop( );
         this.shop.load( YamlConfiguration.loadConfiguration( PluginFiles.SHOP.getFile( ) ) );
         this.upgrade = new ConfigurableUpgrade( );
@@ -48,8 +51,8 @@ public class ConfigHandler {
         this.plugin.getGameManager( ).load( );
         this.customItems = new ConfigurableCustomItems( );
         this.customItems.load( YamlConfiguration.loadConfiguration( PluginFiles.CUSTOM_ITEMS.getFile( ) ) );
-        this.particleImages = new ConfigurableParticleImages();
-        this.particleImages.load(YamlConfiguration.loadConfiguration(PluginFiles.PARTICLE_IMAGES.getFile()));
+        this.particleImages = new ConfigurableParticleImages( );
+        this.particleImages.load( YamlConfiguration.loadConfiguration( PluginFiles.PARTICLE_IMAGES.getFile( ) ) );
     }
 
     private void loadArena( ) {
@@ -112,6 +115,10 @@ public class ConfigHandler {
         return this.scoreboards;
     }
 
+    public ConfigurableDatabase getDatabase( ) {
+        return this.database;
+    }
+
     public ConfigurableShop getShop( ) {
         return this.shop;
     }
@@ -125,6 +132,6 @@ public class ConfigHandler {
     }
 
     public ConfigurableParticleImages getParticleImages() {
-        return particleImages;
+        return this.particleImages;
     }
 }

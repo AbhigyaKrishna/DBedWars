@@ -8,7 +8,7 @@ import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
 import me.Abhigya.core.util.loadable.LoadableEntry;
 import me.abhigya.dbedwars.DBedwars;
-import me.abhigya.dbedwars.api.events.game.PlayerPurchaseItemEvent;
+import me.abhigya.dbedwars.api.events.PlayerPurchaseItemEvent;
 import me.abhigya.dbedwars.api.exceptions.OverrideException;
 import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.util.BwItemStack;

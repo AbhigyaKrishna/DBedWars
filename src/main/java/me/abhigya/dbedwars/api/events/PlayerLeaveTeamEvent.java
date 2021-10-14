@@ -1,23 +1,26 @@
-package me.abhigya.dbedwars.api.events.game;
+package me.abhigya.dbedwars.api.events;
 
 import me.Abhigya.core.events.player.CustomPlayerEventCancellable;
 import me.abhigya.dbedwars.api.game.Arena;
-import org.bukkit.Location;
+import me.abhigya.dbedwars.api.game.ArenaPlayer;
+import me.abhigya.dbedwars.api.game.Team;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
+public class PlayerLeaveTeamEvent extends CustomPlayerEventCancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList( );
 
     private final Arena arena;
-    private Location location;
+    private final ArenaPlayer arenaPlayer;
+    private final Team team;
 
-    public PlayerJoinArenaLobbyEvent( Player player, Arena arena, Location location ) {
+    public PlayerLeaveTeamEvent( Player player, ArenaPlayer arenaPlayer, Arena arena, Team team ) {
         super( player );
         this.arena = arena;
-        this.location = location;
+        this.arenaPlayer = arenaPlayer;
+        this.team = team;
     }
 
     public static HandlerList getHandlerList( ) {
@@ -28,12 +31,12 @@ public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
         return arena;
     }
 
-    public Location getLocation( ) {
-        return location;
+    public ArenaPlayer getArenaPlayer( ) {
+        return arenaPlayer;
     }
 
-    public void setLocation( Location location ) {
-        this.location = location;
+    public Team getTeam( ) {
+        return team;
     }
 
     @NotNull

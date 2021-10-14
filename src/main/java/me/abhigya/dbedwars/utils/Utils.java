@@ -197,7 +197,7 @@ public class Utils {
                 int p1 = calculatePoint( o1 );
                 int p2 = calculatePoint( o2 );
 
-                return Integer.compare( p1, p2 );
+                return Integer.compare( p1, p2 ) * -1;
             }
         } ).forEach( new Consumer< ArenaPlayer >( ) {
             @Override
