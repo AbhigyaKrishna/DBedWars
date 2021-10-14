@@ -24,6 +24,7 @@ import java.util.Optional;
 public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
 
     private final UUIDPlayer player;
+    private final String name;
     private Arena arena;
     private Team team;
 
@@ -42,6 +43,7 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
 
     public ArenaPlayer( Player player, Arena arena ) {
         this.player = new UUIDPlayer( player );
+        this.name = player.getName();
         this.arena = arena;
         this.shopView = new me.abhigya.dbedwars.game.arena.view.shop.ShopView( this );
     }
@@ -154,6 +156,8 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
                 return;
 
             event.getVictim( ).addDeath( );
+            if ( event.getAttacker( ) != null )
+                event.getAttacker( ).addFinalKills( );
             event.getVictim( ).setSpectator( true );
             this.previousInv = event.getVictim( ).getPlayer( ).getInventory( ).getContents( );
             this.previousArmor = event.getVictim( ).getPlayer( ).getInventory( ).getArmorContents( );
@@ -162,6 +166,7 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
                 event.getVictim( ).getPlayer( ).teleport( this.arena.getSettings( ).getSpectatorLocation( ).toBukkit( this.arena.getWorld( ) ) );
             event.getVictim( ).setFinalKilled( true );
             event.getVictim( ).getArena( ).broadcast( event.getKillMessage( ) );
+
             if ( event.getVictim( ).getTeam( ).getPlayers( ).stream( ).allMatch( me.abhigya.dbedwars.api.game.ArenaPlayer::isFinalKilled ) ) {
                 TeamEliminateEvent e = new TeamEliminateEvent( this.arena, event.getVictim( ).getTeam( ) );
                 e.call( );
@@ -182,6 +187,8 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
                 return;
 
             this.addDeath( );
+            if ( event.getAttacker( ) != null )
+                event.getAttacker( ).addKill( );
             this.setSpectator( true );
             event.getVictim( ).getPlayer( ).getInventory( ).clear( );
             this.getPlayer( ).teleport( this.arena.getSettings( ).getSpectatorLocation( ).toBukkit( this.arena.getWorld( ) ) );
@@ -204,6 +211,11 @@ public class ArenaPlayer implements me.abhigya.dbedwars.api.game.ArenaPlayer {
     @Override
     public UUIDPlayer getUUIDPlayer( ) {
         return this.player;
+    }
+
+    @Override
+    public String getName( ) {
+        return this.name;
     }
 
     @Override

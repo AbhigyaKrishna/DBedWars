@@ -4,6 +4,7 @@ import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.api.util.item.PluginActionItem;
+import me.abhigya.dbedwars.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -29,7 +30,7 @@ public class WaterBucket extends PluginActionItem{
 
     public void onWaterBucketUse(PlayerBucketEmptyEvent event){
         if (removeOnUse)
-            event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().getHeldItemSlot(),new ItemStack(Material.AIR));
+            Utils.useItem( event.getPlayer( ) );
     }
 
 }

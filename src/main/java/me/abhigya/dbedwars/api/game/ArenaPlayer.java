@@ -54,6 +54,8 @@ public interface ArenaPlayer {
 
     UUIDPlayer getUUIDPlayer( );
 
+    String getName( );
+
     Player getPlayer( );
 
     void spawn( Location location );

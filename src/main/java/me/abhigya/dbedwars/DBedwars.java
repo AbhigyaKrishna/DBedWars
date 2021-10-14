@@ -12,10 +12,7 @@ import me.Abhigya.core.util.hologram.HologramFactory;
 import me.Abhigya.core.util.npc.NPCPool;
 import me.Abhigya.core.util.server.Version;
 import me.abhigya.dbedwars.api.DBedWarsAPI;
-import me.abhigya.dbedwars.commands.HoloTestCommand;
-import me.abhigya.dbedwars.commands.ImageParticleTestCommand;
-import me.abhigya.dbedwars.commands.Setup;
-import me.abhigya.dbedwars.commands.Start;
+import me.abhigya.dbedwars.commands.*;
 import me.abhigya.dbedwars.configuration.Lang;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableDatabase;
@@ -226,7 +223,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands( ) {
-        new CommandHandler( this, "bedwars", new Setup( this ), new Start( this ), new HoloTestCommand( ), new ImageParticleTestCommand());
+        new CommandHandler( this, "bedwars", new Setup( this ), new Start( this ), new End( this ), new HoloTestCommand( ), new ImageParticleTestCommand( ) );
 
         return true;
     }

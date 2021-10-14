@@ -2,7 +2,6 @@ package me.abhigya.dbedwars.database;
 
 import com.google.gson.Gson;
 import me.Abhigya.core.database.Database;
-import me.Abhigya.core.database.sql.SQLConsumer;
 import me.Abhigya.core.database.sql.SQLDatabase;
 import me.Abhigya.core.util.json.Json;
 import me.abhigya.dbedwars.DBedwars;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +22,7 @@ public abstract class DatabaseBridge {
     protected static final Map< String, Map.Entry< List< String >, Class< ? extends DataCache > > > DATABASE_NAME_COLUMNS = new LinkedHashMap<>( );
 
     static {
-        DATABASE_NAME_COLUMNS.put( "PLAYER_STATS", new AbstractMap.SimpleEntry<>( Arrays.asList( "UUID", "NAME", "LEVEL",
+            DATABASE_NAME_COLUMNS.put( "PLAYER_STATS", new AbstractMap.SimpleEntry<>( Arrays.asList( "UUID", "NAME", "LEVEL",
                 "LEVEL_PROGRESS", "COINS", "WINSTREAK", "POINTS" ), PlayerStats.class ) );
     }
 
@@ -43,6 +41,8 @@ public abstract class DatabaseBridge {
     public abstract Json getData( String key, Object gate, String database );
 
     public abstract List< DataCache > getAsDataCache( String key, Object gate, String database );
+
+    public abstract boolean saveData( DataCache data, String database, boolean update );
 
     public abstract Database getHandle( );
 

@@ -26,12 +26,15 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class GameListener extends PluginHandler {
 
@@ -167,7 +170,7 @@ public class GameListener extends PluginHandler {
 
         if ( entity.getType( ) == EntityType.IRON_GOLEM
                 && entity.hasMetadata( "isDBedwarsGolem" )
-                && entity.getMetadata( "isDBedwarsGolem" ).contains( DreamDefenderSpawnEgg.golemMetaValue ) ) {
+                && entity.getMetadata( "isDBedwarsGolem" ).contains( DreamDefenderSpawnEgg.GOLEM_META_VALUE ) ) {
             ( (DreamDefenderSpawnEgg) ( (DBedwars) this.getPlugin( ) ).getCustomItemHandler( ).getItem( "DREAM_DEFENDER" ) ).onDeath( event );
         }
 
@@ -192,13 +195,20 @@ public class GameListener extends PluginHandler {
     public void handleEntityExplosions( EntityExplodeEvent event ) {
         if ( event.getEntity( ) == null || !event.getEntity( ).getWorld( ).equals( this.arena.getWorld( ) ) )
             return;
+
         Entity entity = event.getEntity( );
         if ( entity.getType( ) == EntityType.FIREBALL && entity.hasMetadata( "isDBedwarsFireball" ) && entity.getMetadata( "isDBedwarsFireball" ).contains( FireballItem.fireballMeta ) ) {
             ( (FireballItem) plugin.getCustomItemHandler( ).getItem( "FIREBALL" ) ).onFireBallExplode( event );
-        }
-        if ( entity.getType( ) == EntityType.PRIMED_TNT && entity.hasMetadata( "isDBedwarsTNT" ) && entity.getMetadata( "isDBedwarsTNT" ).contains( TNTItem.tntPrimedMeta ) ) {
+        } else if ( entity.getType( ) == EntityType.PRIMED_TNT && entity.hasMetadata( "isDBedwarsTNT" ) && entity.getMetadata( "isDBedwarsTNT" ).contains( TNTItem.tntPrimedMeta ) ) {
             ( (TNTItem) plugin.getCustomItemHandler( ).getItem( "TNT" ) ).onTNTExplode( event );
         }
+
+        event.blockList( ).removeIf( new Predicate< Block >( ) {
+            @Override
+            public boolean test( Block block ) {
+                return !block.hasMetadata( "placed" );
+            }
+        } );
     }
 
     // TODO: revamp this
@@ -217,6 +227,14 @@ public class GameListener extends PluginHandler {
             return;
 
         event.getRecipe( ).getResult( ).setType( XMaterial.AIR.parseMaterial( ) );
+        event.setCancelled( true );
+    }
+
+    @EventHandler( priority = EventPriority.LOW, ignoreCancelled = true )
+    public void handleDurability( PlayerItemDamageEvent event ) {
+        if ( !event.getPlayer( ).getWorld( ).equals( this.arena.getWorld( ) ) )
+            return;
+
         event.setCancelled( true );
     }
 
@@ -259,47 +277,24 @@ public class GameListener extends PluginHandler {
     }
 
     @EventHandler( priority = EventPriority.LOW )
-    public void handlePlayerFall( EntityChangeBlockEvent event ) {
-        if ( !( event.getEntity( ) instanceof Player ) )
+    public void handlePlayerFall( PlayerMoveEvent event ) {
+        if ( !event.getPlayer( ).getWorld( ).equals( this.arena.getWorld( ) ) )
             return;
 
-        Player player = (Player) event.getEntity( );
-
-        if ( !event.getEntity( ).getWorld( ).equals( this.arena.getWorld( ) ) )
+        if ( event.getFrom( ).getBlock( ).equals( event.getTo( ).getBlock( ) ) )
             return;
 
-        if ( player.getLocation( ).getY( ) <= this.arena.getSettings( ).getMinYAxis( ) ) {
-            this.arena.getAsArenaPlayer( player ).ifPresent( p -> p.kill( DeathCause.VOID ) );
+        if ( event.getTo( ).getY( ) <= this.arena.getSettings( ).getMinYAxis( ) ) {
+            this.arena.getAsArenaPlayer( event.getPlayer( ) ).ifPresent( p -> p.kill( DeathCause.VOID ) );
 
         }
-    }
-
-    @EventHandler( priority = EventPriority.HIGH, ignoreCancelled = true )
-    public void handlePlayerMove( EntityChangeBlockEvent event ) {
-        if ( !( event.getEntity( ) instanceof Player ) )
-            return;
-
-        Player player = (Player) event.getEntity( );
-
-        if ( !event.getEntity( ).getWorld( ).equals( this.arena.getWorld( ) ) )
-            return;
-
-        this.arena.getAsArenaPlayer( player ).ifPresent( p -> {
-            for ( Team team : this.arena.getTeams( ) ) {
-                if ( team.getIslandArea( ).contains( event.getBlock( ).getLocation( ).toVector( ) ) ) {
-                    PlayerBaseEnterEvent e = new PlayerBaseEnterEvent( p, this.arena, team );
-                    e.call( );
-
-
-                }
-            }
-        } );
     }
 
     @EventHandler
     public void handleWaterBucketPlace( PlayerBucketEmptyEvent event ) {
         if ( !event.getPlayer( ).getWorld( ).equals( this.arena.getWorld( ) ) )
             return;
+
         if ( event.getItemStack( ).isSimilar( ( (DBedwars) this.getPlugin( ) ).getCustomItemHandler( ).getItem( "WATER_BUCKET" ).toItemStack( ) ) ) {
             ( (WaterBucket) ( (DBedwars) this.getPlugin( ) ).getCustomItemHandler( ).getItem( "WATER_BUCKET" ) ).onWaterBucketUse( event );
         }
@@ -317,6 +312,27 @@ public class GameListener extends PluginHandler {
                 ( (BedBugSnowball) ( (DBedwars) this.getPlugin( ) ).getCustomItemHandler( ).getItem( "BED_BUG" ) ).onLand( event );
             }
         }
+    }
+
+    @EventHandler
+    public void handleTrapTrigger( PlayerMoveEvent event ) {
+        if ( !event.getPlayer( ).getWorld( ).equals( this.arena.getWorld( ) ) )
+            return;
+
+        if ( event.getFrom( ).getBlock( ).equals( event.getTo( ).getBlock( ) ) )
+            return;
+
+        this.arena.getAsArenaPlayer( event.getPlayer( ) ).ifPresent( p -> {
+
+            for ( Team team : this.arena.getTeams( ) ) {
+                if ( team.getIslandArea( ).contains( event.getTo( ).getBlock( ).getLocation( ).toVector( ) ) ) {
+                    PlayerBaseEnterEvent e = new PlayerBaseEnterEvent( p, this.arena, team );
+                    e.call( );
+
+
+                }
+            }
+        } );
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.mongodb.DBObject;
 import me.Abhigya.core.database.Database;
 import me.Abhigya.core.database.mongo.MongoDocument;
 import me.Abhigya.core.util.json.Json;
+import me.Abhigya.core.util.reflection.general.FieldReflection;
 import me.abhigya.dbedwars.DBedwars;
 import me.abhigya.dbedwars.cache.DataCache;
 import me.abhigya.dbedwars.utils.JSONBuilder;
@@ -55,7 +56,7 @@ public class MongoDB extends DatabaseBridge {
     public List< DataCache > getAsDataCache( String key, Object gate, String database ) {
         List< DataCache > caches = new ArrayList<>( );
 
-        Map.Entry< List<String>, Class< ? extends DataCache > > entry = DATABASE_NAME_COLUMNS.getOrDefault( database, null );
+        Map.Entry< List< String >, Class< ? extends DataCache > > entry = DATABASE_NAME_COLUMNS.getOrDefault( database, null );
         if ( entry == null )
             return caches;
 
@@ -69,6 +70,36 @@ public class MongoDB extends DatabaseBridge {
         }
 
         return caches;
+    }
+
+    @Override
+    public boolean saveData( DataCache data, String database, boolean update ) {
+        Json json = Json.loadFromString( this.getGson( ).toJson( data ) );
+
+        Map.Entry< List< String >, Class< ? extends DataCache > > entry = DATABASE_NAME_COLUMNS.getOrDefault( database, null );
+        if ( entry == null )
+            return false;
+
+        DBCollection collection = this.db.getCollection( database );
+        MongoDocument document = new MongoDocument( collection );
+
+        if ( !update ) {
+            document.insert( "UUID", json.getAsJsonPrimitive( "UUID" ).getAsString( ) );
+        }
+
+        for ( String col : entry.getKey() ) {
+            if ( col.equals( "UUID" ) )
+                continue;
+
+            try {
+                document.update( "UUID", json.getAsJsonPrimitive( "UUID" ).getAsString( ), col,
+                        FieldReflection.getValue( json.getAsJsonPrimitive( col ), "value" ) );
+            } catch ( NoSuchFieldException | IllegalAccessException e ) {
+                e.printStackTrace( );
+            }
+        }
+
+        return true;
     }
 
     @Override

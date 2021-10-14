@@ -27,6 +27,7 @@ import me.abhigya.dbedwars.listeners.ArenaListener;
 import me.abhigya.dbedwars.listeners.GameListener;
 import me.abhigya.dbedwars.task.WorldRegenerator;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
+import me.abhigya.dbedwars.utils.DatabaseUtils;
 import me.abhigya.dbedwars.utils.ScoreboardImpl;
 import me.abhigya.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -345,6 +346,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
             return false;
 
         this.status = ArenaStatus.ENDING;
+        DatabaseUtils.saveGameData( this );
         this.plugin.getThreadHandler( ).addSyncWork( new Workload( ) {
             final long time = System.currentTimeMillis( );
             final int delay = Arena.this.getSettings( ).getGameEndDelay( ) * 20;
@@ -371,7 +373,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
 
         // TODO: give config?
         LinkedHashMap< ArenaPlayer, Integer > leaderboard = Utils.getGameLeaderBoard( this.players );
-        StringBuilder builder = new StringBuilder( "&6" + StringUtils.repeat( "⬛", 50 ) );
+        StringBuilder builder = new StringBuilder( "&6" + StringUtils.repeat( "⬛", 35 ) );
         byte b = 0;
         for ( Map.Entry< ArenaPlayer, Integer > entry : leaderboard.entrySet( ) ) {
             if ( b == 4 )
@@ -381,7 +383,7 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
             builder.append( "\n&a" ).append( b ).append( ". " ).append( entry.getKey().getPlayer().getName() )
                     .append( "   " ).append( entry.getValue( ) ).append( "pts" );
         }
-        builder.append( "\n&6" ).append( StringUtils.repeat( "⬛", 50 ) );
+        builder.append( "\n&6" ).append( StringUtils.repeat( "⬛", 35 ) );
         for ( ArenaPlayer player : this.players ) {
             if ( player.getArena( ).getWorld( ).equals( player.getPlayer( ).getWorld( ) ) ) {
                 player.sendMessage( StringUtils.translateAlternateColorCodes( builder.toString( ) ) );

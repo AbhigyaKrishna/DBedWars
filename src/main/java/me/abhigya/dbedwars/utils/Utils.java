@@ -218,4 +218,14 @@ public class Utils {
                 + ( player.getBedDestroy( ) * player.getArena( ).getSettings( ).getBedDestroyPoint( ) );
     }
 
+    public static void useItem( Player player ) {
+        int amt = player.getInventory( ).getItemInHand( ).getAmount( );
+
+        if ( amt == 1 ) {
+            player.getInventory( ).setItemInHand( XMaterial.AIR.parseItem( ) );
+        } else {
+            player.getInventory( ).getItemInHand( ).setAmount( --amt );
+        }
+    }
+
 }
