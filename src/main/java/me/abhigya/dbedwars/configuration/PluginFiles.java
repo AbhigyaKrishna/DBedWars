@@ -34,9 +34,11 @@ public enum PluginFiles {
     UPGRADES( new File( PLUGIN_DATA_FOLDER.getFile( ), "upgrades.yml" ) ),
     HOLOGRAM( new File( PLUGIN_DATA_FOLDER.getFile( ), "hologram.yml" ) ),
     SCOREBOARD( new File( PLUGIN_DATA_FOLDER.getFile( ), "scoreboard.yml" ) ),
-    DATABASE( new File( PLUGIN_DATA_FOLDER.getFile( ), "database.yml" ) ),
-    PARTICLE_IMAGES( new File( GRAPHICS.getFile(),"particle-images.yml" ) )
 
+    DATABASE( new File( PLUGIN_DATA_FOLDER.getFile( ), "database.yml" ) ),
+
+
+    PARTICLE_IMAGES(new File(GRAPHICS.getFile(),"particle-images.yml"))
     ;
 
     private final File file;
@@ -46,7 +48,7 @@ public enum PluginFiles {
     }
 
     public static PluginFiles[] getDirectories( ) {
-        return new PluginFiles[]{ PLUGIN_DATA_FOLDER, ADDON, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS,
+        return new PluginFiles[]{ PLUGIN_DATA_FOLDER, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS,
                 HOOKS };
     }
 

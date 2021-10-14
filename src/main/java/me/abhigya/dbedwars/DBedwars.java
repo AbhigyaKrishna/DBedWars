@@ -70,8 +70,6 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     public void onLoad( ) {
-        if ( !PluginFiles.ADDON.getFile( ).isDirectory( ) )
-            PluginFiles.ADDON.getFile( ).mkdirs( );
 
         if ( !PluginFiles.LANGUAGES.getFile( ).isDirectory( ) )
             PluginFiles.LANGUAGES.getFile( ).mkdirs( );
