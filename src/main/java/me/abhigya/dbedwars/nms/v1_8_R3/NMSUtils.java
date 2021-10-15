@@ -10,9 +10,11 @@ import me.abhigya.dbedwars.nms.NMSAdaptor;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.craftbukkit.v1_8_R3.util.LongObjectHashMap;
 import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
 import org.bukkit.entity.IronGolem;
@@ -92,6 +94,16 @@ public class NMSUtils implements NMSAdaptor {
             FieldReflection.setValue( creature.targetSelector, "c", new UnsafeList( ) );
         } catch ( NoSuchFieldException | IllegalAccessException e ) {
             e.printStackTrace( );
+        }
+    }
+
+    @Override
+    public void setBlockResistance(Block block, Float resistance) {
+        net.minecraft.server.v1_8_R3.Block nmsBlock = CraftMagicNumbers.getBlock(block);
+        try {
+            FieldReflection.getAccessible(net.minecraft.server.v1_8_R3.Block.class, "durability").set(nmsBlock, Float.MAX_VALUE / 5);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
         }
     }
 

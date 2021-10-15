@@ -32,7 +32,6 @@ public class SpongeAnimationTask implements Workload {
         this.shouldRemoveOnEnd = shouldRemoveOnEnd;
         this.soundOnBoxIncrease = SoundVP.valueOf(soundOnBoxIncrease);
         this.soundOnAnimationEnd = SoundVP.valueOf(soundOnAnimationEnd);
-
     }
 
     private int tick = 0;

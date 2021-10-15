@@ -75,6 +75,10 @@ bed-bug:
   health-indicator-count: 5
   potion-effects: []
   time-until-despawn: 300
+blast-proof-glass:
+  name: 'Blast-Proof Glass'
+  lore: []
+
 
 
 

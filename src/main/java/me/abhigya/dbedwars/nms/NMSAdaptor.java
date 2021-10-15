@@ -4,6 +4,7 @@ import me.abhigya.dbedwars.api.game.ArenaPlayer;
 import me.abhigya.dbedwars.api.game.Team;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -20,6 +21,8 @@ public interface NMSAdaptor {
     void clearDefaultPathFinding( LivingEntity entity );
 
     void clearDefaultPathFinding( Object entityCreature );
+
+    void setBlockResistance(Block block, Float resistance);
 
     IVillager spawnNPCVillager( Location location );
 

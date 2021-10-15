@@ -136,6 +136,10 @@ public class GameListener extends PluginHandler {
                 .isThis( player.getPlayer( ).getItemInHand( ) ) ) {
             ( (PopupTowerChestItem) ( (DBedwars) this.getPlugin( ) ).getCustomItemHandler( ).getItem( "POPUP_TOWER" ) ).onChestPlace( event, player );
         }
+        //TODO REFERENCE
+        if (Utils.hasNBTData(event.getItemInHand(),"")){
+            ((BlastProofGlass) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onPlace(event);
+        }
     }
 
     @EventHandler
@@ -197,10 +201,14 @@ public class GameListener extends PluginHandler {
             return;
 
         Entity entity = event.getEntity( );
-        if ( entity.getType( ) == EntityType.FIREBALL && entity.hasMetadata( "isDBedwarsFireball" ) && entity.getMetadata( "isDBedwarsFireball" ).contains( FireballItem.fireballMeta ) ) {
-            ( (FireballItem) plugin.getCustomItemHandler( ).getItem( "FIREBALL" ) ).onFireBallExplode( event );
-        } else if ( entity.getType( ) == EntityType.PRIMED_TNT && entity.hasMetadata( "isDBedwarsTNT" ) && entity.getMetadata( "isDBedwarsTNT" ).contains( TNTItem.tntPrimedMeta ) ) {
-            ( (TNTItem) plugin.getCustomItemHandler( ).getItem( "TNT" ) ).onTNTExplode( event );
+        if ( entity.getType( ) == EntityType.FIREBALL) {
+            ((BlastProofGlass) plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onFireballExplode(event);
+            if (entity.hasMetadata( "isDBedwarsFireball" ) && entity.getMetadata( "isDBedwarsFireball" ).contains( FireballItem.fireballMeta ) )
+                ( (FireballItem) plugin.getCustomItemHandler( ).getItem( "FIREBALL" ) ).onFireBallExplode( event );
+        } else if ( entity.getType( ) == EntityType.PRIMED_TNT) {
+            ((BlastProofGlass) plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onTNTExplode(event);
+            if (entity.hasMetadata( "isDBedwarsTNT" ) && entity.getMetadata( "isDBedwarsTNT" ).contains( TNTItem.tntPrimedMeta ) )
+                ( (TNTItem) plugin.getCustomItemHandler( ).getItem( "TNT" ) ).onTNTExplode( event );
         }
 
         event.blockList( ).removeIf( new Predicate< Block >( ) {

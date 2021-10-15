@@ -23,7 +23,6 @@ import me.abhigya.dbedwars.database.SQLite;
 import me.abhigya.dbedwars.game.GameManager;
 import me.abhigya.dbedwars.handler.*;
 import me.abhigya.dbedwars.item.*;
-import me.abhigya.dbedwars.listeners.BlastProofGlassListener;
 import me.abhigya.dbedwars.nms.NMSAdaptor;
 import me.abhigya.dbedwars.nms.v1_8_R3.NMSUtils;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
@@ -40,8 +39,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public final class DBedwars extends PluginAdapter {
@@ -193,8 +190,6 @@ public final class DBedwars extends PluginAdapter {
         this.threadHandler = new ThreadHandler( this, 4, 3 );
         this.threadHandler.runThreads( );
 
-        CompletableFuture<Boolean> configLoaded = new CompletableFuture<>();
-
         this.threadHandler.getUpdaterThread( ).add( ( ) -> {
             this.configHandler.loadConfigurations( );
 
@@ -204,19 +199,12 @@ public final class DBedwars extends PluginAdapter {
             this.registerCustomItems( );
             this.initDatabase( );
 
-            configLoaded.complete(true);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                imageHandler.clearCache();
+                imageHandler.formatAllImagesToPNG();
+                imageHandler.loadAllFormattedImages();
+            });
         } );
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                configLoaded.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-            imageHandler.clearCache();
-            imageHandler.formatAllImagesToPNG();
-            imageHandler.loadAllFormattedImages();
-        });
 
         return true;
     }
@@ -231,7 +219,6 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpListeners( ) {
         this.listeners = new ArrayList<>( );
-        this.listeners.add( new BlastProofGlassListener( ) );
         this.listeners.forEach( l -> this.getServer( ).getPluginManager( ).registerEvents( l, this ) );
         return true;
     }
@@ -365,6 +352,7 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler.registerItem( "DREAM_DEFENDER", new DreamDefenderSpawnEgg( this ) );
         this.customItemHandler.registerItem( "BED_BUG", new BedBugSnowball( this ) );
         this.customItemHandler.registerItem("POPUP_TOWER", new PopupTowerChestItem(this));
+        this.customItemHandler.registerItem("BLAST_PROOF_GLASS", new BlastProofGlass(this));
     }
 
     @Override

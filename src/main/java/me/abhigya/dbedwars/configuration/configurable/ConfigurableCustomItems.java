@@ -17,6 +17,7 @@ public class ConfigurableCustomItems implements Loadable {
     private ConfigurableSponge sponge;
     private ConfigurableDreamDefender dreamDefender;
     private ConfigurableBedBug bedBug;
+    private ConfigurableBlastProofGlass blastProofGlass;
 
     @Override
     public Loadable load(ConfigurationSection section) {
@@ -36,6 +37,8 @@ public class ConfigurableCustomItems implements Loadable {
         dreamDefender.load(section.getConfigurationSection("dream-defender"));
         bedBug = new ConfigurableBedBug();
         bedBug.load(section.getConfigurationSection("bed-bug"));
+        blastProofGlass = new ConfigurableBlastProofGlass();
+        blastProofGlass.load(section.getConfigurationSection("blast-proof-glass"));
         return this.loadEntries(section);
     }
 
@@ -79,6 +82,10 @@ public class ConfigurableCustomItems implements Loadable {
 
     public ConfigurableBedBug getBedBug() {
         return bedBug;
+    }
+
+    public ConfigurableBlastProofGlass getBlastProofGlass() {
+        return blastProofGlass;
     }
 
     public static class ConfigurablePopupTower implements Loadable{
@@ -687,6 +694,43 @@ public class ConfigurableCustomItems implements Loadable {
 
         public String getItemName() {
             return itemName;
+        }
+    }
+
+    public static class ConfigurableBlastProofGlass implements Loadable{
+
+        @LoadableEntry(key = "name")
+        private String glassItemName;
+
+        @LoadableEntry(key = "lore")
+        private List<String> glassItemLore;
+
+        public ConfigurableBlastProofGlass(){
+            this.glassItemName = "";
+            this.glassItemLore = new ArrayList<>();
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return false;
+        }
+
+        public List<String> getGlassItemLore() {
+            return glassItemLore;
+        }
+
+        public String getGlassItemName() {
+            return glassItemName;
         }
     }
 

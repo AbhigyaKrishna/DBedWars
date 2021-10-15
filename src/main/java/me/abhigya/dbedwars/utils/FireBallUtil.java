@@ -1,5 +1,7 @@
 package me.abhigya.dbedwars.utils;
 
+import me.Abhigya.core.util.reflection.general.ClassReflection;
+import me.Abhigya.core.util.reflection.general.FieldReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Fireball;
 import org.bukkit.util.Vector;
@@ -21,24 +23,20 @@ public class FireBallUtil {
         String nmsFireball = "net.minecraft.server." + version + "EntityFireball";
         String craftFireball = "org.bukkit.craftbukkit." + version + "entity.CraftFireball";
         try {
-            Class< ? > fireballClass = Class.forName( nmsFireball );
-
+            Class< ? > fireballClass = ClassReflection.getNmsClass("EntityFireball","Entity");
             fieldFireballDirX = fireballClass.getDeclaredField( "dirX" );
             fieldFireballDirY = fireballClass.getDeclaredField( "dirY" );
             fieldFireballDirZ = fireballClass.getDeclaredField( "dirZ" );
 
             craftFireballHandle = Class.forName( craftFireball ).getDeclaredMethod( "getHandle" );
 
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace( );
-            Bukkit.shutdown( );
-        } catch ( NoSuchFieldException | NoSuchMethodException e ) {
+        } catch ( ClassNotFoundException | NoSuchFieldException | NoSuchMethodException e ) {
             e.printStackTrace( );
         }
     }
 
 
-    public static Fireball setDirection( Fireball fireball, Vector direction ) {
+    public static void setDirection(Fireball fireball, Vector direction ) {
         try {
             Object handle = craftFireballHandle.invoke( fireball );
             fieldFireballDirX.set( handle, direction.getX( ) * 0.10D );
@@ -48,8 +46,9 @@ public class FireBallUtil {
         } catch ( IllegalAccessException | InvocationTargetException e ) {
             e.printStackTrace( );
         }
-        return fireball;
     }
+
+
 
 }
 
