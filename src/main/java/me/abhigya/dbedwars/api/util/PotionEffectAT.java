@@ -53,12 +53,9 @@ public class PotionEffectAT {
 
         int duration = MAX_DURATION;
         if (s.length > 2) {
-            /*if (s[2].equalsIgnoreCase("max"))
-                duration = MAX_DURATION;
-            else*/
-                try {
-                    duration = Integer.parseInt(s[2]);
-                } catch (NumberFormatException ignored) {}
+            try {
+                duration = Integer.parseInt(s[2]);
+            } catch (NumberFormatException ignored) {}
         }
 
         boolean particle = false;

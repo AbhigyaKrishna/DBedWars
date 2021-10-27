@@ -23,7 +23,7 @@ public class FireBallUtil {
         String nmsFireball = "net.minecraft.server." + version + "EntityFireball";
         String craftFireball = "org.bukkit.craftbukkit." + version + "entity.CraftFireball";
         try {
-            Class< ? > fireballClass = ClassReflection.getNmsClass("EntityFireball","Entity");
+            Class< ? > fireballClass = ClassReflection.getNmsClass("EntityFireball","");
             fieldFireballDirX = fireballClass.getDeclaredField( "dirX" );
             fieldFireballDirY = fireballClass.getDeclaredField( "dirY" );
             fieldFireballDirZ = fireballClass.getDeclaredField( "dirZ" );

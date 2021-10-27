@@ -353,6 +353,7 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler.registerItem( "BED_BUG", new BedBugSnowball( this ) );
         this.customItemHandler.registerItem("POPUP_TOWER", new PopupTowerChestItem(this));
         this.customItemHandler.registerItem("BLAST_PROOF_GLASS", new BlastProofGlass(this));
+
     }
 
     @Override
