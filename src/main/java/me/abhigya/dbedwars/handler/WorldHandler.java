@@ -7,19 +7,19 @@ import me.abhigya.dbedwars.task.DefaultWorldAdaptor;
 
 public class WorldHandler {
 
-  private final DBedwars plugin;
+    private final DBedwars plugin;
 
-  private final WorldAdaptor worldAdaptor;
+    private final WorldAdaptor worldAdaptor;
 
-  public WorldHandler(DBedwars plugin) {
-    this.plugin = plugin;
-    if (plugin.getDependences()[1].isEnabled()) {
-      this.worldAdaptor = new SlimeWorldManagerHook(this.plugin);
-      ((SlimeWorldManagerHook) this.worldAdaptor).setup();
-    } else this.worldAdaptor = new DefaultWorldAdaptor(plugin);
-  }
+    public WorldHandler(DBedwars plugin) {
+        this.plugin = plugin;
+        if (plugin.getDependences()[1].isEnabled()) {
+            this.worldAdaptor = new SlimeWorldManagerHook(this.plugin);
+            ((SlimeWorldManagerHook) this.worldAdaptor).setup();
+        } else this.worldAdaptor = new DefaultWorldAdaptor(plugin);
+    }
 
-  public WorldAdaptor getWorldAdaptor() {
-    return this.worldAdaptor;
-  }
+    public WorldAdaptor getWorldAdaptor() {
+        return this.worldAdaptor;
+    }
 }

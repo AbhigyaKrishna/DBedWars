@@ -13,40 +13,43 @@ import java.awt.*;
 import java.util.List;
 
 public class ImageParticleTestCommand implements CommandArgument {
-  @Override
-  public String getName() {
-    return "particle";
-  }
+    @Override
+    public String getName() {
+        return "particle";
+    }
 
-  @Override
-  public String getUsage() {
-    return null;
-  }
+    @Override
+    public String getUsage() {
+        return null;
+    }
 
-  @Override
-  public boolean execute(CommandSender commandSender, Command command, String s, String[] strings) {
-    DBedwars.getInstance()
-        .getImageHandler()
-        .getLoadedImages()
-        .forEach(
-            (key, colors) -> {
-              DBedwars.getInstance()
-                  .getThreadHandler()
-                  .addAsyncWork(
-                      new ParticleImageDisplayTask(
-                          100,
-                          new Dimension(2, 2),
-                          ((Player) commandSender).getLocation(),
-                          "x",
-                          colors,
-                          new ParticleBuilder(ParticleEffect.REDSTONE).setAmount(1).setSpeed(0)));
-            });
-    return true;
-  }
+    @Override
+    public boolean execute(
+            CommandSender commandSender, Command command, String s, String[] strings) {
+        DBedwars.getInstance()
+                .getImageHandler()
+                .getLoadedImages()
+                .forEach(
+                        (key, colors) -> {
+                            DBedwars.getInstance()
+                                    .getThreadHandler()
+                                    .addAsyncWork(
+                                            new ParticleImageDisplayTask(
+                                                    100,
+                                                    new Dimension(2, 2),
+                                                    ((Player) commandSender).getLocation(),
+                                                    "x",
+                                                    colors,
+                                                    new ParticleBuilder(ParticleEffect.REDSTONE)
+                                                            .setAmount(1)
+                                                            .setSpeed(0)));
+                        });
+        return true;
+    }
 
-  @Override
-  public List<String> tab(
-      CommandSender commandSender, Command command, String s, String[] strings) {
-    return null;
-  }
+    @Override
+    public List<String> tab(
+            CommandSender commandSender, Command command, String s, String[] strings) {
+        return null;
+    }
 }

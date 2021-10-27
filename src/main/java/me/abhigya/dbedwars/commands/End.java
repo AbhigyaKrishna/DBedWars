@@ -12,40 +12,41 @@ import java.util.List;
 
 public class End implements CommandArgument {
 
-  private final DBedwars plugin;
+    private final DBedwars plugin;
 
-  public End(DBedwars plugin) {
-    this.plugin = plugin;
-  }
-
-  @Override
-  public String getName() {
-    return "end";
-  }
-
-  @Override
-  public String getUsage() {
-    return null;
-  }
-
-  @Override
-  public boolean execute(CommandSender sender, Command command, String s, String[] args) {
-    if (!(sender instanceof Player)) return false;
-
-    Player player = (Player) sender;
-    Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
-    if (arena == null) {
-      player.sendMessage(StringUtils.translateAlternateColorCodes("&cYou are not in a arena!"));
-      return true;
+    public End(DBedwars plugin) {
+        this.plugin = plugin;
     }
 
-    arena.end();
-    return true;
-  }
+    @Override
+    public String getName() {
+        return "end";
+    }
 
-  @Override
-  public List<String> tab(
-      CommandSender commandSender, Command command, String s, String[] strings) {
-    return null;
-  }
+    @Override
+    public String getUsage() {
+        return null;
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, Command command, String s, String[] args) {
+        if (!(sender instanceof Player)) return false;
+
+        Player player = (Player) sender;
+        Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
+        if (arena == null) {
+            player.sendMessage(
+                    StringUtils.translateAlternateColorCodes("&cYou are not in a arena!"));
+            return true;
+        }
+
+        arena.end();
+        return true;
+    }
+
+    @Override
+    public List<String> tab(
+            CommandSender commandSender, Command command, String s, String[] strings) {
+        return null;
+    }
 }

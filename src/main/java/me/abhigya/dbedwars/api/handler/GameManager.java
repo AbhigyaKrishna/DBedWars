@@ -6,11 +6,11 @@ import java.util.Map;
 
 public interface GameManager {
 
-  Arena createArena(String name);
+    Arena createArena(String name);
 
-  boolean containsArena(String name);
+    boolean containsArena(String name);
 
-  Map<String, Arena> getArenas();
+    Map<String, Arena> getArenas();
 
-  Arena getArena(String name);
+    Arena getArena(String name);
 }

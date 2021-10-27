@@ -8,11 +8,11 @@ import java.util.function.Consumer;
 
 public interface Trap {
 
-  void trigger(ArenaPlayer target, Team team);
+    void trigger(ArenaPlayer target, Team team);
 
-  String getId();
+    String getId();
 
-  TrapEnum.TriggerType getTrigger();
+    TrapEnum.TriggerType getTrigger();
 
-  Map<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> getActions();
+    Map<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> getActions();
 }

@@ -12,21 +12,21 @@ import org.bukkit.entity.Silverfish;
 
 public interface NMSAdaptor {
 
-  void clearRegionFileCache(World world);
+    void clearRegionFileCache(World world);
 
-  void clearChunkCache(World world);
+    void clearChunkCache(World world);
 
-  void refreshPlayerChunk(Player player);
+    void refreshPlayerChunk(Player player);
 
-  void clearDefaultPathFinding(LivingEntity entity);
+    void clearDefaultPathFinding(LivingEntity entity);
 
-  void clearDefaultPathFinding(Object entityCreature);
+    void clearDefaultPathFinding(Object entityCreature);
 
-  void setBlockResistance(Block block, Float resistance);
+    void setBlockResistance(Block block, Float resistance);
 
-  IVillager spawnNPCVillager(Location location);
+    IVillager spawnNPCVillager(Location location);
 
-  IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer);
+    IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer);
 
-  IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
+    IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
 }

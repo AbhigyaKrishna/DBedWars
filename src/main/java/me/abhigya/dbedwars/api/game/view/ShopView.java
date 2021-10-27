@@ -8,11 +8,11 @@ import java.util.Map;
 
 public interface ShopView extends Cloneable, Overridable {
 
-  ArenaPlayer getPlayer();
+    ArenaPlayer getPlayer();
 
-  String getDefaultPage();
+    String getDefaultPage();
 
-  Map<String, ViewItem> getCommons();
+    Map<String, ViewItem> getCommons();
 
-  Map<String, ShopPage> getShopPages();
+    Map<String, ShopPage> getShopPages();
 }

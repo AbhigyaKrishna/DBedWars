@@ -10,31 +10,31 @@ import java.util.Collection;
 
 public class ArenaEndEvent extends CustomEventCancellable {
 
-  private static final HandlerList HANDLER_LIST = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
-  private final Arena arena;
-  private final Collection<ArenaPlayer> winners;
+    private final Arena arena;
+    private final Collection<ArenaPlayer> winners;
 
-  public ArenaEndEvent(Arena arena, Collection<ArenaPlayer> winners) {
-    this.arena = arena;
-    this.winners = winners;
-  }
+    public ArenaEndEvent(Arena arena, Collection<ArenaPlayer> winners) {
+        this.arena = arena;
+        this.winners = winners;
+    }
 
-  public static HandlerList getHandlerList() {
-    return HANDLER_LIST;
-  }
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
 
-  public Arena getArena() {
-    return this.arena;
-  }
+    public Arena getArena() {
+        return this.arena;
+    }
 
-  public Collection<ArenaPlayer> getWinners() {
-    return this.winners;
-  }
+    public Collection<ArenaPlayer> getWinners() {
+        return this.winners;
+    }
 
-  @NotNull
-  @Override
-  public HandlerList getHandlers() {
-    return HANDLER_LIST;
-  }
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
 }

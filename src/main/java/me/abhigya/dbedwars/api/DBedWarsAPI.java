@@ -6,29 +6,29 @@ import me.abhigya.dbedwars.api.handler.*;
 
 public abstract class DBedWarsAPI {
 
-  private static DBedWarsAPI INSTANCE = null;
+    private static DBedWarsAPI INSTANCE = null;
 
-  public DBedWarsAPI() {
-    INSTANCE = this;
-  }
+    public DBedWarsAPI() {
+        INSTANCE = this;
+    }
 
-  public static DBedWarsAPI getApi() {
-    return INSTANCE;
-  }
+    public static DBedWarsAPI getApi() {
+        return INSTANCE;
+    }
 
-  public abstract Version getServerVersion();
+    public abstract Version getServerVersion();
 
-  public abstract String getPluginVersion();
+    public abstract String getPluginVersion();
 
-  public abstract GameManager getGameManager();
+    public abstract GameManager getGameManager();
 
-  public abstract WorldAdaptor getGeneratorHandler();
+    public abstract WorldAdaptor getGeneratorHandler();
 
-  public abstract CustomItemHandler getCustomItemHandler();
+    public abstract CustomItemHandler getCustomItemHandler();
 
-  public abstract GuiHandler getGuiHandler();
+    public abstract GuiHandler getGuiHandler();
 
-  public abstract ThreadHandler getThreadHandler();
+    public abstract ThreadHandler getThreadHandler();
 
-  public abstract HologramFactory getHologramFactory();
+    public abstract HologramFactory getHologramFactory();
 }

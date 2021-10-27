@@ -12,305 +12,305 @@ import java.util.Map;
 
 public class ConfigurableShop implements Loadable {
 
-  @LoadableEntry(key = "default-page")
-  private String defaultPage;
+    @LoadableEntry(key = "default-page")
+    private String defaultPage;
 
-  @LoadableCollectionEntry(subsection = "pages")
-  private Map<String, ConfigurablePage> pages;
+    @LoadableCollectionEntry(subsection = "pages")
+    private Map<String, ConfigurablePage> pages;
 
-  @LoadableCollectionEntry(subsection = "common")
-  private Map<String, ConfigurablePage.BwGUIItem> commonItems;
+    @LoadableCollectionEntry(subsection = "common")
+    private Map<String, ConfigurablePage.BwGUIItem> commonItems;
 
-  public ConfigurableShop() {
-    this.pages = new HashMap<>();
-    this.commonItems = new HashMap<>();
-  }
-
-  @Override
-  public Loadable load(ConfigurationSection section) {
-    return this.loadEntries(section);
-  }
-
-  @Override
-  public boolean isValid() {
-    return !this.pages.isEmpty();
-  }
-
-  @Override
-  public boolean isInvalid() {
-    return !this.isValid();
-  }
-
-  public String getDefaultPage() {
-    return defaultPage;
-  }
-
-  public Map<String, ConfigurablePage.BwGUIItem> getCommonItems() {
-    return commonItems;
-  }
-
-  public Map<String, ConfigurablePage> getPages() {
-    return pages;
-  }
-
-  public static class ConfigurablePage implements Loadable {
-
-    @LoadableEntry(key = "title")
-    private String guiTitle;
-
-    @LoadableEntry(key = "pattern")
-    private List<String> pattern;
-
-    @LoadableCollectionEntry(subsection = "items")
-    private Map<String, BwGUIItem> items;
-
-    public ConfigurablePage() {
-      this.pattern = new ArrayList<>();
-      this.items = new HashMap<>();
+    public ConfigurableShop() {
+        this.pages = new HashMap<>();
+        this.commonItems = new HashMap<>();
     }
 
     @Override
     public Loadable load(ConfigurationSection section) {
-      return this.loadEntries(section);
+        return this.loadEntries(section);
     }
 
     @Override
     public boolean isValid() {
-      return this.guiTitle != null && !this.pattern.isEmpty();
+        return !this.pages.isEmpty();
     }
 
     @Override
     public boolean isInvalid() {
-      return !this.isValid();
+        return !this.isValid();
     }
 
-    public Map<String, BwGUIItem> getItems() {
-      return items;
+    public String getDefaultPage() {
+        return defaultPage;
     }
 
-    public List<String> getPattern() {
-      return pattern;
+    public Map<String, ConfigurablePage.BwGUIItem> getCommonItems() {
+        return commonItems;
     }
 
-    public String getGuiTitle() {
-      return guiTitle;
+    public Map<String, ConfigurablePage> getPages() {
+        return pages;
     }
 
-    public static class BwGUIItem implements Loadable {
+    public static class ConfigurablePage implements Loadable {
 
-      @LoadableEntry(key = "name")
-      private String itemName;
+        @LoadableEntry(key = "title")
+        private String guiTitle;
 
-      @LoadableEntry(key = "lore")
-      private List<String> itemLore;
+        @LoadableEntry(key = "pattern")
+        private List<String> pattern;
 
-      @LoadableEntry(key = "material")
-      private String material;
+        @LoadableCollectionEntry(subsection = "items")
+        private Map<String, BwGUIItem> items;
 
-      @LoadableEntry(key = "amount")
-      private int amount;
+        public ConfigurablePage() {
+            this.pattern = new ArrayList<>();
+            this.items = new HashMap<>();
+        }
 
-      @LoadableEntry(key = "enchantment")
-      private List<String> enchant;
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
 
-      private ConfigurableAttribute attribute;
+        @Override
+        public boolean isValid() {
+            return this.guiTitle != null && !this.pattern.isEmpty();
+        }
 
-      public BwGUIItem() {
-        this.amount = 1;
-        this.itemLore = new ArrayList<>();
-        this.attribute = new ConfigurableAttribute();
-        this.enchant = new ArrayList<>();
-      }
+        @Override
+        public boolean isInvalid() {
+            return !this.isValid();
+        }
 
-      @Override
-      public Loadable load(ConfigurationSection section) {
-        this.attribute.load(section.getConfigurationSection("attribute"));
-        return this.loadEntries(section);
-      }
+        public Map<String, BwGUIItem> getItems() {
+            return items;
+        }
 
-      @Override
-      public boolean isValid() {
-        return true;
-      }
+        public List<String> getPattern() {
+            return pattern;
+        }
 
-      @Override
-      public boolean isInvalid() {
-        return false;
-      }
+        public String getGuiTitle() {
+            return guiTitle;
+        }
 
-      public List<String> getItemLore() {
-        return itemLore;
-      }
+        public static class BwGUIItem implements Loadable {
 
-      public String getItemName() {
-        return itemName;
-      }
+            @LoadableEntry(key = "name")
+            private String itemName;
 
-      public int getAmount() {
-        return amount;
-      }
+            @LoadableEntry(key = "lore")
+            private List<String> itemLore;
 
-      public String getMaterial() {
-        return material;
-      }
+            @LoadableEntry(key = "material")
+            private String material;
 
-      public List<String> getEnchant() {
-        return enchant;
-      }
+            @LoadableEntry(key = "amount")
+            private int amount;
 
-      public ConfigurableAttribute getAttribute() {
-        return attribute;
-      }
-    }
-  }
+            @LoadableEntry(key = "enchantment")
+            private List<String> enchant;
 
-  public static class ConfigurableAttribute implements Loadable {
+            private ConfigurableAttribute attribute;
 
-    @LoadableEntry(key = "type")
-    private String type;
+            public BwGUIItem() {
+                this.amount = 1;
+                this.itemLore = new ArrayList<>();
+                this.attribute = new ConfigurableAttribute();
+                this.enchant = new ArrayList<>();
+            }
 
-    @LoadableEntry(key = "page")
-    private String pageToChangeTo;
+            @Override
+            public Loadable load(ConfigurationSection section) {
+                this.attribute.load(section.getConfigurationSection("attribute"));
+                return this.loadEntries(section);
+            }
 
-    @LoadableEntry(key = "cost")
-    private String cost;
+            @Override
+            public boolean isValid() {
+                return true;
+            }
 
-    @LoadableEntry(key = "next-tier")
-    private String nextTier;
+            @Override
+            public boolean isInvalid() {
+                return false;
+            }
 
-    @LoadableEntry(key = "previous-tier")
-    private String previousTier;
+            public List<String> getItemLore() {
+                return itemLore;
+            }
 
-    @LoadableEntry(key = "downgrade-event")
-    private String downgradeEvent;
+            public String getItemName() {
+                return itemName;
+            }
 
-    @LoadableEntry(key = "command")
-    private List<String> command;
+            public int getAmount() {
+                return amount;
+            }
 
-    @LoadableCollectionEntry(subsection = "item")
-    private Map<String, AttributeItems> itemsToGive;
+            public String getMaterial() {
+                return material;
+            }
 
-    public ConfigurableAttribute() {
-      itemsToGive = new HashMap<>();
-    }
+            public List<String> getEnchant() {
+                return enchant;
+            }
 
-    @Override
-    public Loadable load(ConfigurationSection section) {
-      return this.loadEntries(section);
-    }
-
-    @Override
-    public boolean isValid() {
-      return this.type != null && this.cost != null;
-    }
-
-    @Override
-    public boolean isInvalid() {
-      return !this.isValid();
+            public ConfigurableAttribute getAttribute() {
+                return attribute;
+            }
+        }
     }
 
-    public Map<String, AttributeItems> getItemsToGive() {
-      return itemsToGive;
+    public static class ConfigurableAttribute implements Loadable {
+
+        @LoadableEntry(key = "type")
+        private String type;
+
+        @LoadableEntry(key = "page")
+        private String pageToChangeTo;
+
+        @LoadableEntry(key = "cost")
+        private String cost;
+
+        @LoadableEntry(key = "next-tier")
+        private String nextTier;
+
+        @LoadableEntry(key = "previous-tier")
+        private String previousTier;
+
+        @LoadableEntry(key = "downgrade-event")
+        private String downgradeEvent;
+
+        @LoadableEntry(key = "command")
+        private List<String> command;
+
+        @LoadableCollectionEntry(subsection = "item")
+        private Map<String, AttributeItems> itemsToGive;
+
+        public ConfigurableAttribute() {
+            itemsToGive = new HashMap<>();
+        }
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return this.type != null && this.cost != null;
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return !this.isValid();
+        }
+
+        public Map<String, AttributeItems> getItemsToGive() {
+            return itemsToGive;
+        }
+
+        public String getCost() {
+            return cost;
+        }
+
+        public String getAttributeType() {
+            return type;
+        }
+
+        public String getDowngradeEvent() {
+            return downgradeEvent;
+        }
+
+        public String getNextTier() {
+            return nextTier;
+        }
+
+        public String getPreviousTier() {
+            return previousTier;
+        }
+
+        public String getPageToChangeTo() {
+            return pageToChangeTo;
+        }
+
+        public List<String> getCommand() {
+            return command;
+        }
+
+        public static class AttributeItems implements Loadable {
+
+            @LoadableEntry(key = "enchantment")
+            List<String> enchant;
+
+            @LoadableEntry(key = "custom-item")
+            private String customItem;
+
+            @LoadableEntry(key = "material")
+            private String material;
+
+            @LoadableEntry(key = "amount")
+            private int amount;
+
+            @LoadableEntry(key = "name")
+            private String name;
+
+            @LoadableEntry(key = "lore")
+            private List<String> lore;
+
+            @LoadableEntry(key = "auto-equip-slot")
+            private int autoEquipSlot;
+
+            public AttributeItems() {
+                this.amount = 1;
+                this.lore = new ArrayList<>();
+            }
+
+            @Override
+            public Loadable load(ConfigurationSection section) {
+                return this.loadEntries(section);
+            }
+
+            @Override
+            public boolean isValid() {
+                return this.material != null;
+            }
+
+            @Override
+            public boolean isInvalid() {
+                return false;
+            }
+
+            public String getCustomItem() {
+                return customItem;
+            }
+
+            public int getAmount() {
+                return amount;
+            }
+
+            public String getMaterial() {
+                return material;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public List<String> getLore() {
+                return lore;
+            }
+
+            public List<String> getEnchant() {
+                return enchant;
+            }
+
+            public int getAutoEquipSlot() {
+                return autoEquipSlot;
+            }
+        }
     }
-
-    public String getCost() {
-      return cost;
-    }
-
-    public String getAttributeType() {
-      return type;
-    }
-
-    public String getDowngradeEvent() {
-      return downgradeEvent;
-    }
-
-    public String getNextTier() {
-      return nextTier;
-    }
-
-    public String getPreviousTier() {
-      return previousTier;
-    }
-
-    public String getPageToChangeTo() {
-      return pageToChangeTo;
-    }
-
-    public List<String> getCommand() {
-      return command;
-    }
-
-    public static class AttributeItems implements Loadable {
-
-      @LoadableEntry(key = "enchantment")
-      List<String> enchant;
-
-      @LoadableEntry(key = "custom-item")
-      private String customItem;
-
-      @LoadableEntry(key = "material")
-      private String material;
-
-      @LoadableEntry(key = "amount")
-      private int amount;
-
-      @LoadableEntry(key = "name")
-      private String name;
-
-      @LoadableEntry(key = "lore")
-      private List<String> lore;
-
-      @LoadableEntry(key = "auto-equip-slot")
-      private int autoEquipSlot;
-
-      public AttributeItems() {
-        this.amount = 1;
-        this.lore = new ArrayList<>();
-      }
-
-      @Override
-      public Loadable load(ConfigurationSection section) {
-        return this.loadEntries(section);
-      }
-
-      @Override
-      public boolean isValid() {
-        return this.material != null;
-      }
-
-      @Override
-      public boolean isInvalid() {
-        return false;
-      }
-
-      public String getCustomItem() {
-        return customItem;
-      }
-
-      public int getAmount() {
-        return amount;
-      }
-
-      public String getMaterial() {
-        return material;
-      }
-
-      public String getName() {
-        return name;
-      }
-
-      public List<String> getLore() {
-        return lore;
-      }
-
-      public List<String> getEnchant() {
-        return enchant;
-      }
-
-      public int getAutoEquipSlot() {
-        return autoEquipSlot;
-      }
-    }
-  }
 }

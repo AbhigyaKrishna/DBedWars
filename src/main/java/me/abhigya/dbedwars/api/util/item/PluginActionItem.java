@@ -13,29 +13,29 @@ import java.util.Collection;
 
 public abstract class PluginActionItem extends ActionItemBase {
 
-  private final DBedwars plugin;
+    private final DBedwars plugin;
 
-  public PluginActionItem(
-      DBedwars plugin, String display_name, Collection<String> lore, Material material) {
-    super(display_name, lore, material);
-    this.plugin = plugin;
-  }
+    public PluginActionItem(
+            DBedwars plugin, String display_name, Collection<String> lore, Material material) {
+        super(display_name, lore, material);
+        this.plugin = plugin;
+    }
 
-  @Override
-  public ItemStack toItemStack() {
-    return this.toBwItemStack().toItemStack();
-  }
+    @Override
+    public ItemStack toItemStack() {
+        return this.toBwItemStack().toItemStack();
+    }
 
-  public BwItemStack toBwItemStack() {
-    return new BwItemStack(super.toItemStack());
-  }
+    public BwItemStack toBwItemStack() {
+        return new BwItemStack(super.toItemStack());
+    }
 
-  @Override
-  public boolean isThis(ItemStack item) {
-    return super.isThis(item) && Utils.hasPluginData(item);
-  }
+    @Override
+    public boolean isThis(ItemStack item) {
+        return super.isThis(item) && Utils.hasPluginData(item);
+    }
 
-  @Override
-  public void onActionPerform(
-      Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+    @Override
+    public void onActionPerform(
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 }

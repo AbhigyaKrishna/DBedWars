@@ -9,99 +9,99 @@ import java.util.Map;
 
 public interface DropType extends Cloneable {
 
-  String getConfigId();
+    String getConfigId();
 
-  String getId();
+    String getId();
 
-  String getSimpleName();
+    String getSimpleName();
 
-  BwItemStack getIcon();
+    BwItemStack getIcon();
 
-  SoundVP getSpawnSound();
+    SoundVP getSpawnSound();
 
-  void setSpawnSound(SoundVP sound);
+    void setSpawnSound(SoundVP sound);
 
-  ParticleEffect getSpawnEffect();
+    ParticleEffect getSpawnEffect();
 
-  void setSpawnEffect(ParticleEffect effect);
+    void setSpawnEffect(ParticleEffect effect);
 
-  int getSpawnRadius();
+    int getSpawnRadius();
 
-  void setSpawnRadius(int radius);
+    void setSpawnRadius(int radius);
 
-  boolean isTeamSpawner();
+    boolean isTeamSpawner();
 
-  void setTeamSpawner(boolean flag);
+    void setTeamSpawner(boolean flag);
 
-  boolean isMerging();
+    boolean isMerging();
 
-  void setMerging(boolean flag);
+    void setMerging(boolean flag);
 
-  boolean isSplitable();
+    boolean isSplitable();
 
-  void setSplitable(boolean flag);
+    void setSplitable(boolean flag);
 
-  boolean isHologramEnabled();
+    boolean isHologramEnabled();
 
-  void setHologramEnabled(boolean flag);
+    void setHologramEnabled(boolean flag);
 
-  BwItemStack getHologramMaterial();
+    BwItemStack getHologramMaterial();
 
-  void setHologramMaterial(BwItemStack stack);
+    void setHologramMaterial(BwItemStack stack);
 
-  List<String> getHologramText();
+    List<String> getHologramText();
 
-  Tier getTier(int level);
+    Tier getTier(int level);
 
-  boolean hasTier(int level);
+    boolean hasTier(int level);
 
-  Map<Integer, Tier> getTiers();
+    Map<Integer, Tier> getTiers();
 
-  boolean isRegistered();
+    boolean isRegistered();
 
-  DropType clone();
+    DropType clone();
 
-  interface Tier extends Cloneable {
+    interface Tier extends Cloneable {
 
-    double getUpgradeDelay();
+        double getUpgradeDelay();
 
-    void setUpgradeDelay(double delay);
+        void setUpgradeDelay(double delay);
 
-    SoundVP getUpgradeSound();
+        SoundVP getUpgradeSound();
 
-    void setUpgradeSound(SoundVP sound);
+        void setUpgradeSound(SoundVP sound);
 
-    ParticleEffect getUpgradeEffect();
+        ParticleEffect getUpgradeEffect();
 
-    void setUpgradeEffect(ParticleEffect effect);
+        void setUpgradeEffect(ParticleEffect effect);
 
-    String getUpgradeMessage();
+        String getUpgradeMessage();
 
-    void setUpgradeMessage(String message);
+        void setUpgradeMessage(String message);
 
-    List<Drop> getDrops();
+        List<Drop> getDrops();
 
-    Map<String, Drop> getDropMap();
+        Map<String, Drop> getDropMap();
 
-    Tier clone();
-  }
+        Tier clone();
+    }
 
-  interface Drop extends Cloneable {
+    interface Drop extends Cloneable {
 
-    String getKey();
+        String getKey();
 
-    BwItemStack getItem();
+        BwItemStack getItem();
 
-    void setItem(BwItemStack stack);
+        void setItem(BwItemStack stack);
 
-    double getDelay();
+        double getDelay();
 
-    void setDelay(double delay);
+        void setDelay(double delay);
 
-    int getMaxSpawn();
+        int getMaxSpawn();
 
-    void setMaxSpawn(int maxSpawn);
+        void setMaxSpawn(int maxSpawn);
 
-    Drop clone();
-  }
+        Drop clone();
+    }
 }

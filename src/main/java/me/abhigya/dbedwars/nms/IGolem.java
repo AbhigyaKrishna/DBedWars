@@ -2,11 +2,11 @@ package me.abhigya.dbedwars.nms;
 
 public interface IGolem {
 
-  IGolem clearDefaultPathfinding();
+    IGolem clearDefaultPathfinding();
 
-  IGolem addCustomDefaults();
+    IGolem addCustomDefaults();
 
-  IGolem initTargets(double reachModifier);
+    IGolem initTargets(double reachModifier);
 
-  IGolem setChaseRadius(float radius);
+    IGolem setChaseRadius(float radius);
 }
