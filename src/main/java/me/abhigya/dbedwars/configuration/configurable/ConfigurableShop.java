@@ -72,6 +72,8 @@ public class ConfigurableShop implements Loadable {
         @Override
         public Loadable load( ConfigurationSection section ) {
             return this.loadEntries( section );
+
+            
         }
 
         @Override
