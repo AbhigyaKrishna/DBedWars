@@ -20,7 +20,6 @@ import me.abhigya.dbedwars.api.util.KickReason;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.configuration.PluginFiles;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableArena;
-import me.abhigya.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import me.abhigya.dbedwars.game.TeamAssigner;
 import me.abhigya.dbedwars.game.arena.view.shop.ShopView;
 import me.abhigya.dbedwars.listeners.ArenaListener;
@@ -321,65 +320,40 @@ public class Arena implements me.abhigya.dbedwars.api.game.Arena {
 
     if (event.isCancelled()) return false;
 
-    this.gameHandler.register();
-    this.arenaHandler.unregister();
-    this.players.forEach(
-        p -> {
-          p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
-          ((ShopView) p.getShopView()).load();
-        });
+        this.gameHandler.register( );
+        this.arenaHandler.unregister( );
 
-    // TODO manage scoreboard
-    this.plugin
-        .getThreadHandler()
-        .addSyncWork(
-            new Workload() {
-              @Override
-              public void compute() {
-                Arena.this.scoreboard =
-                    new ScoreboardImpl(
-                        Arena.this.plugin,
-                        new ArrayList<ConfigurableScoreboard>(
-                                Arena.this.plugin.getConfigHandler().getScoreboards())
-                            .get(0));
-                Arena.this.scoreboard.createScoreboard();
-                Arena.this.players.forEach(p -> Arena.this.scoreboard.show(p.getPlayer()));
-                Arena.this.scoreboard.getHandle().update();
-              }
-            });
+        // TODO manage scoreboard
+        this.plugin.getThreadHandler( ).addSyncWork( new Workload( ) {
+            @Override
+            public void compute( ) {
+                Arena.this.scoreboard = new ScoreboardImpl( Arena.this.plugin, new ArrayList<>( Arena.this.plugin.getConfigHandler( ).getScoreboards( ) ).get( 0 ) );
+                Arena.this.scoreboard.createScoreboard( );
+                Arena.this.players.forEach( p -> Arena.this.scoreboard.show( p.getPlayer( ) ) );
+                Arena.this.scoreboard.getHandle( ).update( );
+                Arena.this.teams.forEach( t -> t.registerTeam( Arena.this.scoreboard.getHandle( ).getHandle( ) ) );
+            }
+        } );
 
-    this.teams.forEach(
-        t ->
-            t.getSpawners()
-                .entries()
-                .forEach(
-                    e ->
-                        new me.abhigya.dbedwars.game.arena.Spawner(
-                                this.plugin,
-                                e.getKey(),
-                                e.getValue().toBukkit(this.getWorld()),
-                                this,
-                                t)
-                            .init()));
-    this.settings
-        .getDrops()
-        .entries()
-        .forEach(
-            e ->
-                new me.abhigya.dbedwars.game.arena.Spawner(
-                        this.plugin, e.getKey(), e.getValue().toBukkit(this.getWorld()), this, null)
-                    .init());
+        this.teams.forEach( t -> {
+            t.getSpawners( ).entries( ).forEach( e ->
+                    new me.abhigya.dbedwars.game.arena.Spawner( this.plugin, e.getKey( ), e.getValue( ).toBukkit( this.getWorld( ) ), this, t ).init( ) );
+            t.spawnShopNpc( t.getShopNpc( ) );
+            t.spawnUpgradesNpc( t.getUpgradesNpc( ) );
+        } );
 
-    this.teams.forEach(
-        t -> {
-          t.spawnShopNpc(t.getShopNpc());
-          t.spawnUpgradesNpc(t.getUpgradesNpc());
-        });
+        this.settings.getDrops( ).entries( ).forEach( e ->
+                new me.abhigya.dbedwars.game.arena.Spawner( this.plugin, e.getKey( ), e.getValue( ).toBukkit( this.getWorld( ) ), this, null ).init( ) );
 
-    this.status = ArenaStatus.RUNNING;
-    this.startTime = Instant.now();
-    return true;
-  }
+        this.players.forEach( p -> {
+            p.spawn( p.getTeam( ).getSpawn( ).toBukkit( this.world ) );
+            ( (ShopView) p.getShopView( ) ).load( );
+        } );
+
+        this.status = ArenaStatus.RUNNING;
+        this.startTime = Instant.now( );
+        return true;
+    }
 
   // TODO: revamp this
   @Override

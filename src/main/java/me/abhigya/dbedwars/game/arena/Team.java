@@ -22,6 +22,7 @@ import me.abhigya.dbedwars.api.util.LocationXYZYP;
 import me.abhigya.dbedwars.api.util.TrapEnum;
 import me.abhigya.dbedwars.configuration.configurable.ConfigurableTeam;
 import me.abhigya.dbedwars.utils.ConfigurationUtils;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -37,6 +38,7 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
   private Multimap<DropType, LocationXYZ> spawners;
 
   private Arena arena;
+  private org.bukkit.scoreboard.Team handle;
   private boolean bedBroken;
   private boolean eliminated;
   private Set<ArenaPlayer> players;
@@ -160,6 +162,15 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
             this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
             this.spawn.getY() + 50,
             this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
+  }
+
+  @Override
+  public void registerTeam(Scoreboard scoreboard) {
+    this.handle = scoreboard.registerNewTeam(this.getName());
+    this.handle.setDisplayName(this.getColor().getChatColor() + "[" + this.getName() + "]");
+    this.handle.setAllowFriendlyFire(false);
+    this.handle.setPrefix(this.getColor().getChatColor() + "[" + this.getName() + "] ");
+    this.players.forEach(p -> this.handle.addEntry(p.getPlayer().getName()));
   }
 
   @Override
@@ -330,10 +341,12 @@ public class Team implements me.abhigya.dbedwars.api.game.Team {
     this.arena = null;
     this.players = null;
     this.islandArea = null;
+    this.handle.unregister();
     this.plugin.getNpcHandler().removeNPC(this.shopNpc.getEntityId());
     this.shopNpc = null;
     this.plugin.getNpcHandler().removeNPC(this.upgradesNpc.getEntityId());
     this.upgradesNpc = null;
     this.trapQueue.clear();
   }
+
 }

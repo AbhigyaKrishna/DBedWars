@@ -5,6 +5,7 @@ import me.abhigya.dbedwars.api.game.spawner.Spawner;
 import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.KickReason;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
+import me.abhigya.dbedwars.utils.ScoreboardImpl;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Material;
 import org.bukkit.World;

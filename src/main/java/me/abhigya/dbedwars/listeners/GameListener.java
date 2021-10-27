@@ -362,15 +362,15 @@ public class GameListener extends PluginHandler {
 
     if (event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
-    this.arena
-        .getAsArenaPlayer(event.getPlayer())
-        .ifPresent(
-            p -> {
-              for (Team team : this.arena.getTeams()) {
-                if (team.getIslandArea()
-                    .contains(event.getTo().getBlock().getLocation().toVector())) {
-                  PlayerBaseEnterEvent e = new PlayerBaseEnterEvent(p, this.arena, team);
-                  e.call();
+        this.arena.getAsArenaPlayer( event.getPlayer( ) ).ifPresent( p -> {
+
+            for ( Team team : this.arena.getTeams( ) ) {
+                if ( team.getIslandArea( ).contains( event.getTo( ).toVector( ) ) &&
+                        !team.getIslandArea( ).contains( event.getFrom( ).toVector( ) ) ) {
+                    PlayerBaseEnterEvent e = new PlayerBaseEnterEvent( p, this.arena, team );
+                    e.call( );
+
+
                 }
               }
             });

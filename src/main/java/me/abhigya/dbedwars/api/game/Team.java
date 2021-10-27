@@ -7,6 +7,7 @@ import me.abhigya.dbedwars.api.util.Color;
 import me.abhigya.dbedwars.api.util.LocationXYZ;
 import me.abhigya.dbedwars.api.util.LocationXYZYP;
 import me.abhigya.dbedwars.api.util.TrapEnum;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,9 @@ public interface Team {
 
   void init(Arena arena);
 
-  Arena getArena();
+    void registerTeam(Scoreboard scoreboard);
+
+    Arena getArena();
 
   void addPlayer(ArenaPlayer player);
 
