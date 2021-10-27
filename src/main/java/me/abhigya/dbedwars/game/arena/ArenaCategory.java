@@ -4,12 +4,11 @@ public class ArenaCategory {
 
     private final String name;
 
-    public ArenaCategory( String name ) {
+    public ArenaCategory(String name) {
         this.name = name;
     }
 
-    public String getName( ) {
+    public String getName() {
         return name;
     }
-
 }

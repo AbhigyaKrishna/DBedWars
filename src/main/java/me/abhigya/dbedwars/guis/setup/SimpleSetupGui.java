@@ -163,8 +163,8 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                                                 .sendMessage(
                                                         StringUtils.translateAlternateColorCodes(
                                                                 "&cArena world not set. Teleporting"
-                                                                    + " to location in current"
-                                                                    + " world!"));
+                                                                        + " to location in current"
+                                                                        + " world!"));
                                         itemClickAction
                                                 .getPlayer()
                                                 .teleport(

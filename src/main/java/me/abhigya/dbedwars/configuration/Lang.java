@@ -14,7 +14,7 @@ public enum Lang {
     ERROR_WRITE_FILES(
             "error.write-files",
             "&aPlugin resource directories cannot be created. Please check if the system has"
-                + " required permissions to write files!"),
+                    + " required permissions to write files!"),
 
     /* General */
     ARENA("general.arena", "arena"),
