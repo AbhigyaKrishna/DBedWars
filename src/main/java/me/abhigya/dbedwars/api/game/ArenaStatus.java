@@ -1,19 +1,17 @@
 package me.abhigya.dbedwars.api.game;
 
 public enum ArenaStatus {
+  IDLING,
+  WAITING,
+  STARTING,
+  RUNNING,
+  ENDING,
+  REGENERATING,
+  SLEEPING,
+  STOPPED,
+  ;
 
-    IDLING,
-    WAITING,
-    STARTING,
-    RUNNING,
-    ENDING,
-    REGENERATING,
-    SLEEPING,
-    STOPPED,
-    ;
-
-    public int getId( ) {
-        return this.ordinal( ) + 1;
-    }
-
+  public int getId() {
+    return this.ordinal() + 1;
+  }
 }

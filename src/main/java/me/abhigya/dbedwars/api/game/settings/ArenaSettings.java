@@ -16,124 +16,123 @@ import java.util.Set;
 
 public interface ArenaSettings {
 
-    Arena getArena( );
+  Arena getArena();
 
-    String getName( );
+  String getName();
 
-    void setName( String name );
+  void setName(String name);
 
-    String getCustomName( );
+  String getCustomName();
 
-    void setCustomName( String customName );
+  void setCustomName(String customName);
 
-    boolean hasCustomName( );
+  boolean hasCustomName();
 
-    World.Environment getWorldEnv( );
+  World.Environment getWorldEnv();
 
-    void setWorldEnv( World.Environment worldEnv );
+  void setWorldEnv(World.Environment worldEnv);
 
-    RegenerationType getRegenerationType( );
+  RegenerationType getRegenerationType();
 
-    void setRegenerationType( RegenerationType regenerationType );
+  void setRegenerationType(RegenerationType regenerationType);
 
-    LocationXYZYP getLobby( );
+  LocationXYZYP getLobby();
 
-    void setLobby( LocationXYZYP lobby );
+  void setLobby(LocationXYZYP lobby);
 
-    boolean hasLobby( );
+  boolean hasLobby();
 
-    LocationXYZYP getSpectatorLocation( );
+  LocationXYZYP getSpectatorLocation();
 
-    void setSpectatorLocation( LocationXYZYP spectatorLocation );
+  void setSpectatorLocation(LocationXYZYP spectatorLocation);
 
-    LocationXYZ getLobbyPosMax( );
+  LocationXYZ getLobbyPosMax();
 
-    void setLobbyPosMax( LocationXYZ location );
+  void setLobbyPosMax(LocationXYZ location);
 
-    LocationXYZ getLobbyPosMin( );
+  LocationXYZ getLobbyPosMin();
 
-    void setLobbyPosMin( LocationXYZ location );
+  void setLobbyPosMin(LocationXYZ location);
 
-    BwItemStack getIcon( );
+  BwItemStack getIcon();
 
-    void setIcon( BwItemStack icon );
+  void setIcon(BwItemStack icon);
 
-    int getTeamPlayers( );
+  int getTeamPlayers();
 
-    void setTeamPlayers( int teamPlayers );
+  void setTeamPlayers(int teamPlayers);
 
-    int getMinPlayers( );
+  int getMinPlayers();
 
-    void setMinPlayers( int minPlayers );
+  void setMinPlayers(int minPlayers);
 
-    int getMaxPlayer( );
+  int getMaxPlayer();
 
-    Multimap< DropType, LocationXYZ > getDrops( );
+  Multimap<DropType, LocationXYZ> getDrops();
 
-    void addDrop( DropType dropType, LocationXYZ location );
+  void addDrop(DropType dropType, LocationXYZ location);
 
-    void removeDrop( LocationXYZ location );
+  void removeDrop(LocationXYZ location);
 
-    void removeDrop( DropType dropType, LocationXYZ location );
+  void removeDrop(DropType dropType, LocationXYZ location);
 
-    Collection< LocationXYZ > getDropLocation( DropType dropType );
+  Collection<LocationXYZ> getDropLocation(DropType dropType);
 
-    Set< Team > getAvailableTeams( );
+  Set<Team> getAvailableTeams();
 
-    void enableTeam( Color teamColor );
+  void enableTeam(Color teamColor);
 
-    void enableTeam( Team team );
+  void enableTeam(Team team);
 
-    boolean isEnabled( Color teamColor );
+  boolean isEnabled(Color teamColor);
 
-    Team getTeam( Color teamColor );
+  Team getTeam(Color teamColor);
 
-    void disableTeam( Color teamColor );
+  void disableTeam(Color teamColor);
 
-    void disableTeam( Team team );
+  void disableTeam(Team team);
 
-    int getStartTimer( );
+  int getStartTimer();
 
-    void setStartTimer( int startTimer );
+  void setStartTimer(int startTimer);
 
-    int getRespawnTime( );
+  int getRespawnTime();
 
-    void setRespawnTime( int respawnTime );
+  void setRespawnTime(int respawnTime);
 
-    int getIslandRadius( );
+  int getIslandRadius();
 
-    void setIslandRadius( int islandRadius );
+  void setIslandRadius(int islandRadius);
 
-    int getMinYAxis( );
+  int getMinYAxis();
 
-    void setMinYAxis( int minYAxis );
+  void setMinYAxis(int minYAxis);
 
-    int getPlayerHitTagLength( );
+  int getPlayerHitTagLength();
 
-    void setPlayerHitTagLength( int playerHitTagLength );
+  void setPlayerHitTagLength(int playerHitTagLength);
 
-    int getGameEndDelay( );
+  int getGameEndDelay();
 
-    void setGameEndDelay( int gameEndDelay );
+  void setGameEndDelay(int gameEndDelay);
 
-    boolean isDisableHunger( );
+  boolean isDisableHunger();
 
-    void setDisableHunger( boolean flag );
+  void setDisableHunger(boolean flag);
 
-    int getBedDestroyPoint( );
+  int getBedDestroyPoint();
 
-    void setBedDestroyPoint( int bedDestroyPoint );
+  void setBedDestroyPoint(int bedDestroyPoint);
 
-    int getKillPoint( );
+  int getKillPoint();
 
-    void setKillPoint( int killPoint );
+  void setKillPoint(int killPoint);
 
-    int getFinalKillPoint( );
+  int getFinalKillPoint();
 
-    void setFinalKillPoint( int finalKillPoint );
+  void setFinalKillPoint(int finalKillPoint);
 
-    int getDeathPoint( );
+  int getDeathPoint();
 
-    void setDeathPoint( int deathPoint );
-
+  void setDeathPoint(int deathPoint);
 }

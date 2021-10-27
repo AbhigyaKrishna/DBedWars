@@ -11,79 +11,85 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpawnerUpgradeEvent extends CustomEventCancellable {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList( );
+  private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private final Arena arena;
-    private final DropType dropType;
-    private final Spawner spawner;
-    private final Team team;
-    private final int currentLevel;
-    private int nextLevel;
-    private DropType.Tier currentTier;
-    private DropType.Tier nextTier;
+  private final Arena arena;
+  private final DropType dropType;
+  private final Spawner spawner;
+  private final Team team;
+  private final int currentLevel;
+  private int nextLevel;
+  private DropType.Tier currentTier;
+  private DropType.Tier nextTier;
 
-    public SpawnerUpgradeEvent( Arena arena, DropType dropType, Spawner spawner, Team team, int currentLevel, int nextLevel,
-                                DropType.Tier currentTier, DropType.Tier nextTier ) {
-        this.arena = arena;
-        this.dropType = dropType;
-        this.spawner = spawner;
-        this.team = team;
-        this.currentLevel = currentLevel;
-        this.nextLevel = nextLevel;
-        this.currentTier = currentTier;
-        this.nextTier = nextTier;
-    }
+  public SpawnerUpgradeEvent(
+      Arena arena,
+      DropType dropType,
+      Spawner spawner,
+      Team team,
+      int currentLevel,
+      int nextLevel,
+      DropType.Tier currentTier,
+      DropType.Tier nextTier) {
+    this.arena = arena;
+    this.dropType = dropType;
+    this.spawner = spawner;
+    this.team = team;
+    this.currentLevel = currentLevel;
+    this.nextLevel = nextLevel;
+    this.currentTier = currentTier;
+    this.nextTier = nextTier;
+  }
 
-    public static HandlerList getHandlerList( ) {
-        return HANDLER_LIST;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLER_LIST;
+  }
 
-    public Arena getArena( ) {
-        return arena;
-    }
+  public Arena getArena() {
+    return arena;
+  }
 
-    public DropType getDropType( ) {
-        return dropType;
-    }
+  public DropType getDropType() {
+    return dropType;
+  }
 
-    public Spawner getSpawner( ) {
-        return spawner;
-    }
+  public Spawner getSpawner() {
+    return spawner;
+  }
 
-    public boolean isTeamSpawner( ) {
-        return this.team != null;
-    }
+  public boolean isTeamSpawner() {
+    return this.team != null;
+  }
 
-    @Nullable
-    public Team getTeam( ) {
-        return team;
-    }
+  @Nullable
+  public Team getTeam() {
+    return team;
+  }
 
-    public int getCurrentLevel( ) {
-        return currentLevel;
-    }
+  public int getCurrentLevel() {
+    return currentLevel;
+  }
 
-    public int getNextLevel( ) {
-        return nextLevel;
-    }
+  public int getNextLevel() {
+    return nextLevel;
+  }
 
-    public void setNextLevel( int nextLevel ) {
-        this.nextLevel = nextLevel;
-        this.nextTier = this.dropType.getTier( this.nextLevel );
-    }
+  public void setNextLevel(int nextLevel) {
+    this.nextLevel = nextLevel;
+    this.nextTier = this.dropType.getTier(this.nextLevel);
+  }
 
-    public DropType.Tier getCurrentTier( ) {
-        return currentTier;
-    }
+  public DropType.Tier getCurrentTier() {
+    return currentTier;
+  }
 
-    public DropType.Tier getNextTier( ) {
-        return nextTier;
-    }
+  public DropType.Tier getNextTier() {
+    return nextTier;
+  }
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers( ) {
-        return HANDLER_LIST;
-    }
-
+  @NotNull
+  @Override
+  public HandlerList getHandlers() {
+    return HANDLER_LIST;
+  }
 }

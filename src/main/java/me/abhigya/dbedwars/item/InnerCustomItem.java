@@ -14,44 +14,72 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InnerCustomItem {
-
-    SIMPLE_SETUP_ITEM(new PluginActionItem(DBedwars.getInstance(), StringUtils.translateAlternateColorCodes("&bSimple Arena Setup"),
-            StringUtils.translateAlternateColorCodes(new ArrayList<>(Collections.singletonList("&7Right click to view arena settings panel."))),
-            XMaterial.NETHER_STAR.parseMaterial()) {
+  SIMPLE_SETUP_ITEM(
+      new PluginActionItem(
+          DBedwars.getInstance(),
+          StringUtils.translateAlternateColorCodes("&bSimple Arena Setup"),
+          StringUtils.translateAlternateColorCodes(
+              new ArrayList<>(
+                  Collections.singletonList("&7Right click to view arena settings panel."))),
+          XMaterial.NETHER_STAR.parseMaterial()) {
         @Override
-        public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-            Map<String, Object> info = new HashMap<>();
-            info.put("arena", DBedwars.getInstance().getGameManager().getArena(Utils.getValue(playerInteractEvent.getItem(),
-                    "arena", String.class)));
-            info.put("page", 1);
-            if (enumAction == EnumAction.RIGHT_CLICK || enumAction == EnumAction.RIGHT_CLICK_SNEAKING || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
-                DBedwars.getInstance().getGuiHandler().getGuis().get("SIMPLE_SETUP").open(null, info, player);
+        public void onActionPerform(
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+          Map<String, Object> info = new HashMap<>();
+          info.put(
+              "arena",
+              DBedwars.getInstance()
+                  .getGameManager()
+                  .getArena(Utils.getValue(playerInteractEvent.getItem(), "arena", String.class)));
+          info.put("page", 1);
+          if (enumAction == EnumAction.RIGHT_CLICK
+              || enumAction == EnumAction.RIGHT_CLICK_SNEAKING
+              || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
+            DBedwars.getInstance()
+                .getGuiHandler()
+                .getGuis()
+                .get("SIMPLE_SETUP")
+                .open(null, info, player);
         }
-    }),
+      }),
 
-    ADVANCED_SETUP_ITEM(new PluginActionItem(DBedwars.getInstance(), StringUtils.translateAlternateColorCodes("&bAdvanced Arena Setup"),
-            StringUtils.translateAlternateColorCodes(new ArrayList<>(Collections.singletonList("&7Right click to view arena settings panel."))),
-            XMaterial.NETHER_STAR.parseMaterial()) {
+  ADVANCED_SETUP_ITEM(
+      new PluginActionItem(
+          DBedwars.getInstance(),
+          StringUtils.translateAlternateColorCodes("&bAdvanced Arena Setup"),
+          StringUtils.translateAlternateColorCodes(
+              new ArrayList<>(
+                  Collections.singletonList("&7Right click to view arena settings panel."))),
+          XMaterial.NETHER_STAR.parseMaterial()) {
         @Override
-        public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-            Map<String, Object> info = new HashMap<>();
-            info.put("arena", DBedwars.getInstance().getGameManager().getArena(Utils.getValue(playerInteractEvent.getItem(),
-                    "arena", String.class)));
-            info.put("page", 1);
-            if (enumAction == EnumAction.RIGHT_CLICK || enumAction == EnumAction.RIGHT_CLICK_SNEAKING || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
-                DBedwars.getInstance().getGuiHandler().getGuis().get("ADVANCED_SETUP").open(null, info, player);
+        public void onActionPerform(
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+          Map<String, Object> info = new HashMap<>();
+          info.put(
+              "arena",
+              DBedwars.getInstance()
+                  .getGameManager()
+                  .getArena(Utils.getValue(playerInteractEvent.getItem(), "arena", String.class)));
+          info.put("page", 1);
+          if (enumAction == EnumAction.RIGHT_CLICK
+              || enumAction == EnumAction.RIGHT_CLICK_SNEAKING
+              || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
+            DBedwars.getInstance()
+                .getGuiHandler()
+                .getGuis()
+                .get("ADVANCED_SETUP")
+                .open(null, info, player);
         }
-    }),
+      }),
+  ;
 
-    ;
+  private final PluginActionItem item;
 
-    private final PluginActionItem item;
+  InnerCustomItem(PluginActionItem item) {
+    this.item = item;
+  }
 
-    InnerCustomItem( PluginActionItem item) {
-        this.item = item;
-    }
-
-    public PluginActionItem getItem() {
-        return item;
-    }
+  public PluginActionItem getItem() {
+    return item;
+  }
 }

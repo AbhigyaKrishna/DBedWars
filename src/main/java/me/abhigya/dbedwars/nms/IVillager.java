@@ -5,14 +5,13 @@ import org.bukkit.entity.LivingEntity;
 
 public interface IVillager {
 
-    void spawn( );
+  void spawn();
 
-    void setDisplayName( String name );
+  void setDisplayName(String name);
 
-    void teleport( Location location );
+  void teleport(Location location);
 
-    void setLookAtPlayer( boolean flag );
+  void setLookAtPlayer(boolean flag);
 
-    LivingEntity asBukkitEntity( );
-
+  LivingEntity asBukkitEntity();
 }

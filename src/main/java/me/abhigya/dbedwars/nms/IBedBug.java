@@ -2,12 +2,11 @@ package me.abhigya.dbedwars.nms;
 
 public interface IBedBug {
 
-    IBedBug clearDefaultPathfinding();
+  IBedBug clearDefaultPathfinding();
 
-    IBedBug addCustomDefaults();
+  IBedBug addCustomDefaults();
 
-    IBedBug initTargets(double reachModifier);
+  IBedBug initTargets(double reachModifier);
 
-    IBedBug setChaseRadius(float radius);
-
+  IBedBug setChaseRadius(float radius);
 }

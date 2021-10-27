@@ -5,12 +5,11 @@ import java.util.function.Consumer;
 
 public interface Upgrade {
 
-    String getId( );
+  String getId();
 
-    String getTier( );
+  String getTier();
 
-    Team getTeam( );
+  Team getTeam();
 
-    Set< Consumer< Team > > getPermanentActions( );
-
+  Set<Consumer<Team>> getPermanentActions();
 }

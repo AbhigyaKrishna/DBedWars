@@ -10,72 +10,71 @@ import java.time.Instant;
 
 public interface ArenaPlayer {
 
-    Arena getArena( );
+  Arena getArena();
 
-    void setArena( Arena arena );
+  void setArena(Arena arena);
 
-    Team getTeam( );
+  Team getTeam();
 
-    void setTeam( Team team );
+  void setTeam(Team team);
 
-    boolean isSpectator( );
+  boolean isSpectator();
 
-    void setSpectator( boolean spectator );
+  void setSpectator(boolean spectator);
 
-    void addKill( );
+  void addKill();
 
-    void setKill( int count );
+  void setKill(int count);
 
-    int getKills( );
+  int getKills();
 
-    void addFinalKills( );
+  void addFinalKills();
 
-    int getFinalKills( );
+  int getFinalKills();
 
-    void setFinalKills( int count );
+  void setFinalKills(int count);
 
-    void addDeath( );
+  void addDeath();
 
-    int getDeath( );
+  int getDeath();
 
-    void setDeath( int count );
+  void setDeath(int count);
 
-    void addBedDestroy( );
+  void addBedDestroy();
 
-    short getBedDestroy( );
+  short getBedDestroy();
 
-    void setBedDestroy( short bedDestroy );
+  void setBedDestroy(short bedDestroy);
 
-    void kill( DeathCause reason );
+  void kill(DeathCause reason);
 
-    boolean isFinalKilled( );
+  boolean isFinalKilled();
 
-    void setFinalKilled( boolean flag );
+  void setFinalKilled(boolean flag);
 
-    UUIDPlayer getUUIDPlayer( );
+  UUIDPlayer getUUIDPlayer();
 
-    String getName( );
+  String getName();
 
-    Player getPlayer( );
+  Player getPlayer();
 
-    void spawn( Location location );
+  void spawn(Location location);
 
-    void sendMessage( String msg );
+  void sendMessage(String msg);
 
-    void sendMessage( BaseComponent[] component );
+  void sendMessage(BaseComponent[] component);
 
-    ArenaPlayer getLastHitTagged( );
+  ArenaPlayer getLastHitTagged();
 
-    void setLastHitTag( ArenaPlayer player );
+  void setLastHitTag(ArenaPlayer player);
 
-    Instant getLastHitTime( );
+  Instant getLastHitTime();
 
-    void setLastHitTime( Instant instant );
+  void setLastHitTime(Instant instant);
 
-    boolean isRespawning( );
+  boolean isRespawning();
 
-    ShopView getShopView( );
+  ShopView getShopView();
 
-    void queueRespawn( );
-
+  void queueRespawn();
 }

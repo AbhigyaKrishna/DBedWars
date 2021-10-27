@@ -7,20 +7,19 @@ import java.util.Collection;
 
 public interface ThreadHandler {
 
-    WorkloadThread[] getSyncThreads( );
+  WorkloadThread[] getSyncThreads();
 
-    WorkloadThread getLeastWorkSyncWorker( );
+  WorkloadThread getLeastWorkSyncWorker();
 
-    void addSyncWork( Workload work );
+  void addSyncWork(Workload work);
 
-    void addSyncWork( Collection< Workload > work );
+  void addSyncWork(Collection<Workload> work);
 
-    WorkloadThread[] getAsyncThreads( );
+  WorkloadThread[] getAsyncThreads();
 
-    WorkloadThread getLeastWorkAsyncWorker( );
+  WorkloadThread getLeastWorkAsyncWorker();
 
-    void addAsyncWork( Workload work );
+  void addAsyncWork(Workload work);
 
-    void addAsyncWork( Collection< Workload > work );
-
+  void addAsyncWork(Collection<Workload> work);
 }

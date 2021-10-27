@@ -15,54 +15,52 @@ import java.util.Map;
 
 public interface ViewItem extends Cloneable, Overridable {
 
-    ShopPage getPage( );
+  ShopPage getPage();
 
-    ArenaPlayer getPlayer( );
+  ArenaPlayer getPlayer();
 
-    BwItemStack getMaterial( );
+  BwItemStack getMaterial();
 
-    void setMaterial( BwItemStack material );
+  void setMaterial(BwItemStack material);
 
-    int getAmount( );
+  int getAmount();
 
-    void setAmount( int amount );
+  void setAmount(int amount);
 
-    String getName( );
+  String getName();
 
-    void setName( String name );
+  void setName(String name);
 
-    List< String > getLore( );
+  List<String> getLore();
 
-    List< LEnchant > getEnchants( );
+  List<LEnchant> getEnchants();
 
-    Map< AttributeType, Attribute > getAttributes( );
+  Map<AttributeType, Attribute> getAttributes();
 
-    BwItemStack getFormatted( );
+  BwItemStack getFormatted();
 
-    ActionItem getActionItem( boolean recreate );
+  ActionItem getActionItem(boolean recreate);
+
+  @Override
+  void override(Overridable override) throws OverrideException;
+
+  ViewItem clone();
+
+  interface Attribute extends Validable, Cloneable, Overridable {
+
+    AttributeType getType();
+
+    Map<String, Object> getKeyEntry();
 
     @Override
-    void override( Overridable override ) throws OverrideException;
+    boolean isValid();
 
-    ViewItem clone( );
+    @Override
+    boolean isInvalid();
 
-    interface Attribute extends Validable, Cloneable, Overridable {
+    @Override
+    void override(Overridable override) throws OverrideException;
 
-        AttributeType getType( );
-
-        Map< String, Object > getKeyEntry( );
-
-        @Override
-        boolean isValid( );
-
-        @Override
-        boolean isInvalid( );
-
-        @Override
-        void override( Overridable override ) throws OverrideException;
-
-        Attribute clone( );
-
-    }
-
+    Attribute clone();
+  }
 }

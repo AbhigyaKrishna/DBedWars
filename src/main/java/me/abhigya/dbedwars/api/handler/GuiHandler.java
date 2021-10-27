@@ -7,25 +7,24 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings( "rawtypes" )
+@SuppressWarnings("rawtypes")
 public interface GuiHandler {
 
-    void registerGui( String name, IMenu< ? extends ItemMenu > menu );
+  void registerGui(String name, IMenu<? extends ItemMenu> menu);
 
-    void unRegisterGui( String name );
+  void unRegisterGui(String name);
 
-    @Nullable
-    IMenu getGui( String name );
+  @Nullable
+  IMenu getGui(String name);
 
-    void registerAnvilGui( String name, IAnvilMenu menu );
+  void registerAnvilGui(String name, IAnvilMenu menu);
 
-    void unRegisterAnvilGui( String name );
+  void unRegisterAnvilGui(String name);
 
-    @Nullable
-    IAnvilMenu getAnvilGui( String name );
+  @Nullable
+  IAnvilMenu getAnvilGui(String name);
 
-    Map< String, IMenu > getGuis( );
+  Map<String, IMenu> getGuis();
 
-    Map< String, IAnvilMenu > getAnvilGuis( );
-
+  Map<String, IAnvilMenu> getAnvilGuis();
 }

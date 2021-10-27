@@ -13,62 +13,61 @@ import java.util.Set;
 
 public interface Team {
 
-    Color getColor( );
+  Color getColor();
 
-    String getName( );
+  String getName();
 
-    LocationXYZ getBedLocation( );
+  LocationXYZ getBedLocation();
 
-    void setBedLocation( LocationXYZ location );
+  void setBedLocation(LocationXYZ location);
 
-    LocationXYZYP getSpawn( );
+  LocationXYZYP getSpawn();
 
-    void setSpawn( LocationXYZYP location );
+  void setSpawn(LocationXYZYP location);
 
-    void addSpawner( DropType dropType, LocationXYZ location );
+  void addSpawner(DropType dropType, LocationXYZ location);
 
-    Multimap< DropType, LocationXYZ > getSpawners( );
+  Multimap<DropType, LocationXYZ> getSpawners();
 
-    LocationXYZYP getShopNpc( );
+  LocationXYZYP getShopNpc();
 
-    void setShopNpc( LocationXYZYP location );
+  void setShopNpc(LocationXYZYP location);
 
-    LocationXYZYP getUpgradesNpc( );
+  LocationXYZYP getUpgradesNpc();
 
-    void setUpgradesNpc( LocationXYZYP location );
+  void setUpgradesNpc(LocationXYZYP location);
 
-    void reloadData( );
+  void reloadData();
 
-    boolean isConfigured( );
+  boolean isConfigured();
 
-    void init( Arena arena );
+  void init(Arena arena);
 
-    Arena getArena( );
+  Arena getArena();
 
-    void addPlayer( ArenaPlayer player );
+  void addPlayer(ArenaPlayer player);
 
-    void removePlayer( ArenaPlayer player );
+  void removePlayer(ArenaPlayer player);
 
-    Set< ArenaPlayer > getPlayers( );
+  Set<ArenaPlayer> getPlayers();
 
-    void sendMessage( String message );
+  void sendMessage(String message);
 
-    boolean isBedBroken( );
+  boolean isBedBroken();
 
-    void setBedBroken( boolean flag );
+  void setBedBroken(boolean flag);
 
-    boolean isEliminated( );
+  boolean isEliminated();
 
-    void setEliminated( boolean flag );
+  void setEliminated(boolean flag);
 
-    BoundingBox getIslandArea( );
+  BoundingBox getIslandArea();
 
-    List< Trap > getTrapQueue( );
+  List<Trap> getTrapQueue();
 
-    void triggerTrap( TrapEnum.TriggerType trigger, ArenaPlayer target );
+  void triggerTrap(TrapEnum.TriggerType trigger, ArenaPlayer target);
 
-    void spawnShopNpc( LocationXYZYP location );
+  void spawnShopNpc(LocationXYZYP location);
 
-    void spawnUpgradesNpc( LocationXYZYP location );
-
+  void spawnUpgradesNpc(LocationXYZYP location);
 }
