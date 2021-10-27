@@ -22,112 +22,113 @@ import java.util.stream.Collectors;
 
 public class ConfigurableTeam implements Configurable {
 
-  @SaveableEntry(key = "spawners")
-  @LoadableEntry(key = "spawners")
-  public List<String> spawners;
+    @SaveableEntry(key = "spawners")
+    @LoadableEntry(key = "spawners")
+    public List<String> spawners;
 
-  private Team team;
+    private Team team;
 
-  @SaveableEntry(key = "color")
-  @LoadableEntry(key = "color")
-  private String color;
+    @SaveableEntry(key = "color")
+    @LoadableEntry(key = "color")
+    private String color;
 
-  @SaveableEntry(key = "bed")
-  @LoadableEntry(key = "bed")
-  private String bedLocation;
+    @SaveableEntry(key = "bed")
+    @LoadableEntry(key = "bed")
+    private String bedLocation;
 
-  @SaveableEntry(key = "spawn")
-  @LoadableEntry(key = "spawn")
-  private String spawn;
+    @SaveableEntry(key = "spawn")
+    @LoadableEntry(key = "spawn")
+    private String spawn;
 
-  @SaveableEntry(key = "shop")
-  @LoadableEntry(key = "shop")
-  private String shopNpc;
+    @SaveableEntry(key = "shop")
+    @LoadableEntry(key = "shop")
+    private String shopNpc;
 
-  @SaveableEntry(key = "upgrades")
-  @LoadableEntry(key = "upgrades")
-  private String upgrades;
+    @SaveableEntry(key = "upgrades")
+    @LoadableEntry(key = "upgrades")
+    private String upgrades;
 
-  public ConfigurableTeam() {
-    this.spawners = new ArrayList<>();
-  }
-
-  public ConfigurableTeam(Team team) {
-    this.team = team;
-    this.update();
-  }
-
-  @Override
-  public Loadable load(ConfigurationSection section) {
-    return this.loadEntries(section);
-  }
-
-  @Override
-  public boolean isValid() {
-    return true;
-  }
-
-  @Override
-  public boolean isInvalid() {
-    return false;
-  }
-
-  @Override
-  public int save(ConfigurationSection section) {
-    return this.saveEntries(section);
-  }
-
-  public Color getColor() {
-    return Color.valueOf(this.color);
-  }
-
-  public LocationXYZ getBedLocation() {
-    return this.bedLocation == null ? null : LocationXYZ.valueOf(this.bedLocation);
-  }
-
-  public LocationXYZYP getSpawn() {
-    return this.spawn == null ? null : LocationXYZYP.valueOf(this.spawn);
-  }
-
-  public LocationXYZYP getShopNpc() {
-    return this.shopNpc == null ? null : LocationXYZYP.valueOf(this.shopNpc);
-  }
-
-  public LocationXYZYP getUpgrades() {
-    return this.upgrades == null ? null : LocationXYZYP.valueOf(this.upgrades);
-  }
-
-  public Multimap<DropType, LocationXYZ> getSpawners() {
-    Multimap<DropType, LocationXYZ> multimap = ArrayListMultimap.create();
-    for (String s : this.spawners) {
-      Map.Entry<DropType, LocationXYZ> entry = ConfigurationUtils.parseSpawner(s);
-      if (entry != null) multimap.put(entry.getKey(), entry.getValue());
+    public ConfigurableTeam() {
+        this.spawners = new ArrayList<>();
     }
 
-    return multimap;
-  }
+    public ConfigurableTeam(Team team) {
+        this.team = team;
+        this.update();
+    }
 
-  public void update() {
-    if (this.team == null)
-      throw new IllegalStateException("Team is null somehow in the configuration!");
+    @Override
+    public Loadable load(ConfigurationSection section) {
+        return this.loadEntries(section);
+    }
 
-    this.color = this.team.getColor().name();
-    this.bedLocation =
-        this.team.getBedLocation() != null ? this.team.getBedLocation().toString() : null;
-    this.spawn = this.team.getSpawn() != null ? this.team.getSpawn().toString() : null;
-    this.shopNpc = this.team.getShopNpc() != null ? this.team.getShopNpc().toString() : null;
-    this.upgrades =
-        this.team.getUpgradesNpc() != null ? this.team.getUpgradesNpc().toString() : null;
-    this.spawners =
-        this.team.getSpawners().entries().stream()
-            .map(e -> ConfigurationUtils.serializeSpawner(e.getKey(), e.getValue()))
-            .collect(Collectors.toList());
-  }
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 
-  public Team toTeam() {
-    if (this.team == null)
-      return this.team = new me.abhigya.dbedwars.game.arena.Team(DBedwars.getInstance(), this);
+    @Override
+    public boolean isInvalid() {
+        return false;
+    }
 
-    return this.team;
-  }
+    @Override
+    public int save(ConfigurationSection section) {
+        return this.saveEntries(section);
+    }
+
+    public Color getColor() {
+        return Color.valueOf(this.color);
+    }
+
+    public LocationXYZ getBedLocation() {
+        return this.bedLocation == null ? null : LocationXYZ.valueOf(this.bedLocation);
+    }
+
+    public LocationXYZYP getSpawn() {
+        return this.spawn == null ? null : LocationXYZYP.valueOf(this.spawn);
+    }
+
+    public LocationXYZYP getShopNpc() {
+        return this.shopNpc == null ? null : LocationXYZYP.valueOf(this.shopNpc);
+    }
+
+    public LocationXYZYP getUpgrades() {
+        return this.upgrades == null ? null : LocationXYZYP.valueOf(this.upgrades);
+    }
+
+    public Multimap<DropType, LocationXYZ> getSpawners() {
+        Multimap<DropType, LocationXYZ> multimap = ArrayListMultimap.create();
+        for (String s : this.spawners) {
+            Map.Entry<DropType, LocationXYZ> entry = ConfigurationUtils.parseSpawner(s);
+            if (entry != null) multimap.put(entry.getKey(), entry.getValue());
+        }
+
+        return multimap;
+    }
+
+    public void update() {
+        if (this.team == null)
+            throw new IllegalStateException("Team is null somehow in the configuration!");
+
+        this.color = this.team.getColor().name();
+        this.bedLocation =
+                this.team.getBedLocation() != null ? this.team.getBedLocation().toString() : null;
+        this.spawn = this.team.getSpawn() != null ? this.team.getSpawn().toString() : null;
+        this.shopNpc = this.team.getShopNpc() != null ? this.team.getShopNpc().toString() : null;
+        this.upgrades =
+                this.team.getUpgradesNpc() != null ? this.team.getUpgradesNpc().toString() : null;
+        this.spawners =
+                this.team.getSpawners().entries().stream()
+                        .map(e -> ConfigurationUtils.serializeSpawner(e.getKey(), e.getValue()))
+                        .collect(Collectors.toList());
+    }
+
+    public Team toTeam() {
+        if (this.team == null)
+            return this.team =
+                    new me.abhigya.dbedwars.game.arena.Team(DBedwars.getInstance(), this);
+
+        return this.team;
+    }
 }

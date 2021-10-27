@@ -17,68 +17,72 @@ import java.util.Optional;
 
 public class IngameTabImpl extends PluginHandler {
 
-  private final Arena arena;
+    private final Arena arena;
 
-  public IngameTabImpl(DBedwars plugin, Arena arena) {
-    super(plugin);
-    this.arena = arena;
-  }
-
-  @Override
-  protected boolean isAllowMultipleInstances() {
-    return false;
-  }
-
-  public IngameTabImpl clearAllPlayers(Player user) {
-    for (Player player : Bukkit.getOnlinePlayers()) {
-      WrappedPacketOutPlayerInfo packet =
-          new WrappedPacketOutPlayerInfo(
-              WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER,
-              new WrappedPacketOutPlayerInfo.PlayerInfo(
-                  player.getName(),
-                  new WrappedGameProfile(player.getUniqueId(), player.getName()),
-                  GameMode.CREATIVE,
-                  20));
-      PacketEvents.get().getPlayerUtils().sendPacket(user, packet);
+    public IngameTabImpl(DBedwars plugin, Arena arena) {
+        super(plugin);
+        this.arena = arena;
     }
 
-    return this;
-  }
-
-  public IngameTabImpl showArenaPlayers(Player user) {
-    for (ArenaPlayer player : this.arena.getPlayers()) {
-      WrappedPacketOutPlayerInfo packet =
-          new WrappedPacketOutPlayerInfo(
-              WrappedPacketOutPlayerInfo.PlayerInfoAction.ADD_PLAYER,
-              new WrappedPacketOutPlayerInfo.PlayerInfo(
-                  player.getPlayer().getName(),
-                  new WrappedGameProfile(
-                      player.getPlayer().getUniqueId(), player.getPlayer().getName()),
-                  player.getPlayer().getGameMode(),
-                  PacketEvents.get().getPlayerUtils().getPing(player.getPlayer())));
-      PacketEvents.get().getPlayerUtils().sendPacket(user, packet);
+    @Override
+    protected boolean isAllowMultipleInstances() {
+        return false;
     }
 
-    return this;
-  }
+    public IngameTabImpl clearAllPlayers(Player user) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            WrappedPacketOutPlayerInfo packet =
+                    new WrappedPacketOutPlayerInfo(
+                            WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER,
+                            new WrappedPacketOutPlayerInfo.PlayerInfo(
+                                    player.getName(),
+                                    new WrappedGameProfile(player.getUniqueId(), player.getName()),
+                                    GameMode.CREATIVE,
+                                    20));
+            PacketEvents.get().getPlayerUtils().sendPacket(user, packet);
+        }
 
-  @EventHandler
-  public void handlePlayerJoin(PlayerJoinEvent event) {
-    Optional<ArenaPlayer> opt = this.arena.getAsArenaPlayer(event.getPlayer());
-    if (!opt.isPresent()) {
-      WrappedPacketOutPlayerInfo packet =
-          new WrappedPacketOutPlayerInfo(
-              WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER,
-              new WrappedPacketOutPlayerInfo.PlayerInfo(
-                  event.getPlayer().getName(),
-                  new WrappedGameProfile(
-                      event.getPlayer().getUniqueId(), event.getPlayer().getName()),
-                  GameMode.CREATIVE,
-                  20));
-
-      for (ArenaPlayer player : this.arena.getPlayers()) {
-        PacketEvents.get().getPlayerUtils().sendPacket(player.getPlayer(), packet);
-      }
+        return this;
     }
-  }
+
+    public IngameTabImpl showArenaPlayers(Player user) {
+        for (ArenaPlayer player : this.arena.getPlayers()) {
+            WrappedPacketOutPlayerInfo packet =
+                    new WrappedPacketOutPlayerInfo(
+                            WrappedPacketOutPlayerInfo.PlayerInfoAction.ADD_PLAYER,
+                            new WrappedPacketOutPlayerInfo.PlayerInfo(
+                                    player.getPlayer().getName(),
+                                    new WrappedGameProfile(
+                                            player.getPlayer().getUniqueId(),
+                                            player.getPlayer().getName()),
+                                    player.getPlayer().getGameMode(),
+                                    PacketEvents.get()
+                                            .getPlayerUtils()
+                                            .getPing(player.getPlayer())));
+            PacketEvents.get().getPlayerUtils().sendPacket(user, packet);
+        }
+
+        return this;
+    }
+
+    @EventHandler
+    public void handlePlayerJoin(PlayerJoinEvent event) {
+        Optional<ArenaPlayer> opt = this.arena.getAsArenaPlayer(event.getPlayer());
+        if (!opt.isPresent()) {
+            WrappedPacketOutPlayerInfo packet =
+                    new WrappedPacketOutPlayerInfo(
+                            WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER,
+                            new WrappedPacketOutPlayerInfo.PlayerInfo(
+                                    event.getPlayer().getName(),
+                                    new WrappedGameProfile(
+                                            event.getPlayer().getUniqueId(),
+                                            event.getPlayer().getName()),
+                                    GameMode.CREATIVE,
+                                    20));
+
+            for (ArenaPlayer player : this.arena.getPlayers()) {
+                PacketEvents.get().getPlayerUtils().sendPacket(player.getPlayer(), packet);
+            }
+        }
+    }
 }

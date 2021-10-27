@@ -4,9 +4,9 @@ import me.abhigya.dbedwars.api.util.item.PluginActionItem;
 
 public interface CustomItemHandler {
 
-  void registerItem(String id, PluginActionItem item);
+    void registerItem(String id, PluginActionItem item);
 
-  void unregisterItem(String id);
+    void unregisterItem(String id);
 
-  PluginActionItem getItem(String id);
+    PluginActionItem getItem(String id);
 }
