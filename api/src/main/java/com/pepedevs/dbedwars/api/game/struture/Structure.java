@@ -9,5 +9,4 @@ public interface Structure {
     List<Block> getBlocks();
 
     int getBlocksToPlacePerSecond();
-
 }

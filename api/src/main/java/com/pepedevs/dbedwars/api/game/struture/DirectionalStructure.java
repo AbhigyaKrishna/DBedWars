@@ -13,5 +13,4 @@ public interface DirectionalStructure extends Structure {
     List<Block> getEastBlocks();
 
     List<Block> getSouthBlocks();
-
 }
