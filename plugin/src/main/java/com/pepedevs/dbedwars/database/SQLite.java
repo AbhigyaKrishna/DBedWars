@@ -25,8 +25,7 @@ public class SQLite extends DatabaseBridge {
         super(plugin);
         this.db =
                 new me.Abhigya.core.database.sql.sqlite.SQLite(
-                        new File(this.getPlugin().getDataFolder(), "database.db"),
-                        true);
+                        new File(this.getPlugin().getDataFolder(), "database.db"), true);
     }
 
     @Override

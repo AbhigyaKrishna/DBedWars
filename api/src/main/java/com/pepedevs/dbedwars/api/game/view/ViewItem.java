@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface ViewItem extends Cloneable, Overridable {
 
-//    ShopPage getPage();
+    //    ShopPage getPage();
 
     ArenaPlayer getPlayer();
 
@@ -33,7 +33,7 @@ public interface ViewItem extends Cloneable, Overridable {
 
     List<LEnchant> getEnchants();
 
-//    Map<AttributeType, Attribute> getAttributes();
+    //    Map<AttributeType, Attribute> getAttributes();
 
     BwItemStack getFormatted();
 
@@ -46,7 +46,7 @@ public interface ViewItem extends Cloneable, Overridable {
 
     interface Attribute extends Validable, Cloneable, Overridable {
 
-//        AttributeType getType();
+        //        AttributeType getType();
 
         Map<String, Object> getKeyEntry();
 

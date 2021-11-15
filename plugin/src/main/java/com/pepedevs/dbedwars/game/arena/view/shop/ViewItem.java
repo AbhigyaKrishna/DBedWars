@@ -440,7 +440,9 @@ public class ViewItem implements com.pepedevs.dbedwars.api.game.view.ViewItem {
                 } else {
                     break;
                 }
-            } while (((ViewItem) viewItem).getAttributes().containsKey(AttributeType.UPGRADEABLE_TIER));
+            } while (((ViewItem) viewItem)
+                    .getAttributes()
+                    .containsKey(AttributeType.UPGRADEABLE_TIER));
         }
 
         return tiers;

@@ -13,5 +13,5 @@ public interface ShopView extends Cloneable, Overridable {
 
     Map<String, ViewItem> getCommons();
 
-//    Map<String, ShopPage> getShopPages();
+    //    Map<String, ShopPage> getShopPages();
 }

@@ -155,7 +155,10 @@ public class ConfigurableArenaOverride implements Loadable {
                                                                             t.getDropMap()
                                                                                     .put(
                                                                                             str,
-                                                                                            new com.pepedevs.dbedwars.game
+                                                                                            new com
+                                                                                                    .pepedevs
+                                                                                                    .dbedwars
+                                                                                                    .game
                                                                                                     .arena
                                                                                                     .DropType
                                                                                                     .Drop(

@@ -12,8 +12,7 @@ import java.util.Collection;
 
 public abstract class PluginActionItem extends ActionItemBase {
 
-    public PluginActionItem(
-            String display_name, Collection<String> lore, Material material) {
+    public PluginActionItem(String display_name, Collection<String> lore, Material material) {
         super(display_name, lore, material);
     }
 

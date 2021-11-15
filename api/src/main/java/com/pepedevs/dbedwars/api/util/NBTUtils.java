@@ -70,5 +70,4 @@ public class NBTUtils {
         nbti.removeKey(key);
         return nbti.getItem();
     }
-
 }

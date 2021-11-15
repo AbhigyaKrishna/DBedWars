@@ -44,8 +44,6 @@ public class Utils {
                     XMaterial.WHITE_BED.parseMaterial(),
                     XMaterial.YELLOW_BED.parseMaterial());
 
-
-
     public static boolean isUnMergeable(ItemStack item) {
         return NBTUtils.hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
     }

@@ -16,7 +16,6 @@ import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import com.pepedevs.dbedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;

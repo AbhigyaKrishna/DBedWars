@@ -34,14 +34,7 @@ public class MySQL extends DatabaseBridge {
             boolean ssl) {
         super(plugin);
         this.db =
-                new HikariClientBuilder(
-                        host,
-                        port,
-                        database,
-                        username,
-                        password,
-                        reconnect,
-                        ssl)
+                new HikariClientBuilder(host, port, database, username, password, reconnect, ssl)
                         .addProperty("cachePrepStmts", "true")
                         .addProperty("prepStmtCacheSize", "250")
                         .addProperty("prepStmtCacheSqlLimit", "2048")

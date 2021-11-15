@@ -7,7 +7,6 @@ import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import me.Abhigya.core.util.console.ConsoleUtils;
-import me.Abhigya.core.util.file.FileUtils;
 import me.Abhigya.core.util.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
@@ -20,7 +19,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +69,7 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
                                             + " 'DBedWars/hooks/SlimeWorldManager-Hook.yml'",
                                     this.plugin);
                         }
-//                        this.configureSlimeConfig();
+                        //                        this.configureSlimeConfig();
                     }
                     String[] availableLoaders = new String[] {"file", "mysql", "mongodb"};
                     String l = config.getString("slime-loader");
@@ -266,142 +264,144 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
         }
     }
 
-//    private void configureSlimeConfig() {
-//        String sourcesPath =
-//                this.config.getString("config", "plugins/SlimeWorldManager/sources.yml");
-//        File sources = new File(sourcesPath);
-//        if (!sources.exists()) {
-//            sources = new File("plugins/SlimeWorldManager/sources.yml");
-//        }
-//
-//        if (!sources.exists()) {
-//            throw new InvalidPathException(
-//                    sourcesPath,
-//                    "Please configure the path for \"SlimeWorldManager/sources.yml\" in \""
-//                            + this.file.getPath()
-//                            + "\"");
-//        }
-//
-//        boolean reloadSlime = false;
-//
-//        try {
-//            File oldFile = new File(sources.getAbsolutePath() + ".old");
-//            if (!file.exists()) {
-//                FileUtils.copyFile(sources, oldFile);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (!PluginFiles.ARENA_DATA_ARENACACHE.getFile().isDirectory())
-//            PluginFiles.ARENA_DATA_ARENACACHE.getFile().mkdirs();
-//
-//        FileConfiguration configuration = YamlConfiguration.loadConfiguration(sources);
-//
-//        // File DataSource
-//        String filePath =
-//                this.config.getString(
-//                        "sources.file.path", "plugins/DBedwars/arena/data/arenacache");
-//        String oldPath = configuration.getString("file.path");
-//
-//        if (!filePath.equals(oldPath)) {
-//            reloadSlime = true;
-//            File slimeFolder = new File(oldPath);
-//            if (slimeFolder.isDirectory()) {
-//                File[] slimeWorlds = slimeFolder.listFiles();
-//                for (File worldFile : slimeWorlds) {
-//                    if (!worldFile.getName().endsWith(".slime")) continue;
-//                    try {
-//                        FileUtils.copyFile(
-//                                worldFile,
-//                                new File(
-//                                        PluginFiles.ARENA_DATA_ARENACACHE.getFile(),
-//                                        worldFile.getName()));
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//            configuration.set("file.path", filePath);
-//        }
-//
-//        // MYSQL DataSource
-//        ConfigurationSection mysqlSection = this.config.getConfigurationSection("sources.mysql");
-//        ConfigurationSection sourceMysql = configuration.getConfigurationSection("mysql");
-//        if (mysqlSection == null) {
-//            mysqlSection = this.config.createSection("sources.mysql");
-//            for (String key : sourceMysql.getKeys(false)) {
-//                mysqlSection.set(key, sourceMysql.get(key));
-//            }
-//        }
-//
-//        boolean slimeConfigMysql = this.isDefaultMysql(sourceMysql);
-//        boolean hookConfigMysql = this.isDefaultMysql(mysqlSection);
-//
-//        if (!(slimeConfigMysql && hookConfigMysql)) {
-//            reloadSlime = true;
-//            if (!slimeConfigMysql) {
-//                for (String key : sourceMysql.getKeys(false)) {
-//                    mysqlSection.set(key, sourceMysql.get(key));
-//                }
-//            } else if (!hookConfigMysql) {
-//                for (String key : mysqlSection.getKeys(false)) {
-//                    sourceMysql.set(key, mysqlSection.get(key));
-//                }
-//            }
-//        } else {
-//            if (this.config.getString("slime-loader").equalsIgnoreCase("mysql")) {
-//                throw new ConfigurationException("Mysql database not configured!");
-//            }
-//        }
-//
-//        // MYSQL DataSource
-//        ConfigurationSection mongoSection = this.config.getConfigurationSection("sources.mongodb");
-//        ConfigurationSection sourceMongo = configuration.getConfigurationSection("mongodb");
-//        if (mongoSection == null) {
-//            mongoSection = this.config.createSection("sources.mongodb");
-//            for (String key : sourceMongo.getKeys(false)) {
-//                mongoSection.set(key, sourceMongo.get(key));
-//            }
-//        }
-//
-//        boolean slimeConfigMongo = this.isDefaultMongoDB(sourceMongo);
-//        boolean hookConfigMongo = this.isDefaultMongoDB(mongoSection);
-//
-//        if (!(slimeConfigMongo && hookConfigMongo)) {
-//            reloadSlime = true;
-//            if (!slimeConfigMongo) {
-//                for (String key : sourceMongo.getKeys(false)) {
-//                    mongoSection.set(key, sourceMongo.get(key));
-//                }
-//            } else if (!hookConfigMongo) {
-//                for (String key : mongoSection.getKeys(false)) {
-//                    sourceMongo.set(key, mongoSection.get(key));
-//                }
-//            }
-//        } else {
-//            if (this.config.getString("slime-loader").equalsIgnoreCase("mongodb")) {
-//                throw new ConfigurationException("MongoDB database not configured!");
-//            }
-//        }
-//
-//        try {
-//            this.config.save(this.file);
-//            configuration.save(sources);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (reloadSlime) {
-//            try {
-//                ConfigManager.initialize();
-//            } catch (IOException | ObjectMappingException e) {
-//                e.printStackTrace();
-//            }
-//            LoaderUtils.registerLoaders();
-//        }
-//        this.reloadConfig();
-//    }
+    //    private void configureSlimeConfig() {
+    //        String sourcesPath =
+    //                this.config.getString("config", "plugins/SlimeWorldManager/sources.yml");
+    //        File sources = new File(sourcesPath);
+    //        if (!sources.exists()) {
+    //            sources = new File("plugins/SlimeWorldManager/sources.yml");
+    //        }
+    //
+    //        if (!sources.exists()) {
+    //            throw new InvalidPathException(
+    //                    sourcesPath,
+    //                    "Please configure the path for \"SlimeWorldManager/sources.yml\" in \""
+    //                            + this.file.getPath()
+    //                            + "\"");
+    //        }
+    //
+    //        boolean reloadSlime = false;
+    //
+    //        try {
+    //            File oldFile = new File(sources.getAbsolutePath() + ".old");
+    //            if (!file.exists()) {
+    //                FileUtils.copyFile(sources, oldFile);
+    //            }
+    //        } catch (IOException e) {
+    //            e.printStackTrace();
+    //        }
+    //
+    //        if (!PluginFiles.ARENA_DATA_ARENACACHE.getFile().isDirectory())
+    //            PluginFiles.ARENA_DATA_ARENACACHE.getFile().mkdirs();
+    //
+    //        FileConfiguration configuration = YamlConfiguration.loadConfiguration(sources);
+    //
+    //        // File DataSource
+    //        String filePath =
+    //                this.config.getString(
+    //                        "sources.file.path", "plugins/DBedwars/arena/data/arenacache");
+    //        String oldPath = configuration.getString("file.path");
+    //
+    //        if (!filePath.equals(oldPath)) {
+    //            reloadSlime = true;
+    //            File slimeFolder = new File(oldPath);
+    //            if (slimeFolder.isDirectory()) {
+    //                File[] slimeWorlds = slimeFolder.listFiles();
+    //                for (File worldFile : slimeWorlds) {
+    //                    if (!worldFile.getName().endsWith(".slime")) continue;
+    //                    try {
+    //                        FileUtils.copyFile(
+    //                                worldFile,
+    //                                new File(
+    //                                        PluginFiles.ARENA_DATA_ARENACACHE.getFile(),
+    //                                        worldFile.getName()));
+    //                    } catch (IOException e) {
+    //                        e.printStackTrace();
+    //                    }
+    //                }
+    //            }
+    //            configuration.set("file.path", filePath);
+    //        }
+    //
+    //        // MYSQL DataSource
+    //        ConfigurationSection mysqlSection =
+    // this.config.getConfigurationSection("sources.mysql");
+    //        ConfigurationSection sourceMysql = configuration.getConfigurationSection("mysql");
+    //        if (mysqlSection == null) {
+    //            mysqlSection = this.config.createSection("sources.mysql");
+    //            for (String key : sourceMysql.getKeys(false)) {
+    //                mysqlSection.set(key, sourceMysql.get(key));
+    //            }
+    //        }
+    //
+    //        boolean slimeConfigMysql = this.isDefaultMysql(sourceMysql);
+    //        boolean hookConfigMysql = this.isDefaultMysql(mysqlSection);
+    //
+    //        if (!(slimeConfigMysql && hookConfigMysql)) {
+    //            reloadSlime = true;
+    //            if (!slimeConfigMysql) {
+    //                for (String key : sourceMysql.getKeys(false)) {
+    //                    mysqlSection.set(key, sourceMysql.get(key));
+    //                }
+    //            } else if (!hookConfigMysql) {
+    //                for (String key : mysqlSection.getKeys(false)) {
+    //                    sourceMysql.set(key, mysqlSection.get(key));
+    //                }
+    //            }
+    //        } else {
+    //            if (this.config.getString("slime-loader").equalsIgnoreCase("mysql")) {
+    //                throw new ConfigurationException("Mysql database not configured!");
+    //            }
+    //        }
+    //
+    //        // MYSQL DataSource
+    //        ConfigurationSection mongoSection =
+    // this.config.getConfigurationSection("sources.mongodb");
+    //        ConfigurationSection sourceMongo = configuration.getConfigurationSection("mongodb");
+    //        if (mongoSection == null) {
+    //            mongoSection = this.config.createSection("sources.mongodb");
+    //            for (String key : sourceMongo.getKeys(false)) {
+    //                mongoSection.set(key, sourceMongo.get(key));
+    //            }
+    //        }
+    //
+    //        boolean slimeConfigMongo = this.isDefaultMongoDB(sourceMongo);
+    //        boolean hookConfigMongo = this.isDefaultMongoDB(mongoSection);
+    //
+    //        if (!(slimeConfigMongo && hookConfigMongo)) {
+    //            reloadSlime = true;
+    //            if (!slimeConfigMongo) {
+    //                for (String key : sourceMongo.getKeys(false)) {
+    //                    mongoSection.set(key, sourceMongo.get(key));
+    //                }
+    //            } else if (!hookConfigMongo) {
+    //                for (String key : mongoSection.getKeys(false)) {
+    //                    sourceMongo.set(key, mongoSection.get(key));
+    //                }
+    //            }
+    //        } else {
+    //            if (this.config.getString("slime-loader").equalsIgnoreCase("mongodb")) {
+    //                throw new ConfigurationException("MongoDB database not configured!");
+    //            }
+    //        }
+    //
+    //        try {
+    //            this.config.save(this.file);
+    //            configuration.save(sources);
+    //        } catch (IOException e) {
+    //            e.printStackTrace();
+    //        }
+    //
+    //        if (reloadSlime) {
+    //            try {
+    //                ConfigManager.initialize();
+    //            } catch (IOException | ObjectMappingException e) {
+    //                e.printStackTrace();
+    //            }
+    //            LoaderUtils.registerLoaders();
+    //        }
+    //        this.reloadConfig();
+    //    }
 
     private boolean isDefaultMysql(ConfigurationSection section) {
         try {
