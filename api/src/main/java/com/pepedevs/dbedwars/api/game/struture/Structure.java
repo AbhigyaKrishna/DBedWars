@@ -1,4 +1,4 @@
-package me.abhigya.dbedwars.api.game.struture;
+package com.pepedevs.dbedwars.api.game.struture;
 
 import org.bukkit.block.Block;
 
@@ -9,4 +9,5 @@ public interface Structure {
     List<Block> getBlocks();
 
     int getBlocksToPlacePerSecond();
+
 }
