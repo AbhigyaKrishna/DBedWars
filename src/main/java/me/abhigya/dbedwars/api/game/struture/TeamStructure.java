@@ -5,5 +5,4 @@ import me.abhigya.dbedwars.api.util.Color;
 public interface TeamStructure extends Structure {
 
     Color getTeamColor();
-
 }

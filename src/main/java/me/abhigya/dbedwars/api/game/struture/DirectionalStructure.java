@@ -4,7 +4,7 @@ import org.bukkit.block.Block;
 
 import java.util.List;
 
-public interface DirectionalStructure extends Structure{
+public interface DirectionalStructure extends Structure {
 
     List<Block> getNorthBlocks();
 
@@ -13,5 +13,4 @@ public interface DirectionalStructure extends Structure{
     List<Block> getEastBlocks();
 
     List<Block> getSouthBlocks();
-
 }
