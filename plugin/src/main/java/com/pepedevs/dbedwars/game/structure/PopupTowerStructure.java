@@ -1,18 +1,21 @@
 package com.pepedevs.dbedwars.game.structure;
 
 import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
+import me.Abhigya.core.util.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PopupTowerStructure implements DirectionalStructure {
 
-    private List<Block> northBlocks;
-    private List<Block> westBlocks;
-    private List<Block> eastBlocks;
-    private List<Block> southBlocks;
+    private Map<Block, XMaterial> northBlocks;
+    private Map<Block, XMaterial> westBlocks;
+    private Map<Block, XMaterial> eastBlocks;
+    private Map<Block, XMaterial> southBlocks;
 
     private int blocksPerSecond;
     private Block centre;
@@ -28,52 +31,52 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     @Override
-    public List<Block> getNorthBlocks() {
-        return new ArrayList<>(northBlocks);
+    public Map<Block, XMaterial> getNorthBlocks() {
+        return new LinkedHashMap<>(northBlocks);
     }
 
     @Override
-    public List<Block> getWestBlocks() {
-        return new ArrayList<>(westBlocks);
+    public Map<Block, XMaterial> getWestBlocks() {
+        return new LinkedHashMap<>(westBlocks);
     }
 
     @Override
-    public List<Block> getEastBlocks() {
-        return new ArrayList<>(eastBlocks);
+    public Map<Block, XMaterial> getEastBlocks() {
+        return new LinkedHashMap<>(eastBlocks);
     }
 
     @Override
-    public List<Block> getSouthBlocks() {
-        return new ArrayList<>(southBlocks);
+    public Map<Block, XMaterial> getSouthBlocks() {
+        return new LinkedHashMap<>(southBlocks);
     }
 
     @Override
-    public List<Block> getBlocks(BlockFace face) {
+    public Map<Block, XMaterial> getBlocks(BlockFace face) {
         return null;
     }
 
     @Override
-    public void setNorthBlocks(List<Block> blocks) {
+    public void setNorthBlocks(Map<Block, XMaterial> blocks) {
         this.northBlocks = blocks;
     }
 
     @Override
-    public void setWestBlocks(List<Block> blocks) {
+    public void setWestBlocks(Map<Block, XMaterial> blocks) {
         this.westBlocks = blocks;
     }
 
     @Override
-    public void setEastBlocks(List<Block> blocks) {
+    public void setEastBlocks(Map<Block, XMaterial> blocks) {
         this.eastBlocks = blocks;
     }
 
     @Override
-    public void setSouthBlocks(List<Block> blocks) {
+    public void setSouthBlocks(Map<Block, XMaterial> blocks) {
         this.southBlocks = blocks;
     }
 
     @Override
-    public void setBlocks(BlockFace face, List<Block> blocks) {
+    public void setBlocks(BlockFace face, Map<Block, XMaterial> blocks) {
         switch (face) {
             case NORTH:
                 this.northBlocks = blocks;
@@ -90,7 +93,7 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     @Override
-    public List<Block> getBlocks() {
+    public Map<Block, XMaterial> getBlocks() {
         return getNorthBlocks();
     }
 
@@ -120,7 +123,7 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     private void initNorthBlocks() {
-        this.northBlocks = new ArrayList<>();
+        this.northBlocks = new LinkedHashMap<>();
 
         Block layerCentre = this.centre;
 
@@ -242,7 +245,7 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     private void initSouthBlocks() {
-        this.southBlocks = new ArrayList<>();
+        this.southBlocks = new LinkedHashMap<>();
 
         Block layerCentre = this.centre;
 
@@ -364,10 +367,10 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     private void initEastBlocks() {
-        this.eastBlocks = new ArrayList<>();
+        this.eastBlocks = new LinkedHashMap<>();
     }
 
     private void initWestBlocks() {
-        this.westBlocks = new ArrayList<>();
+        this.westBlocks = new LinkedHashMap<>();
     }
 }
