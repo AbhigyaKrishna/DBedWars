@@ -11,4 +11,6 @@ public interface Structure {
     void setBlocks(List<Block> blocks);
 
     int getBlocksToPlacePerSecond();
+
+    void setBlocksToPlacePerSecond(int n);
 }
