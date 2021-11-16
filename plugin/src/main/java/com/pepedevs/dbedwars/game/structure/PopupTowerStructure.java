@@ -134,7 +134,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(0, 0, 2));
         northBlocks.add(layerCentre.getRelative(-1, 0, -1));
         northBlocks.add(layerCentre.getRelative(-1, 0, 1));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(2, 0, -1));
         northBlocks.add(layerCentre.getRelative(2, 0, 0));
         northBlocks.add(layerCentre.getRelative(2, 0, 1));
@@ -145,7 +147,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(0, 0, 2));
         northBlocks.add(layerCentre.getRelative(-1, 0, -1));
         northBlocks.add(layerCentre.getRelative(-1, 0, 1));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(2, 0, -1));
         northBlocks.add(layerCentre.getRelative(2, 0, 0));
         northBlocks.add(layerCentre.getRelative(2, 0, 1));
@@ -156,7 +160,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(0, 0, 2));
         northBlocks.add(layerCentre.getRelative(-1, 0, -1));
         northBlocks.add(layerCentre.getRelative(-1, 0, 1));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(2, 0, -1));
         northBlocks.add(layerCentre.getRelative(2, 0, 0));
         northBlocks.add(layerCentre.getRelative(2, 0, 1));
@@ -168,7 +174,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(-1, 0, -1));
         northBlocks.add(layerCentre.getRelative(-1, 0, 0));
         northBlocks.add(layerCentre.getRelative(-1, 0, 1));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(2, 0, -2));
         northBlocks.add(layerCentre.getRelative(2, 0, -1));
         northBlocks.add(layerCentre.getRelative(2, 0, 0));
@@ -197,7 +205,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(-2, 0, -2));
         northBlocks.add(layerCentre.getRelative(-1, 0, 3));
         northBlocks.add(layerCentre.getRelative(-2, 0, 2));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(3, 0, -1));
         northBlocks.add(layerCentre.getRelative(3, 0, 0));
         northBlocks.add(layerCentre.getRelative(3, 0, 1));
@@ -216,7 +226,9 @@ public class PopupTowerStructure implements DirectionalStructure {
         northBlocks.add(layerCentre.getRelative(-2, 0, -2));
         northBlocks.add(layerCentre.getRelative(-1, 0, 3));
         northBlocks.add(layerCentre.getRelative(-2, 0, 2));
+
         layerCentre = layerCentre.getRelative(0, 1, 0);
+
         northBlocks.add(layerCentre.getRelative(3, 0, 0));
         northBlocks.add(layerCentre.getRelative(-2, 0, 0));
         northBlocks.add(layerCentre.getRelative(3, 0, -2));
@@ -231,6 +243,124 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     private void initSouthBlocks() {
         this.southBlocks = new ArrayList<>();
+
+        Block layerCentre = this.centre;
+
+        westBlocks.add(layerCentre.getRelative(-2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 2));
+        westBlocks.add(layerCentre.getRelative(0, 0, -2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(1, 0, -1));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 2));
+        westBlocks.add(layerCentre.getRelative(0, 0, -2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(1, 0, -1));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 2));
+        westBlocks.add(layerCentre.getRelative(0, 0, -2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(1, 0, -1));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 2));
+        westBlocks.add(layerCentre.getRelative(0, 0, -2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(1, 0, -1));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-2, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 2));
+        westBlocks.add(layerCentre.getRelative(0, 0, 1));
+        westBlocks.add(layerCentre.getRelative(0, 0, 0));
+        westBlocks.add(layerCentre.getRelative(0, 0, -1));
+        westBlocks.add(layerCentre.getRelative(0, 0, -2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 2));
+        westBlocks.add(layerCentre.getRelative(1, 0, 1));
+        westBlocks.add(layerCentre.getRelative(1, 0, 0));
+        westBlocks.add(layerCentre.getRelative(1, 0, -1));
+        westBlocks.add(layerCentre.getRelative(1, 0, -2));
+        westBlocks.add(layerCentre.getRelative(-3, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 3));
+        westBlocks.add(layerCentre.getRelative(-3, 0, -2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -3));
+        westBlocks.add(layerCentre.getRelative(1, 0, 3));
+        westBlocks.add(layerCentre.getRelative(2, 0, 2));
+        westBlocks.add(layerCentre.getRelative(1, 0, -3));
+        westBlocks.add(layerCentre.getRelative(2, 0, -2));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-3, 0, 1));
+        westBlocks.add(layerCentre.getRelative(-3, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-3, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-1, 0, 3));
+        westBlocks.add(layerCentre.getRelative(-1, 0, -3));
+        westBlocks.add(layerCentre.getRelative(0, 0, 3));
+        westBlocks.add(layerCentre.getRelative(0, 0, -3));
+        westBlocks.add(layerCentre.getRelative(2, 0, 1));
+        westBlocks.add(layerCentre.getRelative(2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(2, 0, -1));
+        westBlocks.add(layerCentre.getRelative(-3, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 3));
+        westBlocks.add(layerCentre.getRelative(-3, 0, -2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -3));
+        westBlocks.add(layerCentre.getRelative(1, 0, 3));
+        westBlocks.add(layerCentre.getRelative(2, 0, 2));
+        westBlocks.add(layerCentre.getRelative(1, 0, -3));
+        westBlocks.add(layerCentre.getRelative(2, 0, -2));
+
+        layerCentre = layerCentre.getRelative(0, 1, 0);
+
+        westBlocks.add(layerCentre.getRelative(-3, 0, 0));
+        westBlocks.add(layerCentre.getRelative(2, 0, 0));
+        westBlocks.add(layerCentre.getRelative(-3, 0, 2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, 3));
+        westBlocks.add(layerCentre.getRelative(-3, 0, -2));
+        westBlocks.add(layerCentre.getRelative(-2, 0, -3));
+        westBlocks.add(layerCentre.getRelative(1, 0, 3));
+        westBlocks.add(layerCentre.getRelative(2, 0, 2));
+        westBlocks.add(layerCentre.getRelative(1, 0, -3));
+        westBlocks.add(layerCentre.getRelative(2, 0, -2));
     }
 
     private void initEastBlocks() {
