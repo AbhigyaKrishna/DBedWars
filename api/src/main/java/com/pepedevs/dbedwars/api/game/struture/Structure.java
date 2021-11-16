@@ -13,4 +13,8 @@ public interface Structure {
     int getBlocksToPlacePerSecond();
 
     void setBlocksToPlacePerSecond(int n);
+
+    Block getCentre();
+
+    void setCentre(Block centre);
 }
