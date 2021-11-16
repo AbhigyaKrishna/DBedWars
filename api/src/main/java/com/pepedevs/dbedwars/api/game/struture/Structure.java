@@ -8,5 +8,7 @@ public interface Structure {
 
     List<Block> getBlocks();
 
+    void setBlocks(List<Block> blocks);
+
     int getBlocksToPlacePerSecond();
 }
