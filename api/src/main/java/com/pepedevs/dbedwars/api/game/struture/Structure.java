@@ -1,14 +1,15 @@
 package com.pepedevs.dbedwars.api.game.struture;
 
+import me.Abhigya.core.util.xseries.XMaterial;
 import org.bukkit.block.Block;
 
-import java.util.List;
+import java.util.Map;
 
 public interface Structure {
 
-    List<Block> getBlocks();
+    Map<Block, XMaterial> getBlocks();
 
-    void setBlocks(List<Block> blocks);
+    void setBlocks(Map<Block, XMaterial> blocks);
 
     int getBlocksToPlacePerSecond();
 
