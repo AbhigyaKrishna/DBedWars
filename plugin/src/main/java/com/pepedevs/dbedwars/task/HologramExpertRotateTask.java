@@ -14,7 +14,11 @@ public class HologramExpertRotateTask extends HologramRotateTask {
     private final LinkedList<Map.Entry<LocationXYZYP, Integer>> frames;
     private final short delayMillis;
 
-    public HologramExpertRotateTask(DBedwars plugin, Hologram hologram, LinkedHashMap<LocationXYZYP, Integer> frames, short delayMillis) {
+    public HologramExpertRotateTask(
+            DBedwars plugin,
+            Hologram hologram,
+            LinkedHashMap<LocationXYZYP, Integer> frames,
+            short delayMillis) {
         super(plugin, hologram);
         this.frames = new LinkedList<>(frames.entrySet());
         this.delayMillis = delayMillis;
@@ -22,8 +26,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
 
     @Override
     public void start() {
-        if (this.frames.size() == 0)
-            throw new IllegalStateException("No animations in hologram!");
+        if (this.frames.size() == 0) throw new IllegalStateException("No animations in hologram!");
 
         this.task = new HologramRotate(this.delayMillis);
         this.plugin.getThreadHandler().addAsyncWork(this.task);
@@ -51,14 +54,12 @@ public class HologramExpertRotateTask extends HologramRotateTask {
 
         @Override
         public void compute() {
-            if (this.isCancelled())
-                return;
+            if (this.isCancelled()) return;
 
             this.lastExec = System.currentTimeMillis();
 
             if (this.lastExec - this.frameStart >= this.time) {
-                if (++this.frame >= this.task.frames.size())
-                    this.frame = 0;
+                if (++this.frame >= this.task.frames.size()) this.frame = 0;
 
                 this.loc = this.task.frames.get(this.frame).getKey();
                 this.time = this.task.frames.get(this.frame).getValue() * 50;
@@ -67,12 +68,12 @@ public class HologramExpertRotateTask extends HologramRotateTask {
                 this.frameStart = System.currentTimeMillis();
             }
 
-            this.task.rotateAndMoveHologram(this.loc.getX() / this.frameParts * this.partMove,
+            this.task.rotateAndMoveHologram(
+                    this.loc.getX() / this.frameParts * this.partMove,
                     this.loc.getY() / this.frameParts * this.partMove,
                     this.loc.getZ() / this.frameParts * this.partMove,
                     this.loc.getYaw() / this.frameParts * this.partMove,
                     this.loc.getPitch() / this.frameParts * this.partMove);
-
 
             this.partMove++;
         }
@@ -81,7 +82,5 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return !this.isCancelled() && System.currentTimeMillis() - lastExec > this.delayMillis;
         }
-
     }
-
 }

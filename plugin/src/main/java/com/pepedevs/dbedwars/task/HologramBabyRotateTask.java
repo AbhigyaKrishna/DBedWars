@@ -12,15 +12,18 @@ public class HologramBabyRotateTask extends HologramRotateTask {
     private final boolean slowDownAtEnd;
     private final float verticalMovement;
 
-    public HologramBabyRotateTask(DBedwars plugin, Hologram hologram, float degreeRotatedPerCycle,
-                                  int ticksPerAnimationCycle,
-                                  String onAnimationEnd,
-                                  boolean slowDownAtEnd,
-                                  float verticalMovement) {
+    public HologramBabyRotateTask(
+            DBedwars plugin,
+            Hologram hologram,
+            float degreeRotatedPerCycle,
+            int ticksPerAnimationCycle,
+            String onAnimationEnd,
+            boolean slowDownAtEnd,
+            float verticalMovement) {
         super(plugin, hologram);
         this.degreeRotatedPerCycle = degreeRotatedPerCycle;
         this.ticksPerAnimationCycle = ticksPerAnimationCycle;
-        this. onAnimationEnd = onAnimationEnd;
+        this.onAnimationEnd = onAnimationEnd;
         this.slowDownAtEnd = slowDownAtEnd;
         this.verticalMovement = verticalMovement;
     }
@@ -29,9 +32,11 @@ public class HologramBabyRotateTask extends HologramRotateTask {
     public void start() {
         if (this.slowDownAtEnd) {
             float horizontalAcceleration =
-                    (4 * this.degreeRotatedPerCycle) / (this.ticksPerAnimationCycle * this.ticksPerAnimationCycle);
+                    (4 * this.degreeRotatedPerCycle)
+                            / (this.ticksPerAnimationCycle * this.ticksPerAnimationCycle);
             float verticalAcceleration =
-                    (4 * this.verticalMovement) / (this.ticksPerAnimationCycle * this.ticksPerAnimationCycle);
+                    (4 * this.verticalMovement)
+                            / (this.ticksPerAnimationCycle * this.ticksPerAnimationCycle);
             this.task = new HologramRotateSlow(horizontalAcceleration, verticalAcceleration);
         } else {
             this.task = new HologramRotateNoSlow();
@@ -76,21 +81,15 @@ public class HologramBabyRotateTask extends HologramRotateTask {
                 this.task.rotateHologram(
                         this.revert
                                 * (this.horizontalAcceleration / 2)
-                                * ((2 * (this.task.ticksPerAnimationCycle - this.tick))
-                                + 1),
+                                * ((2 * (this.task.ticksPerAnimationCycle - this.tick)) + 1),
                         (this.revert
                                 * (this.verticalAcceleration / 2)
-                                * ((2 * (this.task.ticksPerAnimationCycle - this.tick))
-                                + 1)));
+                                * ((2 * (this.task.ticksPerAnimationCycle - this.tick)) + 1)));
             } else {
                 this.tick++;
                 this.task.rotateHologram(
-                        this.revert
-                                * (this.horizontalAcceleration / 2)
-                                * ((2 * this.tick) + 1),
-                        (this.revert
-                                * (this.verticalAcceleration / 2)
-                                * ((2 * this.tick) + 1)));
+                        this.revert * (this.horizontalAcceleration / 2) * ((2 * this.tick) + 1),
+                        (this.revert * (this.verticalAcceleration / 2) * ((2 * this.tick) + 1)));
             }
         }
 
@@ -98,7 +97,6 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.timestamp >= 50;
         }
-
     }
 
     private class HologramRotateNoSlow extends CancellableTask {
@@ -123,7 +121,9 @@ public class HologramBabyRotateTask extends HologramRotateTask {
                     0,
                     this.revert * this.task.verticalMovement / this.task.ticksPerAnimationCycle,
                     0,
-                    this.revert * this.task.degreeRotatedPerCycle / this.task.ticksPerAnimationCycle,
+                    this.revert
+                            * this.task.degreeRotatedPerCycle
+                            / this.task.ticksPerAnimationCycle,
                     0);
             if (this.tick >= this.task.ticksPerAnimationCycle) {
                 this.tick = 0;
@@ -141,7 +141,5 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.lastExec >= 50;
         }
-
     }
-
 }

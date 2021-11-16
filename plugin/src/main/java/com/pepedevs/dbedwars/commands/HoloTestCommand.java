@@ -6,8 +6,6 @@ import com.pepedevs.dbedwars.task.HologramRotateTask;
 import me.Abhigya.core.commands.CommandArgument;
 import me.Abhigya.core.util.hologram.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.task.HologramBabyRotateTask;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -50,7 +48,8 @@ public class HoloTestCommand implements CommandArgument {
         LinkedHashMap<LocationXYZYP, Integer> map = new LinkedHashMap<>();
         map.put(new LocationXYZYP(0, 0, 0, 90, 0), 10);
         System.out.println(map);
-        HologramRotateTask task = new HologramExpertRotateTask(DBedwars.getInstance(), hologram3, map, (short) 50);
+        HologramRotateTask task =
+                new HologramExpertRotateTask(DBedwars.getInstance(), hologram3, map, (short) 50);
         task.start();
         return true;
     }

@@ -19,8 +19,7 @@ public abstract class HologramRotateTask {
     public abstract void start();
 
     public void cancel() {
-        if (this.task == null)
-            throw new IllegalStateException("Task already stopped!");
+        if (this.task == null) throw new IllegalStateException("Task already stopped!");
 
         this.task.setCancelled(true);
         this.task = null;
@@ -46,5 +45,4 @@ public abstract class HologramRotateTask {
     public Hologram getHologram() {
         return this.hologram;
     }
-
 }
