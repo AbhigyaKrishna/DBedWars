@@ -148,8 +148,7 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     private static class PopupTowerBlocks {
 
-        private static Map<Block, XMaterial> getEastBlocks(
-                Block centre, XMaterial material) {
+        private static Map<Block, XMaterial> getEastBlocks(Block centre, XMaterial material) {
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
             Block layerCentre = centre;
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
@@ -258,8 +257,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             return blocks;
         }
 
-        private static Map<Block, XMaterial> getWestBlocks(
-                Block centre, XMaterial material) {
+        private static Map<Block, XMaterial> getWestBlocks(Block centre, XMaterial material) {
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
 
             blocks.put(centre.getRelative(-2, 0, 1), material);
@@ -362,8 +360,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             return blocks;
         }
 
-        private static Map<Block, XMaterial> getSouthBlocks(
-                Block centre, XMaterial material) {
+        private static Map<Block, XMaterial> getSouthBlocks(Block centre, XMaterial material) {
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
             blocks.put(centre.getRelative(1, 0, 2), material);
             blocks.put(centre.getRelative(0, 0, 2), material);
@@ -465,8 +462,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             return blocks;
         }
 
-        private static Map<Block, XMaterial> getNorthBlocks(
-                Block centre, XMaterial material) {
+        private static Map<Block, XMaterial> getNorthBlocks(Block centre, XMaterial material) {
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
             blocks.put(centre.getRelative(1, 0, -2), material);
             blocks.put(centre.getRelative(0, 0, -2), material);
