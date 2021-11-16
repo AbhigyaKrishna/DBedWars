@@ -23,7 +23,7 @@ public class StructureBuilderTask implements Workload {
     private Arena arena;
     private Iterator<Map.Entry<Block, XMaterial>> blockIterator;
 
-    public StructureBuilderTask(Structure structure, Arena arena){
+    public StructureBuilderTask(Structure structure, Arena arena) {
         this.structure = structure;
         this.isDirectional = false;
         this.face = null;
@@ -31,7 +31,7 @@ public class StructureBuilderTask implements Workload {
         this.blockIterator = structure.getBlocks().entrySet().iterator();
     }
 
-    public StructureBuilderTask(DirectionalStructure structure, BlockFace face, Arena arena){
+    public StructureBuilderTask(DirectionalStructure structure, BlockFace face, Arena arena) {
         this.structure = structure;
         this.isDirectional = true;
         this.face = face;
@@ -41,9 +41,10 @@ public class StructureBuilderTask implements Workload {
 
     @Override
     public void compute() {
-        for (int blocksToPlacePerSecond = structure.getBlocksToPlacePerSecond(); blocksToPlacePerSecond > 0; blocksToPlacePerSecond--) {
-            if (!blockIterator.hasNext())
-                break;
+        for (int blocksToPlacePerSecond = structure.getBlocksToPlacePerSecond();
+                blocksToPlacePerSecond > 0;
+                blocksToPlacePerSecond--) {
+            if (!blockIterator.hasNext()) break;
 
             Map.Entry<Block, XMaterial> entry = blockIterator.next();
 
@@ -51,10 +52,9 @@ public class StructureBuilderTask implements Workload {
 
             arena.setBlock(entry.getKey(), entry.getValue().parseMaterial());
 
-            if (isDirectional){
+            if (isDirectional) {
                 XBlock.setDirection(entry.getKey(), face);
             }
-
         }
     }
 
@@ -65,8 +65,7 @@ public class StructureBuilderTask implements Workload {
 
     @Override
     public boolean shouldExecute() {
-        if (System.currentTimeMillis() - timestamp < 50)
-            return false;
+        if (System.currentTimeMillis() - timestamp < 50) return false;
         timestamp = System.currentTimeMillis();
         tick++;
 
