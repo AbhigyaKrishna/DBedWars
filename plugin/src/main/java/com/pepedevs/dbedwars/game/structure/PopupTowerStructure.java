@@ -150,7 +150,9 @@ public class PopupTowerStructure implements DirectionalStructure {
 
         private static Map<Block, XMaterial> getEastBlocks(Block centre, XMaterial material) {
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
+
             Block layerCentre = centre;
+
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
             blocks.put(layerCentre.getRelative(2, 0, 0), material);
             blocks.put(layerCentre.getRelative(2, 0, 1), material);
@@ -161,7 +163,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
             blocks.put(layerCentre.getRelative(2, 0, 0), material);
             blocks.put(layerCentre.getRelative(2, 0, 1), material);
@@ -172,7 +176,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
             blocks.put(layerCentre.getRelative(2, 0, 0), material);
             blocks.put(layerCentre.getRelative(2, 0, 1), material);
@@ -183,7 +189,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
             blocks.put(layerCentre.getRelative(2, 0, 0), material);
             blocks.put(layerCentre.getRelative(2, 0, 1), material);
@@ -195,7 +203,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 0), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(2, 0, -2), material);
             blocks.put(layerCentre.getRelative(2, 0, -1), material);
             blocks.put(layerCentre.getRelative(2, 0, 0), material);
@@ -224,7 +234,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, -2), material);
             blocks.put(layerCentre.getRelative(-1, 0, 3), material);
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(3, 0, -1), material);
             blocks.put(layerCentre.getRelative(3, 0, 0), material);
             blocks.put(layerCentre.getRelative(3, 0, 1), material);
@@ -243,7 +255,9 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, -2), material);
             blocks.put(layerCentre.getRelative(-1, 0, 3), material);
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
+
             layerCentre = layerCentre.getRelative(0, 1, 0);
+
             blocks.put(layerCentre.getRelative(3, 0, 0), material);
             blocks.put(layerCentre.getRelative(-2, 0, 0), material);
             blocks.put(layerCentre.getRelative(3, 0, -2), material);
@@ -254,109 +268,131 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, -2), material);
             blocks.put(layerCentre.getRelative(-1, 0, 3), material);
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
+
             return blocks;
         }
 
         private static Map<Block, XMaterial> getWestBlocks(Block centre, XMaterial material) {
+
             LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
 
-            blocks.put(centre.getRelative(-2, 0, 1), material);
-            blocks.put(centre.getRelative(-2, 0, 0), material);
-            blocks.put(centre.getRelative(-2, 0, -1), material);
-            blocks.put(centre.getRelative(-1, 0, 0), XMaterial.LADDER);
-            blocks.put(centre.getRelative(-1, 0, 2), material);
-            blocks.put(centre.getRelative(-1, 0, -2), material);
-            blocks.put(centre.getRelative(0, 0, 2), material);
-            blocks.put(centre.getRelative(0, 0, -2), material);
-            blocks.put(centre.getRelative(1, 0, 1), material);
-            blocks.put(centre.getRelative(1, 0, -1), material);
-            blocks.put(centre.getRelative(-2, 1, 1), material);
-            blocks.put(centre.getRelative(-2, 1, 0), material);
-            blocks.put(centre.getRelative(-2, 1, -1), material);
-            blocks.put(centre.getRelative(-1, 1, 0), XMaterial.LADDER);
-            blocks.put(centre.getRelative(-1, 1, 2), material);
-            blocks.put(centre.getRelative(-1, 1, -2), material);
-            blocks.put(centre.getRelative(0, 1, 2), material);
-            blocks.put(centre.getRelative(0, 1, -2), material);
-            blocks.put(centre.getRelative(1, 1, 1), material);
-            blocks.put(centre.getRelative(1, 1, -1), material);
-            blocks.put(centre.getRelative(-2, 2, 1), material);
-            blocks.put(centre.getRelative(-2, 2, 0), material);
-            blocks.put(centre.getRelative(-2, 2, -1), material);
-            blocks.put(centre.getRelative(-1, 2, 0), XMaterial.LADDER);
-            blocks.put(centre.getRelative(-1, 2, 2), material);
-            blocks.put(centre.getRelative(-1, 2, -2), material);
-            blocks.put(centre.getRelative(0, 2, 2), material);
-            blocks.put(centre.getRelative(0, 2, -2), material);
-            blocks.put(centre.getRelative(1, 2, 1), material);
-            blocks.put(centre.getRelative(1, 2, -1), material);
-            blocks.put(centre.getRelative(-2, 3, 1), material);
-            blocks.put(centre.getRelative(-2, 3, 0), material);
-            blocks.put(centre.getRelative(-2, 3, -1), material);
-            blocks.put(centre.getRelative(-1, 3, 0), XMaterial.LADDER);
-            blocks.put(centre.getRelative(-1, 3, 2), material);
-            blocks.put(centre.getRelative(-1, 3, -2), material);
-            blocks.put(centre.getRelative(0, 3, 2), material);
-            blocks.put(centre.getRelative(0, 3, -2), material);
-            blocks.put(centre.getRelative(1, 3, 1), material);
-            blocks.put(centre.getRelative(1, 3, 0), material);
-            blocks.put(centre.getRelative(1, 3, -1), material);
-            blocks.put(centre.getRelative(-2, 4, 2), material);
-            blocks.put(centre.getRelative(-2, 4, 1), material);
-            blocks.put(centre.getRelative(-2, 4, 0), material);
-            blocks.put(centre.getRelative(-2, 4, -1), material);
-            blocks.put(centre.getRelative(-2, 4, -2), material);
-            blocks.put(centre.getRelative(-1, 4, 0), XMaterial.LADDER);
-            blocks.put(centre.getRelative(-1, 4, 2), material);
-            blocks.put(centre.getRelative(-1, 4, 1), material);
-            blocks.put(centre.getRelative(-1, 4, -1), material);
-            blocks.put(centre.getRelative(-1, 4, -2), material);
-            blocks.put(centre.getRelative(0, 4, 2), material);
-            blocks.put(centre.getRelative(0, 4, 1), material);
-            blocks.put(centre.getRelative(0, 4, 0), material);
-            blocks.put(centre.getRelative(0, 4, -1), material);
-            blocks.put(centre.getRelative(0, 4, -2), material);
-            blocks.put(centre.getRelative(1, 4, 2), material);
-            blocks.put(centre.getRelative(1, 4, 1), material);
-            blocks.put(centre.getRelative(1, 4, 0), material);
-            blocks.put(centre.getRelative(1, 4, -1), material);
-            blocks.put(centre.getRelative(1, 4, -2), material);
-            blocks.put(centre.getRelative(-3, 4, 2), material);
-            blocks.put(centre.getRelative(-2, 4, 3), material);
-            blocks.put(centre.getRelative(-3, 4, -2), material);
-            blocks.put(centre.getRelative(-2, 4, -3), material);
-            blocks.put(centre.getRelative(1, 4, 3), material);
-            blocks.put(centre.getRelative(2, 4, 2), material);
-            blocks.put(centre.getRelative(1, 4, -3), material);
-            blocks.put(centre.getRelative(2, 4, -2), material);
-            blocks.put(centre.getRelative(-3, 5, 1), material);
-            blocks.put(centre.getRelative(-3, 5, 0), material);
-            blocks.put(centre.getRelative(-3, 5, -1), material);
-            blocks.put(centre.getRelative(-1, 5, 3), material);
-            blocks.put(centre.getRelative(-1, 5, -3), material);
-            blocks.put(centre.getRelative(0, 5, 3), material);
-            blocks.put(centre.getRelative(0, 5, -3), material);
-            blocks.put(centre.getRelative(2, 5, 1), material);
-            blocks.put(centre.getRelative(2, 5, 0), material);
-            blocks.put(centre.getRelative(2, 5, -1), material);
-            blocks.put(centre.getRelative(-3, 5, 2), material);
-            blocks.put(centre.getRelative(-2, 5, 3), material);
-            blocks.put(centre.getRelative(-3, 5, -2), material);
-            blocks.put(centre.getRelative(-2, 5, -3), material);
-            blocks.put(centre.getRelative(1, 5, 3), material);
-            blocks.put(centre.getRelative(2, 5, 2), material);
-            blocks.put(centre.getRelative(1, 5, -3), material);
-            blocks.put(centre.getRelative(2, 5, -2), material);
-            blocks.put(centre.getRelative(-3, 6, 0), material);
-            blocks.put(centre.getRelative(2, 6, 0), material);
-            blocks.put(centre.getRelative(-3, 6, 2), material);
-            blocks.put(centre.getRelative(-2, 6, 3), material);
-            blocks.put(centre.getRelative(-3, 6, -2), material);
-            blocks.put(centre.getRelative(-2, 6, -3), material);
-            blocks.put(centre.getRelative(1, 6, 3), material);
-            blocks.put(centre.getRelative(2, 6, 2), material);
-            blocks.put(centre.getRelative(1, 6, -3), material);
-            blocks.put(centre.getRelative(2, 6, -2), material);
+            Block layerCentre = centre;
+
+            blocks.put(layerCentre.getRelative(-2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 0), XMaterial.LADDER);
+            blocks.put(layerCentre.getRelative(-1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 2), material);
+            blocks.put(layerCentre.getRelative(0, 0, -2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(1, 0, -1), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 0), XMaterial.LADDER);
+            blocks.put(layerCentre.getRelative(-1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 2), material);
+            blocks.put(layerCentre.getRelative(0, 0, -2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(1, 0, -1), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 0), XMaterial.LADDER);
+            blocks.put(layerCentre.getRelative(-1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 2), material);
+            blocks.put(layerCentre.getRelative(0, 0, -2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(1, 0, -1), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 0), XMaterial.LADDER);
+            blocks.put(layerCentre.getRelative(-1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 2), material);
+            blocks.put(layerCentre.getRelative(0, 0, -2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(1, 0, 0), material);
+            blocks.put(layerCentre.getRelative(1, 0, -1), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-2, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 0), XMaterial.LADDER);
+            blocks.put(layerCentre.getRelative(-1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 2), material);
+            blocks.put(layerCentre.getRelative(0, 0, 1), material);
+            blocks.put(layerCentre.getRelative(0, 0, 0), material);
+            blocks.put(layerCentre.getRelative(0, 0, -1), material);
+            blocks.put(layerCentre.getRelative(0, 0, -2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 2), material);
+            blocks.put(layerCentre.getRelative(1, 0, 1), material);
+            blocks.put(layerCentre.getRelative(1, 0, 0), material);
+            blocks.put(layerCentre.getRelative(1, 0, -1), material);
+            blocks.put(layerCentre.getRelative(1, 0, -2), material);
+            blocks.put(layerCentre.getRelative(-3, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 3), material);
+            blocks.put(layerCentre.getRelative(-3, 0, -2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -3), material);
+            blocks.put(layerCentre.getRelative(1, 0, 3), material);
+            blocks.put(layerCentre.getRelative(2, 0, 2), material);
+            blocks.put(layerCentre.getRelative(1, 0, -3), material);
+            blocks.put(layerCentre.getRelative(2, 0, -2), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-3, 0, 1), material);
+            blocks.put(layerCentre.getRelative(-3, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-3, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-1, 0, 3), material);
+            blocks.put(layerCentre.getRelative(-1, 0, -3), material);
+            blocks.put(layerCentre.getRelative(0, 0, 3), material);
+            blocks.put(layerCentre.getRelative(0, 0, -3), material);
+            blocks.put(layerCentre.getRelative(2, 0, 1), material);
+            blocks.put(layerCentre.getRelative(2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(2, 0, -1), material);
+            blocks.put(layerCentre.getRelative(-3, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 3), material);
+            blocks.put(layerCentre.getRelative(-3, 0, -2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -3), material);
+            blocks.put(layerCentre.getRelative(1, 0, 3), material);
+            blocks.put(layerCentre.getRelative(2, 0, 2), material);
+            blocks.put(layerCentre.getRelative(1, 0, -3), material);
+            blocks.put(layerCentre.getRelative(2, 0, -2), material);
+
+            layerCentre = layerCentre.getRelative(0, 1, 0);
+
+            blocks.put(layerCentre.getRelative(-3, 0, 0), material);
+            blocks.put(layerCentre.getRelative(2, 0, 0), material);
+            blocks.put(layerCentre.getRelative(-3, 0, 2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, 3), material);
+            blocks.put(layerCentre.getRelative(-3, 0, -2), material);
+            blocks.put(layerCentre.getRelative(-2, 0, -3), material);
+            blocks.put(layerCentre.getRelative(1, 0, 3), material);
+            blocks.put(layerCentre.getRelative(2, 0, 2), material);
+            blocks.put(layerCentre.getRelative(1, 0, -3), material);
+            blocks.put(layerCentre.getRelative(2, 0, -2), material);
             return blocks;
         }
 
