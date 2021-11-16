@@ -1,29 +1,30 @@
 package com.pepedevs.dbedwars.api.game.struture;
 
+import me.Abhigya.core.util.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import java.util.List;
+import java.util.Map;
 
 public interface DirectionalStructure extends Structure {
 
-    List<Block> getNorthBlocks();
+    Map<Block, XMaterial> getNorthBlocks();
 
-    List<Block> getWestBlocks();
+    Map<Block, XMaterial> getWestBlocks();
 
-    List<Block> getEastBlocks();
+    Map<Block, XMaterial> getEastBlocks();
 
-    List<Block> getSouthBlocks();
+    Map<Block, XMaterial> getSouthBlocks();
 
-    List<Block> getBlocks(BlockFace face);
+    Map<Block, XMaterial> getBlocks(BlockFace face);
 
-    void setNorthBlocks(List<Block> blocks);
+    void setNorthBlocks(Map<Block, XMaterial> blocks);
 
-    void setWestBlocks(List<Block> blocks);
+    void setWestBlocks(Map<Block, XMaterial> blocks);
 
-    void setEastBlocks(List<Block> blocks);
+    void setEastBlocks(Map<Block, XMaterial> blocks);
 
-    void setSouthBlocks(List<Block> blocks);
+    void setSouthBlocks(Map<Block, XMaterial> blocks);
 
-    void setBlocks(BlockFace face, List<Block> blocks);
+    void setBlocks(BlockFace face, Map<Block, XMaterial> blocks);
 }
