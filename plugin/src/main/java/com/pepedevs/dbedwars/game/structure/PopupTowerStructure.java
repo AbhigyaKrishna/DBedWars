@@ -413,7 +413,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, 2), material);
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
@@ -426,7 +426,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, 2), material);
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
@@ -439,7 +439,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, 2), material);
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
@@ -453,7 +453,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(0, 0, -1), material);
             blocks.put(layerCentre.getRelative(-1, 0, -1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(2, 0, 2), material);
             blocks.put(layerCentre.getRelative(1, 0, 2), material);
@@ -484,7 +484,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-3, 0, -1), material);
             blocks.put(layerCentre.getRelative(-2, 0, -2), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, 3), material);
             blocks.put(layerCentre.getRelative(0, 0, 3), material);
@@ -505,7 +505,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-3, 0, -1), material);
             blocks.put(layerCentre.getRelative(-2, 0, -2), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(0, 0, 3), material);
             blocks.put(layerCentre.getRelative(0, 0, -2), material);
@@ -536,7 +536,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, 1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, -2), material);
             blocks.put(layerCentre.getRelative(0, 0, -2), material);
@@ -549,7 +549,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, 1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, -2), material);
             blocks.put(layerCentre.getRelative(0, 0, -2), material);
@@ -562,7 +562,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(1, 0, 1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, -2), material);
             blocks.put(layerCentre.getRelative(0, 0, -2), material);
@@ -576,7 +576,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(0, 0, 1), material);
             blocks.put(layerCentre.getRelative(-1, 0, 1), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(2, 0, -2), material);
             blocks.put(layerCentre.getRelative(1, 0, -2), material);
@@ -607,7 +607,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-3, 0, 1), material);
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(1, 0, -3), material);
             blocks.put(layerCentre.getRelative(0, 0, -3), material);
@@ -628,7 +628,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-3, 0, 1), material);
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
 
-            layerCentre = layerCentre.getRelative(0,1,0);
+            layerCentre = layerCentre.getRelative(0, 1, 0);
 
             blocks.put(layerCentre.getRelative(0, 0, -3), material);
             blocks.put(layerCentre.getRelative(0, 0, 2), material);
