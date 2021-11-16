@@ -149,7 +149,7 @@ public class PopupTowerStructure implements DirectionalStructure {
     private static class PopupTowerBlocks {
 
         private static Map<Block, XMaterial> getEastBlocks(Block centre, XMaterial material) {
-            LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
+            Map<Block, XMaterial> blocks = new LinkedHashMap<>();
 
             Block layerCentre = centre;
 
@@ -274,7 +274,7 @@ public class PopupTowerStructure implements DirectionalStructure {
 
         private static Map<Block, XMaterial> getWestBlocks(Block centre, XMaterial material) {
 
-            LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
+            Map<Block, XMaterial> blocks = new LinkedHashMap<>();
 
             Block layerCentre = centre;
 
@@ -398,7 +398,7 @@ public class PopupTowerStructure implements DirectionalStructure {
 
         private static Map<Block, XMaterial> getSouthBlocks(Block centre, XMaterial material) {
 
-            LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
+            Map<Block, XMaterial> blocks = new LinkedHashMap<>();
 
             Block layerCentre = centre;
 
@@ -521,7 +521,7 @@ public class PopupTowerStructure implements DirectionalStructure {
         }
 
         private static Map<Block, XMaterial> getNorthBlocks(Block centre, XMaterial material) {
-            LinkedHashMap<Block, XMaterial> blocks = new LinkedHashMap<>();
+            Map<Block, XMaterial> blocks = new LinkedHashMap<>();
 
             Block layerCentre = centre;
 
