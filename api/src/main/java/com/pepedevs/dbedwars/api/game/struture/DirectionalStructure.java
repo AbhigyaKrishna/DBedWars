@@ -26,5 +26,4 @@ public interface DirectionalStructure extends Structure {
     void setSouthBlocks(List<Block> blocks);
 
     void setBlocks(BlockFace face, List<Block> blocks);
-
 }
