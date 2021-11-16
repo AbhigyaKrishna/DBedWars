@@ -15,8 +15,12 @@ public class PopupTowerStructure implements DirectionalStructure {
     private List<Block> southBlocks;
 
     private int blocksPerSecond;
+    private Block centre;
 
-    public PopupTowerStructure(){
+    public PopupTowerStructure(Block centre){
+
+        this.centre = centre;
+
         initNorthBlocks();
         initWestBlocks();
         initEastBlocks();
@@ -105,8 +109,20 @@ public class PopupTowerStructure implements DirectionalStructure {
         this.blocksPerSecond = n;
     }
 
+    @Override
+    public Block getCentre() {
+        return this.centre;
+    }
+
+    @Override
+    public void setCentre(Block centre) {
+        this.centre = centre;
+    }
+
     private void initNorthBlocks() {
         this.northBlocks = new ArrayList<>();
+
+        
     }
 
     private void initSouthBlocks() {
