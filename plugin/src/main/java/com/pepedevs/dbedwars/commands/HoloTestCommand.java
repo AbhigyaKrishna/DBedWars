@@ -1,9 +1,12 @@
 package com.pepedevs.dbedwars.commands;
 
+import com.pepedevs.dbedwars.api.util.LocationXYZYP;
+import com.pepedevs.dbedwars.task.HologramExpertRotateTask;
+import com.pepedevs.dbedwars.task.HologramRotateTask;
 import me.Abhigya.core.commands.CommandArgument;
 import me.Abhigya.core.util.hologram.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.task.HologramRotateTask;
+import com.pepedevs.dbedwars.task.HologramBabyRotateTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -44,26 +47,12 @@ public class HoloTestCommand implements CommandArgument {
                                 "OK LOLL");
         hologram3.add(new ItemStack(Material.WOOD), false);
         hologram3.spawn();
-        LinkedHashMap<Location, Integer> map = new LinkedHashMap<>();
-        Location location =
-                ((Player) commandSender)
-                        .getLocation()
-                        .clone()
-                        .subtract(((Player) commandSender).getLocation());
-        map.put(yawAdder(location).clone(), 10);
-        map.put(yawAdder(location).clone(), 10);
-        map.put(yawAdder(location).clone(), 10);
-        map.put(yawAdder(location).clone(), 10);
-        map.put(yawAdder(location).clone(), 10);
-        map.put(yawAdder(location).clone(), 10);
+        LinkedHashMap<LocationXYZYP, Integer> map = new LinkedHashMap<>();
+        map.put(new LocationXYZYP(0, 0, 0, 90, 0), 10);
         System.out.println(map);
-        new HologramRotateTask(DBedwars.getInstance(), hologram3);
+        HologramRotateTask task = new HologramExpertRotateTask(DBedwars.getInstance(), hologram3, map, (short) 50);
+        task.start();
         return true;
-    }
-
-    private Location yawAdder(Location location) {
-        location.setYaw(location.getYaw() + 90F);
-        return location;
     }
 
     @Override
