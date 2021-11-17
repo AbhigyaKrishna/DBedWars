@@ -254,9 +254,7 @@ public class GameListener extends PluginHandler {
                 ((TNTItem) plugin.getCustomItemHandler().getItem("TNT")).onTNTExplode(event);
         }
 
-        event.blockList()
-                .removeIf(
-                        block -> !block.hasMetadata("placed"));
+        event.blockList().removeIf(block -> !block.hasMetadata("placed"));
     }
 
     // TODO: revamp this

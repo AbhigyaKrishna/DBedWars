@@ -360,10 +360,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                             Arena.this.teams.forEach(
                                     t ->
                                             t.registerTeam(
-                                                    Arena.this
-                                                            .scoreboard
-                                                            .getHandle()
-                                                            .getHandle()));
+                                                    Arena.this.scoreboard.getHandle().getHandle()));
                         });
 
         this.teams.forEach(

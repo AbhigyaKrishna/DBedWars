@@ -37,16 +37,12 @@ public class FireballItem extends PluginActionItem {
                 StringUtils.translateAlternateColorCodes(
                         plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
                 StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getFireball()
-                                .getLore()
-                                == null
+                        plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getFireball()
-                                .getLore()),
+                                        .getCustomItems()
+                                        .getFireball()
+                                        .getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
         this.cfgFireball = plugin.getConfigHandler().getCustomItems().getFireball();
         this.cfgKB = cfgFireball.getKnockBack();

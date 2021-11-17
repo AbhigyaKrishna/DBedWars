@@ -93,14 +93,13 @@ public class Utils {
         Location corner2 = location.clone().subtract(x, y, z);
         Set<Block> blocks = LocationUtils.getBlocksBetween(corner, corner2);
 
-        return blocks.stream()
-                .filter(Utils::isBed)
-                .findFirst()
-                .orElse(null);
+        return blocks.stream().filter(Utils::isBed).findFirst().orElse(null);
     }
 
     public static boolean isBed(Block block) {
-        return List.of(ItemConstant.BED.getItems()).contains(XMaterial.matchXMaterial(block.getType())) || block.getType().name().equals("BED_BLOCK");
+        return List.of(ItemConstant.BED.getItems())
+                        .contains(XMaterial.matchXMaterial(block.getType()))
+                || block.getType().name().equals("BED_BLOCK");
     }
 
     @SafeVarargs
@@ -154,8 +153,7 @@ public class Utils {
     }
 
     public static void useItem(Player player) {
-        if (player.getGameMode() == GameMode.CREATIVE)
-            return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
 
         int amt = player.getInventory().getItemInHand().getAmount();
 

@@ -29,16 +29,9 @@ public class BedBugSnowball extends PluginActionItem {
     public BedBugSnowball(DBedwars plugin) {
         super(
                 StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getBedBug()
-                                .getItemName()),
+                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
                 StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getBedBug()
-                                .getItemLore()
-                                        == null
+                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
                                         .getCustomItems()

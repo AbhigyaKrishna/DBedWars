@@ -30,14 +30,11 @@ public class DatabaseUtils {
                                     stat = (PlayerStats) saved.get(0);
                                     stat.setCOINS(stat.getCOINS() + 10);
                                     stat.setLEVEL(stat.getLEVEL() + 1);
-                                    stat.setPOINTS(
-                                            stat.getPOINTS() + Utils.calculatePoint(player));
+                                    stat.setPOINTS(stat.getPOINTS() + Utils.calculatePoint(player));
                                 } else {
                                     stat =
                                             new PlayerStats(
-                                                    player.getUUIDPlayer()
-                                                            .getUniqueId()
-                                                            .toString(),
+                                                    player.getUUIDPlayer().getUniqueId().toString(),
                                                     player.getName());
                                     stat.setCOINS(10);
                                     stat.setLEVEL(1);

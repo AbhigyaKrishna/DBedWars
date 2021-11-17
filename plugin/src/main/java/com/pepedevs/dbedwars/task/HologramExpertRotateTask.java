@@ -58,8 +58,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
             this.lastExec = System.currentTimeMillis();
 
             if (this.lastExec - this.frameStart >= this.frame.getValue() * 50) {
-                if (this.frame.getKey() != null)
-                    this.task.frames.add(this.frame);
+                if (this.frame.getKey() != null) this.task.frames.add(this.frame);
 
                 this.frame = this.task.frames.poll();
                 this.frameParts = (int) Math.ceil(this.frame.getValue() * 50 / this.delayMillis);

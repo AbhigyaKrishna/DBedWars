@@ -67,11 +67,9 @@ public class RespawnTask extends CancellableTask implements Listener {
 
     @EventHandler
     private void handleDeath(PlayerDeathEvent event) {
-        if (event.getEntity() != this.player.getPlayer())
-            return;
+        if (event.getEntity() != this.player.getPlayer()) return;
 
         this.setCancelled(true);
         HandlerList.unregisterAll(this);
     }
-
 }
