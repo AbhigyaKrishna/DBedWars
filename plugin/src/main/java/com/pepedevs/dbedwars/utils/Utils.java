@@ -1,16 +1,15 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.Abhigya.core.util.math.LocationUtils;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
 import me.Abhigya.core.util.reflection.general.MethodReflection;
-import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.util.xseries.XMaterial;
-import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.util.BwItemStack;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,28 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class Utils {
-
-    public static final List<Material> BEDS =
-            Arrays.asList(
-                    XMaterial.RED_BED.parseMaterial(),
-                    XMaterial.BLACK_BED.parseMaterial(),
-                    XMaterial.BLUE_BED.parseMaterial(),
-                    XMaterial.BROWN_BED.parseMaterial(),
-                    XMaterial.CYAN_BED.parseMaterial(),
-                    XMaterial.GRAY_BED.parseMaterial(),
-                    XMaterial.GREEN_BED.parseMaterial(),
-                    XMaterial.LIGHT_BLUE_BED.parseMaterial(),
-                    XMaterial.LIGHT_GRAY_BED.parseMaterial(),
-                    XMaterial.LIME_BED.parseMaterial(),
-                    XMaterial.MAGENTA_BED.parseMaterial(),
-                    XMaterial.ORANGE_BED.parseMaterial(),
-                    XMaterial.PINK_BED.parseMaterial(),
-                    XMaterial.PURPLE_BED.parseMaterial(),
-                    XMaterial.WHITE_BED.parseMaterial(),
-                    XMaterial.YELLOW_BED.parseMaterial());
 
     public static boolean isUnMergeable(ItemStack item) {
         return NBTUtils.hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
@@ -114,20 +93,14 @@ public class Utils {
         Location corner2 = location.clone().subtract(x, y, z);
         Set<Block> blocks = LocationUtils.getBlocksBetween(corner, corner2);
 
-        if (DBedwars.getInstance().getServerVersion().isOlderEquals(Version.v1_8_R3))
-            return blocks.stream()
-                    .filter(block -> block.getType().equals(Material.valueOf("BED_BLOCK")))
-                    .findFirst()
-                    .orElse(null);
-
         return blocks.stream()
-                .filter(block -> BEDS.contains(block.getType()))
+                .filter(Utils::isBed)
                 .findFirst()
                 .orElse(null);
     }
 
     public static boolean isBed(Block block) {
-        return BEDS.contains(block.getType()) || block.getType().name().equals("BED_BLOCK");
+        return List.of(ItemConstant.BED.getItems()).contains(XMaterial.matchXMaterial(block.getType())) || block.getType().name().equals("BED_BLOCK");
     }
 
     @SafeVarargs
@@ -158,22 +131,16 @@ public class Utils {
         LinkedHashMap<ArenaPlayer, Integer> map = new LinkedHashMap<>();
         players.stream()
                 .sorted(
-                        new Comparator<ArenaPlayer>() {
-                            @Override
-                            public int compare(ArenaPlayer o1, ArenaPlayer o2) {
-                                int p1 = calculatePoint(o1);
-                                int p2 = calculatePoint(o2);
+                        (o1, o2) -> {
+                            int p1 = calculatePoint(o1);
+                            int p2 = calculatePoint(o2);
 
-                                return Integer.compare(p1, p2) * -1;
-                            }
+                            return Integer.compare(p1, p2) * -1;
                         })
                 .forEach(
-                        new Consumer<ArenaPlayer>() {
-                            @Override
-                            public void accept(ArenaPlayer player) {
-                                int point = calculatePoint(player);
-                                map.put(player, point);
-                            }
+                        player -> {
+                            int point = calculatePoint(player);
+                            map.put(player, point);
                         });
 
         return map;
@@ -187,6 +154,9 @@ public class Utils {
     }
 
     public static void useItem(Player player) {
+        if (player.getGameMode() == GameMode.CREATIVE)
+            return;
+
         int amt = player.getInventory().getItemInHand().getAmount();
 
         if (amt == 1) {

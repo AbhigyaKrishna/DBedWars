@@ -68,7 +68,7 @@ public class IngameTabImpl extends PluginHandler {
     @EventHandler
     public void handlePlayerJoin(PlayerJoinEvent event) {
         Optional<ArenaPlayer> opt = this.arena.getAsArenaPlayer(event.getPlayer());
-        if (!opt.isPresent()) {
+        if (opt.isEmpty()) {
             WrappedPacketOutPlayerInfo packet =
                     new WrappedPacketOutPlayerInfo(
                             WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER,

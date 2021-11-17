@@ -1,9 +1,5 @@
 package com.pepedevs.dbedwars.listeners;
 
-import com.pepedevs.dbedwars.api.util.NBTUtils;
-import me.Abhigya.core.handler.PluginHandler;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerBaseEnterEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -12,8 +8,12 @@ import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
+import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.item.*;
 import com.pepedevs.dbedwars.utils.Utils;
+import me.Abhigya.core.handler.PluginHandler;
+import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -35,7 +35,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class GameListener extends PluginHandler {
 
@@ -108,7 +107,7 @@ public class GameListener extends PluginHandler {
                                     })
                             .findFirst();
 
-            if (!oTeam.isPresent()) return;
+            if (oTeam.isEmpty()) return;
 
             Team team = oTeam.get();
 
@@ -257,12 +256,7 @@ public class GameListener extends PluginHandler {
 
         event.blockList()
                 .removeIf(
-                        new Predicate<Block>() {
-                            @Override
-                            public boolean test(Block block) {
-                                return !block.hasMetadata("placed");
-                            }
-                        });
+                        block -> !block.hasMetadata("placed"));
     }
 
     // TODO: revamp this

@@ -21,7 +21,6 @@ public class FireBallUtil {
         String version =
                 Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]
                         + ".";
-        String nmsFireball = "net.minecraft.server." + version + "EntityFireball";
         String craftFireball = "org.bukkit.craftbukkit." + version + "entity.CraftFireball";
         try {
             Class<?> fireballClass = ClassReflection.getNmsClass("EntityFireball", "");

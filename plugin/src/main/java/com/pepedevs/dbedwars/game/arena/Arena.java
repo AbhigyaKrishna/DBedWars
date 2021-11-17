@@ -343,30 +343,27 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.plugin
                 .getThreadHandler()
                 .addSyncWork(
-                        new Workload() {
-                            @Override
-                            public void compute() {
-                                Arena.this.scoreboard =
-                                        new ScoreboardImpl(
-                                                Arena.this.plugin,
-                                                new ArrayList<>(
-                                                                Arena.this
-                                                                        .plugin
-                                                                        .getConfigHandler()
-                                                                        .getScoreboards())
-                                                        .get(0));
-                                Arena.this.scoreboard.createScoreboard();
-                                Arena.this.players.forEach(
-                                        p -> Arena.this.scoreboard.show(p.getPlayer()));
-                                Arena.this.scoreboard.getHandle().update();
-                                Arena.this.teams.forEach(
-                                        t ->
-                                                t.registerTeam(
-                                                        Arena.this
-                                                                .scoreboard
-                                                                .getHandle()
-                                                                .getHandle()));
-                            }
+                        () -> {
+                            Arena.this.scoreboard =
+                                    new ScoreboardImpl(
+                                            Arena.this.plugin,
+                                            new ArrayList<>(
+                                                            Arena.this
+                                                                    .plugin
+                                                                    .getConfigHandler()
+                                                                    .getScoreboards())
+                                                    .get(0));
+                            Arena.this.scoreboard.createScoreboard();
+                            Arena.this.players.forEach(
+                                    p -> Arena.this.scoreboard.show(p.getPlayer()));
+                            Arena.this.scoreboard.getHandle().update();
+                            Arena.this.teams.forEach(
+                                    t ->
+                                            t.registerTeam(
+                                                    Arena.this
+                                                            .scoreboard
+                                                            .getHandle()
+                                                            .getHandle()));
                         });
 
         this.teams.forEach(
@@ -793,16 +790,13 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.plugin
                 .getThreadHandler()
                 .addSyncWork(
-                        new Workload() {
-                            @Override
-                            public void compute() {
-                                for (Player player :
-                                        new ArrayList<>(
-                                                Arena.this.scoreboard.getHandle().getViewers())) {
-                                    Arena.this.scoreboard.hide(player);
-                                }
-                                Arena.this.scoreboard.getHandle().update();
+                        () -> {
+                            for (Player player :
+                                    new ArrayList<>(
+                                            Arena.this.scoreboard.getHandle().getViewers())) {
+                                Arena.this.scoreboard.hide(player);
                             }
+                            Arena.this.scoreboard.getHandle().update();
                         });
     }
 }

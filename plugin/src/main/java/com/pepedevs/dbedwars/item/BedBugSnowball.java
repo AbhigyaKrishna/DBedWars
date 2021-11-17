@@ -29,24 +29,21 @@ public class BedBugSnowball extends PluginActionItem {
     public BedBugSnowball(DBedwars plugin) {
         super(
                 StringUtils.translateAlternateColorCodes(
-                        DBedwars.getInstance()
-                                .getConfigHandler()
+                        plugin.getConfigHandler()
                                 .getCustomItems()
                                 .getBedBug()
                                 .getItemName()),
                 StringUtils.translateAlternateColorCodes(
-                        (DBedwars.getInstance()
-                                                .getConfigHandler()
-                                                .getCustomItems()
-                                                .getBedBug()
-                                                .getItemLore()
+                        plugin.getConfigHandler()
+                                .getCustomItems()
+                                .getBedBug()
+                                .getItemLore()
                                         == null
                                 ? new ArrayList<>()
-                                : DBedwars.getInstance()
-                                        .getConfigHandler()
+                                : plugin.getConfigHandler()
                                         .getCustomItems()
                                         .getBedBug()
-                                        .getItemLore())),
+                                        .getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());
         this.plugin = plugin;
         this.cfgBedBug = plugin.getConfigHandler().getCustomItems().getBedBug();

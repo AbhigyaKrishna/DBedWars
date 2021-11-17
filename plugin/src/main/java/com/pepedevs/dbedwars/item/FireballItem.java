@@ -36,11 +36,14 @@ public class FireballItem extends PluginActionItem {
         super(
                 StringUtils.translateAlternateColorCodes(
                         plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
-                (DBedwars.getInstance().getConfigHandler().getCustomItems().getFireball().getLore()
+                StringUtils.translateAlternateColorCodes(
+                        plugin.getConfigHandler()
+                                .getCustomItems()
+                                .getFireball()
+                                .getLore()
                                 == null
-                        ? new ArrayList<>()
-                        : DBedwars.getInstance()
-                                .getConfigHandler()
+                                ? new ArrayList<>()
+                                : plugin.getConfigHandler()
                                 .getCustomItems()
                                 .getFireball()
                                 .getLore()),

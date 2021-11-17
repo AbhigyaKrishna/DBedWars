@@ -90,9 +90,27 @@ public enum ItemConstant {
                     GOLDEN_ARMOR.getItems(),
                     DIAMOND_ARMOR.getItems(),
                     NETHERITE_ARMOR.getItems())),
+
+    BED(
+            XMaterial.RED_BED,
+            XMaterial.BLACK_BED,
+            XMaterial.BLUE_BED,
+            XMaterial.BROWN_BED,
+            XMaterial.CYAN_BED,
+            XMaterial.GRAY_BED,
+            XMaterial.GREEN_BED,
+            XMaterial.LIGHT_BLUE_BED,
+            XMaterial.LIGHT_GRAY_BED,
+            XMaterial.LIME_BED,
+            XMaterial.MAGENTA_BED,
+            XMaterial.ORANGE_BED,
+            XMaterial.PINK_BED,
+            XMaterial.PURPLE_BED,
+            XMaterial.WHITE_BED,
+            XMaterial.YELLOW_BED),
     ;
 
-    private XMaterial[] items;
+    private final XMaterial[] items;
 
     ItemConstant(XMaterial... items) {
         this.items = items;

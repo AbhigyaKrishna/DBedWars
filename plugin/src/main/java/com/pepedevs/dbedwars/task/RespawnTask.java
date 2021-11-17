@@ -1,12 +1,16 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.titles.TitleUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.task.FixedRateScheduleTask;
+import com.pepedevs.dbedwars.api.task.CancellableTask;
+import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.titles.TitleUtils;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class RespawnTask extends FixedRateScheduleTask {
+public class RespawnTask extends CancellableTask implements Listener {
 
     private final DBedwars plugin;
     private final ArenaPlayer player;
@@ -14,12 +18,6 @@ public class RespawnTask extends FixedRateScheduleTask {
     private long lastExecuted;
 
     public RespawnTask(DBedwars plugin, ArenaPlayer player) {
-        super(
-                20,
-                plugin.getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getRespawnTime());
         this.plugin = plugin;
         this.time =
                 this.plugin
@@ -33,12 +31,13 @@ public class RespawnTask extends FixedRateScheduleTask {
                 StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time + "s"),
                 "");
         this.lastExecuted = System.currentTimeMillis();
+        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
     // TODO: Revamp this
     @Override
     public void compute() {
-        lastExecuted = System.currentTimeMillis();
+        this.lastExecuted = System.currentTimeMillis();
         this.time--;
         TitleUtils.send(
                 player.getPlayer(),
@@ -56,6 +55,8 @@ public class RespawnTask extends FixedRateScheduleTask {
                                                     .getTeam()
                                                     .getSpawn()
                                                     .toBukkit(this.player.getArena().getWorld())));
+            this.setCancelled(true);
+            HandlerList.unregisterAll(this);
         }
     }
 
@@ -64,8 +65,13 @@ public class RespawnTask extends FixedRateScheduleTask {
         return System.currentTimeMillis() - this.lastExecuted >= 1000;
     }
 
-    @Override
-    public boolean reSchedule() {
-        return time != 0;
+    @EventHandler
+    private void handleDeath(PlayerDeathEvent event) {
+        if (event.getEntity() != this.player.getPlayer())
+            return;
+
+        this.setCancelled(true);
+        HandlerList.unregisterAll(this);
     }
+
 }
