@@ -1,14 +1,14 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.Color;
+import com.pepedevs.dbedwars.api.util.LocationXYZ;
+import com.pepedevs.dbedwars.api.game.view.AttributeType;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
 import me.Abhigya.core.util.xseries.XMaterial;
-import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.game.spawner.DropType;
-import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.dbedwars.api.util.LocationXYZ;
-import com.pepedevs.dbedwars.game.arena.view.shop.AttributeType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -53,7 +53,7 @@ public class ConfigurationUtils {
     }
 
     public static String[][] parseGuiPattern(List<String> lines) {
-        String[][] pattern = new String[lines.size()][9];
+        String[][] pattern = new String[Math.min(lines.size(), 6)][9];
         for (byte i = 0; i < lines.size(); i++) {
             pattern[i] = lines.get(i).split(" ");
         }
@@ -70,8 +70,9 @@ public class ConfigurationUtils {
         return null;
     }
 
-    public static BwItemStack parseItem(Team team, String s) {
-        if (team != null) s = s.replace("%team%", String.valueOf(team.getColor().getData()));
+    public static BwItemStack parseItem(Color color, String s) {
+        String replace = color == null ? "" : String.valueOf(color.getData());
+        s = s.replace("%team%", replace);
         s = s.replace("STAINED_GLASS", "GLASS");
         s = s.replace("GLASS", "STAINED_GLASS");
         return BwItemStack.valueOf(s);
@@ -109,7 +110,7 @@ public class ConfigurationUtils {
     public static Set<AttributeType> getAttributeTypes(String s) {
         Set<AttributeType> attributes = new HashSet<>();
         for (String str : s.split(",")) {
-            AttributeType type = AttributeType.matchAttribute(str.trim());
+            AttributeType type = ConfigurationUtils.matchEnum(str, AttributeType.VALUES);
             if (type != null) attributes.add(type);
         }
         return attributes;

@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.api.events;
 
-import me.Abhigya.core.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.game.view.ShopItem;
+import me.Abhigya.core.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,10 +18,10 @@ public class PlayerPurchaseItemEvent extends CustomEventCancellable {
     private ArenaPlayer player;
     private Arena arena;
     private Set<ItemStack> cost;
-    private Collection<BwItemStack> items;
+    private Collection<ShopItem> items;
 
     public PlayerPurchaseItemEvent(
-            ArenaPlayer player, Arena arena, Set<ItemStack> cost, Collection<BwItemStack> items) {
+            ArenaPlayer player, Arena arena, Set<ItemStack> cost, Collection<ShopItem> items) {
         this.player = player;
         this.arena = arena;
         this.cost = cost;
@@ -41,11 +41,11 @@ public class PlayerPurchaseItemEvent extends CustomEventCancellable {
     }
 
     public Set<ItemStack> getCost() {
-        return this.cost;
+        return Collections.unmodifiableSet(this.cost);
     }
 
-    public Collection<BwItemStack> getItems() {
-        return Collections.unmodifiableCollection(this.items);
+    public Collection<ShopItem> getItems() {
+        return this.items;
     }
 
     @Override

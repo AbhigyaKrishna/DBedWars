@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.game.arena;
 
+import com.pepedevs.dbedwars.api.game.view.ShopView;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.DBedwars;
@@ -9,7 +10,6 @@ import com.pepedevs.dbedwars.api.events.TeamEliminateEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -45,7 +45,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
         this.player = new UUIDPlayer(player);
         this.name = player.getName();
         this.arena = arena;
-        this.shopView = new com.pepedevs.dbedwars.game.arena.view.shop.ShopView(this);
+        this.shopView = new com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView(this);
     }
 
     @Override

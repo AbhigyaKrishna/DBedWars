@@ -117,6 +117,10 @@ public class BwItemStack implements Cloneable {
         return this.item;
     }
 
+    public void setItemStack(ItemStack item) {
+        this.item = item;
+    }
+
     public ItemMeta getItemMeta() {
         return this.item.getItemMeta();
     }

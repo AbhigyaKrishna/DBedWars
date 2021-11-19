@@ -28,13 +28,13 @@ public class PopupTowerChestItem extends PluginActionItem {
                 StringUtils.translateAlternateColorCodes(
                         plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
                 StringUtils.translateAlternateColorCodes(
-                        (plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()
+                        plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()
                                         == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
                                         .getCustomItems()
                                         .getPopupTower()
-                                        .getLore())),
+                                        .getLore()),
                 XMaterial.TRAPPED_CHEST.parseMaterial());
         this.plugin = plugin;
         this.cfgPopupTower = plugin.getConfigHandler().getCustomItems().getPopupTower();
@@ -42,7 +42,7 @@ public class PopupTowerChestItem extends PluginActionItem {
 
     public void onChestPlace(BlockPlaceEvent event, ArenaPlayer player) {
         event.getPlayer().sendMessage("YET TO BE FIXED FOR PAPER");
-        if (!XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).isPresent()) return;
+        if (XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).isEmpty()) return;
 
         plugin.getThreadHandler()
                 .addSyncWork(

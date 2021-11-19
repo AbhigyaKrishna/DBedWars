@@ -1,17 +1,16 @@
 package com.pepedevs.dbedwars.api.game.view;
 
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.util.Overridable;
 
 import java.util.Map;
 
-public interface ShopView extends Cloneable, Overridable {
+public interface ShopView {
 
     ArenaPlayer getPlayer();
 
-    String getDefaultPage();
+    ShopPage getDefaultPage();
 
-    Map<String, ViewItem> getCommons();
+    void setDefaultPage(ShopPage defaultPage);
 
-    //    Map<String, ShopPage> getShopPages();
+    Map<String, com.pepedevs.dbedwars.api.game.view.ShopPage> getShopPages();
 }

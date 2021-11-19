@@ -53,7 +53,9 @@ public class ConfigurableShop implements Loadable {
         return pages;
     }
 
-    public static class ConfigurablePage implements Loadable {
+    public class ConfigurablePage implements Loadable {
+
+        private final ConfigurableShop shop;
 
         @LoadableEntry(key = "title")
         private String guiTitle;
@@ -65,6 +67,7 @@ public class ConfigurableShop implements Loadable {
         private Map<String, BwGUIItem> items;
 
         public ConfigurablePage() {
+            this.shop = ConfigurableShop.this;
             this.pattern = new ArrayList<>();
             this.items = new HashMap<>();
         }
@@ -96,7 +99,13 @@ public class ConfigurableShop implements Loadable {
             return guiTitle;
         }
 
-        public static class BwGUIItem implements Loadable {
+        public ConfigurableShop getShop() {
+            return shop;
+        }
+
+        public class BwGUIItem implements Loadable {
+
+            private final ConfigurablePage page;
 
             @LoadableEntry(key = "name")
             private String itemName;
@@ -116,6 +125,7 @@ public class ConfigurableShop implements Loadable {
             private ConfigurableAttribute attribute;
 
             public BwGUIItem() {
+                this.page = ConfigurablePage.this;
                 this.amount = 1;
                 this.itemLore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();
@@ -161,6 +171,11 @@ public class ConfigurableShop implements Loadable {
             public ConfigurableAttribute getAttribute() {
                 return attribute;
             }
+
+            public ConfigurablePage getPage() {
+                return page;
+            }
+
         }
     }
 

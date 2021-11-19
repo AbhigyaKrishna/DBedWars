@@ -21,7 +21,7 @@ import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.game.TeamAssigner;
-import com.pepedevs.dbedwars.game.arena.view.shop.ShopView;
+import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
 import com.pepedevs.dbedwars.listeners.GameListener;
 import com.pepedevs.dbedwars.task.WorldRegenerator;
@@ -396,7 +396,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.players.forEach(
                 p -> {
                     p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
-                    ((ShopView) p.getShopView()).load();
+                    ((ShopView) p.getShopView()).loadFromConfig(this.plugin.getConfigHandler().getShop());
                     p.getPlayer().getEnderChest().clear();
                 });
 
