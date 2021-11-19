@@ -16,5 +16,4 @@ public interface Purchasable {
     boolean isCostFullFilled(Player player);
 
     void onPurchase(ArenaPlayer player);
-
 }

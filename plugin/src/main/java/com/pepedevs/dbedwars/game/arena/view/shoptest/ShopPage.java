@@ -22,7 +22,8 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
         this.items = new HashMap<>();
     }
 
-    public void loadFromConfig(ShopView view, Map<String, GuiItem> common, ConfigurableShop.ConfigurablePage page) {
+    public void loadFromConfig(
+            ShopView view, Map<String, GuiItem> common, ConfigurableShop.ConfigurablePage page) {
         this.view = view;
         this.title = StringUtils.translateAlternateColorCodes(page.getGuiTitle());
         page.getItems()
@@ -43,10 +44,12 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
                         });
 
         String[][] pattern = ConfigurationUtils.parseGuiPattern(page.getPattern());
-        this.pattern = new com.pepedevs.dbedwars.api.game.view.GuiItem[pattern.length][pattern[0].length];
+        this.pattern =
+                new com.pepedevs.dbedwars.api.game.view.GuiItem[pattern.length][pattern[0].length];
         for (byte col = 0; col < pattern.length; col++) {
             for (byte row = 0; row < pattern[col].length; row++) {
-                com.pepedevs.dbedwars.api.game.view.GuiItem item = common.getOrDefault(pattern[col][row], null);
+                com.pepedevs.dbedwars.api.game.view.GuiItem item =
+                        common.getOrDefault(pattern[col][row], null);
                 if (item != null) {
                     item = item.clone();
                     if (this.items.containsKey(pattern[col][row])) {

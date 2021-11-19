@@ -175,7 +175,6 @@ public class ConfigurableShop implements Loadable {
             public ConfigurablePage getPage() {
                 return page;
             }
-
         }
     }
 

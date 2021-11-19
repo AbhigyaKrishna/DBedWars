@@ -38,9 +38,12 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         this.command = new ArrayList<>();
     }
 
-    public void loadFromConfig(ShopPage page, ShopView view, Map<String, GuiItem> common, ConfigurableShop.ConfigurablePage.BwGUIItem item) {
-        if (this.isLoaded())
-            return;
+    public void loadFromConfig(
+            ShopPage page,
+            ShopView view,
+            Map<String, GuiItem> common,
+            ConfigurableShop.ConfigurablePage.BwGUIItem item) {
+        if (this.isLoaded()) return;
 
         this.shopPage = page;
         ConfigurationUtils.getAttributeTypes(item.getAttribute().getAttributeType())
@@ -50,69 +53,96 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                             attribute.loadFromConfig(item.getAttribute());
                             this.attributes.put(t, attribute);
                         });
-        this.attributes.computeIfPresent(AttributeType.PURCHASABLE, (type, attribute) -> {
-            Set<ItemStack> cost = ConfigurationUtils.parseCost((String) attribute.getKeyEntry().get("cost"));
-            boolean b = this.attributes.containsKey(AttributeType.PERMANENT);
-            boolean c = this.attributes.containsKey(AttributeType.AUTO_EQUIP);
-            Map<String, Integer> index = new HashMap<>();
-            this.attributes.computeIfPresent(AttributeType.AUTO_EQUIP, (attributeType, atr) -> {
-                atr.getKeyEntry().forEach((s, o) -> index.put(s.replace("item:auto-equip-", ""), (int) o));
-                return atr;
-            });
-            attribute.getKeyEntry().entrySet().stream()
-                    .filter(entry -> entry.getKey().startsWith("item-"))
-                    .forEach(entry -> {
-                        String key = entry.getKey().replace("item-", "")
-                                .replace("true-", "")
-                                .replace("false-", "");
-                        boolean isColorable = Boolean.parseBoolean(entry.getKey().split("-")[1]);
-                        BwItemStack i = (BwItemStack) entry.getValue();
-                        ShopItem si = new ShopItem(key, i);
-                        if (b)
-                            si.setPermanent(true);
-                        if (c)
-                            si.setAutoEquip(true);
-                        si.setColorable(isColorable);
-                        si.getCost().addAll(cost);
-                        si.setSlot(index.getOrDefault(key, 0));
-                    });
+        this.attributes.computeIfPresent(
+                AttributeType.PURCHASABLE,
+                (type, attribute) -> {
+                    Set<ItemStack> cost =
+                            ConfigurationUtils.parseCost(
+                                    (String) attribute.getKeyEntry().get("cost"));
+                    boolean b = this.attributes.containsKey(AttributeType.PERMANENT);
+                    boolean c = this.attributes.containsKey(AttributeType.AUTO_EQUIP);
+                    Map<String, Integer> index = new HashMap<>();
+                    this.attributes.computeIfPresent(
+                            AttributeType.AUTO_EQUIP,
+                            (attributeType, atr) -> {
+                                atr.getKeyEntry()
+                                        .forEach(
+                                                (s, o) ->
+                                                        index.put(
+                                                                s.replace("item:auto-equip-", ""),
+                                                                (int) o));
+                                return atr;
+                            });
+                    attribute.getKeyEntry().entrySet().stream()
+                            .filter(entry -> entry.getKey().startsWith("item-"))
+                            .forEach(
+                                    entry -> {
+                                        String key =
+                                                entry.getKey()
+                                                        .replace("item-", "")
+                                                        .replace("true-", "")
+                                                        .replace("false-", "");
+                                        boolean isColorable =
+                                                Boolean.parseBoolean(entry.getKey().split("-")[1]);
+                                        BwItemStack i = (BwItemStack) entry.getValue();
+                                        ShopItem si = new ShopItem(key, i);
+                                        if (b) si.setPermanent(true);
+                                        if (c) si.setAutoEquip(true);
+                                        si.setColorable(isColorable);
+                                        si.getCost().addAll(cost);
+                                        si.setSlot(index.getOrDefault(key, 0));
+                                    });
 
-            return attribute;
-        });
-        this.attributes.computeIfPresent(AttributeType.CHANGE_PAGE, (type, attribute) -> {
-            this.setPage((String) attribute.getKeyEntry().get("page"));
-            return attribute;
-        });
-        this.attributes.computeIfPresent(AttributeType.COMMAND, (type, attribute) -> {
-            this.getCommand().addAll((List<String>) attribute.getKeyEntry().get("command"));
-            return attribute;
-        });
+                    return attribute;
+                });
+        this.attributes.computeIfPresent(
+                AttributeType.CHANGE_PAGE,
+                (type, attribute) -> {
+                    this.setPage((String) attribute.getKeyEntry().get("page"));
+                    return attribute;
+                });
+        this.attributes.computeIfPresent(
+                AttributeType.COMMAND,
+                (type, attribute) -> {
+                    this.getCommand().addAll((List<String>) attribute.getKeyEntry().get("command"));
+                    return attribute;
+                });
         if (page == null) return;
-        this.attributes.computeIfPresent(AttributeType.UPGRADEABLE_TIER, (type, attribute) -> {
-            String nextTier = (String) attribute.getKeyEntry().get(AttributeType.UPGRADEABLE_TIER.getKeys()[0]);
-            com.pepedevs.dbedwars.api.game.view.GuiItem guiItem = common.getOrDefault(nextTier, null);
-            if (item.getPage().getItems().containsKey(nextTier)) {
-                if (guiItem != null) {
-                    guiItem = guiItem.clone();
-                    if (this.shopPage.getItems().containsKey(nextTier)) {
-                        try {
-                            guiItem.override(this.shopPage.getItems().get(nextTier));
-                        } catch (OverrideException ignored) {}
+        this.attributes.computeIfPresent(
+                AttributeType.UPGRADEABLE_TIER,
+                (type, attribute) -> {
+                    String nextTier =
+                            (String)
+                                    attribute
+                                            .getKeyEntry()
+                                            .get(AttributeType.UPGRADEABLE_TIER.getKeys()[0]);
+                    com.pepedevs.dbedwars.api.game.view.GuiItem guiItem =
+                            common.getOrDefault(nextTier, null);
+                    if (item.getPage().getItems().containsKey(nextTier)) {
+                        if (guiItem != null) {
+                            guiItem = guiItem.clone();
+                            if (this.shopPage.getItems().containsKey(nextTier)) {
+                                try {
+                                    guiItem.override(this.shopPage.getItems().get(nextTier));
+                                } catch (OverrideException ignored) {
+                                }
+                            }
+                        } else {
+                            guiItem = this.shopPage.getItems().getOrDefault(nextTier, null);
+                            if (guiItem == null) {
+                                ConfigurableShop.ConfigurablePage.BwGUIItem next =
+                                        item.getPage().getItems().get(nextTier);
+                                guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
+                                ((GuiItem) guiItem)
+                                        .loadFromConfig(this.shopPage, view, common, next);
+                                this.shopPage.getItems().put(nextTier, guiItem);
+                            }
+                        }
                     }
-                } else {
-                    guiItem = this.shopPage.getItems().getOrDefault(nextTier, null);
-                    if (guiItem == null) {
-                        ConfigurableShop.ConfigurablePage.BwGUIItem next = item.getPage().getItems().get(nextTier);
-                        guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
-                        ((GuiItem) guiItem).loadFromConfig(this.shopPage, view, common, next);
-                        this.shopPage.getItems().put(nextTier, guiItem);
-                    }
-                }
-            }
-            this.setNextTier(guiItem);
+                    this.setNextTier(guiItem);
 
-            return attribute;
-        });
+                    return attribute;
+                });
         this.loaded = true;
     }
 
@@ -138,16 +168,17 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
             this.changePage(action);
         }
         if (this.attributes.containsKey(AttributeType.PURCHASABLE)) {
-            Optional<com.pepedevs.dbedwars.api.game.view.ShopItem> optional = this.item.stream().findFirst();
-            if (optional.isEmpty())
-                return;
+            Optional<com.pepedevs.dbedwars.api.game.view.ShopItem> optional =
+                    this.item.stream().findFirst();
+            if (optional.isEmpty()) return;
 
             if (optional.get().isCostFullFilled(action.getPlayer())) {
-                PlayerPurchaseItemEvent event = new PlayerPurchaseItemEvent(ap, ap.getArena(), optional.get().getCost(), this.item);
+                PlayerPurchaseItemEvent event =
+                        new PlayerPurchaseItemEvent(
+                                ap, ap.getArena(), optional.get().getCost(), this.item);
                 event.call();
 
-                if (!event.isCancelled())
-                    event.getItems().forEach(i -> i.onPurchase(ap));
+                if (!event.isCancelled()) event.getItems().forEach(i -> i.onPurchase(ap));
             }
 
             if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER))
@@ -186,19 +217,18 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     @Override
     public void runCommand(Player player) {
-        this.getCommand().forEach(
-                c -> {
-                    if (c.startsWith("[CONSOLE]")) {
-                        Bukkit.getServer()
-                                .dispatchCommand(
-                                        Bukkit.getConsoleSender(),
-                                        c.replace("[CONSOLE]", "").trim());
-                    } else if (c.startsWith("[PLAYER]")) {
-                        player
-                                .performCommand(
-                                        c.replace("[PLAYER]", "").trim());
-                    }
-                });
+        this.getCommand()
+                .forEach(
+                        c -> {
+                            if (c.startsWith("[CONSOLE]")) {
+                                Bukkit.getServer()
+                                        .dispatchCommand(
+                                                Bukkit.getConsoleSender(),
+                                                c.replace("[CONSOLE]", "").trim());
+                            } else if (c.startsWith("[PLAYER]")) {
+                                player.performCommand(c.replace("[PLAYER]", "").trim());
+                            }
+                        });
     }
 
     @Override
@@ -213,8 +243,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     @Override
     public void upgradeTier(ItemClickAction action) {
-        if (this.getNextTier() == null)
-            return;
+        if (this.getNextTier() == null) return;
 
         this.shopPage.getPattern()[action.getSlot() / 9][action.getSlot() % 9] = this.getNextTier();
     }
@@ -233,8 +262,5 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
     }
 
     @Override
-    public void override(Overridable override) throws OverrideException {
-
-    }
-
+    public void override(Overridable override) throws OverrideException {}
 }

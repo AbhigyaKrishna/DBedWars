@@ -396,7 +396,8 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.players.forEach(
                 p -> {
                     p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
-                    ((ShopView) p.getShopView()).loadFromConfig(this.plugin.getConfigHandler().getShop());
+                    ((ShopView) p.getShopView())
+                            .loadFromConfig(this.plugin.getConfigHandler().getShop());
                     p.getPlayer().getEnderChest().clear();
                 });
 

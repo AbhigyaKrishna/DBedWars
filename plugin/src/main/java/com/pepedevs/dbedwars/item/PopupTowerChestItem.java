@@ -28,8 +28,7 @@ public class PopupTowerChestItem extends PluginActionItem {
                 StringUtils.translateAlternateColorCodes(
                         plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
                 StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()
-                                        == null
+                        plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
                                         .getCustomItems()

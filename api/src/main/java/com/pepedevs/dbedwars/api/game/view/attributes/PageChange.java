@@ -9,5 +9,4 @@ public interface PageChange {
     void setPage(String page);
 
     void changePage(ItemClickAction action);
-
 }

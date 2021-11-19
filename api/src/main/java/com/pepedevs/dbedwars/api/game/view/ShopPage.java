@@ -15,5 +15,4 @@ public interface ShopPage {
     GuiItem[][] getPattern();
 
     Map<String, GuiItem> getItems();
-
 }

@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-public abstract class GuiItem extends Item implements PageChange, ClickCommand, UpgradableTier, Cloneable, Overridable {
+public abstract class GuiItem extends Item
+        implements PageChange, ClickCommand, UpgradableTier, Cloneable, Overridable {
 
     public GuiItem(ItemStack icon) {
         super(icon);
@@ -22,5 +23,4 @@ public abstract class GuiItem extends Item implements PageChange, ClickCommand, 
     public abstract Map<AttributeType, Attribute> getAttributes();
 
     public abstract GuiItem clone();
-
 }

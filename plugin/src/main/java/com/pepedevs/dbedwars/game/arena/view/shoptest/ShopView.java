@@ -26,16 +26,14 @@ public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
 
     public void loadFromConfig(ConfigurableShop cfgShop) {
         Map<String, GuiItem> commons = new HashMap<>();
-        cfgShop
-                .getCommonItems()
+        cfgShop.getCommonItems()
                 .forEach(
                         (s, item) -> {
                             GuiItem guiItem = new GuiItem(s, this.getFormattedItem(item));
                             guiItem.loadFromConfig(null, this, commons, item);
                             commons.put(s, guiItem);
                         });
-        cfgShop
-                .getPages()
+        cfgShop.getPages()
                 .forEach(
                         (s, page) -> {
                             ShopPage shopPage = new ShopPage(s);
@@ -66,14 +64,18 @@ public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
     }
 
     public BwItemStack getFormattedItem(ConfigurableShop.ConfigurablePage.BwGUIItem item) {
-        BwItemStack stack = ConfigurationUtils.parseItem(this.player.getTeam().getColor(), item.getMaterial());
+        BwItemStack stack =
+                ConfigurationUtils.parseItem(this.player.getTeam().getColor(), item.getMaterial());
         ItemMetaBuilder builder =
                 stack.getItemMetaBuilder()
-                        .withDisplayName(StringUtils.translateAlternateColorCodes(item.getItemName()))
+                        .withDisplayName(
+                                StringUtils.translateAlternateColorCodes(item.getItemName()))
                         .withLore(StringUtils.translateAlternateColorCodes(item.getItemLore()));
         stack.setItemMetaBuilder(builder);
-        item.getEnchant().stream().map(LEnchant::valueOf).filter(Objects::nonNull).forEach(stack::applyEnchant);
+        item.getEnchant().stream()
+                .map(LEnchant::valueOf)
+                .filter(Objects::nonNull)
+                .forEach(stack::applyEnchant);
         return stack;
     }
-
 }

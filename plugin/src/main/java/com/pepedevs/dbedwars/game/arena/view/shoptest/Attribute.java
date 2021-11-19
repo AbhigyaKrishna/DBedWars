@@ -46,14 +46,13 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
         }
 
         if (type == AttributeType.PURCHASABLE) {
-            for (Map.Entry<String, ConfigurableShop.ConfigurableAttribute.AttributeItems>
-                    atrItem : atr.getItemsToGive().entrySet()) {
+            for (Map.Entry<String, ConfigurableShop.ConfigurableAttribute.AttributeItems> atrItem :
+                    atr.getItemsToGive().entrySet()) {
                 if (atrItem.getValue().isInvalid()) continue;
                 if (atrItem.getValue().getMaterial() != null) {
                     boolean isTeamColor = atrItem.getValue().getMaterial().contains("%team%");
                     BwItemStack stack =
-                            ConfigurationUtils.parseItem(null,
-                                    atrItem.getValue().getMaterial());
+                            ConfigurationUtils.parseItem(null, atrItem.getValue().getMaterial());
                     stack.setAmount(atrItem.getValue().getAmount());
                     ItemMetaBuilder builder = stack.getItemMetaBuilder();
                     if (atrItem.getValue().getName() != null)
@@ -84,8 +83,8 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
                 }
             }
         } else if (type == AttributeType.AUTO_EQUIP) {
-            for (Map.Entry<String, ConfigurableShop.ConfigurableAttribute.AttributeItems>
-                    atrItem : atr.getItemsToGive().entrySet()) {
+            for (Map.Entry<String, ConfigurableShop.ConfigurableAttribute.AttributeItems> atrItem :
+                    atr.getItemsToGive().entrySet()) {
                 this.keyEntry.put(
                         AttributeType.AUTO_EQUIP.getKeys()[0] + "-" + atrItem.getKey(),
                         atrItem.getValue().getAutoEquipSlot());
@@ -102,5 +101,4 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
     public Map<String, Object> getKeyEntry() {
         return this.keyEntry;
     }
-
 }

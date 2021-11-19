@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.api.game.view;
 
 public enum AttributeType {
-
     PURCHASABLE("cost", "item"),
     PERMANENT(),
     UPGRADEABLE("previous-slot"),
@@ -23,5 +22,4 @@ public enum AttributeType {
     public String[] getKeys() {
         return this.keys;
     }
-
 }

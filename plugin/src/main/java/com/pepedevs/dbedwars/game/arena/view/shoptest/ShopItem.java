@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.game.view.attributes.Colorable;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
@@ -50,12 +49,9 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
 
     @Override
     public void onPurchase(ArenaPlayer player) {
-        if (this.isColorable())
-            this.color(player.getTeam().getColor());
-        if (this.isAutoEquip())
-            this.equip(player.getPlayer());
-        else
-            player.getPlayer().getInventory().addItem(this.getItem().toItemStack());
+        if (this.isColorable()) this.color(player.getTeam().getColor());
+        if (this.isAutoEquip()) this.equip(player.getPlayer());
+        else player.getPlayer().getInventory().addItem(this.getItem().toItemStack());
     }
 
     @Override
@@ -65,10 +61,8 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
 
     @Override
     public void setPermanent(boolean flag) {
-        if (flag)
-            this.item.addNBT(PERMANENT_KEY, true);
-        else
-            this.item.removeNBT(PERMANENT_KEY);
+        if (flag) this.item.addNBT(PERMANENT_KEY, true);
+        else this.item.removeNBT(PERMANENT_KEY);
     }
 
     @Override
@@ -96,7 +90,6 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
         player.getInventory().setItem(this.getSlot(), this.getItem().toItemStack());
     }
 
-
     @Override
     public boolean isColorable() {
         return this.colorable;
@@ -109,12 +102,10 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
 
     @Override
     public void color(Color color) {
-        if (color == null)
-            return;
+        if (color == null) return;
 
         if (this.item.toItemStack() instanceof org.bukkit.material.Colorable) {
             ((org.bukkit.material.Colorable) this.item.toItemStack()).setColor(color.getDyeColor());
         }
     }
-
 }
