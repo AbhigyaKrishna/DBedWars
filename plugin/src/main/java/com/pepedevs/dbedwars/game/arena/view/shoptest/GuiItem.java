@@ -133,8 +133,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                                 ConfigurableShop.ConfigurablePage.BwGUIItem next =
                                         item.getPage().getItems().get(nextTier);
                                 guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
-                                ((GuiItem) guiItem)
-                                        .loadFromConfig(page, view, common, next);
+                                ((GuiItem) guiItem).loadFromConfig(page, view, common, next);
                                 this.shopPage.getItems().put(nextTier, guiItem);
                             }
                         }
@@ -252,7 +251,6 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
     public GuiItem clone() {
         return new GuiItem(this.key, new BwItemStack(this.icon));
     }
-
 
     @Override
     public com.pepedevs.dbedwars.api.game.view.ShopPage getShopPage() {

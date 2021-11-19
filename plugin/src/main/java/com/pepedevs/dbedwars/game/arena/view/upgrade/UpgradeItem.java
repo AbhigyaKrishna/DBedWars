@@ -162,7 +162,9 @@ public class UpgradeItem {
             this.item = UpgradeItem.this;
             this.key = key;
             this.tier = tier;
-            this.material = ConfigurationUtils.parseItem(this.item.team.getColor(), this.tier.getMaterial());
+            this.material =
+                    ConfigurationUtils.parseItem(
+                            this.item.team.getColor(), this.tier.getMaterial());
             this.amount = this.tier.getAmount();
             this.name = this.tier.getName();
             this.lore = this.tier.getLore();
