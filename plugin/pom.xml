@@ -49,10 +49,6 @@
                             <shadedPattern>com.pepedevs.dbedwars.libraries.reflections</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache.commons</pattern>
-                            <shadedPattern>com.pepedevs.dbedwars.libraries.apache.commons</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>net.kyori.adventure</pattern>
                             <shadedPattern>com.pepedevs.dbedwars.libraries.kyori.adventure</shadedPattern>
                         </relocation>
@@ -173,6 +169,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Slime World Manager -->
         <dependency>
             <groupId>com.grinderwolf</groupId>
             <artifactId>slimeworldmanager-api</artifactId>

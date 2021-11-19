@@ -30,7 +30,8 @@ public class ShopGui extends IMenu<ItemMenu> {
         this.menu.clear();
         ShopPage page = (ShopPage) info.getOrDefault("page", null);
         ArenaPlayer ap = (ArenaPlayer) info.get("player");
-        if (page == null) page = ap.getShopView().getDefaultPage();
+        if (page == null)
+            page = (ap.getShopView().getDefaultPage() == null ? ap.getShopView().getShopPages().values().stream().findFirst().get() : ap.getShopView().getDefaultPage());
         this.menu.setTitle(page.getTitle());
         for (byte i = 0; i < page.getPattern().length; i++) {
             for (byte j = 0; j < 9; j++) {

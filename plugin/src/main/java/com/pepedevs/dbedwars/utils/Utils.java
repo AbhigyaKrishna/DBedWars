@@ -97,7 +97,7 @@ public class Utils {
     }
 
     public static boolean isBed(Block block) {
-        return List.of(ItemConstant.BED.getItems())
+        return Arrays.asList(ItemConstant.BED.getItems())
                         .contains(XMaterial.matchXMaterial(block.getType()))
                 || block.getType().name().equals("BED_BLOCK");
     }

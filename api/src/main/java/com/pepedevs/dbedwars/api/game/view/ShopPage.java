@@ -12,6 +12,8 @@ public interface ShopPage {
 
     String getTitle();
 
+    void setTitle(String title);
+
     GuiItem[][] getPattern();
 
     Map<String, GuiItem> getItems();

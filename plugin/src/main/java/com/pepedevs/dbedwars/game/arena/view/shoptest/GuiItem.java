@@ -22,11 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     private final String key;
-    private ShopPage shopPage;
+    private com.pepedevs.dbedwars.api.game.view.ShopPage shopPage;
     private final Map<AttributeType, com.pepedevs.dbedwars.api.game.view.Attribute> attributes;
     private final List<com.pepedevs.dbedwars.api.game.view.ShopItem> item;
     private com.pepedevs.dbedwars.api.game.view.GuiItem nextTier;
-    private String page;
+    private String nextPage;
     private final List<String> command;
     private boolean loaded;
 
@@ -98,7 +98,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         this.attributes.computeIfPresent(
                 AttributeType.CHANGE_PAGE,
                 (type, attribute) -> {
-                    this.setPage((String) attribute.getKeyEntry().get("page"));
+                    this.nextPage = (String) attribute.getKeyEntry().get("page");
                     return attribute;
                 });
         this.attributes.computeIfPresent(
@@ -134,7 +134,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                                         item.getPage().getItems().get(nextTier);
                                 guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
                                 ((GuiItem) guiItem)
-                                        .loadFromConfig(this.shopPage, view, common, next);
+                                        .loadFromConfig(page, view, common, next);
                                 this.shopPage.getItems().put(nextTier, guiItem);
                             }
                         }
@@ -170,7 +170,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         if (this.attributes.containsKey(AttributeType.PURCHASABLE)) {
             Optional<com.pepedevs.dbedwars.api.game.view.ShopItem> optional =
                     this.item.stream().findFirst();
-            if (optional.isEmpty()) return;
+            if (!optional.isPresent()) return;
 
             if (optional.get().isCostFullFilled(action.getPlayer())) {
                 PlayerPurchaseItemEvent event =
@@ -190,13 +190,13 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
     }
 
     @Override
-    public String getPage() {
-        return this.page;
+    public com.pepedevs.dbedwars.api.game.view.ShopPage getPage() {
+        return this.shopPage.getView().getShopPages().getOrDefault(this.nextPage, null);
     }
 
     @Override
-    public void setPage(String page) {
-        this.page = page;
+    public void setPage(com.pepedevs.dbedwars.api.game.view.ShopPage page) {
+        this.nextPage = page.getKey();
     }
 
     @Override
@@ -253,11 +253,14 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         return new GuiItem(this.key, new BwItemStack(this.icon));
     }
 
-    public ShopPage getShopPage() {
+
+    @Override
+    public com.pepedevs.dbedwars.api.game.view.ShopPage getShopPage() {
         return this.shopPage;
     }
 
-    public void setShopPage(ShopPage shopPage) {
+    @Override
+    public void setShopPage(com.pepedevs.dbedwars.api.game.view.ShopPage shopPage) {
         this.shopPage = shopPage;
     }
 

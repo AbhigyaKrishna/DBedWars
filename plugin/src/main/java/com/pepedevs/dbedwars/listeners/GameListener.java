@@ -107,7 +107,7 @@ public class GameListener extends PluginHandler {
                                     })
                             .findFirst();
 
-            if (oTeam.isEmpty()) return;
+            if (!oTeam.isPresent()) return;
 
             Team team = oTeam.get();
 

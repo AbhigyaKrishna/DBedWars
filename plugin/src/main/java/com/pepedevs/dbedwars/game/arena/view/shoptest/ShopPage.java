@@ -66,26 +66,37 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
         }
     }
 
+    @Override
     public String getKey() {
         return this.key;
     }
 
+    @Override
     public com.pepedevs.dbedwars.api.game.view.ShopView getView() {
         return this.view;
     }
 
+    @Override
     public void setView(com.pepedevs.dbedwars.api.game.view.ShopView view) {
         this.view = view;
     }
 
+    @Override
     public String getTitle() {
         return this.title;
     }
 
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
     public com.pepedevs.dbedwars.api.game.view.GuiItem[][] getPattern() {
         return this.pattern;
     }
 
+    @Override
     public Map<String, com.pepedevs.dbedwars.api.game.view.GuiItem> getItems() {
         return this.items;
     }

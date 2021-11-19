@@ -22,5 +22,9 @@ public abstract class GuiItem extends Item
 
     public abstract Map<AttributeType, Attribute> getAttributes();
 
+    public abstract ShopPage getShopPage();
+
+    public abstract void setShopPage(ShopPage shopPage);
+
     public abstract GuiItem clone();
 }
