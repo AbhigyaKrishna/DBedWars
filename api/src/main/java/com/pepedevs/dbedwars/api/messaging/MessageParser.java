@@ -1,4 +1,3 @@
 package com.pepedevs.dbedwars.api.messaging;
 
-public interface MessageParser {
-}
+public interface MessageParser {}

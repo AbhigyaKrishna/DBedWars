@@ -13,9 +13,10 @@ public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.Mes
     private final List<ChannelMember> channelMembers;
     private Cache<Message, Long> messageHistory;
 
-    public MessagingChannel(){
+    public MessagingChannel() {
         this.channelMembers = new ArrayList<>();
-        this.messageHistory = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
+        this.messageHistory =
+                CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
     }
 
     @Override
@@ -37,10 +38,7 @@ public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.Mes
 
     @Override
     public void sendMessage(Message message) {
-        for (ChannelMember member : this.channelMembers) {
-
-
-        }
+        for (ChannelMember member : this.channelMembers) {}
     }
 
     @Override
@@ -49,12 +47,14 @@ public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.Mes
 
         List<Map.Entry<Message, Long>> sortingList = new LinkedList<>(history.entrySet());
 
-        sortingList.sort(new Comparator<Map.Entry<Message, Long>>() {
-            @Override
-            public int compare(Map.Entry<Message, Long> o1, Map.Entry<Message, Long> o2) {
-                return Float.compare(o1.getValue().floatValue(), o2.getValue().floatValue());
-            }
-        });
+        sortingList.sort(
+                new Comparator<Map.Entry<Message, Long>>() {
+                    @Override
+                    public int compare(Map.Entry<Message, Long> o1, Map.Entry<Message, Long> o2) {
+                        return Float.compare(
+                                o1.getValue().floatValue(), o2.getValue().floatValue());
+                    }
+                });
 
         Map<Message, Long> returnHistory = new LinkedHashMap<>();
 

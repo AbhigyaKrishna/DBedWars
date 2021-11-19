@@ -14,5 +14,4 @@ public interface MessagingChannel {
     void sendMessage(Message message);
 
     Map<Message, Long> getMessageHistory();
-
 }
