@@ -134,7 +134,8 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                                 ConfigurableShop.ConfigurablePage.BwGUIItem next =
                                         cfgPage.getItems().get(nextTier);
                                 guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
-                                ((GuiItem) guiItem).loadFromConfig(page, view, common, next, cfgPage);
+                                ((GuiItem) guiItem)
+                                        .loadFromConfig(page, view, common, next, cfgPage);
                                 this.shopPage.getItems().put(nextTier, guiItem);
                             }
                         }

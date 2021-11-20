@@ -28,7 +28,7 @@ public class ConfigurableMessaging implements Loadable {
         return parserType;
     }
 
-    public static class ConfigurableModernSettings implements Loadable{
+    public static class ConfigurableModernSettings implements Loadable {
 
         private ConfigurableTransformations transformations;
 
@@ -38,7 +38,7 @@ public class ConfigurableMessaging implements Loadable {
         @LoadableEntry(key = "discord-type-formatting")
         private boolean discordFlavour;
 
-        public ConfigurableModernSettings(){
+        public ConfigurableModernSettings() {
             this.transformations = new ConfigurableTransformations();
         }
 
@@ -70,7 +70,7 @@ public class ConfigurableMessaging implements Loadable {
             return discordFlavour;
         }
 
-        public static class ConfigurableTransformations implements Loadable{
+        public static class ConfigurableTransformations implements Loadable {
 
             @LoadableEntry(key = "click-event")
             private boolean clickEvent;
