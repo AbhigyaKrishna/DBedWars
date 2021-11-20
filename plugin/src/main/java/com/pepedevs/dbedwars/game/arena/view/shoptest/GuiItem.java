@@ -42,7 +42,8 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
             ShopPage page,
             ShopView view,
             Map<String, GuiItem> common,
-            ConfigurableShop.ConfigurablePage.BwGUIItem item) {
+            ConfigurableShop.ConfigurablePage.BwGUIItem item,
+            ConfigurableShop.ConfigurablePage cfgPage) {
         if (this.isLoaded()) return;
 
         this.shopPage = page;
@@ -118,7 +119,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                                             .get(AttributeType.UPGRADEABLE_TIER.getKeys()[0]);
                     com.pepedevs.dbedwars.api.game.view.GuiItem guiItem =
                             common.getOrDefault(nextTier, null);
-                    if (item.getPage().getItems().containsKey(nextTier)) {
+                    if (cfgPage.getItems().containsKey(nextTier)) {
                         if (guiItem != null) {
                             guiItem = guiItem.clone();
                             if (this.shopPage.getItems().containsKey(nextTier)) {
@@ -131,9 +132,9 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                             guiItem = this.shopPage.getItems().getOrDefault(nextTier, null);
                             if (guiItem == null) {
                                 ConfigurableShop.ConfigurablePage.BwGUIItem next =
-                                        item.getPage().getItems().get(nextTier);
+                                        cfgPage.getItems().get(nextTier);
                                 guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
-                                ((GuiItem) guiItem).loadFromConfig(page, view, common, next);
+                                ((GuiItem) guiItem).loadFromConfig(page, view, common, next, cfgPage);
                                 this.shopPage.getItems().put(nextTier, guiItem);
                             }
                         }
@@ -162,6 +163,8 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     @Override
     public void onClick(ItemClickAction action) {
+        System.out.println("SHOP PAGE" + this.shopPage);
+        System.out.println("SHOP VIEW" + this.shopPage.getView());
         ArenaPlayer ap = this.shopPage.getView().getPlayer();
         if (this.attributes.containsKey(AttributeType.CHANGE_PAGE)) {
             this.changePage(action);

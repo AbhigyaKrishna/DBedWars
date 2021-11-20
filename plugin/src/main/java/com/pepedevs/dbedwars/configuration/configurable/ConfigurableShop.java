@@ -24,6 +24,8 @@ public class ConfigurableShop implements Loadable {
     public ConfigurableShop() {
         this.pages = new HashMap<>();
         this.commonItems = new HashMap<>();
+
+        System.out.println("SHOP CONSTRUCTOR CALLED");
     }
 
     @Override
@@ -53,9 +55,7 @@ public class ConfigurableShop implements Loadable {
         return pages;
     }
 
-    public class ConfigurablePage implements Loadable {
-
-        private final ConfigurableShop shop;
+    public static class ConfigurablePage implements Loadable {
 
         @LoadableEntry(key = "title")
         private String guiTitle;
@@ -67,9 +67,10 @@ public class ConfigurableShop implements Loadable {
         private Map<String, BwGUIItem> items;
 
         public ConfigurablePage() {
-            this.shop = ConfigurableShop.this;
             this.pattern = new ArrayList<>();
             this.items = new HashMap<>();
+
+            System.out.println("PAGE BEING LOADED -- " + this.guiTitle);
         }
 
         @Override
@@ -99,13 +100,7 @@ public class ConfigurableShop implements Loadable {
             return guiTitle;
         }
 
-        public ConfigurableShop getShop() {
-            return shop;
-        }
-
-        public class BwGUIItem implements Loadable {
-
-            private final ConfigurablePage page;
+        public static class BwGUIItem implements Loadable {
 
             @LoadableEntry(key = "name")
             private String itemName;
@@ -125,11 +120,12 @@ public class ConfigurableShop implements Loadable {
             private ConfigurableAttribute attribute;
 
             public BwGUIItem() {
-                this.page = ConfigurablePage.this;
                 this.amount = 1;
                 this.itemLore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();
                 this.enchant = new ArrayList<>();
+
+                System.out.println("ITEM BEING LOADED -- " + this.itemName);
             }
 
             @Override
@@ -170,10 +166,6 @@ public class ConfigurableShop implements Loadable {
 
             public ConfigurableAttribute getAttribute() {
                 return attribute;
-            }
-
-            public ConfigurablePage getPage() {
-                return page;
             }
         }
     }

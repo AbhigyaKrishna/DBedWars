@@ -1,24 +1,30 @@
 package com.pepedevs.dbedwars.messaging;
 
+import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
-import net.kyori.adventure.
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.transformation.TransformationType;
 
 public class MiniMessageParser implements MessageParser {
 
     private MiniMessage instance;
+    private final DBedwars plugin;
 
-    public MiniMessageParser(){
+    public MiniMessageParser(DBedwars plugin, MiniMessage instance){
+        this.instance = instance;
+        this.plugin = plugin;
+    }
+
+    /*public Component parse(String message){
 
     }
 
-    private void buildMiniMessage(){
+    public Component parseWPAPI(String message){
+        pl
+    }*/
 
-    }
-
-    public Message parse(Message message){
-
+    public void setInstance(MiniMessage instance){
+        this.instance = instance;
     }
 
 }

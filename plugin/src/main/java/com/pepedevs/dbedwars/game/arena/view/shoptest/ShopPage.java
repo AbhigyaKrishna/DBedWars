@@ -39,7 +39,7 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
                             } else {
                                 guiItem = new GuiItem(s, view.getFormattedItem(item));
                             }
-                            guiItem.loadFromConfig(this, view, common, item);
+                            guiItem.loadFromConfig(this, view, common, item, page);
                             this.items.put(s, guiItem);
                         });
 

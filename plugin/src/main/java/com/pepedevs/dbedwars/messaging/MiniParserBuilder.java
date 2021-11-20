@@ -18,8 +18,7 @@ public class MiniParserBuilder {
                 .addTransformations(settings.getTransformations())
                 .strict(settings.isStrict());
 
-        if (settings.isDiscordFlavour())
-            this.addDiscordFlavor();
+        if (settings.isDiscordFlavour()) this.addDiscordFlavor();
 
     }
 

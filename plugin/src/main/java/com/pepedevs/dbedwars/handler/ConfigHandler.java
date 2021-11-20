@@ -47,6 +47,7 @@ public class ConfigHandler {
         this.database.load(YamlConfiguration.loadConfiguration(PluginFiles.DATABASE.getFile()));
         this.shop = new ConfigurableShop();
         this.shop.load(YamlConfiguration.loadConfiguration(PluginFiles.SHOP.getFile()));
+        System.out.println("DEFAULT-PAGE" + this.shop.getDefaultPage());
         this.upgrade = new ConfigurableUpgrade();
         this.upgrade.load(YamlConfiguration.loadConfiguration(PluginFiles.UPGRADES.getFile()));
         this.plugin.getGameManager().load();
