@@ -173,21 +173,26 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         if (this.attributes.containsKey(AttributeType.PURCHASABLE)) {
             Optional<com.pepedevs.dbedwars.api.game.view.ShopItem> optional =
                     this.item.stream().findFirst();
-            optional.ifPresent(si -> {
-                if (si.isCostFullFilled(action.getPlayer())) {
-                    PlayerPurchaseItemEvent event =
-                            new PlayerPurchaseItemEvent(
-                                    ap, ap.getArena(), si.getCost(), this.item);
-                    event.call();
+            optional.ifPresent(
+                    si -> {
+                        if (si.isCostFullFilled(action.getPlayer())) {
+                            PlayerPurchaseItemEvent event =
+                                    new PlayerPurchaseItemEvent(
+                                            ap, ap.getArena(), si.getCost(), this.item);
+                            event.call();
 
-                    if (!event.isCancelled()) event.getItems().forEach(i -> i.onPurchase(ap));
-                } else {
-                    ap.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes("&cYou don't have required items!"));
-                }
+                            if (!event.isCancelled())
+                                event.getItems().forEach(i -> i.onPurchase(ap));
+                        } else {
+                            ap.getPlayer()
+                                    .sendMessage(
+                                            StringUtils.translateAlternateColorCodes(
+                                                    "&cYou don't have required items!"));
+                        }
 
-                if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER))
-                    this.upgradeTier(action);
-            });
+                        if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER))
+                            this.upgradeTier(action);
+                    });
         }
         if (this.attributes.containsKey(AttributeType.COMMAND)) {
             this.runCommand(action.getPlayer());
@@ -270,8 +275,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     @Override
     public void override(Overridable override) throws OverrideException {
-        if (!(override instanceof GuiItem))
-            throw new OverrideException("Invalid override type!");
+        if (!(override instanceof GuiItem)) throw new OverrideException("Invalid override type!");
 
         GuiItem item = (GuiItem) override;
         if (!item.isLoaded())

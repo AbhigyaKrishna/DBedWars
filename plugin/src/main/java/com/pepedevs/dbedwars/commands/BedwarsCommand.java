@@ -51,5 +51,4 @@ public class BedwarsCommand extends BaseCommand {
 
         arena.end();
     }
-
 }

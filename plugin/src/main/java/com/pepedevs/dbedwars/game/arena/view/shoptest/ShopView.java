@@ -7,7 +7,6 @@ import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
-import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

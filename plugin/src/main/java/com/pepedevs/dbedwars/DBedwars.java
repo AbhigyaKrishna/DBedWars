@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
-import me.Abhigya.core.commands.CommandHandler;
 import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.placeholder.PlaceholderUtil;
 import me.Abhigya.core.plugin.Plugin;
@@ -108,6 +107,8 @@ public final class DBedwars extends PluginAdapter {
     }
 
     /**
+     *
+     *
      * <ul>
      *   <li>PluginDependence[0] = MultiVerseCore
      *   <li>PluginDependence[1] = SlimeWorldManager
@@ -231,13 +232,13 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands() {
-//        new CommandHandler(
-//                this,
-//                "bedwars",
-//                new Setup(this),
-//                new Start(this),
-//                new HoloTestCommand(),
-//                new ImageParticleTestCommand());
+        //        new CommandHandler(
+        //                this,
+        //                "bedwars",
+        //                new Setup(this),
+        //                new Start(this),
+        //                new HoloTestCommand(),
+        //                new ImageParticleTestCommand());
 
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.enableUnstableAPI("help");
