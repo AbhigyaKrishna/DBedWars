@@ -67,7 +67,7 @@ public class BridgeEgg extends PluginActionItem {
         Projectile egg = player.launchProjectile(Egg.class);
         egg.setMetadata("isDBedwarsEgg", bridgeEggMeta);
         plugin.getThreadHandler()
-                .addSyncWork(
+                .submitSync(
                         new BridgeEggWorkloadTask(
                                 plugin,
                                 arena,

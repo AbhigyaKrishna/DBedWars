@@ -44,7 +44,7 @@ public class PopupTowerChestItem extends PluginActionItem {
         if (!XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).isPresent()) return;
 
         plugin.getThreadHandler()
-                .addSyncWork(
+                .submitSync(
                         new PopupTowerWorkload(
                                 XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).get(),
                                 (cfgPopupTower.getSound() == null
@@ -60,7 +60,7 @@ public class PopupTowerChestItem extends PluginActionItem {
                                 2));
 
         plugin.getThreadHandler()
-                .addSyncWork(() -> event.getBlock().setType(XMaterial.AIR.parseMaterial()));
+                .submitSync(() -> event.getBlock().setType(XMaterial.AIR.parseMaterial()));
     }
 
     public static class PopupTowerBlocks {

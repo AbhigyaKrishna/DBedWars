@@ -11,6 +11,7 @@ import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.guis.ShopGui;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import me.Abhigya.core.menu.inventory.action.ItemClickAction;
+import me.Abhigya.core.util.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,11 +24,11 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     private final String key;
     private com.pepedevs.dbedwars.api.game.view.ShopPage shopPage;
-    private final Map<AttributeType, com.pepedevs.dbedwars.api.game.view.Attribute> attributes;
-    private final List<com.pepedevs.dbedwars.api.game.view.ShopItem> item;
+    private Map<AttributeType, com.pepedevs.dbedwars.api.game.view.Attribute> attributes;
+    private List<com.pepedevs.dbedwars.api.game.view.ShopItem> item;
     private com.pepedevs.dbedwars.api.game.view.GuiItem nextTier;
     private String nextPage;
-    private final List<String> command;
+    private List<String> command;
     private boolean loaded;
 
     public GuiItem(String key, BwItemStack icon) {
@@ -92,6 +93,7 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
                                         si.setColorable(isColorable);
                                         si.getCost().addAll(cost);
                                         si.setSlot(index.getOrDefault(key, 0));
+                                        this.item.add(si);
                                     });
 
                     return attribute;
@@ -164,8 +166,6 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
 
     @Override
     public void onClick(ItemClickAction action) {
-        System.out.println("SHOP PAGE" + this.shopPage);
-        System.out.println("SHOP VIEW" + this.shopPage.getView());
         ArenaPlayer ap = this.shopPage.getView().getPlayer();
         if (this.attributes.containsKey(AttributeType.CHANGE_PAGE)) {
             this.changePage(action);
@@ -173,19 +173,21 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         if (this.attributes.containsKey(AttributeType.PURCHASABLE)) {
             Optional<com.pepedevs.dbedwars.api.game.view.ShopItem> optional =
                     this.item.stream().findFirst();
-            if (!optional.isPresent()) return;
+            optional.ifPresent(si -> {
+                if (si.isCostFullFilled(action.getPlayer())) {
+                    PlayerPurchaseItemEvent event =
+                            new PlayerPurchaseItemEvent(
+                                    ap, ap.getArena(), si.getCost(), this.item);
+                    event.call();
 
-            if (optional.get().isCostFullFilled(action.getPlayer())) {
-                PlayerPurchaseItemEvent event =
-                        new PlayerPurchaseItemEvent(
-                                ap, ap.getArena(), optional.get().getCost(), this.item);
-                event.call();
+                    if (!event.isCancelled()) event.getItems().forEach(i -> i.onPurchase(ap));
+                } else {
+                    ap.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes("&cYou don't have required items!"));
+                }
 
-                if (!event.isCancelled()) event.getItems().forEach(i -> i.onPurchase(ap));
-            }
-
-            if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER))
-                this.upgradeTier(action);
+                if (this.attributes.containsKey(AttributeType.UPGRADEABLE_TIER))
+                    this.upgradeTier(action);
+            });
         }
         if (this.attributes.containsKey(AttributeType.COMMAND)) {
             this.runCommand(action.getPlayer());
@@ -267,5 +269,20 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
     }
 
     @Override
-    public void override(Overridable override) throws OverrideException {}
+    public void override(Overridable override) throws OverrideException {
+        if (!(override instanceof GuiItem))
+            throw new OverrideException("Invalid override type!");
+
+        GuiItem item = (GuiItem) override;
+        if (!item.isLoaded())
+            throw new OverrideException("Can't override item which isn't loaded!");
+
+        this.shopPage = item.shopPage;
+        this.attributes = new ConcurrentHashMap<>(item.attributes);
+        this.item = new ArrayList<>(item.item);
+        this.nextTier = item.nextTier;
+        this.nextPage = item.nextPage;
+        this.command = new ArrayList<>(item.command);
+        this.loaded = true;
+    }
 }

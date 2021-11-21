@@ -11,15 +11,15 @@ public interface ThreadHandler {
 
     WorkloadThread getLeastWorkSyncWorker();
 
-    void addSyncWork(Workload work);
+    void submitSync(Workload load);
 
-    void addSyncWork(Collection<Workload> work);
+    void submitSync(Collection<Workload> load);
 
     WorkloadThread[] getAsyncThreads();
 
     WorkloadThread getLeastWorkAsyncWorker();
 
-    void addAsyncWork(Workload work);
+    void submitAsync(Workload load);
 
-    void addAsyncWork(Collection<Workload> work);
+    void submitAsync(Collection<Workload> load);
 }

@@ -24,8 +24,6 @@ public class ConfigurableShop implements Loadable {
     public ConfigurableShop() {
         this.pages = new HashMap<>();
         this.commonItems = new HashMap<>();
-
-        System.out.println("SHOP CONSTRUCTOR CALLED");
     }
 
     @Override
@@ -69,8 +67,6 @@ public class ConfigurableShop implements Loadable {
         public ConfigurablePage() {
             this.pattern = new ArrayList<>();
             this.items = new HashMap<>();
-
-            System.out.println("PAGE BEING LOADED -- " + this.guiTitle);
         }
 
         @Override
@@ -124,8 +120,6 @@ public class ConfigurableShop implements Loadable {
                 this.itemLore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();
                 this.enchant = new ArrayList<>();
-
-                System.out.println("ITEM BEING LOADED -- " + this.itemName);
             }
 
             @Override

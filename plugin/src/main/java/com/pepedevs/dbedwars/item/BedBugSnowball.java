@@ -81,6 +81,6 @@ public class BedBugSnowball extends PluginActionItem {
                 .addCustomDefaults()
                 .initTargets(1);
         plugin.getThreadHandler()
-                .addAsyncWork(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
+                .submitAsync(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
     }
 }

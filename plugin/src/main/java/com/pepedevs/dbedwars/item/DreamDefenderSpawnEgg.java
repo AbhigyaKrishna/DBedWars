@@ -85,7 +85,7 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
                 if (effectAT != null) effectAT.applyTo(ironGolem);
             }
             plugin.getThreadHandler()
-                    .addAsyncWork(
+                    .submitAsync(
                             new GolemDisplayNameUpdateTask(
                                     ironGolem, arenaPlayer.getTeam(), cfgGolem));
         }

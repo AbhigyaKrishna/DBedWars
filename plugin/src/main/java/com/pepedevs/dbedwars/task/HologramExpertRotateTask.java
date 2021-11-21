@@ -30,7 +30,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         if (this.frames.size() == 0) throw new IllegalStateException("No animations in hologram!");
 
         this.task = new HologramRotate(this.delayMillis);
-        this.plugin.getThreadHandler().addAsyncWork(this.task);
+        this.plugin.getThreadHandler().submitAsync(this.task);
     }
 
     private class HologramRotate extends CancellableTask {

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Start implements CommandArgument {
 
-    private DBedwars plugin;
+    private final DBedwars plugin;
 
     public Start(DBedwars plugin) {
         this.plugin = plugin;
@@ -46,14 +46,14 @@ public class Start implements CommandArgument {
         Arena arena = this.plugin.getGameManager().getArena(args[0]);
         this.plugin
                 .getThreadHandler()
-                .addAsyncWork(
+                .submitAsync(
                         () -> {
                             if (arena.getWorld() == null) {
                                 arena.load();
                             }
                             this.plugin
                                     .getThreadHandler()
-                                    .addSyncWork(() -> arena.addPlayer(player));
+                                    .submitSync(() -> arena.addPlayer(player));
                         });
         return true;
     }

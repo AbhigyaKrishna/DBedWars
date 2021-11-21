@@ -42,7 +42,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
             this.task = new HologramRotateNoSlow();
         }
 
-        this.plugin.getThreadHandler().addAsyncWork(this.task);
+        this.plugin.getThreadHandler().submitAsync(this.task);
     }
 
     private class HologramRotateSlow extends CancellableTask {

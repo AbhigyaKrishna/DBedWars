@@ -211,7 +211,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.enabled = flag;
         this.plugin
                 .getThreadHandler()
-                .addAsyncWork(
+                .submitAsync(
                         () -> {
                             File file =
                                     new File(
@@ -342,7 +342,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         // TODO manage scoreboard
         this.plugin
                 .getThreadHandler()
-                .addSyncWork(
+                .submitSync(
                         () -> {
                             Arena.this.scoreboard =
                                     new ScoreboardImpl(
@@ -426,7 +426,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         DatabaseUtils.saveGameData(this);
         this.plugin
                 .getThreadHandler()
-                .addSyncWork(
+                .submitSync(
                         new Workload() {
                             final long time = System.currentTimeMillis();
                             final int delay = Arena.this.getSettings().getGameEndDelay() * 20;
@@ -448,7 +448,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                                                                         .getWorlds()
                                                                         .get(0)
                                                                         .getSpawnLocation()));
-                                Arena.this.plugin.getThreadHandler().addAsyncWork(Arena.this::load);
+                                Arena.this.plugin.getThreadHandler().submitAsync(Arena.this::load);
                             }
 
                             @Override
@@ -743,7 +743,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
             com.pepedevs.dbedwars.api.game.Arena arena, Player player, int size, boolean join) {
         this.plugin
                 .getThreadHandler()
-                .addAsyncWork(
+                .submitAsync(
                         new FixedRateWorkload(20) {
                             private boolean hasRun = false;
 
@@ -788,7 +788,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.removed.clear();
         this.plugin
                 .getThreadHandler()
-                .addSyncWork(
+                .submitSync(
                         () -> {
                             for (Player player :
                                     new ArrayList<>(

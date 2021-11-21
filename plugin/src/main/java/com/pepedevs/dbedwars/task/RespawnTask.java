@@ -45,10 +45,10 @@ public class RespawnTask extends CancellableTask implements Listener {
                 "");
         if (time == 0) {
             ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) this.player).setRespawning(false);
-            this.plugin.getThreadHandler().addSyncWork(() -> this.player.setSpectator(false));
+            this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));
             this.plugin
                     .getThreadHandler()
-                    .addSyncWork(
+                    .submitSync(
                             () ->
                                     this.player.spawn(
                                             this.player

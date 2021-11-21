@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.MessagingChannel {
 
     private final List<MessagingMember> channelMembers;
-    private Cache<Message, Long> messageHistory;
+    private final Cache<Message, Long> messageHistory;
 
     public MessagingChannel() {
         this.channelMembers = new ArrayList<>();

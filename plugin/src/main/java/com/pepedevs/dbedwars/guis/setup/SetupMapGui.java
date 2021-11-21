@@ -117,7 +117,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                         SetupMapGui.this
                                                 .plugin
                                                 .getThreadHandler()
-                                                .addAsyncWork(
+                                                .submitAsync(
                                                         () -> {
                                                             if (arena.isEnabled()) {
                                                                 itemClickAction
@@ -143,7 +143,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                             SetupMapGui.this
                                                                     .plugin
                                                                     .getThreadHandler()
-                                                                    .addSyncWork(
+                                                                    .submitSync(
                                                                             () -> {
                                                                                 if (arena.getSettings()
                                                                                         .hasLobby()) {
@@ -210,7 +210,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                 SetupMapGui.this
                                         .plugin
                                         .getThreadHandler()
-                                        .addAsyncWork(
+                                        .submitAsync(
                                                 () -> {
                                                     CompletableFuture<Boolean> future =
                                                             new CompletableFuture<>();

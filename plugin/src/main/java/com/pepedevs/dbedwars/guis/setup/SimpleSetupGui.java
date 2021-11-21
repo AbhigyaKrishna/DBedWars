@@ -147,7 +147,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                                                             SimpleSetupGui.this
                                                                     .plugin
                                                                     .getThreadHandler()
-                                                                    .addSyncWork(
+                                                                    .submitSync(
                                                                             () ->
                                                                                     itemClickAction
                                                                                             .getPlayer()

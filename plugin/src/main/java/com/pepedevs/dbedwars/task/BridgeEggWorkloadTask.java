@@ -102,7 +102,7 @@ public class BridgeEggWorkloadTask implements Workload {
     private void placeBlock(Block block, DyeColor dyeColor) {
         if (block.getType() == Material.AIR) {
             plugin.getThreadHandler()
-                    .addSyncWork(
+                    .submitSync(
                             () -> {
                                 arena.setBlock(block, Material.WOOL);
                                 block.getWorld()

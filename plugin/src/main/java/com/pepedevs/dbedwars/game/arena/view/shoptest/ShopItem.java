@@ -1,9 +1,12 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
+import me.Abhigya.core.util.server.Version;
+import me.Abhigya.core.util.xseries.XItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -51,7 +54,7 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
     public void onPurchase(ArenaPlayer player) {
         if (this.isColorable()) this.color(player.getTeam().getColor());
         if (this.isAutoEquip()) this.equip(player.getPlayer());
-        else player.getPlayer().getInventory().addItem(this.getItem().toItemStack());
+        else XItemStack.giveOrDrop(player.getPlayer(), this.getItem().toItemStack());
     }
 
     @Override
@@ -105,6 +108,10 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
         if (color == null) return;
 
         if (this.item.toItemStack() instanceof org.bukkit.material.Colorable) {
+            if (DBedwars.getInstance().getServerVersion().isOlderEquals(Version.v1_8_R3)) {
+                this.item.setData(color.getData());
+                return;
+            }
             ((org.bukkit.material.Colorable) this.item.toItemStack()).setColor(color.getDyeColor());
         }
     }

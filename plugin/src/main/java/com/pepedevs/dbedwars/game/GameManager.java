@@ -54,7 +54,7 @@ public class GameManager implements com.pepedevs.dbedwars.api.handler.GameManage
         arena.setStatus(ArenaStatus.STARTING);
         this.plugin
                 .getThreadHandler()
-                .addAsyncWork(
+                .submitAsync(
                         new CountdownTask(
                                 arena,
                                 (short)

@@ -33,7 +33,7 @@ public class ImageParticleTestCommand implements CommandArgument {
                         (key, colors) -> {
                             DBedwars.getInstance()
                                     .getThreadHandler()
-                                    .addAsyncWork(
+                                    .submitAsync(
                                             new ParticleImageDisplayTask(
                                                     100,
                                                     new Dimension(2, 2),

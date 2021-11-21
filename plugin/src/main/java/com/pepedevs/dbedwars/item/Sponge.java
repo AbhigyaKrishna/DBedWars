@@ -41,7 +41,7 @@ public class Sponge extends PluginActionItem {
         event.getBlock().setMetadata("isBedwarsSponge", spongeMeta);
         if (cfgSponge.isAnimationEnabled())
             plugin.getThreadHandler()
-                    .addAsyncWork(
+                    .submitAsync(
                             new SpongeAnimationTask(
                                     plugin,
                                     event.getBlock(),

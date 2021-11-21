@@ -14,7 +14,7 @@ public class DatabaseUtils {
         for (ArenaPlayer player : arena.getPlayers()) {
             DBedwars.getInstance()
                     .getThreadHandler()
-                    .addAsyncWork(
+                    .submitAsync(
                             () -> {
                                 List<DataCache> saved =
                                         DBedwars.getInstance()

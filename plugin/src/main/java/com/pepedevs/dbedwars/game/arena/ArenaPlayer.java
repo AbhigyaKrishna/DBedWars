@@ -226,7 +226,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
             this.setRespawning(true);
             DBedwars.getInstance()
                     .getThreadHandler()
-                    .addAsyncWork(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
+                    .submitAsync(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
         }
     }
 
@@ -321,6 +321,6 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
         this.respawning = true;
         DBedwars.getInstance()
                 .getThreadHandler()
-                .addAsyncWork(new RespawnTask(DBedwars.getInstance(), this));
+                .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
 }

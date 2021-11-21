@@ -27,20 +27,16 @@ public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
 
     public void loadFromConfig(ConfigurableShop cfgShop) {
         Map<String, GuiItem> commons = new HashMap<>();
-        System.out.println(ChatColor.RED + "COMMON ITEMS -- " + cfgShop.getCommonItems().size());
         cfgShop.getCommonItems()
                 .forEach(
                         (s, item) -> {
-                            System.out.println("CITEM--" + item.getItemName());
                             GuiItem guiItem = new GuiItem(s, this.getFormattedItem(item));
                             guiItem.loadFromConfig(null, this, commons, item, null);
                             commons.put(s, guiItem);
                         });
-        System.out.println(ChatColor.RED + "NO OF PAGES -- " + cfgShop.getPages().size());
         cfgShop.getPages()
                 .forEach(
                         (s, page) -> {
-                            System.out.println("LOADING PAGE==" + page.getGuiTitle());
                             ShopPage shopPage = new ShopPage(s);
                             shopPage.loadFromConfig(this, commons, page);
                             this.shopPages.put(s, shopPage);

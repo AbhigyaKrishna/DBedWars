@@ -61,6 +61,8 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
                 } else {
                     item = this.items.getOrDefault(pattern[col][row], null);
                 }
+                if (item != null)
+                    item.setShopPage(this);
                 this.pattern[col][row] = item;
             }
         }

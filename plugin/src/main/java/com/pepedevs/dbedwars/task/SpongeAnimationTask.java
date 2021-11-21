@@ -90,7 +90,7 @@ public class SpongeAnimationTask implements Workload {
                 soundOnAnimationEnd.play(centre);
                 if (shouldRemoveOnEnd)
                     plugin.getThreadHandler()
-                            .addSyncWork(() -> centre.getBlock().setType(Material.AIR));
+                            .submitSync(() -> centre.getBlock().setType(Material.AIR));
                 this.done = true;
             }
             return false;

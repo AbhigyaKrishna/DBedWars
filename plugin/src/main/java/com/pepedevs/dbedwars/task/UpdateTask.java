@@ -45,7 +45,7 @@ public final class UpdateTask implements Runnable {
         try {
             this.plugin
                     .getThreadHandler()
-                    .addAsyncWork(
+                    .submitAsync(
                             () -> {
                                 for (Arena a : this.plugin.getGameManager().getArenas().values()) {
                                     if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
@@ -61,14 +61,14 @@ public final class UpdateTask implements Runnable {
                     builders.remove(buildersClone.get(i));
                     continue;
                 }
-                plugin.getThreadHandler().addSyncWork(workload);
+                plugin.getThreadHandler().submitSync(workload);
                 i++;
                 workload = buildersClone.get(i).getBlockQueue().poll();
                 if(workload == null){
                     builders.remove(buildersClone.get(i));
                     continue;
                 }
-                plugin.getThreadHandler().addSyncWork(workload);
+                plugin.getThreadHandler().submitSync(workload);
             }*/
 
         } catch (Exception ignored) {

@@ -19,9 +19,9 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
     private final DBedwars plugin;
     private final WorkloadDistributor distributor;
     private final UpdateTask updater;
-    private WorkloadThread[] syncThreads;
-    private WorkloadThread[] asyncThreads;
-    private WorkloadThread updaterThread;
+    private final WorkloadThread[] syncThreads;
+    private final WorkloadThread[] asyncThreads;
+    private final WorkloadThread updaterThread;
     private BukkitTask updateThreadConsumer;
 
     private Map<Long, BukkitTask> syncTask;
@@ -128,14 +128,14 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
     }
 
     @Override
-    public void addSyncWork(Workload work) {
-        this.getLeastWorkSyncWorker().add(work);
+    public void submitSync(Workload load) {
+        this.getLeastWorkSyncWorker().add(load);
     }
 
     @Override
-    public void addSyncWork(Collection<Workload> work) {
+    public void submitSync(Collection<Workload> load) {
         WorkloadThread thread = this.getLeastWorkSyncWorker();
-        for (Workload w : work) {
+        for (Workload w : load) {
             thread.add(w);
         }
     }
@@ -161,14 +161,14 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
     }
 
     @Override
-    public void addAsyncWork(Workload work) {
-        this.getLeastWorkAsyncWorker().add(work);
+    public void submitAsync(Workload load) {
+        this.getLeastWorkAsyncWorker().add(load);
     }
 
     @Override
-    public void addAsyncWork(Collection<Workload> work) {
+    public void submitAsync(Collection<Workload> load) {
         WorkloadThread thread = this.getLeastWorkAsyncWorker();
-        for (Workload w : work) {
+        for (Workload w : load) {
             thread.add(w);
         }
     }

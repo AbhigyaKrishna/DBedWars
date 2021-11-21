@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings("unchecked")
 public class ShopGui extends IMenu<ItemMenu> {
 
     private final DBedwars plugin;
