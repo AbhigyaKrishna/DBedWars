@@ -6,7 +6,4 @@ public class MessagingMember implements com.pepedevs.dbedwars.api.messaging.Mess
     public void sendMessage(com.pepedevs.dbedwars.api.messaging.Message message) {
         message.getChannel().sendMessage(message);
     }
-
-    
-
 }

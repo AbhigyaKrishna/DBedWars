@@ -20,29 +20,30 @@ public class MiniMessageParser implements MessageParser {
     }
 
     @Override
-    public Component parse(String message){
+    public Component parse(String message) {
         return instance.parse(message);
     }
 
     @Override
-    public Component parseWithPAPI(String message, Player player){
+    public Component parseWithPAPI(String message, Player player) {
         String parsedMessage = PlaceholderUtil.getManager().apply(player, message);
         return this.parse(parsedMessage);
     }
 
     @Override
-    public Component parseWithPlaceholder(String message, Player player, String placeholder, String replacement){
+    public Component parseWithPlaceholder(
+            String message, Player player, String placeholder, String replacement) {
         String parsedMessage = this.replacer(message, placeholder, replacement);
         return this.parseWithPAPI(message, player);
     }
 
     @Override
-    public Component parseWithPlaceholder(String message, Player player, Template... placeholders){
+    public Component parseWithPlaceholder(String message, Player player, Template... placeholders) {
         String parsedMessage = PlaceholderUtil.getManager().apply(player, message);
         return instance.parse(parsedMessage, placeholders);
     }
 
-    private String replacer(String message, String placeholder, String replacement){
+    private String replacer(String message, String placeholder, String replacement) {
         String returnMessage = message;
         for (int count = replacementCount; count > 0; count--) {
             returnMessage = returnMessage.replace(placeholder, replacement);

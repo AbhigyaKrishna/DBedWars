@@ -10,10 +10,10 @@ public interface MessageParser {
 
     Component parseWithPAPI(String message, Player player);
 
-    Component parseWithPlaceholder(String message, Player player, String placeholder, String replacement);
+    Component parseWithPlaceholder(
+            String message, Player player, String placeholder, String replacement);
 
     Component parseWithPlaceholder(String message, Player player, Template... placeholders);
 
     void setReplacementCount(int replacementCount);
-
 }

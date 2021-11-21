@@ -7,5 +7,4 @@ public interface Message {
     MessagingChannel getChannel();
 
     MessagingMember getSender();
-
 }

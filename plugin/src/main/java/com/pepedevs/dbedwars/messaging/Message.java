@@ -9,19 +9,20 @@ public class Message implements com.pepedevs.dbedwars.api.messaging.Message {
 
     private String raw;
 
-    public Message(MessagingChannel channel, MessagingMember sender){
+    public Message(MessagingChannel channel, MessagingMember sender) {
         this.channel = channel;
         this.sender = sender;
     }
 
     public Message(MessagingChannel channel) {}
-    public Message(String raw, MessagingChannel channel, MessagingMember sender){
+
+    public Message(String raw, MessagingChannel channel, MessagingMember sender) {
         this.raw = raw;
         this.channel = channel;
         this.sender = sender;
     }
 
-    public void send(){
+    public void send() {
         sender.sendMessage(this);
     }
 
