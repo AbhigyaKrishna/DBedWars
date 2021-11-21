@@ -5,11 +5,11 @@ import java.util.Map;
 
 public interface MessagingChannel {
 
-    List<ChannelMember> getMembers();
+    List<MessagingMember> getMembers();
 
-    boolean addChannelMember(ChannelMember member);
+    boolean addChannelMember(MessagingMember member);
 
-    boolean removeChannelMember(ChannelMember member);
+    boolean removeChannelMember(MessagingMember member);
 
     void sendMessage(Message message);
 

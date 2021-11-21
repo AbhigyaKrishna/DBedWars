@@ -2,15 +2,15 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.pepedevs.dbedwars.api.messaging.ChannelMember;
 import com.pepedevs.dbedwars.api.messaging.Message;
+import com.pepedevs.dbedwars.api.messaging.MessagingMember;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.MessagingChannel {
 
-    private final List<ChannelMember> channelMembers;
+    private final List<MessagingMember> channelMembers;
     private Cache<Message, Long> messageHistory;
 
     public MessagingChannel() {
@@ -20,25 +20,25 @@ public class MessagingChannel implements com.pepedevs.dbedwars.api.messaging.Mes
     }
 
     @Override
-    public List<ChannelMember> getMembers() {
+    public List<MessagingMember> getMembers() {
         return new ArrayList<>(this.channelMembers);
     }
 
     @Override
-    public boolean addChannelMember(ChannelMember member) {
+    public boolean addChannelMember(MessagingMember member) {
         if (this.channelMembers.contains(member)) return false;
         this.channelMembers.add(member);
         return true;
     }
 
     @Override
-    public boolean removeChannelMember(ChannelMember member) {
+    public boolean removeChannelMember(MessagingMember member) {
         return this.channelMembers.removeIf(this.channelMembers::contains);
     }
 
     @Override
     public void sendMessage(Message message) {
-        for (ChannelMember member : this.channelMembers) {}
+        for (MessagingMember member : this.channelMembers) {}
     }
 
     @Override
