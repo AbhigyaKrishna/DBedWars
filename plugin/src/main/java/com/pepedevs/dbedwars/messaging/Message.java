@@ -35,5 +35,4 @@ public class Message implements Cloneable {
     public Message clone() {
         return new Message(this.component);
     }
-
 }

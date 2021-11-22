@@ -94,20 +94,29 @@ public class MessagingChannel {
 
     public void sendMessage(Message message) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send message to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send message to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.getAudiences().sendMessage(message.asComponent());
         this.messageHistory.put(message, System.currentTimeMillis());
     }
 
     public void sendActionBar(Message message) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send action bar to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.getAudiences().sendActionBar(message.asComponent());
     }
 
     public void sendActionBar(Message message, Duration duration, long delayMillis) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send action bar to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.server
                 .getPlugin()
                 .getThreadHandler()
@@ -136,7 +145,10 @@ public class MessagingChannel {
 
     public CancellableTask sendActionBar(Message message, long delayMillis) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send action bar to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         CancellableTask task =
                 new CancellableTask() {
                     long lastSent = 0;
@@ -159,7 +171,10 @@ public class MessagingChannel {
 
     public void sendBossBar(BossBar bossBar, Duration duration) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send boss bar change to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.showBossBar(bossBar);
         this.server
                 .getPlugin()
@@ -185,19 +200,24 @@ public class MessagingChannel {
 
     public void showBossBar(BossBar bossBar) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send boss bar change to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.getAudiences().showBossBar(bossBar);
     }
 
     public void hideBossBar(BossBar bossBar) {
         if (!this.isRegistered())
-            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
+            throw new IllegalStateException(
+                    "Tried to send boss bar change to channel `"
+                            + this.getKey()
+                            + "` which is not registered!");
         this.getAudiences().hideBossBar(bossBar);
     }
 
     public Map<Message, Long> getMessageHistory() {
-        if (!this.isRegistered())
-            return Collections.EMPTY_MAP;
+        if (!this.isRegistered()) return Collections.EMPTY_MAP;
         Map<Message, Long> history = new HashMap<>(this.messageHistory.asMap());
 
         List<Map.Entry<Message, Long>> sortingList = new LinkedList<>(history.entrySet());

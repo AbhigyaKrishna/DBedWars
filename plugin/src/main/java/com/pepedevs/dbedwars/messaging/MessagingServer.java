@@ -52,9 +52,19 @@ public class MessagingServer {
     }
 
     public void broadcast(Message message, EnumChannel... channel) {
-        Audience audience = Audience.audience(this.channels.values().stream()
-                .filter(messagingChannel -> Arrays.stream(channel).anyMatch(c -> messagingChannel.getChannel() == c))
-                .map(MessagingChannel::getAudiences).collect(Collectors.toList()));
+        Audience audience =
+                Audience.audience(
+                        this.channels.values().stream()
+                                .filter(
+                                        messagingChannel ->
+                                                Arrays.stream(channel)
+                                                        .anyMatch(
+                                                                c ->
+                                                                        messagingChannel
+                                                                                        .getChannel()
+                                                                                == c))
+                                .map(MessagingChannel::getAudiences)
+                                .collect(Collectors.toList()));
         audience.sendMessage(message.asComponent());
     }
 
