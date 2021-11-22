@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.messaging;
 
 import net.kyori.adventure.text.Component;
 
-public class Message {
+public class Message implements Cloneable {
 
     private Component component;
 
@@ -30,4 +30,10 @@ public class Message {
     public void setComponent(Component component) {
         this.component = component;
     }
+
+    @Override
+    public Message clone() {
+        return new Message(this.component);
+    }
+
 }

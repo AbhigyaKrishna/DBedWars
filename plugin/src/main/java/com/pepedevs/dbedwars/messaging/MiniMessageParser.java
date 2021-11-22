@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.messaging;
 
-import com.pepedevs.dbedwars.DBedwars;
 import me.Abhigya.core.placeholder.PlaceholderUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -10,12 +9,10 @@ import org.bukkit.entity.Player;
 public class MiniMessageParser {
 
     private MiniMessage instance;
-    private final DBedwars plugin;
     private int replacementCount;
 
-    public MiniMessageParser(DBedwars plugin, MiniMessage instance) {
+    public MiniMessageParser(MiniMessage instance) {
         this.instance = instance;
-        this.plugin = plugin;
     }
 
     public Component parse(String message) {

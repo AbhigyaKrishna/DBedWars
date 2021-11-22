@@ -7,76 +7,32 @@ import me.Abhigya.core.util.Duration;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class MessagingChannel {
 
+    private final String key;
     private final EnumChannel channel;
     private final MessagingServer server;
     private final Collection<Audience> members;
     private Audience audience;
     private final Cache<Message, Long> messageHistory;
 
-    public MessagingChannel(EnumChannel channel, Collection<Audience> members) {
+    protected MessagingChannel(String key, EnumChannel channel, MessagingServer server) {
+        this.key = key;
         this.channel = channel;
-        this.server = MessagingServer.getInstance();
-        this.members = members;
+        this.server = server;
+        this.members = new CopyOnWriteArraySet<>();
         this.audience = Audience.audience(this.members);
         this.messageHistory =
                 CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
     }
 
-    public MessagingChannel(EnumChannel channel, Player... players) {
-        this(
-                channel,
-                Arrays.stream(players)
-                        .map(
-                                new Function<Player, Audience>() {
-                                    @Override
-                                    public Audience apply(Player player) {
-                                        return MessagingServer.getInstance()
-                                                .adventure()
-                                                .player(player);
-                                    }
-                                })
-                        .collect(Collectors.toSet()));
-    }
-
-    public MessagingChannel(EnumChannel channel, UUID... players) {
-        this(
-                channel,
-                Arrays.stream(players)
-                        .map(
-                                new Function<UUID, Audience>() {
-                                    @Override
-                                    public Audience apply(UUID uuid) {
-                                        return MessagingServer.getInstance()
-                                                .adventure()
-                                                .player(uuid);
-                                    }
-                                })
-                        .collect(Collectors.toSet()));
-    }
-
-    public MessagingChannel(EnumChannel channel, CommandSender... senders) {
-        this(
-                channel,
-                Arrays.stream(senders)
-                        .map(
-                                new Function<CommandSender, Audience>() {
-                                    @Override
-                                    public Audience apply(CommandSender sender) {
-                                        return MessagingServer.getInstance()
-                                                .adventure()
-                                                .sender(sender);
-                                    }
-                                })
-                        .collect(Collectors.toSet()));
+    public String getKey() {
+        return this.key;
     }
 
     public EnumChannel getChannel() {
@@ -91,9 +47,13 @@ public class MessagingChannel {
         return Collections.unmodifiableCollection(this.members);
     }
 
+    public boolean isRegistered() {
+        return this.server.isRegistered(this.getKey());
+    }
+
     public void addMember(Audience member) {
         this.members.add(member);
-        this.audience = Audience.audience(this.members);
+        this.updateAudience();
     }
 
     public void addMember(CommandSender sender) {
@@ -104,21 +64,50 @@ public class MessagingChannel {
         this.addMember(this.server.adventure().player(player));
     }
 
+    public void addMembers(Audience... members) {
+        this.members.addAll(Arrays.asList(members));
+        this.updateAudience();
+    }
+
+    public void addMembers(CommandSender... senders) {
+        for (CommandSender sender : senders) {
+            this.members.add(this.server.adventure().sender(sender));
+        }
+        this.updateAudience();
+    }
+
+    public void addMembers(UUID... players) {
+        for (UUID player : players) {
+            this.members.add(this.server.adventure().player(player));
+        }
+        this.updateAudience();
+    }
+
     public void removeMember(Audience audience) {
         this.members.remove(audience);
+        this.updateAudience();
+    }
+
+    private void updateAudience() {
         this.audience = Audience.audience(this.members);
     }
 
     public void sendMessage(Message message) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send message to channel `" + this.getKey() + "` which is not registered!");
         this.getAudiences().sendMessage(message.asComponent());
         this.messageHistory.put(message, System.currentTimeMillis());
     }
 
     public void sendActionBar(Message message) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
         this.getAudiences().sendActionBar(message.asComponent());
     }
 
     public void sendActionBar(Message message, Duration duration, long delayMillis) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
         this.server
                 .getPlugin()
                 .getThreadHandler()
@@ -146,6 +135,8 @@ public class MessagingChannel {
     }
 
     public CancellableTask sendActionBar(Message message, long delayMillis) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send action bar to channel `" + this.getKey() + "` which is not registered!");
         CancellableTask task =
                 new CancellableTask() {
                     long lastSent = 0;
@@ -167,6 +158,8 @@ public class MessagingChannel {
     }
 
     public void sendBossBar(BossBar bossBar, Duration duration) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
         this.showBossBar(bossBar);
         this.server
                 .getPlugin()
@@ -191,14 +184,20 @@ public class MessagingChannel {
     }
 
     public void showBossBar(BossBar bossBar) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
         this.getAudiences().showBossBar(bossBar);
     }
 
     public void hideBossBar(BossBar bossBar) {
+        if (!this.isRegistered())
+            throw new IllegalStateException("Tried to send boss bar change to channel `" + this.getKey() + "` which is not registered!");
         this.getAudiences().hideBossBar(bossBar);
     }
 
     public Map<Message, Long> getMessageHistory() {
+        if (!this.isRegistered())
+            return Collections.EMPTY_MAP;
         Map<Message, Long> history = new HashMap<>(this.messageHistory.asMap());
 
         List<Map.Entry<Message, Long>> sortingList = new LinkedList<>(history.entrySet());
