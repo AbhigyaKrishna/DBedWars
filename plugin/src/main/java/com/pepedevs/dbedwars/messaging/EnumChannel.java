@@ -7,6 +7,7 @@ public enum EnumChannel {
     ARENA_SPECTATOR,
     SERVER,
     LOBBY,
+    PERSONAL,
     CUSTOM,
     ;
 }
