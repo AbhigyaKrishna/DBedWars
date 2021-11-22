@@ -32,30 +32,51 @@ public class MessagingChannel {
     }
 
     public MessagingChannel(EnumChannel channel, Player... players) {
-        this(channel, Arrays.stream(players).map(new Function<Player, Audience>() {
-            @Override
-            public Audience apply(Player player) {
-                return MessagingServer.getInstance().adventure().player(player);
-            }
-        }).collect(Collectors.toSet()));
+        this(
+                channel,
+                Arrays.stream(players)
+                        .map(
+                                new Function<Player, Audience>() {
+                                    @Override
+                                    public Audience apply(Player player) {
+                                        return MessagingServer.getInstance()
+                                                .adventure()
+                                                .player(player);
+                                    }
+                                })
+                        .collect(Collectors.toSet()));
     }
 
     public MessagingChannel(EnumChannel channel, UUID... players) {
-        this(channel, Arrays.stream(players).map(new Function<UUID, Audience>() {
-            @Override
-            public Audience apply(UUID uuid) {
-                return MessagingServer.getInstance().adventure().player(uuid);
-            }
-        }).collect(Collectors.toSet()));
+        this(
+                channel,
+                Arrays.stream(players)
+                        .map(
+                                new Function<UUID, Audience>() {
+                                    @Override
+                                    public Audience apply(UUID uuid) {
+                                        return MessagingServer.getInstance()
+                                                .adventure()
+                                                .player(uuid);
+                                    }
+                                })
+                        .collect(Collectors.toSet()));
     }
 
     public MessagingChannel(EnumChannel channel, CommandSender... senders) {
-        this(channel, Arrays.stream(senders).map(new Function<CommandSender, Audience>() {
-            @Override
-            public Audience apply(CommandSender sender) {
-                return MessagingServer.getInstance().adventure().sender(sender);
-            }
-        }).collect(Collectors.toSet()));
+        this(
+                channel,
+                Arrays.stream(senders)
+                        .map(
+                                new Function<CommandSender, Audience>() {
+                                    @Override
+                                    public Audience apply(CommandSender sender) {
+                                        return MessagingServer.getInstance()
+                                                .adventure()
+                                                .sender(sender);
+                                    }
+                                })
+                        .collect(Collectors.toSet()));
     }
 
     public EnumChannel getChannel() {
@@ -98,62 +119,75 @@ public class MessagingChannel {
     }
 
     public void sendActionBar(Message message, Duration duration, long delayMillis) {
-        this.server.getPlugin().getThreadHandler().submitAsync(new CancellableTask() {
-            final long start = System.currentTimeMillis();
-            long lastSent = 0;
+        this.server
+                .getPlugin()
+                .getThreadHandler()
+                .submitAsync(
+                        new CancellableTask() {
+                            final long start = System.currentTimeMillis();
+                            long lastSent = 0;
 
-            @Override
-            public void compute() {
-                lastSent = System.currentTimeMillis();
-                MessagingChannel.this.sendActionBar(message);
+                            @Override
+                            public void compute() {
+                                lastSent = System.currentTimeMillis();
+                                MessagingChannel.this.sendActionBar(message);
 
-                if (System.currentTimeMillis() - start >= duration.toMillis()) {
-                    this.setCancelled(true);
-                }
-            }
+                                if (System.currentTimeMillis() - start >= duration.toMillis()) {
+                                    this.setCancelled(true);
+                                }
+                            }
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - lastSent >= delayMillis;
-            }
-        });
+                            @Override
+                            public boolean shouldExecute() {
+                                return !this.isCancelled()
+                                        && System.currentTimeMillis() - lastSent >= delayMillis;
+                            }
+                        });
     }
 
     public CancellableTask sendActionBar(Message message, long delayMillis) {
-        CancellableTask task = new CancellableTask() {
-            long lastSent = 0;
+        CancellableTask task =
+                new CancellableTask() {
+                    long lastSent = 0;
 
-            @Override
-            public void compute() {
-                lastSent = System.currentTimeMillis();
-                MessagingChannel.this.sendActionBar(message);
-            }
+                    @Override
+                    public void compute() {
+                        lastSent = System.currentTimeMillis();
+                        MessagingChannel.this.sendActionBar(message);
+                    }
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - lastSent >= delayMillis;
-            }
-        };
+                    @Override
+                    public boolean shouldExecute() {
+                        return !this.isCancelled()
+                                && System.currentTimeMillis() - lastSent >= delayMillis;
+                    }
+                };
         this.server.getPlugin().getThreadHandler().submitAsync(task);
         return task;
     }
 
     public void sendBossBar(BossBar bossBar, Duration duration) {
         this.showBossBar(bossBar);
-        this.server.getPlugin().getThreadHandler().submitAsync(new CancellableTask() {
-            final long start = System.currentTimeMillis();
+        this.server
+                .getPlugin()
+                .getThreadHandler()
+                .submitAsync(
+                        new CancellableTask() {
+                            final long start = System.currentTimeMillis();
 
-            @Override
-            public void compute() {
-                this.setCancelled(true);
-                MessagingChannel.this.hideBossBar(bossBar);
-            }
+                            @Override
+                            public void compute() {
+                                this.setCancelled(true);
+                                MessagingChannel.this.hideBossBar(bossBar);
+                            }
 
-            @Override
-            public boolean shouldExecute() {
-                return !this.isCancelled() && System.currentTimeMillis() - this.start >= duration.toMillis();
-            }
-        });
+                            @Override
+                            public boolean shouldExecute() {
+                                return !this.isCancelled()
+                                        && System.currentTimeMillis() - this.start
+                                                >= duration.toMillis();
+                            }
+                        });
     }
 
     public void showBossBar(BossBar bossBar) {

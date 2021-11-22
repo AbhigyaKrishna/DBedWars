@@ -19,9 +19,7 @@ public class MessagingServer {
         this.adventure = BukkitAudiences.builder(this.plugin).build();
     }
 
-    public void broadcast(Message message) {
-
-    }
+    public void broadcast(Message message) {}
 
     public void close() {
         if (this.adventure != null) {
@@ -32,7 +30,8 @@ public class MessagingServer {
 
     public BukkitAudiences adventure() {
         if (this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+            throw new IllegalStateException(
+                    "Tried to access Adventure when the plugin was disabled!");
         }
         return this.adventure;
     }

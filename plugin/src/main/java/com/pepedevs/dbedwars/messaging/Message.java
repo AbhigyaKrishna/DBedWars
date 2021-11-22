@@ -30,5 +30,4 @@ public class Message {
     public void setComponent(Component component) {
         this.component = component;
     }
-
 }

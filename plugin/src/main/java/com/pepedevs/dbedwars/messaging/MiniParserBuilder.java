@@ -14,10 +14,10 @@ public class MiniParserBuilder {
         this.builder = MiniMessage.builder();
     }
 
-    public static MiniParserBuilder fromConfig(ConfigurableMessaging.ConfigurableModernSettings settings) {
+    public static MiniParserBuilder fromConfig(
+            ConfigurableMessaging.ConfigurableModernSettings settings) {
         MiniParserBuilder builder = new MiniParserBuilder();
-        builder.clearDefaults()
-                .strict(settings.isStrict());
+        builder.clearDefaults().strict(settings.isStrict());
 
         if (settings.getTransformations().isClickEvent())
             builder.addTransformation(TransformationType.CLICK_EVENT);
@@ -54,12 +54,14 @@ public class MiniParserBuilder {
         return this;
     }
 
-    public MiniParserBuilder addTransformation(TransformationType<? extends Transformation> transformation) {
+    public MiniParserBuilder addTransformation(
+            TransformationType<? extends Transformation> transformation) {
         this.builder.transformation(transformation);
         return this;
     }
 
-    public MiniParserBuilder addTransformation(TransformationType<? extends Transformation>... transformations) {
+    public MiniParserBuilder addTransformation(
+            TransformationType<? extends Transformation>... transformations) {
         for (TransformationType<? extends Transformation> transformation : transformations) {
             this.addTransformation(transformation);
         }
