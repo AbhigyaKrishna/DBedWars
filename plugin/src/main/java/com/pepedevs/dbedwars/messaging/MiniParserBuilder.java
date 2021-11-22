@@ -3,6 +3,7 @@ package com.pepedevs.dbedwars.messaging;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
+import net.kyori.adventure.text.minimessage.transformation.Transformation;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
 
 public class MiniParserBuilder {
@@ -13,12 +14,39 @@ public class MiniParserBuilder {
         this.builder = MiniMessage.builder();
     }
 
-    public MiniParserBuilder(ConfigurableMessaging.ConfigurableModernSettings settings) {
-        this.clearDefaults()
-                .addTransformations(settings.getTransformations())
+    public static MiniParserBuilder fromConfig(ConfigurableMessaging.ConfigurableModernSettings settings) {
+        MiniParserBuilder builder = new MiniParserBuilder();
+        builder.clearDefaults()
                 .strict(settings.isStrict());
 
-        if (settings.isDiscordFlavour()) this.addDiscordFlavor();
+        if (settings.getTransformations().isClickEvent())
+            builder.addTransformation(TransformationType.CLICK_EVENT);
+        if (settings.getTransformations().isColor())
+            builder.addTransformation(TransformationType.COLOR);
+        if (settings.getTransformations().isDecoration())
+            builder.addTransformation(TransformationType.DECORATION);
+        if (settings.getTransformations().isFont())
+            builder.addTransformation(TransformationType.FONT);
+        if (settings.getTransformations().isGradient())
+            builder.addTransformation(TransformationType.GRADIENT);
+        if (settings.getTransformations().isHoverEvent())
+            builder.addTransformation(TransformationType.HOVER_EVENT);
+        if (settings.getTransformations().isInsertion())
+            builder.addTransformation(TransformationType.INSERTION);
+        if (settings.getTransformations().isKeybind())
+            builder.addTransformation(TransformationType.KEYBIND);
+        if (settings.getTransformations().isPre())
+            builder.addTransformation(TransformationType.PRE);
+        if (settings.getTransformations().isRainbow())
+            builder.addTransformation(TransformationType.RAINBOW);
+        if (settings.getTransformations().isReset())
+            builder.addTransformation(TransformationType.RESET);
+        if (settings.getTransformations().isTranslatable())
+            builder.addTransformation(TransformationType.TRANSLATABLE);
+
+        if (settings.isDiscordFlavour()) builder.addDiscordFlavor();
+
+        return builder;
     }
 
     public MiniParserBuilder clearDefaults() {
@@ -26,46 +54,31 @@ public class MiniParserBuilder {
         return this;
     }
 
-    public MiniParserBuilder addTransformations(
-            ConfigurableMessaging.ConfigurableModernSettings.ConfigurableTransformations
-                    transformations) {
+    public MiniParserBuilder addTransformation(TransformationType<? extends Transformation> transformation) {
+        this.builder.transformation(transformation);
+        return this;
+    }
 
-        if (transformations.isClickEvent())
-            builder = builder.transformation(TransformationType.CLICK_EVENT);
-        if (transformations.isColor()) builder = builder.transformation(TransformationType.COLOR);
-        if (transformations.isDecoration())
-            builder = builder.transformation(TransformationType.DECORATION);
-        if (transformations.isFont()) builder = builder.transformation(TransformationType.FONT);
-        if (transformations.isGradient())
-            builder = builder.transformation(TransformationType.GRADIENT);
-        if (transformations.isHoverEvent())
-            builder = builder.transformation(TransformationType.HOVER_EVENT);
-        if (transformations.isInsertion())
-            builder = builder.transformation(TransformationType.INSERTION);
-        if (transformations.isKeybind())
-            builder = builder.transformation(TransformationType.KEYBIND);
-        if (transformations.isPre()) builder = builder.transformation(TransformationType.PRE);
-        if (transformations.isRainbow())
-            builder = builder.transformation(TransformationType.RAINBOW);
-        if (transformations.isReset()) builder = builder.transformation(TransformationType.RESET);
-        if (transformations.isTranslatable())
-            builder = builder.transformation(TransformationType.TRANSLATABLE);
+    public MiniParserBuilder addTransformation(TransformationType<? extends Transformation>... transformations) {
+        for (TransformationType<? extends Transformation> transformation : transformations) {
+            this.addTransformation(transformation);
+        }
 
         return this;
     }
 
     public MiniParserBuilder strict(boolean strict) {
-        builder = builder.strict(strict);
+        builder.strict(strict);
         return this;
     }
 
     public MiniParserBuilder addDiscordFlavor() {
-        builder = builder.markdown();
-        builder = builder.markdownFlavor(DiscordFlavor.get());
+        builder.markdown();
+        builder.markdownFlavor(DiscordFlavor.get());
         return this;
     }
 
-    public MiniMessage.Builder build() {
-        return this.builder;
+    public MiniMessage build() {
+        return this.builder.build();
     }
 }

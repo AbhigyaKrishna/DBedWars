@@ -1,14 +1,13 @@
 package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import me.Abhigya.core.placeholder.PlaceholderUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
 
-public class MiniMessageParser implements MessageParser {
+public class MiniMessageParser {
 
     private MiniMessage instance;
     private final DBedwars plugin;
@@ -19,25 +18,21 @@ public class MiniMessageParser implements MessageParser {
         this.plugin = plugin;
     }
 
-    @Override
     public Component parse(String message) {
         return instance.parse(message);
     }
 
-    @Override
     public Component parseWithPAPI(String message, Player player) {
         String parsedMessage = PlaceholderUtil.getManager().apply(player, message);
         return this.parse(parsedMessage);
     }
 
-    @Override
     public Component parseWithPlaceholder(
             String message, Player player, String placeholder, String replacement) {
         String parsedMessage = this.replacer(message, placeholder, replacement);
         return this.parseWithPAPI(message, player);
     }
 
-    @Override
     public Component parseWithPlaceholder(String message, Player player, Template... placeholders) {
         String parsedMessage = PlaceholderUtil.getManager().apply(player, message);
         return instance.parse(parsedMessage, placeholders);
@@ -55,7 +50,6 @@ public class MiniMessageParser implements MessageParser {
         this.instance = instance;
     }
 
-    @Override
     public void setReplacementCount(int replacementCount) {
         this.replacementCount = replacementCount;
     }

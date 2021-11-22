@@ -1,36 +1,34 @@
 package com.pepedevs.dbedwars.messaging;
 
-import com.pepedevs.dbedwars.api.messaging.MessagingMember;
+import net.kyori.adventure.text.Component;
 
-public class Message implements com.pepedevs.dbedwars.api.messaging.Message {
+public class Message {
 
-    private MessagingChannel channel;
-    private MessagingMember sender;
+    private Component component;
 
-    private String raw;
-
-    public Message(MessagingChannel channel, MessagingMember sender) {
-        this.channel = channel;
-        this.sender = sender;
+    protected Message(Component component) {
+        this.component = component;
     }
 
-    public Message(MessagingChannel channel) {}
-
-    public Message(String raw, MessagingChannel channel, MessagingMember sender) {
-        this.raw = raw;
-        this.channel = channel;
-        this.sender = sender;
+    public static Message fromComponent(Component component) {
+        return new Message(component);
     }
 
-    public void send() {
-        sender.sendMessage(this);
+    public static Message fromText(String message) {
+        return new Message(Component.text(message));
     }
 
-    public MessagingChannel getChannel() {
-        return channel;
+    public static Message fromLegacyText(String message) {
+        // TODO: Format legacy text
+        return new Message(Component.text(message));
     }
 
-    public MessagingMember getSender() {
-        return sender;
+    public Component asComponent() {
+        return this.component;
     }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
 }
