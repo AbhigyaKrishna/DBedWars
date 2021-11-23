@@ -60,7 +60,6 @@ public class MessagingServer {
         }
 
         return sentMessage;
-
     }
 
     protected SentMessage sendToExcept(
@@ -79,7 +78,8 @@ public class MessagingServer {
         Set<MessagingMember> receivers = channel.getChannelMemebers();
         Arrays.asList(hiddenUsers).forEach(receivers::remove);
 
-        SentMessage sentMessage = new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
+        SentMessage sentMessage =
+                new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
         sender.getMessagingHistory().addSentMessage(sentMessage);
         channel.getMessagingHistory().addSentMessage(sentMessage);
 
