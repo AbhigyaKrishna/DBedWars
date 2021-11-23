@@ -2,6 +2,7 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.apache.commons.lang.Validate;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,6 +24,10 @@ public class MessagingServer {
 
     public MessagingServer(DBedwars plugin) {
         server = this;
+
+        if (plugin == null)
+            throw new IllegalArgumentException("plugin cannot be null");
+
         this.plugin = plugin;
     }
 
@@ -36,6 +41,19 @@ public class MessagingServer {
 
     protected SentMessage sendMessage(
             Message message, MessagingMember sender, MessagingChannel channel) {
+
+        Validate.notNull(message, "message cannot be null");
+        Validate.notNull(sender, "sender cannot be null");
+        Validate.notNull(channel, "channel cannot be null");
+
+        if (!registryCheck(channel)) throw new IllegalStateException("cannot send message in an unregistered channel");
+
+        Set<MessagingMember> receivers = channel.getChannelMemebers();
+
+        for (MessagingMember receiver : receivers) {
+            receiver.getAudienceMember().sendMessage(message.asComponent());
+        }
+
         return new SentMessage(message, channel, sender);
     }
 
@@ -44,13 +62,25 @@ public class MessagingServer {
             MessagingMember sender,
             MessagingChannel channel,
             MessagingMember... hiddenUsers) {
+
+        Validate.notNull(message, "message cannot be null");
+        Validate.notNull(sender, "sender cannot be null");
+        Validate.notNull(channel, "channel cannot be null");
+
+        if (!registryCheck(channel)) throw new IllegalStateException("cannot send message in an unregistered channel");
+
         Set<MessagingMember> receivers = channel.getChannelMemebers();
         Arrays.asList(hiddenUsers).forEach(receivers::remove);
+
+        for (MessagingMember receiver : receivers) {
+            receiver.getAudienceMember().sendMessage(message.asComponent());
+        }
 
         return new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
     }
 
     protected SentMessage sendToConsole(Message message) {
+        this.consoleMessagingMember.getAudienceMember().sendMessage(message.asComponent());
         return new SentMessage(message, consoleLogger, consoleMessagingMember);
     }
 
