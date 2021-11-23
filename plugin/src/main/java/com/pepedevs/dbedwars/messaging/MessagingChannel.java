@@ -9,10 +9,6 @@ public abstract class MessagingChannel {
     private Set<MessagingMember> channelMembers;
     private EnumChannel channelType;
 
-    public void addMember(MessagingMember member) {
-        this.channelMembers.add(member);
-    }
-
     public void addMembers(MessagingMember... members) {
         this.channelMembers.addAll(Arrays.asList(members));
     }
@@ -21,14 +17,8 @@ public abstract class MessagingChannel {
         this.channelMembers.add(MessagingMember.ofConsole());
     }
 
-    public void removeMember(MessagingMember member) {
-        this.channelMembers.removeIf(member::equals);
-    }
-
     public void removeMembers(MessagingMember... members) {
-        for (MessagingMember member : members) {
-            this.removeMember(member);
-        }
+        Arrays.asList(members).forEach(this.channelMembers::remove);
     }
 
     public boolean isMember(MessagingMember member) {
@@ -36,11 +26,11 @@ public abstract class MessagingChannel {
     }
 
     public void register() {
-        MessagingServer.connect().registerChannel(this);
+        MessagingServer.connect().registerChannels(this);
     }
 
     public void unregister() {
-        MessagingServer.connect().unRegisterChannel(this);
+        MessagingServer.connect().unRegisterChannels(this);
     }
 
     public boolean isRegistered() {
@@ -49,11 +39,6 @@ public abstract class MessagingChannel {
 
     public SentMessage sendMessage(MessagingMember sender, Message message) {
         return MessagingServer.connect().sendMessage(message, sender, this);
-    }
-
-    public SentMessage sendToExcept(
-            MessagingMember sender, Message message, MessagingMember hiddenUser) {
-        return MessagingServer.connect().sendToExcept(message, sender, this, hiddenUser);
     }
 
     public SentMessage sendToExcept(

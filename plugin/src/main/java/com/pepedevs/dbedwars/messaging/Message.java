@@ -34,11 +34,6 @@ public class Message implements Cloneable {
     }
 
     public SentMessage sendToExcept(
-            MessagingMember sender, MessagingChannel channel, MessagingMember hiddenUser) {
-        return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUser);
-    }
-
-    public SentMessage sendToExcept(
             MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
         return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
     }

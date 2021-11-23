@@ -2,6 +2,7 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.util.MonkeyBars;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,17 +44,10 @@ public class MessagingServer {
             Message message,
             MessagingMember sender,
             MessagingChannel channel,
-            MessagingMember hiddenUser) {
-        return new SentMessage(message, channel, sender, System.currentTimeMillis(), hiddenUser);
-    }
-
-    protected SentMessage sendToExcept(
-            Message message,
-            MessagingMember sender,
-            MessagingChannel channel,
             MessagingMember... hiddenUsers) {
         Set<MessagingMember> receivers = channel.getChannelMemebers();
-        receivers.removeAll(Arrays.asList(hiddenUsers));
+        Arrays.asList(hiddenUsers).forEach(receivers::remove);
+
         return new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
     }
 
@@ -61,16 +55,8 @@ public class MessagingServer {
         return new SentMessage(message, consoleLogger, consoleMessagingMember);
     }
 
-    protected void registerChannel(MessagingChannel channel) {
-        this.registeredChannels.add(channel);
-    }
-
     protected void registerChannels(MessagingChannel... channels) {
         this.registeredChannels.addAll(Arrays.asList(channels));
-    }
-
-    protected void unRegisterChannel(MessagingChannel channel) {
-        this.registeredChannels.remove(channel);
     }
 
     protected void unRegisterChannels(MessagingChannel... channels) {
