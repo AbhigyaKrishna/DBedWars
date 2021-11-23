@@ -31,21 +31,19 @@ public class MessagingMember {
         this.sender = console;
     }
 
-    public SentMessage sendMessage(Message message, MessagingChannel channel){
+    public SentMessage sendMessage(Message message, MessagingChannel channel) {
         return MessagingServer.connect().sendMessage(message, this, channel);
     }
 
     @Nullable
     public Player getAsPlayer() {
-        if (isPlayer())
-            return (Player) getSender();
+        if (isPlayer()) return (Player) getSender();
         return null;
     }
 
     @Nullable
     public ConsoleCommandSender getAsConsole() {
-        if (isConsole())
-            return (ConsoleCommandSender) getSender();
+        if (isConsole()) return (ConsoleCommandSender) getSender();
         return null;
     }
 

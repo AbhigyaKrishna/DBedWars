@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SentMessage extends Message{
+public class SentMessage extends Message {
 
     private final Message rawMessage;
     private final MessagingChannel messagingChannel;
@@ -17,15 +17,26 @@ public class SentMessage extends Message{
         this(message, channel, sender, System.currentTimeMillis(), channel.getChannelMemebers());
     }
 
-    protected SentMessage(Message message, MessagingChannel channel, MessagingMember sender, Long timestamp) {
+    protected SentMessage(
+            Message message, MessagingChannel channel, MessagingMember sender, Long timestamp) {
         this(message, channel, sender, timestamp, channel.getChannelMemebers());
     }
 
-    protected SentMessage(Message message, MessagingChannel channel,  MessagingMember sender, Long timestamp, MessagingMember hiddenUser) {
+    protected SentMessage(
+            Message message,
+            MessagingChannel channel,
+            MessagingMember sender,
+            Long timestamp,
+            MessagingMember hiddenUser) {
         this(message, channel, sender, timestamp, channel.getChannelMemebers());
     }
 
-    protected SentMessage(Message message, MessagingChannel channel, MessagingMember sender, Long timestamp, Set<MessagingMember> receivers) {
+    protected SentMessage(
+            Message message,
+            MessagingChannel channel,
+            MessagingMember sender,
+            Long timestamp,
+            Set<MessagingMember> receivers) {
         super();
         this.rawMessage = message;
         this.messagingChannel = channel;
@@ -70,7 +81,10 @@ public class SentMessage extends Message{
     }
 
     public SentMessage sendAgain() {
-        return this.rawMessage.clone().sendToExcept(sender, messagingChannel, hiddenUsers.toArray(new MessagingMember[0]));
+        return this.rawMessage
+                .clone()
+                .sendToExcept(
+                        sender, messagingChannel, hiddenUsers.toArray(new MessagingMember[0]));
     }
 
     public SentMessage sendAgainIn(MessagingChannel channel) {

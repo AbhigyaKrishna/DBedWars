@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
@@ -11,7 +10,6 @@ public class ClassicParser implements MessageParser {
     @Override
     public Component parse(String message) {
         return Component;
-
     }
 
     @Override
@@ -20,7 +18,8 @@ public class ClassicParser implements MessageParser {
     }
 
     @Override
-    public Component parseWithPlaceholder(String message, Player player, String placeholder, String replacement) {
+    public Component parseWithPlaceholder(
+            String message, Player player, String placeholder, String replacement) {
         return null;
     }
 
@@ -30,7 +29,5 @@ public class ClassicParser implements MessageParser {
     }
 
     @Override
-    public void setReplacementCount(int replacementCount) {
-
-    }
+    public void setReplacementCount(int replacementCount) {}
 }

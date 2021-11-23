@@ -9,11 +9,11 @@ public abstract class MessagingChannel {
     private Set<MessagingMember> channelMembers;
     private EnumChannel channelType;
 
-    public void addMember(MessagingMember member){
+    public void addMember(MessagingMember member) {
         this.channelMembers.add(member);
     }
 
-    public void addMembers(MessagingMember... members){
+    public void addMembers(MessagingMember... members) {
         this.channelMembers.addAll(Arrays.asList(members));
     }
 
@@ -21,11 +21,11 @@ public abstract class MessagingChannel {
         this.channelMembers.add(MessagingMember.ofConsole());
     }
 
-    public void removeMember(MessagingMember member){
+    public void removeMember(MessagingMember member) {
         this.channelMembers.removeIf(member::equals);
     }
 
-    public void removeMembers(MessagingMember... members){
+    public void removeMembers(MessagingMember... members) {
         for (MessagingMember member : members) {
             this.removeMember(member);
         }
@@ -35,7 +35,7 @@ public abstract class MessagingChannel {
         return this.channelMembers.contains(member);
     }
 
-    public void register(){
+    public void register() {
         MessagingServer.connect().registerChannel(this);
     }
 
@@ -43,19 +43,21 @@ public abstract class MessagingChannel {
         MessagingServer.connect().unRegisterChannel(this);
     }
 
-    public boolean isRegistered(){
+    public boolean isRegistered() {
         return MessagingServer.connect().registryCheck(this);
     }
 
-    public SentMessage sendMessage(MessagingMember sender, Message message){
+    public SentMessage sendMessage(MessagingMember sender, Message message) {
         return MessagingServer.connect().sendMessage(message, sender, this);
     }
 
-    public SentMessage sendToExcept(MessagingMember sender, Message message, MessagingMember hiddenUser) {
+    public SentMessage sendToExcept(
+            MessagingMember sender, Message message, MessagingMember hiddenUser) {
         return MessagingServer.connect().sendToExcept(message, sender, this, hiddenUser);
     }
 
-    public SentMessage sendToExcept(MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
+    public SentMessage sendToExcept(
+            MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
         return MessagingServer.connect().sendToExcept(message, sender, this, hiddenUsers);
     }
 

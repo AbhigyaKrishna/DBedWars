@@ -6,9 +6,7 @@ public class Message implements Cloneable {
 
     private Component component;
 
-    protected Message() {
-
-    }
+    protected Message() {}
 
     protected Message(Component component) {
         this.component = component;
@@ -31,15 +29,17 @@ public class Message implements Cloneable {
         return new Message(Component.text(message));
     }
 
-    public SentMessage send(MessagingMember sender, MessagingChannel channel){
+    public SentMessage send(MessagingMember sender, MessagingChannel channel) {
         return MessagingServer.connect().sendMessage(this, sender, channel);
     }
 
-    public SentMessage sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember hiddenUser) {
+    public SentMessage sendToExcept(
+            MessagingMember sender, MessagingChannel channel, MessagingMember hiddenUser) {
         return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUser);
     }
 
-    public SentMessage sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
+    public SentMessage sendToExcept(
+            MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
         return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
     }
 
@@ -60,7 +60,7 @@ public class Message implements Cloneable {
     }
 
     @Override
-    public Message clone(){
+    public Message clone() {
         try {
             return (Message) super.clone();
         } catch (CloneNotSupportedException e) {

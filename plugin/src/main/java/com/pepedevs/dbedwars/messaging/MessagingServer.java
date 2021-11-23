@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -35,15 +34,24 @@ public class MessagingServer {
         this.consoleMessagingMember = new MessagingMember(adventure.sender(console), console);
     }
 
-    protected SentMessage sendMessage(Message message, MessagingMember sender, MessagingChannel channel){
+    protected SentMessage sendMessage(
+            Message message, MessagingMember sender, MessagingChannel channel) {
         return new SentMessage(message, channel, sender);
     }
 
-    protected SentMessage sendToExcept(Message message, MessagingMember sender, MessagingChannel channel, MessagingMember hiddenUser) {
+    protected SentMessage sendToExcept(
+            Message message,
+            MessagingMember sender,
+            MessagingChannel channel,
+            MessagingMember hiddenUser) {
         return new SentMessage(message, channel, sender, System.currentTimeMillis(), hiddenUser);
     }
 
-    protected SentMessage sendToExcept(Message message, MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
+    protected SentMessage sendToExcept(
+            Message message,
+            MessagingMember sender,
+            MessagingChannel channel,
+            MessagingMember... hiddenUsers) {
         Set<MessagingMember> receivers = channel.getChannelMemebers();
         receivers.removeAll(Arrays.asList(hiddenUsers));
         return new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
@@ -53,11 +61,11 @@ public class MessagingServer {
         return new SentMessage(message, consoleLogger, consoleMessagingMember);
     }
 
-    protected void registerChannel(MessagingChannel channel){
+    protected void registerChannel(MessagingChannel channel) {
         this.registeredChannels.add(channel);
     }
 
-    protected void registerChannels(MessagingChannel... channels){
+    protected void registerChannels(MessagingChannel... channels) {
         this.registeredChannels.addAll(Arrays.asList(channels));
     }
 
@@ -73,7 +81,7 @@ public class MessagingServer {
         return registeredChannels;
     }
 
-    protected static MessagingServer connect(){
+    protected static MessagingServer connect() {
         return server;
     }
 
@@ -92,8 +100,7 @@ public class MessagingServer {
         return this.consoleMessagingMember;
     }
 
-    protected boolean registryCheck(MessagingChannel channel){
+    protected boolean registryCheck(MessagingChannel channel) {
         return this.getRegisteredChannels().contains(channel);
     }
-
 }
