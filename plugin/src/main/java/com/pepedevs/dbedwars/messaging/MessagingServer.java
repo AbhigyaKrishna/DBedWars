@@ -25,8 +25,7 @@ public class MessagingServer {
     public MessagingServer(DBedwars plugin) {
         server = this;
 
-        if (plugin == null)
-            throw new IllegalArgumentException("plugin cannot be null");
+        if (plugin == null) throw new IllegalArgumentException("plugin cannot be null");
 
         this.plugin = plugin;
     }
@@ -46,7 +45,8 @@ public class MessagingServer {
         Validate.notNull(sender, "sender cannot be null");
         Validate.notNull(channel, "channel cannot be null");
 
-        if (!registryCheck(channel)) throw new IllegalStateException("cannot send message in an unregistered channel");
+        if (!registryCheck(channel))
+            throw new IllegalStateException("cannot send message in an unregistered channel");
 
         Set<MessagingMember> receivers = channel.getChannelMemebers();
 
@@ -73,7 +73,8 @@ public class MessagingServer {
         Validate.notNull(sender, "sender cannot be null");
         Validate.notNull(channel, "channel cannot be null");
 
-        if (!registryCheck(channel)) throw new IllegalStateException("cannot send message in an unregistered channel");
+        if (!registryCheck(channel))
+            throw new IllegalStateException("cannot send message in an unregistered channel");
 
         Set<MessagingMember> receivers = channel.getChannelMemebers();
         Arrays.asList(hiddenUsers).forEach(receivers::remove);
