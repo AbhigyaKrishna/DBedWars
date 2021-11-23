@@ -50,11 +50,17 @@ public class MessagingServer {
 
         Set<MessagingMember> receivers = channel.getChannelMemebers();
 
+        SentMessage sentMessage = new SentMessage(message, channel, sender);
+        sender.getMessagingHistory().addSentMessage(sentMessage);
+        channel.getMessagingHistory().addSentMessage(sentMessage);
+
         for (MessagingMember receiver : receivers) {
             receiver.getAudienceMember().sendMessage(message.asComponent());
+            receiver.getMessagingHistory().addSentMessage(sentMessage);
         }
 
-        return new SentMessage(message, channel, sender);
+        return sentMessage;
+
     }
 
     protected SentMessage sendToExcept(
@@ -72,16 +78,29 @@ public class MessagingServer {
         Set<MessagingMember> receivers = channel.getChannelMemebers();
         Arrays.asList(hiddenUsers).forEach(receivers::remove);
 
+        SentMessage sentMessage = new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
+        sender.getMessagingHistory().addSentMessage(sentMessage);
+        channel.getMessagingHistory().addSentMessage(sentMessage);
+
         for (MessagingMember receiver : receivers) {
             receiver.getAudienceMember().sendMessage(message.asComponent());
+            receiver.getMessagingHistory().addSentMessage(sentMessage);
         }
 
-        return new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
+        return sentMessage;
     }
 
     protected SentMessage sendToConsole(Message message) {
+
+        Validate.notNull(message, "message cannot be null");
+
+        SentMessage sentMessage = new SentMessage(message, consoleLogger, consoleMessagingMember);
+
         this.consoleMessagingMember.getAudienceMember().sendMessage(message.asComponent());
-        return new SentMessage(message, consoleLogger, consoleMessagingMember);
+        this.consoleMessagingMember.getMessagingHistory().addSentMessage(sentMessage);
+        this.consoleLogger.getMessagingHistory().addSentMessage(sentMessage);
+
+        return sentMessage;
     }
 
     protected void registerChannels(MessagingChannel... channels) {

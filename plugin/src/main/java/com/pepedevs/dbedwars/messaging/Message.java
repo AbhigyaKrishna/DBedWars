@@ -6,10 +6,12 @@ public class Message implements Cloneable {
 
     private Component component;
 
-    protected Message() {}
-
     protected Message(Component component) {
         this.component = component;
+    }
+
+    protected Message() {
+
     }
 
     public static Message fromText(String message) {
@@ -21,6 +23,7 @@ public class Message implements Cloneable {
     }
 
     public static Message fromString() {
+        //TODO ADD FROM STRING
         return new Message();
     }
 

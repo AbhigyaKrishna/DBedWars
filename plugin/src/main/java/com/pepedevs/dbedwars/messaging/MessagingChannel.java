@@ -4,10 +4,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class MessagingChannel {
+public class MessagingChannel {
 
     private Set<MessagingMember> channelMembers;
     private EnumChannel channelType;
+
+    private MessagingHistory messagingHistory;
+
+    protected MessagingChannel() {
+        this.messagingHistory = new MessagingHistory();
+    }
 
     public void addMembers(MessagingMember... members) {
         this.channelMembers.addAll(Arrays.asList(members));
@@ -56,5 +62,9 @@ public abstract class MessagingChannel {
 
     public void setChannelType(EnumChannel channelType) {
         this.channelType = channelType;
+    }
+
+    public MessagingHistory getMessagingHistory() {
+        return messagingHistory;
     }
 }

@@ -11,7 +11,7 @@ public class MessagingMember {
     private final CommandSender sender;
     private final Audience audienceMember;
 
-    protected MessagingHistory messagingHistory;
+    private MessagingHistory messagingHistory;
 
     public static MessagingMember ofPlayer(Player player) {
         return MessagingServer.connect().getMessagingMember(player);
@@ -24,11 +24,15 @@ public class MessagingMember {
     protected MessagingMember(Audience audience, Player player) {
         this.audienceMember = audience;
         this.sender = player;
+
+        this.messagingHistory = new MessagingHistory();
     }
 
     protected MessagingMember(Audience audience, ConsoleCommandSender console) {
         this.audienceMember = audience;
         this.sender = console;
+
+        this.messagingHistory = new MessagingHistory();
     }
 
     public SentMessage sendMessage(Message message, MessagingChannel channel) {
