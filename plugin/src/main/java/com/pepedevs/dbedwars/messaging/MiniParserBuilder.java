@@ -74,7 +74,7 @@ public class MiniParserBuilder {
         return this;
     }
 
-    public MiniParserBuilder addD   iscordFlavor() {
+    public MiniParserBuilder addDiscordFlavor() {
         builder.markdown();
         builder.markdownFlavor(DiscordFlavor.get());
         return this;
