@@ -86,7 +86,7 @@ public class MessagingHistory {
 
                 return returnMap;
             }
-        })
+        });
     }
 
 }

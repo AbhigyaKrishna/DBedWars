@@ -11,7 +11,7 @@ public class Message implements Cloneable {
     }
 
     protected Message(Component component) {
-
+        this.component = component;
     }
 
     public static Message fromText(String message) {
@@ -31,8 +31,24 @@ public class Message implements Cloneable {
         return new Message(Component.text(message));
     }
 
-    public SentMessage send(MessagingMember member, MessagingChannel channel){
-        return MessagingServer.connect().sendMessage(this, member, channel);
+    public SentMessage send(MessagingMember sender, MessagingChannel channel){
+        return MessagingServer.connect().sendMessage(this, sender, channel);
+    }
+
+    public SentMessage sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember hiddenUser) {
+        return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUser);
+    }
+
+    public SentMessage sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
+        return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
+    }
+
+    public SentMessage sendAsConsole(MessagingChannel channel) {
+        return MessagingServer.connect().sendMessage(this, MessagingMember.ofConsole(), channel);
+    }
+
+    public SentMessage logToConsole() {
+        return MessagingServer.connect().sendToConsole(this);
     }
 
     public Component asComponent() {
@@ -44,7 +60,12 @@ public class Message implements Cloneable {
     }
 
     @Override
-    public Message clone() throws CloneNotSupportedException {
-        return (Message) super.clone();
+    public Message clone(){
+        try {
+            return (Message) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

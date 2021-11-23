@@ -6,15 +6,29 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MessagingMember {
+public class MessagingMember {
 
-    private CommandSender sender;
-    private Audience audienceMember;
+    private final CommandSender sender;
+    private final Audience audienceMember;
 
     protected MessagingHistory messagingHistory;
 
-    protected MessagingMember() {
+    public static MessagingMember ofPlayer(Player player) {
+        return MessagingServer.connect().getMessagingMember(player);
+    }
 
+    public static MessagingMember ofConsole() {
+        return MessagingServer.connect().getConsole();
+    }
+
+    protected MessagingMember(Audience audience, Player player) {
+        this.audienceMember = audience;
+        this.sender = player;
+    }
+
+    protected MessagingMember(Audience audience, ConsoleCommandSender console) {
+        this.audienceMember = audience;
+        this.sender = console;
     }
 
     public SentMessage sendMessage(Message message, MessagingChannel channel){
