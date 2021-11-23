@@ -2,7 +2,6 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.util.MonkeyBars;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
