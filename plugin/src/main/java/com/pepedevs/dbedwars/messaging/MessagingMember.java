@@ -4,14 +4,13 @@ import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 public class MessagingMember {
 
     private final CommandSender sender;
     private final Audience audienceMember;
 
-    private MessagingHistory messagingHistory;
+    private final MessagingHistory messagingHistory;
 
     public static MessagingMember ofPlayer(Player player) {
         return MessagingServer.connect().getMessagingMember(player);
@@ -22,16 +21,16 @@ public class MessagingMember {
     }
 
     protected MessagingMember(Audience audience, Player player) {
-        this.audienceMember = audience;
-        this.sender = player;
-
-        this.messagingHistory = new MessagingHistory();
+        this(audience, (CommandSender) player);
     }
 
     protected MessagingMember(Audience audience, ConsoleCommandSender console) {
-        this.audienceMember = audience;
-        this.sender = console;
+        this(audience, (CommandSender) console);
+    }
 
+    private MessagingMember(Audience audience, CommandSender sender) {
+        this.audienceMember = audience;
+        this.sender = sender;
         this.messagingHistory = new MessagingHistory();
     }
 
@@ -39,13 +38,11 @@ public class MessagingMember {
         return MessagingServer.connect().sendMessage(message, this, channel);
     }
 
-    @Nullable
     public Player getAsPlayer() {
         if (isPlayer()) return (Player) getSender();
         return null;
     }
 
-    @Nullable
     public ConsoleCommandSender getAsConsole() {
         if (isConsole()) return (ConsoleCommandSender) getSender();
         return null;

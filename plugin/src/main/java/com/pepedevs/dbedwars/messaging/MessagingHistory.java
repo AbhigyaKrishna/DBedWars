@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 public class MessagingHistory {
 
-    private Cache<SentMessage, Long> cache;
+    private final Cache<SentMessage, Long> cache;
 
     protected MessagingHistory(long cacheTime, int maxMessages) {
         this.cache =

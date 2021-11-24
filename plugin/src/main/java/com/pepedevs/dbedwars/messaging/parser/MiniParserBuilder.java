@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.messaging;
+package com.pepedevs.dbedwars.messaging.parser;
 
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
 import net.kyori.adventure.text.minimessage.MiniMessage;

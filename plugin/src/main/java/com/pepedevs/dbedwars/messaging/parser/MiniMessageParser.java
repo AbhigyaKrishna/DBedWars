@@ -1,12 +1,13 @@
-package com.pepedevs.dbedwars.messaging;
+package com.pepedevs.dbedwars.messaging.parser;
 
+import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import me.Abhigya.core.placeholder.PlaceholderUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
 
-public class MiniMessageParser {
+public class MiniMessageParser implements MessageParser {
 
     private MiniMessage instance;
     private int replacementCount;
@@ -47,7 +48,7 @@ public class MiniMessageParser {
         this.instance = instance;
     }
 
-    public void setReplacementCount(int replacementCount) {
+    public void setPlaceholderReplacementCount(int replacementCount) {
         this.replacementCount = replacementCount;
     }
 }

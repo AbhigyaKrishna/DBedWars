@@ -6,12 +6,13 @@ import java.util.Set;
 
 public class MessagingChannel {
 
-    private Set<MessagingMember> channelMembers;
+    private final Set<MessagingMember> channelMembers;
     private EnumChannel channelType;
 
-    private MessagingHistory messagingHistory;
+    private final MessagingHistory messagingHistory;
 
     protected MessagingChannel() {
+        this.channelMembers = new HashSet<>();
         this.messagingHistory = new MessagingHistory();
     }
 
