@@ -45,7 +45,9 @@ public class BedBugSnowball extends PluginActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+            Player player,
+            ActionItem.EnumAction enumAction,
+            PlayerInteractEvent playerInteractEvent) {
         if (!EventUtils.isRightClick(playerInteractEvent.getAction())) return;
         Arena arena = plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null

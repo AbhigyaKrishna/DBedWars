@@ -42,7 +42,6 @@ public class MiniMessageParser implements MessageParser {
         }
 
         return returnMessage;
-
     }
 
     public void setInstance(MiniMessage instance) {
