@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util.item;
 
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import me.Abhigya.core.item.ActionItemBase;
+import com.pepedevs.corelib.item.ActionItemBase;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

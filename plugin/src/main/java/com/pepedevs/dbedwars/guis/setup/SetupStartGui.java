@@ -1,15 +1,15 @@
 package com.pepedevs.dbedwars.guis.setup;
 
-import me.Abhigya.core.menu.inventory.Item;
-import me.Abhigya.core.menu.inventory.action.ItemClickAction;
-import me.Abhigya.core.menu.inventory.custom.book.BookItemMenu;
-import me.Abhigya.core.menu.inventory.item.action.ActionItem;
-import me.Abhigya.core.menu.inventory.item.action.ItemAction;
-import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
-import me.Abhigya.core.menu.inventory.item.voidaction.VoidActionItem;
-import me.Abhigya.core.menu.inventory.size.ItemMenuSize;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.menu.inventory.Item;
+import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.menu.inventory.custom.book.BookItemMenu;
+import com.pepedevs.corelib.menu.inventory.item.action.ActionItem;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.menu.inventory.item.voidaction.VoidActionItem;
+import com.pepedevs.corelib.menu.inventory.size.ItemMenuSize;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;

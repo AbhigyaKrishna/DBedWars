@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.math.collision.BoundingBox;
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.tasks.workload.FixedRateWorkload;
-import me.Abhigya.core.util.world.GameRuleDisableDaylightCycle;
-import me.Abhigya.core.util.world.GameRuleType;
-import me.Abhigya.core.util.world.WorldUtils;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.task.workload.FixedRateWorkload;
+import com.pepedevs.corelib.utils.world.GameRuleDisableDaylightCycle;
+import com.pepedevs.corelib.utils.world.GameRuleType;
+import com.pepedevs.corelib.utils.world.WorldUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;

@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.configuration.configurablegui.action;
 
-import me.Abhigya.core.menu.inventory.ItemMenu;
-import me.Abhigya.core.menu.inventory.action.ItemClickAction;
-import me.Abhigya.core.menu.inventory.item.action.ItemAction;
-import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
-import me.Abhigya.core.util.StringUtils;
+import com.pepedevs.corelib.menu.inventory.ItemMenu;
+import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;

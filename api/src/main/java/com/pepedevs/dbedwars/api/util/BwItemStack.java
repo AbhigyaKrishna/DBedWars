@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

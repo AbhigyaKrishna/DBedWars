@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.utils;
 
-import me.Abhigya.core.handler.PluginHandler;
-import me.Abhigya.core.util.packet.packetevents.PacketEvents;
-import me.Abhigya.core.util.packet.packetevents.packetwrappers.play.out.playerinfo.WrappedPacketOutPlayerInfo;
-import me.Abhigya.core.util.packet.packetevents.utils.gameprofile.WrappedGameProfile;
+import com.pepedevs.corelib.utils.PluginHandler;
+import com.pepedevs.corelib.utils.packet.packetevents.PacketEvents;
+import com.pepedevs.corelib.utils.packet.packetevents.packetwrappers.play.out.playerinfo.WrappedPacketOutPlayerInfo;
+import com.pepedevs.corelib.utils.packet.packetevents.utils.gameprofile.WrappedGameProfile;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;

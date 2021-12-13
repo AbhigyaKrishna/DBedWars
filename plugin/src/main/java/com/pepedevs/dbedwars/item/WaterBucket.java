@@ -3,8 +3,8 @@ package com.pepedevs.dbedwars.item;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.utils.Utils;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 import java.util.ArrayList;

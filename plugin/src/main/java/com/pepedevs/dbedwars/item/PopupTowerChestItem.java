@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.item;
 
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
-import me.Abhigya.core.util.xseries.XSound;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.corelib.utils.xseries.XSound;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.SoundVP;

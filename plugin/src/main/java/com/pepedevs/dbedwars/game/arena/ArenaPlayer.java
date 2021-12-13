@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.game.arena;
 
 import com.pepedevs.dbedwars.api.game.view.ShopView;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.entity.UUIDPlayer;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerFinalKillEvent;
 import com.pepedevs.dbedwars.api.events.PlayerKillEvent;

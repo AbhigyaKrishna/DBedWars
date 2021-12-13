@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.database;
 
 import com.google.gson.Gson;
-import me.Abhigya.core.database.Database;
-import me.Abhigya.core.database.sql.SQLDatabase;
-import me.Abhigya.core.util.json.Json;
+import com.pepedevs.corelib.database.Database;
+import com.pepedevs.corelib.database.sql.SQLDatabase;
+import com.pepedevs.corelib.utils.json.Json;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.cache.PlayerStats;

@@ -2,10 +2,10 @@ package com.pepedevs.dbedwars.database;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import me.Abhigya.core.database.Database;
-import me.Abhigya.core.database.mongo.MongoDocument;
-import me.Abhigya.core.util.json.Json;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
+import com.pepedevs.corelib.database.Database;
+import com.pepedevs.corelib.database.mongo.MongoDocument;
+import com.pepedevs.corelib.utils.json.Json;
+import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.utils.JSONBuilder;
@@ -17,11 +17,11 @@ import java.util.Set;
 
 public class MongoDB extends DatabaseBridge {
 
-    private final me.Abhigya.core.database.mongo.MongoDB db;
+    private final com.pepedevs.corelib.database.mongo.MongoDB db;
 
     public MongoDB(DBedwars plugin, String host, int port, String databaseName) {
         super(plugin);
-        this.db = new me.Abhigya.core.database.mongo.MongoDB(host, port, databaseName);
+        this.db = new com.pepedevs.corelib.database.mongo.MongoDB(host, port, databaseName);
     }
 
     @Override

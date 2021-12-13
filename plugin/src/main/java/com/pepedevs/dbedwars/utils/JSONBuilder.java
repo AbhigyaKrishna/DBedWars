@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import me.Abhigya.core.util.json.Json;
+import com.pepedevs.corelib.utils.json.Json;
 import org.jetbrains.annotations.NotNull;
 
 public class JSONBuilder implements Cloneable {

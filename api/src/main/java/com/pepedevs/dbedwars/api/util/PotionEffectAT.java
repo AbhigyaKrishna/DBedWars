@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util;
 
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
-import me.Abhigya.core.util.server.Version;
-import me.Abhigya.core.util.xseries.XPotion;
+import com.pepedevs.corelib.utils.version.Version;
+import com.pepedevs.corelib.utils.xseries.XPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;

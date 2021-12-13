@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
-import me.Abhigya.core.util.math.LocationUtils;
-import me.Abhigya.core.util.tasks.Workload;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.utils.math.LocationUtils;
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import org.bukkit.Location;

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.tasks.Workload;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.bukkit.ChatColor;

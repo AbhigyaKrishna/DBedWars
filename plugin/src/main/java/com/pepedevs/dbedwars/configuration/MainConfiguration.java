@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration;
 
-import me.Abhigya.core.util.loadable.Loadable;
-import me.Abhigya.core.util.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.exceptions.IllegalConfigException;
 import org.bukkit.configuration.ConfigurationSection;

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util;
 
-import me.Abhigya.core.util.xseries.XEnchantment;
+import com.pepedevs.corelib.utils.xseries.XEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 

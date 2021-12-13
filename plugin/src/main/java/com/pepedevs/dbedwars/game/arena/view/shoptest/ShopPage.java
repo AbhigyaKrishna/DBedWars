@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.game.arena.view.shoptest;
 import com.pepedevs.dbedwars.api.exceptions.OverrideException;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import me.Abhigya.core.util.StringUtils;
+import com.pepedevs.corelib.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.task;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
-import me.Abhigya.core.util.hologram.Hologram;
+import com.pepedevs.corelib.utils.hologram.Hologram;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.task;
 
-import me.Abhigya.core.util.tasks.Workload;
+import com.pepedevs.corelib.task.Workload;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

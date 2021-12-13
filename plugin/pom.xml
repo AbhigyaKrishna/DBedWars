@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.pepedevs</groupId>
-        <artifactId>dbedwars</artifactId>
-        <version>1.0</version>
-    </parent>
+        <parent>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>dbedwars</artifactId>
+            <version>1.0</version>
+        </parent>
 
     <artifactId>plugin</artifactId>
     <packaging>jar</packaging>
@@ -137,7 +137,7 @@
         <!-- PepeDevs -->
         <repository>
             <id>pepedevs</id>
-            <url>http://13.233.67.205:8080/</url>
+            <url>http://51.79.243.92:8081/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -167,11 +167,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- CoreAPI -->
+        <!-- CoreLib -->
         <dependency>
-            <groupId>me.Abhigya</groupId>
-            <artifactId>CoreAPI</artifactId>
-            <version>1.2.2</version>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>CoreLib</artifactId>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
 

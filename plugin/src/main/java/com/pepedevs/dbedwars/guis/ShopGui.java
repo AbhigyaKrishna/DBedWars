@@ -4,9 +4,9 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopPage;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;
-import me.Abhigya.core.menu.inventory.ItemMenu;
-import me.Abhigya.core.menu.inventory.action.ItemClickAction;
-import me.Abhigya.core.menu.inventory.size.ItemMenuSize;
+import com.pepedevs.corelib.menu.inventory.ItemMenu;
+import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.menu.inventory.size.ItemMenuSize;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

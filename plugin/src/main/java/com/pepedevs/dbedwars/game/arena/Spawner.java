@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.game.arena;
 
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.hologram.Hologram;
-import me.Abhigya.core.util.math.collision.BoundingBox;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.hologram.Hologram;
+import com.pepedevs.corelib.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.SpawnerDropItemEvent;
 import com.pepedevs.dbedwars.api.events.SpawnerUpgradeEvent;

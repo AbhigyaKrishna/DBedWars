@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.guis.anvil;
 
-import me.Abhigya.core.menu.anvil.AnvilItem;
-import me.Abhigya.core.menu.anvil.AnvilMenu;
-import me.Abhigya.core.menu.anvil.action.AnvilItemClickAction;
-import me.Abhigya.core.menu.inventory.action.ItemClickAction;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.menu.anvil.AnvilItem;
+import com.pepedevs.corelib.menu.anvil.AnvilMenu;
+import com.pepedevs.corelib.menu.anvil.action.AnvilItemClickAction;
+import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.util.gui.IAnvilMenu;

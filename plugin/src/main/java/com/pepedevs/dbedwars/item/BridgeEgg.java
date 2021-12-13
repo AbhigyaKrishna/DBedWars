@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.item;
 
-import me.Abhigya.core.util.EventUtils;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.EventUtils;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;

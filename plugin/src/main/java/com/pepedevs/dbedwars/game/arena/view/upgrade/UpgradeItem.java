@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.view.upgrade;
 
-import me.Abhigya.core.util.packet.packetevents.utils.list.ConcurrentList;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.packet.packetevents.utils.list.ConcurrentList;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

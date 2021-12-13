@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api;
 
-import me.Abhigya.core.util.hologram.HologramFactory;
-import me.Abhigya.core.util.server.Version;
+import com.pepedevs.corelib.utils.hologram.HologramFactory;
+import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.handler.*;
 
 public abstract class DBedWarsAPI {

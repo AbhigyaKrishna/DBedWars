@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import me.Abhigya.core.database.DatabaseType;
-import me.Abhigya.core.util.loadable.Loadable;
-import me.Abhigya.core.util.loadable.LoadableEntry;
+import com.pepedevs.corelib.database.DatabaseType;
+import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 

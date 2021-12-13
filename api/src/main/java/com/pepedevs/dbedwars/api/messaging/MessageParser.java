@@ -14,6 +14,4 @@ public interface MessageParser {
             String message, Player player, String placeholder, String replacement);
 
     Component parseWithPlaceholder(String message, Player player, Template... placeholders);
-
-    void setPlaceholderReplacementCount(int replacementCount);
 }

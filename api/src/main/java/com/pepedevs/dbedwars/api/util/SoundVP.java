@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util;
 
-import me.Abhigya.core.util.xseries.XSound;
+import com.pepedevs.corelib.utils.xseries.XSound;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;

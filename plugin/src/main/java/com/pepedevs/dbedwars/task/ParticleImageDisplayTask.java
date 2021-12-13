@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.util.tasks.Workload;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.task.Workload;
 import org.bukkit.Location;
 
 import java.awt.*;

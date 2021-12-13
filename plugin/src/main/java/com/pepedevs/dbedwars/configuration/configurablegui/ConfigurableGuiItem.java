@@ -1,14 +1,14 @@
 package com.pepedevs.dbedwars.configuration.configurablegui;
 
-import me.Abhigya.core.menu.inventory.item.action.ActionItem;
-import me.Abhigya.core.menu.inventory.item.action.ItemAction;
-import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
-import me.Abhigya.core.util.loadable.Loadable;
-import me.Abhigya.core.util.loadable.LoadableCollectionEntry;
-import me.Abhigya.core.util.loadable.LoadableEntry;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.menu.inventory.item.action.ActionItem;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.configuration.configurablegui.action.ActionParser;
 import com.pepedevs.dbedwars.configuration.configurablegui.action.ActionType;

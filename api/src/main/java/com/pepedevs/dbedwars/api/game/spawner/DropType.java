@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.particles.ParticleEffect;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 

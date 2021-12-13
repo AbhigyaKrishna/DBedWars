@@ -2,11 +2,11 @@ package com.pepedevs.dbedwars.game.arena;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.math.collision.BoundingBox;
-import me.Abhigya.core.util.npc.NPC;
-import me.Abhigya.core.util.npc.Profile;
-import me.Abhigya.core.util.packet.packetevents.utils.player.Skin;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.corelib.utils.npc.NPC;
+import com.pepedevs.corelib.utils.npc.Profile;
+import com.pepedevs.corelib.utils.packet.packetevents.utils.player.Skin;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerJoinTeamEvent;
 import com.pepedevs.dbedwars.api.events.PlayerLeaveTeamEvent;

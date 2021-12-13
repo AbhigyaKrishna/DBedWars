@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.handler;
 
-import me.Abhigya.core.handler.PluginHandler;
-import me.Abhigya.core.item.ActionItemHandler;
+import com.pepedevs.corelib.utils.PluginHandler;
+import com.pepedevs.corelib.item.ActionItemHandler;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import org.bukkit.plugin.Plugin;
 

@@ -2,10 +2,10 @@ package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import me.Abhigya.core.util.configurable.Configurable;
-import me.Abhigya.core.util.loadable.Loadable;
-import me.Abhigya.core.util.loadable.LoadableEntry;
-import me.Abhigya.core.util.saveable.SaveableEntry;
+import com.pepedevs.corelib.utils.configurable.Configurable;
+import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.saveable.SaveableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;

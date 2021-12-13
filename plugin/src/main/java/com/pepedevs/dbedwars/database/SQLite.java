@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.database;
 
-import me.Abhigya.core.database.Database;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.json.Json;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
+import com.pepedevs.corelib.database.Database;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.json.Json;
+import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.utils.JSONBuilder;
@@ -19,12 +19,12 @@ import java.util.Map;
 
 public class SQLite extends DatabaseBridge {
 
-    private me.Abhigya.core.database.sql.sqlite.SQLite db;
+    private com.pepedevs.corelib.database.sql.sqlite.SQLite db;
 
     public SQLite(DBedwars plugin) {
         super(plugin);
         this.db =
-                new me.Abhigya.core.database.sql.sqlite.SQLite(
+                new com.pepedevs.corelib.database.sql.sqlite.SQLite(
                         new File(this.getPlugin().getDataFolder(), "database.db"), true);
     }
 

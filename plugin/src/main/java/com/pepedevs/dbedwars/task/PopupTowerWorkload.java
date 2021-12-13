@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.xseries.XBlock;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.xseries.XBlock;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.SoundVP;

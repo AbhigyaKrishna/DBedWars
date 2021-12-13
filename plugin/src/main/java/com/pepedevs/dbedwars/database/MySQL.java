@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.database;
 
-import me.Abhigya.core.database.Database;
-import me.Abhigya.core.database.sql.hikaricp.HikariCP;
-import me.Abhigya.core.database.sql.hikaricp.HikariClientBuilder;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.json.Json;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
+import com.pepedevs.corelib.database.Database;
+import com.pepedevs.corelib.database.sql.hikaricp.HikariCP;
+import com.pepedevs.corelib.database.sql.hikaricp.HikariClientBuilder;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.json.Json;
+import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.utils.JSONBuilder;

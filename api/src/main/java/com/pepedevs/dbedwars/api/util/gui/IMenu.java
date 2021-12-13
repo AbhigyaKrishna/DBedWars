@@ -1,13 +1,13 @@
 package com.pepedevs.dbedwars.api.util.gui;
 
-import me.Abhigya.core.menu.inventory.ItemMenu;
-import me.Abhigya.core.menu.inventory.action.ItemClickAction;
-import me.Abhigya.core.menu.inventory.custom.book.item.AlternateBookPageActionItem;
-import me.Abhigya.core.menu.inventory.item.action.back.BackActionItem;
-import me.Abhigya.core.menu.inventory.item.voidaction.VoidActionItem;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.itemstack.ItemStackUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.gui.inventory.ItemMenu;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.inventory.custom.book.item.AlternateBookPageActionItem;
+import com.pepedevs.corelib.gui.inventory.item.action.back.BackActionItem;
+import com.pepedevs.corelib.gui.inventory.item.voidaction.VoidActionItem;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.itemstack.ItemStackUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

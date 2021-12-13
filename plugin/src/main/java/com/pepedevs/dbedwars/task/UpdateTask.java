@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.util.scheduler.SchedulerUtils;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;

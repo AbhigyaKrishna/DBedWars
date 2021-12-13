@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.utils;
 
-import me.Abhigya.core.util.file.FileUtils;
-import me.Abhigya.core.util.server.Version;
+import com.pepedevs.corelib.utils.FileUtils;
+import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import org.bukkit.configuration.file.FileConfiguration;

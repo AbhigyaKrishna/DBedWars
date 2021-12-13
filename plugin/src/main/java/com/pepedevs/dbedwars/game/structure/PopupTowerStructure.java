@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.structure;
 
 import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 

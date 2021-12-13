@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 
 public enum ItemConstant {
     SWORD(

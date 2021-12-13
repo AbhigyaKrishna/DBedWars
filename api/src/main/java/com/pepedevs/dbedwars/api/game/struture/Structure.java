@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game.struture;
 
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 
 import java.util.Map;

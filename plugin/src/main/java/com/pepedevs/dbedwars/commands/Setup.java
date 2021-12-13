@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.commands;
 
-import me.Abhigya.core.commands.CommandArgument;
+import com.pepedevs.corelib.commands.CommandArgument;
 import com.pepedevs.dbedwars.DBedwars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

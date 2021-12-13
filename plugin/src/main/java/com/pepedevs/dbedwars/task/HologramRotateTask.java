@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.task;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
-import me.Abhigya.core.util.hologram.Hologram;
+import com.pepedevs.corelib.utils.hologram.Hologram;
 import org.bukkit.Location;
 
 public abstract class HologramRotateTask {

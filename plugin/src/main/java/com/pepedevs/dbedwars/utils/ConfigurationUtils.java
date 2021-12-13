@@ -6,9 +6,9 @@ import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.game.view.AttributeType;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.console.ConsoleUtils;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.console.ConsoleUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

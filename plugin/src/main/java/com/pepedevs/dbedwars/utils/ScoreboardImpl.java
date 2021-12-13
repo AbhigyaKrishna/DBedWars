@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.utils;
 
-import me.Abhigya.core.scoreboard.SimpleScoreboard;
-import me.Abhigya.core.util.StringUtils;
+import com.pepedevs.corelib.scoreboard.SimpleScoreboard;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.bukkit.entity.Player;

@@ -7,9 +7,9 @@ import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
-import me.Abhigya.core.util.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

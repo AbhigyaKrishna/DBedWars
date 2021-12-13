@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
-import me.Abhigya.core.util.loadable.Loadable;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.utils.loadable.Loadable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;

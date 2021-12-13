@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
 import com.google.common.primitives.Shorts;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.titles.TitleUtils;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.titles.TitleUtils;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import org.bukkit.ChatColor;

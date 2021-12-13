@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util;
 
-import me.Abhigya.core.util.itemstack.stainedglass.StainedGlassColor;
-import me.Abhigya.core.util.itemstack.wool.WoolColor;
+import com.pepedevs.corelib.utils.itemstack.stainedglass.StainedGlassColor;
+import com.pepedevs.corelib.utils.itemstack.wool.WoolColor;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 

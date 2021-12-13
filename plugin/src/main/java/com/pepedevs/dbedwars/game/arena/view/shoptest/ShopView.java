@@ -5,8 +5,8 @@ import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.itemstack.ItemMetaBuilder;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

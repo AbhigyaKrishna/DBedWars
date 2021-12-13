@@ -3,9 +3,9 @@ package com.pepedevs.dbedwars.task;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
 import com.pepedevs.dbedwars.api.game.struture.Structure;
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.xseries.XBlock;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.xseries.XBlock;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 

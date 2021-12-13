@@ -35,7 +35,7 @@
         <!-- PepeDevs -->
         <repository>
             <id>pepedevs</id>
-            <url>http://13.233.67.205:8080/</url>
+            <url>http://51.79.243.92:8081/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -51,9 +51,9 @@
 
         <!-- CoreAPI -->
         <dependency>
-            <groupId>me.Abhigya</groupId>
-            <artifactId>CoreAPI</artifactId>
-            <version>1.2.2</version>
+            <groupId>com.pepedevs</groupId>
+            <artifactId>corelib</artifactId>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
 

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.configuration;
 
-import me.Abhigya.core.util.StringUtils;
+import com.pepedevs.corelib.utils.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

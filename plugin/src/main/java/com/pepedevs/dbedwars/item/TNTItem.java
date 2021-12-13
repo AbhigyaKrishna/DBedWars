@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.item;
 
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.math.VectorUtils;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.math.VectorUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;

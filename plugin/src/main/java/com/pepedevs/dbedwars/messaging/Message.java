@@ -39,7 +39,7 @@ public class Message implements Cloneable {
         return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
     }
 
-    public SentMessage sendAsConsole(MessagingChannel channel) {
+    public SentMessage sendAsServer(MessagingChannel channel) {
         return MessagingServer.connect().sendMessage(this, MessagingMember.ofConsole(), channel);
     }
 
@@ -57,11 +57,6 @@ public class Message implements Cloneable {
 
     @Override
     public Message clone() {
-        try {
-            return (Message) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new Message(asComponent());
     }
 }

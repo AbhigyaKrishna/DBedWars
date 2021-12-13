@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.commands;
 
-import me.Abhigya.core.commands.CommandArgument;
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.commands.CommandArgument;
+import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.task.ParticleImageDisplayTask;
 import org.bukkit.command.Command;

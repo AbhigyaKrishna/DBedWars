@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.messaging.parser;
 
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
-import me.Abhigya.core.placeholder.PlaceholderUtil;
+import com.pepedevs.corelib.placeholders.PlaceholderUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 public class MiniMessageParser implements MessageParser {
 
     private MiniMessage instance;
-    private int replacementCount;
 
     public MiniMessageParser(MiniMessage instance) {
         this.instance = instance;
@@ -38,17 +37,15 @@ public class MiniMessageParser implements MessageParser {
 
     private String replacer(String message, String placeholder, String replacement) {
         String returnMessage = message;
-        for (int count = replacementCount; count > 0; count--) {
+        while (returnMessage.contains(placeholder)) {
             returnMessage = returnMessage.replace(placeholder, replacement);
         }
+
         return returnMessage;
+
     }
 
     public void setInstance(MiniMessage instance) {
         this.instance = instance;
-    }
-
-    public void setPlaceholderReplacementCount(int replacementCount) {
-        this.replacementCount = replacementCount;
     }
 }

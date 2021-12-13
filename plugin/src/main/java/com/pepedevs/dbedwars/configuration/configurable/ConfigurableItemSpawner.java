@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import me.Abhigya.core.particle.particlelib.ParticleEffect;
-import me.Abhigya.core.util.loadable.Loadable;
-import me.Abhigya.core.util.loadable.LoadableEntry;
-import me.Abhigya.core.util.xseries.XMaterial;
+import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

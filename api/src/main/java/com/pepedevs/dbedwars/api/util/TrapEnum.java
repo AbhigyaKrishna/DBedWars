@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.api.util;
 
-import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.acionbar.ActionBarUtils;
-import me.Abhigya.core.util.bossbar.BarColor;
-import me.Abhigya.core.util.bossbar.BarFlag;
-import me.Abhigya.core.util.bossbar.BarStyle;
-import me.Abhigya.core.util.bossbar.BossBar;
-import me.Abhigya.core.util.titles.TitleUtils;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.acionbar.ActionBarUtils;
+import com.pepedevs.corelib.utils.bossbar.BarColor;
+import com.pepedevs.corelib.utils.bossbar.BarFlag;
+import com.pepedevs.corelib.utils.bossbar.BarStyle;
+import com.pepedevs.corelib.utils.bossbar.BossBar;
+import com.pepedevs.corelib.utils.titles.TitleUtils;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;

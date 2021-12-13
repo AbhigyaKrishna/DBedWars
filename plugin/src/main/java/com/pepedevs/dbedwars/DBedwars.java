@@ -1,16 +1,16 @@
 package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
-import me.Abhigya.core.database.DatabaseType;
-import me.Abhigya.core.placeholder.PlaceholderUtil;
-import me.Abhigya.core.plugin.Plugin;
-import me.Abhigya.core.plugin.PluginAdapter;
-import me.Abhigya.core.plugin.PluginDependence;
-import me.Abhigya.core.util.ServerPropertiesUtils;
-import me.Abhigya.core.util.console.ConsoleUtils;
-import me.Abhigya.core.util.hologram.HologramFactory;
-import me.Abhigya.core.util.npc.NPCPool;
-import me.Abhigya.core.util.server.Version;
+import com.pepedevs.corelib.database.DatabaseType;
+import com.pepedevs.corelib.placeholders.PlaceholderUtil;
+import com.pepedevs.corelib.plugin.Plugin;
+import com.pepedevs.corelib.plugin.PluginAdapter;
+import com.pepedevs.corelib.plugin.PluginDependence;
+import com.pepedevs.corelib.utils.ServerPropertiesUtils;
+import com.pepedevs.corelib.utils.console.ConsoleUtils;
+import com.pepedevs.corelib.utils.hologram.HologramFactory;
+import com.pepedevs.corelib.utils.npc.NPCPool;
+import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.commands.*;
 import com.pepedevs.dbedwars.configuration.Lang;

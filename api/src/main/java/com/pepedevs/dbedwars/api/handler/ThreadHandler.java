@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.handler;
 
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.tasks.WorkloadThread;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.task.WorkloadThread;
 
 import java.util.Collection;
 

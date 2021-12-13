@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.handler;
 
-import me.Abhigya.core.menu.inventory.ItemMenu;
-import me.Abhigya.core.util.reflection.general.ConstructorReflection;
+import com.pepedevs.corelib.menu.inventory.ItemMenu;
+import com.pepedevs.corelib.utils.reflection.general.ConstructorReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.gui.IAnvilMenu;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;

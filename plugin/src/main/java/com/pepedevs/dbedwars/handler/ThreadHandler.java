@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.handler;
 
-import me.Abhigya.core.util.scheduler.SchedulerUtils;
-import me.Abhigya.core.util.tasks.Workload;
-import me.Abhigya.core.util.tasks.WorkloadDistributor;
-import me.Abhigya.core.util.tasks.WorkloadThread;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.task.WorkloadDistributor;
+import com.pepedevs.corelib.task.WorkloadThread;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.task.UpdateTask;
 import org.bukkit.scheduler.BukkitTask;

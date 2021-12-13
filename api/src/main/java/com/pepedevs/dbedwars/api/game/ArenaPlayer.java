@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game;
 
-import me.Abhigya.core.util.entity.UUIDPlayer;
+import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Location;

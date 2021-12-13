@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import me.Abhigya.core.util.scheduler.SchedulerUtils;
-import me.Abhigya.core.util.server.Version;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
 import com.pepedevs.dbedwars.configuration.PluginFiles;

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
-import me.Abhigya.core.particle.particlelib.ParticleBuilder;
-import me.Abhigya.core.util.math.collision.BoundingBox;
+import com.pepedevs.corelib.particles.ParticleBuilder;
+import com.pepedevs.corelib.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;
 import org.bukkit.Location;

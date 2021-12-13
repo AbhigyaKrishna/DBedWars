@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
-import me.Abhigya.core.util.reflection.general.ClassReflection;
+import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Fireball;
 import org.bukkit.util.Vector;

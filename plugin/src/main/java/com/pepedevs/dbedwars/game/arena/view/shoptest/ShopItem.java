@@ -5,8 +5,8 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import me.Abhigya.core.util.server.Version;
-import me.Abhigya.core.util.xseries.XItemStack;
+import com.pepedevs.corelib.utils.version.Version;
+import com.pepedevs.corelib.utils.xseries.XItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
