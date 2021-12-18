@@ -23,7 +23,7 @@ public class MessagingMember {
     private MessagingMember(Audience audience, CommandSender sender) {
         this.audienceMember = audience;
         this.sender = sender;
-        this.messagingHistory = new MessagingHistory();
+        this.messagingHistory = MessagingHistory.from(MessagingServer.connect().getHistory());
     }
 
     public static MessagingMember ofPlayer(Player player) {

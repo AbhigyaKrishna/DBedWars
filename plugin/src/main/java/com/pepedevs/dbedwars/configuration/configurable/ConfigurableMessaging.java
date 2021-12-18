@@ -172,4 +172,36 @@ public class ConfigurableMessaging implements Loadable {
             }
         }
     }
+
+    public static class ConfigurableHistory implements Loadable {
+
+        @LoadableEntry(key = "cache-time-seconds")
+        private long cacheTime;
+
+        @LoadableEntry(key = "max-messages")
+        private int maxMessages;
+
+        @Override
+        public Loadable load(ConfigurationSection section) {
+            return this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isInvalid() {
+            return Loadable.super.isInvalid();
+        }
+
+        @Override
+        public boolean isValid() {
+            return false;
+        }
+
+        public int getMaxMessages() {
+            return maxMessages;
+        }
+
+        public long getCacheTime() {
+            return cacheTime;
+        }
+    }
 }

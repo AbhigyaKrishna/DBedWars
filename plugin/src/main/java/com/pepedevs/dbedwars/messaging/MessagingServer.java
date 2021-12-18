@@ -1,6 +1,8 @@
 package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.messaging.MessageParser;
+import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,6 +22,9 @@ public class MessagingServer {
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
 
+    private ConfigurableMessaging.ConfigurableHistory history;
+    private MessageParser parser;
+
     public MessagingServer(DBedwars plugin) {
         server = this;
 
@@ -38,6 +43,8 @@ public class MessagingServer {
         this.registeredMembers = new HashSet<>();
 
         this.consoleMessagingMember = new MessagingMember(adventure.sender(console), console);
+        this.consoleLogger = new MessagingChannel();
+        this.consoleLogger.addConsole();
     }
 
     protected SentMessage sendMessage(
@@ -111,7 +118,9 @@ public class MessagingServer {
     }
 
     protected void unRegisterChannels(MessagingChannel... channels) {
-        this.registeredChannels.removeAll(Arrays.asList(channels));
+        for (MessagingChannel channel : channels) {
+            this.registeredChannels.remove(channel);
+        }
     }
 
     protected Set<MessagingChannel> getRegisteredChannels() {
@@ -135,5 +144,13 @@ public class MessagingServer {
 
     protected boolean registryCheck(MessagingChannel channel) {
         return this.getRegisteredChannels().contains(channel);
+    }
+
+    protected ConfigurableMessaging.ConfigurableHistory getHistory() {
+        return this.history;
+    }
+
+    protected MessageParser getParser() {
+        return parser;
     }
 }

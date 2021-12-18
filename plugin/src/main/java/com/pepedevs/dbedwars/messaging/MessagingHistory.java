@@ -2,6 +2,7 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +24,10 @@ public class MessagingHistory {
     protected MessagingHistory(long cacheTime) {
         this.cache =
                 CacheBuilder.newBuilder().expireAfterWrite(cacheTime, TimeUnit.SECONDS).build();
+    }
+
+    protected static MessagingHistory from(ConfigurableMessaging.ConfigurableHistory configurableHistory) {
+        return new MessagingHistory(configurableHistory.getCacheTime(), configurableHistory.getMaxMessages());
     }
 
     protected void addSentMessage(SentMessage message) {

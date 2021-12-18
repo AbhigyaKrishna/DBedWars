@@ -2,9 +2,9 @@ package com.pepedevs.dbedwars.messaging.parser;
 
 import com.pepedevs.corelib.placeholders.PlaceholderUtil;
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
 
 public class MiniMessageParser implements MessageParser {
@@ -27,21 +27,20 @@ public class MiniMessageParser implements MessageParser {
     public Component parseWithPlaceholder(
             String message, Player player, String placeholder, String replacement) {
         String parsedMessage = this.replacer(message, placeholder, replacement);
-        return this.parseWithPAPI(message, player);
+        return this.parseWithPAPI(parsedMessage, player);
     }
 
-    public Component parseWithPlaceholder(String message, Player player, Template... placeholders) {
-        String parsedMessage = PlaceholderUtil.getManager().apply(player, message);
-        return instance.parse(parsedMessage, placeholders);
+    public Component parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders) {
+        String parsedMessage = message;
+        for (PlaceholderEntry entry : placeholders) {
+            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement());
+        }
+        parsedMessage = PlaceholderUtil.getManager().apply(player, parsedMessage);
+        return this.parse(parsedMessage);
     }
 
     private String replacer(String message, String placeholder, String replacement) {
-        String returnMessage = message;
-        while (returnMessage.contains(placeholder)) {
-            returnMessage = returnMessage.replace(placeholder, replacement);
-        }
-
-        return returnMessage;
+        return message.replace(placeholder, replacement);
     }
 
     public void setInstance(MiniMessage instance) {

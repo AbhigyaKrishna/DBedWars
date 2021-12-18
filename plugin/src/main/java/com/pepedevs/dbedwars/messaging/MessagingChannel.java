@@ -12,7 +12,7 @@ public class MessagingChannel {
 
     protected MessagingChannel() {
         this.channelMembers = new HashSet<>();
-        this.messagingHistory = new MessagingHistory();
+        this.messagingHistory = MessagingHistory.from(MessagingServer.connect().getHistory());
     }
 
     public void addMembers(MessagingMember... members) {

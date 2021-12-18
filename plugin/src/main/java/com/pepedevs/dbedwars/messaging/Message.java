@@ -12,22 +12,16 @@ public class Message implements Cloneable {
 
     protected Message() {}
 
-    public static Message fromText(String message) {
-        return new Message(Component.text(message));
+    public static Message from(String message) {
+        return new Message(MessagingServer.connect().getParser().parse(message));
     }
 
-    public static Message fromComponent(Component component) {
+    public static Message from(Component component) {
         return new Message(component);
     }
 
-    public static Message fromString() {
-        // TODO ADD FROM STRING
+    public static Message empty() {
         return new Message();
-    }
-
-    public static Message fromLegacyText(String message) {
-        // TODO: Format legacy text
-        return new Message(Component.text(message));
     }
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {
@@ -53,6 +47,14 @@ public class Message implements Cloneable {
 
     public void setComponent(Component component) {
         this.component = component;
+    }
+
+    public void append(String text) {
+        this.component = this.component.append(MessagingServer.connect().getParser().parse(text));
+    }
+
+    public void append(Component component) {
+        this.component = this.component.append(component);
     }
 
     @Override
