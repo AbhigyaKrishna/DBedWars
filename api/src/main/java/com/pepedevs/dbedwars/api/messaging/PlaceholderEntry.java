@@ -17,6 +17,6 @@ public interface PlaceholderEntry {
     }
 
     String getPlaceholder();
-    String getReplacement();
 
+    String getReplacement();
 }

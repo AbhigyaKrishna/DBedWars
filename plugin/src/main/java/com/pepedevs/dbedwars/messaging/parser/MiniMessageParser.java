@@ -30,7 +30,8 @@ public class MiniMessageParser implements MessageParser {
         return this.parseWithPAPI(parsedMessage, player);
     }
 
-    public Component parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders) {
+    public Component parseWithPlaceholder(
+            String message, Player player, PlaceholderEntry... placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
             parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement());

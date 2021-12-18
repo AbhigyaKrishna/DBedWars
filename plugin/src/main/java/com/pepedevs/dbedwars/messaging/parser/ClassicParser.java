@@ -27,7 +27,8 @@ public class ClassicParser implements MessageParser {
     }
 
     @Override
-    public Component parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders) {
+    public Component parseWithPlaceholder(
+            String message, Player player, PlaceholderEntry... placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
             parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement());

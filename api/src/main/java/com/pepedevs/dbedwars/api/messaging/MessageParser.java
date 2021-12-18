@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.api.messaging;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.entity.Player;
 
 public interface MessageParser {

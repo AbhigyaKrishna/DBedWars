@@ -26,8 +26,10 @@ public class MessagingHistory {
                 CacheBuilder.newBuilder().expireAfterWrite(cacheTime, TimeUnit.SECONDS).build();
     }
 
-    protected static MessagingHistory from(ConfigurableMessaging.ConfigurableHistory configurableHistory) {
-        return new MessagingHistory(configurableHistory.getCacheTime(), configurableHistory.getMaxMessages());
+    protected static MessagingHistory from(
+            ConfigurableMessaging.ConfigurableHistory configurableHistory) {
+        return new MessagingHistory(
+                configurableHistory.getCacheTime(), configurableHistory.getMaxMessages());
     }
 
     protected void addSentMessage(SentMessage message) {
