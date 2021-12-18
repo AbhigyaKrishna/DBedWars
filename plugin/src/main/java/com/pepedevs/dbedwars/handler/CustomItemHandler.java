@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.handler;
 
-import com.pepedevs.corelib.utils.PluginHandler;
 import com.pepedevs.corelib.item.ActionItemHandler;
+import com.pepedevs.corelib.utils.PluginHandler;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import org.bukkit.plugin.Plugin;
 
@@ -22,6 +22,11 @@ public class CustomItemHandler extends PluginHandler
     @Override
     protected boolean isAllowMultipleInstances() {
         return false;
+    }
+
+    @Override
+    protected boolean isSingleInstanceForAllPlugin() {
+        return true;
     }
 
     @Override
@@ -47,4 +52,5 @@ public class CustomItemHandler extends PluginHandler
     public synchronized PluginActionItem getItem(String id) {
         return this.items.getOrDefault(id, null);
     }
+
 }

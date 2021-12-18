@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -16,8 +16,8 @@ import java.util.Objects;
 public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
 
     private final ArenaPlayer player;
-    private com.pepedevs.dbedwars.api.game.view.ShopPage defaultPage;
     private final Map<String, com.pepedevs.dbedwars.api.game.view.ShopPage> shopPages;
+    private com.pepedevs.dbedwars.api.game.view.ShopPage defaultPage;
 
     public ShopView(ArenaPlayer player) {
         this.player = player;
@@ -78,4 +78,5 @@ public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
                 .forEach(stack::applyEnchant);
         return stack;
     }
+
 }

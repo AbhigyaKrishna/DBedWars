@@ -1,13 +1,13 @@
 package com.pepedevs.dbedwars.configuration.configurablegui;
 
-import com.pepedevs.corelib.menu.inventory.item.action.ActionItem;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.configuration.configurablegui.action.ActionParser;
@@ -183,5 +183,7 @@ public class ConfigurableGuiItem implements Loadable {
 
             return this.itemAction;
         }
+
     }
+
 }

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -145,6 +145,7 @@ public class ConfigurableCustomItems implements Loadable {
         public String getSound() {
             return sound;
         }
+
     }
 
     public static class ConfigurableTNT implements Loadable {
@@ -222,6 +223,7 @@ public class ConfigurableCustomItems implements Loadable {
         public KnockBack getKnockBack() {
             return knockBack;
         }
+
     }
 
     public static class ConfigurableFireball implements Loadable {
@@ -315,6 +317,7 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isExplosionFireEnabled() {
             return explosionFire;
         }
+
     }
 
     public static class ConfigurableBridgeEgg implements Loadable {
@@ -387,6 +390,7 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isFlipBridgeEnabled() {
             return flipBridgeEnabled;
         }
+
     }
 
     public static class ConfigurableWaterBucket implements Loadable {
@@ -432,6 +436,7 @@ public class ConfigurableCustomItems implements Loadable {
         public String getDisplayName() {
             return displayName;
         }
+
     }
 
     public static class ConfigurableSponge implements Loadable {
@@ -525,6 +530,7 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isAnimationEnabled() {
             return animationEnabled;
         }
+
     }
 
     public static class ConfigurableDreamDefender implements Loadable {
@@ -610,6 +616,7 @@ public class ConfigurableCustomItems implements Loadable {
         public int getTicksUntilDespawn() {
             return ticksUntilDespawn;
         }
+
     }
 
     public static class ConfigurableBedBug implements Loadable {
@@ -695,6 +702,7 @@ public class ConfigurableCustomItems implements Loadable {
         public String getItemName() {
             return itemName;
         }
+
     }
 
     public static class ConfigurableBlastProofGlass implements Loadable {
@@ -732,6 +740,7 @@ public class ConfigurableCustomItems implements Loadable {
         public String getGlassItemName() {
             return glassItemName;
         }
+
     }
 
     public static class KnockBack implements Loadable {
@@ -793,5 +802,7 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isEnabled() {
             return enabled;
         }
+
     }
+
 }

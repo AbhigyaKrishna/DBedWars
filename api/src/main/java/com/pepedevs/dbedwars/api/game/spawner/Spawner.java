@@ -43,4 +43,5 @@ public interface Spawner {
     boolean exists();
 
     boolean remove();
+
 }

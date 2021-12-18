@@ -1,7 +1,7 @@
 #TODO ADD SOUNDS FOR ALL ITEMS
 fireball:
   name: 'Fireball'
-  lore: []
+  lore: [ ]
   left-click-throw: false # works only when left clicking on block
   fix-direction: true
   explosion-yield: 4
@@ -17,7 +17,7 @@ fireball:
     horizontal-force: 3
 tnt:
   name: 'TNT'
-  lore: []
+  lore: [ ]
   auto-ignite-tnt: true
   fix-random-explosion: true
   better-tnt-ignite-animation: true
@@ -30,13 +30,13 @@ tnt:
     horizontal-force: 3
 popup-tower:
   name: "&bCompact Pop-up Tower"
-  lore: []
+  lore: [ ]
   sound: ''
   particle: ''
   main-block: 'WOOL'
 bridge-egg:
   name: ' Bridge Egg'
-  lore: []
+  lore: [ ]
   keep-alive-timeout: 200 #ticks
   min-distance-from-player-to-start-placing-blocks: 4
   max-distance-from-player-to-keep-placing-blocks: 27
@@ -44,11 +44,11 @@ bridge-egg:
   flip-bridge: true
 water-bucket:
   name: 'Water Bucket'
-  lore: []
+  lore: [ ]
   remove-on-use: true
 sponge:
   name: 'Sponge'
-  lore: []
+  lore: [ ]
   animation-enabled: true
   radius-for-particles: 4
   remove-on-animation-end: true
@@ -58,7 +58,7 @@ sponge:
   sound-on-end: 'SPLASH2:1:1'
 dream-defender:
   name: ''
-  lore: []
+  lore: [ ]
   golem-display-name: '&f%time_left% &0[ &l%health_bar% &0]' # %time_left%, %team_color%, %health_bar%
   health-symbol: '● ' #add intentional space to add space between health symbols
   health-color-codes: '%team_color%:8'
@@ -68,16 +68,16 @@ dream-defender:
   time-until-despawn: 4800
 bed-bug:
   name: ''
-  lore: []
+  lore: [ ]
   bed-bug-display-name: '&0[ %health_bar% &0]'
   health-symbol: '● ' #add intentional space to add space between health symbols
   health-color-codes: '%team_color%:8'
   health-indicator-count: 5
-  potion-effects: []
+  potion-effects: [ ]
   time-until-despawn: 300
 blast-proof-glass:
   name: 'Blast-Proof Glass'
-  lore: []
+  lore: [ ]
 
 
 

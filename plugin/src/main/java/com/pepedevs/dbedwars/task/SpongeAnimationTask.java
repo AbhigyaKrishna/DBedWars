@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
-import com.pepedevs.corelib.utils.math.LocationUtils;
+import com.pepedevs.corelib.particles.ParticleBuilder;
+import com.pepedevs.corelib.particles.ParticleEffect;
 import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.math.LocationUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import org.bukkit.Location;
@@ -23,7 +23,9 @@ public class SpongeAnimationTask implements Workload {
     private final boolean shouldRemoveOnEnd;
     private final SoundVP soundOnBoxIncrease;
     private final SoundVP soundOnAnimationEnd;
-
+    private int tick = 0;
+    private long timestamp = System.currentTimeMillis();
+    private boolean done = false;
     public SpongeAnimationTask(
             DBedwars plugin,
             Block block,
@@ -38,10 +40,6 @@ public class SpongeAnimationTask implements Workload {
         this.soundOnBoxIncrease = SoundVP.valueOf(soundOnBoxIncrease);
         this.soundOnAnimationEnd = SoundVP.valueOf(soundOnAnimationEnd);
     }
-
-    private int tick = 0;
-    private long timestamp = System.currentTimeMillis();
-    private boolean done = false;
 
     @Override
     public void compute() {
@@ -60,22 +58,22 @@ public class SpongeAnimationTask implements Workload {
         largerBox.forEach(
                 block -> {
                     new ParticleBuilder(
-                                    ParticleEffect.CLOUD,
-                                    block.getLocation()
-                                            .add(
-                                                    0.5 + random.nextGaussian() / 5,
-                                                    0.5 + random.nextGaussian() / 5,
-                                                    0.5 + random.nextGaussian() / 5))
+                            ParticleEffect.CLOUD,
+                            block.getLocation()
+                                    .add(
+                                            0.5 + random.nextGaussian() / 5,
+                                            0.5 + random.nextGaussian() / 5,
+                                            0.5 + random.nextGaussian() / 5))
                             .setSpeed(0.01F)
                             .setAmount(1)
                             .display();
                     new ParticleBuilder(
-                                    ParticleEffect.CLOUD,
-                                    block.getLocation()
-                                            .add(
-                                                    0.5 + random.nextGaussian() / 5,
-                                                    0.5 + random.nextGaussian() / 5,
-                                                    0.5 + random.nextGaussian() / 5))
+                            ParticleEffect.CLOUD,
+                            block.getLocation()
+                                    .add(
+                                            0.5 + random.nextGaussian() / 5,
+                                            0.5 + random.nextGaussian() / 5,
+                                            0.5 + random.nextGaussian() / 5))
                             .setSpeed(0.01F)
                             .setAmount(1)
                             .display();
@@ -105,4 +103,5 @@ public class SpongeAnimationTask implements Workload {
         tick++;
         return tick % 8 == 0;
     }
+
 }

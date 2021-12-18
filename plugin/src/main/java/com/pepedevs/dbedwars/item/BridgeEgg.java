@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.utils.EventUtils;
+import com.pepedevs.corelib.events.EventUtils;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -21,14 +21,14 @@ import java.util.ArrayList;
 
 public class BridgeEgg extends PluginActionItem {
 
+    public static final FixedMetadataValue bridgeEggMeta =
+            new FixedMetadataValue(DBedwars.getInstance(), true);
     private final int keepAliveTimeOut;
     private final int minDistanceFromPlayer;
     private final int maxDistanceFromPlayer;
     private final int maxDownStack;
     private final boolean isFlipBridgeEnabled;
     private final DBedwars plugin;
-    public static final FixedMetadataValue bridgeEggMeta =
-            new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public BridgeEgg(DBedwars plugin) {
         super(
@@ -38,9 +38,9 @@ public class BridgeEgg extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getBridgeEgg()
-                                        .getLore()),
+                                .getCustomItems()
+                                .getBridgeEgg()
+                                .getLore()),
                 XMaterial.EGG.parseMaterial());
         this.plugin = plugin;
         ConfigurableCustomItems.ConfigurableBridgeEgg confEgg =
@@ -67,7 +67,7 @@ public class BridgeEgg extends PluginActionItem {
         Projectile egg = player.launchProjectile(Egg.class);
         egg.setMetadata("isDBedwarsEgg", bridgeEggMeta);
         plugin.getThreadHandler()
-                .submitSync(
+                .submitAsync(
                         new BridgeEggWorkloadTask(
                                 plugin,
                                 arena,

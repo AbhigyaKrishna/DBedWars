@@ -2,12 +2,12 @@ package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.pepedevs.corelib.utils.configurable.Configurable;
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
-import com.pepedevs.corelib.utils.saveable.SaveableCollectionEntry;
-import com.pepedevs.corelib.utils.saveable.SaveableEntry;
+import com.pepedevs.corelib.utils.configuration.Configurable;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.SaveableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.SaveableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.RegenerationType;
@@ -225,17 +225,17 @@ public class ConfigurableArena implements Configurable {
         this.teams =
                 this.arena.getSettings().getAvailableTeams() != null
                         ? this.arena.getSettings().getAvailableTeams().stream()
-                                .map(ConfigurableTeam::new)
-                                .collect(Collectors.toList())
+                        .map(ConfigurableTeam::new)
+                        .collect(Collectors.toList())
                         : new ArrayList<>();
         this.spawners =
                 this.arena.getSettings().getDrops() != null
                         ? this.arena.getSettings().getDrops().entries().stream()
-                                .map(
-                                        e ->
-                                                ConfigurationUtils.serializeSpawner(
-                                                        e.getKey(), e.getValue()))
-                                .collect(Collectors.toList())
+                        .map(
+                                e ->
+                                        ConfigurationUtils.serializeSpawner(
+                                                e.getKey(), e.getValue()))
+                        .collect(Collectors.toList())
                         : new ArrayList<>();
     }
 
@@ -247,4 +247,5 @@ public class ConfigurableArena implements Configurable {
 
         return this.arena;
     }
+
 }

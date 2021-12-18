@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.guis.anvil;
 
-import com.pepedevs.corelib.menu.anvil.AnvilItem;
-import com.pepedevs.corelib.menu.anvil.AnvilMenu;
-import com.pepedevs.corelib.menu.anvil.action.AnvilItemClickAction;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.anvil.AnvilItem;
+import com.pepedevs.corelib.gui.anvil.AnvilMenu;
+import com.pepedevs.corelib.gui.anvil.action.AnvilItemClickAction;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -28,7 +28,8 @@ public class ArenaNameGui extends IAnvilMenu {
                                 StringUtils.translateAlternateColorCodes("Enter name"),
                                 XMaterial.PAPER.parseItem()) {
                             @Override
-                            public void onClick(AnvilItemClickAction anvilItemClickAction) {}
+                            public void onClick(AnvilItemClickAction anvilItemClickAction) {
+                            }
                         },
                         null));
 
@@ -72,5 +73,7 @@ public class ArenaNameGui extends IAnvilMenu {
 
     @Override
     public void setUpMenu(
-            Player player, ItemClickAction action, @Nullable Map<String, Object> info) {}
+            Player player, ItemClickAction action, @Nullable Map<String, Object> info) {
+    }
+
 }

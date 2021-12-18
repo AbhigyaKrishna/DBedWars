@@ -13,7 +13,8 @@ public class LocationXYZYP {
     private float yaw = 0.0F;
     private float pitch = 0.0F;
 
-    public LocationXYZYP() {}
+    public LocationXYZYP() {
+    }
 
     public LocationXYZYP(double x, double y, double z) {
         this.x = x;
@@ -147,4 +148,5 @@ public class LocationXYZYP {
             throw new AssertionError();
         }
     }
+
 }

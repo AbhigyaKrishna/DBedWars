@@ -90,4 +90,5 @@ public final class UpdateTask implements Runnable {
     public Instant getCurrent() {
         return current;
     }
+
 }

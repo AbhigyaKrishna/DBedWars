@@ -9,4 +9,5 @@ public interface IBedBug {
     IBedBug initTargets(double reachModifier);
 
     IBedBug setChaseRadius(float radius);
+
 }

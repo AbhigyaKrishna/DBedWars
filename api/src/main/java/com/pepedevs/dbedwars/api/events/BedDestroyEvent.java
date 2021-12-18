@@ -83,4 +83,5 @@ public class BedDestroyEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

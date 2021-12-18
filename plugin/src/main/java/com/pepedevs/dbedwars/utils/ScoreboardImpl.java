@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
-import com.pepedevs.corelib.scoreboard.SimpleScoreboard;
+import com.pepedevs.corelib.scoreboard.Scoreboard;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
@@ -13,7 +13,7 @@ public class ScoreboardImpl {
     private final DBedwars plugin;
     private final ConfigurableScoreboard cfgScore;
 
-    private SimpleScoreboard scoreboard;
+    private Scoreboard scoreboard;
 
     public ScoreboardImpl(DBedwars plugin, ConfigurableScoreboard cfgScore) {
         this.plugin = plugin;
@@ -22,30 +22,31 @@ public class ScoreboardImpl {
 
     public void createScoreboard() {
         ScoreboardImpl.this.scoreboard =
-                new SimpleScoreboard(
+                new Scoreboard(
                         StringUtils.translateAlternateColorCodes(
                                 ScoreboardImpl.this.cfgScore.getTitle()),
                         StringUtils.translateAlternateColorCodes(
                                 ScoreboardImpl.this.cfgScore.getContent().toArray(new String[0])));
     }
 
-    public void show(Player... player) {
-        this.scoreboard.addViewer(player);
+    public void show(Player... players) {
+        this.scoreboard.show(players);
     }
 
     public void show(Collection<Player> players) {
-        this.scoreboard.addViewers(players);
+        this.scoreboard.show(players.toArray(new Player[0]));
     }
 
-    public void hide(Player... player) {
-        this.scoreboard.removeViewer(player);
+    public void hide(Player... players) {
+        this.scoreboard.hide(players);
     }
 
     public void hide(Collection<Player> players) {
-        this.scoreboard.removeViewers(players);
+        this.scoreboard.hide(players.toArray(new Player[0]));
     }
 
-    public SimpleScoreboard getHandle() {
+    public Scoreboard getHandle() {
         return this.scoreboard;
     }
+
 }

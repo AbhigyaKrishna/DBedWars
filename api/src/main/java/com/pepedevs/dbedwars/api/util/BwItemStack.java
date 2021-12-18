@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -133,6 +133,10 @@ public class BwItemStack implements Cloneable {
         return this.item.getType();
     }
 
+    public void setType(XMaterial material) {
+        material.setType(this.item);
+    }
+
     public void setType(Material type) {
         this.item.setType(type);
     }
@@ -161,4 +165,5 @@ public class BwItemStack implements Cloneable {
             throw new AssertionError();
         }
     }
+
 }

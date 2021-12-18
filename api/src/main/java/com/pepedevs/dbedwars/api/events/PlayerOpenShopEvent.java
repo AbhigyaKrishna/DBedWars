@@ -40,4 +40,5 @@ public class PlayerOpenShopEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

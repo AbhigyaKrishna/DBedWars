@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ConfigurableMessaging implements Loadable {
@@ -170,6 +170,9 @@ public class ConfigurableMessaging implements Loadable {
             public boolean isTranslatable() {
                 return translatable;
             }
+
         }
+
     }
+
 }

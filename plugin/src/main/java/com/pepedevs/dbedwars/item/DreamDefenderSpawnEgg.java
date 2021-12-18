@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class DreamDefenderSpawnEgg extends PluginActionItem {
 
-    private final DBedwars plugin;
     public static final FixedMetadataValue GOLEM_META_VALUE =
             new FixedMetadataValue(DBedwars.getInstance(), true);
+    private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
 
     public DreamDefenderSpawnEgg(DBedwars plugin) {
@@ -36,12 +36,12 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
                                 .getItemName()),
                 StringUtils.translateAlternateColorCodes(
                         (plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore()
-                                        == null
+                                == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getDreamDefender()
-                                        .getItemLore())),
+                                .getCustomItems()
+                                .getDreamDefender()
+                                .getItemLore())),
                 XMaterial.WOLF_SPAWN_EGG.parseMaterial());
         this.plugin = plugin;
         cfgGolem = plugin.getConfigHandler().getCustomItems().getDreamDefender();
@@ -54,14 +54,14 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
 
         if (plugin.getGameManager().getArena(player.getWorld().getName()) != null
                 && plugin.getGameManager()
-                        .getArena(player.getWorld().getName())
-                        .getAsArenaPlayer(player)
-                        .isPresent()
+                .getArena(player.getWorld().getName())
+                .getAsArenaPlayer(player)
+                .isPresent()
                 && !plugin.getGameManager()
-                        .getArena(player.getWorld().getName())
-                        .getAsArenaPlayer(player)
-                        .get()
-                        .isSpectator()) {
+                .getArena(player.getWorld().getName())
+                .getAsArenaPlayer(player)
+                .get()
+                .isSpectator()) {
 
             ArenaPlayer arenaPlayer =
                     plugin.getGameManager()
@@ -94,4 +94,5 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
     public void onDeath(EntityDeathEvent event) {
         event.getDrops().clear();
     }
+
 }

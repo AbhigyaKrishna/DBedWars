@@ -8,4 +8,5 @@ import com.pepedevs.dbedwars.api.game.view.attributes.Purchasable;
 public interface ShopItem extends Purchasable, Permanent, AutoEquip, Colorable {
 
     String getKey();
+
 }

@@ -37,4 +37,5 @@ public class TeamAssigner {
             team.addPlayer(player);
         }
     }
+
 }

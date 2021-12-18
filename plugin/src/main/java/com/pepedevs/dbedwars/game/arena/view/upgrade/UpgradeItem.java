@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.game.arena.view.upgrade;
 
-import com.pepedevs.corelib.utils.packet.packetevents.utils.list.ConcurrentList;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
@@ -136,7 +135,8 @@ public class UpgradeItem {
         public Consumer<ArenaPlayer> getAction(String statement) {
             return new Consumer<ArenaPlayer>() {
                 @Override
-                public void accept(ArenaPlayer team) {}
+                public void accept(ArenaPlayer team) {
+                }
             };
         }
     }
@@ -219,7 +219,7 @@ public class UpgradeItem {
 
             private UpgradeTier tier;
             private ConfigurableUpgrade.ConfigurableUpgradePage.ConfigurableItem
-                            .ConfigurableUpgradeTier.ConfigurableTierAction
+                    .ConfigurableUpgradeTier.ConfigurableTierAction
                     action;
 
             private Target target;
@@ -227,13 +227,13 @@ public class UpgradeItem {
 
             public TierAction(
                     ConfigurableUpgrade.ConfigurableUpgradePage.ConfigurableItem
-                                    .ConfigurableUpgradeTier.ConfigurableTierAction
+                            .ConfigurableUpgradeTier.ConfigurableTierAction
                             action) {
                 this.tier = UpgradeTier.this;
                 this.action = action;
                 this.target =
                         ConfigurationUtils.matchEnum(this.action.getTarget(), Target.values());
-                this.goals = new ConcurrentList<>();
+                this.goals = Collections.synchronizedList(new ArrayList<>());
             }
 
             public UpgradeTier getTier() {
@@ -247,6 +247,9 @@ public class UpgradeItem {
             public List<Consumer<Team>> getGoals() {
                 return goals;
             }
+
         }
+
     }
+
 }

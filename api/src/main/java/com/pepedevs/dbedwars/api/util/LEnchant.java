@@ -91,4 +91,5 @@ public class LEnchant implements Cloneable {
             throw new AssertionError();
         }
     }
+
 }

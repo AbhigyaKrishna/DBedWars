@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.corelib.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
-import com.pepedevs.corelib.utils.hologram.Hologram;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
@@ -80,5 +80,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return !this.isCancelled() && System.currentTimeMillis() - lastExec > this.delayMillis;
         }
+
     }
+
 }

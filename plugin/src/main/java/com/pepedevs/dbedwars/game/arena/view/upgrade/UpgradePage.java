@@ -40,4 +40,5 @@ public class UpgradePage {
     public String getTitle() {
         return this.page.getTitle();
     }
+
 }

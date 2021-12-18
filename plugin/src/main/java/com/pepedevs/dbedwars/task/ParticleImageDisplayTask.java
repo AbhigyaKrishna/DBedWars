@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particles.ParticleBuilder;
 import com.pepedevs.corelib.task.Workload;
 import org.bukkit.Location;
 
@@ -15,7 +15,8 @@ public class ParticleImageDisplayTask implements Workload {
     private final double mainAxisMultiplier;
     private final double yAxisMultiplier;
     private final ParticleBuilder particle;
-
+    private long timestamp = System.currentTimeMillis();
+    private int tick = -1;
     public ParticleImageDisplayTask(
             int ticksToDisplayFor,
             Dimension dimension,
@@ -34,9 +35,6 @@ public class ParticleImageDisplayTask implements Workload {
         this.yAxisMultiplier = dimension.height / ((double) imagePixels[0].length);
         this.particle = nonLocationParticleBuilder;
     }
-
-    private long timestamp = System.currentTimeMillis();
-    private int tick = -1;
 
     @Override
     public void compute() {
@@ -67,4 +65,5 @@ public class ParticleImageDisplayTask implements Workload {
         timestamp = System.currentTimeMillis();
         return tick < ticksToDisplayFor;
     }
+
 }

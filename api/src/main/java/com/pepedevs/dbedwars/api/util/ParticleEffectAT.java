@@ -86,20 +86,12 @@ public class ParticleEffectAT {
         return effect;
     }
 
-    public float getSpeed() {
-        return speed.floatValue();
-    }
-
-    public int getAmount() {
-        return amount.get();
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
     public void setEffect(ParticleEffect effect) {
         this.effect = effect;
+    }
+
+    public float getSpeed() {
+        return speed.floatValue();
     }
 
     public void setSpeed(float speed) {
@@ -107,9 +99,17 @@ public class ParticleEffectAT {
         this.speed.set(speed);
     }
 
+    public int getAmount() {
+        return amount.get();
+    }
+
     public void setAmount(int amount) {
         if (this.amount == null) this.amount = new AtomicInteger();
         this.amount.set(amount);
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public void setColor(Color color) {
@@ -123,4 +123,5 @@ public class ParticleEffectAT {
         if (this.speed != null) builder.setSpeed(speed.floatValue());
         return builder;
     }
+
 }

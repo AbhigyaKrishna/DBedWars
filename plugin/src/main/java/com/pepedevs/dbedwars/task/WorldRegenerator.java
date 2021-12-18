@@ -32,8 +32,7 @@ public class WorldRegenerator extends Regeneration {
             case MULTI_THREADED_ASYNC:
                 this.plugin
                         .getThreadHandler()
-                        .getLeastWorkAsyncWorker()
-                        .add(
+                        .submitAsync(
                                 () ->
                                         world.complete(
                                                 this.plugin
@@ -47,8 +46,7 @@ public class WorldRegenerator extends Regeneration {
             case MULTI_THREADED_SYNC:
                 this.plugin
                         .getThreadHandler()
-                        .getLeastWorkSyncWorker()
-                        .add(
+                        .submitSync(
                                 () ->
                                         world.complete(
                                                 this.plugin
@@ -62,4 +60,5 @@ public class WorldRegenerator extends Regeneration {
         }
         return world;
     }
+
 }

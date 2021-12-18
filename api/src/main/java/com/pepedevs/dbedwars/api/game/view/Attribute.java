@@ -7,4 +7,5 @@ public interface Attribute {
     AttributeType getType();
 
     Map<String, Object> getKeyEntry();
+
 }

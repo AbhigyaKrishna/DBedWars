@@ -14,7 +14,7 @@ pages:
         name: '&bQuick buy'
         material: 'NETHER_STAR'
         amount: 1
-        lore: []
+        lore: [ ]
         attribute:
           type: ''
 
@@ -31,7 +31,7 @@ pages:
       N2:
         material: 'STAINED_CLAY:%team%'
         name: '&bBlocks'
-        lore: []
+        lore: [ ]
         attribute:
           type: ''
 
@@ -563,7 +563,7 @@ pages:
         material: 'BOW'
         amount: 1
         name: '&aRanged'
-        lore: []
+        lore: [ ]
         attribute:
           type: ''
 
@@ -644,7 +644,7 @@ pages:
         material: 'BREWING_STAND'
         amount: 1
         name: '&aPotions'
-        lore: []
+        lore: [ ]
         attribute:
           type: ''
 

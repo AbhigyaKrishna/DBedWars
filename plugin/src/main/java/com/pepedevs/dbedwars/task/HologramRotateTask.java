@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.corelib.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
-import com.pepedevs.corelib.utils.hologram.Hologram;
 import org.bukkit.Location;
 
 public abstract class HologramRotateTask {
@@ -32,17 +32,19 @@ public abstract class HologramRotateTask {
         location.setZ(location.getZ() + z);
         location.setYaw(location.getYaw() + yaw);
         location.setPitch(location.getPitch() + pitch);
-        this.hologram.teleport(location);
+//        this.hologram.teleport(location);
+        // TODO
     }
 
     protected void rotateHologram(float yaw, float pitch) {
         Location location = hologram.getLocation().clone();
         location.setYaw(location.getYaw() + yaw);
         location.setPitch(location.getPitch() + pitch);
-        this.hologram.teleport(location);
+//        this.hologram.teleport(location);
     }
 
     public Hologram getHologram() {
         return this.hologram;
     }
+
 }

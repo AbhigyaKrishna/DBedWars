@@ -4,9 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.math.collision.BoundingBox;
-import com.pepedevs.corelib.utils.npc.NPC;
-import com.pepedevs.corelib.utils.npc.Profile;
-import com.pepedevs.corelib.utils.packet.packetevents.utils.player.Skin;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerJoinTeamEvent;
 import com.pepedevs.dbedwars.api.events.PlayerLeaveTeamEvent;
@@ -43,8 +40,8 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
     private boolean eliminated;
     private Set<ArenaPlayer> players;
     private BoundingBox islandArea;
-    private NPC shopNpc;
-    private NPC upgradesNpc;
+//    private NPC shopNpc;
+//    private NPC upgradesNpc;
 
     private List<Trap> trapQueue;
 
@@ -295,54 +292,54 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
 
     @Override
     public void spawnShopNpc(LocationXYZYP location) {
-        this.shopNpc =
-                NPC.builder()
-                        .location(this.shopNpcLocation.toBukkit(this.arena.getWorld()))
-                        .profile(
-                                new Profile(
-                                        UUID.randomUUID(),
-                                        StringUtils.translateAlternateColorCodes("&eShop"),
-                                        new Skin("", "")))
-                        .lookAtPlayer(true)
-                        .imitatePlayer(false)
-                        .build(DBedwars.getInstance().getNpcHandler());
-        this.shopNpc.addInteractAction(
-                (npc, player, clickType) -> {
-                    Optional<ArenaPlayer> ap = this.arena.getAsArenaPlayer(player);
-                    ap.ifPresent(
-                            arenaPlayer -> {
-                                PlayerOpenShopEvent event =
-                                        new PlayerOpenShopEvent(
-                                                arenaPlayer, this.arena, arenaPlayer.getShopView());
-                                event.call();
-
-                                if (event.isCancelled()) return;
-
-                                DBedwars.getInstance()
-                                        .getGuiHandler()
-                                        .getGuis()
-                                        .get("SHOP")
-                                        .open(
-                                                null,
-                                                Collections.singletonMap("player", arenaPlayer),
-                                                player);
-                            });
-                });
+//        this.shopNpc =
+//                NPC.builder()
+//                        .location(this.shopNpcLocation.toBukkit(this.arena.getWorld()))
+//                        .profile(
+//                                new Profile(
+//                                        UUID.randomUUID(),
+//                                        StringUtils.translateAlternateColorCodes("&eShop"),
+//                                        new Skin("", "")))
+//                        .lookAtPlayer(true)
+//                        .imitatePlayer(false)
+//                        .build(DBedwars.getInstance().getNpcHandler());
+//        this.shopNpc.addInteractAction(
+//                (npc, player, clickType) -> {
+//                    Optional<ArenaPlayer> ap = this.arena.getAsArenaPlayer(player);
+//                    ap.ifPresent(
+//                            arenaPlayer -> {
+//                                PlayerOpenShopEvent event =
+//                                        new PlayerOpenShopEvent(
+//                                                arenaPlayer, this.arena, arenaPlayer.getShopView());
+//                                event.call();
+//
+//                                if (event.isCancelled()) return;
+//
+//                                DBedwars.getInstance()
+//                                        .getGuiHandler()
+//                                        .getGuis()
+//                                        .get("SHOP")
+//                                        .open(
+//                                                null,
+//                                                Collections.singletonMap("player", arenaPlayer),
+//                                                player);
+//                            });
+//                });
     }
 
     @Override
     public void spawnUpgradesNpc(LocationXYZYP location) {
-        this.upgradesNpc =
-                NPC.builder()
-                        .location(this.upgradesNpcLocation.toBukkit(this.arena.getWorld()))
-                        .profile(
-                                new Profile(
-                                        UUID.randomUUID(),
-                                        StringUtils.translateAlternateColorCodes("&eUpgrades"),
-                                        new Skin("", "")))
-                        .lookAtPlayer(true)
-                        .imitatePlayer(false)
-                        .build(DBedwars.getInstance().getNpcHandler());
+//        this.upgradesNpc =
+//                NPC.builder()
+//                        .location(this.upgradesNpcLocation.toBukkit(this.arena.getWorld()))
+//                        .profile(
+//                                new Profile(
+//                                        UUID.randomUUID(),
+//                                        StringUtils.translateAlternateColorCodes("&eUpgrades"),
+//                                        new Skin("", "")))
+//                        .lookAtPlayer(true)
+//                        .imitatePlayer(false)
+//                        .build(DBedwars.getInstance().getNpcHandler());
     }
 
     public void clearCache() {
@@ -351,10 +348,11 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
         this.players = null;
         this.islandArea = null;
         this.handle.unregister();
-        this.plugin.getNpcHandler().removeNPC(this.shopNpc.getEntityId());
-        this.shopNpc = null;
-        this.plugin.getNpcHandler().removeNPC(this.upgradesNpc.getEntityId());
-        this.upgradesNpc = null;
+//        this.plugin.getNpcHandler().removeNPC(this.shopNpc.getEntityId());
+//        this.shopNpc = null;
+//        this.plugin.getNpcHandler().removeNPC(this.upgradesNpc.getEntityId());
+//        this.upgradesNpc = null;
         this.trapQueue.clear();
     }
+
 }

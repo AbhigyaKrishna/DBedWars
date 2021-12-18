@@ -3,9 +3,9 @@ package com.pepedevs.dbedwars.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Subcommand;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.corelib.utils.StringUtils;
 import org.bukkit.entity.Player;
 
 @CommandAlias("bedwars|bedwar|bw")
@@ -51,4 +51,5 @@ public class BedwarsCommand extends BaseCommand {
 
         arena.end();
     }
+
 }

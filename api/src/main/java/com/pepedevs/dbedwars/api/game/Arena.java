@@ -113,4 +113,5 @@ public interface Arena {
     void setLobbyScoreboard(Player player);
 
     boolean stop();
+
 }

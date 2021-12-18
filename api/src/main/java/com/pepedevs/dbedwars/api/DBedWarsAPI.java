@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api;
 
-import com.pepedevs.corelib.utils.hologram.HologramFactory;
+import com.pepedevs.corelib.holograms.HologramManager;
 import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.handler.*;
 
@@ -30,7 +30,8 @@ public abstract class DBedWarsAPI {
 
     public abstract ThreadHandler getThreadHandler();
 
-    public abstract HologramFactory getHologramFactory();
+    public abstract HologramManager getHologramFactory();
 
     public abstract Version getVersion();
+
 }

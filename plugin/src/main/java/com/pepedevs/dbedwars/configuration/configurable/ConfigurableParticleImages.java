@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
@@ -71,6 +71,7 @@ public class ConfigurableParticleImages implements Loadable {
         public String getDownscaling() {
             return downscaling;
         }
+
     }
 
     public static class ConfigurableParticleImageSettings implements Loadable {
@@ -108,5 +109,7 @@ public class ConfigurableParticleImages implements Loadable {
         public String getFormat() {
             return format;
         }
+
     }
+
 }

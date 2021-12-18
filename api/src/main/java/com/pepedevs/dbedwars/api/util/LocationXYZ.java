@@ -11,7 +11,8 @@ public class LocationXYZ implements Cloneable {
     private double y = 0.0D;
     private double z = 0.0D;
 
-    public LocationXYZ() {}
+    public LocationXYZ() {
+    }
 
     public LocationXYZ(double x, double y, double z) {
         this.x = x;
@@ -134,4 +135,5 @@ public class LocationXYZ implements Cloneable {
             throw new AssertionError();
         }
     }
+
 }

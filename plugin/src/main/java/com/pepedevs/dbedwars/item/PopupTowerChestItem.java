@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.particles.ParticleBuilder;
+import com.pepedevs.corelib.particles.ParticleEffect;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.corelib.utils.xseries.XSound;
@@ -31,9 +31,9 @@ public class PopupTowerChestItem extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getPopupTower()
-                                        .getLore()),
+                                .getCustomItems()
+                                .getPopupTower()
+                                .getLore()),
                 XMaterial.TRAPPED_CHEST.parseMaterial());
         this.plugin = plugin;
         this.cfgPopupTower = plugin.getConfigHandler().getCustomItems().getPopupTower();
@@ -44,23 +44,23 @@ public class PopupTowerChestItem extends PluginActionItem {
         if (!XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).isPresent()) return;
 
         plugin.getThreadHandler()
-                .submitSync(
+                .submitSync(() -> event.getBlock().setType(XMaterial.AIR.parseMaterial()));
+
+        plugin.getThreadHandler()
+                .submitAsync(
                         new PopupTowerWorkload(
                                 XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).get(),
                                 (cfgPopupTower.getSound() == null
                                         ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
                                         : cfgPopupTower.getSound().equals("")
-                                                ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
-                                                : SoundVP.valueOf(cfgPopupTower.getSound())),
+                                        ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
+                                        : SoundVP.valueOf(cfgPopupTower.getSound())),
                                 new ParticleBuilder(ParticleEffect.CLOUD)
                                         .setAmount(1)
                                         .setSpeed(0.2F),
                                 event.getBlockPlaced(),
                                 player,
                                 2));
-
-        plugin.getThreadHandler()
-                .submitSync(() -> event.getBlock().setType(XMaterial.AIR.parseMaterial()));
     }
 
     public static class PopupTowerBlocks {
@@ -484,5 +484,7 @@ public class PopupTowerChestItem extends PluginActionItem {
             blocks.put(centre.getRelative(-2, 6, 2), material.parseMaterial());
             return blocks;
         }
+
     }
+
 }

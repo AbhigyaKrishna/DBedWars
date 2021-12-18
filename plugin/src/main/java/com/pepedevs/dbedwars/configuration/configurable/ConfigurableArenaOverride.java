@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
-import com.pepedevs.corelib.utils.loadable.Loadable;
+import com.pepedevs.corelib.particles.ParticleEffect;
+import com.pepedevs.corelib.utils.configuration.Loadable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
@@ -184,6 +184,7 @@ public class ConfigurableArenaOverride implements Loadable {
                 }
             }
         }
+
     }
 
     public class ConfigOverride implements Loadable {
@@ -236,5 +237,7 @@ public class ConfigurableArenaOverride implements Loadable {
             if (this.config.getDeathPoint() != Integer.MIN_VALUE)
                 arena.getSettings().setDeathPoint(this.config.getDeathPoint());
         }
+
     }
+
 }

@@ -1,5 +1,8 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.view.AttributeType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
@@ -7,9 +10,6 @@ import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -101,4 +101,5 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
     public Map<String, Object> getKeyEntry() {
         return this.keyEntry;
     }
+
 }

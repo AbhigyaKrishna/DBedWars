@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.particles.ParticleEffect;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
@@ -176,7 +176,8 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
         return this.spawner != null;
     }
 
-    public void override(ConfigurableArenaOverride.SpawnerOverride o) {}
+    public void override(ConfigurableArenaOverride.SpawnerOverride o) {
+    }
 
     @Override
     public DropType clone() {
@@ -262,6 +263,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
                 throw new AssertionError();
             }
         }
+
     }
 
     public static class Drop implements com.pepedevs.dbedwars.api.game.spawner.DropType.Drop {
@@ -321,5 +323,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
                 throw new AssertionError();
             }
         }
+
     }
+
 }

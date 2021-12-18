@@ -43,4 +43,5 @@ public class UpgradeView {
     public Map<String, UpgradePage> getUpgradePages() {
         return upgradePages;
     }
+
 }

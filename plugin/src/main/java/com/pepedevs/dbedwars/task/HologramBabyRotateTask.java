@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.corelib.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
-import com.pepedevs.corelib.utils.hologram.Hologram;
 
 public class HologramBabyRotateTask extends HologramRotateTask {
 
@@ -97,6 +97,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.timestamp >= 50;
         }
+
     }
 
     private class HologramRotateNoSlow extends CancellableTask {
@@ -141,5 +142,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.lastExec >= 50;
         }
+
     }
+
 }

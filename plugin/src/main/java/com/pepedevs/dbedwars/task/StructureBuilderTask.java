@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
-import com.pepedevs.dbedwars.api.game.struture.Structure;
 import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.xseries.XBlock;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.dbedwars.api.game.Arena;
+import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
+import com.pepedevs.dbedwars.api.game.struture.Structure;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -42,8 +42,8 @@ public class StructureBuilderTask implements Workload {
     @Override
     public void compute() {
         for (int blocksToPlacePerSecond = structure.getBlocksToPlacePerSecond();
-                blocksToPlacePerSecond > 0;
-                blocksToPlacePerSecond--) {
+             blocksToPlacePerSecond > 0;
+             blocksToPlacePerSecond--) {
             if (!blockIterator.hasNext()) break;
 
             Map.Entry<Block, XMaterial> entry = blockIterator.next();
@@ -71,4 +71,5 @@ public class StructureBuilderTask implements Workload {
 
         return blockIterator.hasNext();
     }
+
 }

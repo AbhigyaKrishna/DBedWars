@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.corelib.utils.version.Version;
+import com.pepedevs.corelib.utils.xseries.XItemStack;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import com.pepedevs.corelib.utils.version.Version;
-import com.pepedevs.corelib.utils.xseries.XItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,9 +19,9 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
 
     private final String key;
     private final BwItemStack item;
+    private final Set<ItemStack> cost;
     private boolean autoEquip;
     private boolean colorable;
-    private final Set<ItemStack> cost;
     private int slot;
 
     public ShopItem(String key, BwItemStack item) {
@@ -115,4 +115,5 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
             ((org.bukkit.material.Colorable) this.item.toItemStack()).setColor(color.getDyeColor());
         }
     }
+
 }

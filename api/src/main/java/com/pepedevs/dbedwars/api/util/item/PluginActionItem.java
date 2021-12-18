@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util.item;
 
-import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.corelib.item.ActionItemBase;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.NBTUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,5 +32,7 @@ public abstract class PluginActionItem extends ActionItemBase {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    }
+
 }

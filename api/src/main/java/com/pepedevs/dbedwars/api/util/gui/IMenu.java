@@ -17,15 +17,15 @@ public abstract class IMenu<T extends ItemMenu> {
 
     protected static final AlternateBookPageActionItem NEXT_PAGE =
             new AlternateBookPageActionItem(
-                            StringUtils.translateAlternateColorCodes("&cNext Page"),
-                            ItemStackUtils.getSkull(
-                                    "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODI3MWE0NzEwNDQ5NWUzNTdjM2U4ZTgwZjUxMWE5ZjEwMmIwNzAwY2E5Yjg4ZTg4Yjc5NWQzM2ZmMjAxMDVlYiJ9fX0="))
+                    StringUtils.translateAlternateColorCodes("&cNext Page"),
+                    ItemStackUtils.getSkull(
+                            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODI3MWE0NzEwNDQ5NWUzNTdjM2U4ZTgwZjUxMWE5ZjEwMmIwNzAwY2E5Yjg4ZTg4Yjc5NWQzM2ZmMjAxMDVlYiJ9fX0="))
                     .setGoNext(true);
     protected static final AlternateBookPageActionItem PREVIOUS_PAGE =
             new AlternateBookPageActionItem(
-                            StringUtils.translateAlternateColorCodes("&cPrevious Page"),
-                            ItemStackUtils.getSkull(
-                                    "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjllYTFkODYyNDdmNGFmMzUxZWQxODY2YmNhNmEzMDQwYTA2YzY4MTc3Yzc4ZTQyMzE2YTEwOThlNjBmYjdkMyJ9fX0="))
+                    StringUtils.translateAlternateColorCodes("&cPrevious Page"),
+                    ItemStackUtils.getSkull(
+                            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjllYTFkODYyNDdmNGFmMzUxZWQxODY2YmNhNmEzMDQwYTA2YzY4MTc3Yzc4ZTQyMzE2YTEwOThlNjBmYjdkMyJ9fX0="))
                     .setGoNext(false);
     protected static final VoidActionItem VOID_ITEM =
             new VoidActionItem(
@@ -61,4 +61,5 @@ public abstract class IMenu<T extends ItemMenu> {
     public String getIdentifier() {
         return identifier;
     }
+
 }

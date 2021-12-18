@@ -69,6 +69,11 @@ public class ArenaListener extends PluginHandler {
     }
 
     @Override
+    protected boolean isSingleInstanceForAllPlugin() {
+        return true;
+    }
+
+    @Override
     public void register() {
         super.register();
     }
@@ -77,4 +82,5 @@ public class ArenaListener extends PluginHandler {
     public void unregister() {
         super.unregister();
     }
+
 }

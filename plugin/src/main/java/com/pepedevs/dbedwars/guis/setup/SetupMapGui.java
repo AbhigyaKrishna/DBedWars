@@ -1,14 +1,15 @@
 package com.pepedevs.dbedwars.guis.setup;
 
-import com.pepedevs.corelib.menu.inventory.Item;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.menu.inventory.custom.book.BookItemMenu;
-import com.pepedevs.corelib.menu.inventory.item.action.ActionItem;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
-import com.pepedevs.corelib.menu.inventory.item.voidaction.VoidActionItem;
-import com.pepedevs.corelib.menu.inventory.size.ItemMenuSize;
+import com.pepedevs.corelib.gui.inventory.Item;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.inventory.custom.book.BookItemMenu;
+import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.gui.inventory.item.voidaction.VoidActionItem;
+import com.pepedevs.corelib.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.corelib.utils.world.WorldUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -37,7 +38,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                     StringUtils.translateAlternateColorCodes("&cNo map found :("),
                     XMaterial.PAPER.parseItem(),
                     StringUtils.translateAlternateColorCodes(
-                            new String[] {"&cAdd some arena world to", "&cthe root directory!"}));
+                            new String[]{"&cAdd some arena world to", "&cthe root directory!"}));
 
     public SetupMapGui(DBedwars plugin) {
         super(
@@ -96,10 +97,10 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                 case 2:
                     if (info.get("type").equals("final")
                             && SetupMapGui.this
-                                    .plugin
-                                    .getGeneratorHandler()
-                                    .getWorldAdaptor()
-                                    .saveExist(arena.getSettings().getName())) {
+                            .plugin
+                            .getGeneratorHandler()
+                            .getWorldAdaptor()
+                            .saveExist(arena.getSettings().getName())) {
                         ActionItem world =
                                 new ActionItem(
                                         StringUtils.translateAlternateColorCodes(
@@ -126,14 +127,14 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                                                 StringUtils
                                                                                         .translateAlternateColorCodes(
                                                                                                 "&cPlease"
-                                                                                                    + " disable"
-                                                                                                    + " the arena"
-                                                                                                    + " to make"
-                                                                                                    + " changes"
-                                                                                                    + " in the"
-                                                                                                    + " world"
-                                                                                                    + " or load"
-                                                                                                    + " world!"));
+                                                                                                        + " disable"
+                                                                                                        + " the arena"
+                                                                                                        + " to make"
+                                                                                                        + " changes"
+                                                                                                        + " in the"
+                                                                                                        + " world"
+                                                                                                        + " or load"
+                                                                                                        + " world!"));
                                                                 return;
                                                             }
                                                             if (arena.getWorld() == null) {
@@ -217,8 +218,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                     SetupMapGui.this
                                                             .plugin
                                                             .getThreadHandler()
-                                                            .getLeastWorkSyncWorker()
-                                                            .add(
+                                                            .submitAsync(
                                                                     () -> {
                                                                         World world =
                                                                                 SetupMapGui.this
@@ -227,29 +227,34 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                                                         .getWorld(
                                                                                                 file
                                                                                                         .getName());
-                                                                        if (world != null) {
-                                                                            world.getPlayers()
-                                                                                    .forEach(
-                                                                                            p ->
-                                                                                                    p
-                                                                                                            .teleport(
-                                                                                                                    SetupMapGui
-                                                                                                                            .this
-                                                                                                                            .plugin
-                                                                                                                            .getServer()
-                                                                                                                            .getWorld(
-                                                                                                                                    mainWorld)
-                                                                                                                            .getSpawnLocation()));
-                                                                            SetupMapGui.this
-                                                                                    .plugin
-                                                                                    .getGeneratorHandler()
-                                                                                    .getWorldAdaptor()
-                                                                                    .unloadWorld(
-                                                                                            file
-                                                                                                    .getName(),
-                                                                                            true);
-                                                                            future.complete(true);
-                                                                        }
+                                                                        SchedulerUtils.runTask(new Runnable() {
+                                                                            @Override
+                                                                            public void run() {
+                                                                                if (world != null) {
+                                                                                    world.getPlayers()
+                                                                                            .forEach(
+                                                                                                    p ->
+                                                                                                            p
+                                                                                                                    .teleport(
+                                                                                                                            SetupMapGui
+                                                                                                                                    .this
+                                                                                                                                    .plugin
+                                                                                                                                    .getServer()
+                                                                                                                                    .getWorld(
+                                                                                                                                            mainWorld)
+                                                                                                                                    .getSpawnLocation()));
+                                                                                    SetupMapGui.this
+                                                                                            .plugin
+                                                                                            .getGeneratorHandler()
+                                                                                            .getWorldAdaptor()
+                                                                                            .unloadWorld(
+                                                                                                    file
+                                                                                                            .getName(),
+                                                                                                    true);
+                                                                                    future.complete(true);
+                                                                                }
+                                                                            }
+                                                                        }, SetupMapGui.this.plugin);
                                                                     });
 
                                                     try {
@@ -263,7 +268,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                                     StringUtils
                                                                             .translateAlternateColorCodes(
                                                                                     "&aWorld set"
-                                                                                        + " successfully!"));
+                                                                                            + " successfully!"));
                                                 });
 
                                 Map<String, Object> info = new HashMap<>();
@@ -277,8 +282,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                 SetupMapGui.this
                                         .plugin
                                         .getThreadHandler()
-                                        .getLeastWorkSyncWorker()
-                                        .add(
+                                        .submitSync(
                                                 () -> {
                                                     World world =
                                                             SetupMapGui.this
@@ -297,4 +301,5 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
             this.menu.addItem(item);
         }
     }
+
 }

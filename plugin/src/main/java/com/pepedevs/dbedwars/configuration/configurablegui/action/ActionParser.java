@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.configuration.configurablegui.action;
 
-import com.pepedevs.corelib.menu.inventory.ItemMenu;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.gui.inventory.ItemMenu;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -130,4 +130,5 @@ public class ActionParser {
         this.clickType = clickType;
         return this;
     }
+
 }

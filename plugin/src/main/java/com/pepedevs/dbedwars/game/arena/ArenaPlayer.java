@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.DBedwars;
@@ -10,13 +9,13 @@ import com.pepedevs.dbedwars.api.events.TeamEliminateEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -38,8 +37,6 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
     private com.pepedevs.dbedwars.api.game.ArenaPlayer lastHitTag;
     private Instant lastHitTime;
     private ShopView shopView;
-    private ItemStack[] previousInv;
-    private ItemStack[] previousArmor;
 
     public ArenaPlayer(Player player, Arena arena) {
         this.player = new UUIDPlayer(player);
@@ -166,8 +163,8 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
             event.getVictim().addDeath();
             if (event.getAttacker() != null) event.getAttacker().addFinalKills();
             event.getVictim().setSpectator(true);
-            this.previousInv = event.getVictim().getPlayer().getInventory().getContents();
-            this.previousArmor = event.getVictim().getPlayer().getInventory().getArmorContents();
+//            this.previousInv = event.getVictim().getPlayer().getInventory().getContents();
+//            this.previousArmor = event.getVictim().getPlayer().getInventory().getArmorContents();
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
                 event.getVictim()
@@ -192,7 +189,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                         this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
                 if (oTeam.isPresent()
                         && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count()
-                                == 1) {
+                        == 1) {
                     this.arena.end();
                 }
             }
@@ -257,7 +254,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
     @Override
     public void spawn(Location location) {
-        Utils.setSpawnInventory(this.getPlayer(), this.team, this.previousInv, this.previousArmor);
+        Utils.setSpawnInventory(this.getPlayer(), this.team);
         this.getPlayer().teleport(location);
         this.getPlayer().setHealth(20);
     }
@@ -277,11 +274,11 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
         if (this.lastHitTime == null) return null;
 
         return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000
-                        > DBedwars.getInstance()
-                                .getConfigHandler()
-                                .getMainConfiguration()
-                                .getArenaSection()
-                                .getPlayerHitTagLength()
+                > DBedwars.getInstance()
+                .getConfigHandler()
+                .getMainConfiguration()
+                .getArenaSection()
+                .getPlayerHitTagLength()
                 ? null
                 : this.lastHitTag;
     }
@@ -323,4 +320,5 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                 .getThreadHandler()
                 .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
+
 }

@@ -1,14 +1,13 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.game.view.AttributeType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
-import com.pepedevs.dbedwars.api.game.view.AttributeType;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.console.ConsoleUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -89,9 +88,7 @@ public class ConfigurationUtils {
             try {
                 num = Integer.parseInt(t[0]);
             } catch (NumberFormatException e) {
-                ConsoleUtils.sendMessage(
-                        StringUtils.translateAlternateColorCodes(
-                                "&cCost &8`" + s + "` &cis not in right format! Skipping it!"));
+                DBedwars.getInstance().getLogger().warning("Cost `" + s + "` is not in right format! Skipping it!");
                 continue;
             }
             Optional<XMaterial> xm =
@@ -115,4 +112,5 @@ public class ConfigurationUtils {
         }
         return attributes;
     }
+
 }

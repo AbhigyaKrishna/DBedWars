@@ -27,4 +27,5 @@ public interface GuiHandler {
     Map<String, IMenu> getGuis();
 
     Map<String, IAnvilMenu> getAnvilGuis();
+
 }

@@ -12,14 +12,6 @@ public class MessagingMember {
 
     private final MessagingHistory messagingHistory;
 
-    public static MessagingMember ofPlayer(Player player) {
-        return MessagingServer.connect().getMessagingMember(player);
-    }
-
-    public static MessagingMember ofConsole() {
-        return MessagingServer.connect().getConsole();
-    }
-
     protected MessagingMember(Audience audience, Player player) {
         this(audience, (CommandSender) player);
     }
@@ -32,6 +24,14 @@ public class MessagingMember {
         this.audienceMember = audience;
         this.sender = sender;
         this.messagingHistory = new MessagingHistory();
+    }
+
+    public static MessagingMember ofPlayer(Player player) {
+        return MessagingServer.connect().getMessagingMember(player);
+    }
+
+    public static MessagingMember ofConsole() {
+        return MessagingServer.connect().getConsole();
     }
 
     public SentMessage sendMessage(Message message, MessagingChannel channel) {
@@ -67,4 +67,5 @@ public class MessagingMember {
     public MessagingHistory getMessagingHistory() {
         return messagingHistory;
     }
+
 }

@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.api.events;
 
+import com.pepedevs.corelib.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopItem;
-import com.pepedevs.corelib.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,4 +52,5 @@ public class PlayerPurchaseItemEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

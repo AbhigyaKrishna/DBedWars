@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -233,8 +233,13 @@ public class ConfigurableUpgrade implements Loadable {
                     public List<String> getGoal() {
                         return this.goal;
                     }
+
                 }
+
             }
+
         }
+
     }
+
 }

@@ -9,4 +9,5 @@ public interface ClickCommand {
     List<String> getCommand();
 
     void runCommand(Player player);
+
 }

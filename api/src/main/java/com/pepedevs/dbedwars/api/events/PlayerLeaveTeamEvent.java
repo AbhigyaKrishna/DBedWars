@@ -44,4 +44,5 @@ public class PlayerLeaveTeamEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

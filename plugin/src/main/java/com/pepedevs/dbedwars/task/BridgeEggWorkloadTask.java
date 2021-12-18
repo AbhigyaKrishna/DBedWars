@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
 public class BridgeEggWorkloadTask implements Workload {
+
     private final DBedwars plugin;
-    private int tick;
     private final int keepAliveTimeout;
     private final double maxEggDistance;
     private final Player player;
@@ -23,10 +23,11 @@ public class BridgeEggWorkloadTask implements Workload {
     private final double maxDownStack;
     private final double minDistanceToStartPlacingBlocks;
     private final DyeColor dyeColor;
-    private long timestamp;
-    private Block lastBlock;
     private final BlockFace[] faces;
     private final Arena arena;
+    private int tick;
+    private long timestamp;
+    private Block lastBlock;
 
     public BridgeEggWorkloadTask(
             DBedwars plugin,
@@ -190,4 +191,5 @@ public class BridgeEggWorkloadTask implements Workload {
             placeBlock(block.getRelative(faces[1]), dyeColor);
         }
     }
+
 }

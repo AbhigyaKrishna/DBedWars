@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.bukkit.ChatColor;
@@ -15,7 +15,8 @@ public class BedBugDisplayNameUpdateTask implements Workload {
     private final ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
     private final ChatColor teamColor;
     private final DecimalFormat formatter;
-
+    private long timestamp = System.currentTimeMillis();
+    private int tick = 0;
     public BedBugDisplayNameUpdateTask(
             Silverfish silverfish,
             Team team,
@@ -27,9 +28,6 @@ public class BedBugDisplayNameUpdateTask implements Workload {
         this.formatter = new DecimalFormat("###.#");
         this.formatter.setMinimumFractionDigits(1);
     }
-
-    private long timestamp = System.currentTimeMillis();
-    private int tick = 0;
 
     @Override
     public void compute() {
@@ -83,4 +81,5 @@ public class BedBugDisplayNameUpdateTask implements Workload {
         tick++;
         return silverfish != null && !silverfish.isDead();
     }
+
 }

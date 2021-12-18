@@ -457,4 +457,5 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
         this.availableTeams = new HashSet<>(cfgArena.getTeams());
         this.drops = cfgArena.getSpawners();
     }
+
 }

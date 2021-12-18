@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ConfigurableHologram implements Loadable {
@@ -69,6 +69,7 @@ public class ConfigurableHologram implements Loadable {
         public String getAnimationEndTask() {
             return animationEndTask;
         }
+
     }
 
     public static class ConfigurableBabyHologram implements Loadable {
@@ -122,5 +123,7 @@ public class ConfigurableHologram implements Loadable {
         public int getTicksPerAnimationCycle() {
             return ticksPerAnimationCycle;
         }
+
     }
+
 }

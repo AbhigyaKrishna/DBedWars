@@ -7,9 +7,8 @@ import java.util.Set;
 public class MessagingChannel {
 
     private final Set<MessagingMember> channelMembers;
-    private EnumChannel channelType;
-
     private final MessagingHistory messagingHistory;
+    private EnumChannel channelType;
 
     protected MessagingChannel() {
         this.channelMembers = new HashSet<>();
@@ -68,4 +67,5 @@ public class MessagingChannel {
     public MessagingHistory getMessagingHistory() {
         return messagingHistory;
     }
+
 }

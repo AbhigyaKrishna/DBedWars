@@ -77,4 +77,5 @@ public interface ArenaPlayer {
     ShopView getShopView();
 
     void queueRespawn();
+
 }

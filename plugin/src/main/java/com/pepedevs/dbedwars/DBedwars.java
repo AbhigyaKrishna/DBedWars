@@ -2,17 +2,16 @@ package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
 import com.pepedevs.corelib.database.DatabaseType;
+import com.pepedevs.corelib.holograms.HologramManager;
 import com.pepedevs.corelib.placeholders.PlaceholderUtil;
 import com.pepedevs.corelib.plugin.Plugin;
 import com.pepedevs.corelib.plugin.PluginAdapter;
 import com.pepedevs.corelib.plugin.PluginDependence;
 import com.pepedevs.corelib.utils.ServerPropertiesUtils;
-import com.pepedevs.corelib.utils.console.ConsoleUtils;
-import com.pepedevs.corelib.utils.hologram.HologramFactory;
-import com.pepedevs.corelib.utils.npc.NPCPool;
 import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
-import com.pepedevs.dbedwars.commands.*;
+import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
+import com.pepedevs.dbedwars.commands.BedwarsCommand;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableDatabase;
@@ -23,11 +22,9 @@ import com.pepedevs.dbedwars.database.SQLite;
 import com.pepedevs.dbedwars.game.GameManager;
 import com.pepedevs.dbedwars.handler.*;
 import com.pepedevs.dbedwars.item.*;
-import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -39,7 +36,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Executors;
 
 public final class DBedwars extends PluginAdapter {
 
@@ -55,12 +51,15 @@ public final class DBedwars extends PluginAdapter {
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
     private ConfigHandler configHandler;
-    private NPCPool npcHandler;
     private ImageHandler imageHandler;
-    private HologramFactory hologramFactory;
+    private HologramManager hologramManager;
 
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
+
+    public static DBedwars getInstance() {
+        return Plugin.getPlugin(DBedwars.class);
+    }
 
     @Override
     public void onLoad() {
@@ -86,7 +85,6 @@ public final class DBedwars extends PluginAdapter {
     protected boolean setUp() {
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
-        this.hologramFactory = new HologramFactory(this);
 
         this.getServer()
                 .getServicesManager()
@@ -103,12 +101,10 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     public void onDisable() {
-        //        this.threadHandler.destroyAllThreads();
+        this.threadHandler.destroy();
     }
 
     /**
-     *
-     *
      * <ul>
      *   <li>PluginDependence[0] = MultiVerseCore
      *   <li>PluginDependence[1] = SlimeWorldManager
@@ -118,53 +114,48 @@ public final class DBedwars extends PluginAdapter {
     public PluginDependence[] getDependences() {
         if (!PluginFiles.HOOKS.getFile().isDirectory()) {
             if (!PluginFiles.HOOKS.getFile().mkdirs()) {
-                ConsoleUtils.sendPluginMessage(
-                        ChatColor.RED + Lang.ERROR_WRITE_FILES.toString(), this.getAlias());
+                this.getLogger().severe(Lang.ERROR_WRITE_FILES.toString());
             }
         }
-        return new PluginDependence[] {
-            new PluginDependence("MultiVerse-Core") {
+        return new PluginDependence[]{
+                new PluginDependence("MultiVerse-Core") {
 
-                private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
+                    private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
 
-                @Override
-                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                    if (plugin != null) {
-                        ConsoleUtils.sendPluginMessage(
-                                Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()),
-                                DBedwars.this.getAlias());
-                        DBedwars.this.saveResource(
-                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                        PluginFileUtils.set(this.file, "enabled", true);
-                    } else {
-                        if (this.file.exists()) {
-                            PluginFileUtils.set(this.file, "enabled", false);
+                    @Override
+                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
+                        if (plugin != null) {
+                            DBedwars.this.getLogger().info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                            DBedwars.this.saveResource(
+                                    "hooks/" + this.file.getName(), this.file.getParentFile(), false);
+                            PluginFileUtils.set(this.file, "enabled", true);
+                        } else {
+                            if (this.file.exists()) {
+                                PluginFileUtils.set(this.file, "enabled", false);
+                            }
                         }
+                        return true;
                     }
-                    return true;
-                }
-            },
-            new PluginDependence("SlimeWorldManager") {
+                },
+                new PluginDependence("SlimeWorldManager") {
 
-                private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
+                    private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
 
-                @Override
-                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                    if (plugin != null && DBedwars.this.checkSWM(plugin)) {
-                        ConsoleUtils.sendPluginMessage(
-                                Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()),
-                                DBedwars.this.getAlias());
-                        DBedwars.this.saveResource(
-                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                        PluginFileUtils.set(this.file, "enabled", true);
-                    } else {
-                        if (this.file.exists()) {
-                            PluginFileUtils.set(this.file, "enabled", false);
+                    @Override
+                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
+                        if (plugin != null && DBedwars.this.checkSWM(plugin)) {
+                            DBedwars.this.getLogger().info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                            DBedwars.this.saveResource(
+                                    "hooks/" + this.file.getName(), this.file.getParentFile(), false);
+                            PluginFileUtils.set(this.file, "enabled", true);
+                        } else {
+                            if (this.file.exists()) {
+                                PluginFileUtils.set(this.file, "enabled", false);
+                            }
                         }
+                        return true;
                     }
-                    return true;
                 }
-            }
         };
     }
 
@@ -173,8 +164,7 @@ public final class DBedwars extends PluginAdapter {
         for (PluginFiles folder : PluginFiles.getDirectories()) {
             if (!folder.getFile().isDirectory())
                 if (!folder.getFile().mkdirs()) {
-                    ConsoleUtils.sendPluginMessage(
-                            Lang.ERROR_WRITE_FILES.toString(), this.getAlias());
+                    this.getLogger().warning(Lang.ERROR_WRITE_FILES.toString());
                     return false;
                 }
         }
@@ -195,20 +185,18 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
+        this.threadHandler = new ThreadHandler(this);
+        this.threadHandler.runThreads(4);
         this.worldHandler = new WorldHandler(this);
         this.gameManager = new GameManager(this);
         this.configHandler = new ConfigHandler(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.imageHandler = new ImageHandler(this);
-        this.npcHandler = NPCPool.createDefault(this);
-
-        this.threadHandler = new ThreadHandler(this, 4, 3);
-        this.threadHandler.runThreads();
+        this.hologramManager = new HologramManager(this, this.threadHandler.getUpdaterTask());
 
         this.threadHandler
-                .getUpdaterThread()
-                .add(
+                .submitAsync(
                         () -> {
                             this.configHandler.loadConfigurations();
 
@@ -217,14 +205,6 @@ public final class DBedwars extends PluginAdapter {
 
                             this.registerCustomItems();
                             this.initDatabase();
-
-                            Executors.newSingleThreadExecutor()
-                                    .execute(
-                                            () -> {
-                                                imageHandler.clearCache();
-                                                imageHandler.formatAllImagesToPNG();
-                                                imageHandler.loadAllFormattedImages();
-                                            });
                         });
 
         return true;
@@ -232,14 +212,6 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands() {
-        //        new CommandHandler(
-        //                this,
-        //                "bedwars",
-        //                new Setup(this),
-        //                new Start(this),
-        //                new HoloTestCommand(),
-        //                new ImageParticleTestCommand());
-
         PaperCommandManager manager = new PaperCommandManager(this);
         manager.enableUnstableAPI("help");
         manager.registerCommand(new BedwarsCommand(this));
@@ -252,10 +224,6 @@ public final class DBedwars extends PluginAdapter {
         this.listeners = new ArrayList<>();
         this.listeners.forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
         return true;
-    }
-
-    public static DBedwars getInstance() {
-        return Plugin.getPlugin(DBedwars.class);
     }
 
     public Version getServerVersion() {
@@ -306,16 +274,12 @@ public final class DBedwars extends PluginAdapter {
         return this.database;
     }
 
-    public NPCPool getNpcHandler() {
-        return this.npcHandler;
-    }
-
     public ImageHandler getImageHandler() {
         return imageHandler;
     }
 
-    public HologramFactory getHologramFactory() {
-        return this.hologramFactory;
+    public HologramManager getHologramManager() {
+        return this.hologramManager;
     }
 
     private void initDatabase() {
@@ -381,11 +345,8 @@ public final class DBedwars extends PluginAdapter {
             case "1.0.2":
             case "1.0.1":
             case "1.0.0-BETA":
-                ConsoleUtils.sendPluginMessage(
-                        ChatColor.DARK_RED
-                                + "Could not hook into SlimeWorldManager support! You are running"
-                                + " an unsupported version",
-                        this.getAlias());
+                this.getLogger().severe("Could not hook into SlimeWorldManager support! You are running"
+                        + " an unsupported version");
                 return false;
         }
         return true;
@@ -419,4 +380,5 @@ public final class DBedwars extends PluginAdapter {
             }
         };
     }
+
 }

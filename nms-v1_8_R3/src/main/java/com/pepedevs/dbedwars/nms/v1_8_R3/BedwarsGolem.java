@@ -12,8 +12,8 @@ import java.util.Optional;
 public class BedwarsGolem implements IGolem {
 
     private final EntityIronGolem golem;
-    private float radius;
     private final Team spawningPlayerTeam;
+    private float radius;
 
     public BedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer) {
         this.golem = ((CraftIronGolem) golem).getHandle();
@@ -80,5 +80,7 @@ public class BedwarsGolem implements IGolem {
             if (optionalPlayer.get().isSpectator()) return false;
             return !spawningTeam.getPlayers().contains(optionalPlayer.get());
         }
+
     }
+
 }

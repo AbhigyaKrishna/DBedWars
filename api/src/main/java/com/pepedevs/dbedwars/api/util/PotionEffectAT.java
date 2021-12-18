@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.corelib.utils.xseries.XPotion;
+import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -129,4 +129,5 @@ public class PotionEffectAT {
                 + ":"
                 + (this.particleOff ? "true" : "");
     }
+
 }

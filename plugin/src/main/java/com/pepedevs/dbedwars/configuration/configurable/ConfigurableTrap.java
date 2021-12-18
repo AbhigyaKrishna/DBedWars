@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -96,5 +96,7 @@ public class ConfigurableTrap implements Loadable {
         public List<String> getExecutables() {
             return executables;
         }
+
     }
+
 }

@@ -1,5 +1,8 @@
 package com.pepedevs.dbedwars.listeners;
 
+import com.pepedevs.corelib.utils.PluginHandler;
+import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerBaseEnterEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -11,9 +14,6 @@ import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.item.*;
 import com.pepedevs.dbedwars.utils.Utils;
-import com.pepedevs.corelib.utils.PluginHandler;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -93,17 +93,17 @@ public class GameListener extends PluginHandler {
                                                 t.getBedLocation().getBlock(this.arena.getWorld());
                                         return (block.equals(event.getBlock())
                                                 || block.equals(
-                                                        event.getBlock()
-                                                                .getRelative(BlockFace.EAST))
+                                                event.getBlock()
+                                                        .getRelative(BlockFace.EAST))
                                                 || block.equals(
-                                                        event.getBlock()
-                                                                .getRelative(BlockFace.WEST))
+                                                event.getBlock()
+                                                        .getRelative(BlockFace.WEST))
                                                 || block.equals(
-                                                        event.getBlock()
-                                                                .getRelative(BlockFace.NORTH))
+                                                event.getBlock()
+                                                        .getRelative(BlockFace.NORTH))
                                                 || block.equals(
-                                                        event.getBlock()
-                                                                .getRelative(BlockFace.SOUTH)));
+                                                event.getBlock()
+                                                        .getRelative(BlockFace.SOUTH)));
                                     })
                             .findFirst();
 
@@ -146,37 +146,37 @@ public class GameListener extends PluginHandler {
         // TODO ADDITIONAL CHECK FOR TNT
         if (block.getType() == XMaterial.TNT.parseMaterial()
                 && ((DBedwars) this.getPlugin())
-                        .getCustomItemHandler()
-                        .getItem("TNT")
-                        .isThis(player.getPlayer().getItemInHand())) {
+                .getCustomItemHandler()
+                .getItem("TNT")
+                .isThis(player.getPlayer().getItemInHand())) {
             ((TNTItem) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("TNT"))
                     .onTNTPlace(event);
         }
         if (block.getType() == XMaterial.SPONGE.parseMaterial()
                 && ((DBedwars) this.getPlugin())
-                        .getCustomItemHandler()
-                        .getItem("SPONGE")
-                        .isThis(player.getPlayer().getItemInHand())) {
+                .getCustomItemHandler()
+                .getItem("SPONGE")
+                .isThis(player.getPlayer().getItemInHand())) {
             ((Sponge) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("SPONGE"))
                     .onSpongePlace(event);
         }
         if (block.getType() == XMaterial.TRAPPED_CHEST.parseMaterial()
                 && ((DBedwars) this.getPlugin())
-                        .getCustomItemHandler()
-                        .getItem("POPUP_TOWER")
-                        .isThis(player.getPlayer().getItemInHand())) {
+                .getCustomItemHandler()
+                .getItem("POPUP_TOWER")
+                .isThis(player.getPlayer().getItemInHand())) {
             ((PopupTowerChestItem)
-                            ((DBedwars) this.getPlugin())
-                                    .getCustomItemHandler()
-                                    .getItem("POPUP_TOWER"))
+                    ((DBedwars) this.getPlugin())
+                            .getCustomItemHandler()
+                            .getItem("POPUP_TOWER"))
                     .onChestPlace(event, player);
         }
         // TODO REFERENCE
         if (NBTUtils.hasNBTData(event.getItemInHand(), "")) {
             ((BlastProofGlass)
-                            ((DBedwars) this.getPlugin())
-                                    .getCustomItemHandler()
-                                    .getItem("BLAST_PROOF_GLASS"))
+                    ((DBedwars) this.getPlugin())
+                            .getCustomItemHandler()
+                            .getItem("BLAST_PROOF_GLASS"))
                     .onPlace(event);
         }
     }
@@ -211,11 +211,11 @@ public class GameListener extends PluginHandler {
         if (entity.getType() == EntityType.IRON_GOLEM
                 && entity.hasMetadata("isDBedwarsGolem")
                 && entity.getMetadata("isDBedwarsGolem")
-                        .contains(DreamDefenderSpawnEgg.GOLEM_META_VALUE)) {
+                .contains(DreamDefenderSpawnEgg.GOLEM_META_VALUE)) {
             ((DreamDefenderSpawnEgg)
-                            ((DBedwars) this.getPlugin())
-                                    .getCustomItemHandler()
-                                    .getItem("DREAM_DEFENDER"))
+                    ((DBedwars) this.getPlugin())
+                            .getCustomItemHandler()
+                            .getItem("DREAM_DEFENDER"))
                     .onDeath(event);
         }
     }
@@ -349,9 +349,9 @@ public class GameListener extends PluginHandler {
                                 .getItem("WATER_BUCKET")
                                 .toItemStack())) {
             ((WaterBucket)
-                            ((DBedwars) this.getPlugin())
-                                    .getCustomItemHandler()
-                                    .getItem("WATER_BUCKET"))
+                    ((DBedwars) this.getPlugin())
+                            .getCustomItemHandler()
+                            .getItem("WATER_BUCKET"))
                     .onWaterBucketUse(event);
         }
     }
@@ -365,11 +365,11 @@ public class GameListener extends PluginHandler {
         if (event.getEntityType() == EntityType.SNOWBALL) {
             if (entity.hasMetadata("isDBedWarsBedBugBall")
                     && entity.getMetadata("isDBedWarsBedBugBall")
-                            .contains(BedBugSnowball.bedBugBallMeta)) {
+                    .contains(BedBugSnowball.bedBugBallMeta)) {
                 ((BedBugSnowball)
-                                ((DBedwars) this.getPlugin())
-                                        .getCustomItemHandler()
-                                        .getItem("BED_BUG"))
+                        ((DBedwars) this.getPlugin())
+                                .getCustomItemHandler()
+                                .getItem("BED_BUG"))
                         .onLand(event);
             }
         }
@@ -388,7 +388,7 @@ public class GameListener extends PluginHandler {
                             for (Team team : this.arena.getTeams()) {
                                 if (team.getIslandArea().contains(event.getTo().toVector())
                                         && !team.getIslandArea()
-                                                .contains(event.getFrom().toVector())) {
+                                        .contains(event.getFrom().toVector())) {
                                     PlayerBaseEnterEvent e =
                                             new PlayerBaseEnterEvent(p, this.arena, team);
                                     e.call();
@@ -403,6 +403,11 @@ public class GameListener extends PluginHandler {
     }
 
     @Override
+    protected boolean isSingleInstanceForAllPlugin() {
+        return true;
+    }
+
+    @Override
     public void register() {
         super.register();
     }
@@ -411,4 +416,5 @@ public class GameListener extends PluginHandler {
     public void unregister() {
         super.unregister();
     }
+
 }

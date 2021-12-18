@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.messaging.parser;
 
-import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import com.pepedevs.corelib.placeholders.PlaceholderUtil;
+import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
@@ -47,4 +47,5 @@ public class MiniMessageParser implements MessageParser {
     public void setInstance(MiniMessage instance) {
         this.instance = instance;
     }
+
 }

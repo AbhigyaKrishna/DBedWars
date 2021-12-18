@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.guis;
 
+import com.pepedevs.corelib.gui.inventory.ItemMenu;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopPage;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;
-import com.pepedevs.corelib.menu.inventory.ItemMenu;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.menu.inventory.size.ItemMenuSize;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,4 +41,5 @@ public class ShopGui extends IMenu<ItemMenu> {
             }
         }
     }
+
 }

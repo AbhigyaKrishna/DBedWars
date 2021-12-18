@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.bukkit.ChatColor;
@@ -15,7 +15,8 @@ public class GolemDisplayNameUpdateTask implements Workload {
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
     private final ChatColor teamColor;
     private final DecimalFormat formatter;
-
+    private long timestamp = System.currentTimeMillis();
+    private int tick = 0;
     public GolemDisplayNameUpdateTask(
             IronGolem golem,
             Team team,
@@ -27,9 +28,6 @@ public class GolemDisplayNameUpdateTask implements Workload {
         this.formatter = new DecimalFormat("###");
         this.formatter.setMinimumFractionDigits(1);
     }
-
-    private long timestamp = System.currentTimeMillis();
-    private int tick = 0;
 
     @Override
     public void compute() {
@@ -81,4 +79,5 @@ public class GolemDisplayNameUpdateTask implements Workload {
         tick++;
         return golem != null && !golem.isDead();
     }
+
 }

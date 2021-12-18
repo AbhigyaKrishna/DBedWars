@@ -1,8 +1,9 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.particles.ParticleEffect;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.corelib.utils.reflection.general.EnumReflection;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
@@ -112,11 +113,7 @@ public class ConfigurableItemSpawner implements Loadable {
     }
 
     public ParticleEffect getSpawnEffect() {
-        try {
-            return ParticleEffect.valueOf(this.spawnEffect);
-        } catch (IllegalArgumentException ignored) {
-        }
-        return null;
+        return EnumReflection.getEnumConstant(ParticleEffect.class, this.spawnEffect);
     }
 
     public int getRadius() {
@@ -247,6 +244,7 @@ public class ConfigurableItemSpawner implements Loadable {
         public Map<String, ConfigurableDrop> getActions() {
             return this.actions;
         }
+
     }
 
     public static class ConfigurableDrop implements Loadable {
@@ -299,5 +297,7 @@ public class ConfigurableItemSpawner implements Loadable {
         public int getLimit() {
             return this.limit;
         }
+
     }
+
 }

@@ -13,4 +13,5 @@ public interface GameManager {
     Map<String, Arena> getArenas();
 
     Arena getArena(String name);
+
 }

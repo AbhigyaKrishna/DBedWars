@@ -13,4 +13,5 @@ public interface ShopView {
     void setDefaultPage(ShopPage defaultPage);
 
     Map<String, com.pepedevs.dbedwars.api.game.view.ShopPage> getShopPages();
+
 }

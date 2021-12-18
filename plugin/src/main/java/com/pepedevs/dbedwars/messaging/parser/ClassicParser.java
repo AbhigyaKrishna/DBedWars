@@ -27,4 +27,5 @@ public class ClassicParser implements MessageParser {
     public Component parseWithPlaceholder(String message, Player player, Template... placeholders) {
         return null;
     }
+
 }

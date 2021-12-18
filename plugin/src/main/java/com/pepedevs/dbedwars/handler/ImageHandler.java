@@ -72,6 +72,7 @@ public class ImageHandler {
     }
 
     public static class ImageUtils {
+
         public static void downscale(File image, Dimension dimension, File saveLocation) {
             if (!image.exists()) return;
 
@@ -138,5 +139,7 @@ public class ImageHandler {
         private static boolean isTransparent(int rgb) {
             return ((rgb >> 24) == 0x00);
         }
+
     }
+
 }

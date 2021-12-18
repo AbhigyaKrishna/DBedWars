@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.pepedevs.corelib.database.DatabaseType;
-import com.pepedevs.corelib.utils.loadable.Loadable;
-import com.pepedevs.corelib.utils.loadable.LoadableEntry;
+import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -110,6 +110,7 @@ public class ConfigurableDatabase implements Loadable {
         public boolean isSsl() {
             return ssl;
         }
+
     }
 
     public static class ConfigurableMongoDB implements Loadable {
@@ -149,5 +150,7 @@ public class ConfigurableDatabase implements Loadable {
         public String getDatabaseName() {
             return databaseName;
         }
+
     }
+
 }

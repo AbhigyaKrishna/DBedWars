@@ -48,4 +48,5 @@ public class PlayerLeaveArenaLobbyEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

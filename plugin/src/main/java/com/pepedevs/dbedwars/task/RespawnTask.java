@@ -1,10 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.titles.TitleUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -26,10 +25,11 @@ public class RespawnTask extends CancellableTask implements Listener {
                         .getArenaSection()
                         .getRespawnTime();
         this.player = player;
-        TitleUtils.send(
-                player.getPlayer(),
-                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time + "s"),
-                "");
+        // TODO
+//        TitleUtils.send(
+//                player.getPlayer(),
+//                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time + "s"),
+//                "");
         this.lastExecuted = System.currentTimeMillis();
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
@@ -39,10 +39,11 @@ public class RespawnTask extends CancellableTask implements Listener {
     public void compute() {
         this.lastExecuted = System.currentTimeMillis();
         this.time--;
-        TitleUtils.send(
-                player.getPlayer(),
-                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time + "s"),
-                "");
+        // TODO
+//        TitleUtils.send(
+//                player.getPlayer(),
+//                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time + "s"),
+//                "");
         if (time == 0) {
             ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) this.player).setRespawning(false);
             this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));
@@ -72,4 +73,5 @@ public class RespawnTask extends CancellableTask implements Listener {
         this.setCancelled(true);
         HandlerList.unregisterAll(this);
     }
+
 }

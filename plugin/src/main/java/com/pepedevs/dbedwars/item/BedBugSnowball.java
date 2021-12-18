@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class BedBugSnowball extends PluginActionItem {
 
-    private final DBedwars plugin;
     public static final FixedMetadataValue bedBugBallMeta =
             new FixedMetadataValue(DBedwars.getInstance(), true);
+    private final DBedwars plugin;
     ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
 
     public BedBugSnowball(DBedwars plugin) {
@@ -35,9 +35,9 @@ public class BedBugSnowball extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getBedBug()
-                                        .getItemLore()),
+                                .getCustomItems()
+                                .getBedBug()
+                                .getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());
         this.plugin = plugin;
         this.cfgBedBug = plugin.getConfigHandler().getCustomItems().getBedBug();
@@ -86,4 +86,5 @@ public class BedBugSnowball extends PluginActionItem {
         plugin.getThreadHandler()
                 .submitAsync(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
     }
+
 }

@@ -21,11 +21,12 @@ public abstract class CancellableTask implements Workload {
         return !this.isCancelled();
     }
 
+    public boolean isCancelled() {
+        return this.cancel.get();
+    }
+
     public void setCancelled(boolean cancelled) {
         this.cancel.set(cancelled);
     }
 
-    public boolean isCancelled() {
-        return this.cancel.get();
-    }
 }

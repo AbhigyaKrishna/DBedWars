@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerPurchaseItemEvent;
 import com.pepedevs.dbedwars.api.exceptions.OverrideException;
@@ -10,8 +12,6 @@ import com.pepedevs.dbedwars.api.util.Overridable;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.guis.ShopGui;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -289,4 +289,5 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         this.command = new ArrayList<>(item.command);
         this.loaded = true;
     }
+
 }

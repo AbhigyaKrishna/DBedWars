@@ -1,14 +1,14 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.corelib.utils.math.LocationUtils;
+import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
+import com.pepedevs.corelib.utils.reflection.general.MethodReflection;
+import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import com.pepedevs.corelib.utils.math.LocationUtils;
-import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
-import com.pepedevs.corelib.utils.reflection.general.MethodReflection;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +16,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -47,9 +46,7 @@ public class Utils {
 
     public static void setSpawnInventory(
             Player player,
-            Team team,
-            @Nullable ItemStack[] previousContent,
-            @Nullable ItemStack[] previousArmor) {
+            Team team) {
         BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET.parseMaterial());
         BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
         BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS.parseMaterial());
@@ -84,10 +81,6 @@ public class Utils {
                 .setItem(0, new BwItemStack(XMaterial.WOODEN_SWORD.parseItem()).toItemStack());
     }
 
-    public static void clearInventory(Player player) {
-        ItemStack[] items = player.getInventory().getContents();
-    }
-
     public static Block findBed(Location location, byte x, byte y, byte z) {
         Location corner = location.clone().add(x, y, z);
         Location corner2 = location.clone().subtract(x, y, z);
@@ -98,7 +91,7 @@ public class Utils {
 
     public static boolean isBed(Block block) {
         return Arrays.asList(ItemConstant.BED.getItems())
-                        .contains(XMaterial.matchXMaterial(block.getType()))
+                .contains(XMaterial.matchXMaterial(block.getType()))
                 || block.getType().name().equals("BED_BLOCK");
     }
 
@@ -163,4 +156,5 @@ public class Utils {
             player.getInventory().getItemInHand().setAmount(--amt);
         }
     }
+
 }

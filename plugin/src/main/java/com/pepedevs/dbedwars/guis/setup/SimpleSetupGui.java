@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.guis.setup;
 
-import com.pepedevs.corelib.menu.inventory.ItemMenu;
-import com.pepedevs.corelib.menu.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ActionItem;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.menu.inventory.item.action.ItemActionPriority;
-import com.pepedevs.corelib.menu.inventory.size.ItemMenuSize;
+import com.pepedevs.corelib.gui.inventory.ItemMenu;
+import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
+import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
+import com.pepedevs.corelib.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.itemstack.stainedglass.StainedGlassItemStack;
 import com.pepedevs.corelib.utils.itemstack.wool.WoolItemStack;
@@ -127,9 +127,9 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                         } else if (itemClickAction.getClickType().equals(ClickType.RIGHT)) {
                             if (arena.getSettings().hasLobby()) {
                                 if (SimpleSetupGui.this
-                                                .plugin
-                                                .getServer()
-                                                .getWorld(arena.getSettings().getName())
+                                        .plugin
+                                        .getServer()
+                                        .getWorld(arena.getSettings().getName())
                                         == null) {
                                     if (SimpleSetupGui.this
                                             .plugin
@@ -139,8 +139,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                                         SimpleSetupGui.this
                                                 .plugin
                                                 .getThreadHandler()
-                                                .getLeastWorkAsyncWorker()
-                                                .add(
+                                                .submitAsync(
                                                         () -> {
                                                             World world = arena.loadWorld();
                                                             arena.setWorld(world);
@@ -247,8 +246,8 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                         StringUtils.translateAlternateColorCodes("&aSet world"),
                         XMaterial.GRASS_BLOCK.parseItem(),
                         StringUtils.translateAlternateColorCodes(
-                                new String[] {
-                                    "&eClick to set arena world to current world.", "&eAnd save it"
+                                new String[]{
+                                        "&eClick to set arena world to current world.", "&eAnd save it"
                                 }));
         world.addAction(
                 new ItemAction() {
@@ -262,9 +261,9 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                         String world = itemClickAction.getPlayer().getWorld().getName();
                         if (world.equals(SimpleSetupGui.this.plugin.getMainWorld())
                                 || world.equals(
-                                        SimpleSetupGui.this.plugin.getMainWorld() + "_nether")
+                                SimpleSetupGui.this.plugin.getMainWorld() + "_nether")
                                 || world.equals(
-                                        SimpleSetupGui.this.plugin.getMainWorld() + "_the_end")) {
+                                SimpleSetupGui.this.plugin.getMainWorld() + "_the_end")) {
                             itemClickAction
                                     .getPlayer()
                                     .sendMessage(
@@ -277,8 +276,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                         SimpleSetupGui.this
                                 .plugin
                                 .getThreadHandler()
-                                .getLeastWorkSyncWorker()
-                                .add(
+                                .submitSync(
                                         () -> {
                                             itemClickAction
                                                     .getPlayer()
@@ -306,8 +304,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                         SimpleSetupGui.this
                                 .plugin
                                 .getThreadHandler()
-                                .getLeastWorkAsyncWorker()
-                                .add(
+                                .submitAsync(
                                         () -> {
                                             try {
                                                 future.get();
@@ -357,7 +354,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
     }
 
     private void renderPageTwo(Arena arena) {
-        byte[] index = new byte[] {10, 12, 14, 16, 19, 21, 23, 25, 28, 30, 32, 34, 37, 39, 41, 43};
+        byte[] index = new byte[]{10, 12, 14, 16, 19, 21, 23, 25, 28, 30, 32, 34, 37, 39, 41, 43};
         Color[] colors = Color.values();
         Set<Team> teams = arena.getSettings().getAvailableTeams();
         List<Color> enabledColor = teams.stream().map(Team::getColor).collect(Collectors.toList());
@@ -371,9 +368,9 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
                                 colors[i].getChatColor() + "Team " + colors[i].name(),
                                 new WoolItemStack(colors[i].getWoolColor()),
                                 StringUtils.translateAlternateColorCodes(
-                                        new String[] {
-                                            "&eLeft click to open team settings.",
-                                            "&cRight click to disable team."
+                                        new String[]{
+                                                "&eLeft click to open team settings.",
+                                                "&cRight click to disable team."
                                         }));
                 byte finalI1 = i;
                 color.addAction(
@@ -556,4 +553,5 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
         this.menu.setItem(53, next);
         this.menu.setItem(45, back);
     }
+
 }

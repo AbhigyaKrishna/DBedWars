@@ -15,4 +15,5 @@ public interface Trap {
     TrapEnum.TriggerType getTrigger();
 
     Map<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> getActions();
+
 }

@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.exceptions.OverrideException;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
-import com.pepedevs.corelib.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +11,10 @@ import java.util.Map;
 public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
 
     private final String key;
-
+    private final Map<String, com.pepedevs.dbedwars.api.game.view.GuiItem> items;
     private com.pepedevs.dbedwars.api.game.view.ShopView view;
     private String title;
     private com.pepedevs.dbedwars.api.game.view.GuiItem[][] pattern;
-    private final Map<String, com.pepedevs.dbedwars.api.game.view.GuiItem> items;
 
     public ShopPage(String key) {
         this.key = key;
@@ -101,4 +100,5 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
     public Map<String, com.pepedevs.dbedwars.api.game.view.GuiItem> getItems() {
         return this.items;
     }
+
 }

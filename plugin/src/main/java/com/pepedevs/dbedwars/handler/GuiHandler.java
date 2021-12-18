@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.handler;
 
-import com.pepedevs.corelib.menu.inventory.ItemMenu;
+import com.pepedevs.corelib.gui.inventory.ItemMenu;
 import com.pepedevs.corelib.utils.reflection.general.ConstructorReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.gui.IAnvilMenu;
@@ -36,7 +36,7 @@ public class GuiHandler implements com.pepedevs.dbedwars.api.handler.GuiHandler 
             for (Class<? extends IMenu> clazz : classes) {
                 IMenu menu =
                         ConstructorReflection.newInstance(
-                                clazz, new Class<?>[] {DBedwars.class}, this.plugin);
+                                clazz, new Class<?>[]{DBedwars.class}, this.plugin);
                 this.registerGui(menu.getIdentifier(), menu);
             }
 
@@ -55,7 +55,7 @@ public class GuiHandler implements com.pepedevs.dbedwars.api.handler.GuiHandler 
             for (Class<? extends IAnvilMenu> clazz : classes) {
                 IAnvilMenu menu =
                         ConstructorReflection.newInstance(
-                                clazz, new Class<?>[] {DBedwars.class}, this.plugin);
+                                clazz, new Class<?>[]{DBedwars.class}, this.plugin);
                 this.registerAnvilGui(menu.getIdentifier(), menu);
             }
         } catch (InvocationTargetException
@@ -111,4 +111,5 @@ public class GuiHandler implements com.pepedevs.dbedwars.api.handler.GuiHandler 
     public Map<String, IAnvilMenu> getAnvilGuis() {
         return Collections.unmodifiableMap(this.anvilGuis);
     }
+
 }

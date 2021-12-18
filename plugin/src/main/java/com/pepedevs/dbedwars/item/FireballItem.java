@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.utils.EventUtils;
+import com.pepedevs.corelib.events.EventUtils;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -25,9 +25,9 @@ import java.util.List;
 
 public class FireballItem extends PluginActionItem {
 
-    private final ConfigurableCustomItems.ConfigurableFireball cfgFireball;
     public static final FixedMetadataValue fireballMeta =
             new FixedMetadataValue(DBedwars.getInstance(), DBedwars.getInstance().getName());
+    private final ConfigurableCustomItems.ConfigurableFireball cfgFireball;
     private final ConfigurableCustomItems.KnockBack cfgKB;
 
     // TODO DAMAGE SETTINGS TO BE ADDED
@@ -40,9 +40,9 @@ public class FireballItem extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getFireball()
-                                        .getLore()),
+                                .getCustomItems()
+                                .getFireball()
+                                .getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
         this.cfgFireball = plugin.getConfigHandler().getCustomItems().getFireball();
         this.cfgKB = cfgFireball.getKnockBack();
@@ -53,7 +53,7 @@ public class FireballItem extends PluginActionItem {
             Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         if (EventUtils.isRightClick(playerInteractEvent.getAction())
                 || (cfgFireball.isLeftClickThrowEnabled()
-                        && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
+                && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
             playerInteractEvent.setCancelled(true);
             Utils.useItem(player);
             Fireball fireball = player.launchProjectile(Fireball.class);
@@ -104,4 +104,5 @@ public class FireballItem extends PluginActionItem {
             if (!DamageEvent.isCancelled()) player.damage(DamageEvent.getFinalDamage());
         }
     }
+
 }

@@ -1,9 +1,11 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
+import com.pepedevs.corelib.particles.ParticleBuilder;
 import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.corelib.utils.xseries.XBlock;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.SoundVP;
@@ -25,11 +27,13 @@ public class PopupTowerWorkload implements Workload {
     private final ParticleBuilder particle;
     private final Block chest;
     private final DyeColor color;
-    private HashMap<Block, Material> blockMap;
     private final BlockFace face;
-    private Block[] blocks;
     private final int blocksPerTick;
     private final Arena arena;
+    private HashMap<Block, Material> blockMap;
+    private Block[] blocks;
+    private long timestamp = System.currentTimeMillis();
+    private int t = -1;
 
     public PopupTowerWorkload(
             XMaterial material,
@@ -70,24 +74,26 @@ public class PopupTowerWorkload implements Workload {
         blocks = blockMap.keySet().toArray(new Block[0]);
     }
 
-    private long timestamp = System.currentTimeMillis();
-    private int t = -1;
-
     @Override
     public void compute() {
         for (int i = 0; i < blocksPerTick; i++) {
             if ((t * blocksPerTick + i) <= blocks.length - 1) {
                 Block block = blocks[t * blocksPerTick + i];
                 Material material = blockMap.get(block);
-                if (block.isEmpty()) {
-                    arena.setBlock(block, blockMap.get(block));
-                    if (block.getState().getData() instanceof Colorable) {
-                        XBlock.setColor(block, color);
+                SchedulerUtils.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (block.isEmpty()) {
+                            arena.setBlock(block, blockMap.get(block));
+                            if (block.getState().getData() instanceof Colorable) {
+                                XBlock.setColor(block, color);
+                            }
+                            if (material == Material.LADDER) {
+                                XBlock.setDirection(block, face);
+                            }
+                        }
                     }
-                    if (material == Material.LADDER) {
-                        XBlock.setDirection(block, face);
-                    }
-                }
+                }, DBedwars.getInstance());
                 sound.play(block.getLocation());
                 particle.setLocation(block.getLocation()).display();
             }
@@ -108,4 +114,5 @@ public class PopupTowerWorkload implements Workload {
         t++;
         return t * blocksPerTick < blocks.length + blocksPerTick;
     }
+
 }

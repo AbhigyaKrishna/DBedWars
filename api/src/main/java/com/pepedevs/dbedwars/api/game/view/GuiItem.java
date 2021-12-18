@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.api.game.view;
 
+import com.pepedevs.corelib.gui.inventory.Item;
 import com.pepedevs.dbedwars.api.game.view.attributes.ClickCommand;
 import com.pepedevs.dbedwars.api.game.view.attributes.PageChange;
 import com.pepedevs.dbedwars.api.game.view.attributes.UpgradableTier;
 import com.pepedevs.dbedwars.api.util.Overridable;
-import com.pepedevs.corelib.gui.inventory.Item;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
@@ -27,4 +27,5 @@ public abstract class GuiItem extends Item
     public abstract void setShopPage(ShopPage shopPage);
 
     public abstract GuiItem clone();
+
 }

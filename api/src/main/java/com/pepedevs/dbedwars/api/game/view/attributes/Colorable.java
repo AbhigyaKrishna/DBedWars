@@ -9,4 +9,5 @@ public interface Colorable {
     void setColorable(boolean flag);
 
     void color(Color color);
+
 }

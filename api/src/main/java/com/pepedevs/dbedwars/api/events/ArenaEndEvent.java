@@ -37,4 +37,5 @@ public class ArenaEndEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

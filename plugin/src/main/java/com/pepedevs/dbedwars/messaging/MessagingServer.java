@@ -12,15 +12,13 @@ import java.util.Set;
 
 public class MessagingServer {
 
+    private static MessagingServer server;
     private final DBedwars plugin;
     private BukkitAudiences adventure;
-
     private Set<MessagingMember> registeredMembers;
     private Set<MessagingChannel> registeredChannels;
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
-
-    private static MessagingServer server;
 
     public MessagingServer(DBedwars plugin) {
         server = this;
@@ -28,6 +26,10 @@ public class MessagingServer {
         if (plugin == null) throw new IllegalArgumentException("plugin cannot be null");
 
         this.plugin = plugin;
+    }
+
+    protected static MessagingServer connect() {
+        return server;
     }
 
     public void start(ConsoleCommandSender console) {
@@ -116,10 +118,6 @@ public class MessagingServer {
         return registeredChannels;
     }
 
-    protected static MessagingServer connect() {
-        return server;
-    }
-
     protected MessagingMember getMessagingMember(Player player) {
         for (MessagingMember member : this.registeredMembers) {
             if (!member.isPlayer()) continue;
@@ -138,4 +136,5 @@ public class MessagingServer {
     protected boolean registryCheck(MessagingChannel channel) {
         return this.getRegisteredChannels().contains(channel);
     }
+
 }

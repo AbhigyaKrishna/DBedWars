@@ -216,4 +216,5 @@ public class MySQL extends DatabaseBridge {
     public Database getHandle() {
         return this.db;
     }
+
 }

@@ -25,10 +25,10 @@ import java.util.Random;
 
 public class TNTItem extends PluginActionItem {
 
-    private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
-    private final ConfigurableCustomItems.KnockBack cfgKB;
     public static final FixedMetadataValue tntPrimedMeta =
             new FixedMetadataValue(DBedwars.getInstance(), true);
+    private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
+    private final ConfigurableCustomItems.KnockBack cfgKB;
 
     public TNTItem(DBedwars plugin) {
         super(
@@ -45,7 +45,8 @@ public class TNTItem extends PluginActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    }
 
     public void onTNTPlace(BlockPlaceEvent event) {
         if (!cfgTNT.isAutoIgniteTNTEnabled()) {
@@ -112,4 +113,5 @@ public class TNTItem extends PluginActionItem {
             if (!DamageEvent.isCancelled()) player.damage(DamageEvent.getFinalDamage());
         }
     }
+
 }

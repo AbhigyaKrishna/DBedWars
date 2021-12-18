@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.structure;
 
-import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -36,28 +36,13 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     @Override
-    public Map<Block, XMaterial> getWestBlocks() {
-        return new LinkedHashMap<>(westBlocks);
-    }
-
-    @Override
-    public Map<Block, XMaterial> getEastBlocks() {
-        return new LinkedHashMap<>(eastBlocks);
-    }
-
-    @Override
-    public Map<Block, XMaterial> getSouthBlocks() {
-        return new LinkedHashMap<>(southBlocks);
-    }
-
-    @Override
-    public Map<Block, XMaterial> getBlocks(BlockFace face) {
-        return null;
-    }
-
-    @Override
     public void setNorthBlocks(Map<Block, XMaterial> blocks) {
         this.northBlocks = blocks;
+    }
+
+    @Override
+    public Map<Block, XMaterial> getWestBlocks() {
+        return new LinkedHashMap<>(westBlocks);
     }
 
     @Override
@@ -66,13 +51,28 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     @Override
+    public Map<Block, XMaterial> getEastBlocks() {
+        return new LinkedHashMap<>(eastBlocks);
+    }
+
+    @Override
     public void setEastBlocks(Map<Block, XMaterial> blocks) {
         this.eastBlocks = blocks;
     }
 
     @Override
+    public Map<Block, XMaterial> getSouthBlocks() {
+        return new LinkedHashMap<>(southBlocks);
+    }
+
+    @Override
     public void setSouthBlocks(Map<Block, XMaterial> blocks) {
         this.southBlocks = blocks;
+    }
+
+    @Override
+    public Map<Block, XMaterial> getBlocks(BlockFace face) {
+        return null;
     }
 
     @Override
@@ -642,5 +642,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
             return blocks;
         }
+
     }
+
 }

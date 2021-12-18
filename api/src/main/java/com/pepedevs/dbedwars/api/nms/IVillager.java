@@ -14,4 +14,5 @@ public interface IVillager {
     void setLookAtPlayer(boolean flag);
 
     LivingEntity asBukkitEntity();
+
 }

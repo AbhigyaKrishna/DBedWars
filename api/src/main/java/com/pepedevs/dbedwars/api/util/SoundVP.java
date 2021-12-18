@@ -93,4 +93,5 @@ public class SoundVP implements Cloneable {
             throw new AssertionError();
         }
     }
+
 }

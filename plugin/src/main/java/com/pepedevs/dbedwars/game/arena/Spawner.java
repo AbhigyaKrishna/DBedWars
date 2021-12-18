@@ -1,11 +1,15 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.dbedwars.api.util.NBTUtils;
-import com.pepedevs.corelib.particle.particlelib.ParticleBuilder;
-import com.pepedevs.corelib.particle.particlelib.ParticleEffect;
+import com.pepedevs.corelib.holograms.hologramline.HeadHologramLine;
+import com.pepedevs.corelib.holograms.hologramline.TextHologramLine;
+import com.pepedevs.corelib.holograms.object.Hologram;
+import com.pepedevs.corelib.holograms.object.HologramLineType;
+import com.pepedevs.corelib.holograms.object.HologramPage;
+import com.pepedevs.corelib.particles.ParticleBuilder;
+import com.pepedevs.corelib.particles.ParticleEffect;
 import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.hologram.Hologram;
 import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.SpawnerDropItemEvent;
 import com.pepedevs.dbedwars.api.events.SpawnerUpgradeEvent;
@@ -14,6 +18,7 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.Bukkit;
@@ -77,18 +82,23 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                         .setSpeed(0)
                         .setAmount(5);
         if (this.drop.isHologramEnabled()) {
+            // TODO
+            Location loc = this.location.clone().add(0, 2, 0);
             this.hologram =
                     this.plugin
-                            .getHologramFactory()
+                            .getHologramManager()
                             .createHologram(
                                     this.drop.getId() + "@" + UUID.randomUUID().toString(),
-                                    this.location.clone().add(0, 2, 0));
-            this.hologram.add(this.drop.getHologramMaterial().toItemStack(), false);
+                                    loc);
+            HologramPage page = this.hologram.getPages().get(0);
+            page.addLine(new HeadHologramLine(loc, this.drop.getHologramMaterial().toItemStack()));
+            loc.subtract(0, HologramLineType.HEAD.getOffsetY(), 0);
             for (String line : this.drop.getHologramText()) {
-                this.hologram.add(StringUtils.translateAlternateColorCodes(line));
+                page.addLine(new TextHologramLine(loc, StringUtils.translateAlternateColorCodes(line)));
+                loc.subtract(0, HologramLineType.TEXT.getOffsetY(), 0);
             }
 
-            this.hologram.spawn();
+            this.hologram.showAll();
         }
 
         this.start = Instant.now();
@@ -122,12 +132,12 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                                         e ->
                                                 e instanceof Item
                                                         && ((Item) e)
-                                                                .getItemStack()
-                                                                .getType()
-                                                                .equals(
-                                                                        entry.getKey()
-                                                                                .getItem()
-                                                                                .getType()))
+                                                        .getItemStack()
+                                                        .getType()
+                                                        .equals(
+                                                                entry.getKey()
+                                                                        .getItem()
+                                                                        .getType()))
                                 .filter(e -> NBTUtils.hasPluginData(((Item) e).getItemStack()))
                                 .mapToInt(e -> ((Item) e).getItemStack().getAmount())
                                 .sum();
@@ -155,19 +165,23 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
         this.plugin
                 .getThreadHandler()
-                .getLeastWorkSyncWorker()
-                .add(
+                .submitAsync(
                         () -> {
                             BwItemStack stack = event.getDrop().getItem();
                             if (!Spawner.this.getDropType().isMerging()) stack.setUnMergeable();
 
-                            Item item =
-                                    this.location
-                                            .getWorld()
-                                            .dropItemNaturally(this.location, stack.toItemStack());
-                            if (Spawner.this.getDropType().isSplitable())
-                                item.setMetadata(
-                                        "split", new FixedMetadataValue(this.plugin, true));
+                            SchedulerUtils.runTask(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Item item =
+                                        Spawner.this.location
+                                                    .getWorld()
+                                                    .dropItemNaturally(Spawner.this.location, stack.toItemStack());
+                                    if (Spawner.this.getDropType().isSplitable())
+                                        item.setMetadata(
+                                                "split", new FixedMetadataValue(Spawner.this.plugin, true));
+                                }
+                            }, this.plugin);
                             if (this.drop.getSpawnSound() != null)
                                 this.drop.getSpawnSound().play(this.location);
                             if (this.drop.getSpawnEffect() != null)
@@ -212,8 +226,7 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
         this.plugin
                 .getThreadHandler()
-                .getLeastWorkSyncWorker()
-                .add(
+                .submitAsync(
                         () -> {
                             if (event.getNextTier().getUpgradeMessage() != null) {
                                 String message = event.getNextTier().getUpgradeMessage();
@@ -247,7 +260,7 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
         Location location = this.hologram.getLocation().clone();
         location.setYaw(location.getYaw() + 1F);
-        this.hologram.teleport(location);
+//        this.hologram.teleport(location);
     }
 
     private void broadcast(String key, String message, @Nullable Location location) {
@@ -369,4 +382,5 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
     public boolean remove() {
         return false;
     }
+
 }
