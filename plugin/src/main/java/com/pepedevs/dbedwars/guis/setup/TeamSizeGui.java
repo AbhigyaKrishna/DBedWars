@@ -101,5 +101,4 @@ public class TeamSizeGui extends IMenu<ItemMenu> {
         main.getIcon().setAmount(size);
         main.setName(StringUtils.translateAlternateColorCodes("&a&l" + size));
     }
-
 }

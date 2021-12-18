@@ -97,7 +97,6 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.timestamp >= 50;
         }
-
     }
 
     private class HologramRotateNoSlow extends CancellableTask {
@@ -142,7 +141,5 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.lastExec >= 50;
         }
-
     }
-
 }

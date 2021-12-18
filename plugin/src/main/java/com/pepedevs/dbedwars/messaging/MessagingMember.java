@@ -67,5 +67,4 @@ public class MessagingMember {
     public MessagingHistory getMessagingHistory() {
         return messagingHistory;
     }
-
 }

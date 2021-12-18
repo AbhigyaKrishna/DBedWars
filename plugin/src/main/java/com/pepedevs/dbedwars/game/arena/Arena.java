@@ -307,9 +307,9 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                 && this.settings.getLobby() != null
                 && !this.settings.getDrops().isEmpty()
                 && this.plugin
-                .getGeneratorHandler()
-                .getWorldAdaptor()
-                .saveExist(this.settings.getName())
+                        .getGeneratorHandler()
+                        .getWorldAdaptor()
+                        .saveExist(this.settings.getName())
                 && this.settings.getAvailableTeams().stream().allMatch(Team::isConfigured);
     }
 
@@ -348,18 +348,19 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                                     new ScoreboardImpl(
                                             Arena.this.plugin,
                                             new ArrayList<>(
-                                                    Arena.this
-                                                            .plugin
-                                                            .getConfigHandler()
-                                                            .getScoreboards())
+                                                            Arena.this
+                                                                    .plugin
+                                                                    .getConfigHandler()
+                                                                    .getScoreboards())
                                                     .get(0));
                             Arena.this.scoreboard.createScoreboard();
                             Arena.this.players.forEach(
                                     p -> Arena.this.scoreboard.show(p.getPlayer()));
-//                            Arena.this.teams.forEach(
-//                                    t ->
-//                                            t.registerTeam(
-//                                                    Arena.this.scoreboard.getHandle().getHandle()));
+                            //                            Arena.this.teams.forEach(
+                            //                                    t ->
+                            //                                            t.registerTeam(
+                            //
+                            // Arena.this.scoreboard.getHandle().getHandle()));
                         });
 
         this.teams.forEach(
@@ -369,11 +370,11 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                             .forEach(
                                     e ->
                                             new com.pepedevs.dbedwars.game.arena.Spawner(
-                                                    this.plugin,
-                                                    e.getKey(),
-                                                    e.getValue().toBukkit(this.getWorld()),
-                                                    this,
-                                                    t)
+                                                            this.plugin,
+                                                            e.getKey(),
+                                                            e.getValue().toBukkit(this.getWorld()),
+                                                            this,
+                                                            t)
                                                     .init());
                     t.spawnShopNpc(t.getShopNpc());
                     t.spawnUpgradesNpc(t.getUpgradesNpc());
@@ -385,11 +386,11 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                 .forEach(
                         e ->
                                 new com.pepedevs.dbedwars.game.arena.Spawner(
-                                        this.plugin,
-                                        e.getKey(),
-                                        e.getValue().toBukkit(this.getWorld()),
-                                        this,
-                                        null)
+                                                this.plugin,
+                                                e.getKey(),
+                                                e.getValue().toBukkit(this.getWorld()),
+                                                this,
+                                                null)
                                         .init());
 
         this.players.forEach(
@@ -425,35 +426,40 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         DatabaseUtils.saveGameData(this);
         this.plugin
                 .getThreadHandler()
-                .runTaskLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Arena.this.clearCache();
-                        CompletableFuture<Void> teleported = new CompletableFuture<>();
-                        SchedulerUtils.runTask(new Runnable() {
+                .runTaskLater(
+                        new Runnable() {
                             @Override
                             public void run() {
-                                Arena.this
-                                        .world
-                                        .getPlayers()
-                                        .forEach(
-                                                p ->
-                                                        p.teleport(
-                                                                Arena.this
-                                                                        .plugin
-                                                                        .getServer()
-                                                                        .getWorlds()
-                                                                        .get(0)
-                                                                        .getSpawnLocation()));
-                                teleported.complete(null);
+                                Arena.this.clearCache();
+                                CompletableFuture<Void> teleported = new CompletableFuture<>();
+                                SchedulerUtils.runTask(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Arena.this
+                                                        .world
+                                                        .getPlayers()
+                                                        .forEach(
+                                                                p ->
+                                                                        p.teleport(
+                                                                                Arena.this
+                                                                                        .plugin
+                                                                                        .getServer()
+                                                                                        .getWorlds()
+                                                                                        .get(0)
+                                                                                        .getSpawnLocation()));
+                                                teleported.complete(null);
+                                            }
+                                        },
+                                        Arena.this.plugin);
+                                try {
+                                    teleported.get();
+                                } catch (InterruptedException | ExecutionException ignored) {
+                                }
+                                Arena.this.load();
                             }
-                        }, Arena.this.plugin);
-                        try {
-                            teleported.get();
-                        } catch (InterruptedException | ExecutionException ignored) {}
-                        Arena.this.load();
-                    }
-                }, (long) Arena.this.getSettings().getGameEndDelay() * 20 * 50);
+                        },
+                        (long) Arena.this.getSettings().getGameEndDelay() * 20 * 50);
 
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);
@@ -722,12 +728,10 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
     }
 
     @Override
-    public void setIngameScoreboard(ArenaPlayer player) {
-    }
+    public void setIngameScoreboard(ArenaPlayer player) {}
 
     @Override
-    public void setLobbyScoreboard(Player player) {
-    }
+    public void setLobbyScoreboard(Player player) {}
 
     @Override
     public boolean stop() {
@@ -739,7 +743,8 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.plugin
                 .getThreadHandler()
                 .getTaskHandler()
-                .runTaskLater(this.plugin.getThreadHandler().getTask().getID(),
+                .runTaskLater(
+                        this.plugin.getThreadHandler().getTask().getID(),
                         new Runnable() {
                             @Override
                             public void run() {
@@ -755,7 +760,8 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                                                         + arena.getSettings().getMaxPlayer()
                                                         + ")"));
                             }
-                        }, 1000);
+                        },
+                        1000);
     }
 
     private void clearCache() {
@@ -775,5 +781,4 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.spawners.clear();
         this.removed.clear();
     }
-
 }

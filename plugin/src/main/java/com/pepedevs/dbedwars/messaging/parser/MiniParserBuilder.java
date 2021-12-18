@@ -83,5 +83,4 @@ public class MiniParserBuilder {
     public MiniMessage build() {
         return this.builder.build();
     }
-
 }

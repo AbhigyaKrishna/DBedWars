@@ -225,17 +225,17 @@ public class ConfigurableArena implements Configurable {
         this.teams =
                 this.arena.getSettings().getAvailableTeams() != null
                         ? this.arena.getSettings().getAvailableTeams().stream()
-                        .map(ConfigurableTeam::new)
-                        .collect(Collectors.toList())
+                                .map(ConfigurableTeam::new)
+                                .collect(Collectors.toList())
                         : new ArrayList<>();
         this.spawners =
                 this.arena.getSettings().getDrops() != null
                         ? this.arena.getSettings().getDrops().entries().stream()
-                        .map(
-                                e ->
-                                        ConfigurationUtils.serializeSpawner(
-                                                e.getKey(), e.getValue()))
-                        .collect(Collectors.toList())
+                                .map(
+                                        e ->
+                                                ConfigurationUtils.serializeSpawner(
+                                                        e.getKey(), e.getValue()))
+                                .collect(Collectors.toList())
                         : new ArrayList<>();
     }
 
@@ -247,5 +247,4 @@ public class ConfigurableArena implements Configurable {
 
         return this.arena;
     }
-
 }

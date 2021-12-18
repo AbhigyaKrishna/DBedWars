@@ -92,5 +92,4 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

@@ -170,9 +170,6 @@ public class ConfigurableMessaging implements Loadable {
             public boolean isTranslatable() {
                 return translatable;
             }
-
         }
-
     }
-
 }

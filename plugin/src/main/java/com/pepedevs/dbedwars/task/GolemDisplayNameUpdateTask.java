@@ -17,6 +17,7 @@ public class GolemDisplayNameUpdateTask implements Workload {
     private final DecimalFormat formatter;
     private long timestamp = System.currentTimeMillis();
     private int tick = 0;
+
     public GolemDisplayNameUpdateTask(
             IronGolem golem,
             Team team,
@@ -79,5 +80,4 @@ public class GolemDisplayNameUpdateTask implements Workload {
         tick++;
         return golem != null && !golem.isDead();
     }
-
 }

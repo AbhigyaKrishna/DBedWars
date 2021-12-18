@@ -43,11 +43,11 @@ public class SetupTypeGui extends IMenu<ItemMenu> {
                         StringUtils.translateAlternateColorCodes("&e&lSimple Setup"),
                         XMaterial.REPEATER.parseItem(),
                         StringUtils.translateAlternateColorCodes(
-                                new String[]{
-                                        "",
-                                        "&7Easy and quick arena setup!",
-                                        "",
-                                        "&dOnly essential options for setup."
+                                new String[] {
+                                    "",
+                                    "&7Easy and quick arena setup!",
+                                    "",
+                                    "&dOnly essential options for setup."
                                 }));
 
         simple.addAction(
@@ -79,12 +79,12 @@ public class SetupTypeGui extends IMenu<ItemMenu> {
                         StringUtils.translateAlternateColorCodes("&c&lAdvanced Setup"),
                         XMaterial.COMPARATOR.parseItem(),
                         StringUtils.translateAlternateColorCodes(
-                                new String[]{
-                                        "",
-                                        "&7Advanced detailed setup",
-                                        "&7for customizing whole arena!",
-                                        "",
-                                        "&dAll customization options for setup."
+                                new String[] {
+                                    "",
+                                    "&7Advanced detailed setup",
+                                    "&7for customizing whole arena!",
+                                    "",
+                                    "&dAll customization options for setup."
                                 }));
 
         advanced.addAction(
@@ -114,5 +114,4 @@ public class SetupTypeGui extends IMenu<ItemMenu> {
         this.menu.setItem(11, simple);
         this.menu.setItem(15, advanced);
     }
-
 }

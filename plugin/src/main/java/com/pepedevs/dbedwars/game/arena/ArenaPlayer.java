@@ -163,8 +163,10 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
             event.getVictim().addDeath();
             if (event.getAttacker() != null) event.getAttacker().addFinalKills();
             event.getVictim().setSpectator(true);
-//            this.previousInv = event.getVictim().getPlayer().getInventory().getContents();
-//            this.previousArmor = event.getVictim().getPlayer().getInventory().getArmorContents();
+            //            this.previousInv =
+            // event.getVictim().getPlayer().getInventory().getContents();
+            //            this.previousArmor =
+            // event.getVictim().getPlayer().getInventory().getArmorContents();
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
                 event.getVictim()
@@ -189,7 +191,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                         this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
                 if (oTeam.isPresent()
                         && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count()
-                        == 1) {
+                                == 1) {
                     this.arena.end();
                 }
             }
@@ -274,11 +276,11 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
         if (this.lastHitTime == null) return null;
 
         return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000
-                > DBedwars.getInstance()
-                .getConfigHandler()
-                .getMainConfiguration()
-                .getArenaSection()
-                .getPlayerHitTagLength()
+                        > DBedwars.getInstance()
+                                .getConfigHandler()
+                                .getMainConfiguration()
+                                .getArenaSection()
+                                .getPlayerHitTagLength()
                 ? null
                 : this.lastHitTag;
     }
@@ -320,5 +322,4 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                 .getThreadHandler()
                 .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
-
 }

@@ -84,7 +84,6 @@ public interface DropType extends Cloneable {
         Map<String, Drop> getDropMap();
 
         Tier clone();
-
     }
 
     interface Drop extends Cloneable {
@@ -104,7 +103,5 @@ public interface DropType extends Cloneable {
         void setMaxSpawn(int maxSpawn);
 
         Drop clone();
-
     }
-
 }

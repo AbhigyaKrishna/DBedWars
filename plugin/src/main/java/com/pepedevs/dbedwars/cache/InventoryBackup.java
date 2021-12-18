@@ -13,14 +13,14 @@ public class InventoryBackup {
     private final ItemStack[] armorContent = new ItemStack[4];
     private final ItemStack[] content = new ItemStack[36];
 
-    private InventoryBackup() {
-    }
+    private InventoryBackup() {}
 
     public static InventoryBackup createBackup(Player player) {
         InventoryBackup inventoryBackup = new InventoryBackup();
         ItemStack[] armorContent = player.getInventory().getArmorContents();
         for (byte b = 0; b < 4; b++) {
-            inventoryBackup.armorContent[b] = armorContent[b] != null ? armorContent[b].clone() : null;
+            inventoryBackup.armorContent[b] =
+                    armorContent[b] != null ? armorContent[b].clone() : null;
         }
         ItemStack[] content = player.getInventory().getContents();
         for (byte b = 0; b < 36; b++) {
@@ -85,5 +85,4 @@ public class InventoryBackup {
             }
         }
     }
-
 }

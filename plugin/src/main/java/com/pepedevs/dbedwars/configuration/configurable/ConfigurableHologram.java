@@ -69,7 +69,6 @@ public class ConfigurableHologram implements Loadable {
         public String getAnimationEndTask() {
             return animationEndTask;
         }
-
     }
 
     public static class ConfigurableBabyHologram implements Loadable {
@@ -123,7 +122,5 @@ public class ConfigurableHologram implements Loadable {
         public int getTicksPerAnimationCycle() {
             return ticksPerAnimationCycle;
         }
-
     }
-
 }

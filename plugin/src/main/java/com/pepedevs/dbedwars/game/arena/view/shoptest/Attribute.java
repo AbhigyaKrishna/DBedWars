@@ -101,5 +101,4 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
     public Map<String, Object> getKeyEntry() {
         return this.keyEntry;
     }
-
 }

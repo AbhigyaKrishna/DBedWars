@@ -36,12 +36,13 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
 
     @Override
     public void submitSync(Runnable runnable) {
-        this.task.submit(new Workload() {
-            @Override
-            public void compute() {
-                SchedulerUtils.runTask(runnable, ThreadHandler.this.plugin);
-            }
-        });
+        this.task.submit(
+                new Workload() {
+                    @Override
+                    public void compute() {
+                        SchedulerUtils.runTask(runnable, ThreadHandler.this.plugin);
+                    }
+                });
     }
 
     @Override
@@ -86,5 +87,4 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
     public UpdateTask getUpdater() {
         return this.updater;
     }
-
 }

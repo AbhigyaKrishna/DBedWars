@@ -41,5 +41,4 @@ public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

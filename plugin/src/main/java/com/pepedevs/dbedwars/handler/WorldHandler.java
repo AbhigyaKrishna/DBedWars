@@ -22,5 +22,4 @@ public class WorldHandler {
     public WorldAdaptor getWorldAdaptor() {
         return this.worldAdaptor;
     }
-
 }

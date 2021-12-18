@@ -48,5 +48,4 @@ public class ScoreboardImpl {
     public Scoreboard getHandle() {
         return this.scoreboard;
     }
-
 }

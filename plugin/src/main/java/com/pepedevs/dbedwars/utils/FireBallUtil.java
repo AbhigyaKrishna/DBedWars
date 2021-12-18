@@ -46,5 +46,4 @@ public class FireBallUtil {
             e.printStackTrace();
         }
     }
-
 }

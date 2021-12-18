@@ -73,7 +73,5 @@ public class BedwarsBedBug implements IBedBug {
             if (optionalPlayer.get().isSpectator()) return false;
             return !spawningTeam.getPlayers().contains(optionalPlayer.get());
         }
-
     }
-
 }

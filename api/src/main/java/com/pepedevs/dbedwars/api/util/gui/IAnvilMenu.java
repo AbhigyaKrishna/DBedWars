@@ -33,5 +33,4 @@ public abstract class IAnvilMenu {
     public AnvilMenu getMenu() {
         return menu;
     }
-
 }

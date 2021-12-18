@@ -70,5 +70,4 @@ public class PlayerStats implements DataCache {
     public void setPOINTS(double POINTS) {
         this.POINTS = POINTS;
     }
-
 }

@@ -136,5 +136,4 @@ public class MessagingServer {
     protected boolean registryCheck(MessagingChannel channel) {
         return this.getRegisteredChannels().contains(channel);
     }
-
 }

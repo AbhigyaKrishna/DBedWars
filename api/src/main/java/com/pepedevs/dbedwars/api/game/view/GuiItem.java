@@ -27,5 +27,4 @@ public abstract class GuiItem extends Item
     public abstract void setShopPage(ShopPage shopPage);
 
     public abstract GuiItem clone();
-
 }

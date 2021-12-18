@@ -1,12 +1,9 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class TrapEnum {
@@ -36,23 +33,27 @@ public class TrapEnum {
                     return new Consumer<ArenaPlayer>() {
                         @Override
                         public void accept(ArenaPlayer player) {
-//                            TitleUtils.send(
-//                                    player.getPlayer(),
-//                                    StringUtils.translateAlternateColorCodes(title),
-//                                    StringUtils.translateAlternateColorCodes(finalSubTitle),
-//                                    Integer.parseInt(split[1]),
-//                                    Integer.parseInt(split[2]),
-//                                    Integer.parseInt(split[3]));
+                            //                            TitleUtils.send(
+                            //                                    player.getPlayer(),
+                            //
+                            // StringUtils.translateAlternateColorCodes(title),
+                            //
+                            // StringUtils.translateAlternateColorCodes(finalSubTitle),
+                            //                                    Integer.parseInt(split[1]),
+                            //                                    Integer.parseInt(split[2]),
+                            //                                    Integer.parseInt(split[3]));
                         }
                     };
                 } else {
                     return new Consumer<ArenaPlayer>() {
                         @Override
                         public void accept(ArenaPlayer player) {
-//                            TitleUtils.send(
-//                                    player.getPlayer(),
-//                                    StringUtils.translateAlternateColorCodes(title),
-//                                    StringUtils.translateAlternateColorCodes(finalSubTitle));
+                            //                            TitleUtils.send(
+                            //                                    player.getPlayer(),
+                            //
+                            // StringUtils.translateAlternateColorCodes(title),
+                            //
+                            // StringUtils.translateAlternateColorCodes(finalSubTitle));
                         }
                     };
                 }
@@ -67,8 +68,9 @@ public class TrapEnum {
                 return new Consumer<ArenaPlayer>() {
                     @Override
                     public void accept(ArenaPlayer player) {
-//                        ActionBarUtils.send(
-//                                player.getPlayer(), StringUtils.translateAlternateColorCodes(main));
+                        //                        ActionBarUtils.send(
+                        //                                player.getPlayer(),
+                        // StringUtils.translateAlternateColorCodes(main));
                     }
                 };
             }
@@ -78,62 +80,64 @@ public class TrapEnum {
             // [BOSSBAR:{PROGRESS}:{COLOR}:{STYLE}:{FLAG}] Text
             @Override
             public Consumer<ArenaPlayer> getAction(String statement) {
-//                String sub = statement.substring(statement.indexOf("["), statement.indexOf("]"));
-//                String main = statement.replace(sub, "").trim();
-//                sub = sub.replace("[", "").replace("]", "").trim();
-//                String[] split = sub.split(":");
-//                double progress = 1.0D;
-//                BarColor barColor = BarColor.PINK;
-//                BarStyle barStyle = BarStyle.SOLID;
-//                List<BarFlag> flags = new ArrayList<>();
-//                if (split.length > 1) {
-//                    if (NumberUtils.isNumber(split[1])) {
-//                        double d = Double.parseDouble(split[1]);
-//                        if (d > 1) {
-//                            d = d / 100;
-//                        }
-//                        progress = d;
-//                    }
-//                }
-//                if (split.length > 2) {
-//                    try {
-//                        barColor = BarColor.valueOf(split[2]);
-//                    } catch (IllegalArgumentException ignored) {
-//                    }
-//                }
-//                if (split.length > 3) {
-//                    try {
-//                        barStyle = BarStyle.valueOf(split[3]);
-//                    } catch (IllegalArgumentException ignored) {
-//                    }
-//                }
-//                if (split.length > 4) {
-//                    String[] flagSplit = split[4].split(",");
-//                    for (String s : flagSplit) {
-//                        try {
-//                            BarFlag flag = BarFlag.valueOf(s.trim());
-//                            flags.add(flag);
-//                        } catch (IllegalArgumentException ignored) {
-//                        }
-//                    }
-//                }
-//                double finalProgress = progress;
-//                BarColor finalBarColor = barColor;
-//                BarStyle finalBarStyle = barStyle;
-//                return new Consumer<ArenaPlayer>() {
-//                    @Override
-//                    public void accept(ArenaPlayer player) {
-//                        BossBar bossBar =
-//                                BossBar.createBossBar(
-//                                        player.getPlayer(),
-//                                        StringUtils.translateAlternateColorCodes(main),
-//                                        finalProgress,
-//                                        finalBarColor,
-//                                        finalBarStyle,
-//                                        flags.toArray(new BarFlag[0]));
-//                        bossBar.show();
-//                    }
-//                };
+                //                String sub = statement.substring(statement.indexOf("["),
+                // statement.indexOf("]"));
+                //                String main = statement.replace(sub, "").trim();
+                //                sub = sub.replace("[", "").replace("]", "").trim();
+                //                String[] split = sub.split(":");
+                //                double progress = 1.0D;
+                //                BarColor barColor = BarColor.PINK;
+                //                BarStyle barStyle = BarStyle.SOLID;
+                //                List<BarFlag> flags = new ArrayList<>();
+                //                if (split.length > 1) {
+                //                    if (NumberUtils.isNumber(split[1])) {
+                //                        double d = Double.parseDouble(split[1]);
+                //                        if (d > 1) {
+                //                            d = d / 100;
+                //                        }
+                //                        progress = d;
+                //                    }
+                //                }
+                //                if (split.length > 2) {
+                //                    try {
+                //                        barColor = BarColor.valueOf(split[2]);
+                //                    } catch (IllegalArgumentException ignored) {
+                //                    }
+                //                }
+                //                if (split.length > 3) {
+                //                    try {
+                //                        barStyle = BarStyle.valueOf(split[3]);
+                //                    } catch (IllegalArgumentException ignored) {
+                //                    }
+                //                }
+                //                if (split.length > 4) {
+                //                    String[] flagSplit = split[4].split(",");
+                //                    for (String s : flagSplit) {
+                //                        try {
+                //                            BarFlag flag = BarFlag.valueOf(s.trim());
+                //                            flags.add(flag);
+                //                        } catch (IllegalArgumentException ignored) {
+                //                        }
+                //                    }
+                //                }
+                //                double finalProgress = progress;
+                //                BarColor finalBarColor = barColor;
+                //                BarStyle finalBarStyle = barStyle;
+                //                return new Consumer<ArenaPlayer>() {
+                //                    @Override
+                //                    public void accept(ArenaPlayer player) {
+                //                        BossBar bossBar =
+                //                                BossBar.createBossBar(
+                //                                        player.getPlayer(),
+                //
+                // StringUtils.translateAlternateColorCodes(main),
+                //                                        finalProgress,
+                //                                        finalBarColor,
+                //                                        finalBarStyle,
+                //                                        flags.toArray(new BarFlag[0]));
+                //                        bossBar.show();
+                //                    }
+                //                };
                 return super.getAction(statement);
             }
         },
@@ -211,8 +215,7 @@ public class TrapEnum {
         public Consumer<ArenaPlayer> getAction(String statement) {
             return new Consumer<ArenaPlayer>() {
                 @Override
-                public void accept(ArenaPlayer player) {
-                }
+                public void accept(ArenaPlayer player) {}
             };
         }
     }
@@ -268,5 +271,4 @@ public class TrapEnum {
             return this.simpleName;
         }
     }
-
 }

@@ -131,5 +131,4 @@ public class ConfigurableTeam implements Configurable {
 
         return this.team;
     }
-
 }

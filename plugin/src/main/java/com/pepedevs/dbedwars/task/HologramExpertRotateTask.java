@@ -80,7 +80,5 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return !this.isCancelled() && System.currentTimeMillis() - lastExec > this.delayMillis;
         }
-
     }
-
 }

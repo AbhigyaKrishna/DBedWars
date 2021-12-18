@@ -37,13 +37,13 @@ public class BlastProofGlass extends PluginActionItem {
             Block block = blockIterator.next();
             if (block.getType() != Material.AIR) {
                 if (Utils.containsGlass(
-                        getBlockPathX(
-                                event.getEntity().getLocation().getBlock().getLocation(),
-                                block.getLocation()))
+                                getBlockPathX(
+                                        event.getEntity().getLocation().getBlock().getLocation(),
+                                        block.getLocation()))
                         && Utils.containsGlass(
-                        getBlockPathY(
-                                event.getEntity().getLocation().getBlock().getLocation(),
-                                block.getLocation()))) {
+                                getBlockPathY(
+                                        event.getEntity().getLocation().getBlock().getLocation(),
+                                        block.getLocation()))) {
                     blockIterator.remove();
                 }
             }
@@ -60,13 +60,13 @@ public class BlastProofGlass extends PluginActionItem {
             if (block.getType() != Material.AIR
                     && XMaterial.matchXMaterial(block.getType()) != XMaterial.END_STONE) {
                 if (Utils.containsGlassOrEndstone(
-                        getBlockPathX(
-                                event.getEntity().getLocation().getBlock().getLocation(),
-                                block.getLocation()))
+                                getBlockPathX(
+                                        event.getEntity().getLocation().getBlock().getLocation(),
+                                        block.getLocation()))
                         && Utils.containsGlassOrEndstone(
-                        getBlockPathY(
-                                event.getEntity().getLocation().getBlock().getLocation(),
-                                block.getLocation()))) {
+                                getBlockPathY(
+                                        event.getEntity().getLocation().getBlock().getLocation(),
+                                        block.getLocation()))) {
                     blockIterator.remove();
                 }
             }
@@ -201,7 +201,7 @@ public class BlastProofGlass extends PluginActionItem {
                 block ->
                         !(block.getType().name().contains("GLASS")
                                 || XMaterial.matchXMaterial(block.getType())
-                                == XMaterial.END_STONE));
+                                        == XMaterial.END_STONE));
         blocks.forEach(
                 block -> {
                     if (!materials.contains(block.getType())) {
@@ -211,5 +211,4 @@ public class BlastProofGlass extends PluginActionItem {
 
         return materials;
     }
-
 }

@@ -99,7 +99,7 @@ public class SpawnerSetupGui extends IMenu<BookItemMenu> {
                             StringUtils.translateAlternateColorCodes("&6" + d.getSimpleName()),
                             d.getIcon().toItemStack(),
                             StringUtils.translateAlternateColorCodes(
-                                    new String[]{"&bId: " + d.getId(), builder.toString()}));
+                                    new String[] {"&bId: " + d.getId(), builder.toString()}));
             item.addAction(
                     new ItemAction() {
                         @Override
@@ -130,5 +130,4 @@ public class SpawnerSetupGui extends IMenu<BookItemMenu> {
 
         this.menu.addItems(items);
     }
-
 }

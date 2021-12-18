@@ -31,9 +31,9 @@ public class PopupTowerChestItem extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getPopupTower()
-                                .getLore()),
+                                        .getCustomItems()
+                                        .getPopupTower()
+                                        .getLore()),
                 XMaterial.TRAPPED_CHEST.parseMaterial());
         this.plugin = plugin;
         this.cfgPopupTower = plugin.getConfigHandler().getCustomItems().getPopupTower();
@@ -53,8 +53,8 @@ public class PopupTowerChestItem extends PluginActionItem {
                                 (cfgPopupTower.getSound() == null
                                         ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
                                         : cfgPopupTower.getSound().equals("")
-                                        ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
-                                        : SoundVP.valueOf(cfgPopupTower.getSound())),
+                                                ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
+                                                : SoundVP.valueOf(cfgPopupTower.getSound())),
                                 new ParticleBuilder(ParticleEffect.CLOUD)
                                         .setAmount(1)
                                         .setSpeed(0.2F),
@@ -484,7 +484,5 @@ public class PopupTowerChestItem extends PluginActionItem {
             blocks.put(centre.getRelative(-2, 6, 2), material.parseMaterial());
             return blocks;
         }
-
     }
-
 }

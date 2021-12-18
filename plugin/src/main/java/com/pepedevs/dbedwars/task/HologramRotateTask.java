@@ -32,7 +32,7 @@ public abstract class HologramRotateTask {
         location.setZ(location.getZ() + z);
         location.setYaw(location.getYaw() + yaw);
         location.setPitch(location.getPitch() + pitch);
-//        this.hologram.teleport(location);
+        //        this.hologram.teleport(location);
         // TODO
     }
 
@@ -40,11 +40,10 @@ public abstract class HologramRotateTask {
         Location location = hologram.getLocation().clone();
         location.setYaw(location.getYaw() + yaw);
         location.setPitch(location.getPitch() + pitch);
-//        this.hologram.teleport(location);
+        //        this.hologram.teleport(location);
     }
 
     public Hologram getHologram() {
         return this.hologram;
     }
-
 }

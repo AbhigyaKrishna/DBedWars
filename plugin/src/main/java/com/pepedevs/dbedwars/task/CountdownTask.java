@@ -5,13 +5,12 @@ import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CountdownTask implements Workload {
 
     private static final short[] TRIGGERS =
-            new short[]{1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
+            new short[] {1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
     private final Arena arena;
     private short countdown;
     private boolean started;
@@ -71,12 +70,11 @@ public class CountdownTask implements Workload {
     private void sendTrigger(Player player) {
         if (Shorts.contains(TRIGGERS, this.countdown)) {
             // TODO: change message
-//            TitleUtils.send(player, ChatColor.YELLOW + String.valueOf(countdown), "");
+            //            TitleUtils.send(player, ChatColor.YELLOW + String.valueOf(countdown), "");
             player.sendMessage(
                     StringUtils.translateAlternateColorCodes(
                             "&7Match starting in &c" + this.countdown + " &7seconds."));
         }
         // TODO: update scoreboard
     }
-
 }

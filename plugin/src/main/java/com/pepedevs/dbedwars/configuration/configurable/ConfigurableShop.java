@@ -161,9 +161,7 @@ public class ConfigurableShop implements Loadable {
             public ConfigurableAttribute getAttribute() {
                 return attribute;
             }
-
         }
-
     }
 
     public static class ConfigurableAttribute implements Loadable {
@@ -313,9 +311,6 @@ public class ConfigurableShop implements Loadable {
             public int getAutoEquipSlot() {
                 return autoEquipSlot;
             }
-
         }
-
     }
-
 }

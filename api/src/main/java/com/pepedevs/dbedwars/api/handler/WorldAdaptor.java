@@ -17,5 +17,4 @@ public interface WorldAdaptor {
     void unloadWorld(String worldName, boolean save);
 
     void deleteWorld(String worldName);
-
 }

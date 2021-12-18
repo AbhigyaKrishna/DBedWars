@@ -100,5 +100,4 @@ public class ShopPage implements com.pepedevs.dbedwars.api.game.view.ShopPage {
     public Map<String, com.pepedevs.dbedwars.api.game.view.GuiItem> getItems() {
         return this.items;
     }
-
 }

@@ -44,9 +44,7 @@ public class Utils {
         return stack;
     }
 
-    public static void setSpawnInventory(
-            Player player,
-            Team team) {
+    public static void setSpawnInventory(Player player, Team team) {
         BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET.parseMaterial());
         BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
         BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS.parseMaterial());
@@ -91,7 +89,7 @@ public class Utils {
 
     public static boolean isBed(Block block) {
         return Arrays.asList(ItemConstant.BED.getItems())
-                .contains(XMaterial.matchXMaterial(block.getType()))
+                        .contains(XMaterial.matchXMaterial(block.getType()))
                 || block.getType().name().equals("BED_BLOCK");
     }
 
@@ -156,5 +154,4 @@ public class Utils {
             player.getInventory().getItemInHand().setAmount(--amt);
         }
     }
-
 }

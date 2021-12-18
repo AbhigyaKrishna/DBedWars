@@ -41,5 +41,4 @@ public class ShopGui extends IMenu<ItemMenu> {
             }
         }
     }
-
 }

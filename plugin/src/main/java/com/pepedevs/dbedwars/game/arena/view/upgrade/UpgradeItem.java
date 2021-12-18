@@ -135,8 +135,7 @@ public class UpgradeItem {
         public Consumer<ArenaPlayer> getAction(String statement) {
             return new Consumer<ArenaPlayer>() {
                 @Override
-                public void accept(ArenaPlayer team) {
-                }
+                public void accept(ArenaPlayer team) {}
             };
         }
     }
@@ -219,7 +218,7 @@ public class UpgradeItem {
 
             private UpgradeTier tier;
             private ConfigurableUpgrade.ConfigurableUpgradePage.ConfigurableItem
-                    .ConfigurableUpgradeTier.ConfigurableTierAction
+                            .ConfigurableUpgradeTier.ConfigurableTierAction
                     action;
 
             private Target target;
@@ -227,7 +226,7 @@ public class UpgradeItem {
 
             public TierAction(
                     ConfigurableUpgrade.ConfigurableUpgradePage.ConfigurableItem
-                            .ConfigurableUpgradeTier.ConfigurableTierAction
+                                    .ConfigurableUpgradeTier.ConfigurableTierAction
                             action) {
                 this.tier = UpgradeTier.this;
                 this.action = action;
@@ -247,9 +246,6 @@ public class UpgradeItem {
             public List<Consumer<Team>> getGoals() {
                 return goals;
             }
-
         }
-
     }
-
 }

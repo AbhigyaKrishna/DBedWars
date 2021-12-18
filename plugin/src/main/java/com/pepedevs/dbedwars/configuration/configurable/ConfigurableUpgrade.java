@@ -233,13 +233,8 @@ public class ConfigurableUpgrade implements Loadable {
                     public List<String> getGoal() {
                         return this.goal;
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }

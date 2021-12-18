@@ -56,5 +56,4 @@ public class PlayerRemoveFromArenaEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

@@ -29,5 +29,4 @@ public abstract class Regeneration {
     public Arena getArena() {
         return arena;
     }
-
 }

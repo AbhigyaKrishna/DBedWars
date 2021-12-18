@@ -35,5 +35,4 @@ public class TeamEliminateEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

@@ -35,9 +35,9 @@ public class BedBugSnowball extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getBedBug()
-                                .getItemLore()),
+                                        .getCustomItems()
+                                        .getBedBug()
+                                        .getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());
         this.plugin = plugin;
         this.cfgBedBug = plugin.getConfigHandler().getCustomItems().getBedBug();
@@ -86,5 +86,4 @@ public class BedBugSnowball extends PluginActionItem {
         plugin.getThreadHandler()
                 .submitAsync(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
     }
-
 }

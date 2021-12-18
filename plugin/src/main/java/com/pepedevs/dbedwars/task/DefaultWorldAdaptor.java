@@ -99,5 +99,4 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
             if (file.getName().equals(worldName + ".yml")) file.delete();
         }
     }
-
 }

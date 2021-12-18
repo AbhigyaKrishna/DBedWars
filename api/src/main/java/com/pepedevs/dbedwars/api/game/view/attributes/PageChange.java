@@ -10,5 +10,4 @@ public interface PageChange {
     void setPage(ShopPage page);
 
     void changePage(ItemClickAction action);
-
 }

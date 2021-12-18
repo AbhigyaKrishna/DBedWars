@@ -127,8 +127,8 @@ public class PluginFileUtils {
 
                 String sub =
                         (!entry.getName().contains("/") && !entry.getName().contains("\\")
-                                ? region_dbw.getName() + "/"
-                                : "")
+                                        ? region_dbw.getName() + "/"
+                                        : "")
                                 + entry.getName();
                 File subFile = new File(worldFolder, sub);
                 if (subFile.exists()) {
@@ -171,5 +171,4 @@ public class PluginFileUtils {
             }
         }
     }
-
 }

@@ -244,7 +244,6 @@ public class ConfigurableItemSpawner implements Loadable {
         public Map<String, ConfigurableDrop> getActions() {
             return this.actions;
         }
-
     }
 
     public static class ConfigurableDrop implements Loadable {
@@ -297,7 +296,5 @@ public class ConfigurableItemSpawner implements Loadable {
         public int getLimit() {
             return this.limit;
         }
-
     }
-
 }

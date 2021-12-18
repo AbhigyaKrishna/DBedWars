@@ -115,5 +115,4 @@ public class ShopItem implements com.pepedevs.dbedwars.api.game.view.ShopItem {
             ((org.bukkit.material.Colorable) this.item.toItemStack()).setColor(color.getDyeColor());
         }
     }
-
 }

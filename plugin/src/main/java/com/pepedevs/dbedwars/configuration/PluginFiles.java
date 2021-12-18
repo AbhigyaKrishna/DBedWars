@@ -46,30 +46,30 @@ public enum PluginFiles {
     }
 
     public static PluginFiles[] getDirectories() {
-        return new PluginFiles[]{
-                PLUGIN_DATA_FOLDER, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS, HOOKS
+        return new PluginFiles[] {
+            PLUGIN_DATA_FOLDER, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS, HOOKS
         };
     }
 
     public static PluginFiles[] getHooksSettingFiles() {
-        return new PluginFiles[]{SLIME_WORLD_MANAGER_HOOK};
+        return new PluginFiles[] {SLIME_WORLD_MANAGER_HOOK};
     }
 
     public static PluginFiles[] getLanguageFiles() {
-        return new PluginFiles[]{ENGLISH};
+        return new PluginFiles[] {ENGLISH};
     }
 
     public static PluginFiles[] getFiles() {
-        return new PluginFiles[]{
-                CONFIG,
-                ITEM_SPAWNERS,
-                TRAPS,
-                SHOP,
-                UPGRADES,
-                CUSTOM_ITEMS,
-                HOLOGRAM,
-                SCOREBOARD,
-                DATABASE
+        return new PluginFiles[] {
+            CONFIG,
+            ITEM_SPAWNERS,
+            TRAPS,
+            SHOP,
+            UPGRADES,
+            CUSTOM_ITEMS,
+            HOLOGRAM,
+            SCOREBOARD,
+            DATABASE
         };
     }
 

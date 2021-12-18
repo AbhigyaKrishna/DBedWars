@@ -71,7 +71,6 @@ public class ConfigurableParticleImages implements Loadable {
         public String getDownscaling() {
             return downscaling;
         }
-
     }
 
     public static class ConfigurableParticleImageSettings implements Loadable {
@@ -109,7 +108,5 @@ public class ConfigurableParticleImages implements Loadable {
         public String getFormat() {
             return format;
         }
-
     }
-
 }

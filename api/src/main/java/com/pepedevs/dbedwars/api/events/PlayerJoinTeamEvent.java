@@ -48,5 +48,4 @@ public class PlayerJoinTeamEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

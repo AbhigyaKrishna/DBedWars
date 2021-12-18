@@ -17,6 +17,7 @@ public class BedBugDisplayNameUpdateTask implements Workload {
     private final DecimalFormat formatter;
     private long timestamp = System.currentTimeMillis();
     private int tick = 0;
+
     public BedBugDisplayNameUpdateTask(
             Silverfish silverfish,
             Team team,
@@ -81,5 +82,4 @@ public class BedBugDisplayNameUpdateTask implements Workload {
         tick++;
         return silverfish != null && !silverfish.isDead();
     }
-
 }

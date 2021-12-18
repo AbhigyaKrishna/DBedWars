@@ -52,5 +52,4 @@ public class CustomItemHandler extends PluginHandler
     public synchronized PluginActionItem getItem(String id) {
         return this.items.getOrDefault(id, null);
     }
-
 }

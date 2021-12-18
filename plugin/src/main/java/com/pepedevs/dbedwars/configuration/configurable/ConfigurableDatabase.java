@@ -110,7 +110,6 @@ public class ConfigurableDatabase implements Loadable {
         public boolean isSsl() {
             return ssl;
         }
-
     }
 
     public static class ConfigurableMongoDB implements Loadable {
@@ -150,7 +149,5 @@ public class ConfigurableDatabase implements Loadable {
         public String getDatabaseName() {
             return databaseName;
         }
-
     }
-
 }

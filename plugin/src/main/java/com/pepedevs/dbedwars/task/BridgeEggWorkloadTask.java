@@ -191,5 +191,4 @@ public class BridgeEggWorkloadTask implements Workload {
             placeBlock(block.getRelative(faces[1]), dyeColor);
         }
     }
-
 }

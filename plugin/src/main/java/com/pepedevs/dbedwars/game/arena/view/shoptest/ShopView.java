@@ -78,5 +78,4 @@ public class ShopView implements com.pepedevs.dbedwars.api.game.view.ShopView {
                 .forEach(stack::applyEnchant);
         return stack;
     }
-
 }

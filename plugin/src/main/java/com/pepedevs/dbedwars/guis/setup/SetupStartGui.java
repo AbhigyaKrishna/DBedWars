@@ -132,5 +132,4 @@ public class SetupStartGui extends IMenu<BookItemMenu> {
             this.menu.addItem(item);
         }
     }
-
 }

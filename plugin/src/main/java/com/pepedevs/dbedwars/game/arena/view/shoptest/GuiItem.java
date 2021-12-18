@@ -289,5 +289,4 @@ public class GuiItem extends com.pepedevs.dbedwars.api.game.view.GuiItem {
         this.command = new ArrayList<>(item.command);
         this.loaded = true;
     }
-
 }

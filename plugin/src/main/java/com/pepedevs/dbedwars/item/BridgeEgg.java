@@ -38,9 +38,9 @@ public class BridgeEgg extends PluginActionItem {
                         plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getBridgeEgg()
-                                .getLore()),
+                                        .getCustomItems()
+                                        .getBridgeEgg()
+                                        .getLore()),
                 XMaterial.EGG.parseMaterial());
         this.plugin = plugin;
         ConfigurableCustomItems.ConfigurableBridgeEgg confEgg =

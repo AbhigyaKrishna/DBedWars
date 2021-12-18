@@ -84,5 +84,4 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

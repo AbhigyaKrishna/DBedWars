@@ -28,8 +28,7 @@ public class ArenaNameGui extends IAnvilMenu {
                                 StringUtils.translateAlternateColorCodes("Enter name"),
                                 XMaterial.PAPER.parseItem()) {
                             @Override
-                            public void onClick(AnvilItemClickAction anvilItemClickAction) {
-                            }
+                            public void onClick(AnvilItemClickAction anvilItemClickAction) {}
                         },
                         null));
 
@@ -73,7 +72,5 @@ public class ArenaNameGui extends IAnvilMenu {
 
     @Override
     public void setUpMenu(
-            Player player, ItemClickAction action, @Nullable Map<String, Object> info) {
-    }
-
+            Player player, ItemClickAction action, @Nullable Map<String, Object> info) {}
 }

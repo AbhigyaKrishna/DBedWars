@@ -165,5 +165,4 @@ public class BwItemStack implements Cloneable {
             throw new AssertionError();
         }
     }
-
 }

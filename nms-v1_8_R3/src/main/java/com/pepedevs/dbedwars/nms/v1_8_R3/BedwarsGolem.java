@@ -80,7 +80,5 @@ public class BedwarsGolem implements IGolem {
             if (optionalPlayer.get().isSpectator()) return false;
             return !spawningTeam.getPlayers().contains(optionalPlayer.get());
         }
-
     }
-
 }

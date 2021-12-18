@@ -35,12 +35,10 @@ public class Villager extends EntityVillager implements IVillager {
     }
 
     @Override
-    public void move(double d0, double d1, double d2) {
-    }
+    public void move(double d0, double d1, double d2) {}
 
     @Override
-    public void collide(Entity entity) {
-    }
+    public void collide(Entity entity) {}
 
     @Override
     public boolean damageEntity(DamageSource damagesource, float f) {
@@ -48,12 +46,10 @@ public class Villager extends EntityVillager implements IVillager {
     }
 
     @Override
-    public void g(double d0, double d1, double d2) {
-    }
+    public void g(double d0, double d1, double d2) {}
 
     @Override
-    public void makeSound(String s, float f, float f1) {
-    }
+    public void makeSound(String s, float f, float f1) {}
 
     @Override
     protected void initAttributes() {
@@ -94,5 +90,4 @@ public class Villager extends EntityVillager implements IVillager {
     public LivingEntity asBukkitEntity() {
         return ((CraftLivingEntity) this.getBukkitEntity());
     }
-
 }

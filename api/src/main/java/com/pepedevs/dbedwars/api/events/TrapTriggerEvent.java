@@ -40,5 +40,4 @@ public class TrapTriggerEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

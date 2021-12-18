@@ -129,5 +129,4 @@ public class PotionEffectAT {
                 + ":"
                 + (this.particleOff ? "true" : "");
     }
-
 }

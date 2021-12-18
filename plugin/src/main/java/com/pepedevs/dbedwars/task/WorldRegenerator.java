@@ -60,5 +60,4 @@ public class WorldRegenerator extends Regeneration {
         }
         return world;
     }
-
 }

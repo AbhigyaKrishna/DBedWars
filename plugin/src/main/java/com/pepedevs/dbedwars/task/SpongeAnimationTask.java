@@ -26,6 +26,7 @@ public class SpongeAnimationTask implements Workload {
     private int tick = 0;
     private long timestamp = System.currentTimeMillis();
     private boolean done = false;
+
     public SpongeAnimationTask(
             DBedwars plugin,
             Block block,
@@ -58,22 +59,22 @@ public class SpongeAnimationTask implements Workload {
         largerBox.forEach(
                 block -> {
                     new ParticleBuilder(
-                            ParticleEffect.CLOUD,
-                            block.getLocation()
-                                    .add(
-                                            0.5 + random.nextGaussian() / 5,
-                                            0.5 + random.nextGaussian() / 5,
-                                            0.5 + random.nextGaussian() / 5))
+                                    ParticleEffect.CLOUD,
+                                    block.getLocation()
+                                            .add(
+                                                    0.5 + random.nextGaussian() / 5,
+                                                    0.5 + random.nextGaussian() / 5,
+                                                    0.5 + random.nextGaussian() / 5))
                             .setSpeed(0.01F)
                             .setAmount(1)
                             .display();
                     new ParticleBuilder(
-                            ParticleEffect.CLOUD,
-                            block.getLocation()
-                                    .add(
-                                            0.5 + random.nextGaussian() / 5,
-                                            0.5 + random.nextGaussian() / 5,
-                                            0.5 + random.nextGaussian() / 5))
+                                    ParticleEffect.CLOUD,
+                                    block.getLocation()
+                                            .add(
+                                                    0.5 + random.nextGaussian() / 5,
+                                                    0.5 + random.nextGaussian() / 5,
+                                                    0.5 + random.nextGaussian() / 5))
                             .setSpeed(0.01F)
                             .setAmount(1)
                             .display();
@@ -103,5 +104,4 @@ public class SpongeAnimationTask implements Workload {
         tick++;
         return tick % 8 == 0;
     }
-
 }

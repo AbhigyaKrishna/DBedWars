@@ -90,5 +90,4 @@ public class SentMessage extends Message {
     public SentMessage sendAgainIn(MessagingChannel channel) {
         return this.rawMessage.clone().send(sender, channel);
     }
-
 }

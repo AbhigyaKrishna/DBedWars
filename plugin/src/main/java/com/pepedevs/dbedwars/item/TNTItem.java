@@ -45,8 +45,7 @@ public class TNTItem extends PluginActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-    }
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onTNTPlace(BlockPlaceEvent event) {
         if (!cfgTNT.isAutoIgniteTNTEnabled()) {
@@ -113,5 +112,4 @@ public class TNTItem extends PluginActionItem {
             if (!DamageEvent.isCancelled()) player.damage(DamageEvent.getFinalDamage());
         }
     }
-
 }

@@ -10,8 +10,7 @@ public class Message implements Cloneable {
         this.component = component;
     }
 
-    protected Message() {
-    }
+    protected Message() {}
 
     public static Message fromText(String message) {
         return new Message(Component.text(message));
@@ -60,5 +59,4 @@ public class Message implements Cloneable {
     public Message clone() {
         return new Message(asComponent());
     }
-
 }

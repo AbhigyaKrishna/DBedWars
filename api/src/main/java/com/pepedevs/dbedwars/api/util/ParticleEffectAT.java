@@ -123,5 +123,4 @@ public class ParticleEffectAT {
         if (this.speed != null) builder.setSpeed(speed.floatValue());
         return builder;
     }
-
 }

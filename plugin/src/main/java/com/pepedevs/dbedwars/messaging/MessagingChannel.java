@@ -67,5 +67,4 @@ public class MessagingChannel {
     public MessagingHistory getMessagingHistory() {
         return messagingHistory;
     }
-
 }

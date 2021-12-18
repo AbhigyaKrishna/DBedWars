@@ -54,5 +54,4 @@ public class ConfigurableScoreboard implements Loadable {
     public int getUpdateTick() {
         return this.updateTick;
     }
-
 }

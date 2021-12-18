@@ -5,5 +5,4 @@ public interface Permanent {
     boolean isPermanent();
 
     void setPermanent(boolean flag);
-
 }

@@ -52,5 +52,4 @@ public class PlayerPurchaseItemEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

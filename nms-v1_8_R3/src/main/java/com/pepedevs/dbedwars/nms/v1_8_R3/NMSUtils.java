@@ -124,5 +124,4 @@ public class NMSUtils implements NMSAdaptor {
     public IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam) {
         return new BedwarsBedBug(bedBug, spawningTeam);
     }
-
 }

@@ -642,7 +642,5 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
             return blocks;
         }
-
     }
-
 }

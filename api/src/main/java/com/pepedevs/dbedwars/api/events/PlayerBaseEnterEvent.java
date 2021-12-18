@@ -40,5 +40,4 @@ public class PlayerBaseEnterEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

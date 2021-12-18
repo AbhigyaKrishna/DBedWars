@@ -80,20 +80,22 @@ public class PopupTowerWorkload implements Workload {
             if ((t * blocksPerTick + i) <= blocks.length - 1) {
                 Block block = blocks[t * blocksPerTick + i];
                 Material material = blockMap.get(block);
-                SchedulerUtils.runTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (block.isEmpty()) {
-                            arena.setBlock(block, blockMap.get(block));
-                            if (block.getState().getData() instanceof Colorable) {
-                                XBlock.setColor(block, color);
+                SchedulerUtils.runTask(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (block.isEmpty()) {
+                                    arena.setBlock(block, blockMap.get(block));
+                                    if (block.getState().getData() instanceof Colorable) {
+                                        XBlock.setColor(block, color);
+                                    }
+                                    if (material == Material.LADDER) {
+                                        XBlock.setDirection(block, face);
+                                    }
+                                }
                             }
-                            if (material == Material.LADDER) {
-                                XBlock.setDirection(block, face);
-                            }
-                        }
-                    }
-                }, DBedwars.getInstance());
+                        },
+                        DBedwars.getInstance());
                 sound.play(block.getLocation());
                 particle.setLocation(block.getLocation()).display();
             }
@@ -114,5 +116,4 @@ public class PopupTowerWorkload implements Workload {
         t++;
         return t * blocksPerTick < blocks.length + blocksPerTick;
     }
-
 }

@@ -17,6 +17,7 @@ public class ParticleImageDisplayTask implements Workload {
     private final ParticleBuilder particle;
     private long timestamp = System.currentTimeMillis();
     private int tick = -1;
+
     public ParticleImageDisplayTask(
             int ticksToDisplayFor,
             Dimension dimension,
@@ -65,5 +66,4 @@ public class ParticleImageDisplayTask implements Workload {
         timestamp = System.currentTimeMillis();
         return tick < ticksToDisplayFor;
     }
-
 }

@@ -82,5 +82,4 @@ public class ArenaListener extends PluginHandler {
     public void unregister() {
         super.unregister();
     }
-
 }

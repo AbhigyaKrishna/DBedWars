@@ -88,7 +88,9 @@ public class ConfigurationUtils {
             try {
                 num = Integer.parseInt(t[0]);
             } catch (NumberFormatException e) {
-                DBedwars.getInstance().getLogger().warning("Cost `" + s + "` is not in right format! Skipping it!");
+                DBedwars.getInstance()
+                        .getLogger()
+                        .warning("Cost `" + s + "` is not in right format! Skipping it!");
                 continue;
             }
             Optional<XMaterial> xm =
@@ -112,5 +114,4 @@ public class ConfigurationUtils {
         }
         return attributes;
     }
-
 }

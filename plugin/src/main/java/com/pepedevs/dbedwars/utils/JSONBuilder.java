@@ -367,5 +367,4 @@ public class JSONBuilder implements Cloneable {
             throw new AssertionError();
         }
     }
-
 }

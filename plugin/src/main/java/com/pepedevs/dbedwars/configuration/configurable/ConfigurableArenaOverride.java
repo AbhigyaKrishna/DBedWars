@@ -184,7 +184,6 @@ public class ConfigurableArenaOverride implements Loadable {
                 }
             }
         }
-
     }
 
     public class ConfigOverride implements Loadable {
@@ -237,7 +236,5 @@ public class ConfigurableArenaOverride implements Loadable {
             if (this.config.getDeathPoint() != Integer.MIN_VALUE)
                 arena.getSettings().setDeathPoint(this.config.getDeathPoint());
         }
-
     }
-
 }

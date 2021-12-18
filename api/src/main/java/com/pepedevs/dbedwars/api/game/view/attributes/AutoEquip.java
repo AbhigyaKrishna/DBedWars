@@ -13,5 +13,4 @@ public interface AutoEquip {
     void setSlot(int slot);
 
     void equip(Player player);
-
 }

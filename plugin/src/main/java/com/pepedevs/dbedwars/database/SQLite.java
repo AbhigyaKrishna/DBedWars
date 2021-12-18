@@ -203,5 +203,4 @@ public class SQLite extends DatabaseBridge {
     public Database getHandle() {
         return this.db;
     }
-
 }

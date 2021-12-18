@@ -22,12 +22,12 @@ public class WaterBucket extends PluginActionItem {
                                 .getDisplayName()),
                 StringUtils.translateAlternateColorCodes(
                         plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
-                                == null
+                                        == null
                                 ? new ArrayList<>()
                                 : plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getWaterBucket()
-                                .getLore()),
+                                        .getCustomItems()
+                                        .getWaterBucket()
+                                        .getLore()),
                 XMaterial.WATER_BUCKET.parseMaterial());
         this.removeOnUse =
                 plugin.getConfigHandler().getCustomItems().getWaterBucket().shouldRemoveOnUse();
@@ -36,5 +36,4 @@ public class WaterBucket extends PluginActionItem {
     public void onWaterBucketUse(PlayerBucketEmptyEvent event) {
         if (removeOnUse) Utils.useItem(event.getPlayer());
     }
-
 }

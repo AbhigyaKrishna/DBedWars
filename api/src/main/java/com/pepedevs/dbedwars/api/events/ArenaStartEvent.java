@@ -38,5 +38,4 @@ public class ArenaStartEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

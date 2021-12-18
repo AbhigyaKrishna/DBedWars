@@ -192,5 +192,4 @@ public class TeamSetupGui extends IMenu<ItemMenu> {
         this.menu.setItem(33, upgrade);
         this.menu.setItem(8, BACK);
     }
-
 }

@@ -40,5 +40,4 @@ public class PlayerBaseExitEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

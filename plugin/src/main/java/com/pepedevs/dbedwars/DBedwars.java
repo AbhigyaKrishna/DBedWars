@@ -105,6 +105,8 @@ public final class DBedwars extends PluginAdapter {
     }
 
     /**
+     *
+     *
      * <ul>
      *   <li>PluginDependence[0] = MultiVerseCore
      *   <li>PluginDependence[1] = SlimeWorldManager
@@ -117,45 +119,49 @@ public final class DBedwars extends PluginAdapter {
                 this.getLogger().severe(Lang.ERROR_WRITE_FILES.toString());
             }
         }
-        return new PluginDependence[]{
-                new PluginDependence("MultiVerse-Core") {
+        return new PluginDependence[] {
+            new PluginDependence("MultiVerse-Core") {
 
-                    private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
+                private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
 
-                    @Override
-                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                        if (plugin != null) {
-                            DBedwars.this.getLogger().info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
-                            DBedwars.this.saveResource(
-                                    "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                            PluginFileUtils.set(this.file, "enabled", true);
-                        } else {
-                            if (this.file.exists()) {
-                                PluginFileUtils.set(this.file, "enabled", false);
-                            }
+                @Override
+                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
+                    if (plugin != null) {
+                        DBedwars.this
+                                .getLogger()
+                                .info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                        DBedwars.this.saveResource(
+                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
+                        PluginFileUtils.set(this.file, "enabled", true);
+                    } else {
+                        if (this.file.exists()) {
+                            PluginFileUtils.set(this.file, "enabled", false);
                         }
-                        return true;
                     }
-                },
-                new PluginDependence("SlimeWorldManager") {
-
-                    private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
-
-                    @Override
-                    public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                        if (plugin != null && DBedwars.this.checkSWM(plugin)) {
-                            DBedwars.this.getLogger().info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
-                            DBedwars.this.saveResource(
-                                    "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                            PluginFileUtils.set(this.file, "enabled", true);
-                        } else {
-                            if (this.file.exists()) {
-                                PluginFileUtils.set(this.file, "enabled", false);
-                            }
-                        }
-                        return true;
-                    }
+                    return true;
                 }
+            },
+            new PluginDependence("SlimeWorldManager") {
+
+                private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
+
+                @Override
+                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
+                    if (plugin != null && DBedwars.this.checkSWM(plugin)) {
+                        DBedwars.this
+                                .getLogger()
+                                .info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                        DBedwars.this.saveResource(
+                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
+                        PluginFileUtils.set(this.file, "enabled", true);
+                    } else {
+                        if (this.file.exists()) {
+                            PluginFileUtils.set(this.file, "enabled", false);
+                        }
+                    }
+                    return true;
+                }
+            }
         };
     }
 
@@ -195,17 +201,16 @@ public final class DBedwars extends PluginAdapter {
         this.imageHandler = new ImageHandler(this);
         this.hologramManager = new HologramManager(this, this.threadHandler.getUpdaterTask());
 
-        this.threadHandler
-                .submitAsync(
-                        () -> {
-                            this.configHandler.loadConfigurations();
+        this.threadHandler.submitAsync(
+                () -> {
+                    this.configHandler.loadConfigurations();
 
-                            this.guiHandler.loadMenus();
-                            this.guiHandler.loadAnvilMenus();
+                    this.guiHandler.loadMenus();
+                    this.guiHandler.loadAnvilMenus();
 
-                            this.registerCustomItems();
-                            this.initDatabase();
-                        });
+                    this.registerCustomItems();
+                    this.initDatabase();
+                });
 
         return true;
     }
@@ -345,8 +350,10 @@ public final class DBedwars extends PluginAdapter {
             case "1.0.2":
             case "1.0.1":
             case "1.0.0-BETA":
-                this.getLogger().severe("Could not hook into SlimeWorldManager support! You are running"
-                        + " an unsupported version");
+                this.getLogger()
+                        .severe(
+                                "Could not hook into SlimeWorldManager support! You are running"
+                                        + " an unsupported version");
                 return false;
         }
         return true;
@@ -380,5 +387,4 @@ public final class DBedwars extends PluginAdapter {
             }
         };
     }
-
 }

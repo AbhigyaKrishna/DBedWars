@@ -32,7 +32,5 @@ public abstract class PluginActionItem extends ActionItemBase {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-    }
-
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 }

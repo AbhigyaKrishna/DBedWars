@@ -44,7 +44,7 @@ public enum ItemConstant {
                     PICKAXE.getItems(),
                     SHOVEL.getItems(),
                     HOE.getItems(),
-                    new XMaterial[]{XMaterial.SHEARS})),
+                    new XMaterial[] {XMaterial.SHEARS})),
 
     LEATHER_ARMOR(
             XMaterial.LEATHER_HELMET,

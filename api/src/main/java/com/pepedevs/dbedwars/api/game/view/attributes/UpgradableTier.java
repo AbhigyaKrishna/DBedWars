@@ -10,5 +10,4 @@ public interface UpgradableTier {
     void setNextTier(GuiItem nextTier);
 
     void upgradeTier(ItemClickAction action);
-
 }

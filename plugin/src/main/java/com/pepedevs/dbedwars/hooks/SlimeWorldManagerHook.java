@@ -46,33 +46,43 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
                 () -> {
                     if (this.isEnabled() && this.config.getBoolean("configure-slime-sources")) {
                         if (!this.config.getBoolean("disable-configure-message")) {
-                            this.plugin.getLogger().warning("We are configuring 'SlimeWorldManager/sources.yml'"
-                                    + " for our convenience!");
-                            this.plugin.getLogger().warning("If you have any inconvenience with this feature,"
-                                    + " please stop the server and disable it in"
-                                    + " 'DBedWars/hooks/SlimeWorldManager-Hook.yml' and"
-                                    + " revert your setting from"
-                                    + " 'SlimeWorldManager/sources.yml.old'. But we highly"
-                                    + " suggest you to leave this feature on! Or you may"
-                                    + " not be able to use other DataSources for storage!");
-                            this.plugin.getLogger().warning("You could disable this message by setting"
-                                    + " 'disable-configure-message' to 'true' in"
-                                    + " 'DBedWars/hooks/SlimeWorldManager-Hook.yml'");
+                            this.plugin
+                                    .getLogger()
+                                    .warning(
+                                            "We are configuring 'SlimeWorldManager/sources.yml'"
+                                                    + " for our convenience!");
+                            this.plugin
+                                    .getLogger()
+                                    .warning(
+                                            "If you have any inconvenience with this feature,"
+                                                + " please stop the server and disable it in"
+                                                + " 'DBedWars/hooks/SlimeWorldManager-Hook.yml' and"
+                                                + " revert your setting from"
+                                                + " 'SlimeWorldManager/sources.yml.old'. But we"
+                                                + " highly suggest you to leave this feature on! Or"
+                                                + " you may not be able to use other DataSources"
+                                                + " for storage!");
+                            this.plugin
+                                    .getLogger()
+                                    .warning(
+                                            "You could disable this message by setting"
+                                                + " 'disable-configure-message' to 'true' in"
+                                                + " 'DBedWars/hooks/SlimeWorldManager-Hook.yml'");
                         }
                         //                        this.configureSlimeConfig();
                     }
-                    String[] availableLoaders = new String[]{"file", "mysql", "mongodb"};
+                    String[] availableLoaders = new String[] {"file", "mysql", "mongodb"};
                     String l = config.getString("slime-loader");
                     l =
                             l != null
                                     ? (Arrays.stream(availableLoaders)
-                                    .anyMatch(
-                                            x ->
-                                                    x.equalsIgnoreCase(
-                                                            config.getString(
-                                                                    "slime-loader")))
-                                    ? l.toLowerCase(Locale.ROOT)
-                                    : "file")
+                                                    .anyMatch(
+                                                            x ->
+                                                                    x.equalsIgnoreCase(
+                                                                            config.getString(
+                                                                                    "slime-loader")))
+                                            ? l.toLowerCase(Locale.ROOT)
+                                            : "file")
                                     : "file";
                     this.loader = slime.getLoader(l);
                 },
@@ -420,5 +430,4 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
             return false;
         }
     }
-
 }

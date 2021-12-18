@@ -139,7 +139,5 @@ public class ImageHandler {
         private static boolean isTransparent(int rgb) {
             return ((rgb >> 24) == 0x00);
         }
-
     }
-
 }
