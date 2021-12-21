@@ -26,12 +26,19 @@ public class Message implements Cloneable {
         return new Message();
     }
 
-    public static Message parsed(String message, Player player, String placeholder, String replacement) {
-        return new Message(MessagingServer.connect().getParser().parseWithPlaceholder(message, player, placeholder, replacement));
+    public static Message parsed(
+            String message, Player player, String placeholder, String replacement) {
+        return new Message(
+                MessagingServer.connect()
+                        .getParser()
+                        .parseWithPlaceholder(message, player, placeholder, replacement));
     }
 
     public static Message parsed(String message, Player player, PlaceholderEntry... placeholders) {
-        return new Message(MessagingServer.connect().getParser().parseWithPlaceholder(message, player, placeholders));
+        return new Message(
+                MessagingServer.connect()
+                        .getParser()
+                        .parseWithPlaceholder(message, player, placeholders));
     }
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {
