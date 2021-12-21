@@ -1,6 +1,8 @@
 package com.pepedevs.dbedwars.messaging;
 
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class Message implements Cloneable {
 
@@ -22,6 +24,14 @@ public class Message implements Cloneable {
 
     public static Message empty() {
         return new Message();
+    }
+
+    public static Message parsed(String message, Player player, String placeholder, String replacement) {
+        return new Message(MessagingServer.connect().getParser().parseWithPlaceholder(message, player, placeholder, replacement));
+    }
+
+    public static Message parsed(String message, Player player, PlaceholderEntry... placeholders) {
+        return new Message(MessagingServer.connect().getParser().parseWithPlaceholder(message, player, placeholders));
     }
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {

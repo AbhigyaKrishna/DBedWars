@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.messaging;
 
+import net.kyori.adventure.bossbar.BossBar;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
