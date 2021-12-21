@@ -1,7 +1,5 @@
 package com.pepedevs.dbedwars.messaging;
 
-import net.kyori.adventure.bossbar.BossBar;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +12,7 @@ public class MessagingChannel {
 
     protected MessagingChannel() {
         this.channelMembers = new HashSet<>();
-        this.messagingHistory = MessagingHistory.from(MessagingServer.connect().getHistory());
+        this.messagingHistory = new MessagingHistory(1000, 100);
     }
 
     public void addMembers(MessagingMember... members) {

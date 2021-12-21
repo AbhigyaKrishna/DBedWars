@@ -34,6 +34,22 @@ public class Message implements Cloneable {
         return new Message(MessagingServer.connect().getParser().parseWithPlaceholder(message, player, placeholders));
     }
 
+    public static Message mini(String message) {
+        return new Message(MessagingServer.connect().getPluginParser().parse(message));
+    }
+
+    public static Message mini(Component component) {
+        return new Message(component);
+    }
+
+    public static Message mini(String message, Player player, String placeholder, String replacement) {
+        return new Message(MessagingServer.connect().getPluginParser().parseWithPlaceholder(message, player, placeholder, replacement));
+    }
+
+    public static Message mini(String message, Player player, PlaceholderEntry... placeholders) {
+        return new Message(MessagingServer.connect().getPluginParser().parseWithPlaceholder(message, player, placeholders));
+    }
+
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {
         return MessagingServer.connect().sendMessage(this, sender, channel);
     }
