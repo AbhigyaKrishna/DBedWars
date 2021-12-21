@@ -1,8 +1,10 @@
 package com.pepedevs.dbedwars.api.messaging;
 
+import java.util.function.Supplier;
+
 public interface PlaceholderEntry {
 
-    static PlaceholderEntry of(String placeholder, String replacement) {
+    static PlaceholderEntry of(String placeholder, Supplier<String> replacementSupplier) {
         return new PlaceholderEntry() {
             @Override
             public String getPlaceholder() {
@@ -10,13 +12,13 @@ public interface PlaceholderEntry {
             }
 
             @Override
-            public String getReplacement() {
-                return replacement;
+            public Supplier<String> getReplacement() {
+                return replacementSupplier;
             }
         };
     }
 
     String getPlaceholder();
 
-    String getReplacement();
+    Supplier<String> getReplacement();
 }

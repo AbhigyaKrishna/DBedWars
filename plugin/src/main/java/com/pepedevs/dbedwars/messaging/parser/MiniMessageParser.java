@@ -34,9 +34,24 @@ public class MiniMessageParser implements MessageParser {
             String message, Player player, PlaceholderEntry... placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
-            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement());
+            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
         }
         parsedMessage = PlaceholderUtil.getManager().apply(player, parsedMessage);
+        return this.parse(parsedMessage);
+    }
+
+    @Override
+    public Component parseFakePlaceholder(String message, String placeholder, String replacement) {
+        String parsedMessage = this.replacer(message, placeholder, replacement);
+        return this.parse(parsedMessage);
+    }
+
+    @Override
+    public Component parseFakePlaceholder(String message, PlaceholderEntry... placeholders) {
+        String parsedMessage = message;
+        for (PlaceholderEntry entry : placeholders) {
+            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
+        }
         return this.parse(parsedMessage);
     }
 

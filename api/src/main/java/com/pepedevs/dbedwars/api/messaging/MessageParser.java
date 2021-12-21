@@ -13,4 +13,8 @@ public interface MessageParser {
             String message, Player player, String placeholder, String replacement);
 
     Component parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders);
+
+    Component parseFakePlaceholder(String message, String placeholder, String replacement);
+
+    Component parseFakePlaceholder(String message, PlaceholderEntry... placeholders);
 }

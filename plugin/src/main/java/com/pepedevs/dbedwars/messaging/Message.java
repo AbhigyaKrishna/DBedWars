@@ -41,11 +41,19 @@ public class Message implements Cloneable {
                         .parseWithPlaceholder(message, player, placeholders));
     }
 
+    public static Message parsed(String message, String placeholder, String replacement) {
+        return new Message(MessagingServer.connect().getParser().parseFakePlaceholder(message, placeholder, replacement));
+    }
+
+    public static Message parsed(String message, PlaceholderEntry... placeholders) {
+        return new Message(MessagingServer.connect().getParser().parseFakePlaceholder(message, placeholders));
+    }
+
     public static Message mini(String message) {
         return new Message(MessagingServer.connect().getMiniParser().parse(message));
     }
 
-    public static Message mini(
+    public static Message miniParsed(
             String message, Player player, String placeholder, String replacement) {
         return new Message(
                 MessagingServer.connect()
@@ -53,18 +61,26 @@ public class Message implements Cloneable {
                         .parseWithPlaceholder(message, player, placeholder, replacement));
     }
 
-    public static Message mini(String message, Player player, PlaceholderEntry... placeholders) {
+    public static Message miniParsed(String message, Player player, PlaceholderEntry... placeholders) {
         return new Message(
                 MessagingServer.connect()
                         .getMiniParser()
                         .parseWithPlaceholder(message, player, placeholders));
+    }
+
+    public static Message miniParsed(String message, String placeholder, String replacement) {
+        return new Message(MessagingServer.connect().getMiniParser().parseFakePlaceholder(message, placeholder, replacement));
+    }
+
+    public static Message miniParsed(String message, PlaceholderEntry... placeholders) {
+        return new Message(MessagingServer.connect().getClassicParser().parseFakePlaceholder(message, placeholders));
     }
 
     public static Message classic(String message) {
         return new Message(MessagingServer.connect().getClassicParser().parse(message));
     }
 
-    public static Message classic(
+    public static Message classicParsed(
             String message, Player player, String placeholder, String replacement) {
         return new Message(
                 MessagingServer.connect()
@@ -72,11 +88,19 @@ public class Message implements Cloneable {
                         .parseWithPlaceholder(message, player, placeholder, replacement));
     }
 
-    public static Message classic(String message, Player player, PlaceholderEntry... placeholders) {
+    public static Message classicParsed(String message, Player player, PlaceholderEntry... placeholders) {
         return new Message(
                 MessagingServer.connect()
                         .getClassicParser()
                         .parseWithPlaceholder(message, player, placeholders));
+    }
+
+    public static Message classicParsed(String message, String placeholder, String replacement) {
+        return new Message(MessagingServer.connect().getClassicParser().parseFakePlaceholder(message, placeholder, replacement));
+    }
+
+    public static Message classicParsed(String message, PlaceholderEntry... placeholders) {
+        return new Message(MessagingServer.connect().getClassicParser().parseFakePlaceholder(message, placeholders));
     }
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {
