@@ -4,7 +4,6 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
 import com.pepedevs.dbedwars.messaging.parser.MiniMessageParser;
-import com.pepedevs.dbedwars.messaging.parser.MiniParserBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
@@ -27,43 +26,47 @@ public class MessagingServer {
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
 
-    //TODO DO IN FILES
+    // TODO DO IN FILES
     private ConfigurableMessaging.ConfigurableHistory history;
-    private MessageParser parser = new MiniMessageParser(
-            MiniMessage.builder()
-                    .removeDefaultTransformations()
-                    .transformations(TransformationType.COLOR,
-                            TransformationType.DECORATION,
-                            TransformationType.HOVER_EVENT,
-                            TransformationType.CLICK_EVENT,
-                            TransformationType.KEYBIND,
-                            TransformationType.TRANSLATABLE,
-                            TransformationType.INSERTION,
-                            TransformationType.FONT,
-                            TransformationType.GRADIENT,
-                            TransformationType.RAINBOW,
-                            TransformationType.RESET,
-                            TransformationType.PRE)
-                    .markdownFlavor(DiscordFlavor.get())
-                    .build()
-    );
+    private MessageParser parser =
+            new MiniMessageParser(
+                    MiniMessage.builder()
+                            .removeDefaultTransformations()
+                            .transformations(
+                                    TransformationType.COLOR,
+                                    TransformationType.DECORATION,
+                                    TransformationType.HOVER_EVENT,
+                                    TransformationType.CLICK_EVENT,
+                                    TransformationType.KEYBIND,
+                                    TransformationType.TRANSLATABLE,
+                                    TransformationType.INSERTION,
+                                    TransformationType.FONT,
+                                    TransformationType.GRADIENT,
+                                    TransformationType.RAINBOW,
+                                    TransformationType.RESET,
+                                    TransformationType.PRE)
+                            .markdownFlavor(DiscordFlavor.get())
+                            .build());
 
-    private MessageParser pluginParser = new MiniMessageParser(MiniMessage.builder()
-            .removeDefaultTransformations()
-            .transformations(TransformationType.COLOR,
-                    TransformationType.DECORATION,
-                    TransformationType.HOVER_EVENT,
-                    TransformationType.CLICK_EVENT,
-                    TransformationType.KEYBIND,
-                    TransformationType.TRANSLATABLE,
-                    TransformationType.INSERTION,
-                    TransformationType.FONT,
-                    TransformationType.GRADIENT,
-                    TransformationType.RAINBOW,
-                    TransformationType.RESET,
-                    TransformationType.PRE)
-            .markdownFlavor(DiscordFlavor.get())
-            .build());
+    private MessageParser pluginParser =
+            new MiniMessageParser(
+                    MiniMessage.builder()
+                            .removeDefaultTransformations()
+                            .transformations(
+                                    TransformationType.COLOR,
+                                    TransformationType.DECORATION,
+                                    TransformationType.HOVER_EVENT,
+                                    TransformationType.CLICK_EVENT,
+                                    TransformationType.KEYBIND,
+                                    TransformationType.TRANSLATABLE,
+                                    TransformationType.INSERTION,
+                                    TransformationType.FONT,
+                                    TransformationType.GRADIENT,
+                                    TransformationType.RAINBOW,
+                                    TransformationType.RESET,
+                                    TransformationType.PRE)
+                            .markdownFlavor(DiscordFlavor.get())
+                            .build());
 
     public MessagingServer(DBedwars plugin) {
         server = this;

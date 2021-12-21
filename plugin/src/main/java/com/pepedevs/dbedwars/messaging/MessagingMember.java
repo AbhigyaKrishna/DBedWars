@@ -23,7 +23,7 @@ public class MessagingMember {
     private MessagingMember(Audience audience, CommandSender sender) {
         this.audienceMember = audience;
         this.sender = sender;
-        //TODO TEMP
+        // TODO TEMP
         this.messagingHistory = new MessagingHistory(1000, 100);
     }
 
