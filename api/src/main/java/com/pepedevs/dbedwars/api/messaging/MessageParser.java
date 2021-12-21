@@ -1,20 +1,25 @@
 package com.pepedevs.dbedwars.api.messaging;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+
+import java.util.Set;
 
 public interface MessageParser {
 
-    Component parse(String message);
+    String parse(String message);
 
-    Component parseWithPAPI(String message, Player player);
+    String parseWithPAPI(String message, Player player);
 
-    Component parseWithPlaceholder(
+    String parseWithPlaceholder(
             String message, Player player, String placeholder, String replacement);
 
-    Component parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders);
+    String parseWithPlaceholder(String message, Player player, PlaceholderEntry... placeholders);
 
-    Component parseFakePlaceholder(String message, String placeholder, String replacement);
+    String parseFakePlaceholder(String message, String placeholder, String replacement);
 
-    Component parseFakePlaceholder(String message, PlaceholderEntry... placeholders);
+    String parseFakePlaceholder(String message, PlaceholderEntry... placeholders);
+
+    public String parseFakePlaceholder(String message, Set<PlaceholderEntry> placeholders);
+
+    String parseWithPlaceholder(String message, Player player, Set<PlaceholderEntry> placeholders);
 }
