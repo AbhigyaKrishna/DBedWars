@@ -38,12 +38,15 @@ public class Message implements Cloneable {
             String message, Player player, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = player.getUniqueId();
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.CONFIG;
         return returnMessage;
     }
@@ -59,12 +62,15 @@ public class Message implements Cloneable {
     public static Message from(String message, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = null;
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.CONFIG;
         return returnMessage;
     }
@@ -77,8 +83,7 @@ public class Message implements Cloneable {
         return returnMessage;
     }
 
-
-    //------------------------------
+    // ------------------------------
 
     public static Message mini(String message) {
         Message returnMessage = new Message(message);
@@ -90,12 +95,15 @@ public class Message implements Cloneable {
             String message, Player player, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = player.getUniqueId();
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.MINI;
         return returnMessage;
     }
@@ -111,12 +119,15 @@ public class Message implements Cloneable {
     public static Message mini(String message, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = null;
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.MINI;
         return returnMessage;
     }
@@ -129,7 +140,7 @@ public class Message implements Cloneable {
         return returnMessage;
     }
 
-    //----------------------
+    // ----------------------
 
     public static Message classic(String message) {
         Message returnMessage = new Message(message);
@@ -141,12 +152,15 @@ public class Message implements Cloneable {
             String message, Player player, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = player.getUniqueId();
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.CLASSIC;
         return returnMessage;
     }
@@ -162,12 +176,15 @@ public class Message implements Cloneable {
     public static Message classic(String message, String placeholder, String replacement) {
         Message returnMessage = new Message(message);
         returnMessage.playerUUID = null;
-        returnMessage.placeholders.add(PlaceholderEntry.of(placeholder, new Supplier<String>() {
-            @Override
-            public String get() {
-                return replacement;
-            }
-        }));
+        returnMessage.placeholders.add(
+                PlaceholderEntry.of(
+                        placeholder,
+                        new Supplier<String>() {
+                            @Override
+                            public String get() {
+                                return replacement;
+                            }
+                        }));
         returnMessage.parser = ParserType.CLASSIC;
         return returnMessage;
     }
@@ -179,7 +196,6 @@ public class Message implements Cloneable {
         returnMessage.parser = ParserType.CLASSIC;
         return returnMessage;
     }
-
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {
         return MessagingServer.connect().sendMessage(this, sender, channel);
@@ -200,7 +216,10 @@ public class Message implements Cloneable {
 
     public Component asComponent() {
         if (playerUUID != null && Bukkit.getPlayer(playerUUID) != null) {
-            return Component.text(parser.getParser().parseWithPlaceholder(message, Bukkit.getPlayer(playerUUID), placeholders));
+            return Component.text(
+                    parser.getParser()
+                            .parseWithPlaceholder(
+                                    message, Bukkit.getPlayer(playerUUID), placeholders));
         }
         return Component.text(parser.getParser().parseFakePlaceholder(message, placeholders));
     }
@@ -214,7 +233,7 @@ public class Message implements Cloneable {
         return new Message(new String(message));
     }
 
-    private enum ParserType{
+    private enum ParserType {
         CLASSIC,
         MINI,
         CONFIG;

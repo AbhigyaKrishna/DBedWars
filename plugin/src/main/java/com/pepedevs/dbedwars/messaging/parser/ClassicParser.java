@@ -5,7 +5,6 @@ import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Set;
 
 public class ClassicParser implements MessageParser {
@@ -45,7 +44,8 @@ public class ClassicParser implements MessageParser {
             String message, Player player, Set<PlaceholderEntry> placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
-            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
+            parsedMessage =
+                    parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
         }
         parsedMessage = PlaceholderUtil.getManager().apply(player, parsedMessage);
         return this.parse(parsedMessage);
@@ -61,7 +61,8 @@ public class ClassicParser implements MessageParser {
     public String parseFakePlaceholder(String message, PlaceholderEntry... placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
-            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
+            parsedMessage =
+                    parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
         }
         return this.parse(parsedMessage);
     }

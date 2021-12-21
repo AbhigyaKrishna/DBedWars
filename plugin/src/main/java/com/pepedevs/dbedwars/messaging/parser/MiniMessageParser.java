@@ -6,7 +6,6 @@ import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Set;
 
 public class MiniMessageParser implements MessageParser {
@@ -47,7 +46,8 @@ public class MiniMessageParser implements MessageParser {
             String message, Player player, Set<PlaceholderEntry> placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
-            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
+            parsedMessage =
+                    parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
         }
         parsedMessage = PlaceholderUtil.getManager().apply(player, parsedMessage);
         return this.parse(parsedMessage);
@@ -63,7 +63,8 @@ public class MiniMessageParser implements MessageParser {
     public String parseFakePlaceholder(String message, PlaceholderEntry... placeholders) {
         String parsedMessage = message;
         for (PlaceholderEntry entry : placeholders) {
-            parsedMessage = parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
+            parsedMessage =
+                    parsedMessage.replace(entry.getPlaceholder(), entry.getReplacement().get());
         }
         return this.parse(parsedMessage);
     }
