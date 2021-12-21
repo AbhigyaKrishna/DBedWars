@@ -50,24 +50,28 @@ public class MessagingUtils {
         return bossBar;
     }
 
-
     public static BossBar getBossBar(Message message) {
-        return BossBar.bossBar(message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
+        return BossBar.bossBar(
+                message.asComponent(),
+                DEFAULT_BOSS_BAR_PROGRESS,
+                DEFAULT_BOSS_BAR_COLOR,
+                DEFAULT_BOSS_BAR_OVERLAY);
     }
 
     public static BossBar getBossBar(Message message, float progress) {
-        return BossBar.bossBar(message.asComponent(), progress, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
+        return BossBar.bossBar(
+                message.asComponent(), progress, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
     }
 
     public static BossBar getBossBar(Message message, BossBar.Color color) {
-        return BossBar.bossBar(message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, color, DEFAULT_BOSS_BAR_OVERLAY);
+        return BossBar.bossBar(
+                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, color, DEFAULT_BOSS_BAR_OVERLAY);
     }
 
     public static BossBar getBossBar(Message message, BossBar.Overlay overlay) {
-        return BossBar.bossBar(message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, overlay);
+        return BossBar.bossBar(
+                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, overlay);
     }
-
-
 
     public static void hideBossBar(BossBar bossBar, Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
@@ -91,7 +95,6 @@ public class MessagingUtils {
         }
     }
 
-
     public static void sendActionBar(Message message, Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
             member.getAudienceMember().sendActionBar(message.asComponent());
@@ -110,14 +113,18 @@ public class MessagingUtils {
 
     public static void sendActionBar(Message message, Player... players) {
         for (Player player : players) {
-            MessagingMember.ofPlayer(player).getAudienceMember().sendActionBar(message.asComponent());
+            MessagingMember.ofPlayer(player)
+                    .getAudienceMember()
+                    .sendActionBar(message.asComponent());
         }
     }
 
-
     public static void sendTitle(Message title, Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
         }
     }
 
@@ -127,19 +134,32 @@ public class MessagingUtils {
 
     public static void sendTitle(Message title, MessagingMember... members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
         }
     }
 
     public static void sendTitle(Message title, Player... players) {
         for (Player player : players) {
-            MessagingMember.ofPlayer(player).getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
+            MessagingMember.ofPlayer(player)
+                    .getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
         }
     }
 
-    public static void sendTitle(Message title, Message subtitle, Collection<MessagingMember> members) {
+    public static void sendTitle(
+            Message title, Message subtitle, Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    DEFAULT_TITLE_TIMES));
         }
     }
 
@@ -149,57 +169,146 @@ public class MessagingUtils {
 
     public static void sendTitle(Message title, Message subtitle, MessagingMember... members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    DEFAULT_TITLE_TIMES));
         }
     }
 
     public static void sendTitle(Message title, Message subtitle, Player... players) {
         for (Player player : players) {
-            MessagingMember.ofPlayer(player).getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES));
+            MessagingMember.ofPlayer(player)
+                    .getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    DEFAULT_TITLE_TIMES));
         }
     }
 
-    public static void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, Collection<MessagingMember> members) {
+    public static void sendTitle(
+            Message title,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    DEFAULT_SUBTITLE,
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
-    public static void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingChannel channel) {
+    public static void sendTitle(
+            Message title,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingChannel channel) {
         sendTitle(title, fadeInTicks, fadeOutTicks, stayTicks, channel.getChannelMemebers());
     }
 
-    public static void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingMember... members) {
+    public static void sendTitle(
+            Message title,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingMember... members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    DEFAULT_SUBTITLE,
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
-    public static void sendTitle(Message title,  int fadeInTicks, int fadeOutTicks, int stayTicks, Player... players) {
+    public static void sendTitle(
+            Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, Player... players) {
         for (Player player : players) {
-            MessagingMember.ofPlayer(player).getAudienceMember().showTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            MessagingMember.ofPlayer(player)
+                    .getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    DEFAULT_SUBTITLE,
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
-    public static void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks, Collection<MessagingMember> members) {
+    public static void sendTitle(
+            Message title,
+            Message subtitle,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            Collection<MessagingMember> members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
-    public static void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingChannel channel) {
-        sendTitle(title, subtitle, fadeInTicks, fadeOutTicks, stayTicks, channel.getChannelMemebers());
+    public static void sendTitle(
+            Message title,
+            Message subtitle,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingChannel channel) {
+        sendTitle(
+                title,
+                subtitle,
+                fadeInTicks,
+                fadeOutTicks,
+                stayTicks,
+                channel.getChannelMemebers());
     }
 
-    public static void sendTitle(Message title, Message subtitle,  int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingMember... members) {
+    public static void sendTitle(
+            Message title,
+            Message subtitle,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingMember... members) {
         for (MessagingMember member : members) {
-            member.getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            member.getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
-    public static void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks, Player... players) {
+    public static void sendTitle(
+            Message title,
+            Message subtitle,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            Player... players) {
         for (Player player : players) {
-            MessagingMember.ofPlayer(player).getAudienceMember().showTitle(Title.title(title.asComponent(), subtitle.asComponent(), getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+            MessagingMember.ofPlayer(player)
+                    .getAudienceMember()
+                    .showTitle(
+                            Title.title(
+                                    title.asComponent(),
+                                    subtitle.asComponent(),
+                                    getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
         }
     }
 
@@ -248,7 +357,9 @@ public class MessagingUtils {
     }
 
     private static Title.Times getTimes(int fadeIn, int fadeOut, int stay) {
-        return Title.Times.of(Duration.ofMillis(fadeIn * 50L), Duration.ofMillis(stay * 50L), Duration.ofMillis(fadeOut * 50L));
+        return Title.Times.of(
+                Duration.ofMillis(fadeIn * 50L),
+                Duration.ofMillis(stay * 50L),
+                Duration.ofMillis(fadeOut * 50L));
     }
-
 }
