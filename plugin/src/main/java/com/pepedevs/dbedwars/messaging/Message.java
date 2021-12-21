@@ -45,24 +45,38 @@ public class Message implements Cloneable {
         return new Message(MessagingServer.connect().getMiniParser().parse(message));
     }
 
-    public static Message mini(String message, Player player, String placeholder, String replacement) {
-        return new Message(MessagingServer.connect().getMiniParser().parseWithPlaceholder(message, player, placeholder, replacement));
+    public static Message mini(
+            String message, Player player, String placeholder, String replacement) {
+        return new Message(
+                MessagingServer.connect()
+                        .getMiniParser()
+                        .parseWithPlaceholder(message, player, placeholder, replacement));
     }
 
     public static Message mini(String message, Player player, PlaceholderEntry... placeholders) {
-        return new Message(MessagingServer.connect().getMiniParser().parseWithPlaceholder(message, player, placeholders));
+        return new Message(
+                MessagingServer.connect()
+                        .getMiniParser()
+                        .parseWithPlaceholder(message, player, placeholders));
     }
 
     public static Message classic(String message) {
         return new Message(MessagingServer.connect().getClassicParser().parse(message));
     }
 
-    public static Message classic(String message, Player player, String placeholder, String replacement) {
-        return new Message(MessagingServer.connect().getClassicParser().parseWithPlaceholder(message, player, placeholder, replacement));
+    public static Message classic(
+            String message, Player player, String placeholder, String replacement) {
+        return new Message(
+                MessagingServer.connect()
+                        .getClassicParser()
+                        .parseWithPlaceholder(message, player, placeholder, replacement));
     }
 
     public static Message classic(String message, Player player, PlaceholderEntry... placeholders) {
-        return new Message(MessagingServer.connect().getClassicParser().parseWithPlaceholder(message, player, placeholders));
+        return new Message(
+                MessagingServer.connect()
+                        .getClassicParser()
+                        .parseWithPlaceholder(message, player, placeholders));
     }
 
     public SentMessage send(MessagingMember sender, MessagingChannel channel) {

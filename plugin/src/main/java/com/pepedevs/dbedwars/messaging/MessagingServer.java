@@ -27,43 +27,47 @@ public class MessagingServer {
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
 
-    //TODO DO IN FILES
+    // TODO DO IN FILES
     private ConfigurableMessaging.ConfigurableHistory history;
-    private MessageParser parser = new MiniMessageParser(
-            MiniMessage.builder()
-                    .removeDefaultTransformations()
-                    .transformations(TransformationType.COLOR,
-                            TransformationType.DECORATION,
-                            TransformationType.HOVER_EVENT,
-                            TransformationType.CLICK_EVENT,
-                            TransformationType.KEYBIND,
-                            TransformationType.TRANSLATABLE,
-                            TransformationType.INSERTION,
-                            TransformationType.FONT,
-                            TransformationType.GRADIENT,
-                            TransformationType.RAINBOW,
-                            TransformationType.RESET,
-                            TransformationType.PRE)
-                    .markdownFlavor(DiscordFlavor.get())
-                    .build()
-    );
+    private MessageParser parser =
+            new MiniMessageParser(
+                    MiniMessage.builder()
+                            .removeDefaultTransformations()
+                            .transformations(
+                                    TransformationType.COLOR,
+                                    TransformationType.DECORATION,
+                                    TransformationType.HOVER_EVENT,
+                                    TransformationType.CLICK_EVENT,
+                                    TransformationType.KEYBIND,
+                                    TransformationType.TRANSLATABLE,
+                                    TransformationType.INSERTION,
+                                    TransformationType.FONT,
+                                    TransformationType.GRADIENT,
+                                    TransformationType.RAINBOW,
+                                    TransformationType.RESET,
+                                    TransformationType.PRE)
+                            .markdownFlavor(DiscordFlavor.get())
+                            .build());
 
-    private MiniMessageParser miniParser = new MiniMessageParser(MiniMessage.builder()
-            .removeDefaultTransformations()
-            .transformations(TransformationType.COLOR,
-                    TransformationType.DECORATION,
-                    TransformationType.HOVER_EVENT,
-                    TransformationType.CLICK_EVENT,
-                    TransformationType.KEYBIND,
-                    TransformationType.TRANSLATABLE,
-                    TransformationType.INSERTION,
-                    TransformationType.FONT,
-                    TransformationType.GRADIENT,
-                    TransformationType.RAINBOW,
-                    TransformationType.RESET,
-                    TransformationType.PRE)
-            .markdownFlavor(DiscordFlavor.get())
-            .build());
+    private MiniMessageParser miniParser =
+            new MiniMessageParser(
+                    MiniMessage.builder()
+                            .removeDefaultTransformations()
+                            .transformations(
+                                    TransformationType.COLOR,
+                                    TransformationType.DECORATION,
+                                    TransformationType.HOVER_EVENT,
+                                    TransformationType.CLICK_EVENT,
+                                    TransformationType.KEYBIND,
+                                    TransformationType.TRANSLATABLE,
+                                    TransformationType.INSERTION,
+                                    TransformationType.FONT,
+                                    TransformationType.GRADIENT,
+                                    TransformationType.RAINBOW,
+                                    TransformationType.RESET,
+                                    TransformationType.PRE)
+                            .markdownFlavor(DiscordFlavor.get())
+                            .build());
 
     private ClassicParser classicParser = new ClassicParser();
 
