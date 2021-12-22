@@ -176,7 +176,8 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
         return this.spawner != null;
     }
 
-    public void override(ConfigurableArenaOverride.SpawnerOverride o) {}
+    public void override(ConfigurableArenaOverride.SpawnerOverride o) {
+    }
 
     @Override
     public DropType clone() {
@@ -262,6 +263,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
                 throw new AssertionError();
             }
         }
+
     }
 
     public static class Drop implements com.pepedevs.dbedwars.api.game.spawner.DropType.Drop {
@@ -321,5 +323,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
                 throw new AssertionError();
             }
         }
+
     }
+
 }

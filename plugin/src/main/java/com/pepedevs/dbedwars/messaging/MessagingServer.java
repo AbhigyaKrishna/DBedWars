@@ -2,10 +2,14 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
-import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
-import com.pepedevs.dbedwars.messaging.parser.ClassicParser;
+import com.pepedevs.dbedwars.api.messaging.Messaging;
+import com.pepedevs.dbedwars.messaging.member.ConsoleMember;
+import com.pepedevs.dbedwars.messaging.member.MessagingMember;
+import com.pepedevs.dbedwars.messaging.member.PlayerMember;
+import com.pepedevs.dbedwars.messaging.parser.LegacyParser;
 import com.pepedevs.dbedwars.messaging.parser.MiniMessageParser;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
@@ -17,7 +21,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MessagingServer {
+public class MessagingServer extends Messaging {
 
     private static MessagingServer server;
     private final DBedwars plugin;
@@ -26,9 +30,25 @@ public class MessagingServer {
     private Set<MessagingChannel> registeredChannels;
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
+    private MiniMessage miniMessage = MiniMessage.builder()
+            .removeDefaultTransformations()
+            .transformations(
+                    TransformationType.COLOR,
+                    TransformationType.DECORATION,
+                    TransformationType.HOVER_EVENT,
+                    TransformationType.CLICK_EVENT,
+                    TransformationType.KEYBIND,
+                    TransformationType.TRANSLATABLE,
+                    TransformationType.INSERTION,
+                    TransformationType.FONT,
+                    TransformationType.GRADIENT,
+                    TransformationType.RAINBOW,
+                    TransformationType.RESET,
+                    TransformationType.PRE)
+            .markdownFlavor(DiscordFlavor.get())
+            .build();
 
     // TODO DO IN FILES
-    private ConfigurableMessaging.ConfigurableHistory history;
     private MessageParser parser =
             new MiniMessageParser(
                     MiniMessage.builder()
@@ -49,27 +69,9 @@ public class MessagingServer {
                             .markdownFlavor(DiscordFlavor.get())
                             .build());
 
-    private MiniMessageParser miniParser =
-            new MiniMessageParser(
-                    MiniMessage.builder()
-                            .removeDefaultTransformations()
-                            .transformations(
-                                    TransformationType.COLOR,
-                                    TransformationType.DECORATION,
-                                    TransformationType.HOVER_EVENT,
-                                    TransformationType.CLICK_EVENT,
-                                    TransformationType.KEYBIND,
-                                    TransformationType.TRANSLATABLE,
-                                    TransformationType.INSERTION,
-                                    TransformationType.FONT,
-                                    TransformationType.GRADIENT,
-                                    TransformationType.RAINBOW,
-                                    TransformationType.RESET,
-                                    TransformationType.PRE)
-                            .markdownFlavor(DiscordFlavor.get())
-                            .build());
+    private MiniMessageParser miniParser = new MiniMessageParser(miniMessage);
 
-    private ClassicParser classicParser = new ClassicParser();
+    private LegacyParser classicParser = new LegacyParser();
 
     public MessagingServer(DBedwars plugin) {
         server = this;
@@ -79,7 +81,7 @@ public class MessagingServer {
         this.plugin = plugin;
     }
 
-    protected static MessagingServer connect() {
+    public static MessagingServer connect() {
         return server;
     }
 
@@ -88,12 +90,12 @@ public class MessagingServer {
         this.registeredChannels = new HashSet<>();
         this.registeredMembers = new HashSet<>();
 
-        this.consoleMessagingMember = new MessagingMember(adventure.sender(console), console);
-        this.consoleLogger = new MessagingChannel();
+        this.consoleMessagingMember = new ConsoleMember(console);
+        this.consoleLogger = new MessagingChannel(EnumChannel.CONSOLE);
         this.consoleLogger.addConsole();
     }
 
-    protected SentMessage sendMessage(
+    public void sendMessage(
             Message message, MessagingMember sender, MessagingChannel channel) {
 
         Validate.notNull(message, "message cannot be null");
@@ -103,21 +105,14 @@ public class MessagingServer {
         if (!registryCheck(channel))
             throw new IllegalStateException("cannot send message in an unregistered channel");
 
-        Set<MessagingMember> receivers = channel.getChannelMemebers();
-
-        SentMessage sentMessage = new SentMessage(message, channel, sender);
-        sender.getMessagingHistory().addSentMessage(sentMessage);
-        channel.getMessagingHistory().addSentMessage(sentMessage);
+        Set<MessagingMember> receivers = channel.getChannelMembers();
 
         for (MessagingMember receiver : receivers) {
             receiver.getAudienceMember().sendMessage(message.asComponent());
-            receiver.getMessagingHistory().addSentMessage(sentMessage);
         }
-
-        return sentMessage;
     }
 
-    protected SentMessage sendToExcept(
+    public void sendToExcept(
             Message message,
             MessagingMember sender,
             MessagingChannel channel,
@@ -130,73 +125,58 @@ public class MessagingServer {
         if (!registryCheck(channel))
             throw new IllegalStateException("cannot send message in an unregistered channel");
 
-        Set<MessagingMember> receivers = channel.getChannelMemebers();
+        Set<MessagingMember> receivers = channel.getChannelMembers();
         Arrays.asList(hiddenUsers).forEach(receivers::remove);
-
-        SentMessage sentMessage =
-                new SentMessage(message, channel, sender, System.currentTimeMillis(), receivers);
-        sender.getMessagingHistory().addSentMessage(sentMessage);
-        channel.getMessagingHistory().addSentMessage(sentMessage);
 
         for (MessagingMember receiver : receivers) {
             receiver.getAudienceMember().sendMessage(message.asComponent());
-            receiver.getMessagingHistory().addSentMessage(sentMessage);
         }
 
-        return sentMessage;
     }
 
-    protected SentMessage sendToConsole(Message message) {
-
+    public void sendToConsole(Message message) {
         Validate.notNull(message, "message cannot be null");
-
-        SentMessage sentMessage = new SentMessage(message, consoleLogger, consoleMessagingMember);
-
         this.consoleMessagingMember.getAudienceMember().sendMessage(message.asComponent());
-        this.consoleMessagingMember.getMessagingHistory().addSentMessage(sentMessage);
-        this.consoleLogger.getMessagingHistory().addSentMessage(sentMessage);
-
-        return sentMessage;
     }
 
-    protected void registerChannels(MessagingChannel... channels) {
+    public void registerChannels(MessagingChannel... channels) {
         this.registeredChannels.addAll(Arrays.asList(channels));
     }
 
-    protected void unRegisterChannels(MessagingChannel... channels) {
+    public void unRegisterChannels(MessagingChannel... channels) {
         for (MessagingChannel channel : channels) {
             this.registeredChannels.remove(channel);
         }
     }
 
-    protected Set<MessagingChannel> getRegisteredChannels() {
+    public Set<MessagingChannel> getRegisteredChannels() {
         return registeredChannels;
     }
 
-    protected MessagingMember getMessagingMember(Player player) {
+    public MessagingMember getMessagingMember(Player player) {
         for (MessagingMember member : this.registeredMembers) {
-            if (!member.isPlayer()) continue;
-            if (member.getAsPlayer().equals(player)) return member;
+            if (!member.isPlayerMember()) continue;
+            if (((PlayerMember) member).getPlayer().getUniqueId().equals(player.getUniqueId())) return member;
         }
 
-        MessagingMember member = new MessagingMember(adventure.player(player), player);
+        MessagingMember member = new PlayerMember(player);
         this.registeredMembers.add(member);
         return member;
     }
 
-    protected MessagingMember getConsole() {
+    public MessagingMember getConsole() {
         return this.consoleMessagingMember;
     }
 
-    protected boolean registryCheck(MessagingChannel channel) {
+    public boolean registryCheck(MessagingChannel channel) {
         return this.getRegisteredChannels().contains(channel);
     }
 
-    protected ConfigurableMessaging.ConfigurableHistory getHistory() {
-        return this.history;
+    public BukkitAudiences getAdventure() {
+        return this.adventure;
     }
 
-    protected MessageParser getParser() {
+    public MessageParser getParser() {
         return parser;
     }
 
@@ -204,7 +184,18 @@ public class MessagingServer {
         return miniParser;
     }
 
-    public ClassicParser getClassicParser() {
+    public LegacyParser getClassicParser() {
         return classicParser;
     }
+
+    @Override
+    public String serialize(Component component) {
+        return this.miniMessage.serialize(component);
+    }
+
+    @Override
+    public Component deserialize(String message) {
+        return this.miniMessage.deserialize(message);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.messaging;
 
+import com.pepedevs.dbedwars.messaging.member.MessagingMember;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,12 +9,11 @@ import java.util.Set;
 public class MessagingChannel {
 
     private final Set<MessagingMember> channelMembers;
-    private final MessagingHistory messagingHistory;
-    private EnumChannel channelType;
+    private final EnumChannel channelType;
 
-    protected MessagingChannel() {
+    public MessagingChannel(EnumChannel channelType) {
         this.channelMembers = new HashSet<>();
-        this.messagingHistory = new MessagingHistory(1000, 100);
+        this.channelType = channelType;
     }
 
     public void addMembers(MessagingMember... members) {
@@ -43,16 +44,15 @@ public class MessagingChannel {
         return MessagingServer.connect().registryCheck(this);
     }
 
-    public SentMessage sendMessage(MessagingMember sender, Message message) {
-        return MessagingServer.connect().sendMessage(message, sender, this);
+    public void sendMessage(MessagingMember sender, Message message) {
+        MessagingServer.connect().sendMessage(message, sender, this);
     }
 
-    public SentMessage sendToExcept(
-            MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
-        return MessagingServer.connect().sendToExcept(message, sender, this, hiddenUsers);
+    public void sendToExcept(MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
+        MessagingServer.connect().sendToExcept(message, sender, this, hiddenUsers);
     }
 
-    public Set<MessagingMember> getChannelMemebers() {
+    public Set<MessagingMember> getChannelMembers() {
         return new HashSet<>(channelMembers);
     }
 
@@ -60,11 +60,4 @@ public class MessagingChannel {
         return channelType;
     }
 
-    public void setChannelType(EnumChannel channelType) {
-        this.channelType = channelType;
-    }
-
-    public MessagingHistory getMessagingHistory() {
-        return messagingHistory;
-    }
 }

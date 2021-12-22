@@ -2,13 +2,12 @@ package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.messaging.member.MessagingMember;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Message implements Cloneable {
@@ -18,10 +17,9 @@ public class Message implements Cloneable {
     private UUID playerUUID;
     private ParserType parser;
 
-    protected Message() {}
-
-    protected Message(String message) {
+    public Message(String message) {
         this.message = message;
+        this.placeholders = Collections.synchronizedSet(new HashSet<>());
     }
 
     public static Message from(String message) {
@@ -31,7 +29,7 @@ public class Message implements Cloneable {
     }
 
     public static Message empty() {
-        return new Message();
+        return new Message("");
     }
 
     public static Message from(
@@ -197,21 +195,20 @@ public class Message implements Cloneable {
         return returnMessage;
     }
 
-    public SentMessage send(MessagingMember sender, MessagingChannel channel) {
-        return MessagingServer.connect().sendMessage(this, sender, channel);
+    public void send(MessagingMember sender, MessagingChannel channel) {
+        MessagingServer.connect().sendMessage(this, sender, channel);
     }
 
-    public SentMessage sendToExcept(
-            MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
-        return MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
+    public void sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
+        MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
     }
 
-    public SentMessage sendAsServer(MessagingChannel channel) {
-        return MessagingServer.connect().sendMessage(this, MessagingMember.ofConsole(), channel);
+    public void sendAsServer(MessagingChannel channel) {
+        MessagingServer.connect().sendMessage(this, MessagingMember.ofConsole(), channel);
     }
 
-    public SentMessage logToConsole() {
-        return MessagingServer.connect().sendToConsole(this);
+    public void logToConsole() {
+        MessagingServer.connect().sendToConsole(this);
     }
 
     public Component asComponent() {
@@ -222,6 +219,10 @@ public class Message implements Cloneable {
                                     message, Bukkit.getPlayer(playerUUID), placeholders));
         }
         return Component.text(parser.getParser().parseFakePlaceholder(message, placeholders));
+    }
+
+    public String getRaw() {
+        return this.message;
     }
 
     public void append(String text) {
@@ -249,4 +250,5 @@ public class Message implements Cloneable {
             }
         }
     }
+
 }

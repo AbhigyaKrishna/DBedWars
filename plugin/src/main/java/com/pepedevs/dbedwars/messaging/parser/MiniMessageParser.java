@@ -86,4 +86,5 @@ public class MiniMessageParser implements MessageParser {
     public void setInstance(MiniMessage instance) {
         this.instance = instance;
     }
+
 }

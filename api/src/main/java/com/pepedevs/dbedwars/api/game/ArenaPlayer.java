@@ -2,7 +2,6 @@ package com.pepedevs.dbedwars.api.game;
 
 import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -60,10 +59,6 @@ public interface ArenaPlayer {
 
     void spawn(Location location);
 
-    void sendMessage(String msg);
-
-    void sendMessage(BaseComponent[] component);
-
     ArenaPlayer getLastHitTagged();
 
     void setLastHitTag(ArenaPlayer player);
@@ -77,4 +72,5 @@ public interface ArenaPlayer {
     ShopView getShopView();
 
     void queueRespawn();
+
 }

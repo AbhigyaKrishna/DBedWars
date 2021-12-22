@@ -87,4 +87,5 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
     public UpdateTask getUpdater() {
         return this.updater;
     }
+
 }

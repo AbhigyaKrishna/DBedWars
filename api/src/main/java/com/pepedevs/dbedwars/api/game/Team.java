@@ -73,4 +73,5 @@ public interface Team {
     void spawnShopNpc(LocationXYZYP location);
 
     void spawnUpgradesNpc(LocationXYZYP location);
+
 }

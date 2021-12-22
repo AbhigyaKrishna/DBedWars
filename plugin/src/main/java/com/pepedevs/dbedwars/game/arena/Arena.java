@@ -23,6 +23,9 @@ import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
 import com.pepedevs.dbedwars.listeners.GameListener;
+import com.pepedevs.dbedwars.messaging.EnumChannel;
+import com.pepedevs.dbedwars.messaging.Message;
+import com.pepedevs.dbedwars.messaging.MessagingChannel;
 import com.pepedevs.dbedwars.task.WorldRegenerator;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.DatabaseUtils;
@@ -50,9 +53,9 @@ import java.util.stream.Collectors;
 public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
 
     private final DBedwars plugin;
+    private final MessagingChannel messaging;
     private ConfigurableArena cfgArena;
     private ArenaSettings settings;
-
     private World world;
     private Regeneration regenerator;
     private ArenaStatus status;
@@ -71,6 +74,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.plugin = plugin;
         this.settings =
                 new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
+        this.messaging = new MessagingChannel(EnumChannel.ARENA);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.regenerator =
@@ -307,9 +311,9 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                 && this.settings.getLobby() != null
                 && !this.settings.getDrops().isEmpty()
                 && this.plugin
-                        .getGeneratorHandler()
-                        .getWorldAdaptor()
-                        .saveExist(this.settings.getName())
+                .getGeneratorHandler()
+                .getWorldAdaptor()
+                .saveExist(this.settings.getName())
                 && this.settings.getAvailableTeams().stream().allMatch(Team::isConfigured);
     }
 
@@ -348,10 +352,10 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                                     new ScoreboardImpl(
                                             Arena.this.plugin,
                                             new ArrayList<>(
-                                                            Arena.this
-                                                                    .plugin
-                                                                    .getConfigHandler()
-                                                                    .getScoreboards())
+                                                    Arena.this
+                                                            .plugin
+                                                            .getConfigHandler()
+                                                            .getScoreboards())
                                                     .get(0));
                             Arena.this.scoreboard.createScoreboard();
                             Arena.this.players.forEach(
@@ -370,11 +374,11 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                             .forEach(
                                     e ->
                                             new com.pepedevs.dbedwars.game.arena.Spawner(
-                                                            this.plugin,
-                                                            e.getKey(),
-                                                            e.getValue().toBukkit(this.getWorld()),
-                                                            this,
-                                                            t)
+                                                    this.plugin,
+                                                    e.getKey(),
+                                                    e.getValue().toBukkit(this.getWorld()),
+                                                    this,
+                                                    t)
                                                     .init());
                     t.spawnShopNpc(t.getShopNpc());
                     t.spawnUpgradesNpc(t.getUpgradesNpc());
@@ -386,11 +390,11 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                 .forEach(
                         e ->
                                 new com.pepedevs.dbedwars.game.arena.Spawner(
-                                                this.plugin,
-                                                e.getKey(),
-                                                e.getValue().toBukkit(this.getWorld()),
-                                                this,
-                                                null)
+                                        this.plugin,
+                                        e.getKey(),
+                                        e.getValue().toBukkit(this.getWorld()),
+                                        this,
+                                        null)
                                         .init());
 
         this.players.forEach(
@@ -398,7 +402,6 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                     p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
                     ((ShopView) p.getShopView())
                             .loadFromConfig(this.plugin.getConfigHandler().getShop());
-                    System.out.println("LOADED FROM CONFIG");
                     p.getPlayer().getEnderChest().clear();
                 });
 
@@ -463,13 +466,13 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
 
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);
-        StringBuilder builder = new StringBuilder("&6" + StringUtils.repeat("⬛", 35));
+        StringBuilder builder = new StringBuilder("<gold>" + StringUtils.repeat("⬛", 35));
         byte b = 0;
         for (Map.Entry<ArenaPlayer, Integer> entry : leaderboard.entrySet()) {
             if (b == 4) break;
 
             b++;
-            builder.append("\n&a")
+            builder.append("\n<green>")
                     .append(b)
                     .append(". ")
                     .append(entry.getKey().getPlayer().getName())
@@ -480,7 +483,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         builder.append("\n&6").append(StringUtils.repeat("⬛", 35));
         for (ArenaPlayer player : this.players) {
             if (player.getArena().getWorld().equals(player.getPlayer().getWorld())) {
-                player.sendMessage(StringUtils.translateAlternateColorCodes(builder.toString()));
+                ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) player).sendMessage(Message.mini(builder.toString()));
             }
         }
 
@@ -619,6 +622,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                 p -> {
                     if (condition != null && !condition.test(p)) return;
 
+
                     p.sendMessage(
                             ConfigurationUtils.parseMessage(
                                     ConfigurationUtils.parsePlaceholder(msg, p.getPlayer())));
@@ -728,10 +732,12 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
     }
 
     @Override
-    public void setIngameScoreboard(ArenaPlayer player) {}
+    public void setIngameScoreboard(ArenaPlayer player) {
+    }
 
     @Override
-    public void setLobbyScoreboard(Player player) {}
+    public void setLobbyScoreboard(Player player) {
+    }
 
     @Override
     public boolean stop() {
@@ -781,4 +787,5 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.spawners.clear();
         this.removed.clear();
     }
+
 }

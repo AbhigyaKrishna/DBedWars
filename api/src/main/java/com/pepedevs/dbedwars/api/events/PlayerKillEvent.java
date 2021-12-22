@@ -70,4 +70,5 @@ public class PlayerKillEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

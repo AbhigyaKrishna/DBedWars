@@ -10,9 +10,9 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
+import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import java.time.Instant;
 import java.util.Optional;
 
-public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
+public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
     private final UUIDPlayer player;
     private final String name;
@@ -39,6 +39,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
     private ShopView shopView;
 
     public ArenaPlayer(Player player, Arena arena) {
+        super(player);
         this.player = new UUIDPlayer(player);
         this.name = player.getName();
         this.arena = arena;
@@ -191,7 +192,7 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                         this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
                 if (oTeam.isPresent()
                         && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count()
-                                == 1) {
+                        == 1) {
                     this.arena.end();
                 }
             }
@@ -262,25 +263,15 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
     }
 
     @Override
-    public void sendMessage(String msg) {
-        this.getPlayer().sendMessage(msg);
-    }
-
-    @Override
-    public void sendMessage(BaseComponent[] component) {
-        this.getPlayer().spigot().sendMessage(component);
-    }
-
-    @Override
     public com.pepedevs.dbedwars.api.game.ArenaPlayer getLastHitTagged() {
         if (this.lastHitTime == null) return null;
 
         return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000
-                        > DBedwars.getInstance()
-                                .getConfigHandler()
-                                .getMainConfiguration()
-                                .getArenaSection()
-                                .getPlayerHitTagLength()
+                > DBedwars.getInstance()
+                .getConfigHandler()
+                .getMainConfiguration()
+                .getArenaSection()
+                .getPlayerHitTagLength()
                 ? null
                 : this.lastHitTag;
     }
@@ -322,4 +313,5 @@ public class ArenaPlayer implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
                 .getThreadHandler()
                 .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
+
 }

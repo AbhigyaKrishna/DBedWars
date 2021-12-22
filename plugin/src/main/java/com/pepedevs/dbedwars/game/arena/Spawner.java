@@ -132,12 +132,12 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                                         e ->
                                                 e instanceof Item
                                                         && ((Item) e)
-                                                                .getItemStack()
-                                                                .getType()
-                                                                .equals(
-                                                                        entry.getKey()
-                                                                                .getItem()
-                                                                                .getType()))
+                                                        .getItemStack()
+                                                        .getType()
+                                                        .equals(
+                                                                entry.getKey()
+                                                                        .getItem()
+                                                                        .getType()))
                                 .filter(e -> NBTUtils.hasPluginData(((Item) e).getItemStack()))
                                 .mapToInt(e -> ((Item) e).getItemStack().getAmount())
                                 .sum();
@@ -389,4 +389,5 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
     public boolean remove() {
         return false;
     }
+
 }

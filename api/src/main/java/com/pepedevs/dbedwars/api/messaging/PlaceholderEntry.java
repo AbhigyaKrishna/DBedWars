@@ -21,4 +21,5 @@ public interface PlaceholderEntry {
     String getPlaceholder();
 
     Supplier<String> getReplacement();
+
 }

@@ -33,4 +33,5 @@ public abstract class DBedWarsAPI {
     public abstract HologramManager getHologramFactory();
 
     public abstract Version getVersion();
+
 }

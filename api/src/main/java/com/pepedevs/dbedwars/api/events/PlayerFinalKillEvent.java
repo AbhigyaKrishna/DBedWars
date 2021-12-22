@@ -28,4 +28,5 @@ public class PlayerFinalKillEvent extends PlayerKillEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
 }

@@ -1,17 +1,18 @@
 package com.pepedevs.dbedwars.messaging.parser;
 
 import com.pepedevs.corelib.placeholders.PlaceholderUtil;
+import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.messaging.MessageParser;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class ClassicParser implements MessageParser {
+public class LegacyParser implements MessageParser {
 
     @Override
     public String parse(String message) {
-        return message;
+        return StringUtils.translateAlternateColorCodes(message);
     }
 
     @Override
@@ -80,4 +81,5 @@ public class ClassicParser implements MessageParser {
     private String replacer(String message, String placeholder, String replacement) {
         return message.replace(placeholder, replacement);
     }
+
 }

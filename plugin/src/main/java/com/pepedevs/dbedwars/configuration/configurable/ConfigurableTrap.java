@@ -96,5 +96,7 @@ public class ConfigurableTrap implements Loadable {
         public List<String> getExecutables() {
             return executables;
         }
+
     }
+
 }

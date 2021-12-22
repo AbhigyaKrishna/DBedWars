@@ -78,4 +78,5 @@ public class GameManager implements com.pepedevs.dbedwars.api.handler.GameManage
     public Arena getArena(String name) {
         return arenas.getOrDefault(name, null);
     }
+
 }

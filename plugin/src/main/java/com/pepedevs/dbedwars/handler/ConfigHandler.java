@@ -137,4 +137,5 @@ public class ConfigHandler {
     public ConfigurableParticleImages getParticleImages() {
         return this.particleImages;
     }
+
 }

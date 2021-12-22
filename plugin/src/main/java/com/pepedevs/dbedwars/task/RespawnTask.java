@@ -2,29 +2,41 @@ package com.pepedevs.dbedwars.task;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
+import com.pepedevs.dbedwars.messaging.Message;
+import com.pepedevs.dbedwars.messaging.MessagingUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+
 public class RespawnTask extends CancellableTask implements Listener {
 
     private final DBedwars plugin;
     private final ArenaPlayer player;
-    private int time;
+    private final AtomicInteger time;
+    Message message = Message.mini("<red>Respawning in <gold>{time}s",
+            PlaceholderEntry.of("{time}", new Supplier<String>() {
+                @Override
+                public String get() {
+                    return String.valueOf(RespawnTask.this.time.get());
+                }
+            }));
     private long lastExecuted;
 
     public RespawnTask(DBedwars plugin, ArenaPlayer player) {
         this.plugin = plugin;
-        this.time =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getRespawnTime();
+        this.time = new AtomicInteger(this.plugin
+                .getConfigHandler()
+                .getMainConfiguration()
+                .getArenaSection()
+                .getRespawnTime());
         this.player = player;
-        // TODO
+        MessagingUtils.sendTitle(message, player.getPlayer());
         //        TitleUtils.send(
         //                player.getPlayer(),
         //                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time +
@@ -38,14 +50,9 @@ public class RespawnTask extends CancellableTask implements Listener {
     @Override
     public void compute() {
         this.lastExecuted = System.currentTimeMillis();
-        this.time--;
-        // TODO
-        //        TitleUtils.send(
-        //                player.getPlayer(),
-        //                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time +
-        // "s"),
-        //                "");
-        if (time == 0) {
+        this.time.decrementAndGet();
+        MessagingUtils.sendTitle(message, player.getPlayer());
+        if (time.get() == 0) {
             ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) this.player).setRespawning(false);
             this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));
             this.plugin
@@ -74,4 +81,5 @@ public class RespawnTask extends CancellableTask implements Listener {
         this.setCancelled(true);
         HandlerList.unregisterAll(this);
     }
+
 }

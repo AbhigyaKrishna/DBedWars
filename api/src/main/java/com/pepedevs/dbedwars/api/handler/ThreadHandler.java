@@ -13,4 +13,5 @@ public interface ThreadHandler {
     void submitAsync(Workload load);
 
     void submitAsync(Collection<Workload> load);
+
 }

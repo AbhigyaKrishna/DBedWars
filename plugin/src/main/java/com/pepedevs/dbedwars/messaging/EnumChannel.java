@@ -5,7 +5,7 @@ public enum EnumChannel {
     ARENA_TEAM,
     ARENA_PLAYER,
     ARENA_SPECTATOR,
-    SERVER,
+    CONSOLE,
     LOBBY,
     PERSONAL,
     CUSTOM,

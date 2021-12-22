@@ -22,4 +22,5 @@ public interface MessageParser {
     public String parseFakePlaceholder(String message, Set<PlaceholderEntry> placeholders);
 
     String parseWithPlaceholder(String message, Player player, Set<PlaceholderEntry> placeholders);
+
 }
