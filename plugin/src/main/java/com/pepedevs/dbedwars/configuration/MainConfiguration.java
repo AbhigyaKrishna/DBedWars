@@ -183,7 +183,6 @@ public class MainConfiguration implements Loadable {
         public boolean isDisableHunger() {
             return disableHunger;
         }
-
     }
 
     public static class TrapSection implements Loadable {
@@ -227,7 +226,5 @@ public class MainConfiguration implements Loadable {
         public List<String> getQueueCost() {
             return this.queueCost;
         }
-
     }
-
 }

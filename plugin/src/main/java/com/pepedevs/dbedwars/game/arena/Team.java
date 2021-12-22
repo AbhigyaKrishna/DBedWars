@@ -357,5 +357,4 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
         //        this.upgradesNpc = null;
         this.trapQueue.clear();
     }
-
 }

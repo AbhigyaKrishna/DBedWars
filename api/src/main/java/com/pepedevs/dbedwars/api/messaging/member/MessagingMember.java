@@ -12,5 +12,4 @@ public interface MessagingMember {
     boolean isPlayerMember();
 
     Audience getAudienceMember();
-
 }

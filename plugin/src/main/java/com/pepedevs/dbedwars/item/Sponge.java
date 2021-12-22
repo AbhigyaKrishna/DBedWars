@@ -35,8 +35,7 @@ public class Sponge extends PluginActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
-    }
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onSpongePlace(BlockPlaceEvent event) {
         event.getBlock().setMetadata("isBedwarsSponge", spongeMeta);
@@ -65,5 +64,4 @@ public class Sponge extends PluginActionItem {
                                         cfgSponge.getBreakTryMessage()));
         }
     }
-
 }

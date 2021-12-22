@@ -19,22 +19,28 @@ public class RespawnTask extends CancellableTask implements Listener {
     private final DBedwars plugin;
     private final ArenaPlayer player;
     private final AtomicInteger time;
-    Message message = Message.mini("<red>Respawning in <gold>{time}s",
-            PlaceholderEntry.of("{time}", new Supplier<String>() {
-                @Override
-                public String get() {
-                    return String.valueOf(RespawnTask.this.time.get());
-                }
-            }));
+    Message message =
+            Message.mini(
+                    "<red>Respawning in <gold>{time}s",
+                    PlaceholderEntry.of(
+                            "{time}",
+                            new Supplier<String>() {
+                                @Override
+                                public String get() {
+                                    return String.valueOf(RespawnTask.this.time.get());
+                                }
+                            }));
     private long lastExecuted;
 
     public RespawnTask(DBedwars plugin, ArenaPlayer player) {
         this.plugin = plugin;
-        this.time = new AtomicInteger(this.plugin
-                .getConfigHandler()
-                .getMainConfiguration()
-                .getArenaSection()
-                .getRespawnTime());
+        this.time =
+                new AtomicInteger(
+                        this.plugin
+                                .getConfigHandler()
+                                .getMainConfiguration()
+                                .getArenaSection()
+                                .getRespawnTime());
         this.player = player;
         AbstractMessaging.sendTitle(message, player.getPlayer());
         //        TitleUtils.send(
@@ -81,5 +87,4 @@ public class RespawnTask extends CancellableTask implements Listener {
         this.setCancelled(true);
         HandlerList.unregisterAll(this);
     }
-
 }

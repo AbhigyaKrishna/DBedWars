@@ -28,5 +28,4 @@ public abstract class CancellableTask implements Workload {
     public void setCancelled(boolean cancelled) {
         this.cancel.set(cancelled);
     }
-
 }

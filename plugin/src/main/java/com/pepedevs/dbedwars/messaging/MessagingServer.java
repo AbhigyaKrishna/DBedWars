@@ -30,23 +30,24 @@ public class MessagingServer extends Messaging {
     private Set<MessagingChannel> registeredChannels;
     private MessagingMember consoleMessagingMember;
     private MessagingChannel consoleLogger;
-    private MiniMessage miniMessage = MiniMessage.builder()
-            .removeDefaultTransformations()
-            .transformations(
-                    TransformationType.COLOR,
-                    TransformationType.DECORATION,
-                    TransformationType.HOVER_EVENT,
-                    TransformationType.CLICK_EVENT,
-                    TransformationType.KEYBIND,
-                    TransformationType.TRANSLATABLE,
-                    TransformationType.INSERTION,
-                    TransformationType.FONT,
-                    TransformationType.GRADIENT,
-                    TransformationType.RAINBOW,
-                    TransformationType.RESET,
-                    TransformationType.PRE)
-            .markdownFlavor(DiscordFlavor.get())
-            .build();
+    private MiniMessage miniMessage =
+            MiniMessage.builder()
+                    .removeDefaultTransformations()
+                    .transformations(
+                            TransformationType.COLOR,
+                            TransformationType.DECORATION,
+                            TransformationType.HOVER_EVENT,
+                            TransformationType.CLICK_EVENT,
+                            TransformationType.KEYBIND,
+                            TransformationType.TRANSLATABLE,
+                            TransformationType.INSERTION,
+                            TransformationType.FONT,
+                            TransformationType.GRADIENT,
+                            TransformationType.RAINBOW,
+                            TransformationType.RESET,
+                            TransformationType.PRE)
+                    .markdownFlavor(DiscordFlavor.get())
+                    .build();
 
     // TODO DO IN FILES
     private MessageParser parser =
@@ -95,8 +96,7 @@ public class MessagingServer extends Messaging {
         this.consoleLogger.addConsole();
     }
 
-    public void sendMessage(
-            Message message, MessagingMember sender, MessagingChannel channel) {
+    public void sendMessage(Message message, MessagingMember sender, MessagingChannel channel) {
 
         Validate.notNull(message, "message cannot be null");
         Validate.notNull(sender, "sender cannot be null");
@@ -131,7 +131,6 @@ public class MessagingServer extends Messaging {
         for (MessagingMember receiver : receivers) {
             receiver.getAudienceMember().sendMessage(message.asComponent());
         }
-
     }
 
     public void sendToConsole(Message message) {
@@ -156,7 +155,8 @@ public class MessagingServer extends Messaging {
     public MessagingMember getMessagingMember(Player player) {
         for (MessagingMember member : this.registeredMembers) {
             if (!member.isPlayerMember()) continue;
-            if (((PlayerMember) member).getPlayer().getUniqueId().equals(player.getUniqueId())) return member;
+            if (((PlayerMember) member).getPlayer().getUniqueId().equals(player.getUniqueId()))
+                return member;
         }
 
         MessagingMember member = new PlayerMember(player);
@@ -197,5 +197,4 @@ public class MessagingServer extends Messaging {
     public Component deserialize(String message) {
         return this.miniMessage.parse(message);
     }
-
 }

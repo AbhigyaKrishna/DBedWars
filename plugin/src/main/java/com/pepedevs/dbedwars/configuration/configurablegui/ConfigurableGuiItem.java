@@ -183,7 +183,5 @@ public class ConfigurableGuiItem implements Loadable {
 
             return this.itemAction;
         }
-
     }
-
 }

@@ -48,7 +48,8 @@ public class MessagingChannel {
         MessagingServer.connect().sendMessage(message, sender, this);
     }
 
-    public void sendToExcept(MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
+    public void sendToExcept(
+            MessagingMember sender, Message message, MessagingMember... hiddenUsers) {
         MessagingServer.connect().sendToExcept(message, sender, this, hiddenUsers);
     }
 
@@ -59,5 +60,4 @@ public class MessagingChannel {
     public EnumChannel getChannelType() {
         return channelType;
     }
-
 }

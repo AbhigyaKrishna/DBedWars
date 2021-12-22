@@ -81,5 +81,4 @@ public class LegacyParser implements MessageParser {
     private String replacer(String message, String placeholder, String replacement) {
         return message.replace(placeholder, replacement);
     }
-
 }

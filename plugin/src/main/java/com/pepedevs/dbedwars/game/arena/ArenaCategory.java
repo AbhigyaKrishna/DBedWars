@@ -11,5 +11,4 @@ public class ArenaCategory {
     public String getName() {
         return name;
     }
-
 }
