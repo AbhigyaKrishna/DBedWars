@@ -8,7 +8,8 @@ import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class MessagingMember implements com.pepedevs.dbedwars.api.messaging.member.MessagingMember {
+public abstract class MessagingMember
+        implements com.pepedevs.dbedwars.api.messaging.member.MessagingMember {
 
     private final CommandSender sender;
     private final Audience audienceMember;
@@ -35,7 +36,8 @@ public abstract class MessagingMember implements com.pepedevs.dbedwars.api.messa
     }
 
     public void sendMessage(Message message) {
-        MessagingServer.connect().sendMessage(message, MessagingMember.ofConsole(), this.messagingChannel);
+        MessagingServer.connect()
+                .sendMessage(message, MessagingMember.ofConsole(), this.messagingChannel);
     }
 
     public CommandSender getSender() {
@@ -45,5 +47,4 @@ public abstract class MessagingMember implements com.pepedevs.dbedwars.api.messa
     public Audience getAudienceMember() {
         return audienceMember;
     }
-
 }

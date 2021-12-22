@@ -199,7 +199,8 @@ public class Message implements Cloneable {
         MessagingServer.connect().sendMessage(this, sender, channel);
     }
 
-    public void sendToExcept(MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
+    public void sendToExcept(
+            MessagingMember sender, MessagingChannel channel, MessagingMember... hiddenUsers) {
         MessagingServer.connect().sendToExcept(this, sender, channel, hiddenUsers);
     }
 
@@ -250,5 +251,4 @@ public class Message implements Cloneable {
             }
         }
     }
-
 }

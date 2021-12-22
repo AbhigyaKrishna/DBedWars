@@ -27,29 +27,43 @@ public abstract class MessagingUtils {
     }
 
     public BossBar sendBossBar(Message message, MessagingMember... except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(),
-                DEFAULT_BOSS_BAR_PROGRESS,
-                DEFAULT_BOSS_BAR_COLOR,
-                DEFAULT_BOSS_BAR_OVERLAY);
+        BossBar bossBar =
+                BossBar.bossBar(
+                        message.asComponent(),
+                        DEFAULT_BOSS_BAR_PROGRESS,
+                        DEFAULT_BOSS_BAR_COLOR,
+                        DEFAULT_BOSS_BAR_OVERLAY);
         return this.sendBossBar(bossBar, except);
     }
 
     public BossBar sendBossBar(Message message, float progress, MessagingMember... except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), progress, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
+        BossBar bossBar =
+                BossBar.bossBar(
+                        message.asComponent(),
+                        progress,
+                        DEFAULT_BOSS_BAR_COLOR,
+                        DEFAULT_BOSS_BAR_OVERLAY);
         return this.sendBossBar(bossBar, except);
     }
 
     public BossBar sendBossBar(Message message, BossBar.Color color, MessagingMember... except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, color, DEFAULT_BOSS_BAR_OVERLAY);
+        BossBar bossBar =
+                BossBar.bossBar(
+                        message.asComponent(),
+                        DEFAULT_BOSS_BAR_PROGRESS,
+                        color,
+                        DEFAULT_BOSS_BAR_OVERLAY);
         return this.sendBossBar(bossBar, except);
     }
 
-    public BossBar sendBossBar(Message message, BossBar.Overlay overlay, MessagingMember... except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, overlay);
+    public BossBar sendBossBar(
+            Message message, BossBar.Overlay overlay, MessagingMember... except) {
+        BossBar bossBar =
+                BossBar.bossBar(
+                        message.asComponent(),
+                        DEFAULT_BOSS_BAR_PROGRESS,
+                        DEFAULT_BOSS_BAR_COLOR,
+                        overlay);
         return this.sendBossBar(bossBar, except);
     }
 
@@ -63,7 +77,8 @@ public abstract class MessagingUtils {
     public void sendActionBar(Message message, MessagingMember... except) {
         List<MessagingMember> list = Arrays.asList(except);
         for (MessagingMember member : this.getMembers()) {
-            if (!list.contains(member)) member.getAudienceMember().sendActionBar(message.asComponent());
+            if (!list.contains(member))
+                member.getAudienceMember().sendActionBar(message.asComponent());
         }
     }
 
@@ -75,19 +90,43 @@ public abstract class MessagingUtils {
     }
 
     public void sendTitle(Message title, MessagingMember... except) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES), except);
+        this.sendTitle(
+                Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES), except);
     }
 
     public void sendTitle(Message title, Message subtitle, MessagingMember... except) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES), except);
+        this.sendTitle(
+                Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES),
+                except);
     }
 
-    public void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingMember... except) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)), except);
+    public void sendTitle(
+            Message title,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingMember... except) {
+        this.sendTitle(
+                Title.title(
+                        title.asComponent(),
+                        DEFAULT_SUBTITLE,
+                        this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)),
+                except);
     }
 
-    public void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks, MessagingMember... except) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)), except);
+    public void sendTitle(
+            Message title,
+            Message subtitle,
+            int fadeInTicks,
+            int fadeOutTicks,
+            int stayTicks,
+            MessagingMember... except) {
+        this.sendTitle(
+                Title.title(
+                        title.asComponent(),
+                        subtitle.asComponent(),
+                        this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)),
+                except);
     }
 
     public void clearTitle(MessagingMember... except) {
@@ -112,5 +151,4 @@ public abstract class MessagingUtils {
     }
 
     public abstract Collection<MessagingMember> getMembers();
-
 }

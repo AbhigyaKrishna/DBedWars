@@ -17,5 +17,4 @@ public abstract class Messaging {
     public abstract String serialize(Component component);
 
     public abstract Component deserialize(String message);
-
 }

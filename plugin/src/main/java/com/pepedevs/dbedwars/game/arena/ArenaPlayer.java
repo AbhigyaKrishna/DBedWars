@@ -20,7 +20,8 @@ import org.bukkit.entity.Player;
 import java.time.Instant;
 import java.util.Optional;
 
-public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
+public class ArenaPlayer extends PlayerMember
+        implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
     private final UUIDPlayer player;
     private final String name;
@@ -192,7 +193,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                         this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
                 if (oTeam.isPresent()
                         && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count()
-                        == 1) {
+                                == 1) {
                     this.arena.end();
                 }
             }
@@ -267,11 +268,11 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
         if (this.lastHitTime == null) return null;
 
         return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000
-                > DBedwars.getInstance()
-                .getConfigHandler()
-                .getMainConfiguration()
-                .getArenaSection()
-                .getPlayerHitTagLength()
+                        > DBedwars.getInstance()
+                                .getConfigHandler()
+                                .getMainConfiguration()
+                                .getArenaSection()
+                                .getPlayerHitTagLength()
                 ? null
                 : this.lastHitTag;
     }
@@ -313,5 +314,4 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                 .getThreadHandler()
                 .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
-
 }

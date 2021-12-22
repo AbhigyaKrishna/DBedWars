@@ -130,5 +130,4 @@ public class ActionParser {
         this.clickType = clickType;
         return this;
     }
-
 }

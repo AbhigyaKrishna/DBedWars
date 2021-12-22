@@ -28,5 +28,4 @@ public abstract class FixedRateScheduleTask implements Workload {
 
         return this.numberOfExecutions.decrementAndGet() > 0L;
     }
-
 }
