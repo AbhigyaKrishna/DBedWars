@@ -18,4 +18,10 @@ public abstract class Messaging {
 
     public abstract Component deserialize(String message);
 
+    public abstract Component translateAlternateColorCodes(String messsage);
+
+    public abstract Component translateMiniMessage(String message) {
+
+    }
+
 }

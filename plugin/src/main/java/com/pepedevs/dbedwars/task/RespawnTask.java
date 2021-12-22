@@ -5,7 +5,7 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
 import com.pepedevs.dbedwars.messaging.Message;
-import com.pepedevs.dbedwars.messaging.MessagingUtils;
+import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -36,7 +36,7 @@ public class RespawnTask extends CancellableTask implements Listener {
                 .getArenaSection()
                 .getRespawnTime());
         this.player = player;
-        MessagingUtils.sendTitle(message, player.getPlayer());
+        AbstractMessaging.sendTitle(message, player.getPlayer());
         //        TitleUtils.send(
         //                player.getPlayer(),
         //                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time +
@@ -51,7 +51,7 @@ public class RespawnTask extends CancellableTask implements Listener {
     public void compute() {
         this.lastExecuted = System.currentTimeMillis();
         this.time.decrementAndGet();
-        MessagingUtils.sendTitle(message, player.getPlayer());
+        AbstractMessaging.sendTitle(message, player.getPlayer());
         if (time.get() == 0) {
             ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) this.player).setRespawning(false);
             this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));

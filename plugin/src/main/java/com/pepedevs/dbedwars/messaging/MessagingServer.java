@@ -195,7 +195,7 @@ public class MessagingServer extends Messaging {
 
     @Override
     public Component deserialize(String message) {
-        return this.miniMessage.deserialize(message);
+        return this.miniMessage.parse(message);
     }
 
 }
