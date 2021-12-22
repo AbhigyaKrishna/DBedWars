@@ -39,7 +39,7 @@ import java.util.Random;
 
 public final class DBedwars extends PluginAdapter {
 
-    //USELESS CHANGE
+    // USELESS CHANGE
 
     private String alias;
     private Version serverVersion;
