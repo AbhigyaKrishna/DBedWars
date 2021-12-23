@@ -137,7 +137,7 @@
         <!-- PepeDevs -->
         <repository>
             <id>pepedevs</id>
-            <url>http://51.79.243.92:8081/repository/maven-public/</url>
+            <url>https://repo.pepedevs.com/nexus/repository/maven-public/</url>
         </repository>
     </repositories>
 
