@@ -2,10 +2,10 @@ package com.pepedevs.dbedwars.api.game;
 
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
+import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.KickReason;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -14,9 +14,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 
-public interface Arena {
+public interface Arena extends AbstractMessaging {
 
     ArenaSettings getSettings();
 
@@ -79,12 +78,6 @@ public interface Arena {
     void kickAllPlayers();
 
     void kickAllPlayers(KickReason reason);
-
-    void broadcast(String msg);
-
-    void broadcast(String msg, Predicate<ArenaPlayer> condition);
-
-    void broadcast(BaseComponent[] components);
 
     Block setBlock(LocationXYZ location, Material material);
 

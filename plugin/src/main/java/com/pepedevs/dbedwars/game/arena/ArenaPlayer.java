@@ -10,6 +10,7 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
+import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
@@ -20,8 +21,7 @@ import org.bukkit.entity.Player;
 import java.time.Instant;
 import java.util.Optional;
 
-public class ArenaPlayer extends PlayerMember
-        implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
+public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
     private final UUIDPlayer player;
     private final String name;
@@ -179,7 +179,7 @@ public class ArenaPlayer extends PlayerMember
                                         .getSpectatorLocation()
                                         .toBukkit(this.arena.getWorld()));
             event.getVictim().setFinalKilled(true);
-            event.getVictim().getArena().broadcast(event.getKillMessage());
+            event.getVictim().getArena().sendMessage(LegacyMessage.from(event.getKillMessage()));
 
             if (event.getVictim().getTeam().getPlayers().stream()
                     .allMatch(com.pepedevs.dbedwars.api.game.ArenaPlayer::isFinalKilled)) {
@@ -223,7 +223,7 @@ public class ArenaPlayer extends PlayerMember
                                     .getSettings()
                                     .getSpectatorLocation()
                                     .toBukkit(this.arena.getWorld()));
-            this.arena.broadcast(event.getKillMessage());
+            this.arena.sendMessage(LegacyMessage.from(event.getKillMessage()));
             this.setRespawning(true);
             DBedwars.getInstance()
                     .getThreadHandler()

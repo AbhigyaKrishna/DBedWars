@@ -1,13 +1,14 @@
 package com.pepedevs.dbedwars.messaging;
 
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
+import com.pepedevs.dbedwars.api.messaging.member.PlayerMember;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 
-import java.time.Duration;
-import java.util.Collection;
+import java.util.*;
 import java.util.function.Predicate;
 
 public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.messaging.AbstractMessaging {
@@ -17,6 +18,22 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     public static final BossBar.Overlay DEFAULT_BOSS_BAR_OVERLAY = BossBar.Overlay.PROGRESS;
     public static final Component DEFAULT_SUBTITLE = Component.empty();
     public static final Title.Times DEFAULT_TITLE_TIMES = Title.DEFAULT_TIMES;
+
+    @Override
+    public void sendMessage(Message message, boolean papiParsed) {
+        for (MessagingMember member : this.getMembers()) {
+            member.getAudienceMember().sendMessage(papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+        }
+    }
+
+    @Override
+    public void sendMessage(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
+        for (MessagingMember member : this.getMembers()) {
+            if (!except.test(member)) member.getAudienceMember().sendMessage(papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+        }
+    }
 
     @Override
     public BossBar sendBossBar(BossBar bossBar) {
@@ -35,65 +52,49 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     }
 
     @Override
-    public BossBar sendBossBar(Message message) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(),
-                DEFAULT_BOSS_BAR_PROGRESS,
-                DEFAULT_BOSS_BAR_COLOR,
-                DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar);
+    public BossBar[] sendBossBar(Message message, boolean papiParsed) {
+        return this.sendBossBar(message, DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_OVERLAY, DEFAULT_BOSS_BAR_COLOR, papiParsed);
     }
 
     @Override
-    public BossBar sendBossBar(Message message, Predicate<MessagingMember> except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(),
-                DEFAULT_BOSS_BAR_PROGRESS,
-                DEFAULT_BOSS_BAR_COLOR,
-                DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar, except);
+    public BossBar[] sendBossBar(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
+        return this.sendBossBar(message, DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_OVERLAY, DEFAULT_BOSS_BAR_COLOR, papiParsed, except);
     }
 
     @Override
-    public BossBar sendBossBar(Message message, float progress) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), progress, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar);
+    public BossBar[] sendBossBar(Message message, float progress, BossBar.Overlay overlay, BossBar.Color color, boolean papiParsed) {
+        return this.sendBossBar(message, progress, overlay, color, Collections.emptySet(), papiParsed);
     }
 
     @Override
-    public BossBar sendBossBar(Message message, float progress, Predicate<MessagingMember> except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), progress, DEFAULT_BOSS_BAR_COLOR, DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar, except);
+    public BossBar[] sendBossBar(Message message, float progress, BossBar.Overlay overlay, BossBar.Color color, boolean papiParsed, Predicate<MessagingMember> except) {
+        return this.sendBossBar(message, progress, overlay, color, Collections.emptySet(), papiParsed);
     }
 
     @Override
-    public BossBar sendBossBar(Message message, BossBar.Color color) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, color, DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar);
+    public BossBar[] sendBossBar(Message message, float progress, BossBar.Overlay overlay, BossBar.Color color, Set<BossBar.Flag> flags, boolean papiParsed) {
+        List<BossBar> bossBars = new ArrayList<>();
+        for (MessagingMember member : this.getMembers()) {
+            BossBar bossBar = BossBar.bossBar(papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent(), progress, color, overlay, flags);
+            member.getAudienceMember().showBossBar(bossBar);
+            bossBars.add(bossBar);
+        }
+        return bossBars.toArray(new BossBar[0]);
     }
 
     @Override
-    public BossBar sendBossBar(Message message, BossBar.Color color, Predicate<MessagingMember> except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, color, DEFAULT_BOSS_BAR_OVERLAY);
-        return this.sendBossBar(bossBar, except);
-    }
-
-    @Override
-    public BossBar sendBossBar(Message message, BossBar.Overlay overlay) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, overlay);
-        return this.sendBossBar(bossBar);
-    }
-
-    @Override
-    public BossBar sendBossBar(Message message, BossBar.Overlay overlay, Predicate<MessagingMember> except) {
-        BossBar bossBar = BossBar.bossBar(
-                message.asComponent(), DEFAULT_BOSS_BAR_PROGRESS, DEFAULT_BOSS_BAR_COLOR, overlay);
-        return this.sendBossBar(bossBar, except);
+    public BossBar[] sendBossBar(Message message, float progress, BossBar.Overlay overlay, BossBar.Color color, Set<BossBar.Flag> flags, boolean papiParsed, Predicate<MessagingMember> except) {
+        List<BossBar> bossBars = new ArrayList<>();
+        for (MessagingMember member : this.getMembers()) {
+            if (!except.test(member)) {
+                BossBar bossBar = BossBar.bossBar(papiParsed && member.isPlayerMember() ?
+                        message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent(), progress, color, overlay, flags);
+                member.getAudienceMember().showBossBar(bossBar);
+                bossBars.add(bossBar);
+            }
+        }
+        return bossBars.toArray(new BossBar[0]);
     }
 
     @Override
@@ -111,16 +112,18 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     }
 
     @Override
-    public void sendActionBar(Message message) {
+    public void sendActionBar(Message message, boolean papiParsed) {
         for (MessagingMember member : this.getMembers()) {
-            member.getAudienceMember().sendActionBar(message.asComponent());
+            member.getAudienceMember().sendActionBar(papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
         }
     }
 
     @Override
-    public void sendActionBar(Message message, Predicate<MessagingMember> except) {
+    public void sendActionBar(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
-            if (!except.test(member)) member.getAudienceMember().sendActionBar(message.asComponent());
+            if (!except.test(member)) member.getAudienceMember().sendActionBar(papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
         }
     }
 
@@ -139,43 +142,57 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     }
 
     @Override
-    public void sendTitle(Message title) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES));
+    public void sendTitle(Message title, boolean papiParsed) {
+        this.sendTitle(title, AdventureMessage.from(DEFAULT_SUBTITLE), DEFAULT_TITLE_TIMES, papiParsed);
     }
 
     @Override
-    public void sendTitle(Message title, Predicate<MessagingMember> except) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, DEFAULT_TITLE_TIMES), except);
+    public void sendTitle(Message title, boolean papiParsed, Predicate<MessagingMember> except) {
+        this.sendTitle(title, AdventureMessage.from(DEFAULT_SUBTITLE), DEFAULT_TITLE_TIMES, papiParsed, except);
     }
 
     @Override
-    public void sendTitle(Message title, Message subtitle) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES));
+    public void sendTitle(Message title, Message subtitle, boolean papiParsed) {
+        this.sendTitle(title, subtitle, DEFAULT_TITLE_TIMES, papiParsed);
     }
 
     @Override
-    public void sendTitle(Message title, Message subtitle, Predicate<MessagingMember> except) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), DEFAULT_TITLE_TIMES), except);
+    public void sendTitle(Message title, Message subtitle, boolean papiParsed, Predicate<MessagingMember> except) {
+        this.sendTitle(title, subtitle, DEFAULT_TITLE_TIMES, papiParsed, except);
     }
 
     @Override
-    public void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+    public void sendTitle(Message title, Title.Times times, boolean papiParsed) {
+        this.sendTitle(title, AdventureMessage.from(DEFAULT_SUBTITLE), times, papiParsed);
     }
 
     @Override
-    public void sendTitle(Message title, int fadeInTicks, int fadeOutTicks, int stayTicks, Predicate<MessagingMember> except) {
-        this.sendTitle(Title.title(title.asComponent(), DEFAULT_SUBTITLE, this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)), except);
+    public void sendTitle(Message title, Title.Times times, boolean papiParsed, Predicate<MessagingMember> except) {
+        this.sendTitle(title, AdventureMessage.from(DEFAULT_SUBTITLE), times, papiParsed, except);
     }
 
     @Override
-    public void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)));
+    public void sendTitle(Message title, Message subtitle, Title.Times times, boolean papiParsed) {
+        for (MessagingMember member : this.getMembers()) {
+            Title t = Title.title(papiParsed && member.isPlayerMember() ?
+                            title.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : title.asComponent(),
+                    papiParsed && member.isPlayerMember() ?
+                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : subtitle.asComponent(),
+                    times);
+            member.getAudienceMember().showTitle(t);
+        }
     }
 
     @Override
-    public void sendTitle(Message title, Message subtitle, int fadeInTicks, int fadeOutTicks, int stayTicks, Predicate<MessagingMember> except) {
-        this.sendTitle(Title.title(title.asComponent(), subtitle.asComponent(), this.getTimes(fadeInTicks, fadeOutTicks, stayTicks)), except);
+    public void sendTitle(Message title, Message subtitle, Title.Times times, boolean papiParsed, Predicate<MessagingMember> except) {
+        for (MessagingMember member : this.getMembers()) {
+            Title t = Title.title(papiParsed && member.isPlayerMember() ?
+                    title.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : title.asComponent(),
+                    papiParsed && member.isPlayerMember() ?
+                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : subtitle.asComponent(),
+                    times);
+            if (!except.test(member)) member.getAudienceMember().showTitle(t);
+        }
     }
 
     @Override
@@ -204,13 +221,6 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
         for (MessagingMember member : this.getMembers()) {
             if (!except.test(member)) member.getAudienceMember().resetTitle();
         }
-    }
-
-    private Title.Times getTimes(int fadeIn, int fadeOut, int stay) {
-        return Title.Times.of(
-                Duration.ofMillis(fadeIn * 50L),
-                Duration.ofMillis(stay * 50L),
-                Duration.ofMillis(fadeOut * 50L));
     }
 
     public abstract Collection<MessagingMember> getMembers();

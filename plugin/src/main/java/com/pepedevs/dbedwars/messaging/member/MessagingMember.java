@@ -1,50 +1,45 @@
 package com.pepedevs.dbedwars.messaging.member;
 
-import com.pepedevs.dbedwars.messaging.EnumChannel;
-import com.pepedevs.dbedwars.messaging.Message;
-import com.pepedevs.dbedwars.messaging.MessagingChannel;
-import com.pepedevs.dbedwars.messaging.MessagingServer;
+import com.pepedevs.dbedwars.messaging.AbstractMessaging;
+import com.pepedevs.dbedwars.messaging.Messaging;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class MessagingMember
-        implements com.pepedevs.dbedwars.api.messaging.member.MessagingMember {
+import java.util.Collection;
+import java.util.Collections;
+
+public abstract class MessagingMember extends AbstractMessaging implements com.pepedevs.dbedwars.api.messaging.member.MessagingMember {
 
     private final CommandSender sender;
     private final Audience audienceMember;
 
-    private final MessagingChannel messagingChannel;
+    private Collection<com.pepedevs.dbedwars.api.messaging.member.MessagingMember> members = Collections.singleton(this);
 
     protected MessagingMember(CommandSender sender) {
-        this.audienceMember = MessagingServer.connect().getAdventure().sender(sender);
+        this.audienceMember = Messaging.getInstance().getAdventure().sender(sender);
         this.sender = sender;
-        // TODO TEMP
-        this.messagingChannel = new MessagingChannel(EnumChannel.PERSONAL);
     }
 
     public static MessagingMember ofPlayer(Player player) {
-        return MessagingServer.connect().getMessagingMember(player);
+        return Messaging.getInstance().getMessagingMember(player);
     }
 
     public static MessagingMember ofConsole() {
-        return MessagingServer.connect().getConsole();
-    }
-
-    public void sendMessage(Message message, MessagingChannel channel) {
-        MessagingServer.connect().sendMessage(message, this, channel);
-    }
-
-    public void sendMessage(Message message) {
-        MessagingServer.connect()
-                .sendMessage(message, MessagingMember.ofConsole(), this.messagingChannel);
+        return Messaging.getInstance().getConsole();
     }
 
     public CommandSender getSender() {
-        return sender;
+        return this.sender;
     }
 
     public Audience getAudienceMember() {
         return audienceMember;
     }
+
+    @Override
+    public Collection<com.pepedevs.dbedwars.api.messaging.member.MessagingMember> getMembers() {
+        return this.members;
+    }
+
 }

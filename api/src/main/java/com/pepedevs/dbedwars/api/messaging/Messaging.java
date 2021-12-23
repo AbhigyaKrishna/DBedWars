@@ -1,6 +1,8 @@
 package com.pepedevs.dbedwars.api.messaging;
 
+import com.pepedevs.dbedwars.api.messaging.member.ConsoleMember;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public abstract class Messaging {
 
@@ -14,14 +16,16 @@ public abstract class Messaging {
         return instance;
     }
 
-    public abstract String serialize(Component component);
+    public abstract ConsoleMember getConsole();
 
-    public abstract Component deserialize(String message);
+    public abstract String serializeMini(Component component);
 
-    public abstract Component translateAlternateColorCodes(String messsage);
+    public abstract Component parseMini(String message);
 
-    public abstract Component translateMiniMessage(String message) {
+    public abstract Component translateAlternateColorCodes(String message);
 
-    }
+    public abstract String setPlaceholders(String message, PlaceholderEntry... entries);
+
+    public abstract String setPlaceholders(String message, Player player);
 
 }

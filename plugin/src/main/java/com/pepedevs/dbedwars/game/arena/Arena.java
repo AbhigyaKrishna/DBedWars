@@ -13,6 +13,9 @@ import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
+import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
 import com.pepedevs.dbedwars.api.task.Regeneration;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.KickReason;
@@ -23,15 +26,11 @@ import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
 import com.pepedevs.dbedwars.listeners.GameListener;
-import com.pepedevs.dbedwars.messaging.EnumChannel;
-import com.pepedevs.dbedwars.messaging.Message;
-import com.pepedevs.dbedwars.messaging.MessagingChannel;
+import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.task.WorldRegenerator;
-import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.DatabaseUtils;
 import com.pepedevs.dbedwars.utils.ScoreboardImpl;
 import com.pepedevs.dbedwars.utils.Utils;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -50,10 +49,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
+public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.api.game.Arena {
 
     private final DBedwars plugin;
-    private final MessagingChannel messaging;
     private ConfigurableArena cfgArena;
     private ArenaSettings settings;
     private World world;
@@ -74,7 +72,6 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.plugin = plugin;
         this.settings =
                 new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
-        this.messaging = new MessagingChannel(EnumChannel.ARENA);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.regenerator =
@@ -480,11 +477,10 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                     .append(entry.getValue())
                     .append("pts");
         }
-        builder.append("\n&6").append(StringUtils.repeat("⬛", 35));
+        builder.append("\n<gold>").append(StringUtils.repeat("⬛", 35));
         for (ArenaPlayer player : this.players) {
             if (player.getArena().getWorld().equals(player.getPlayer().getWorld())) {
-                ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) player)
-                        .sendMessage(Message.mini(builder.toString()));
+                player.sendMessage(AdventureMessage.from(builder.toString()));
             }
         }
 
@@ -613,28 +609,6 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
     }
 
     @Override
-    public void broadcast(String msg) {
-        this.broadcast(msg, null);
-    }
-
-    @Override
-    public void broadcast(String msg, Predicate<ArenaPlayer> condition) {
-        this.players.forEach(
-                p -> {
-                    if (condition != null && !condition.test(p)) return;
-
-                    p.sendMessage(
-                            ConfigurationUtils.parseMessage(
-                                    ConfigurationUtils.parsePlaceholder(msg, p.getPlayer())));
-                });
-    }
-
-    @Override
-    public void broadcast(BaseComponent[] components) {
-        this.players.forEach(p -> p.getPlayer().spigot().sendMessage(components));
-    }
-
-    @Override
     public Block setBlock(LocationXYZ location, Material material) {
         Block block = this.world.getBlockAt(location.toBukkit(this.world));
         block.setType(material);
@@ -726,9 +700,13 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         event.getDestroyer().addBedDestroy();
         // TODO: change message
         // TODO: Add more effect
-        this.broadcast(
-                event.getBedBrokenMessage(), p -> !p.getTeam().equals(event.getAffectedTeam()));
-        event.getAffectedTeam().sendMessage(event.getBedBrokenTeamMessage());
+        this.sendMessage(LegacyMessage.from(event.getBedBrokenMessage()), new Predicate<MessagingMember>() {
+            @Override
+            public boolean test(MessagingMember member) {
+                return ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam());
+            }
+        });
+        event.getAffectedTeam().sendMessage(LegacyMessage.from(event.getBedBrokenMessage()));
     }
 
     @Override
@@ -742,8 +720,7 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         return false;
     }
 
-    private void scheduleMessage(
-            com.pepedevs.dbedwars.api.game.Arena arena, Player player, int size, boolean join) {
+    private void scheduleMessage(com.pepedevs.dbedwars.api.game.Arena arena, Player player, int size, boolean join) {
         this.plugin
                 .getThreadHandler()
                 .getTaskHandler()
@@ -752,17 +729,15 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
                         new Runnable() {
                             @Override
                             public void run() {
-                                arena.broadcast(
-                                        StringUtils.translateAlternateColorCodes(
-                                                "&5"
-                                                        + player.getName()
-                                                        + " &7"
-                                                        + (join ? "joined" : "left")
-                                                        + " the arena. &5("
-                                                        + size
-                                                        + "/"
-                                                        + arena.getSettings().getMaxPlayer()
-                                                        + ")"));
+                                arena.sendMessage(LegacyMessage.from("&5"
+                                        + player.getName()
+                                        + " &7"
+                                        + (join ? "joined" : "left")
+                                        + " the arena. &5("
+                                        + size
+                                        + "/"
+                                        + arena.getSettings().getMaxPlayer()
+                                        + ")"));
                             }
                         },
                         1000);
@@ -785,4 +760,10 @@ public class Arena implements com.pepedevs.dbedwars.api.game.Arena {
         this.spawners.clear();
         this.removed.clear();
     }
+
+    @Override
+    public Collection<MessagingMember> getMembers() {
+        return new ArrayList<>(this.players);
+    }
+
 }

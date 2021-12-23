@@ -11,17 +11,18 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Trap;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableTeam;
-import com.pepedevs.dbedwars.utils.ConfigurationUtils;
+import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
-public class Team implements com.pepedevs.dbedwars.api.game.Team {
+public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api.game.Team {
 
     private final DBedwars plugin;
     private final Color color;
@@ -207,16 +208,6 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
     }
 
     @Override
-    public void sendMessage(String message) {
-        this.players.forEach(
-                p ->
-                        p.sendMessage(
-                                ConfigurationUtils.parseMessage(
-                                        ConfigurationUtils.parsePlaceholder(
-                                                message, p.getPlayer()))));
-    }
-
-    @Override
     public boolean isBedBroken() {
         return this.bedBroken;
     }
@@ -357,4 +348,10 @@ public class Team implements com.pepedevs.dbedwars.api.game.Team {
         //        this.upgradesNpc = null;
         this.trapQueue.clear();
     }
+
+    @Override
+    public Collection<MessagingMember> getMembers() {
+        return new ArrayList<>(this.players);
+    }
+
 }

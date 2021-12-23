@@ -2,6 +2,7 @@ package com.pepedevs.dbedwars.api.messaging.message;
 
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,6 +31,12 @@ public abstract class Message {
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
+    public void clearPlaceholders() {
+        this.placeholders.clear();
+    }
+
     public abstract Component asComponent();
+
+    public abstract Component asComponentWithPAPI(Player player);
 
 }

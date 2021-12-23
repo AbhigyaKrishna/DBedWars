@@ -3,9 +3,9 @@ package com.pepedevs.dbedwars.task;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
-import com.pepedevs.dbedwars.messaging.Message;
-import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -20,10 +20,8 @@ public class RespawnTask extends CancellableTask implements Listener {
     private final ArenaPlayer player;
     private final AtomicInteger time;
     Message message =
-            Message.mini(
-                    "<red>Respawning in <gold>{time}s",
-                    PlaceholderEntry.of(
-                            "{time}",
+            AdventureMessage.from("<red>Respawning in <gold>{time}s",
+                    PlaceholderEntry.of("{time}",
                             new Supplier<String>() {
                                 @Override
                                 public String get() {
@@ -42,12 +40,7 @@ public class RespawnTask extends CancellableTask implements Listener {
                                 .getArenaSection()
                                 .getRespawnTime());
         this.player = player;
-        AbstractMessaging.sendTitle(message, player.getPlayer());
-        //        TitleUtils.send(
-        //                player.getPlayer(),
-        //                StringUtils.translateAlternateColorCodes("&cRespawning in &6" + time +
-        // "s"),
-        //                "");
+        this.player.sendTitle(message);
         this.lastExecuted = System.currentTimeMillis();
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
@@ -57,7 +50,7 @@ public class RespawnTask extends CancellableTask implements Listener {
     public void compute() {
         this.lastExecuted = System.currentTimeMillis();
         this.time.decrementAndGet();
-        AbstractMessaging.sendTitle(message, player.getPlayer());
+        this.player.sendTitle(message);
         if (time.get() == 0) {
             ((com.pepedevs.dbedwars.game.arena.ArenaPlayer) this.player).setRespawning(false);
             this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));

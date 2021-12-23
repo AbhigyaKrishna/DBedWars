@@ -1,6 +1,7 @@
-package com.pepedevs.dbedwars.messaging;
+package com.pepedevs.dbedwars.api.messaging;
 
 public enum EnumChannel {
+
     ARENA,
     ARENA_TEAM,
     ARENA_PLAYER,
@@ -10,4 +11,5 @@ public enum EnumChannel {
     PERSONAL,
     CUSTOM,
     ;
+
 }

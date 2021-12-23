@@ -2,12 +2,13 @@ package com.pepedevs.dbedwars.api.game;
 
 import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
+import com.pepedevs.dbedwars.api.messaging.member.PlayerMember;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
 
-public interface ArenaPlayer {
+public interface ArenaPlayer extends PlayerMember {
 
     Arena getArena();
 
@@ -72,4 +73,5 @@ public interface ArenaPlayer {
     ShopView getShopView();
 
     void queueRespawn();
+
 }

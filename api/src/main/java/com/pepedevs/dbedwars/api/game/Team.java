@@ -3,6 +3,7 @@ package com.pepedevs.dbedwars.api.game;
 import com.google.common.collect.Multimap;
 import com.pepedevs.corelib.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
@@ -12,7 +13,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.List;
 import java.util.Set;
 
-public interface Team {
+public interface Team extends AbstractMessaging {
 
     Color getColor();
 
@@ -53,8 +54,6 @@ public interface Team {
     void removePlayer(ArenaPlayer player);
 
     Set<ArenaPlayer> getPlayers();
-
-    void sendMessage(String message);
 
     boolean isBedBroken();
 

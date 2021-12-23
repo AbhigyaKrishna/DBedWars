@@ -5,4 +5,5 @@ import org.bukkit.entity.Player;
 public interface PlayerMember extends MessagingMember {
 
     Player getPlayer();
+
 }
