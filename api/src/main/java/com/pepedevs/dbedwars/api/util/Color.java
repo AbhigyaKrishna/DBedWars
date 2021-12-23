@@ -8,7 +8,7 @@ import org.bukkit.DyeColor;
 public enum Color {
     WHITE(
             (byte) 0,
-            org.bukkit.Color.fromRGB(233, 236, 236),
+            org.bukkit.Color.WHITE,
             ChatColor.WHITE,
             'f',
             "WHITE",
@@ -18,7 +18,7 @@ public enum Color {
             DyeColor.WHITE),
     ORANGE(
             (byte) 1,
-            org.bukkit.Color.fromRGB(240, 118, 19),
+            org.bukkit.Color.ORANGE,
             ChatColor.GOLD,
             '6',
             "ORANGE",
@@ -38,7 +38,7 @@ public enum Color {
             DyeColor.MAGENTA),
     AQUA(
             (byte) 3,
-            org.bukkit.Color.fromRGB(58, 175, 217),
+            org.bukkit.Color.AQUA,
             ChatColor.AQUA,
             'b',
             "LIGHT_BLUE",
@@ -48,7 +48,7 @@ public enum Color {
             DyeColor.LIGHT_BLUE),
     YELLOW(
             (byte) 4,
-            org.bukkit.Color.fromRGB(248, 198, 39),
+            org.bukkit.Color.YELLOW,
             ChatColor.YELLOW,
             'e',
             "YELLOW",
@@ -58,7 +58,7 @@ public enum Color {
             DyeColor.YELLOW),
     LIME(
             (byte) 5,
-            org.bukkit.Color.fromRGB(112, 185, 25),
+            org.bukkit.Color.LIME,
             ChatColor.GREEN,
             'a',
             "LIME",
@@ -78,7 +78,7 @@ public enum Color {
             DyeColor.PINK),
     GRAY(
             (byte) 7,
-            org.bukkit.Color.fromRGB(62, 68, 71),
+            org.bukkit.Color.GRAY,
             ChatColor.DARK_GRAY,
             '8',
             "GRAY",
@@ -118,7 +118,7 @@ public enum Color {
             DyeColor.PURPLE),
     BLUE(
             (byte) 11,
-            org.bukkit.Color.fromRGB(53, 57, 157),
+            org.bukkit.Color.BLUE,
             ChatColor.DARK_BLUE,
             '1',
             "BLUE",
@@ -138,7 +138,7 @@ public enum Color {
             DyeColor.BROWN),
     GREEN(
             (byte) 13,
-            org.bukkit.Color.fromRGB(84, 109, 27),
+            org.bukkit.Color.GREEN,
             ChatColor.DARK_GREEN,
             '2',
             "GREEN",
@@ -148,7 +148,7 @@ public enum Color {
             DyeColor.GREEN),
     RED(
             (byte) 14,
-            org.bukkit.Color.fromRGB(161, 39, 34),
+            org.bukkit.Color.RED,
             ChatColor.RED,
             'c',
             "RED",
@@ -158,7 +158,7 @@ public enum Color {
             DyeColor.RED),
     BLACK(
             (byte) 15,
-            org.bukkit.Color.fromRGB(20, 21, 25),
+            org.bukkit.Color.BLACK,
             ChatColor.BLACK,
             '0',
             "BLACK",
