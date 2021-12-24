@@ -171,7 +171,7 @@
         <dependency>
             <groupId>com.pepedevs</groupId>
             <artifactId>corelib</artifactId>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -213,23 +213,6 @@
             <version>3.7.1</version>
             <type>jar</type>
             <scope>compile</scope>
-        </dependency>
-
-        <!-- Adventure -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.9.3</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.1</version>
         </dependency>
 
         <!-- ACF -->
