@@ -18,7 +18,7 @@ public class Sponge extends PluginActionItem {
 
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableSponge cfgSponge;
-    private final FixedMetadataValue spongeMeta =
+    private final FixedMetadataValue SPONGE_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
@@ -38,7 +38,7 @@ public class Sponge extends PluginActionItem {
             Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onSpongePlace(BlockPlaceEvent event) {
-        event.getBlock().setMetadata("isBedwarsSponge", spongeMeta);
+        event.getBlock().setMetadata("isBedwarsSponge", SPONGE_META);
         if (cfgSponge.isAnimationEnabled())
             plugin.getThreadHandler()
                     .submitAsync(
@@ -54,7 +54,7 @@ public class Sponge extends PluginActionItem {
     public void onSpongeBreak(BlockBreakEvent event) {
         if (!cfgSponge.isBreakingAllowed()
                 && event.getBlock().hasMetadata("isBedwarsSponge")
-                && event.getBlock().getMetadata("isBedwarsSponge").contains(spongeMeta)) {
+                && event.getBlock().getMetadata("isBedwarsSponge").contains(SPONGE_META)) {
             event.setCancelled(true);
             if (cfgSponge.getBreakTryMessage() != null
                     && !cfgSponge.getBreakTryMessage().trim().equals(""))

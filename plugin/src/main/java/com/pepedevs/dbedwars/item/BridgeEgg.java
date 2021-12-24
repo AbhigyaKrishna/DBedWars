@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class BridgeEgg extends PluginActionItem {
 
-    public static final FixedMetadataValue bridgeEggMeta =
+    public static final FixedMetadataValue BRIDGE_EGG_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
     private final int keepAliveTimeOut;
     private final int minDistanceFromPlayer;
@@ -65,7 +65,7 @@ public class BridgeEgg extends PluginActionItem {
         event.setCancelled(true);
         BwItemStack.removeItem(player, this.toItemStack());
         Projectile egg = player.launchProjectile(Egg.class);
-        egg.setMetadata("isDBedwarsEgg", bridgeEggMeta);
+        egg.setMetadata("isDBedwarsEgg", BRIDGE_EGG_META);
         plugin.getThreadHandler()
                 .submitAsync(
                         new BridgeEggWorkloadTask(

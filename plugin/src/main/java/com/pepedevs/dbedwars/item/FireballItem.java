@@ -25,7 +25,7 @@ import java.util.List;
 
 public class FireballItem extends PluginActionItem {
 
-    public static final FixedMetadataValue fireballMeta =
+    public static final FixedMetadataValue FIREBALL_META =
             new FixedMetadataValue(DBedwars.getInstance(), DBedwars.getInstance().getName());
     private final ConfigurableCustomItems.ConfigurableFireball cfgFireball;
     private final ConfigurableCustomItems.KnockBack cfgKB;
@@ -57,7 +57,7 @@ public class FireballItem extends PluginActionItem {
             playerInteractEvent.setCancelled(true);
             Utils.useItem(player);
             Fireball fireball = player.launchProjectile(Fireball.class);
-            fireball.setMetadata("isDBedwarsFireball", fireballMeta);
+            fireball.setMetadata("isDBedwarsFireball", FIREBALL_META);
             fireball.setVelocity(fireball.getVelocity().multiply(cfgFireball.getSpeedMultiplier()));
             if (this.cfgFireball.isFixDirectionEnabled())
                 FireBallUtil.setDirection(fireball, player.getEyeLocation().getDirection());

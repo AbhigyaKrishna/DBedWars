@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class TNTItem extends PluginActionItem {
 
-    public static final FixedMetadataValue tntPrimedMeta =
+    public static final FixedMetadataValue TNT_PRIMED_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
     private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
     private final ConfigurableCustomItems.KnockBack cfgKB;
@@ -65,7 +65,7 @@ public class TNTItem extends PluginActionItem {
         tntPrimed.setVelocity(
                 VectorUtils.rotateAroundAxisY(
                         new Vector(0.01, 0.40, 0.01), new Random().nextInt(360)));
-        tntPrimed.setMetadata("isDBedwarsTNT", tntPrimedMeta);
+        tntPrimed.setMetadata("isDBedwarsTNT", TNT_PRIMED_META);
     }
 
     public void onTNTExplode(EntityExplodeEvent event) {

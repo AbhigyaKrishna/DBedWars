@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class BedBugSnowball extends PluginActionItem {
 
-    public static final FixedMetadataValue bedBugBallMeta =
+    public static final FixedMetadataValue BED_BUG_BALL_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
-    ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
+    private final ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
 
     public BedBugSnowball(DBedwars plugin) {
         super(
@@ -56,7 +56,7 @@ public class BedBugSnowball extends PluginActionItem {
                 || arena.getAsArenaPlayer(player).get().isSpectator()) return;
         playerInteractEvent.setCancelled(true);
         Snowball bedBugBall = player.launchProjectile(Snowball.class);
-        bedBugBall.setMetadata("isDBedWarsBedBugBall", bedBugBallMeta);
+        bedBugBall.setMetadata("isDBedWarsBedBugBall", BED_BUG_BALL_META);
         bedBugBall.setMetadata(
                 "thrower",
                 new FixedMetadataValue(

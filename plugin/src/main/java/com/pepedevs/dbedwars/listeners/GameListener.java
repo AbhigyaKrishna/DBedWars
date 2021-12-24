@@ -10,6 +10,8 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.item.*;
@@ -113,18 +115,14 @@ public class GameListener extends PluginHandler {
 
             if (player.getTeam().equals(team)) {
                 // TODO: change message
-                player.sendMessage(
-                        StringUtils.translateAlternateColorCodes(
-                                "&cYou cannot destroy your own bed!"));
+                player.sendMessage(AdventureMessage.from("<red>You cannot destroy your own bed!"));
                 return;
             }
 
             this.arena.destroyBed(player, team);
         } else {
             // TODO: change message
-            player.sendMessage(
-                    StringUtils.translateAlternateColorCodes(
-                            "&cYou can only destroy blocks placed by players."));
+            player.sendMessage(AdventureMessage.from("<red>You can only destroy blocks placed by players"));
             event.setCancelled(true);
         }
     }
@@ -211,7 +209,7 @@ public class GameListener extends PluginHandler {
         if (entity.getType() == EntityType.IRON_GOLEM
                 && entity.hasMetadata("isDBedwarsGolem")
                 && entity.getMetadata("isDBedwarsGolem")
-                        .contains(DreamDefenderSpawnEgg.GOLEM_META_VALUE)) {
+                        .contains(DreamDefenderSpawnEgg.DREAM_DEFENDER_SPAWN_EGG_META)) {
             ((DreamDefenderSpawnEgg)
                             ((DBedwars) this.getPlugin())
                                     .getCustomItemHandler()
@@ -243,14 +241,14 @@ public class GameListener extends PluginHandler {
             ((BlastProofGlass) plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS"))
                     .onFireballExplode(event);
             if (entity.hasMetadata("isDBedwarsFireball")
-                    && entity.getMetadata("isDBedwarsFireball").contains(FireballItem.fireballMeta))
+                    && entity.getMetadata("isDBedwarsFireball").contains(FireballItem.FIREBALL_META))
                 ((FireballItem) plugin.getCustomItemHandler().getItem("FIREBALL"))
                         .onFireBallExplode(event);
         } else if (entity.getType() == EntityType.PRIMED_TNT) {
             ((BlastProofGlass) plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS"))
                     .onTNTExplode(event);
             if (entity.hasMetadata("isDBedwarsTNT")
-                    && entity.getMetadata("isDBedwarsTNT").contains(TNTItem.tntPrimedMeta))
+                    && entity.getMetadata("isDBedwarsTNT").contains(TNTItem.TNT_PRIMED_META))
                 ((TNTItem) plugin.getCustomItemHandler().getItem("TNT")).onTNTExplode(event);
         }
 
@@ -365,7 +363,7 @@ public class GameListener extends PluginHandler {
         if (event.getEntityType() == EntityType.SNOWBALL) {
             if (entity.hasMetadata("isDBedWarsBedBugBall")
                     && entity.getMetadata("isDBedWarsBedBugBall")
-                            .contains(BedBugSnowball.bedBugBallMeta)) {
+                            .contains(BedBugSnowball.BED_BUG_BALL_META)) {
                 ((BedBugSnowball)
                                 ((DBedwars) this.getPlugin())
                                         .getCustomItemHandler()

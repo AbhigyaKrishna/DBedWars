@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class DreamDefenderSpawnEgg extends PluginActionItem {
 
-    public static final FixedMetadataValue GOLEM_META_VALUE =
+    public static final FixedMetadataValue DREAM_DEFENDER_SPAWN_EGG_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
@@ -72,7 +72,7 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
             IronGolem ironGolem =
                     (IronGolem) spawn.getWorld().spawnEntity(spawn, EntityType.IRON_GOLEM);
             Utils.useItem(player);
-            ironGolem.setMetadata("isDBedwarsGolem", GOLEM_META_VALUE);
+            ironGolem.setMetadata("isDBedwarsGolem", DREAM_DEFENDER_SPAWN_EGG_META);
             plugin.getNMSAdaptor()
                     .getBedwarsGolem(ironGolem, 32, arenaPlayer)
                     .clearDefaultPathfinding()
