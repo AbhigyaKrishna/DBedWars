@@ -9,8 +9,15 @@ public class ConfigurableMessaging implements Loadable {
     @LoadableEntry(key = "parser-type")
     private String parserType;
 
+    private ConfigurableModernSettings settings;
+
+    public ConfigurableMessaging() {
+        settings = new ConfigurableModernSettings();
+    }
+
     @Override
     public Loadable load(ConfigurationSection section) {
+        this.settings.load(section.getConfigurationSection("modern-settings"));
         return this.loadEntries(section);
     }
 
@@ -26,6 +33,10 @@ public class ConfigurableMessaging implements Loadable {
 
     public String getParserType() {
         return parserType;
+    }
+
+    public ConfigurableModernSettings getModernSettings() {
+        return settings;
     }
 
     public static class ConfigurableModernSettings implements Loadable {
@@ -170,38 +181,6 @@ public class ConfigurableMessaging implements Loadable {
             public boolean isTranslatable() {
                 return translatable;
             }
-        }
-    }
-
-    public static class ConfigurableHistory implements Loadable {
-
-        @LoadableEntry(key = "cache-time-seconds")
-        private long cacheTime;
-
-        @LoadableEntry(key = "max-messages")
-        private int maxMessages;
-
-        @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
-        }
-
-        @Override
-        public boolean isInvalid() {
-            return Loadable.super.isInvalid();
-        }
-
-        @Override
-        public boolean isValid() {
-            return false;
-        }
-
-        public int getMaxMessages() {
-            return maxMessages;
-        }
-
-        public long getCacheTime() {
-            return cacheTime;
         }
     }
 }

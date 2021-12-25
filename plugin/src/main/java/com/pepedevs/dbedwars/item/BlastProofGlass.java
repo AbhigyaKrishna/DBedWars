@@ -20,6 +20,9 @@ public class BlastProofGlass extends PluginActionItem {
     private final DBedwars plugin;
 
     public BlastProofGlass(DBedwars plugin) {
+
+        //TODO COLOR BASED ON TEAMS
+
         super(
                 plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemName(),
                 plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemLore(),

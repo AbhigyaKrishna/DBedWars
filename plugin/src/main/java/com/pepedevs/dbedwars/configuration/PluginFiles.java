@@ -37,7 +37,10 @@ public enum PluginFiles {
 
     DATABASE(new File(PLUGIN_DATA_FOLDER.getFile(), "database.yml")),
 
-    PARTICLE_IMAGES(new File(GRAPHICS.getFile(), "particle-images.yml"));
+    PARTICLE_IMAGES(new File(GRAPHICS.getFile(), "particle-images.yml")),
+
+    LANG_SETTINGS(new File(LANGUAGES.getFile(), "settings.yml"));
+
 
     private final File file;
 

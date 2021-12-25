@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.math.VectorUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
@@ -32,12 +31,9 @@ public class TNTItem extends PluginActionItem {
 
     public TNTItem(DBedwars plugin) {
         super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getTNT().getName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler().getCustomItems().getTNT().getLore()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getTNT().getLore()),
                 Material.TNT);
         this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTNT();
         this.cfgKB = cfgTNT.getKnockBack();

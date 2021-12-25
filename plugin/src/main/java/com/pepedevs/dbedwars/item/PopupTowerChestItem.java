@@ -2,7 +2,6 @@ package com.pepedevs.dbedwars.item;
 
 import com.pepedevs.corelib.particles.ParticleBuilder;
 import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.corelib.utils.xseries.XSound;
 import com.pepedevs.dbedwars.DBedwars;
@@ -24,16 +23,9 @@ public class PopupTowerChestItem extends PluginActionItem {
     private final ConfigurableCustomItems.ConfigurablePopupTower cfgPopupTower;
 
     public PopupTowerChestItem(DBedwars plugin) {
-        super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getPopupTower()
-                                        .getLore()),
+        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()),
                 XMaterial.TRAPPED_CHEST.parseMaterial());
         this.plugin = plugin;
         this.cfgPopupTower = plugin.getConfigHandler().getCustomItems().getPopupTower();

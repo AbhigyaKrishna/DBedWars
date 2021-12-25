@@ -12,9 +12,12 @@ import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.commands.BedwarsCommand;
+import com.pepedevs.dbedwars.configuration.translator.ConfigTranslator;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableDatabase;
+import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
+import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import com.pepedevs.dbedwars.database.DatabaseBridge;
 import com.pepedevs.dbedwars.database.MongoDB;
 import com.pepedevs.dbedwars.database.MySQL;
@@ -22,6 +25,7 @@ import com.pepedevs.dbedwars.database.SQLite;
 import com.pepedevs.dbedwars.game.GameManager;
 import com.pepedevs.dbedwars.handler.*;
 import com.pepedevs.dbedwars.item.*;
+import com.pepedevs.dbedwars.messaging.MiniMessageWrapper;
 import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
@@ -54,6 +58,8 @@ public final class DBedwars extends PluginAdapter {
 
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
+
+    private ConfigTranslator translator;
 
     public static DBedwars getInstance() {
         return Plugin.getPlugin(DBedwars.class);
@@ -208,6 +214,14 @@ public final class DBedwars extends PluginAdapter {
 
                     this.registerCustomItems();
                     this.initDatabase();
+
+                    if (this.configHandler.getConfigurableMessaging().getParserType().equalsIgnoreCase("modern")) {
+
+                        MiniMessageWrapper.importConfig(this.configHandler.getConfigurableMessaging().getModernSettings());
+                        this.translator = new MiniMessageTranslator(MiniMessageWrapper.getConfigInstance());
+
+                    }
+                    else this.translator = new LegacyTranslator('&');
                 });
 
         return true;
@@ -285,6 +299,14 @@ public final class DBedwars extends PluginAdapter {
 
     public HologramManager getHologramManager() {
         return this.hologramManager;
+    }
+
+    public ConfigTranslator configTranslator() {
+        return this.translator;
+    };
+
+    public MiniMessageTranslator pluginTranslator() {
+        return new MiniMessageTranslator(MiniMessageWrapper.getFullInstance());
     }
 
     private void initDatabase() {

@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
@@ -14,20 +13,14 @@ public class WaterBucket extends PluginActionItem {
     private final boolean removeOnUse;
 
     public WaterBucket(DBedwars plugin) {
-        super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler()
-                                .getCustomItems()
-                                .getWaterBucket()
-                                .getDisplayName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
-                                        == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getWaterBucket()
-                                        .getLore()),
+        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getDisplayName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
+                        == null
+                        ? new ArrayList<>()
+                        : plugin.getConfigHandler()
+                        .getCustomItems()
+                        .getWaterBucket()
+                        .getLore()),
                 XMaterial.WATER_BUCKET.parseMaterial());
         this.removeOnUse =
                 plugin.getConfigHandler().getCustomItems().getWaterBucket().shouldRemoveOnUse();

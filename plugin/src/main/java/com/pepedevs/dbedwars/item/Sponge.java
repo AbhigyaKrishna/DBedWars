@@ -22,11 +22,8 @@ public class Sponge extends PluginActionItem {
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
-        super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
-                (plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null
-                        ? new ArrayList<>()
+        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
                 XMaterial.SPONGE.parseMaterial());
         this.plugin = plugin;

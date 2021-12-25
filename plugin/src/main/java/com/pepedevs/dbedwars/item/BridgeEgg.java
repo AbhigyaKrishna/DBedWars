@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.item;
 
 import com.pepedevs.corelib.events.EventUtils;
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -31,20 +30,12 @@ public class BridgeEgg extends PluginActionItem {
     private final DBedwars plugin;
 
     public BridgeEgg(DBedwars plugin) {
-        super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getBridgeEgg()
-                                        .getLore()),
+        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore()),
                 XMaterial.EGG.parseMaterial());
         this.plugin = plugin;
-        ConfigurableCustomItems.ConfigurableBridgeEgg confEgg =
-                plugin.getConfigHandler().getCustomItems().getBridgeEgg();
+        ConfigurableCustomItems.ConfigurableBridgeEgg confEgg = plugin.getConfigHandler().getCustomItems().getBridgeEgg();
         this.keepAliveTimeOut = confEgg.getKeepAliveTimeOut();
         this.maxDistanceFromPlayer = confEgg.getMaxDistanceFromPlayer();
         this.minDistanceFromPlayer = confEgg.getMinDistanceFromPlayer();

@@ -2,7 +2,6 @@ package com.pepedevs.dbedwars.item;
 
 import com.pepedevs.corelib.events.EventUtils;
 import com.pepedevs.corelib.item.ActionItem;
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -28,16 +27,10 @@ public class BedBugSnowball extends PluginActionItem {
     private final ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
 
     public BedBugSnowball(DBedwars plugin) {
-        super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getBedBug()
-                                        .getItemLore()),
+        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
+                plugin.configTranslator().translate(
+                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());
         this.plugin = plugin;
         this.cfgBedBug = plugin.getConfigHandler().getCustomItems().getBedBug();

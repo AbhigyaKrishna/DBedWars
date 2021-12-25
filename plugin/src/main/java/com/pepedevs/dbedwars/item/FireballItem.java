@@ -1,7 +1,6 @@
 package com.pepedevs.dbedwars.item;
 
 import com.pepedevs.corelib.events.EventUtils;
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.PotionEffectAT;
@@ -34,15 +33,9 @@ public class FireballItem extends PluginActionItem {
 
     public FireballItem(DBedwars plugin) {
         super(
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
-                StringUtils.translateAlternateColorCodes(
-                        plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null
-                                ? new ArrayList<>()
-                                : plugin.getConfigHandler()
-                                        .getCustomItems()
-                                        .getFireball()
-                                        .getLore()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
         this.cfgFireball = plugin.getConfigHandler().getCustomItems().getFireball();
         this.cfgKB = cfgFireball.getKnockBack();
