@@ -1,0 +1,18 @@
+parser-type: "modern" #modern/legacy
+
+modern-settings:
+  compulsory-closing-tags: false
+  discord-type-formatting: true
+  enabled-transformations:
+    click-event: true
+    color: true
+    decoration: true
+    font: true
+    gradient: true
+    hover-event: true
+    insertion: true
+    keybind: true
+    pre: true
+    rainbow: true
+    reset: true
+    translatable: true
