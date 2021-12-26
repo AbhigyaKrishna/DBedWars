@@ -12,7 +12,6 @@ import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.commands.BedwarsCommand;
-import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableDatabase;
 import com.pepedevs.dbedwars.database.DatabaseBridge;
@@ -48,7 +47,6 @@ public final class DBedwars extends PluginAdapter {
     private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
-    private ImageHandler imageHandler;
     private HologramManager hologramManager;
 
     private NMSAdaptor nmsAdaptor;
@@ -116,7 +114,7 @@ public final class DBedwars extends PluginAdapter {
                     if (plugin != null) {
                         DBedwars.this
                                 .getLogger()
-                                .info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                                .info("MultiVerse-Core found, enabling MultiVerse-Core support.");
                         DBedwars.this.saveResource(
                                 "hooks/" + this.file.getName(), this.file.getParentFile(), false);
                         PluginFileUtils.set(this.file, "enabled", true);
@@ -137,7 +135,7 @@ public final class DBedwars extends PluginAdapter {
                     if (plugin != null && DBedwars.this.checkSWM(plugin)) {
                         DBedwars.this
                                 .getLogger()
-                                .info(Lang.HOOK_FOUND.toString().replace("{hook}", this.getName()));
+                                .info("SlimeWorldManager found, enabling SlimeWorldManager support.");
                         DBedwars.this.saveResource(
                                 "hooks/" + this.file.getName(), this.file.getParentFile(), false);
                         PluginFileUtils.set(this.file, "enabled", true);
@@ -170,7 +168,6 @@ public final class DBedwars extends PluginAdapter {
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
-        this.imageHandler = new ImageHandler(this);
         this.hologramManager = new HologramManager(this, this.threadHandler.getUpdaterTask());
 
         this.threadHandler.submitAsync(
@@ -247,10 +244,6 @@ public final class DBedwars extends PluginAdapter {
 
     public DatabaseBridge getDatabaseBridge() {
         return this.database;
-    }
-
-    public ImageHandler getImageHandler() {
-        return imageHandler;
     }
 
     public HologramManager getHologramManager() {
