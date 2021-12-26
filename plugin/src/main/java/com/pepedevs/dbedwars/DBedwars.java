@@ -12,12 +12,9 @@ import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.commands.BedwarsCommand;
-import com.pepedevs.dbedwars.configuration.translator.ConfigTranslator;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableDatabase;
-import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
-import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import com.pepedevs.dbedwars.database.DatabaseBridge;
 import com.pepedevs.dbedwars.database.MongoDB;
 import com.pepedevs.dbedwars.database.MySQL;
@@ -25,7 +22,6 @@ import com.pepedevs.dbedwars.database.SQLite;
 import com.pepedevs.dbedwars.game.GameManager;
 import com.pepedevs.dbedwars.handler.*;
 import com.pepedevs.dbedwars.item.*;
-import com.pepedevs.dbedwars.messaging.MiniMessageWrapper;
 import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
@@ -41,25 +37,22 @@ import java.util.Random;
 
 public final class DBedwars extends PluginAdapter {
 
-    private String alias;
     private Version serverVersion;
     private GameManager gameManager;
     private Listener[] listeners;
 
     private String mainWorld;
 
+    private ConfigHandler configHandler;
     private WorldHandler worldHandler;
     private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
-    private ConfigHandler configHandler;
     private ImageHandler imageHandler;
     private HologramManager hologramManager;
 
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
-
-    private ConfigTranslator translator;
 
     public static DBedwars getInstance() {
         return Plugin.getPlugin(DBedwars.class);
@@ -68,21 +61,18 @@ public final class DBedwars extends PluginAdapter {
     @Override
     public void onLoad() {
 
-        if (!PluginFiles.LANGUAGES.getFile().isDirectory())
-            PluginFiles.LANGUAGES.getFile().mkdirs();
+        if (!PluginFiles.LANGUAGES.isDirectory())
+            PluginFiles.LANGUAGES.mkdirs();
 
-        for (PluginFiles files : PluginFiles.getLanguageFiles()) {
-            if (!files.getFile().exists()) {
+        for (File files : PluginFiles.getLanguageFiles()) {
+            if (!files.exists()) {
                 this.saveResource(
-                        "languages/" + files.getFile().getName(),
-                        PluginFiles.LANGUAGES.getFile(),
+                        "languages/" + files.getName(),
+                        PluginFiles.LANGUAGES,
                         false);
             }
         }
 
-        Lang.setLangFile(PluginFiles.ENGLISH.getFile());
-
-        this.alias = Lang.PREFIX.toString();
     }
 
     @Override
@@ -109,8 +99,6 @@ public final class DBedwars extends PluginAdapter {
     }
 
     /**
-     *
-     *
      * <ul>
      *   <li>PluginDependence[0] = MultiVerseCore
      *   <li>PluginDependence[1] = SlimeWorldManager
@@ -118,15 +106,10 @@ public final class DBedwars extends PluginAdapter {
      */
     @Override
     public PluginDependence[] getDependences() {
-        if (!PluginFiles.HOOKS.getFile().isDirectory()) {
-            if (!PluginFiles.HOOKS.getFile().mkdirs()) {
-                this.getLogger().severe(Lang.ERROR_WRITE_FILES.toString());
-            }
-        }
         return new PluginDependence[] {
             new PluginDependence("MultiVerse-Core") {
 
-                private final File file = PluginFiles.MULTIVERSE_CORE_HOOK.getFile();
+                private final File file = PluginFiles.MULTIVERSE_CORE_HOOK;
 
                 @Override
                 public Boolean apply(org.bukkit.plugin.Plugin plugin) {
@@ -147,7 +130,7 @@ public final class DBedwars extends PluginAdapter {
             },
             new PluginDependence("SlimeWorldManager") {
 
-                private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
+                private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK;
 
                 @Override
                 public Boolean apply(org.bukkit.plugin.Plugin plugin) {
@@ -171,24 +154,10 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpConfig() {
-        for (PluginFiles folder : PluginFiles.getDirectories()) {
-            if (!folder.getFile().isDirectory())
-                if (!folder.getFile().mkdirs()) {
-                    this.getLogger().warning(Lang.ERROR_WRITE_FILES.toString());
-                    return false;
-                }
-        }
-
-        for (PluginFiles file : PluginFiles.getFiles()) {
-            String path = "";
-            File parent = file.getFile().getParentFile();
-            while (!parent.getName().equals(PluginFiles.PLUGIN_DATA_FOLDER.getFile().getName())) {
-                path = parent.getName() + "/" + path;
-                parent = parent.getParentFile();
-            }
-            this.saveResource(
-                    path + file.getFile().getName(), file.getFile().getParentFile(), false);
-        }
+        this.configHandler = new ConfigHandler(this);
+        this.configHandler.initFiles();
+        this.configHandler.initMainConfig();
+        this.configHandler.initLanguage();
 
         return true;
     }
@@ -199,7 +168,6 @@ public final class DBedwars extends PluginAdapter {
         this.threadHandler.runThreads(4);
         this.worldHandler = new WorldHandler(this);
         this.gameManager = new GameManager(this);
-        this.configHandler = new ConfigHandler(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.imageHandler = new ImageHandler(this);
@@ -214,14 +182,6 @@ public final class DBedwars extends PluginAdapter {
 
                     this.registerCustomItems();
                     this.initDatabase();
-
-                    if (this.configHandler.getConfigurableMessaging().getParserType().equalsIgnoreCase("modern")) {
-
-                        MiniMessageWrapper.importConfig(this.configHandler.getConfigurableMessaging().getModernSettings());
-                        this.translator = new MiniMessageTranslator(MiniMessageWrapper.getConfigInstance());
-
-                    }
-                    else this.translator = new LegacyTranslator('&');
                 });
 
         return true;
@@ -247,10 +207,6 @@ public final class DBedwars extends PluginAdapter {
 
     public Version getServerVersion() {
         return this.serverVersion;
-    }
-
-    public String getAlias() {
-        return this.alias;
     }
 
     public String getVersion() {
@@ -299,14 +255,6 @@ public final class DBedwars extends PluginAdapter {
 
     public HologramManager getHologramManager() {
         return this.hologramManager;
-    }
-
-    public ConfigTranslator configTranslator() {
-        return this.translator;
-    };
-
-    public MiniMessageTranslator pluginTranslator() {
-        return new MiniMessageTranslator(MiniMessageWrapper.getFullInstance());
     }
 
     private void initDatabase() {

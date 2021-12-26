@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.messaging;
 
-import com.pepedevs.dbedwars.configuration.configurable.ConfigurableMessaging;
+import com.pepedevs.dbedwars.configuration.MainConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
@@ -31,11 +31,11 @@ public class MiniMessageWrapper {
                 .build();
     }
 
-    public static void importConfig(ConfigurableMessaging.ConfigurableModernSettings settings) {
+    public static void importConfig(MainConfiguration.LangSection.ModernSettingsSection settings) {
         MiniMessage.Builder builder = MiniMessage.builder();
         builder.removeDefaultTransformations();
 
-        ConfigurableMessaging.ConfigurableModernSettings.ConfigurableTransformations transformations = settings.getTransformations();
+        MainConfiguration.LangSection.ModernSettingsSection.TransformationsSection transformations = settings.getTransformations();
         if (transformations.isClickEvent()) builder = builder.transformation(TransformationType.CLICK_EVENT);
         if (transformations.isColor()) builder = builder.transformation(TransformationType.COLOR);
         if (transformations.isDecoration()) builder = builder.transformation(TransformationType.DECORATION);

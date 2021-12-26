@@ -77,7 +77,7 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
 
     @Override
     public boolean saveExist(String name) {
-        File file = new File(PluginFiles.ARENA_DATA_ARENACACHE.getFile(), name + ".zip");
+        File file = new File(PluginFiles.ARENA_DATA_ARENACACHE, name + ".zip");
         return file.exists();
     }
 
@@ -95,7 +95,7 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
 
     @Override
     public void deleteWorld(String worldName) {
-        for (File file : PluginFiles.ARENA_DATA_ARENACACHE.getFile().listFiles()) {
+        for (File file : PluginFiles.ARENA_DATA_ARENACACHE.listFiles()) {
             if (file.getName().equals(worldName + ".yml")) file.delete();
         }
     }

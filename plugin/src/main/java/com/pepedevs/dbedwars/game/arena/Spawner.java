@@ -297,7 +297,7 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                         .filter(e -> e instanceof Player)
                         .forEach(
                                 e ->
-                                        ((Player) e)
+                                        e
                                                 .sendMessage(
                                                         ConfigurationUtils.parseMessage(
                                                                 ConfigurationUtils.parsePlaceholder(

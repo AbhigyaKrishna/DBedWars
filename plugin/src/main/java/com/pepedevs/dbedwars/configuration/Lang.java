@@ -1,20 +1,18 @@
 package com.pepedevs.dbedwars.configuration;
 
-import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.dbedwars.configuration.translator.ConfigTranslator;
+import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
+import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
+import com.pepedevs.dbedwars.messaging.MiniMessageWrapper;
+import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.EnumMap;
 
 public enum Lang {
+
     PREFIX("prefix", "&6[ &9Bedwars &6]"),
-
-    HOOK_FOUND("hook-found", "&a{hook} found! Hooking into it..."),
-
-    /* Error */
-    ERROR_WRITE_FILES(
-            "error.write-files",
-            "&aPlugin resource directories cannot be created. Please check if the system has"
-                    + " required permissions to write files!"),
 
     /* General */
     ARENA("general.arena", "arena"),
@@ -35,22 +33,54 @@ public enum Lang {
     COLOR_BLACK("general.color-black", "black"),
     ;
 
-    private static YamlConfiguration lang;
+    private static final EnumMap<Lang, Component> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
 
-    private String key;
-    private String def;
+    private static ConfigTranslator TRANSLATOR;
+    private static ConfigTranslator DEFAULT_TRANSLATOR;
+
+    public static void init(MainConfiguration.LangSection cfg) {
+        if (cfg.getModernSettings() != null) {
+            MiniMessageWrapper.importConfig(cfg.getModernSettings());
+            TRANSLATOR = new MiniMessageTranslator(MiniMessageWrapper.getConfigInstance());
+        } else
+            TRANSLATOR = new LegacyTranslator(cfg.getLegacySettings().getTranslationChar());
+
+        DEFAULT_TRANSLATOR = new MiniMessageTranslator(MiniMessageWrapper.getFullInstance());
+    }
+
+    public static void load(File file) {
+        SERVER_LOADED_LANG.clear();
+        if (!file.exists()) {
+            for (Lang value : Lang.values()) {
+                SERVER_LOADED_LANG.put(value, DEFAULT_TRANSLATOR.translate(value.getDef()));
+            }
+        }
+
+        YamlConfiguration lang = YamlConfiguration.loadConfiguration(file);
+        for (Lang l : Lang.values()) {
+            String value = lang.getString(l.getKey());
+            if (value != null) {
+                SERVER_LOADED_LANG.put(l, TRANSLATOR.translate(value));
+            } else {
+                SERVER_LOADED_LANG.put(l, DEFAULT_TRANSLATOR.translate(l.getDef()));
+            }
+        }
+    }
+
+    public static ConfigTranslator getTranslator() {
+        return TRANSLATOR;
+    }
+
+    public static ConfigTranslator getDefaultTranslator() {
+        return DEFAULT_TRANSLATOR;
+    }
+
+    private final String key;
+    private final String def;
 
     Lang(String key, String def) {
         this.key = key;
         this.def = def;
-    }
-
-    public static void setLangFile(File langFile) {
-        lang = YamlConfiguration.loadConfiguration(langFile);
-    }
-
-    public static YamlConfiguration getLang() {
-        return lang;
     }
 
     public String getKey() {
@@ -62,7 +92,11 @@ public enum Lang {
     }
 
     public String toString() {
-        String value = lang.getString(this.key, this.def);
-        return StringUtils.translateAlternateColorCodes(value);
+        return TRANSLATOR.untranslate(this.asComponent());
     }
+
+    public Component asComponent() {
+        return SERVER_LOADED_LANG.get(this);
+    }
+
 }

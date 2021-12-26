@@ -7,7 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import java.util.Collection;
 import java.util.List;
 
-public class MiniMessageTranslator implements ConfigTranslator{
+public class MiniMessageTranslator implements ConfigTranslator {
 
     private final MiniMessage mini;
 

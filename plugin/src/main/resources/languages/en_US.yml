@@ -1,10 +1,5 @@
 prefix: '&6[ &9Bedwars &6]'
 
-hook-found: '&a{hook} found! Hooking into it...'
-
-error:
-  write-files: '&aPlugin resource directories cannot be created. Please check if the system has required permissions to write files!'
-
 general:
   arena: 'arena'
   color-yellow: 'yellow'

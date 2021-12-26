@@ -182,7 +182,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
             }
         }
 
-        File[] configured = PluginFiles.ARENA_DATA_ARENACACHE.getFile().listFiles();
+        File[] configured = PluginFiles.ARENA_DATA_ARENACACHE.listFiles();
         for (File file : worldDirs) {
             ActionItem item;
             if (Arrays.stream(configured).anyMatch(c -> c.getName().contains(file.getName()))) {

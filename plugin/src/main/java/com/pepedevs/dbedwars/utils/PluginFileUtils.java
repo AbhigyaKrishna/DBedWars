@@ -27,7 +27,7 @@ public class PluginFileUtils {
     }
 
     public static boolean saveWorldRegions(String worldName, String fileName) {
-        File file = new File(PluginFiles.ARENA_DATA_ARENACACHE.getFile(), fileName + ".zip");
+        File file = new File(PluginFiles.ARENA_DATA_ARENACACHE, fileName + ".zip");
         if (file.exists()) file.delete();
 
         File region = new File(worldName, "region/");
@@ -118,7 +118,7 @@ public class PluginFileUtils {
         }
 
         try {
-            File f = new File(PluginFiles.ARENA_DATA_ARENACACHE.getFile(), fileName + ".zip");
+            File f = new File(PluginFiles.ARENA_DATA_ARENACACHE, fileName + ".zip");
             ZipInputStream zip = new ZipInputStream(new FileInputStream(f));
 
             ZipEntry entry;

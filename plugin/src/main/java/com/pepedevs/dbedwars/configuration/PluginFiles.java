@@ -4,66 +4,57 @@ import com.pepedevs.dbedwars.DBedwars;
 
 import java.io.File;
 
-public enum PluginFiles {
+public class PluginFiles {
 
     /* Folder */
-    PLUGIN_DATA_FOLDER(DBedwars.getInstance().getDataFolder()),
-    ARENA(new File(PLUGIN_DATA_FOLDER.getFile(), "arena")),
-    ARENA_DATA(new File(ARENA.getFile(), "data")),
-    ARENA_DATA_ARENACACHE(new File(ARENA_DATA.getFile(), "arenacache")),
-    ARENA_DATA_SETTINGS(new File(ARENA_DATA.getFile(), "settings")),
-    HOOKS(new File(PLUGIN_DATA_FOLDER.getFile(), "hooks")),
-    LANGUAGES(new File(PLUGIN_DATA_FOLDER.getFile(), "languages")),
-    GRAPHICS(new File(PLUGIN_DATA_FOLDER.getFile(), "graphics")),
-    IMAGES(new File(GRAPHICS.getFile(), "images")),
-    PARTICLE_IMAGES_CACHE(new File(GRAPHICS.getFile(), "particle-images-cache")),
+    public static final File PLUGIN_DATA_FOLDER = DBedwars.getInstance().getDataFolder();
+    public static final File ARENA = new File(PLUGIN_DATA_FOLDER, "arena");
+    public static final File ARENA_DATA = new File(ARENA, "data");
+    public static final File ARENA_DATA_ARENACACHE = new File(ARENA_DATA, "arenacache");
+    public static final File ARENA_DATA_SETTINGS = new File(ARENA_DATA, "settings");
+    public static final File HOOKS = new File(PLUGIN_DATA_FOLDER, "hooks");
+    public static final File LANGUAGES = new File(PLUGIN_DATA_FOLDER, "languages");
 
     /* Hook Files */
-    MULTIVERSE_CORE_HOOK(new File(HOOKS.getFile(), "Multiverse-Core-Hook.yml")),
-    SLIME_WORLD_MANAGER_HOOK(new File(HOOKS.getFile(), "SlimeWorldManager-Hook.yml")),
+    public static final File MULTIVERSE_CORE_HOOK = new File(HOOKS, "Multiverse-Core-Hook.yml");
+    public static final File SLIME_WORLD_MANAGER_HOOK = new File(HOOKS, "SlimeWorldManager-Hook.yml");
 
     /* Language Files */
-    ENGLISH(new File(LANGUAGES.getFile(), "English.yml")),
+    public static final File EN_US = new File(LANGUAGES, "en_US.yml");
 
     /* Files */
-    CONFIG(new File(PLUGIN_DATA_FOLDER.getFile(), "config.yml")),
-    ITEM_SPAWNERS(new File(PLUGIN_DATA_FOLDER.getFile(), "itemspawner.yml")),
-    TRAPS(new File(PLUGIN_DATA_FOLDER.getFile(), "traps.yml")),
-    CUSTOM_ITEMS(new File(PLUGIN_DATA_FOLDER.getFile(), "custom-items.yml")),
-    SHOP(new File(PLUGIN_DATA_FOLDER.getFile(), "shop.yml")),
-    UPGRADES(new File(PLUGIN_DATA_FOLDER.getFile(), "upgrades.yml")),
-    HOLOGRAM(new File(PLUGIN_DATA_FOLDER.getFile(), "hologram.yml")),
-    SCOREBOARD(new File(PLUGIN_DATA_FOLDER.getFile(), "scoreboard.yml")),
+    public static final File CONFIG = new File(PLUGIN_DATA_FOLDER, "config.yml");
+    public static final File ITEM_SPAWNERS = new File(PLUGIN_DATA_FOLDER, "itemspawner.yml");
+    public static final File TRAPS = new File(PLUGIN_DATA_FOLDER, "traps.yml");
+    public static final File CUSTOM_ITEMS = new File(PLUGIN_DATA_FOLDER, "custom-items.yml");
+    public static final File SHOP = new File(PLUGIN_DATA_FOLDER, "shop.yml");
+    public static final File UPGRADES = new File(PLUGIN_DATA_FOLDER, "upgrades.yml");
+    public static final File HOLOGRAM = new File(PLUGIN_DATA_FOLDER, "hologram.yml");
+    public static final File SCOREBOARD = new File(PLUGIN_DATA_FOLDER, "scoreboard.yml");
 
-    DATABASE(new File(PLUGIN_DATA_FOLDER.getFile(), "database.yml")),
+    /* Database */
+    public static final File DATABASE = new File(PLUGIN_DATA_FOLDER, "database.yml");
 
-    PARTICLE_IMAGES(new File(GRAPHICS.getFile(), "particle-images.yml")),
-
-    LANG_SETTINGS(new File(LANGUAGES.getFile(), "settings.yml"));
-
-
-    private final File file;
-
-    PluginFiles(File file) {
-        this.file = file;
-    }
-
-    public static PluginFiles[] getDirectories() {
-        return new PluginFiles[] {
-            PLUGIN_DATA_FOLDER, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS, HOOKS
+    public static File[] getDirectories() {
+        return new File[]{
+                PLUGIN_DATA_FOLDER, ARENA, ARENA_DATA, ARENA_DATA_ARENACACHE, ARENA_DATA_SETTINGS, HOOKS, LANGUAGES
         };
     }
 
-    public static PluginFiles[] getHooksSettingFiles() {
-        return new PluginFiles[] {SLIME_WORLD_MANAGER_HOOK};
+    public static File[] getHooksSettingFiles() {
+        return new File[]{
+                SLIME_WORLD_MANAGER_HOOK
+        };
     }
 
-    public static PluginFiles[] getLanguageFiles() {
-        return new PluginFiles[] {ENGLISH};
+    public static File[] getLanguageFiles() {
+        return new File[] {
+                EN_US
+        };
     }
 
-    public static PluginFiles[] getFiles() {
-        return new PluginFiles[] {
+    public static File[] getFiles() {
+        return new File[] {
             CONFIG,
             ITEM_SPAWNERS,
             TRAPS,
@@ -76,7 +67,4 @@ public enum PluginFiles {
         };
     }
 
-    public File getFile() {
-        return this.file;
-    }
 }

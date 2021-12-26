@@ -136,7 +136,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     public boolean saveData(boolean overwriteData) {
         File file =
                 new File(
-                        PluginFiles.ARENA_DATA_SETTINGS.getFile(),
+                        PluginFiles.ARENA_DATA_SETTINGS,
                         this.settings.getName() + ".yml");
         if (this.cfgArena == null) {
             this.cfgArena = new ConfigurableArena(this);
@@ -216,7 +216,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                         () -> {
                             File file =
                                     new File(
-                                            PluginFiles.ARENA_DATA_SETTINGS.getFile(),
+                                            PluginFiles.ARENA_DATA_SETTINGS,
                                             this.settings.getName() + ".yml");
                             FileConfiguration configuration =
                                     YamlConfiguration.loadConfiguration(file);

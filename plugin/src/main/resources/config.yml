@@ -32,3 +32,30 @@ traps:
       - '1:DIAMOND'
       - '2:DIAMOND'
       - '4:DIAMOND'
+
+
+# Language
+
+lang:
+  parse-type: 'modern' #modern/legacy
+  server-language: 'en_US'
+
+  legacy-settings:
+    translation-char: '&'
+
+  modern-settings:
+    compulsory-closing-tags: false
+    discord-type-formatting: true
+    enabled-transformations:
+      click-event: true
+      hover-event: true
+      color: true
+      decoration: true
+      font: true
+      gradient: true
+      insertion: true
+      keybind: true
+      pre: true
+      rainbow: true
+      reset: true
+      translatable: true

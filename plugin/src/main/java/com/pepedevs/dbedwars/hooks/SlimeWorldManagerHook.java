@@ -37,7 +37,7 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
         this.slime =
                 (SlimePlugin)
                         this.plugin.getServer().getPluginManager().getPlugin("SlimeWorldManager");
-        this.file = PluginFiles.SLIME_WORLD_MANAGER_HOOK.getFile();
+        this.file = PluginFiles.SLIME_WORLD_MANAGER_HOOK;
         this.config = YamlConfiguration.loadConfiguration(this.file);
     }
 
