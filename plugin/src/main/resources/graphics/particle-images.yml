@@ -1,6 +1,0 @@
-global-settings:
-  downscaling: '30x30'
-images:
-  rainbow.jpg:
-    dimensions: '2x2'
-    render-transparent-pixels: false
