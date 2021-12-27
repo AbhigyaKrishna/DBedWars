@@ -1,8 +1,17 @@
 package com.pepedevs.dbedwars.utils;
 
 import com.pepedevs.corelib.utils.math.LocationUtils;
+import com.pepedevs.corelib.utils.reflection.accessor.FieldAccessor;
+import com.pepedevs.corelib.utils.reflection.bukkit.BukkitReflection;
 import com.pepedevs.corelib.utils.reflection.general.ClassReflection;
 import com.pepedevs.corelib.utils.reflection.general.MethodReflection;
+import com.pepedevs.corelib.utils.reflection.resolver.FieldResolver;
+import com.pepedevs.corelib.utils.reflection.resolver.MethodResolver;
+import com.pepedevs.corelib.utils.reflection.resolver.ResolverQuery;
+import com.pepedevs.corelib.utils.reflection.resolver.minecraft.CraftClassResolver;
+import com.pepedevs.corelib.utils.reflection.resolver.minecraft.NMSClassResolver;
+import com.pepedevs.corelib.utils.reflection.resolver.wrapper.ClassWrapper;
+import com.pepedevs.corelib.utils.reflection.resolver.wrapper.MethodWrapper;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
@@ -13,35 +22,36 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Utils {
 
+    private static final FieldAccessor fieldFireballDirX;
+    private static final FieldAccessor fieldFireballDirY;
+    private static final FieldAccessor fieldFireballDirZ;
+
+    private static final MethodWrapper CRAFT_ITEM_STACK_AS_NMS_COPY;
+    private static final MethodWrapper NMS_ITEM_STACK_GET_ITEM;
+    private static final MethodWrapper NMS_ITEM_C;
+    private static final MethodWrapper CRAFT_ITEM_STACK_AS_BUKKIT_COPY;
+
     public static boolean isUnMergeable(ItemStack item) {
         return NBTUtils.hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
     }
 
-    public static ItemStack setUnStackable(ItemStack stack) {
-        try {
-            Class<?> cbItemStack = ClassReflection.getCraftClass("CraftItemStack", "inventory");
-            Object nmsItemStack =
-                    MethodReflection.get(cbItemStack, "asNMSCopy", ItemStack.class)
-                            .invoke(null, stack);
-            Object item = MethodReflection.invoke(nmsItemStack, "getItem");
-            MethodReflection.invoke(item, "c", 1);
-            return (ItemStack)
-                    MethodReflection.get(cbItemStack, "asBukkitCopy", nmsItemStack.getClass())
-                            .invoke(null, nmsItemStack);
-
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return stack;
+    public static ItemStack setMaxStackSize(ItemStack stack, int stackSize) {
+        Object nmsItemStack =
+                CRAFT_ITEM_STACK_AS_NMS_COPY.invoke(null, stack);
+        Object item = NMS_ITEM_STACK_GET_ITEM.invoke(nmsItemStack);
+        NMS_ITEM_C.invoke(item, stackSize);
+        return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, nmsItemStack);
     }
 
     public static void setSpawnInventory(Player player, Team team) {
@@ -89,7 +99,7 @@ public class Utils {
 
     public static boolean isBed(Block block) {
         return Arrays.asList(ItemConstant.BED.getItems())
-                        .contains(XMaterial.matchXMaterial(block.getType()))
+                .contains(XMaterial.matchXMaterial(block.getType()))
                 || block.getType().name().equals("BED_BLOCK");
     }
 
@@ -153,5 +163,31 @@ public class Utils {
         } else {
             player.getInventory().getItemInHand().setAmount(--amt);
         }
+    }
+
+    public static void setDirection(Fireball fireball, Vector direction) {
+        Object handle = BukkitReflection.getHandle(fireball);
+        fieldFireballDirX.set(handle, direction.getX() * 0.10D);
+        fieldFireballDirY.set(handle, direction.getY() * 0.10D);
+        fieldFireballDirZ.set(handle, direction.getZ() * 0.10D);
+    }
+
+    static {
+        NMSClassResolver NMS_CLASS_RESOLVER = new NMSClassResolver();
+        CraftClassResolver CRAFT_CLASS_RESOLVER = new CraftClassResolver();
+
+        ClassWrapper<?> ENTITY_FIREBALL_CLASS = NMS_CLASS_RESOLVER.resolveWrapper("EntityFireball", "net.minecraft.world.entity.projectile.EntityFireball");
+        ClassWrapper<?> CRAFT_ITEM_STACK = CRAFT_CLASS_RESOLVER.resolveWrapper("inventory.CraftItemStack");
+        ClassWrapper<?> NMS_ITEM_STACK = NMS_CLASS_RESOLVER.resolveWrapper("ItemStack", "net.minecraft.world.item.ItemStack");
+        ClassWrapper<?> NMS_ITEM = NMS_CLASS_RESOLVER.resolveWrapper("Item", "net.minecraft.world.item.Item");
+
+        CRAFT_ITEM_STACK_AS_NMS_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asNMSCopy", ItemStack.class).build());
+        NMS_ITEM_STACK_GET_ITEM = new MethodResolver(NMS_ITEM_STACK.getClazz()).resolveWrapper("getItem");
+        NMS_ITEM_C = new MethodResolver(NMS_ITEM.getClazz()).resolveWrapper(ResolverQuery.builder().with("c", int.class).build());
+        CRAFT_ITEM_STACK_AS_BUKKIT_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asBukkitCopy", NMS_ITEM_STACK.getClazz()).build());
+
+        fieldFireballDirX = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirX", "b");
+        fieldFireballDirY = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirY", "c");
+        fieldFireballDirZ = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirZ", "d");
     }
 }

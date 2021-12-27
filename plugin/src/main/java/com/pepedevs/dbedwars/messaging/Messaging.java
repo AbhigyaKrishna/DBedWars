@@ -23,24 +23,6 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
     private BukkitAudiences adventure;
     private ConsoleMember consoleMessagingMember;
     private LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder().character('&').build();
-    private MiniMessage miniMessage =
-            MiniMessage.builder()
-                    .removeDefaultTransformations()
-                    .transformations(
-                            TransformationType.COLOR,
-                            TransformationType.DECORATION,
-                            TransformationType.HOVER_EVENT,
-                            TransformationType.CLICK_EVENT,
-                            TransformationType.KEYBIND,
-                            TransformationType.TRANSLATABLE,
-                            TransformationType.INSERTION,
-                            TransformationType.FONT,
-                            TransformationType.GRADIENT,
-                            TransformationType.RAINBOW,
-                            TransformationType.RESET,
-                            TransformationType.PRE)
-                    .markdownFlavor(DiscordFlavor.get())
-                    .build();
 
     public Messaging(DBedwars plugin) {
         server = this;
@@ -64,6 +46,7 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
         this.consoleMessagingMember.getAudienceMember().sendMessage(message.asComponent());
     }
 
+    @Override
     public PlayerMember getMessagingMember(Player player) {
         return new PlayerMember(player);
     }
@@ -79,12 +62,12 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
 
     @Override
     public String serializeMini(Component component) {
-        return this.miniMessage.serialize(component);
+        return MiniMessageWrapper.getFullInstance().serialize(component);
     }
 
     @Override
     public Component parseMini(String message) {
-        return this.miniMessage.parse(message);
+        return MiniMessageWrapper.getFullInstance().parse(message);
     }
 
     @Override

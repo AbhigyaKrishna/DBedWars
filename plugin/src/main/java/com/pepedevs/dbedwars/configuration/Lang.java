@@ -1,10 +1,11 @@
 package com.pepedevs.dbedwars.configuration;
 
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.configuration.translator.ConfigTranslator;
 import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
 import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import com.pepedevs.dbedwars.messaging.MiniMessageWrapper;
-import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.util.EnumMap;
 
 public enum Lang {
 
-    PREFIX("prefix", "&6[ &9Bedwars &6]"),
+    PREFIX("prefix", "<gold>[ <blue>Bedwars <gold>]"),
 
     /* General */
     ARENA("general.arena", "arena"),
@@ -31,9 +32,18 @@ public enum Lang {
     COLOR_GRAY("general.color-gray", "gray"),
     COLOR_BROWN("general.color-brown", "brown"),
     COLOR_BLACK("general.color-black", "black"),
+
+    /* Bedwars commands */
+    NO_ARENA_FOUND_W_NAME("", "<red>No arena found with this name!"),
+    NOT_IN_AN_ARENA("", "<red>You are not in a arena!")
+
+    /* Arena */
+
+
+
     ;
 
-    private static final EnumMap<Lang, Component> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
+    private static final EnumMap<Lang, Message> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
 
     private static ConfigTranslator TRANSLATOR;
     private static ConfigTranslator DEFAULT_TRANSLATOR;
@@ -52,7 +62,7 @@ public enum Lang {
         SERVER_LOADED_LANG.clear();
         if (!file.exists()) {
             for (Lang value : Lang.values()) {
-                SERVER_LOADED_LANG.put(value, DEFAULT_TRANSLATOR.translate(value.getDef()));
+                SERVER_LOADED_LANG.put(value, AdventureMessage.from(value.getDef()));
             }
         }
 
@@ -60,9 +70,9 @@ public enum Lang {
         for (Lang l : Lang.values()) {
             String value = lang.getString(l.getKey());
             if (value != null) {
-                SERVER_LOADED_LANG.put(l, TRANSLATOR.translate(value));
+                SERVER_LOADED_LANG.put(l, ConfigMessage.from(value));
             } else {
-                SERVER_LOADED_LANG.put(l, DEFAULT_TRANSLATOR.translate(l.getDef()));
+                SERVER_LOADED_LANG.put(l, AdventureMessage.from(l.getDef()));
             }
         }
     }
@@ -92,10 +102,10 @@ public enum Lang {
     }
 
     public String toString() {
-        return TRANSLATOR.untranslate(this.asComponent());
+        return this.asMessage().getMessage();
     }
 
-    public Component asComponent() {
+    public Message asMessage() {
         return SERVER_LOADED_LANG.get(this);
     }
 

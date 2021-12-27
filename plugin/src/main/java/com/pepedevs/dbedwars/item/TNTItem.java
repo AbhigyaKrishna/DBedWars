@@ -3,6 +3,7 @@ package com.pepedevs.dbedwars.item;
 import com.pepedevs.corelib.utils.math.VectorUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,8 +32,8 @@ public class TNTItem extends PluginActionItem {
 
     public TNTItem(DBedwars plugin) {
         super(
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getTNT().getLore()),
                 Material.TNT);
         this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTNT();

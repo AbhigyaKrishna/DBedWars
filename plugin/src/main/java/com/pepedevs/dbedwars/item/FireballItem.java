@@ -5,8 +5,8 @@ import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.PotionEffectAT;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import com.pepedevs.dbedwars.utils.FireBallUtil;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,8 +33,8 @@ public class FireballItem extends PluginActionItem {
 
     public FireballItem(DBedwars plugin) {
         super(
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
         this.cfgFireball = plugin.getConfigHandler().getCustomItems().getFireball();
@@ -53,7 +53,7 @@ public class FireballItem extends PluginActionItem {
             fireball.setMetadata("isDBedwarsFireball", FIREBALL_META);
             fireball.setVelocity(fireball.getVelocity().multiply(cfgFireball.getSpeedMultiplier()));
             if (this.cfgFireball.isFixDirectionEnabled())
-                FireBallUtil.setDirection(fireball, player.getEyeLocation().getDirection());
+                Utils.setDirection(fireball, player.getEyeLocation().getDirection());
             fireball.setYield(cfgFireball.getExplosionYield());
             cfgFireball
                     .getPotionEffects()

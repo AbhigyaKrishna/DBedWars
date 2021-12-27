@@ -170,7 +170,9 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
         this.handle.setDisplayName(this.getColor().getChatColor() + "[" + this.getName() + "]");
         this.handle.setAllowFriendlyFire(false);
         this.handle.setPrefix(this.getColor().getChatColor() + "[" + this.getName() + "] ");
-        this.players.forEach(p -> this.handle.addEntry(p.getPlayer().getName()));
+        for (ArenaPlayer player : this.players) {
+            this.handle.addEntry(player.getPlayer().getName());
+        }
     }
 
     @Override

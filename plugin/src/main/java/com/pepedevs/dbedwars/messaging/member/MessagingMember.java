@@ -21,14 +21,6 @@ public abstract class MessagingMember extends AbstractMessaging implements com.p
         this.sender = sender;
     }
 
-    public static MessagingMember ofPlayer(Player player) {
-        return Messaging.getInstance().getMessagingMember(player);
-    }
-
-    public static MessagingMember ofConsole() {
-        return Messaging.getInstance().getConsole();
-    }
-
     public CommandSender getSender() {
         return this.sender;
     }

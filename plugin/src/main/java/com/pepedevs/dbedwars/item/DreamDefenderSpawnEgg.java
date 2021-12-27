@@ -5,6 +5,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.PotionEffectAT;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.GolemDisplayNameUpdateTask;
 import com.pepedevs.dbedwars.utils.Utils;
@@ -28,11 +29,11 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
 
     public DreamDefenderSpawnEgg(DBedwars plugin) {
         super(
-                plugin.configTranslator().translate(plugin.getConfigHandler()
+                Lang.getTranslator().translate(plugin.getConfigHandler()
                         .getCustomItems()
                         .getDreamDefender()
                         .getItemName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore() == null ? new ArrayList<>()
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore()),
                 XMaterial.WOLF_SPAWN_EGG.parseMaterial());
         this.plugin = plugin;

@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.game.arena;
 
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.math.collision.BoundingBox;
 import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
@@ -12,6 +13,7 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
+import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
@@ -46,6 +48,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -210,24 +213,24 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     @Override
     public void enable(boolean flag) {
         this.enabled = flag;
-        this.plugin
-                .getThreadHandler()
-                .submitAsync(
-                        () -> {
-                            File file =
-                                    new File(
-                                            PluginFiles.ARENA_DATA_SETTINGS,
-                                            this.settings.getName() + ".yml");
-                            FileConfiguration configuration =
-                                    YamlConfiguration.loadConfiguration(file);
-                            configuration.set("enabled", flag);
-                            try {
-                                configuration.save(file);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            this.cfgArena.update();
-                        });
+        this.plugin.getThreadHandler().submitAsync(new Workload() {
+            @Override
+            public void compute() {
+                File file =
+                        new File(
+                                PluginFiles.ARENA_DATA_SETTINGS,
+                                Arena.this.settings.getName() + ".yml");
+                FileConfiguration configuration =
+                        YamlConfiguration.loadConfiguration(file);
+                configuration.set("enabled", flag);
+                try {
+                    configuration.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Arena.this.cfgArena.update();
+            }
+        });
     }
 
     @Override
@@ -280,9 +283,10 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     @Override
     public Optional<Spawner> getSpawner(LocationXYZ location, float range) {
         if (range <= 1) {
-            return this.spawners.stream()
-                    .filter(s -> s.getBoundingBox().contains(location.toVector()))
-                    .findFirst();
+            for (Spawner spawner : this.spawners) {
+                if (spawner.getBoundingBox().contains(location.toVector())) return Optional.of(spawner);
+            }
+            return Optional.empty();
         }
 
         BoundingBox box =
@@ -293,7 +297,10 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                         location.getX() + range,
                         location.getY() + range,
                         location.getZ() + range);
-        return this.spawners.stream().filter(s -> s.getBoundingBox().intersects(box)).findFirst();
+        for (Spawner spawner : this.spawners) {
+            if (spawner.getBoundingBox().intersects(box)) return Optional.of(spawner);
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -308,9 +315,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 && this.settings.getLobby() != null
                 && !this.settings.getDrops().isEmpty()
                 && this.plugin
-                        .getGeneratorHandler()
-                        .getWorldAdaptor()
-                        .saveExist(this.settings.getName())
+                .getGeneratorHandler()
+                .getWorldAdaptor()
+                .saveExist(this.settings.getName())
                 && this.settings.getAvailableTeams().stream().allMatch(Team::isConfigured);
     }
 
@@ -330,7 +337,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
         TeamAssigner ta = new TeamAssigner(this);
         ta.assign();
-        this.players.forEach(p -> this.teams.add(p.getTeam()));
+        for (ArenaPlayer player : this.players) {
+            this.teams.add(player.getTeam());
+        }
 
         ArenaStartEvent event = new ArenaStartEvent(this);
         event.call();
@@ -341,66 +350,40 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.arenaHandler.unregister();
 
         // TODO manage scoreboard
-        this.plugin
-                .getThreadHandler()
-                .submitSync(
-                        () -> {
-                            Arena.this.scoreboard =
-                                    new ScoreboardImpl(
-                                            Arena.this.plugin,
-                                            new ArrayList<>(
-                                                            Arena.this
-                                                                    .plugin
-                                                                    .getConfigHandler()
-                                                                    .getScoreboards())
-                                                    .get(0));
-                            Arena.this.scoreboard.createScoreboard();
-                            Arena.this.players.forEach(
-                                    p -> Arena.this.scoreboard.show(p.getPlayer()));
-                            //                            Arena.this.teams.forEach(
-                            //                                    t ->
-                            //                                            t.registerTeam(
-                            //
-                            // Arena.this.scoreboard.getHandle().getHandle()));
-                        });
+        this.plugin.getThreadHandler().submitSync(new Runnable() {
+            @Override
+            public void run() {
+                Arena.this.scoreboard = new ScoreboardImpl(Arena.this.plugin, new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
+                Arena.this.scoreboard.createScoreboard();
+                for (ArenaPlayer player : Arena.this.players) {
+                    Arena.this.scoreboard.show(player.getPlayer());
+                }
+                //                            Arena.this.teams.forEach(
+                //                                    t ->
+                //                                            t.registerTeam(
+                //
+                // Arena.this.scoreboard.getHandle().getHandle()));
+            }
+        });
 
-        this.teams.forEach(
-                t -> {
-                    t.getSpawners()
-                            .entries()
-                            .forEach(
-                                    e ->
-                                            new com.pepedevs.dbedwars.game.arena.Spawner(
-                                                            this.plugin,
-                                                            e.getKey(),
-                                                            e.getValue().toBukkit(this.getWorld()),
-                                                            this,
-                                                            t)
-                                                    .init());
-                    t.spawnShopNpc(t.getShopNpc());
-                    t.spawnUpgradesNpc(t.getUpgradesNpc());
-                });
+        for (Team team : this.teams) {
+            for (Map.Entry<DropType, LocationXYZ> entry : team.getSpawners().entries()) {
+                new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, team).init();
+            }
+            team.spawnShopNpc(team.getShopNpc());
+            team.spawnUpgradesNpc(team.getUpgradesNpc());
+        }
 
-        this.settings
-                .getDrops()
-                .entries()
-                .forEach(
-                        e ->
-                                new com.pepedevs.dbedwars.game.arena.Spawner(
-                                                this.plugin,
-                                                e.getKey(),
-                                                e.getValue().toBukkit(this.getWorld()),
-                                                this,
-                                                null)
-                                        .init());
 
-        this.players.forEach(
-                p -> {
-                    p.spawn(p.getTeam().getSpawn().toBukkit(this.world));
-                    ((ShopView) p.getShopView())
-                            .loadFromConfig(this.plugin.getConfigHandler().getShop());
-                    p.getPlayer().getEnderChest().clear();
-                });
+        for (Map.Entry<DropType, LocationXYZ> entry : this.settings.getDrops().entries()) {
+            new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, null).init();
+        }
+
+        for (ArenaPlayer player : this.players) {
+            player.spawn(player.getTeam().getSpawn().toBukkit(this.world));
+            ((ShopView) player.getShopView()).loadFromConfig(this.plugin.getConfigHandler().getShop());
+            player.getPlayer().getEnderChest().clear();
+        }
 
         this.status = ArenaStatus.RUNNING;
         this.startTime = Instant.now();
@@ -412,54 +395,42 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     public boolean end() {
         if (this.status != ArenaStatus.RUNNING) return false;
 
-        ArenaEndEvent event =
-                new ArenaEndEvent(
-                        this,
-                        this.players.stream()
-                                .filter(p -> !p.isFinalKilled())
-                                .collect(Collectors.toSet()));
+        List<ArenaPlayer> list = new ArrayList<>(this.players);
+        list.removeIf(new Predicate<ArenaPlayer>() {
+            @Override
+            public boolean test(ArenaPlayer arenaPlayer) {
+                return arenaPlayer.isFinalKilled();
+            }
+        });
+
+        ArenaEndEvent event = new ArenaEndEvent(this, list);
         event.call();
 
         if (event.isCancelled()) return false;
 
         this.status = ArenaStatus.ENDING;
         DatabaseUtils.saveGameData(this);
-        this.plugin
-                .getThreadHandler()
-                .runTaskLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                Arena.this.clearCache();
-                                CompletableFuture<Void> teleported = new CompletableFuture<>();
-                                SchedulerUtils.runTask(
-                                        new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Arena.this
-                                                        .world
-                                                        .getPlayers()
-                                                        .forEach(
-                                                                p ->
-                                                                        p.teleport(
-                                                                                Arena.this
-                                                                                        .plugin
-                                                                                        .getServer()
-                                                                                        .getWorlds()
-                                                                                        .get(0)
-                                                                                        .getSpawnLocation()));
-                                                teleported.complete(null);
-                                            }
-                                        },
-                                        Arena.this.plugin);
-                                try {
-                                    teleported.get();
-                                } catch (InterruptedException | ExecutionException ignored) {
-                                }
-                                Arena.this.load();
-                            }
-                        },
-                        (long) Arena.this.getSettings().getGameEndDelay() * 20 * 50);
+        this.plugin.getThreadHandler().runTaskLater(new Runnable() {
+            @Override
+            public void run() {
+                Arena.this.clearCache();
+                CompletableFuture<Void> teleported = new CompletableFuture<>();
+                SchedulerUtils.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO TAKE SPAWN LOCATION FROM CONFIG
+                        for (Player player : Arena.this.world.getPlayers()) {
+                            player.teleport(Arena.this.plugin.getServer().getWorlds().get(0).getSpawnLocation());
+                        }
+                        teleported.complete(null);
+                    }
+                }, Arena.this.plugin);
+                try {
+                    teleported.get();
+                } catch (InterruptedException | ExecutionException ignored) {}
+                Arena.this.load();
+            }
+        }, (long) Arena.this.getSettings().getGameEndDelay() * 20 * 50);
 
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);
@@ -605,7 +576,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public void kickAllPlayers(KickReason reason) {
-        this.players.forEach(p -> this.kickPlayer(p, reason));
+        for (ArenaPlayer player : this.players) {
+            this.kickPlayer(player, reason);
+        }
     }
 
     @Override
@@ -649,7 +622,11 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public Set<Team> getRemainingTeams() {
-        return this.teams.stream().filter(t -> !t.isEliminated()).collect(Collectors.toSet());
+        Set<Team> teams = new HashSet<>();
+        for (Team team : this.teams) {
+            if (!team.isEliminated()) teams.add(team);
+        }
+        return teams;
     }
 
     @Override
@@ -659,12 +636,18 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public Optional<ArenaPlayer> getAsArenaPlayer(Player player) {
-        return this.players.stream().filter(p -> p.getPlayer().equals(player)).findFirst();
+        for (ArenaPlayer arenaPlayer : this.players) {
+            if (arenaPlayer.getPlayer().equals(player)) return Optional.of(arenaPlayer);
+        }
+        return Optional.empty();
     }
 
     @Override
     public boolean isArenaPlayer(Player player) {
-        return this.players.stream().anyMatch(p -> p.getPlayer().equals(player));
+        for (ArenaPlayer arenaPlayer : this.players) {
+            if (arenaPlayer.getPlayer().equals(player)) return true;
+        }
+        return false;
     }
 
     @Override
@@ -710,10 +693,12 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     }
 
     @Override
-    public void setIngameScoreboard(ArenaPlayer player) {}
+    public void setIngameScoreboard(ArenaPlayer player) {
+    }
 
     @Override
-    public void setLobbyScoreboard(Player player) {}
+    public void setLobbyScoreboard(Player player) {
+    }
 
     @Override
     public boolean stop() {

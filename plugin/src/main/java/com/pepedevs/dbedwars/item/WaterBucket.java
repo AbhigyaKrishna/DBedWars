@@ -3,6 +3,7 @@ package com.pepedevs.dbedwars.item;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
@@ -13,8 +14,8 @@ public class WaterBucket extends PluginActionItem {
     private final boolean removeOnUse;
 
     public WaterBucket(DBedwars plugin) {
-        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getDisplayName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
+        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getDisplayName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
                         == null
                         ? new ArrayList<>()
                         : plugin.getConfigHandler()

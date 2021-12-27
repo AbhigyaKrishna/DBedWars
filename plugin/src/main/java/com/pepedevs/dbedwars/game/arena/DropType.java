@@ -48,7 +48,9 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
         this.hologramEnabled = this.cfgSpawner.isHologramEnabled();
         this.hologramItem = this.cfgSpawner.getHologramMaterial();
         this.hologramText = this.cfgSpawner.getHologramText();
-        this.cfgSpawner.getTiers().forEach((i, t) -> this.tiers.put(i, new Tier(t)));
+        for (Map.Entry<Integer, ConfigurableItemSpawner.ConfigurableTiers> entry : this.cfgSpawner.getTiers().entrySet()) {
+            this.tiers.put(entry.getKey(), new Tier(entry.getValue()));
+        }
     }
 
     @Override
@@ -201,7 +203,9 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
             this.upgradeEffect = tiers.getUpgradeEffect();
             this.upgradeMessage = tiers.getMessage();
             this.drops = new HashMap<>();
-            tiers.getActions().forEach((s, d) -> this.drops.put(s, new Drop(d)));
+            for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableDrop> entry : tiers.getActions().entrySet()) {
+                this.drops.put(entry.getKey(), new Drop(entry.getValue()));
+            }
         }
 
         @Override

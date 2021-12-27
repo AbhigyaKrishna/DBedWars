@@ -189,11 +189,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
 
                 e.getTeam().setEliminated(true);
 
-                Optional<Team> oTeam =
-                        this.arena.getTeams().stream().filter(t -> !t.isEliminated()).findFirst();
-                if (oTeam.isPresent()
-                        && this.arena.getTeams().stream().filter(t -> !t.isEliminated()).count()
-                                == 1) {
+                if (this.arena.getRemainingTeams().size() <= 1) {
                     this.arena.end();
                 }
             }

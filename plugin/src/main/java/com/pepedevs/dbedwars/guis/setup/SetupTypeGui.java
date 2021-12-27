@@ -64,10 +64,10 @@ public class SetupTypeGui extends IMenu<ItemMenu> {
                                 .getInventory()
                                 .addItem(
                                         NBTUtils.addNbtData(
-                                                Utils.setUnStackable(
+                                                Utils.setMaxStackSize(
                                                         InnerCustomItem.SIMPLE_SETUP_ITEM
                                                                 .getItem()
-                                                                .toItemStack()),
+                                                                .toItemStack(), 1),
                                                 "arena",
                                                 info.get("arena")));
                         itemClickAction.setClose(true);
@@ -101,10 +101,10 @@ public class SetupTypeGui extends IMenu<ItemMenu> {
                                 .getInventory()
                                 .addItem(
                                         NBTUtils.addNbtData(
-                                                Utils.setUnStackable(
+                                                Utils.setMaxStackSize(
                                                         InnerCustomItem.ADVANCED_SETUP_ITEM
                                                                 .getItem()
-                                                                .toItemStack()),
+                                                                .toItemStack(), 1),
                                                 "arena",
                                                 info.get("arena")));
                         itemClickAction.setClose(true);

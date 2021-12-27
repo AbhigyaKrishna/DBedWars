@@ -7,6 +7,7 @@ import com.pepedevs.corelib.holograms.object.HologramLineType;
 import com.pepedevs.corelib.holograms.object.HologramPage;
 import com.pepedevs.corelib.particles.ParticleBuilder;
 import com.pepedevs.corelib.particles.ParticleEffect;
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.math.collision.BoundingBox;
 import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
@@ -17,12 +18,16 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.api.util.SoundVP;
+import com.pepedevs.dbedwars.configuration.ConfigMessage;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -33,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
@@ -119,28 +126,14 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                     < entry.getKey().getDelay()) continue;
             this.items.put(entry.getKey(), System.currentTimeMillis());
             if (entry.getKey().getMaxSpawn() != -1) {
-                int count =
-                        this.location
-                                .getWorld()
-                                .getNearbyEntities(
-                                        this.location,
-                                        this.drop.getSpawnRadius(),
-                                        this.drop.getSpawnRadius(),
-                                        this.drop.getSpawnRadius())
-                                .stream()
-                                .filter(
-                                        e ->
-                                                e instanceof Item
-                                                        && ((Item) e)
-                                                                .getItemStack()
-                                                                .getType()
-                                                                .equals(
-                                                                        entry.getKey()
-                                                                                .getItem()
-                                                                                .getType()))
-                                .filter(e -> NBTUtils.hasPluginData(((Item) e).getItemStack()))
-                                .mapToInt(e -> ((Item) e).getItemStack().getAmount())
-                                .sum();
+                int count = 0;
+                for (Entity entity : this.location.getWorld().getNearbyEntities(this.location, this.drop.getSpawnRadius(), this.drop.getSpawnRadius(), this.drop.getSpawnRadius())) {
+                    if (!(entity instanceof Item)) continue;
+                    Item item = (Item) entity;
+                    if (!item.getItemStack().getType().equals(entry.getKey().getItem().getType())) continue;
+                    if (!NBTUtils.hasPluginData(item.getItemStack())) continue;
+                    count += item.getItemStack().getAmount();
+                }
                 if (count >= entry.getKey().getMaxSpawn()) return;
             }
 
@@ -165,38 +158,40 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
         this.plugin
                 .getThreadHandler()
-                .submitAsync(
-                        () -> {
-                            BwItemStack stack = event.getDrop().getItem();
-                            if (!Spawner.this.getDropType().isMerging()) stack.setUnMergeable();
+                .submitAsync(new Workload() {
+                    @Override
+                    public void compute() {
+                        BwItemStack stack = event.getDrop().getItem();
+                        if (!Spawner.this.getDropType().isMerging()) stack.setUnMergeable();
 
-                            SchedulerUtils.runTask(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Item item =
-                                                    Spawner.this
-                                                            .location
-                                                            .getWorld()
-                                                            .dropItemNaturally(
-                                                                    Spawner.this.location,
-                                                                    stack.toItemStack());
-                                            if (Spawner.this.getDropType().isSplitable())
-                                                item.setMetadata(
-                                                        "split",
-                                                        new FixedMetadataValue(
-                                                                Spawner.this.plugin, true));
-                                        }
-                                    },
-                                    this.plugin);
-                            if (this.drop.getSpawnSound() != null)
-                                this.drop.getSpawnSound().play(this.location);
-                            if (this.drop.getSpawnEffect() != null)
-                                this.particle.display(
-                                        this.arena.getPlayers().stream()
-                                                .map(ArenaPlayer::getPlayer)
-                                                .collect(Collectors.toList()));
-                        });
+                        SchedulerUtils.runTask(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Item item =
+                                                Spawner.this
+                                                        .location
+                                                        .getWorld()
+                                                        .dropItemNaturally(
+                                                                Spawner.this.location,
+                                                                stack.toItemStack());
+                                        if (Spawner.this.getDropType().isSplitable())
+                                            item.setMetadata(
+                                                    "split",
+                                                    new FixedMetadataValue(
+                                                            Spawner.this.plugin, true));
+                                    }
+                                },
+                                Spawner.this.plugin);
+                        if (Spawner.this.drop.getSpawnSound() != null)
+                            Spawner.this.drop.getSpawnSound().play(Spawner.this.location);
+                        if (Spawner.this.drop.getSpawnEffect() != null)
+                            Spawner.this.particle.display(
+                                    Spawner.this.arena.getPlayers().stream()
+                                            .map(ArenaPlayer::getPlayer)
+                                            .collect(Collectors.toList()));
+
+                    }});
     }
 
     @Override
@@ -233,31 +228,33 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
         this.plugin
                 .getThreadHandler()
-                .submitAsync(
-                        () -> {
-                            if (event.getNextTier().getUpgradeMessage() != null) {
-                                String message = event.getNextTier().getUpgradeMessage();
-                                String key = message.substring(0, message.indexOf(" "));
-                                message = message.replaceFirst(key, "").trim();
-                                this.broadcast(key, message, this.location);
-                            }
-                            SoundVP sound = event.getNextTier().getUpgradeSound();
-                            if (sound != null) {
-                                sound.play(this.location);
-                            }
-                            ParticleEffect effect = event.getNextTier().getUpgradeEffect();
-                            if (effect != null) {
-                                ParticleBuilder particle =
-                                        new ParticleBuilder(
-                                                effect, this.location.clone().add(0, 2, 0));
-                                particle.setSpeed(0)
-                                        .setAmount(20)
-                                        .display(
-                                                this.arena.getPlayers().stream()
-                                                        .map(ArenaPlayer::getPlayer)
-                                                        .collect(Collectors.toList()));
-                            }
-                        });
+                .submitAsync(new Workload() {
+                    @Override
+                    public void compute() {
+                        if (event.getNextTier().getUpgradeMessage() != null) {
+                            String message = event.getNextTier().getUpgradeMessage();
+                            String key = message.substring(0, message.indexOf(" "));
+                            message = message.replaceFirst(key, "").trim();
+                            Spawner.this.broadcast(key, message, Spawner.this.location);
+                        }
+                        SoundVP sound = event.getNextTier().getUpgradeSound();
+                        if (sound != null) {
+                            sound.play(Spawner.this.location);
+                        }
+                        ParticleEffect effect = event.getNextTier().getUpgradeEffect();
+                        if (effect != null) {
+                            ParticleBuilder particle =
+                                    new ParticleBuilder(
+                                            effect, Spawner.this.location.clone().add(0, 2, 0));
+                            particle.setSpeed(0)
+                                    .setAmount(20)
+                                    .display(
+                                            Spawner.this.arena.getPlayers().stream()
+                                                    .map(ArenaPlayer::getPlayer)
+                                                    .collect(Collectors.toList()));
+                        }
+                    }
+                });
 
         return true;
     }
@@ -272,17 +269,9 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
 
     private void broadcast(String key, String message, @Nullable Location location) {
         if (key.equalsIgnoreCase("-all")) {
-            //            this.arena.broadcast(message);
-            location.getWorld()
-                    .getPlayers()
-                    .forEach(
-                            p ->
-                                    p.sendMessage(
-                                            ConfigurationUtils.parseMessage(
-                                                    ConfigurationUtils.parsePlaceholder(
-                                                            message, p))));
+            this.arena.sendMessage(ConfigMessage.from(message));
         } else if (key.equalsIgnoreCase("-team")) {
-            if (this.team != null) this.team.sendMessage(message);
+            if (this.team != null) this.team.sendMessage(ConfigMessage.from(message));
         } else if (key.startsWith("-region")) {
             if (location != null && location.getWorld() != null) {
                 double range = 50;
@@ -293,26 +282,29 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                         | NullPointerException ignored) {
                 }
 
-                location.getWorld().getNearbyEntities(location, range, range, range).stream()
-                        .filter(e -> e instanceof Player)
-                        .forEach(
-                                e ->
-                                        e
-                                                .sendMessage(
-                                                        ConfigurationUtils.parseMessage(
-                                                                ConfigurationUtils.parsePlaceholder(
-                                                                        message, ((Player) e)))));
+                for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
+                    if (entity instanceof Player) {
+                        this.arena.getAsArenaPlayer((Player) entity).ifPresent(new Consumer<ArenaPlayer>() {
+                            @Override
+                            public void accept(ArenaPlayer arenaPlayer) {
+                                arenaPlayer.sendMessage(ConfigMessage.from(message));
+                            }
+                        });
+                    }
+                }
             }
         } else if (key.startsWith("-player")) {
             Player player = null;
             try {
                 player = Bukkit.getPlayer(key.split(":")[1]);
-            } catch (ArrayIndexOutOfBoundsException | NullPointerException ignored) {
-            }
+            } catch (ArrayIndexOutOfBoundsException | NullPointerException ignored) {}
             if (player != null) {
-                player.sendMessage(
-                        ConfigurationUtils.parseMessage(
-                                ConfigurationUtils.parsePlaceholder(message, player)));
+                this.arena.getAsArenaPlayer(player).ifPresent(new Consumer<ArenaPlayer>() {
+                    @Override
+                    public void accept(ArenaPlayer arenaPlayer) {
+                        arenaPlayer.sendMessage(ConfigMessage.from(message));
+                    }
+                });
             }
         }
     }

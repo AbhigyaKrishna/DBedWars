@@ -1,6 +1,9 @@
 package com.pepedevs.dbedwars.configuration.translator;
 
 import com.pepedevs.corelib.adventure.MiniMessageUtils;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
@@ -43,5 +46,10 @@ public class MiniMessageTranslator implements ConfigTranslator {
     @Override
     public List<String> untranslate(Collection<Component> components) {
         return MiniMessageUtils.untranslate(mini, components);
+    }
+
+    @Override
+    public Message asMessage(String text, PlaceholderEntry... entries) {
+        return AdventureMessage.from(text, entries);
     }
 }

@@ -8,6 +8,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.PopupTowerWorkload;
 import org.bukkit.Material;
@@ -23,8 +24,8 @@ public class PopupTowerChestItem extends PluginActionItem {
     private final ConfigurableCustomItems.ConfigurablePopupTower cfgPopupTower;
 
     public PopupTowerChestItem(DBedwars plugin) {
-        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null ? new ArrayList<>()
+        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()),
                 XMaterial.TRAPPED_CHEST.parseMaterial());
         this.plugin = plugin;

@@ -7,6 +7,7 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.BridgeEggWorkloadTask;
 import org.bukkit.DyeColor;
@@ -30,8 +31,8 @@ public class BridgeEgg extends PluginActionItem {
     private final DBedwars plugin;
 
     public BridgeEgg(DBedwars plugin) {
-        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
+        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore()),
                 XMaterial.EGG.parseMaterial());
         this.plugin = plugin;

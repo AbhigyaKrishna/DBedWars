@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.api.messaging;
 
 import com.pepedevs.dbedwars.api.messaging.member.ConsoleMember;
+import com.pepedevs.dbedwars.api.messaging.member.PlayerMember;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,8 @@ public abstract class Messaging {
     }
 
     public abstract ConsoleMember getConsole();
+
+    public abstract PlayerMember getMessagingMember(Player player);
 
     public abstract String serializeMini(Component component);
 

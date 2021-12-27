@@ -3,9 +3,12 @@ package com.pepedevs.dbedwars.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Subcommand;
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
+import com.pepedevs.dbedwars.api.messaging.Messaging;
+import com.pepedevs.dbedwars.configuration.Lang;
 import org.bukkit.entity.Player;
 
 @CommandAlias("bedwars|bedwar|bw")
@@ -21,31 +24,34 @@ public class BedwarsCommand extends BaseCommand {
     public void onStart(Player player, String arenaName) {
         if (!this.plugin.getGameManager().containsArena(arenaName)
                 || !this.plugin.getGameManager().getArena(arenaName).isEnabled()) {
-            player.sendMessage(
-                    StringUtils.translateAlternateColorCodes("&cNo arena found with this name!"));
+            Messaging.get().getMessagingMember(player).sendMessage(Lang.NO_ARENA_FOUND_W_NAME.asMessage());
             return;
         }
 
         Arena arena = this.plugin.getGameManager().getArena(arenaName);
         this.plugin
                 .getThreadHandler()
-                .submitAsync(
-                        () -> {
-                            if (arena.getWorld() == null) {
-                                arena.load();
+                .submitAsync(new Workload() {
+                    @Override
+                    public void compute() {
+                        if (arena.getWorld() == null) {
+                            arena.load();
+                        }
+                        BedwarsCommand.this.plugin.getThreadHandler().submitSync(new Runnable() {
+                            @Override
+                            public void run() {
+                                arena.addPlayer(player);
                             }
-                            this.plugin
-                                    .getThreadHandler()
-                                    .submitSync(() -> arena.addPlayer(player));
                         });
+                    }
+                });
     }
 
     @Subcommand("end")
     public void onEnd(Player player) {
         Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null) {
-            player.sendMessage(
-                    StringUtils.translateAlternateColorCodes("&cYou are not in a arena!"));
+            Messaging.get().getMessagingMember(player).sendMessage(Lang.NOT_IN_AN_ARENA.asMessage());
             return;
         }
 

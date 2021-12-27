@@ -4,6 +4,7 @@ import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.SpongeAnimationTask;
 import org.bukkit.entity.Player;
@@ -22,8 +23,8 @@ public class Sponge extends PluginActionItem {
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
-        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
-                plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
+        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
+                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
                 XMaterial.SPONGE.parseMaterial());
         this.plugin = plugin;

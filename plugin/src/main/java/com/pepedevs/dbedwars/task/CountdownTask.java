@@ -5,6 +5,7 @@ import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import org.bukkit.entity.Player;
 
 public class CountdownTask implements Workload {
@@ -34,9 +35,8 @@ public class CountdownTask implements Workload {
         if (this.arena.getPlayers().size() == this.arena.getSettings().getMaxPlayer()
                 && this.countdown > 5) {
             // TODO: change message and add configuration
-            this.arena.broadcast(
-                    StringUtils.translateAlternateColorCodes(
-                            "&aMaximum players reach shortening timer."));
+            this.arena.sendMessage(
+                    AdventureMessage.from("<green>Maximum players reached. Shortening timer"));
             this.countdown = 5;
         }
     }
@@ -45,8 +45,7 @@ public class CountdownTask implements Workload {
     public boolean reSchedule() {
         if (this.arena.getPlayers().size() < this.arena.getSettings().getMinPlayers()) {
             // TODO: change message
-            this.arena.broadcast(
-                    StringUtils.translateAlternateColorCodes("&cNot enough players to start!"));
+            this.arena.sendMessage(AdventureMessage.from("<red>Not enough players to start!"));
             this.arena.setStatus(ArenaStatus.WAITING);
             return false;
         }

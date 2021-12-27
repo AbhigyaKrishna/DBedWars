@@ -10,6 +10,7 @@ import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.BedBugDisplayNameUpdateTask;
 import org.bukkit.entity.*;
@@ -27,8 +28,8 @@ public class BedBugSnowball extends PluginActionItem {
     private final ConfigurableCustomItems.ConfigurableBedBug cfgBedBug;
 
     public BedBugSnowball(DBedwars plugin) {
-        super(plugin.configTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
-                plugin.configTranslator().translate(
+        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
+                Lang.getTranslator().translate(
                         plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());
