@@ -4,6 +4,7 @@ import com.pepedevs.corelib.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.DeathCause;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,17 +16,18 @@ public class PlayerKillEvent extends CustomEventCancellable {
     private final ArenaPlayer victim;
     private ArenaPlayer attacker;
     private DeathCause deathCause;
-    private String killMessage;
+    private Message killMessage;
 
     public PlayerKillEvent(
             ArenaPlayer victim,
             ArenaPlayer attacker,
             Arena arena,
             DeathCause deathCause,
-            String killMessage) {
+            Message killMessage) {
         this.arena = arena;
         this.attacker = attacker;
         this.victim = victim;
+        this.deathCause = deathCause;
         this.killMessage = killMessage;
     }
 
@@ -57,11 +59,11 @@ public class PlayerKillEvent extends CustomEventCancellable {
         this.deathCause = deathCause;
     }
 
-    public String getKillMessage() {
+    public Message getKillMessage() {
         return killMessage;
     }
 
-    public void setKillMessage(String killMessage) {
+    public void setKillMessage(Message killMessage) {
         this.killMessage = killMessage;
     }
 

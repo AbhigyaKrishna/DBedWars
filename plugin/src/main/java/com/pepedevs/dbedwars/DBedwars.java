@@ -21,6 +21,7 @@ import com.pepedevs.dbedwars.database.SQLite;
 import com.pepedevs.dbedwars.game.GameManager;
 import com.pepedevs.dbedwars.handler.*;
 import com.pepedevs.dbedwars.item.*;
+import com.pepedevs.dbedwars.messaging.Messaging;
 import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
@@ -49,28 +50,12 @@ public final class DBedwars extends PluginAdapter {
     private ThreadHandler threadHandler;
     private HologramManager hologramManager;
 
+    private Messaging messaging;
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
 
     public static DBedwars getInstance() {
         return Plugin.getPlugin(DBedwars.class);
-    }
-
-    @Override
-    public void onLoad() {
-
-        if (!PluginFiles.LANGUAGES.isDirectory())
-            PluginFiles.LANGUAGES.mkdirs();
-
-        for (File files : PluginFiles.getLanguageFiles()) {
-            if (!files.exists()) {
-                this.saveResource(
-                        "languages/" + files.getName(),
-                        PluginFiles.LANGUAGES,
-                        false);
-            }
-        }
-
     }
 
     @Override
@@ -162,6 +147,8 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
+        this.messaging = new Messaging(this);
+        this.messaging.init(this.getServer().getConsoleSender());
         this.threadHandler = new ThreadHandler(this);
         this.threadHandler.runThreads(4);
         this.worldHandler = new WorldHandler(this);

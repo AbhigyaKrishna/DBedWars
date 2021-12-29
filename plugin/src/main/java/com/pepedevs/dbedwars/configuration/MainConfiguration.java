@@ -237,7 +237,7 @@ public class MainConfiguration implements Loadable {
 
     public static class LangSection implements Loadable {
 
-        @LoadableEntry(key = "parser-type")
+        @LoadableEntry(key = "parse-type")
         private String parseType;
 
         @LoadableEntry(key = "server-language")

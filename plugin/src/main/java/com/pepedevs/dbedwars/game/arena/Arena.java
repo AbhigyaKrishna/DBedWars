@@ -31,7 +31,7 @@ import com.pepedevs.dbedwars.listeners.GameListener;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.task.WorldRegenerator;
 import com.pepedevs.dbedwars.utils.DatabaseUtils;
-import com.pepedevs.dbedwars.utils.ScoreboardImpl;
+import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -48,7 +48,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     private ArenaStatus status;
     private boolean enabled;
     private Instant startTime;
-    private ScoreboardImpl scoreboard;
+    private ScoreboardWrapper scoreboard;
     private ArenaListener arenaHandler;
     private GameListener gameHandler;
 
@@ -350,23 +349,23 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.arenaHandler.unregister();
 
         // TODO manage scoreboard
-        this.plugin.getThreadHandler().submitSync(new Runnable() {
-            @Override
-            public void run() {
-                Arena.this.scoreboard = new ScoreboardImpl(Arena.this.plugin, new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
-                Arena.this.scoreboard.createScoreboard();
-                for (ArenaPlayer player : Arena.this.players) {
-                    Arena.this.scoreboard.show(player.getPlayer());
-                }
-                //                            Arena.this.teams.forEach(
-                //                                    t ->
-                //                                            t.registerTeam(
-                //
-                // Arena.this.scoreboard.getHandle().getHandle()));
-            }
-        });
+        Arena.this.scoreboard = ScoreboardWrapper.from(new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
+        for (ArenaPlayer player : Arena.this.players) {
+            Arena.this.scoreboard.show(player.getPlayer());
+        }
+//                            Arena.this.teams.forEach(
+//                                    t ->
+//                                            t.registerTeam(
+//
+// Arena.this.scoreboard.getHandle().getHandle()));
 
         for (Team team : this.teams) {
+            this.plugin.getNMSAdaptor().sendTeamPacket(team,
+                    team.getColor().getChatColor() + team.getColor().getName(),
+                    team.getColor().getChatColor() + "[" + team.getColor().getName() + "] ",
+                    "",
+                    0,
+                    1);
             for (Map.Entry<DropType, LocationXYZ> entry : team.getSpawners().entries()) {
                 new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, team).init();
             }
@@ -664,15 +663,13 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                         affected,
                         bed,
                         this,
-                        "&"
-                                + affected.getColor().getChatSymbol()
-                                + StringUtils.capitalize(affected.getName())
-                                + "'s Bed &7 was destroyed by &"
-                                + player.getTeam().getColor().getChatSymbol()
-                                + player.getPlayer().getName(),
-                        "&7Your bed was destroyed by &"
-                                + player.getTeam().getColor().getChatSymbol()
-                                + player.getPlayer().getName());
+                        AdventureMessage.from(affected.getColor().getMiniCode() + affected.getName()
+                                + "'s Bed <gray> was destroyed by "
+                                + player.getTeam().getColor().getMiniCode()
+                                + player.getPlayer().getName()),
+                        AdventureMessage.from("<gray>Your bed was destroyed by "
+                                + player.getTeam().getColor().getMiniCode()
+                                + player.getPlayer().getName()));
         event.call();
 
         if (event.isCancelled()) return;
@@ -683,13 +680,13 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         event.getDestroyer().addBedDestroy();
         // TODO: change message
         // TODO: Add more effect
-        this.sendMessage(LegacyMessage.from(event.getBedBrokenMessage()), new Predicate<MessagingMember>() {
+        this.sendMessage(event.getBedBrokenMessage(), new Predicate<MessagingMember>() {
             @Override
             public boolean test(MessagingMember member) {
                 return ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam());
             }
         });
-        event.getAffectedTeam().sendMessage(LegacyMessage.from(event.getBedBrokenMessage()));
+        event.getAffectedTeam().sendMessage(event.getBedBrokenMessage());
     }
 
     @Override

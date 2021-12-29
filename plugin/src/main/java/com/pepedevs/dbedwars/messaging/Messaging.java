@@ -25,11 +25,9 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
     private LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder().character('&').build();
 
     public Messaging(DBedwars plugin) {
-        server = this;
-
-        if (plugin == null) throw new IllegalArgumentException("plugin cannot be null");
-
+        Validate.notNull(plugin, "plugin cannot be null");
         this.plugin = plugin;
+        server = this;
     }
 
     public static Messaging getInstance() {

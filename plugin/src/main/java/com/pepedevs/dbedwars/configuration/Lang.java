@@ -34,8 +34,8 @@ public enum Lang {
     COLOR_BLACK("general.color-black", "black"),
 
     /* Bedwars commands */
-    NO_ARENA_FOUND_W_NAME("", "<red>No arena found with this name!"),
-    NOT_IN_AN_ARENA("", "<red>You are not in a arena!")
+    NO_ARENA_FOUND_W_NAME("arena.no-arena-found", "<red>No arena found with this name!"),
+    NOT_IN_AN_ARENA("arena.not-in-arena", "<red>You are not in a arena!")
 
     /* Arena */
 
@@ -46,7 +46,6 @@ public enum Lang {
     private static final EnumMap<Lang, Message> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
 
     private static ConfigTranslator TRANSLATOR;
-    private static ConfigTranslator DEFAULT_TRANSLATOR;
 
     public static void init(MainConfiguration.LangSection cfg) {
         if (cfg.getModernSettings() != null) {
@@ -54,8 +53,6 @@ public enum Lang {
             TRANSLATOR = new MiniMessageTranslator(MiniMessageWrapper.getConfigInstance());
         } else
             TRANSLATOR = new LegacyTranslator(cfg.getLegacySettings().getTranslationChar());
-
-        DEFAULT_TRANSLATOR = new MiniMessageTranslator(MiniMessageWrapper.getFullInstance());
     }
 
     public static void load(File file) {
@@ -79,10 +76,6 @@ public enum Lang {
 
     public static ConfigTranslator getTranslator() {
         return TRANSLATOR;
-    }
-
-    public static ConfigTranslator getDefaultTranslator() {
-        return DEFAULT_TRANSLATOR;
     }
 
     private final String key;

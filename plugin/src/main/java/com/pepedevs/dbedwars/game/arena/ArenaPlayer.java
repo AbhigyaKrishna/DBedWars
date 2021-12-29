@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.corelib.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerFinalKillEvent;
@@ -10,7 +9,8 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
-import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
+import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
+import com.pepedevs.dbedwars.cache.InventoryBackup;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
@@ -19,7 +19,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
-import java.util.Optional;
 
 public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
@@ -38,6 +37,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     private com.pepedevs.dbedwars.api.game.ArenaPlayer lastHitTag;
     private Instant lastHitTime;
     private ShopView shopView;
+    private InventoryBackup lastBackup;
 
     public ArenaPlayer(Player player, Arena arena) {
         super(player);
@@ -146,18 +146,16 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     @Override
     public void kill(DeathCause reason) {
         // TODO: revamp this
+        PlayerKillEvent event;
         if (this.team.isBedBroken()) {
-            PlayerFinalKillEvent event =
-                    new PlayerFinalKillEvent(
+            event = new PlayerFinalKillEvent(
                             this,
                             this.getLastHitTagged(),
                             this.arena,
                             reason,
-                            StringUtils.translateAlternateColorCodes(
-                                    "&"
-                                            + this.getTeam().getColor().getChatSymbol()
-                                            + this.getPlayer().getName()
-                                            + " &7died. &bFINAL KILL"));
+                            AdventureMessage.from(this.getTeam().getColor().getMiniCode()
+                                    + this.getPlayer().getName()
+                                    + " <gray>died. <aqua>FINAL KILL"));
             event.call();
 
             if (event.isCancelled()) return;
@@ -165,10 +163,6 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
             event.getVictim().addDeath();
             if (event.getAttacker() != null) event.getAttacker().addFinalKills();
             event.getVictim().setSpectator(true);
-            //            this.previousInv =
-            // event.getVictim().getPlayer().getInventory().getContents();
-            //            this.previousArmor =
-            // event.getVictim().getPlayer().getInventory().getArmorContents();
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
                 event.getVictim()
@@ -179,7 +173,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                                         .getSpectatorLocation()
                                         .toBukkit(this.arena.getWorld()));
             event.getVictim().setFinalKilled(true);
-            event.getVictim().getArena().sendMessage(LegacyMessage.from(event.getKillMessage()));
+            event.getVictim().getArena().sendMessage(event.getKillMessage());
 
             if (event.getVictim().getTeam().getPlayers().stream()
                     .allMatch(com.pepedevs.dbedwars.api.game.ArenaPlayer::isFinalKilled)) {
@@ -194,17 +188,14 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                 }
             }
         } else {
-            PlayerKillEvent event =
-                    new PlayerKillEvent(
+            event = new PlayerKillEvent(
                             this,
                             this.getLastHitTagged(),
                             this.arena,
                             reason,
-                            StringUtils.translateAlternateColorCodes(
-                                    "&"
-                                            + this.getTeam().getColor().getChatSymbol()
-                                            + this.getPlayer().getName()
-                                            + " &7died."));
+                            AdventureMessage.from(this.getTeam().getColor().getMiniCode()
+                                    + this.getPlayer().getName()
+                                    + " <gray>died."));
             event.call();
 
             if (event.isCancelled()) return;
@@ -212,6 +203,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
             this.addDeath();
             if (event.getAttacker() != null) event.getAttacker().addKill();
             this.setSpectator(true);
+            this.lastBackup = InventoryBackup.createBackup(this.getPlayer());
             event.getVictim().getPlayer().getInventory().clear();
             this.getPlayer()
                     .teleport(
@@ -219,7 +211,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                                     .getSettings()
                                     .getSpectatorLocation()
                                     .toBukkit(this.arena.getWorld()));
-            this.arena.sendMessage(LegacyMessage.from(event.getKillMessage()));
+            this.arena.sendMessage(event.getKillMessage());
             this.setRespawning(true);
             DBedwars.getInstance()
                     .getThreadHandler()
@@ -255,6 +247,9 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     @Override
     public void spawn(Location location) {
         Utils.setSpawnInventory(this.getPlayer(), this.team);
+        if (this.lastBackup != null) {
+            this.lastBackup.applyPermanents(this.getPlayer());
+        }
         this.getPlayer().teleport(location);
         this.getPlayer().setHealth(20);
     }

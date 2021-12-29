@@ -4,6 +4,7 @@ import com.pepedevs.corelib.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +17,16 @@ public class BedDestroyEvent extends CustomEventCancellable {
     private final Block bed;
     private ArenaPlayer destroyer;
     private Team affectedTeam;
-    private String bedBrokenMessage;
-    private String bedBrokenTeamMessage;
+    private Message bedBrokenMessage;
+    private Message bedBrokenTeamMessage;
 
     public BedDestroyEvent(
             ArenaPlayer destroyer,
             Team affectedTeam,
             Block bed,
             Arena arena,
-            String msg,
-            String teamMsg) {
+            Message msg,
+            Message teamMsg) {
         this.arena = arena;
         this.bed = bed;
         this.destroyer = destroyer;
@@ -62,19 +63,19 @@ public class BedDestroyEvent extends CustomEventCancellable {
         this.affectedTeam = affectedTeam;
     }
 
-    public String getBedBrokenMessage() {
+    public Message getBedBrokenMessage() {
         return bedBrokenMessage;
     }
 
-    public void setBedBrokenMessage(String bedBrokenMessage) {
+    public void setBedBrokenMessage(Message bedBrokenMessage) {
         this.bedBrokenMessage = bedBrokenMessage;
     }
 
-    public String getBedBrokenTeamMessage() {
+    public Message getBedBrokenTeamMessage() {
         return bedBrokenTeamMessage;
     }
 
-    public void setBedBrokenTeamMessage(String bedBrokenTeamMessage) {
+    public void setBedBrokenTeamMessage(Message bedBrokenTeamMessage) {
         this.bedBrokenTeamMessage = bedBrokenTeamMessage;
     }
 

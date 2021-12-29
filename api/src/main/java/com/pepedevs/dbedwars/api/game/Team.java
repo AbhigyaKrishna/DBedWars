@@ -45,8 +45,6 @@ public interface Team extends AbstractMessaging {
 
     void init(Arena arena);
 
-    void registerTeam(Scoreboard scoreboard);
-
     Arena getArena();
 
     void addPlayer(ArenaPlayer player);

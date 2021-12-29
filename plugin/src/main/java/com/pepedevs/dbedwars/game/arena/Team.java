@@ -18,7 +18,6 @@ import com.pepedevs.dbedwars.api.util.LocationXYZYP;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableTeam;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -34,7 +33,6 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
     private Multimap<DropType, LocationXYZ> spawners;
 
     private Arena arena;
-    private org.bukkit.scoreboard.Team handle;
     private boolean bedBroken;
     private boolean eliminated;
     private Set<ArenaPlayer> players;
@@ -162,17 +160,6 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
                         this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
                         this.spawn.getY() + 50,
                         this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
-    }
-
-    @Override
-    public void registerTeam(Scoreboard scoreboard) {
-        this.handle = scoreboard.registerNewTeam(this.getName());
-        this.handle.setDisplayName(this.getColor().getChatColor() + "[" + this.getName() + "]");
-        this.handle.setAllowFriendlyFire(false);
-        this.handle.setPrefix(this.getColor().getChatColor() + "[" + this.getName() + "] ");
-        for (ArenaPlayer player : this.players) {
-            this.handle.addEntry(player.getPlayer().getName());
-        }
     }
 
     @Override
@@ -343,7 +330,6 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
         this.arena = null;
         this.players = null;
         this.islandArea = null;
-        this.handle.unregister();
         //        this.plugin.getNpcHandler().removeNPC(this.shopNpc.getEntityId());
         //        this.shopNpc = null;
         //        this.plugin.getNpcHandler().removeNPC(this.upgradesNpc.getEntityId());

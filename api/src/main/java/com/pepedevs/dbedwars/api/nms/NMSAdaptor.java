@@ -29,4 +29,7 @@ public interface NMSAdaptor {
     IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer);
 
     IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
+
+    void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data);
+
 }

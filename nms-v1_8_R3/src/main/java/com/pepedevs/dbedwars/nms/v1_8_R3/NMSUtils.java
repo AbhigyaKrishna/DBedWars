@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NMSUtils implements NMSAdaptor {
 
@@ -69,18 +71,9 @@ public class NMSUtils implements NMSAdaptor {
         playerChunkMap.addPlayer(entityPlayer);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void clearDefaultPathFinding(LivingEntity entity) {
-        EntityCreature creature = (EntityCreature) ((CraftEntity) entity).getHandle();
-        try {
-            FieldReflection.setValue(creature.goalSelector, "b", new UnsafeList());
-            FieldReflection.setValue(creature.goalSelector, "c", new UnsafeList());
-            FieldReflection.setValue(creature.targetSelector, "b", new UnsafeList());
-            FieldReflection.setValue(creature.targetSelector, "c", new UnsafeList());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        this.clearDefaultPathFinding(((CraftEntity) entity).getHandle());
     }
 
     @SuppressWarnings("rawtypes")
@@ -123,5 +116,31 @@ public class NMSUtils implements NMSAdaptor {
     @Override
     public IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam) {
         return new BedwarsBedBug(bedBug, spawningTeam);
+    }
+
+    @Override
+    public void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data) {
+        PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam();
+        List<String> names = new ArrayList<>();
+        for (ArenaPlayer player : team.getPlayers()) {
+            names.add(player.getName());
+        }
+        try {
+            FieldReflection.setValue(packet, "a", team.getName());
+            FieldReflection.setValue(packet, "b", displayName);
+            FieldReflection.setValue(packet, "c", prefix);
+            FieldReflection.setValue(packet, "d", suffix);
+            FieldReflection.setValue(packet, "e", "always");
+            FieldReflection.setValue(packet, "f", EnumChatFormat.valueOf(team.getColor().getChatColor().name()).b());
+            FieldReflection.setValue(packet, "g", names);
+            FieldReflection.setValue(packet, "h", mode);
+            FieldReflection.setValue(packet, "i", data);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        for (ArenaPlayer player : team.getArena().getPlayers()) {
+            ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
+        }
     }
 }
