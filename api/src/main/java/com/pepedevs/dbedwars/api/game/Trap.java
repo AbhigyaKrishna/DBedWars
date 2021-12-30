@@ -12,7 +12,7 @@ public interface Trap {
 
     String getId();
 
-    TrapEnum.TriggerType getTrigger();
+    TrapEnum.TriggerType getTriggerType();
 
     Map<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> getActions();
 }
