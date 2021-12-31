@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.game.arena;
 
 import com.pepedevs.corelib.utils.entity.UUIDPlayer;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerFinalKillEvent;
 import com.pepedevs.dbedwars.api.events.PlayerKillEvent;
@@ -246,12 +247,18 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
 
     @Override
     public void spawn(Location location) {
-        Utils.setSpawnInventory(this.getPlayer(), this.team);
-        if (this.lastBackup != null) {
-            this.lastBackup.applyPermanents(this.getPlayer());
-        }
-        this.getPlayer().teleport(location);
-        this.getPlayer().setHealth(20);
+        SchedulerUtils.runTask(new Runnable() {
+            @Override
+            public void run() {
+                ArenaPlayer.this.getPlayer().setGameMode(GameMode.SURVIVAL);
+                Utils.setSpawnInventory(ArenaPlayer.this.getPlayer(), ArenaPlayer.this.team);
+                if (ArenaPlayer.this.lastBackup != null) {
+                    ArenaPlayer.this.lastBackup.applyPermanents(ArenaPlayer.this.getPlayer());
+                }
+                ArenaPlayer.this.getPlayer().teleport(location);
+                ArenaPlayer.this.getPlayer().setHealth(20);
+            }
+        }, DBedwars.getInstance());
     }
 
     @Override

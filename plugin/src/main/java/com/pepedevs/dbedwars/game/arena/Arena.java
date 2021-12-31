@@ -390,16 +390,18 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
             team.spawnUpgradesNpc(team.getUpgradesNpc());
         }
 
-
+        Debugger.debug("Setting spawners");
         for (Map.Entry<DropType, LocationXYZ> entry : this.settings.getDrops().entries()) {
             new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, null).init();
         }
 
+        Debugger.debug("Setting lobby");
         for (ArenaPlayer player : this.players) {
             player.spawn(player.getTeam().getSpawn().toBukkit(this.world));
             ((ShopView) player.getShopView()).loadFromConfig(this.plugin.getConfigHandler().getShop());
             player.getPlayer().getEnderChest().clear();
         }
+        Debugger.debug("Arena started!");
 
         this.status = ArenaStatus.RUNNING;
         this.startTime = Instant.now();

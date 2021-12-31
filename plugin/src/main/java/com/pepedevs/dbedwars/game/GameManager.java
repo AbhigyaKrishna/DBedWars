@@ -6,7 +6,7 @@ import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableItemSpawner;
-import com.pepedevs.dbedwars.task.CountdownTask;
+import com.pepedevs.dbedwars.task.ArenaStartTask;
 
 import java.util.*;
 
@@ -55,7 +55,7 @@ public class GameManager implements com.pepedevs.dbedwars.api.handler.GameManage
         this.plugin
                 .getThreadHandler()
                 .submitAsync(
-                        new CountdownTask(
+                        new ArenaStartTask(
                                 arena,
                                 (short)
                                         this.plugin
