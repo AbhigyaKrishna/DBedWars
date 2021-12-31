@@ -24,6 +24,7 @@ import com.pepedevs.dbedwars.item.*;
 import com.pepedevs.dbedwars.messaging.Messaging;
 import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
+import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
@@ -60,6 +61,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUp() {
+        Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
 

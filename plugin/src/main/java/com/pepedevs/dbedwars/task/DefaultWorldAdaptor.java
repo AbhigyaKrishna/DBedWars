@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.corelib.utils.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
@@ -28,7 +27,7 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
         wc.environment(environment);
         wc.type(WorldType.FLAT);
         if (plugin.getServerVersion().isNewerEquals(Version.v1_13_R1)) {
-            wc.generator(plugin.getName());
+            wc.generator(this.plugin.getDescription().getName());
         } else {
             wc.generatorSettings("2;0;1");
         }
@@ -55,14 +54,14 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
         this.plugin.getNMSAdaptor().clearRegionFileCache(world);
         this.plugin.getNMSAdaptor().clearChunkCache(world);
         World finalWorld = world;
-        SchedulerUtils.runTaskLater(
-                () -> {
-                    for (Player player : finalWorld.getPlayers()) {
-                        plugin.getNMSAdaptor().refreshPlayerChunk(player);
-                    }
-                },
-                20L,
-                this.plugin);
+        this.plugin.getThreadHandler().runTaskLater(new Runnable() {
+            @Override
+            public void run() {
+                for (Player player : finalWorld.getPlayers()) {
+                    plugin.getNMSAdaptor().refreshPlayerChunk(player);
+                }
+            }
+        }, 20 * 50);
         return world;
     }
 
@@ -70,9 +69,7 @@ public class DefaultWorldAdaptor implements WorldAdaptor {
     public boolean saveWorld(String worldName, String fileName) {
         this.unloadWorld(worldName, true);
 
-        if (!PluginFileUtils.saveWorldRegions(worldName, fileName)) return false;
-
-        return true;
+        return PluginFileUtils.saveWorldRegions(worldName, fileName);
     }
 
     @Override

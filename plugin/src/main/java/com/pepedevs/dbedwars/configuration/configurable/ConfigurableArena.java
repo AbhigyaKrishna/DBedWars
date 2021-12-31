@@ -10,7 +10,6 @@ import com.pepedevs.corelib.utils.configuration.annotations.SaveableCollectionEn
 import com.pepedevs.corelib.utils.configuration.annotations.SaveableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.RegenerationType;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
@@ -73,10 +72,6 @@ public class ConfigurableArena implements Configurable {
     @SaveableEntry(key = "customName")
     @LoadableEntry(key = "customName")
     private String customName;
-
-    @SaveableEntry(key = "regeneration")
-    @LoadableEntry(key = "regeneration")
-    private String regenerationType;
 
     @SaveableCollectionEntry(subsection = "teams")
     @LoadableCollectionEntry(subsection = "teams")
@@ -167,16 +162,6 @@ public class ConfigurableArena implements Configurable {
         return this.lobbyPosMin != null ? LocationXYZ.valueOf(this.lobbyPosMin) : null;
     }
 
-    public RegenerationType getRegenerationType() {
-        try {
-            return regenerationType == null
-                    ? RegenerationType.MULTI_THREADED_SYNC
-                    : RegenerationType.valueOf(regenerationType);
-        } catch (Exception e) {
-            return RegenerationType.MULTI_THREADED_SYNC;
-        }
-    }
-
     public List<Team> getTeams() {
         return this.teams.stream().map(ConfigurableTeam::toTeam).collect(Collectors.toList());
     }
@@ -221,7 +206,6 @@ public class ConfigurableArena implements Configurable {
         this.minPlayers = this.arena.getSettings().getMinPlayers();
         this.playerInTeam = this.arena.getSettings().getTeamPlayers();
         this.customName = this.arena.getSettings().getCustomName();
-        this.regenerationType = this.arena.getSettings().getRegenerationType().name();
         this.teams =
                 this.arena.getSettings().getAvailableTeams() != null
                         ? this.arena.getSettings().getAvailableTeams().stream()

@@ -2,7 +2,6 @@ package com.pepedevs.dbedwars.api.game.settings;
 
 import com.google.common.collect.Multimap;
 import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.RegenerationType;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
@@ -31,10 +30,6 @@ public interface ArenaSettings {
     World.Environment getWorldEnv();
 
     void setWorldEnv(World.Environment worldEnv);
-
-    RegenerationType getRegenerationType();
-
-    void setRegenerationType(RegenerationType regenerationType);
 
     LocationXYZYP getLobby();
 

@@ -4,7 +4,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.RegenerationType;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
@@ -25,7 +24,6 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
     private String name;
     private String customName;
     private World.Environment worldEnv;
-    private RegenerationType regenerationType;
     private LocationXYZYP lobby;
     private LocationXYZYP spectatorLocation;
     private LocationXYZ lobbyPosMax;
@@ -56,7 +54,6 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
         this.arena = arena;
         this.teamPlayers = 1;
         this.worldEnv = World.Environment.NORMAL;
-        this.regenerationType = RegenerationType.MULTI_THREADED_SYNC;
         this.drops = ArrayListMultimap.create();
         this.availableTeams = new HashSet<>();
 
@@ -171,16 +168,6 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
     @Override
     public void setWorldEnv(World.Environment worldEnv) {
         this.worldEnv = worldEnv;
-    }
-
-    @Override
-    public RegenerationType getRegenerationType() {
-        return this.regenerationType;
-    }
-
-    @Override
-    public void setRegenerationType(RegenerationType regenerationType) {
-        this.regenerationType = regenerationType;
     }
 
     @Override
@@ -453,7 +440,6 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
         this.spectatorLocation = cfgArena.getSpectatorLocation();
         this.teamPlayers = cfgArena.getPlayerInTeam();
         this.minPlayers = cfgArena.getMinPlayers();
-        this.regenerationType = cfgArena.getRegenerationType();
         this.availableTeams = new HashSet<>(cfgArena.getTeams());
         this.drops = cfgArena.getSpawners();
     }

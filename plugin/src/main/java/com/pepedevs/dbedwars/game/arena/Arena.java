@@ -18,7 +18,6 @@ import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
-import com.pepedevs.dbedwars.api.task.Regeneration;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.KickReason;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
@@ -29,8 +28,9 @@ import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
 import com.pepedevs.dbedwars.listeners.GameListener;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
-import com.pepedevs.dbedwars.task.WorldRegenerator;
+import com.pepedevs.dbedwars.task.DefaultWorldAdaptor;
 import com.pepedevs.dbedwars.utils.DatabaseUtils;
+import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.apache.commons.lang.Validate;
@@ -57,7 +57,6 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     private ConfigurableArena cfgArena;
     private ArenaSettings settings;
     private World world;
-    private Regeneration regenerator;
     private ArenaStatus status;
     private boolean enabled;
     private Instant startTime;
@@ -76,8 +75,6 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
-        this.regenerator =
-                new WorldRegenerator(this.plugin, this.settings.getRegenerationType(), this);
         this.status = ArenaStatus.STOPPED;
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);
@@ -183,11 +180,31 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public World loadWorld() {
-        try {
-            return this.regenerator.regenerate().get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new IllegalStateException("World regen interrupted!");
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        if (Arena.this.plugin.getServer().getWorld(Arena.this.settings.getName()) == null) {
+            Debugger.debug("World is null");
+            if (this.plugin.getGeneratorHandler().getWorldAdaptor() instanceof DefaultWorldAdaptor) {
+                Debugger.debug("Default World generator");
+                SchedulerUtils.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        Debugger.debug("Loading world: " + Arena.this.settings.getName());
+                        Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(Arena.this.settings.getName(), Arena.this.settings.getWorldEnv());
+                        Debugger.debug("World loaded: " + Arena.this.settings.getName());
+                        future.complete(null);
+                    }
+                }, this.plugin);
+            } else {
+                this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(this.settings.getName(), this.settings.getWorldEnv());
+                future.complete(null);
+            }
+        } else {
+            future.complete(null);
         }
+        Debugger.debug("Waiting for world to load...");
+        future.join();
+        Debugger.debug("World loaded!");
+        return this.plugin.getGeneratorHandler().getWorldAdaptor().loadWorldFromSave(this.settings.getName());
     }
 
     @Override

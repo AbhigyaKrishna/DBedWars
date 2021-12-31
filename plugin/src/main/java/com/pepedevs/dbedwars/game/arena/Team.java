@@ -242,7 +242,7 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
                 .getTrapSection()
                 .isTrapQueueEnabled()) {
             for (Trap trap : new LinkedList<>(this.trapQueue)) {
-                if (trap.getTrigger() == trigger) {
+                if (trap.getTriggerType() == trigger) {
                     TrapTriggerEvent event = new TrapTriggerEvent(trap, target, this);
                     event.call();
 
@@ -255,7 +255,7 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
             }
         } else {
             for (Trap trap : new LinkedList<>(this.trapQueue)) {
-                if (trap.getTrigger() == trigger) {
+                if (trap.getTriggerType() == trigger) {
                     TrapTriggerEvent event = new TrapTriggerEvent(trap, target, this);
                     event.call();
 
