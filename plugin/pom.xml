@@ -130,11 +130,6 @@
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
 
-        <!-- PepeDevs -->
-        <repository>
-            <id>pepedevs</id>
-            <url>https://repo.pepedevs.com/nexus/repository/maven-public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -160,14 +155,6 @@
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <!--            <version>1.17.1-R0.1-SNAPSHOT</version>-->
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- CoreLib -->
-        <dependency>
-            <groupId>com.pepedevs</groupId>
-            <artifactId>corelib</artifactId>
-            <version>1.1.1</version>
             <scope>provided</scope>
         </dependency>
 
