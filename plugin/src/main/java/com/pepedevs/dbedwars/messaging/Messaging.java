@@ -41,7 +41,9 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
 
     public void sendToConsole(Message message) {
         Validate.notNull(message, "message cannot be null");
-        this.consoleMessagingMember.getAudienceMember().sendMessage(message.asComponent());
+        for (Component component : message.asComponent()) {
+            this.consoleMessagingMember.getAudienceMember().sendMessage(component);
+        }
     }
 
     @Override

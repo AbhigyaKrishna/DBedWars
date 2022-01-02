@@ -11,21 +11,39 @@ public class LegacyMessage extends Message{
         return new LegacyMessage(message, placeholders);
     }
 
+    public static LegacyMessage from(String[] message, PlaceholderEntry... placeholders) {
+        return new LegacyMessage(message, placeholders);
+    }
+
     protected LegacyMessage(String message, PlaceholderEntry... placeholders) {
         super(message, placeholders);
     }
 
-    @Override
-    public Component asComponent() {
-        String replaced = Messaging.get().setPlaceholders(this.message, this.placeholders.toArray(new PlaceholderEntry[0]));
-        return Messaging.get().translateAlternateColorCodes(replaced);
+    protected LegacyMessage(String[] message, PlaceholderEntry... placeholders) {
+        super(message, placeholders);
     }
 
     @Override
-    public Component asComponentWithPAPI(Player player) {
-        String replaced = Messaging.get().setPlaceholders(this.message, this.placeholders.toArray(new PlaceholderEntry[0]));
-        String replacedWithPAPI = Messaging.get().setPlaceholders(replaced, player);
-        return Messaging.get().translateAlternateColorCodes(replacedWithPAPI);
+    public Component[] asComponent() {
+        PlaceholderEntry[] entries = this.placeholders.toArray(new PlaceholderEntry[0]);
+        Component[] components = new Component[this.message.length];
+        for (int i = 0; i < this.message.length; i++) {
+            String replaced = Messaging.get().setPlaceholders(this.message[i], entries);
+            components[i] = Messaging.get().translateAlternateColorCodes(replaced);
+        }
+        return components;
+    }
+
+    @Override
+    public Component[] asComponentWithPAPI(Player player) {
+        PlaceholderEntry[] entries = this.placeholders.toArray(new PlaceholderEntry[0]);
+        Component[] components = new Component[this.message.length];
+        for (int i = 0; i < this.message.length; i++) {
+            String replaced = Messaging.get().setPlaceholders(this.message[i], entries);
+            String replacedWithPAPI = Messaging.get().setPlaceholders(replaced, player);
+            components[i] = Messaging.get().translateAlternateColorCodes(replacedWithPAPI);
+        }
+        return components;
     }
 
 }

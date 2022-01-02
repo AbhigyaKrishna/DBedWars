@@ -22,16 +22,25 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     @Override
     public void sendMessage(Message message, boolean papiParsed) {
         for (MessagingMember member : this.getMembers()) {
-            member.getAudienceMember().sendMessage(papiParsed && member.isPlayerMember() ?
-                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+            Component[] components = papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent();
+            for (Component component : components) {
+                member.getAudienceMember().sendMessage(component);
+            }
         }
     }
 
     @Override
     public void sendMessage(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
-            if (!except.test(member)) member.getAudienceMember().sendMessage(papiParsed && member.isPlayerMember() ?
-                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+            if (except.test(member))
+                continue;
+
+            Component[] components = papiParsed && member.isPlayerMember() ?
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent();
+            for (Component component : components) {
+                member.getAudienceMember().sendMessage(component);
+            }
         }
     }
 
@@ -76,7 +85,7 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
         List<BossBar> bossBars = new ArrayList<>();
         for (MessagingMember member : this.getMembers()) {
             BossBar bossBar = BossBar.bossBar(papiParsed && member.isPlayerMember() ?
-                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent(), progress, color, overlay, flags);
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : message.asComponent()[0], progress, color, overlay, flags);
             member.getAudienceMember().showBossBar(bossBar);
             bossBars.add(bossBar);
         }
@@ -89,7 +98,7 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
         for (MessagingMember member : this.getMembers()) {
             if (!except.test(member)) {
                 BossBar bossBar = BossBar.bossBar(papiParsed && member.isPlayerMember() ?
-                        message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent(), progress, color, overlay, flags);
+                        message.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : message.asComponent()[0], progress, color, overlay, flags);
                 member.getAudienceMember().showBossBar(bossBar);
                 bossBars.add(bossBar);
             }
@@ -115,7 +124,7 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     public void sendActionBar(Message message, boolean papiParsed) {
         for (MessagingMember member : this.getMembers()) {
             member.getAudienceMember().sendActionBar(papiParsed && member.isPlayerMember() ?
-                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : message.asComponent()[0]);
         }
     }
 
@@ -123,7 +132,7 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     public void sendActionBar(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
             if (!except.test(member)) member.getAudienceMember().sendActionBar(papiParsed && member.isPlayerMember() ?
-                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : message.asComponent());
+                    message.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : message.asComponent()[0]);
         }
     }
 
@@ -175,9 +184,9 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     public void sendTitle(Message title, Message subtitle, Title.Times times, boolean papiParsed) {
         for (MessagingMember member : this.getMembers()) {
             Title t = Title.title(papiParsed && member.isPlayerMember() ?
-                            title.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : title.asComponent(),
+                            title.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : title.asComponent()[0],
                     papiParsed && member.isPlayerMember() ?
-                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : subtitle.asComponent(),
+                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : subtitle.asComponent()[0],
                     times);
             member.getAudienceMember().showTitle(t);
         }
@@ -187,9 +196,9 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     public void sendTitle(Message title, Message subtitle, Title.Times times, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
             Title t = Title.title(papiParsed && member.isPlayerMember() ?
-                    title.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : title.asComponent(),
+                    title.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : title.asComponent()[0],
                     papiParsed && member.isPlayerMember() ?
-                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer()) : subtitle.asComponent(),
+                            subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : subtitle.asComponent()[0],
                     times);
             if (!except.test(member)) member.getAudienceMember().showTitle(t);
         }
