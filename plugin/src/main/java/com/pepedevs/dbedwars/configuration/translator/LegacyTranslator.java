@@ -51,4 +51,8 @@ public class LegacyTranslator implements ConfigTranslator{
     public Message asMessage(String text, PlaceholderEntry... entries) {
         return LegacyMessage.from(text, entries);
     }
+
+    public char getCHAR() {
+        return CHAR;
+    }
 }

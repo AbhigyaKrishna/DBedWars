@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.corelib.task.Workload;
 import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -43,36 +44,17 @@ public final class UpdateTask implements Runnable {
     public void run() {
         this.current = Instant.now();
         try {
-            this.plugin
-                    .getThreadHandler()
-                    .submitAsync(
-                            () -> {
-                                for (Arena a : this.plugin.getGameManager().getArenas().values()) {
-                                    if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
-                                        a.getSpawners().forEach(Spawner::tick);
-                                    }
-                                }
-                            });
-            /*List<PopupTowerBuilder> builders = plugin.getGameManager().getPopupTowerBuilders();
-            List<PopupTowerBuilder> buildersClone = new ArrayList<>(builders);
-            for (int i = 0; i < builders.size(); i++) {
-                Workload workload = buildersClone.get(i).getBlockQueue().poll();
-                if(workload == null){
-                    builders.remove(buildersClone.get(i));
-                    continue;
+            this.plugin.getThreadHandler().submitAsync(new Workload() {
+                @Override
+                public void compute() {
+                    for (Arena a : UpdateTask.this.plugin.getGameManager().getArenas().values()) {
+                        if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
+                            a.getSpawners().forEach(Spawner::tick);
+                        }
+                    }
                 }
-                plugin.getThreadHandler().submitSync(workload);
-                i++;
-                workload = buildersClone.get(i).getBlockQueue().poll();
-                if(workload == null){
-                    builders.remove(buildersClone.get(i));
-                    continue;
-                }
-                plugin.getThreadHandler().submitSync(workload);
-            }*/
-
-        } catch (Exception ignored) {
-        }
+            });
+        } catch (Exception ignored) {}
     }
 
     public int getTaskId() {

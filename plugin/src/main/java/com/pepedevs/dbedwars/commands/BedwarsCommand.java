@@ -4,7 +4,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Subcommand;
 import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.messaging.Messaging;
@@ -56,5 +55,10 @@ public class BedwarsCommand extends BaseCommand {
         }
 
         arena.end();
+    }
+
+    @Subcommand("test")
+    public void test(Player player, String type) {
+        Messaging.get().getMessagingMember(player).sendMessage(Lang.valueOf(type).asMessage());
     }
 }

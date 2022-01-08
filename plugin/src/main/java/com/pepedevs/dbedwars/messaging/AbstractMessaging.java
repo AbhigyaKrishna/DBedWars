@@ -31,6 +31,13 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
     }
 
     @Override
+    public void sendMessage(Message[] messages, boolean papiParsed) {
+        for (Message message : messages) {
+            this.sendMessage(message, papiParsed);
+        }
+    }
+
+    @Override
     public void sendMessage(Message message, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
             if (except.test(member))
@@ -41,6 +48,13 @@ public abstract class AbstractMessaging implements com.pepedevs.dbedwars.api.mes
             for (Component component : components) {
                 member.getAudienceMember().sendMessage(component);
             }
+        }
+    }
+
+    @Override
+    public void sendMessage(Message[] messages, boolean papiParsed, Predicate<MessagingMember> except) {
+        for (Message message : messages) {
+            this.sendMessage(message, papiParsed, except);
         }
     }
 

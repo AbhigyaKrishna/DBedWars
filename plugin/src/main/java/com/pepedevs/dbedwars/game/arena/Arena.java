@@ -15,12 +15,14 @@ import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
-import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.KickReason;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.game.TeamAssigner;
@@ -49,7 +51,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.api.game.Arena {
 
@@ -109,20 +110,10 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
         File file = new File(worldFolder);
         if (file.isDirectory() && WorldUtils.worldFolderCheck(file)) {
-            if (this.plugin
-                    .getGeneratorHandler()
-                    .getWorldAdaptor()
-                    .saveExist(this.settings.getName())) {
-                if (overwriteCache)
-                    return this.plugin
-                            .getGeneratorHandler()
-                            .getWorldAdaptor()
-                            .saveWorld(worldFolder, this.settings.getName());
+            if (this.plugin.getGeneratorHandler().getWorldAdaptor().saveExist(this.settings.getName())) {
+                if (overwriteCache) return this.plugin.getGeneratorHandler().getWorldAdaptor().saveWorld(worldFolder, this.settings.getName());
             } else {
-                return this.plugin
-                        .getGeneratorHandler()
-                        .getWorldAdaptor()
-                        .saveWorld(worldFolder, this.settings.getName());
+                return this.plugin.getGeneratorHandler().getWorldAdaptor().saveWorld(worldFolder, this.settings.getName());
             }
         } else {
             throw new IllegalStateException("World folder missing or was deleted before saving!");
@@ -133,10 +124,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public boolean saveData(boolean overwriteData) {
-        File file =
-                new File(
-                        PluginFiles.ARENA_DATA_SETTINGS,
-                        this.settings.getName() + ".yml");
+        File file = new File(PluginFiles.ARENA_DATA_SETTINGS, this.settings.getName() + ".yml");
         if (this.cfgArena == null) {
             this.cfgArena = new ConfigurableArena(this);
             this.plugin.getConfigHandler().getArenas().add(this.cfgArena);
@@ -175,7 +163,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
         ((com.pepedevs.dbedwars.game.arena.settings.ArenaSettings) this.settings)
                 .update(this.cfgArena);
-        this.settings.getAvailableTeams().forEach(Team::reloadData);
+        for (Team team : this.settings.getAvailableTeams()) {
+            this.reloadData();
+        }
     }
 
     @Override
@@ -232,12 +222,8 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.plugin.getThreadHandler().submitAsync(new Workload() {
             @Override
             public void compute() {
-                File file =
-                        new File(
-                                PluginFiles.ARENA_DATA_SETTINGS,
-                                Arena.this.settings.getName() + ".yml");
-                FileConfiguration configuration =
-                        YamlConfiguration.loadConfiguration(file);
+                File file = new File(PluginFiles.ARENA_DATA_SETTINGS,Arena.this.settings.getName() + ".yml");
+                FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
                 configuration.set("enabled", flag);
                 try {
                     configuration.save(file);
@@ -266,9 +252,11 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public List<ArenaPlayer> getSpectators() {
-        return this.getPlayers().stream()
-                .filter(ArenaPlayer::isSpectator)
-                .collect(Collectors.toList());
+        List<ArenaPlayer> players = new ArrayList<>();
+        for (ArenaPlayer player : this.getPlayers()) {
+            if (player.isSpectator()) players.add(player);
+        }
+        return players;
     }
 
     @Override
@@ -305,14 +293,13 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
             return Optional.empty();
         }
 
-        BoundingBox box =
-                new BoundingBox(
-                        location.getX() - range,
-                        location.getY() - range,
-                        location.getZ() - range,
-                        location.getX() + range,
-                        location.getY() + range,
-                        location.getZ() + range);
+        BoundingBox box = new BoundingBox(
+                    location.getX() - range,
+                    location.getY() - range,
+                    location.getZ() - range,
+                    location.getX() + range,
+                    location.getY() + range,
+                    location.getZ() + range);
         for (Spawner spawner : this.spawners) {
             if (spawner.getBoundingBox().intersects(box)) return Optional.of(spawner);
         }
@@ -326,15 +313,16 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public boolean isConfigured() {
+        boolean returnVal = true;
+        for (Team team : this.settings.getAvailableTeams()) {
+            returnVal = returnVal && team.isConfigured();
+        }
         return this.settings.getName() != null
                 && !this.settings.getAvailableTeams().isEmpty()
                 && this.settings.getLobby() != null
                 && !this.settings.getDrops().isEmpty()
-                && this.plugin
-                .getGeneratorHandler()
-                .getWorldAdaptor()
-                .saveExist(this.settings.getName())
-                && this.settings.getAvailableTeams().stream().allMatch(Team::isConfigured);
+                && this.plugin.getGeneratorHandler().getWorldAdaptor().saveExist(this.settings.getName())
+                && returnVal;
     }
 
     @Override
@@ -366,10 +354,10 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.arenaHandler.unregister();
 
         // TODO manage scoreboard
-        Arena.this.scoreboard = ScoreboardWrapper.from(new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
+        /*Arena.this.scoreboard = ScoreboardWrapper.from(new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
         for (ArenaPlayer player : Arena.this.players) {
             Arena.this.scoreboard.show(player.getPlayer());
-        }
+        }*/
 //                            Arena.this.teams.forEach(
 //                                    t ->
 //                                            t.registerTeam(
@@ -456,20 +444,15 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         byte b = 0;
         for (Map.Entry<ArenaPlayer, Integer> entry : leaderboard.entrySet()) {
             if (b == 4) break;
-
             b++;
-            builder.append("\n<green>")
-                    .append(b)
-                    .append(". ")
-                    .append(entry.getKey().getPlayer().getName())
-                    .append("   ")
-                    .append(entry.getValue())
-                    .append("pts");
+            builder.append("\n<green>").append(b).append(". ").append(entry.getKey().getPlayer().getName()).append("   ").append(entry.getValue()).append("pts");
         }
         builder.append("\n<gold>").append(StringUtils.repeat("⬛", 35));
+        /*String message = ""*/
+        String message = builder.toString();
         for (ArenaPlayer player : this.players) {
             if (player.getArena().getWorld().equals(player.getPlayer().getWorld())) {
-                player.sendMessage(AdventureMessage.from(builder.toString()));
+                player.sendMessage(AdventureMessage.from(message));
             }
         }
 
@@ -479,8 +462,8 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public void addPlayer(Player player) {
-        ArenaPlayer aplayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(player, this);
-        this.addPlayer(aplayer);
+        ArenaPlayer arenaPlayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(player, this);
+        this.addPlayer(arenaPlayer);
     }
 
     @Override
@@ -560,11 +543,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
             if (player.getTeam() != null) player.getTeam().removePlayer(player);
 
-            this.scheduleMessage(
-                    event.getArena(),
-                    event.getPlayer(),
-                    event.getArena().getPlayers().size(),
-                    false);
+            this.scheduleMessage(event.getArena(), event.getPlayer(), event.getArena().getPlayers().size(), false);
             this.players.remove(player);
 
             if (event.getArena().getPlayers().size() == 0)
@@ -589,7 +568,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public void kickAllPlayers() {
-        this.players.forEach(this::kickPlayer);
+        for (ArenaPlayer player : this.players) {
+            kickPlayer(player);
+        }
     }
 
     @Override
@@ -603,8 +584,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     public Block setBlock(LocationXYZ location, Material material) {
         Block block = this.world.getBlockAt(location.toBukkit(this.world));
         block.setType(material);
-        block.setMetadata(
-                "placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
+        block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
         return block;
     }
 
@@ -613,8 +593,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         if (!block.getWorld().getName().equals(this.world.getName())) return null;
 
         block.setType(material);
-        block.setMetadata(
-                "placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
+        block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.getSettings().getName()));
         return block;
     }
 
@@ -675,20 +654,18 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         Block bed = affected.getBedLocation().toBukkit(this.world).getBlock();
         if (!Utils.isBed(bed)) return;
 
-        // TODO: change message with placeholder and configuration
-        BedDestroyEvent event =
-                new BedDestroyEvent(
-                        player,
-                        affected,
-                        bed,
-                        this,
-                        AdventureMessage.from(affected.getColor().getMiniCode() + affected.getName()
-                                + "'s Bed <gray> was destroyed by "
-                                + player.getTeam().getColor().getMiniCode()
-                                + player.getPlayer().getName()),
-                        AdventureMessage.from("<gray>Your bed was destroyed by "
-                                + player.getTeam().getColor().getMiniCode()
-                                + player.getPlayer().getName()));
+        final PlaceholderEntry[] bedBrokenPlaceholders = new PlaceholderEntry[]{
+                PlaceholderEntry.of("{defend_team_color}", Utils.getConfigCode(affected.getColor())),
+                PlaceholderEntry.of("{attack_team_color", Utils.getConfigCode(player.getTeam().getColor())),
+                PlaceholderEntry.of("{defend_team_name}", affected.getName()),
+                PlaceholderEntry.of("{attack_team_name}", player.getTeam().getName()),
+                PlaceholderEntry.of("{attack_name}", player.getName())
+        };
+        Message bedBrokenOthers = Lang.BED_BROKEN_OTHERS.asMessage();
+        bedBrokenOthers.addPlaceholders(bedBrokenPlaceholders);
+        Message bedBrokenSelf = Lang.BED_BROKEN_SELF.asMessage();
+        bedBrokenSelf.addPlaceholders(bedBrokenPlaceholders);
+        BedDestroyEvent event = new BedDestroyEvent(player, affected, bed, this, bedBrokenOthers, bedBrokenSelf);
         event.call();
 
         if (event.isCancelled()) return;
@@ -697,15 +674,14 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         bed.breakNaturally();
         event.getAffectedTeam().setBedBroken(true);
         event.getDestroyer().addBedDestroy();
-        // TODO: change message
         // TODO: Add more effect
-        this.sendMessage(event.getBedBrokenMessage(), new Predicate<MessagingMember>() {
+        this.sendMessage(event.getBedBrokenMessages(), new Predicate<MessagingMember>() {
             @Override
             public boolean test(MessagingMember member) {
                 return ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam());
             }
         });
-        event.getAffectedTeam().sendMessage(event.getBedBrokenMessage());
+        event.getAffectedTeam().sendMessage(event.getBedBrokenMessages());
     }
 
     @Override
@@ -722,26 +698,21 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     }
 
     private void scheduleMessage(com.pepedevs.dbedwars.api.game.Arena arena, Player player, int size, boolean join) {
-        this.plugin
-                .getThreadHandler()
-                .getTaskHandler()
-                .runTaskLater(
-                        this.plugin.getThreadHandler().getTask().getID(),
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                arena.sendMessage(LegacyMessage.from("&5"
-                                        + player.getName()
-                                        + " &7"
-                                        + (join ? "joined" : "left")
-                                        + " the arena. &5("
-                                        + size
-                                        + "/"
-                                        + arena.getSettings().getMaxPlayer()
-                                        + ")"));
-                            }
-                        },
-                        1000);
+        this.plugin.getThreadHandler().getTaskHandler().runTaskLater(this.plugin.getThreadHandler().getTask().getID(), new Runnable() {
+
+           private final PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
+                    PlaceholderEntry.of("{player_name}", player.getName()),
+                    PlaceholderEntry.of("{current_players}", String.valueOf(size)),
+                    PlaceholderEntry.of("{max_players}", String.valueOf(arena.getSettings().getMaxPlayer()))
+            };
+
+            @Override
+            public void run() {
+                Message message = (join ? Lang.ARENA_JOIN_MESSAGE.asMessage() : Lang.ARENA_LEAVE_MESSAGE.asMessage());
+                message.addPlaceholders(joinLeavePlaceholders);
+                arena.sendMessage(message);
+            }
+        },1000);
     }
 
     private void clearCache() {

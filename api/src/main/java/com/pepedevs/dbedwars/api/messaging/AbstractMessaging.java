@@ -14,13 +14,25 @@ public interface AbstractMessaging {
         this.sendMessage(message, true);
     }
 
+    default void sendMessage(Message[] messages) {
+        this.sendMessage(messages, true);
+    }
+
     void sendMessage(Message message, boolean papiParsed);
+
+    void sendMessage(Message[] messages, boolean papiParsed);
 
     default void sendMessage(Message message, Predicate<MessagingMember> except) {
         this.sendMessage(message, true, except);
     }
 
+    default void sendMessage(Message[] messages, Predicate<MessagingMember> except) {
+        this.sendMessage(messages, true, except);
+    }
+
     void sendMessage(Message message, boolean papiParsed, Predicate<MessagingMember> except);
+
+    void sendMessage(Message[] messages, boolean papiParsed, Predicate<MessagingMember> except);
 
     BossBar sendBossBar(BossBar bossBar);
 

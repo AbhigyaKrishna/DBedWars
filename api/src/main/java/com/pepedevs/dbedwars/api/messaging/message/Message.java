@@ -8,65 +8,57 @@ import java.util.*;
 
 public abstract class Message {
 
-    protected int size;
-    protected String[] message;
+    protected List<String> message;
     protected List<PlaceholderEntry> placeholders;
 
     protected Message(String message, PlaceholderEntry... placeholders) {
-        this(new String[]{message}, placeholders);
+        this.message = Collections.synchronizedList(new ArrayList<>());
+        this.message.add(message);
+        this.placeholders = new ArrayList<>();
+        this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
-    protected Message(String[] message, PlaceholderEntry... placeholders) {
-        this.message = message;
-        this.size = message.length;
+    protected Message(Collection<String> message, PlaceholderEntry... placeholders) {
+        this.message = Collections.synchronizedList(new ArrayList<>(message));
         this.placeholders = new ArrayList<>();
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
     public String getMessage() {
-        String message = "";
-        for (int i = 0; i < this.message.length - 1; i++) {
-            message += this.message[i] + "\n";
+        StringBuilder messageBuilder = new StringBuilder();
+        for (int i = 0; i < this.message.size() - 1; i++) {
+            messageBuilder.append(this.message.get(i)).append("\n");
         }
-        message += this.message[this.message.length - 1];
-        return message;
+        messageBuilder.append(this.message.get(this.message.size() - 1));
+        return messageBuilder.toString();
     }
 
     public int size() {
-        return this.size;
+        return this.message.size();
     }
 
-    public String[] getRawMessage() {
+    public List<String> getRawMessage() {
         return this.message;
     }
 
     public void setMessage(String... message) {
-        this.message = message;
-        this.size = message.length;
+        List<String> newMessage = new ArrayList<>(message.length);
+        newMessage.addAll(Arrays.asList(message));
+        this.message = newMessage;
     }
 
     public Message addLine(String line) {
-        if (this.size == this.message.length) {
-            this.message = Arrays.copyOf(this.message, this.message.length + 8);
-        }
-
-        this.message[this.size] = line;
-        this.size++;
+        this.message.add(line);
         return this;
     }
 
     public Message removeLine(int index) {
-        if (index < 0 || index >= this.size)
-            throw new IndexOutOfBoundsException("Index " + index + " is out bound for the message!");
-
-        if (this.size == 1)
-            throw new IllegalStateException("Message should have at least one line!");
-
-        if (this.size - 1 - index >= 0)
-            System.arraycopy(this.message, index + 1, this.message, index, this.size - 1 - index);
-
-        this.size--;
+        this.message.remove(index);
         return this;
+    }
+
+    public List<String> getLines() {
+        return new ArrayList<>(this.message);
     }
 
     public void addPlaceholders(PlaceholderEntry... placeholders) {

@@ -64,14 +64,12 @@ public class Debugger {
         debug(String.valueOf(b), level);
     }
 
-    /* CUSTOM CLASSES HERE*/
-
     public static void debug(String s) {
         if (ENABLED) LOGGER.info(s);
     }
 
     public static void debug(String s, Level level) {
-        LOGGER.log(level, s);
+        if (ENABLED) LOGGER.log(level, s);
     }
 
     public static void setEnabled(boolean enabled) {

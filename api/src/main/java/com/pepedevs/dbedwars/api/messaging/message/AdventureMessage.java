@@ -5,6 +5,9 @@ import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AdventureMessage extends Message{
 
     public static AdventureMessage from(String message, PlaceholderEntry... placeholders) {
@@ -32,15 +35,15 @@ public class AdventureMessage extends Message{
     }
 
     protected AdventureMessage(String[] message, PlaceholderEntry... placeholders) {
-        super(message, placeholders);
+        super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
 
     @Override
     public Component[] asComponent() {
         PlaceholderEntry[] entries = this.placeholders.toArray(new PlaceholderEntry[0]);
-        Component[] components = new Component[this.message.length];
-        for (int i = 0; i < this.message.length; i++) {
-            String replaced = Messaging.get().setPlaceholders(this.message[i], entries);
+        Component[] components = new Component[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            String replaced = Messaging.get().setPlaceholders(this.message.get(i), entries);
             components[i] = Messaging.get().parseMini(replaced);
         }
         return components;
@@ -49,9 +52,9 @@ public class AdventureMessage extends Message{
     @Override
     public Component[] asComponentWithPAPI(Player player) {
         PlaceholderEntry[] entries = this.placeholders.toArray(new PlaceholderEntry[0]);
-        Component[] components = new Component[this.message.length];
-        for (int i = 0; i < this.message.length; i++) {
-            String replaced = Messaging.get().setPlaceholders(this.message[i], entries);
+        Component[] components = new Component[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            String replaced = Messaging.get().setPlaceholders(this.message.get(i), entries);
             String replacedWithPAPI = Messaging.get().setPlaceholders(replaced, player);
             components[i] = Messaging.get().parseMini(replacedWithPAPI);
         }

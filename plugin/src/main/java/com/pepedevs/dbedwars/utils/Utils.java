@@ -15,8 +15,14 @@ import com.pepedevs.corelib.utils.reflection.resolver.wrapper.MethodWrapper;
 import com.pepedevs.corelib.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
+import com.pepedevs.dbedwars.configuration.Lang;
+import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
+import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -170,6 +176,15 @@ public class Utils {
         fieldFireballDirX.set(handle, direction.getX() * 0.10D);
         fieldFireballDirY.set(handle, direction.getY() * 0.10D);
         fieldFireballDirZ.set(handle, direction.getZ() * 0.10D);
+    }
+
+    public static String getConfigCode(Color color) {
+        if (Lang.getTranslator() instanceof MiniMessageTranslator) {
+            return color.getMiniCode();
+        }else if (Lang.getTranslator() instanceof LegacyTranslator) {
+            return "" + ((LegacyTranslator) Lang.getTranslator()).getCHAR() + color.getChatColor().getChar();
+        }
+        return null;
     }
 
     static {

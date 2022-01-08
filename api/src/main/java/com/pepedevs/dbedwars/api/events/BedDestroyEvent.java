@@ -63,19 +63,19 @@ public class BedDestroyEvent extends CustomEventCancellable {
         this.affectedTeam = affectedTeam;
     }
 
-    public Message getBedBrokenMessage() {
+    public Message getBedBrokenMessages() {
         return bedBrokenMessage;
     }
 
-    public void setBedBrokenMessage(Message bedBrokenMessage) {
-        this.bedBrokenMessage = bedBrokenMessage;
+    public void setBedBrokenMessages(Message bedBrokenMessages) {
+        this.bedBrokenMessage = bedBrokenMessages;
     }
 
-    public Message getBedBrokenTeamMessage() {
+    public Message getBedBrokenTeamMessages() {
         return bedBrokenTeamMessage;
     }
 
-    public void setBedBrokenTeamMessage(Message bedBrokenTeamMessage) {
+    public void setBedBrokenTeamMessages(Message bedBrokenTeamMessage) {
         this.bedBrokenTeamMessage = bedBrokenTeamMessage;
     }
 

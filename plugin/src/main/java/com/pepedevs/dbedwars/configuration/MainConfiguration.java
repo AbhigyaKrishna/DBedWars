@@ -312,9 +312,6 @@ public class MainConfiguration implements Loadable {
 
             private final TransformationsSection transformations;
 
-            @LoadableEntry(key = "compulsory-closing-tags")
-            private boolean strict;
-
             @LoadableEntry(key = "discord-type-formatting")
             private boolean discordFlavour;
 
@@ -335,10 +332,6 @@ public class MainConfiguration implements Loadable {
 
             public TransformationsSection getTransformations() {
                 return transformations;
-            }
-
-            public boolean isStrict() {
-                return strict;
             }
 
             public boolean isDiscordFlavour() {
@@ -371,14 +364,8 @@ public class MainConfiguration implements Loadable {
                 @LoadableEntry(key = "keybind")
                 private boolean keybind;
 
-                @LoadableEntry(key = "pre")
-                private boolean pre;
-
                 @LoadableEntry(key = "rainbow")
                 private boolean rainbow;
-
-                @LoadableEntry(key = "reset")
-                private boolean reset;
 
                 @LoadableEntry(key = "translatable")
                 private boolean translatable;
@@ -430,16 +417,8 @@ public class MainConfiguration implements Loadable {
                     return keybind;
                 }
 
-                public boolean isPre() {
-                    return pre;
-                }
-
                 public boolean isRainbow() {
                     return rainbow;
-                }
-
-                public boolean isReset() {
-                    return reset;
                 }
 
                 public boolean isTranslatable() {

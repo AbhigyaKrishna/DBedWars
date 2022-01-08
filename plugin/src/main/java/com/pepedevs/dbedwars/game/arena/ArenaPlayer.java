@@ -12,6 +12,7 @@ import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.cache.InventoryBackup;
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
@@ -149,16 +150,9 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
         // TODO: revamp this
         PlayerKillEvent event;
         if (this.team.isBedBroken()) {
-            event = new PlayerFinalKillEvent(
-                            this,
-                            this.getLastHitTagged(),
-                            this.arena,
-                            reason,
-                            AdventureMessage.from(this.getTeam().getColor().getMiniCode()
-                                    + this.getPlayer().getName()
-                                    + " <gray>died. <aqua>FINAL KILL"));
+            event = new PlayerFinalKillEvent(this, this.getLastHitTagged(), this.arena, reason, Lang.FINAL_KILL_MESSAGE.asMessage());
+            //AdventureMessage.from(this.getTeam().getColor().getMiniCode() + this.getPlayer().getName() + " <gray>died. <aqua>FINAL KILL")
             event.call();
-
             if (event.isCancelled()) return;
 
             event.getVictim().addDeath();
@@ -166,37 +160,24 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
             event.getVictim().setSpectator(true);
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
-                event.getVictim()
-                        .getPlayer()
-                        .teleport(
-                                this.arena
-                                        .getSettings()
-                                        .getSpectatorLocation()
-                                        .toBukkit(this.arena.getWorld()));
+                event.getVictim().getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
             event.getVictim().setFinalKilled(true);
             event.getVictim().getArena().sendMessage(event.getKillMessage());
 
-            if (event.getVictim().getTeam().getPlayers().stream()
-                    .allMatch(com.pepedevs.dbedwars.api.game.ArenaPlayer::isFinalKilled)) {
-                TeamEliminateEvent e =
-                        new TeamEliminateEvent(this.arena, event.getVictim().getTeam());
+            boolean bool = true;
+            for (com.pepedevs.dbedwars.api.game.ArenaPlayer arenaPlayer : event.getVictim().getTeam().getPlayers()) {
+                bool = bool && arenaPlayer.isFinalKilled();
+            }
+            if (bool) {
+                TeamEliminateEvent e = new TeamEliminateEvent(this.arena, event.getVictim().getTeam());
                 e.call();
-
                 e.getTeam().setEliminated(true);
-
                 if (this.arena.getRemainingTeams().size() <= 1) {
                     this.arena.end();
                 }
             }
         } else {
-            event = new PlayerKillEvent(
-                            this,
-                            this.getLastHitTagged(),
-                            this.arena,
-                            reason,
-                            AdventureMessage.from(this.getTeam().getColor().getMiniCode()
-                                    + this.getPlayer().getName()
-                                    + " <gray>died."));
+            event = new PlayerKillEvent(this, this.getLastHitTagged(), this.arena, reason, AdventureMessage.from(this.getTeam().getColor().getMiniCode() + this.getPlayer().getName() + " <gray>died."));
             event.call();
 
             if (event.isCancelled()) return;
@@ -206,17 +187,10 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
             this.setSpectator(true);
             this.lastBackup = InventoryBackup.createBackup(this.getPlayer());
             event.getVictim().getPlayer().getInventory().clear();
-            this.getPlayer()
-                    .teleport(
-                            this.arena
-                                    .getSettings()
-                                    .getSpectatorLocation()
-                                    .toBukkit(this.arena.getWorld()));
+            this.getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));
             this.arena.sendMessage(event.getKillMessage());
             this.setRespawning(true);
-            DBedwars.getInstance()
-                    .getThreadHandler()
-                    .submitAsync(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
+            DBedwars.getInstance().getThreadHandler().submitAsync(new RespawnTask(DBedwars.getInstance(), event.getVictim()));
         }
     }
 
@@ -265,8 +239,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     public com.pepedevs.dbedwars.api.game.ArenaPlayer getLastHitTagged() {
         if (this.lastHitTime == null) return null;
 
-        return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000
-                        > DBedwars.getInstance()
+        return (System.currentTimeMillis() - this.lastHitTime.toEpochMilli()) / 1000 > DBedwars.getInstance()
                                 .getConfigHandler()
                                 .getMainConfiguration()
                                 .getArenaSection()
@@ -308,8 +281,6 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     @Override
     public void queueRespawn() {
         this.respawning = true;
-        DBedwars.getInstance()
-                .getThreadHandler()
-                .submitAsync(new RespawnTask(DBedwars.getInstance(), this));
+        DBedwars.getInstance().getThreadHandler().submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
 }
