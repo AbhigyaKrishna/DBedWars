@@ -655,11 +655,11 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         if (!Utils.isBed(bed)) return;
 
         final PlaceholderEntry[] bedBrokenPlaceholders = new PlaceholderEntry[]{
-                PlaceholderEntry.of("{defend_team_color}", Utils.getConfigCode(affected.getColor())),
-                PlaceholderEntry.of("{attack_team_color", Utils.getConfigCode(player.getTeam().getColor())),
-                PlaceholderEntry.of("{defend_team_name}", affected.getName()),
-                PlaceholderEntry.of("{attack_team_name}", player.getTeam().getName()),
-                PlaceholderEntry.of("{attack_name}", player.getName())
+                PlaceholderEntry.symbol("defend_team_color", Utils.getConfigCode(affected.getColor())),
+                PlaceholderEntry.symbol("attack_team_color", Utils.getConfigCode(player.getTeam().getColor())),
+                PlaceholderEntry.symbol("defend_team_name", affected.getName()),
+                PlaceholderEntry.symbol("attack_team_name", player.getTeam().getName()),
+                PlaceholderEntry.symbol("attack_name", player.getName())
         };
         Message bedBrokenOthers = Lang.BED_BROKEN_OTHERS.asMessage();
         bedBrokenOthers.addPlaceholders(bedBrokenPlaceholders);
@@ -701,9 +701,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.plugin.getThreadHandler().getTaskHandler().runTaskLater(this.plugin.getThreadHandler().getTask().getID(), new Runnable() {
 
            private final PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
-                    PlaceholderEntry.of("{player_name}", player.getName()),
-                    PlaceholderEntry.of("{current_players}", String.valueOf(size)),
-                    PlaceholderEntry.of("{max_players}", String.valueOf(arena.getSettings().getMaxPlayer()))
+                    PlaceholderEntry.symbol("player_name", player.getName()),
+                    PlaceholderEntry.symbol("current_players", String.valueOf(size)),
+                    PlaceholderEntry.symbol("max_players", String.valueOf(arena.getSettings().getMaxPlayer()))
             };
 
             @Override

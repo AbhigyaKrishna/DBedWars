@@ -20,8 +20,8 @@ public class RespawnTask extends CancellableTask implements Listener {
     private final ArenaPlayer player;
     private final AtomicInteger time;
     Message message =
-            AdventureMessage.from("<red>Respawning in <gold>{time}s",
-                    PlaceholderEntry.of("{time}",
+            AdventureMessage.from("<red>Respawning in <gold><time>s",
+                    PlaceholderEntry.symbol("<time>",
                             new Supplier<String>() {
                                 @Override
                                 public String get() {

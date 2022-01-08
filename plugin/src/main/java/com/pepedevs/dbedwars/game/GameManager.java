@@ -52,17 +52,8 @@ public class GameManager implements com.pepedevs.dbedwars.api.handler.GameManage
         if (arena.getPlayers().size() < arena.getSettings().getMinPlayers()) return;
 
         arena.setStatus(ArenaStatus.STARTING);
-        this.plugin
-                .getThreadHandler()
-                .submitAsync(
-                        new ArenaStartTask(
-                                arena,
-                                (short)
-                                        this.plugin
-                                                .getConfigHandler()
-                                                .getMainConfiguration()
-                                                .getArenaSection()
-                                                .getStartTimer()));
+        this.plugin.getThreadHandler().submitAsync(
+                new ArenaStartTask(arena, (short) this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer()));
     }
 
     public Set<DropType> getDropTypes() {

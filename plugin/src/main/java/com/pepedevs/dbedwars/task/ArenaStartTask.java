@@ -17,15 +17,15 @@ public class ArenaStartTask implements Workload {
             new short[] {1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
 
     // TODO Message config
-    private final Message TITLE_MESSAGE = AdventureMessage.from("<yellow>{countdown}",
-            PlaceholderEntry.of("{countdown}", new Supplier<String>() {
+    private final Message TITLE_MESSAGE = AdventureMessage.from("<yellow><countdown>",
+            PlaceholderEntry.symbol("countdown", new Supplier<String>() {
                 @Override
                 public String get() {
                     return String.valueOf(ArenaStartTask.this.countdown.get());
                 }
             }));
-    private final Message TRIGGER_MESSAGE = AdventureMessage.from("<grey>Match starting in <red>{countdown} <grey>seconds.",
-            PlaceholderEntry.of("{countdown}", new Supplier<String>() {
+    private final Message TRIGGER_MESSAGE = AdventureMessage.from("<grey>Match starting in <red><countdown> <grey>seconds.",
+            PlaceholderEntry.symbol("countdown", new Supplier<String>() {
                 @Override
                 public String get() {
                     return String.valueOf(ArenaStartTask.this.countdown.get());

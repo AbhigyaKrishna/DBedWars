@@ -37,6 +37,14 @@ public interface PlaceholderEntry {
         };
     }
 
+    static PlaceholderEntry symbol(String placeholder, String replacement) {
+        return of("<".concat(placeholder).concat(">"), replacement);
+    }
+
+    static PlaceholderEntry symbol(String placeholder, Supplier<String> replacementSupplier) {
+        return of("<".concat(placeholder).concat(">"), replacementSupplier);
+    }
+
     String getPlaceholder();
 
     Supplier<String> getReplacement();
