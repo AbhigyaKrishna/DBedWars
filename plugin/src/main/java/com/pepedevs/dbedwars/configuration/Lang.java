@@ -38,13 +38,13 @@ public enum Lang {
     NOT_IN_AN_ARENA("arena.not-in-arena", "<red>You are not in a arena!"),
 
     /* Arena */
-    BED_BROKEN_OTHERS("a", "{defend_team_color}{defend_team_name} 's Bed <gray>was destroyed by {attack_team_color}{attack_team_name}"),
-    BED_BROKEN_SELF("b", "<gray>Your bed was destroyed by {defend_team_color}{defend_team_name}"),
-    ARENA_JOIN_MESSAGE("c", "<green>{player_name} <yellow>has joined (<aqua>{current_players}</aqua>/<aqua>{max_players}</aqua>)!"),
-    ARENA_LEAVE_MESSAGE("d","<green>{player_name} <yellow>has quit!"),
+    BED_BROKEN_OTHERS("a", "<defend_team_color><defend_team_name> 's Bed <gray>was destroyed by <attack_team_color><attack_team_name>"),
+    BED_BROKEN_SELF("b", "<gray>Your bed was destroyed by <defend_team_color><defend_team_name>"),
+    ARENA_JOIN_MESSAGE("c", "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"),
+    ARENA_LEAVE_MESSAGE("d","<green><player_name> <yellow>has quit!"),
     ARENA_START_MESSAGE("e", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", "<white>                                 <bold>Bed Wars", "<yellow><bold>     Protect your bed and destroy the enemy beds.", "<yellow><bold>      Upgrade yourself and your team by collecting,<yellow><bold>    Iron, Gold, Emerald and Diamond from generators", "<yellow><bold>                  to access powerful upgrades.", "", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
-    FINAL_KILL_MESSAGE("f", "{victim_team_color}{player_name <gray>died. <aqua><bold>FINAL KILL!}"),
-    TEST_IDK("bruh", "You may also select one of the following: <yellow><bold><click:suggest_command:/report <player_name> flying>Flying</click> <click:suggest_command:/report <player_name> bhop>Bhop</click> <green>|</green> <click:suggest_command:/report <player_name> autoclicker>Autoclicker</click> <green>|</green> <click:suggest_command:/report <player_name> kill aura>Kill Aura</click> <green>|</green> <click:suggest_command:>Flying</click>")
+    FINAL_KILL_MESSAGE("f", "<victim_team_color><player_name> <gray>died. <aqua><bold>FINAL KILL!}"),
+    GAME_END_MESSAGE("g", ""),
 
     ;
 

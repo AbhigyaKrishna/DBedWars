@@ -46,18 +46,8 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
         this.plugin = plugin;
         this.color = color;
         this.spawners = ArrayListMultimap.create();
-        if (this.plugin
-                .getConfigHandler()
-                .getMainConfiguration()
-                .getTrapSection()
-                .isTrapQueueEnabled())
-            this.trapQueue =
-                    new ArrayList<>(
-                            this.plugin
-                                    .getConfigHandler()
-                                    .getMainConfiguration()
-                                    .getTrapSection()
-                                    .getTrapQueueLimit());
+        if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled())
+            this.trapQueue = new ArrayList<>(this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().getTrapQueueLimit());
         else this.trapQueue = new ArrayList<>();
     }
 

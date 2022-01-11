@@ -441,6 +441,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);
         StringBuilder builder = new StringBuilder("<gold>" + StringUtils.repeat("⬛", 35));
+        //TODO IMPLEMENT FROM LANG
         byte b = 0;
         for (Map.Entry<ArenaPlayer, Integer> entry : leaderboard.entrySet()) {
             if (b == 4) break;
