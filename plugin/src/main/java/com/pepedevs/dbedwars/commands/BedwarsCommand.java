@@ -28,22 +28,19 @@ public class BedwarsCommand extends BaseCommand {
         }
 
         Arena arena = this.plugin.getGameManager().getArena(arenaName);
-        this.plugin
-                .getThreadHandler()
-                .submitAsync(new Workload() {
+        this.plugin.getThreadHandler().submitAsync(new Workload() {
+            @Override
+            public void compute() {
+                if (arena.getWorld() == null)
+                    arena.load();
+                BedwarsCommand.this.plugin.getThreadHandler().submitSync(new Runnable() {
                     @Override
-                    public void compute() {
-                        if (arena.getWorld() == null) {
-                            arena.load();
-                        }
-                        BedwarsCommand.this.plugin.getThreadHandler().submitSync(new Runnable() {
-                            @Override
-                            public void run() {
+                    public void run() {
                                 arena.addPlayer(player);
                             }
-                        });
-                    }
                 });
+            }
+        });
     }
 
     @Subcommand("end")
