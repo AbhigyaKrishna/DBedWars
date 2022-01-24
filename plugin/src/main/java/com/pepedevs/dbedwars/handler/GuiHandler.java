@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.handler;
 
-import com.pepedevs.corelib.gui.inventory.ItemMenu;
-import com.pepedevs.corelib.utils.reflection.general.ConstructorReflection;
+import com.pepedevs.radium.gui.inventory.ItemMenu;
+import com.pepedevs.radium.utils.reflection.general.ConstructorReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.gui.IAnvilMenu;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;
 import org.bukkit.Location;

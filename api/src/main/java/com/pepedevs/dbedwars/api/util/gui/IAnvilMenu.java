@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util.gui;
 
-import com.pepedevs.corelib.gui.anvil.AnvilMenu;
-import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.radium.gui.anvil.AnvilMenu;
+import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

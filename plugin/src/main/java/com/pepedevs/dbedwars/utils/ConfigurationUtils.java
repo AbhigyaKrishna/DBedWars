@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.utils;
 
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.game.view.AttributeType;

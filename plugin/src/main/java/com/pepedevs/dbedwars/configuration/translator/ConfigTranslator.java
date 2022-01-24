@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.configuration.translator;
 
-import com.pepedevs.corelib.adventure.MiniMessageUtils;
+import com.pepedevs.radium.adventure.MiniMessageUtils;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import net.kyori.adventure.text.Component;

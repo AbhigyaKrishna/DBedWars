@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.nms.v1_8_R3;
 
-import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
+import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.nms.IBedBug;

@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.xseries.XBlock;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.xseries.XBlock;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
 import com.pepedevs.dbedwars.api.game.struture.Structure;

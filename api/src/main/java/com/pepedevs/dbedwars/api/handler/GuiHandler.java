@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.handler;
 
-import com.pepedevs.corelib.gui.inventory.ItemMenu;
+import com.pepedevs.radium.gui.inventory.ItemMenu;
 import com.pepedevs.dbedwars.api.util.gui.IAnvilMenu;
 import com.pepedevs.dbedwars.api.util.gui.IMenu;
 import org.jetbrains.annotations.Nullable;

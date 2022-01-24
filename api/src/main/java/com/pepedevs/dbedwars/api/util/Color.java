@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.itemstack.stainedglass.StainedGlassColor;
-import com.pepedevs.corelib.utils.itemstack.wool.WoolColor;
+import com.pepedevs.radium.utils.itemstack.stainedglass.StainedGlassColor;
+import com.pepedevs.radium.utils.itemstack.wool.WoolColor;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.apache.commons.codec.language.bm.Lang;

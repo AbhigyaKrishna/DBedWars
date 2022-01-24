@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.game.arena.view.upgrade;
 
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

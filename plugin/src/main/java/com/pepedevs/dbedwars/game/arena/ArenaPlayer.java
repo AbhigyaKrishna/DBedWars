@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.utils.entity.UUIDPlayer;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.utils.entity.UUIDPlayer;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerFinalKillEvent;
 import com.pepedevs.dbedwars.api.events.PlayerKillEvent;

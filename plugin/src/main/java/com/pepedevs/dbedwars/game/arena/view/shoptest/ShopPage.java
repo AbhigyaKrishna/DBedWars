@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.dbedwars.api.exceptions.OverrideException;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;

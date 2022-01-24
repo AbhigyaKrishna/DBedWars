@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.utils.version.Version;
+import com.pepedevs.radium.utils.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
 import com.pepedevs.dbedwars.configuration.PluginFiles;

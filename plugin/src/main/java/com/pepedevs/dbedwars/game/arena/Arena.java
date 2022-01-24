@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.math.collision.BoundingBox;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
-import com.pepedevs.corelib.utils.world.GameRuleDisableDaylightCycle;
-import com.pepedevs.corelib.utils.world.GameRuleType;
-import com.pepedevs.corelib.utils.world.WorldUtils;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
+import com.pepedevs.radium.utils.world.GameRuleType;
+import com.pepedevs.radium.utils.world.WorldUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;

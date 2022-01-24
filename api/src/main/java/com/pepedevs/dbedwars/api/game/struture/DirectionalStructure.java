@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game.struture;
 
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 

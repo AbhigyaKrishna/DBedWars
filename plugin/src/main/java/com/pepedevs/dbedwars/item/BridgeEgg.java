@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.events.EventUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.events.EventUtils;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;

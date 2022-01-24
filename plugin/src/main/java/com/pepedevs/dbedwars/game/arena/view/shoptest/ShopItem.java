@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.corelib.utils.version.Version;
-import com.pepedevs.corelib.utils.xseries.XItemStack;
+import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.radium.utils.xseries.XItemStack;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

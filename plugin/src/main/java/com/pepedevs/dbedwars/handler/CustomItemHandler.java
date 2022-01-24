@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.handler;
 
-import com.pepedevs.corelib.item.ActionItemHandler;
-import com.pepedevs.corelib.utils.PluginHandler;
+import com.pepedevs.radium.item.ActionItemHandler;
+import com.pepedevs.radium.utils.PluginHandler;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import org.bukkit.plugin.Plugin;
 

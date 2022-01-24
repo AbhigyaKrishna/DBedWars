@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.reflection.general.EnumReflection;
+import com.pepedevs.radium.utils.reflection.general.EnumReflection;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;

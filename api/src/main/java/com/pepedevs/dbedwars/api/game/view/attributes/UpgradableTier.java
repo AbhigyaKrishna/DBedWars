@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game.view.attributes;
 
-import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
+import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
 import com.pepedevs.dbedwars.api.game.view.GuiItem;
 
 public interface UpgradableTier {

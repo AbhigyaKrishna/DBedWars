@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.handler;
 
-import com.pepedevs.corelib.task.CancellableWorkload;
-import com.pepedevs.corelib.task.Task;
-import com.pepedevs.corelib.task.TaskQueueHandler;
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.task.CancellableWorkload;
+import com.pepedevs.radium.task.Task;
+import com.pepedevs.radium.task.TaskQueueHandler;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.task.UpdateTask;
 import com.pepedevs.dbedwars.utils.Debugger;

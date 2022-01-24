@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
 import com.google.common.primitives.Shorts;
-import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.radium.task.Workload;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;

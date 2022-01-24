@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.database;
 
 import com.google.gson.Gson;
-import com.pepedevs.corelib.database.Database;
-import com.pepedevs.corelib.database.sql.SQLDatabase;
-import com.pepedevs.corelib.utils.json.Json;
+import com.pepedevs.radium.database.Database;
+import com.pepedevs.radium.database.sql.SQLDatabase;
+import com.pepedevs.radium.utils.json.Json;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.cache.PlayerStats;

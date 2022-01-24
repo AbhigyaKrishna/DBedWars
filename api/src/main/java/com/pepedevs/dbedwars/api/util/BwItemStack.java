@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

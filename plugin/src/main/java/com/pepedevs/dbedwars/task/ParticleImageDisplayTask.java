@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.task.Workload;
 import org.bukkit.Location;
 
 import java.awt.*;

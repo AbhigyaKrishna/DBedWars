@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
-import com.pepedevs.corelib.utils.xseries.XBlock;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.utils.xseries.XBlock;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util.item;
 
-import com.pepedevs.corelib.item.ActionItemBase;
+import com.pepedevs.radium.item.ActionItemBase;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import net.kyori.adventure.text.Component;

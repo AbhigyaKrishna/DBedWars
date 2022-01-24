@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.listeners;
 
-import com.pepedevs.corelib.utils.PluginHandler;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.PluginHandler;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerBaseEnterEvent;
 import com.pepedevs.dbedwars.api.game.Arena;

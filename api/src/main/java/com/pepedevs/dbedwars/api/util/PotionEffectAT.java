@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.version.Version;
-import com.pepedevs.corelib.utils.xseries.XPotion;
+import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.radium.utils.xseries.XPotion;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -105,12 +105,12 @@ public class PotionEffectAT {
         if (DBedWarsAPI.getApi().getServerVersion().isOlderEquals(Version.v1_8_R3)) {
             PotionEffect effect =
                     new PotionEffect(
-                            this.potion.parsePotionEffectType(), this.duration, this.amplifier - 1);
+                            this.potion.getPotionEffectType(), this.duration, this.amplifier - 1);
             effect.apply(entity);
         } else {
             PotionEffect effect =
                     new PotionEffect(
-                            this.potion.parsePotionEffectType(),
+                            this.potion.getPotionEffectType(),
                             this.duration,
                             this.amplifier - 1,
                             true,

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.events;
 
-import com.pepedevs.corelib.events.CustomEvent;
+import com.pepedevs.radium.events.CustomEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;
 import org.bukkit.event.HandlerList;

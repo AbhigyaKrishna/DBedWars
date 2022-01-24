@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.holograms.object.Hologram;
+import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.task.CancellableTask;
 import org.bukkit.Location;

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;

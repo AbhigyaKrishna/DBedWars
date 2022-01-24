@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Subcommand;
-import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.radium.task.Workload;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.messaging.Messaging;

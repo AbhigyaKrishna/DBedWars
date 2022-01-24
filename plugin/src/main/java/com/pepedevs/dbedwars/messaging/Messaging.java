@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.messaging;
 
-import com.pepedevs.corelib.placeholders.PlaceholderUtil;
+import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
@@ -64,7 +64,7 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
 
     @Override
     public Component parseMini(String message) {
-        return MiniMessageWrapper.getFullInstance().parse(message);
+        return MiniMessageWrapper.getFullInstance().deserialize(message);
     }
 
     @Override

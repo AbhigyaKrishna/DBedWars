@@ -1,15 +1,15 @@
 package com.pepedevs.dbedwars.guis.setup;
 
-import com.pepedevs.corelib.gui.inventory.Item;
-import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.gui.inventory.custom.book.BookItemMenu;
-import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
-import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
-import com.pepedevs.corelib.gui.inventory.item.voidaction.VoidActionItem;
-import com.pepedevs.corelib.gui.inventory.size.ItemMenuSize;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.gui.inventory.Item;
+import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
+import com.pepedevs.radium.gui.inventory.custom.book.BookItemMenu;
+import com.pepedevs.radium.gui.inventory.item.action.ActionItem;
+import com.pepedevs.radium.gui.inventory.item.action.ItemAction;
+import com.pepedevs.radium.gui.inventory.item.action.ItemActionPriority;
+import com.pepedevs.radium.gui.inventory.item.voidaction.VoidActionItem;
+import com.pepedevs.radium.gui.inventory.size.ItemMenuSize;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;

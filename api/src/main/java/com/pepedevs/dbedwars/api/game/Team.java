@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.game;
 
 import com.google.common.collect.Multimap;
-import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.api.util.Color;

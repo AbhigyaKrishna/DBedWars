@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.game.arena;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.pepedevs.corelib.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerJoinTeamEvent;
 import com.pepedevs.dbedwars.api.events.PlayerLeaveTeamEvent;

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.listeners;
 
-import com.pepedevs.corelib.utils.PluginHandler;
+import com.pepedevs.radium.utils.PluginHandler;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import org.bukkit.entity.ArmorStand;

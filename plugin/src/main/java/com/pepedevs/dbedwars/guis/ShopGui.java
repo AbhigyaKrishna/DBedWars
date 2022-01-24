@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.guis;
 
-import com.pepedevs.corelib.gui.inventory.ItemMenu;
-import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.gui.inventory.size.ItemMenuSize;
+import com.pepedevs.radium.gui.inventory.ItemMenu;
+import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
+import com.pepedevs.radium.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopPage;

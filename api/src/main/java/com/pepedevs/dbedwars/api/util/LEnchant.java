@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.corelib.utils.xseries.XEnchantment;
+import com.pepedevs.radium.utils.xseries.XEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -65,7 +65,7 @@ public class LEnchant implements Cloneable {
             return false;
         }
 
-        item.addEnchantment(this.enchantment.parseEnchantment(), this.level);
+        item.addEnchantment(this.enchantment.getEnchant(), this.level);
         return true;
     }
 
@@ -74,7 +74,7 @@ public class LEnchant implements Cloneable {
             return false;
         }
 
-        item.addUnsafeEnchantment(this.enchantment.parseEnchantment(), this.level);
+        item.addUnsafeEnchantment(this.enchantment.getEnchant(), this.level);
         return true;
     }
 

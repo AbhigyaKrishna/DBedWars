@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration;
 
-import com.pepedevs.corelib.utils.configuration.Loadable;
-import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.radium.utils.configuration.Loadable;
+import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.exceptions.IllegalConfigException;
 import org.bukkit.configuration.ConfigurationSection;

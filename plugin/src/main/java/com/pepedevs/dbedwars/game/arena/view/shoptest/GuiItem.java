@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.corelib.gui.inventory.action.ItemClickAction;
-import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
+import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerPurchaseItemEvent;
 import com.pepedevs.dbedwars.api.exceptions.OverrideException;

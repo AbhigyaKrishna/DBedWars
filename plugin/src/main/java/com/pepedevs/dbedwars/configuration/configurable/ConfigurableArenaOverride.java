@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.utils.configuration.Loadable;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;

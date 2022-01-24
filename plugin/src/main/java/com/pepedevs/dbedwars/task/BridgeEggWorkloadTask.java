@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.xseries.XBlock;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.xseries.XBlock;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import org.bukkit.DyeColor;

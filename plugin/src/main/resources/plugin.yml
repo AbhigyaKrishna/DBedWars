@@ -2,7 +2,7 @@ name: DBedwars
 version: ${project.version}
 main: com.pepedevs.dbedwars.DBedwars
 softdepend:
-  - CoreLib
+  - radium
   - Multiverse-Core
   - SlimeWorldManager
   - PlaceholderAPI

@@ -1,14 +1,14 @@
 package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
-import com.pepedevs.corelib.database.DatabaseType;
-import com.pepedevs.corelib.holograms.HologramManager;
-import com.pepedevs.corelib.placeholders.PlaceholderUtil;
-import com.pepedevs.corelib.plugin.Plugin;
-import com.pepedevs.corelib.plugin.PluginAdapter;
-import com.pepedevs.corelib.plugin.PluginDependence;
-import com.pepedevs.corelib.utils.ServerPropertiesUtils;
-import com.pepedevs.corelib.utils.version.Version;
+import com.pepedevs.radium.database.DatabaseType;
+import com.pepedevs.radium.holograms.HologramManager;
+import com.pepedevs.radium.placeholders.PlaceholderUtil;
+import com.pepedevs.radium.plugin.Plugin;
+import com.pepedevs.radium.plugin.PluginAdapter;
+import com.pepedevs.radium.plugin.PluginDependence;
+import com.pepedevs.radium.utils.ServerPropertiesUtils;
+import com.pepedevs.radium.utils.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.commands.BedwarsCommand;

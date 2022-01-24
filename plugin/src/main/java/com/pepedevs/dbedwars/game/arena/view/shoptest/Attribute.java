@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.view.AttributeType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

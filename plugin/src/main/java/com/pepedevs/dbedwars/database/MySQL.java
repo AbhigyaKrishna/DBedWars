@@ -1,11 +1,11 @@
 package com.pepedevs.dbedwars.database;
 
-import com.pepedevs.corelib.database.Database;
-import com.pepedevs.corelib.database.sql.hikaricp.HikariCP;
-import com.pepedevs.corelib.database.sql.hikaricp.HikariClientBuilder;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.json.Json;
-import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
+import com.pepedevs.radium.database.Database;
+import com.pepedevs.radium.database.sql.hikaricp.HikariCP;
+import com.pepedevs.radium.database.sql.hikaricp.HikariClientBuilder;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.json.Json;
+import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.utils.JSONBuilder;

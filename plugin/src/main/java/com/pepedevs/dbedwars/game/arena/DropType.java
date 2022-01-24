@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.utils.StringUtils;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.util.BwItemStack;

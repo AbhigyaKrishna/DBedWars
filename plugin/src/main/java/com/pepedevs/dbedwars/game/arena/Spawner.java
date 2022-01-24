@@ -1,16 +1,16 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.corelib.holograms.hologramline.HeadHologramLine;
-import com.pepedevs.corelib.holograms.hologramline.TextHologramLine;
-import com.pepedevs.corelib.holograms.object.Hologram;
-import com.pepedevs.corelib.holograms.object.HologramLineType;
-import com.pepedevs.corelib.holograms.object.HologramPage;
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.math.collision.BoundingBox;
-import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.holograms.hologramline.HeadHologramLine;
+import com.pepedevs.radium.holograms.hologramline.TextHologramLine;
+import com.pepedevs.radium.holograms.object.Hologram;
+import com.pepedevs.radium.holograms.object.HologramLineType;
+import com.pepedevs.radium.holograms.object.HologramPage;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.SpawnerDropItemEvent;
 import com.pepedevs.dbedwars.api.events.SpawnerUpgradeEvent;

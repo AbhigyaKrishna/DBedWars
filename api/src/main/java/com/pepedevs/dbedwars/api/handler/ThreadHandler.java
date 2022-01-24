@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.handler;
 
-import com.pepedevs.corelib.task.Workload;
+import com.pepedevs.radium.task.Workload;
 
 import java.util.Collection;
 

@@ -1,14 +1,14 @@
 package com.pepedevs.dbedwars.configuration.configurablegui;
 
-import com.pepedevs.corelib.gui.inventory.item.action.ActionItem;
-import com.pepedevs.corelib.gui.inventory.item.action.ItemAction;
-import com.pepedevs.corelib.gui.inventory.item.action.ItemActionPriority;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.configuration.Loadable;
-import com.pepedevs.corelib.utils.configuration.annotations.LoadableCollectionEntry;
-import com.pepedevs.corelib.utils.configuration.annotations.LoadableEntry;
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
+import com.pepedevs.radium.gui.inventory.item.action.ActionItem;
+import com.pepedevs.radium.gui.inventory.item.action.ItemAction;
+import com.pepedevs.radium.gui.inventory.item.action.ItemActionPriority;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.configuration.Loadable;
+import com.pepedevs.radium.utils.configuration.annotations.LoadableCollectionEntry;
+import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.util.LEnchant;
 import com.pepedevs.dbedwars.configuration.configurablegui.action.ActionParser;
 import com.pepedevs.dbedwars.configuration.configurablegui.action.ActionType;

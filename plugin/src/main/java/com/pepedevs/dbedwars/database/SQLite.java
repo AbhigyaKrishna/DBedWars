@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.database;
 
-import com.pepedevs.corelib.database.Database;
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.json.Json;
-import com.pepedevs.corelib.utils.reflection.general.FieldReflection;
+import com.pepedevs.radium.database.Database;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.json.Json;
+import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.cache.DataCache;
 import com.pepedevs.dbedwars.utils.JSONBuilder;
@@ -19,12 +19,12 @@ import java.util.Map;
 
 public class SQLite extends DatabaseBridge {
 
-    private com.pepedevs.corelib.database.sql.sqlite.SQLite db;
+    private com.pepedevs.radium.database.sql.sqlite.SQLite db;
 
     public SQLite(DBedwars plugin) {
         super(plugin);
         this.db =
-                new com.pepedevs.corelib.database.sql.sqlite.SQLite(
+                new com.pepedevs.radium.database.sql.sqlite.SQLite(
                         new File(this.getPlugin().getDataFolder(), "database.db"), true);
     }
 

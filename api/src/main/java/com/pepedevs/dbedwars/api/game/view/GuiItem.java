@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.game.view;
 
-import com.pepedevs.corelib.gui.inventory.Item;
+import com.pepedevs.radium.gui.inventory.Item;
 import com.pepedevs.dbedwars.api.game.view.attributes.ClickCommand;
 import com.pepedevs.dbedwars.api.game.view.attributes.PageChange;
 import com.pepedevs.dbedwars.api.game.view.attributes.UpgradableTier;

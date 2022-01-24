@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.corelib.utils.StringUtils;
-import com.pepedevs.corelib.utils.itemstack.ItemMetaBuilder;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.LEnchant;

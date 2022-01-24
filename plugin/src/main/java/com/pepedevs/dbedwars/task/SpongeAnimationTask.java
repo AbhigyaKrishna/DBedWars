@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.math.LocationUtils;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.math.LocationUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import org.bukkit.Location;

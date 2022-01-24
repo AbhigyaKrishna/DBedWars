@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.api.util;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.particles.ParticleEffect;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.particles.ParticleEffect;
 
 import java.awt.Color;
 import java.util.concurrent.atomic.AtomicInteger;

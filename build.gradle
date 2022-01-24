@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+
+
+allprojects {
+    group 'DBedwars'
+    version '1.0'
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url 'https://repo.pepedevs.com/nexus/repository/maven-public/'
+        }
+        maven {
+            url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
+        }
+    }
+
+    dependencies {
+        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.6-TEST-SNAPSHOT'
+    }
+
+    build {
+        dependsOn shadowJar
+    }
+}
+
+shadowJar.shouldRunAfter build
+build.shouldRunAfter subprojects.build

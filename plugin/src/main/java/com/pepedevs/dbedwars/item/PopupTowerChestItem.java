@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.particles.ParticleBuilder;
-import com.pepedevs.corelib.particles.ParticleEffect;
-import com.pepedevs.corelib.utils.xseries.XMaterial;
-import com.pepedevs.corelib.utils.xseries.XSound;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.pepedevs.radium.utils.xseries.XSound;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.SoundVP;

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
-import com.pepedevs.corelib.scoreboard.Scoreboard;
+import com.pepedevs.radium.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import net.kyori.adventure.text.Component;

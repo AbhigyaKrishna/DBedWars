@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.events;
 
-import com.pepedevs.corelib.events.player.CustomPlayerEventCancellable;
+import com.pepedevs.radium.events.player.CustomPlayerEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

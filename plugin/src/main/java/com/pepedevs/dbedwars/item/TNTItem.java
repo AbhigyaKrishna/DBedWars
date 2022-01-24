@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.corelib.utils.math.VectorUtils;
+import com.pepedevs.radium.utils.math.VectorUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
