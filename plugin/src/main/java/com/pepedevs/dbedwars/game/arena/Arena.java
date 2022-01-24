@@ -25,6 +25,7 @@ import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
+import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
@@ -354,10 +355,11 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         this.arenaHandler.unregister();
 
         // TODO manage scoreboard
-        /*Arena.this.scoreboard = ScoreboardWrapper.from(new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0));
+        ConfigurableScoreboard scoreboard = new ArrayList<>(Arena.this.plugin.getConfigHandler().getScoreboards()).get(0);
+        Arena.this.scoreboard = ScoreboardWrapper.from(scoreboard.getTitle(), scoreboard.getContent());
         for (ArenaPlayer player : Arena.this.players) {
             Arena.this.scoreboard.show(player.getPlayer());
-        }*/
+        }
 //                            Arena.this.teams.forEach(
 //                                    t ->
 //                                            t.registerTeam(

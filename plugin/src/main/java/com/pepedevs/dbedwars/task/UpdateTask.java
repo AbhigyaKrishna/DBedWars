@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task;
 
-import com.pepedevs.radium.task.Workload;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.corelib.utils.Tickable;
+import com.pepedevs.corelib.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
@@ -9,9 +9,14 @@ import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public final class UpdateTask implements Runnable {
 
+    private static final List<Tickable> TICKABLES = Collections.synchronizedList(new LinkedList<>());
     private final DBedwars plugin;
 
     private BukkitTask task;
@@ -44,17 +49,27 @@ public final class UpdateTask implements Runnable {
     public void run() {
         this.current = Instant.now();
         try {
-            this.plugin.getThreadHandler().submitAsync(new Workload() {
-                @Override
-                public void compute() {
-                    for (Arena a : UpdateTask.this.plugin.getGameManager().getArenas().values()) {
-                        if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
-                            a.getSpawners().forEach(Spawner::tick);
-                        }
-                    }
+            // TODO have to remove
+            this.plugin
+                    .getThreadHandler()
+                    .submitAsync(
+                            () -> {
+                                for (Arena a : this.plugin.getGameManager().getArenas().values()) {
+                                    if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
+                                        a.getSpawners().forEach(Spawner::tick);
+                                    }
+                                }
+                            });
+            for (Tickable tickable : TICKABLES) {
+                try {
+                    tickable.tick();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (Exception ignored) {}
+            }
+
+        } catch (Exception ignored) {
+        }
     }
 
     public int getTaskId() {
@@ -72,4 +87,21 @@ public final class UpdateTask implements Runnable {
     public Instant getCurrent() {
         return current;
     }
+
+    public static void addTickable(Tickable tickable) {
+        TICKABLES.add(tickable);
+    }
+
+    public static void removeTickable(Tickable tickable) {
+        TICKABLES.remove(tickable);
+    }
+
+    public static void removeTickableIf(Predicate<Tickable> predicate) {
+        TICKABLES.removeIf(predicate);
+    }
+
+    public static List<Tickable> getTickables() {
+        return TICKABLES;
+    }
+
 }
