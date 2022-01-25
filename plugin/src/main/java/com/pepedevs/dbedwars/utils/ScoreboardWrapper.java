@@ -1,10 +1,10 @@
 package com.pepedevs.dbedwars.utils;
 
-import com.pepedevs.corelib.placeholders.PlaceholderUtil;
-import com.pepedevs.corelib.scoreboard.Scoreboard;
-import com.pepedevs.corelib.task.Workload;
-import com.pepedevs.corelib.utils.Initializable;
-import com.pepedevs.corelib.utils.Tickable;
+import com.pepedevs.radium.placeholders.PlaceholderUtil;
+import com.pepedevs.radium.scoreboard.Scoreboard;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.configuration.Lang;

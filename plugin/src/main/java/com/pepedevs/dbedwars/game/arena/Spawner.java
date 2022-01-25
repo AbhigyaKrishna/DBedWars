@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.game.arena;
 
+import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.radium.holograms.hologramline.HeadHologramLine;
 import com.pepedevs.radium.holograms.hologramline.TextHologramLine;
 import com.pepedevs.radium.holograms.object.Hologram;
@@ -97,7 +98,7 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
             loc.subtract(0, HologramLineType.HEAD.getOffsetY(), 0);
             for (String line : this.drop.getHologramText()) {
                 page.addLine(
-                        new TextHologramLine(loc, StringUtils.translateAlternateColorCodes(line)));
+                        new TextHologramLine(loc, Lang.getTranslator().translate(line)));
                 loc.subtract(0, HologramLineType.TEXT.getOffsetY(), 0);
             }
 

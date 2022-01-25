@@ -30,23 +30,11 @@ dependencies {
     implementation 'de.tr7zw:item-nbt-api:2.8.0'
     implementation 'redis.clients:jedis:3.7.1'
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
+    implementation 'com.github.retrooper.packetevents:spigot:1.8-pre-27'
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
 
-}
-
-shadowJar {
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.pepedevs.dbedwars.libraries.nbtapi'
-    relocate 'de.tr7zw.annotations', 'com.pepedevs.dbedwars.libraries.nbtapi.annotations'
-    relocate 'de.tr7zw.nbtinjector', 'com.pepedevs.dbedwars.libraries.nbtapi.nbtinjector'
-
-    relocate 'redis.clients.jedis', 'com.pepedevs.dbedwars.libraries.jedis'
-    relocate 'redis.clients.util', 'com.pepedevs.dbedwars.libraries.jedis.util'
-
-    relocate 'org.reflections', 'com.pepedevs.dbedwars.libraries.reflections'
-    relocate 'co.aikar.commands', 'com.pepedevs.dbedwars.libraries.acf'
-    relocate 'co.aikar.locales', 'com.pepedevs.dbedwars.libraries.locales'
 }
 
 def targetJavaVersion = 8

@@ -8,6 +8,8 @@ import org.apache.commons.codec.language.bm.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 
+import java.util.Optional;
+
 public enum Color {
 
     WHITE((byte) 0,
@@ -174,7 +176,7 @@ public enum Color {
     private final byte data;
     private final org.bukkit.Color color;
     private final ChatColor chatColor;
-    private final TextColor colorComponent;
+    private final NamedTextColor colorComponent;
     private final String miniCode;
     private final String prefix;
     private final String name;
@@ -182,10 +184,12 @@ public enum Color {
     private final StainedGlassColor glassColor;
     private final DyeColor dyeColor;
 
+    private static Color[] values;
+
     Color(byte data,
           org.bukkit.Color color,
           ChatColor chatColor,
-          TextColor colorComponent,
+          NamedTextColor colorComponent,
           String miniCode,
           String prefix,
           String name,
@@ -216,7 +220,7 @@ public enum Color {
         return chatColor;
     }
 
-    public TextColor getColorComponent() {
+    public NamedTextColor getColorComponent() {
         return colorComponent;
     }
 
@@ -242,5 +246,52 @@ public enum Color {
 
     public DyeColor getDyeColor() {
         return dyeColor;
+    }
+
+    public static Optional<Color> from(org.bukkit.Color color) {
+        for (Color value : getValues()) {
+            if (value.color.equals(color)) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Color> from(ChatColor color) {
+        for (Color value : getValues()) {
+            if (value.chatColor == color) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Color> from(NamedTextColor color) {
+        for (Color value : getValues()) {
+            if (value.colorComponent.equals(color)) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Color> from(String miniCode) {
+        for (Color value : getValues()) {
+            if (value.miniCode.equalsIgnoreCase(miniCode)) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Color> from(DyeColor dyeColor) {
+        for (Color value : getValues()) {
+            if (value.dyeColor == dyeColor) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Color> from(byte data) {
+        for (Color value : getValues()) {
+            if (value.data == data) return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
+    public static Color[] getValues() {
+        if (values == null) values = values();
+        return values();
     }
 }

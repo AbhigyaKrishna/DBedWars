@@ -78,7 +78,7 @@ public class ConfigurableTeam implements Configurable {
     }
 
     public Color getColor() {
-        return Color.valueOf(this.color);
+        return Color.from(this.color).get();
     }
 
     public LocationXYZ getBedLocation() {

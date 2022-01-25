@@ -155,7 +155,7 @@ public class FireworkEffectAT {
     }
 
     private static String getString(Color color) {
-        for (com.pepedevs.dbedwars.api.util.Color value : com.pepedevs.dbedwars.api.util.Color.values()) {
+        for (com.pepedevs.dbedwars.api.util.Color value : com.pepedevs.dbedwars.api.util.Color.getValues()) {
             if (value.getColor().equals(color)) return value.name();
         }
         return "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());

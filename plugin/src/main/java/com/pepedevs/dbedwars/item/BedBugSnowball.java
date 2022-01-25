@@ -1,8 +1,5 @@
 package com.pepedevs.dbedwars.item;
 
-import com.pepedevs.radium.events.EventUtils;
-import com.pepedevs.radium.item.ActionItem;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
@@ -13,6 +10,9 @@ import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.task.BedBugDisplayNameUpdateTask;
+import com.pepedevs.radium.events.EventUtils;
+import com.pepedevs.radium.item.ActionItem;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -60,24 +60,17 @@ public class BedBugSnowball extends PluginActionItem {
 
     public void onLand(ProjectileHitEvent event) {
         Entity bedBugBall = event.getEntity();
-        Silverfish bedBug =
-                (Silverfish)
-                        bedBugBall
-                                .getWorld()
-                                .spawnEntity(
-                                        bedBugBall.getLocation().clone().add(0, 1, 0),
-                                        EntityType.SILVERFISH);
-        Team throwingTeam =
-                plugin.getGameManager()
-                        .getArena(bedBugBall.getWorld().getName())
-                        .getTeam(
-                                Color.valueOf(bedBugBall.getMetadata("thrower").get(0).asString()));
+        Silverfish bedBug = (Silverfish) bedBugBall.getWorld().spawnEntity(
+                bedBugBall.getLocation().clone().add(0, 1, 0),
+                EntityType.SILVERFISH);
+        Team throwingTeam = plugin.getGameManager().getArena(bedBugBall.getWorld().getName())
+                .getTeam(Color.valueOf(bedBugBall.getMetadata("thrower").get(0).asString()));
         plugin.getNMSAdaptor()
                 .getBedwarsBedBug(bedBug, throwingTeam)
                 .clearDefaultPathfinding()
                 .addCustomDefaults()
                 .initTargets(1);
-        plugin.getThreadHandler()
-                .submitAsync(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
+        plugin.getThreadHandler().submitAsync(new BedBugDisplayNameUpdateTask(bedBug, throwingTeam, cfgBedBug));
     }
+
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
@@ -8,7 +8,7 @@ plugins {
 allprojects {
     group 'DBedwars'
     version '1.0'
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'com.github.johnrengelman.shadow'
 
 
@@ -24,12 +24,34 @@ allprojects {
     }
 
     dependencies {
-        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.7-SNAPSHOT'
+        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.7-TEST-SNAPSHOT'
     }
 
     build {
         dependsOn shadowJar
     }
+
+    shadowJar {
+        relocate 'de.tr7zw.changeme.nbtapi', 'com.pepedevs.dbedwars.libraries.nbtapi'
+        relocate 'de.tr7zw.annotations', 'com.pepedevs.dbedwars.libraries.nbtapi.annotations'
+        relocate 'de.tr7zw.nbtinjector', 'com.pepedevs.dbedwars.libraries.nbtapi.nbtinjector'
+
+        relocate 'redis.clients.jedis', 'com.pepedevs.dbedwars.libraries.jedis'
+        relocate 'redis.clients.util', 'com.pepedevs.dbedwars.libraries.jedis.util'
+
+        relocate 'org.reflections', 'com.pepedevs.dbedwars.libraries.reflections'
+        relocate 'co.aikar.commands', 'com.pepedevs.dbedwars.libraries.acf'
+        relocate 'co.aikar.locales', 'com.pepedevs.dbedwars.libraries.locales'
+        /*relocate 'com.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.api'
+        relocate 'io.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.spigot'*/
+    }
+
+    shadowJar.shouldRunAfter build
+
+}
+
+build {
+    dependsOn shadowJar
 }
 
 shadowJar.shouldRunAfter build

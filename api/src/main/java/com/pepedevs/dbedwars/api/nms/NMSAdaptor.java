@@ -10,6 +10,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 
+import java.util.Collection;
+
 public interface NMSAdaptor {
 
     void clearRegionFileCache(World world);
@@ -31,5 +33,7 @@ public interface NMSAdaptor {
     IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
 
     void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data);
+
+    void sendDeathAnimation(Player player, Collection<Player> viewers);
 
 }

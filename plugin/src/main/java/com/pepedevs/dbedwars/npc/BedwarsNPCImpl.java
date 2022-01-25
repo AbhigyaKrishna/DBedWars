@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class BedwarsNPCImpl implements BedwarsNPC {
 
-    private final NpcBase npc;
+    /*private final NpcBase npc;
     private final DBedwars plugin;
 
     public BedwarsNPCImpl(DBedwars plugin, String id, EntityType entityType, Location location) {
@@ -48,6 +48,6 @@ public class BedwarsNPCImpl implements BedwarsNPC {
 
     private void runLater(Runnable runnable, int ticks) {
         this.plugin.getThreadHandler().runTaskLater(runnable, ticks * 50L);
-    }
+    }*/
 
 }

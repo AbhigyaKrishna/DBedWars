@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.api.util.item;
 
+import com.pepedevs.dbedwars.api.feature.BedWarsFeature;
 import com.pepedevs.radium.item.ActionItemBase;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
@@ -36,6 +37,6 @@ public abstract class PluginActionItem extends ActionItemBase {
     }
 
     @Override
-    public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+
 }

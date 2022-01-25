@@ -21,6 +21,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
@@ -158,6 +160,12 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
             event.getVictim().addDeath();
             if (event.getAttacker() != null) event.getAttacker().addFinalKills();
             event.getVictim().setSpectator(true);
+            List<Player> players = new ArrayList<>();
+            for (com.pepedevs.dbedwars.api.game.ArenaPlayer arenaPlayer : this.arena.getPlayers()) {
+                if (arenaPlayer.getPlayer().getUniqueId().equals(event.getVictim().getUUIDPlayer().getUniqueId())) continue;
+                players.add(arenaPlayer.getPlayer());
+            }
+            DBedwars.getInstance().getNMSAdaptor().sendDeathAnimation(event.getVictim().getPlayer(), players);
             event.getVictim().getPlayer().getInventory().clear();
             if (reason == DeathCause.VOID)
                 event.getVictim().getPlayer().teleport(this.arena.getSettings().getSpectatorLocation().toBukkit(this.arena.getWorld()));

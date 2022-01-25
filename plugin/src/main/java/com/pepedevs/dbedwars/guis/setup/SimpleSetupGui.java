@@ -355,7 +355,7 @@ public class SimpleSetupGui extends IMenu<ItemMenu> {
 
     private void renderPageTwo(Arena arena) {
         byte[] index = new byte[] {10, 12, 14, 16, 19, 21, 23, 25, 28, 30, 32, 34, 37, 39, 41, 43};
-        Color[] colors = Color.values();
+        Color[] colors = Color.getValues();
         Set<Team> teams = arena.getSettings().getAvailableTeams();
         List<Color> enabledColor = teams.stream().map(Team::getColor).collect(Collectors.toList());
 
