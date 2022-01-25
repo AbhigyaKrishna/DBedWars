@@ -38,4 +38,13 @@ public class ArenaStartEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "ArenaStartEvent{" +
+                "arena=" + arena +
+                ", players=" + players +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

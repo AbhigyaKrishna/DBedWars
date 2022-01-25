@@ -35,4 +35,12 @@ public class TeamEliminateEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "TeamEliminateEvent{" +
+                "arena=" + arena +
+                ", team=" + team +
+                '}';
+    }
 }

@@ -52,4 +52,15 @@ public class PlayerPurchaseItemEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerPurchaseItemEvent{" +
+                "player=" + player +
+                ", arena=" + arena +
+                ", cost=" + cost +
+                ", items=" + items +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

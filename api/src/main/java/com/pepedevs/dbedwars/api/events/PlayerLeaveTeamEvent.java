@@ -44,4 +44,15 @@ public class PlayerLeaveTeamEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerLeaveTeamEvent{" +
+                "arena=" + arena +
+                ", arenaPlayer=" + arenaPlayer +
+                ", team=" + team +
+                ", cancelled=" + cancelled +
+                ", player=" + player +
+                '}';
+    }
 }

@@ -92,4 +92,19 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "SpawnerUpgradeEvent{" +
+                "arena=" + arena +
+                ", dropType=" + dropType +
+                ", spawner=" + spawner +
+                ", team=" + team +
+                ", currentLevel=" + currentLevel +
+                ", nextLevel=" + nextLevel +
+                ", currentTier=" + currentTier +
+                ", nextTier=" + nextTier +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

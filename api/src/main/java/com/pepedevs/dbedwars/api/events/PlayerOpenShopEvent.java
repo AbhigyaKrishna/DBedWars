@@ -40,4 +40,14 @@ public class PlayerOpenShopEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerOpenShopEvent{" +
+                "player=" + player +
+                ", arena=" + arena +
+                ", shopView=" + shopView +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

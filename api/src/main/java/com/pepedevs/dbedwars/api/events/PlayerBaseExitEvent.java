@@ -40,4 +40,13 @@ public class PlayerBaseExitEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerBaseExitEvent{" +
+                "player=" + player +
+                ", arena=" + arena +
+                ", team=" + team +
+                '}';
+    }
 }

@@ -48,4 +48,15 @@ public class PlayerLeaveArenaLobbyEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerLeaveArenaLobbyEvent{" +
+                "arenaPlayer=" + arenaPlayer +
+                ", arena=" + arena +
+                ", reason=" + reason +
+                ", cancelled=" + cancelled +
+                ", player=" + player +
+                '}';
+    }
 }
