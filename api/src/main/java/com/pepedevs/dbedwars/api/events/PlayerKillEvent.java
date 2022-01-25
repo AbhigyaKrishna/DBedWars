@@ -72,4 +72,16 @@ public class PlayerKillEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerKillEvent{" +
+                "arena=" + arena +
+                ", victim=" + victim +
+                ", attacker=" + attacker +
+                ", deathCause=" + deathCause +
+                ", killMessage=" + killMessage +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

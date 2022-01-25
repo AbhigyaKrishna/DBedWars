@@ -84,4 +84,17 @@ public class BedDestroyEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "BedDestroyEvent{" +
+                "arena=" + arena +
+                ", bed=" + bed +
+                ", destroyer=" + destroyer +
+                ", affectedTeam=" + affectedTeam +
+                ", bedBrokenMessage=" + bedBrokenMessage +
+                ", bedBrokenTeamMessage=" + bedBrokenTeamMessage +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

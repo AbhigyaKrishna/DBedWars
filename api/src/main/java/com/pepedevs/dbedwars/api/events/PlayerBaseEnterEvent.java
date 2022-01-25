@@ -40,4 +40,13 @@ public class PlayerBaseEnterEvent extends CustomEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerBaseEnterEvent{" +
+                "player=" + player +
+                ", arena=" + arena +
+                ", team=" + team +
+                '}';
+    }
 }

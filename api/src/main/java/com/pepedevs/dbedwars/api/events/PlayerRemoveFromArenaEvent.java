@@ -56,4 +56,16 @@ public class PlayerRemoveFromArenaEvent extends CustomPlayerEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerRemoveFromArenaEvent{" +
+                "arenaPlayer=" + arenaPlayer +
+                ", arena=" + arena +
+                ", team=" + team +
+                ", reason=" + reason +
+                ", cancelled=" + cancelled +
+                ", player=" + player +
+                '}';
+    }
 }

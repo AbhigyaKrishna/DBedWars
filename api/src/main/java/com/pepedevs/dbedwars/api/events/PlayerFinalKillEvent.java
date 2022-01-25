@@ -29,4 +29,16 @@ public class PlayerFinalKillEvent extends PlayerKillEvent {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerFinalKillEvent{" +
+                "arena=" + this.getArena() +
+                ", victim=" + this.getVictim() +
+                ", attacker=" + this.getAttacker() +
+                ", deathCause=" + this.getDeathCause() +
+                ", killMessage=" + this.getKillMessage() +
+                ", cancelled=" + this.isCancelled() +
+                '}';
+    }
 }

@@ -84,4 +84,18 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "SpawnerDropItemEvent{" +
+                "arena=" + arena +
+                ", dropType=" + dropType +
+                ", spawner=" + spawner +
+                ", team=" + team +
+                ", level=" + level +
+                ", tier=" + tier +
+                ", drop=" + drop +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }

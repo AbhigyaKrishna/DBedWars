@@ -40,4 +40,14 @@ public class TrapTriggerEvent extends CustomEventCancellable {
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
+
+    @Override
+    public String toString() {
+        return "TrapTriggerEvent{" +
+                "trap=" + trap +
+                ", target=" + target +
+                ", team=" + team +
+                ", cancelled=" + cancelled +
+                '}';
+    }
 }
