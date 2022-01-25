@@ -174,7 +174,7 @@ public enum Color {
     private final byte data;
     private final org.bukkit.Color color;
     private final ChatColor chatColor;
-    private final TextColor colorComponent;
+    private final NamedTextColor colorComponent;
     private final String miniCode;
     private final String prefix;
     private final String name;
@@ -185,7 +185,7 @@ public enum Color {
     Color(byte data,
           org.bukkit.Color color,
           ChatColor chatColor,
-          TextColor colorComponent,
+          NamedTextColor colorComponent,
           String miniCode,
           String prefix,
           String name,
@@ -216,7 +216,7 @@ public enum Color {
         return chatColor;
     }
 
-    public TextColor getColorComponent() {
+    public NamedTextColor getColorComponent() {
         return colorComponent;
     }
 

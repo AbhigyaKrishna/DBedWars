@@ -24,6 +24,7 @@ import org.bukkit.entity.Silverfish;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class NMSUtils implements NMSAdaptor {
@@ -143,4 +144,13 @@ public class NMSUtils implements NMSAdaptor {
             ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
         }
     }
+
+    @Override
+    public void sendDeathAnimation(Player player, Collection<Player> viewers) {
+        PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 3);
+        for (Player viewer : viewers) {
+            ((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(packet);
+        }
+    }
+
 }

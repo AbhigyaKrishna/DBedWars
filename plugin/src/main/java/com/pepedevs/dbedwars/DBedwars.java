@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
+import com.github.retrooper.packetevents.PacketEvents;
 import com.pepedevs.radium.database.DatabaseType;
 import com.pepedevs.radium.holograms.HologramManager;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
@@ -26,6 +27,7 @@ import com.pepedevs.dbedwars.nms.v1_8_R3.NMSUtils;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -60,10 +62,19 @@ public final class DBedwars extends PluginAdapter {
     }
 
     @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
+
+    @Override
     protected boolean setUp() {
         Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
+
+        PacketEvents.getAPI().getSettings().bStats(true).debug(false).checkForUpdates(false);
+        PacketEvents.getAPI().init();
 
         this.getServer()
                 .getServicesManager()

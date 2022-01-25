@@ -1,12 +1,7 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.radium.task.Workload;
-import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
-import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
-import com.pepedevs.radium.utils.world.GameRuleType;
-import com.pepedevs.radium.utils.world.WorldUtils;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
@@ -36,6 +31,14 @@ import com.pepedevs.dbedwars.utils.DatabaseUtils;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
 import com.pepedevs.dbedwars.utils.Utils;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.StringUtils;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
+import com.pepedevs.radium.utils.world.GameRuleType;
+import com.pepedevs.radium.utils.world.WorldUtils;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -360,19 +363,28 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         for (ArenaPlayer player : Arena.this.players) {
             Arena.this.scoreboard.show(player.getPlayer());
         }
-//                            Arena.this.teams.forEach(
-//                                    t ->
-//                                            t.registerTeam(
-//
-// Arena.this.scoreboard.getHandle().getHandle()));
 
         for (Team team : this.teams) {
-            this.plugin.getNMSAdaptor().sendTeamPacket(team,
-                    team.getColor().getChatColor() + team.getColor().getName(),
-                    team.getColor().getChatColor() + "[" + team.getColor().getName() + "] ",
-                    "",
-                    0,
-                    1);
+            List<String> names = new ArrayList<>();
+            for (ArenaPlayer player : team.getPlayers()) {
+                names.add(player.getName());
+            }
+
+            WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+                    Component.text(team.getColor().getName(), team.getColor().getColorComponent()),
+                    Component.text("[" + team.getColor().getName() + "] ", team.getColor().getColorComponent()),
+                    null,
+                    WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+                    WrapperPlayServerTeams.CollisionRule.ALWAYS,
+                    team.getColor().getColorComponent(),
+                    WrapperPlayServerTeams.OptionData.NONE
+            );
+            WrapperPlayServerTeams teams = new WrapperPlayServerTeams(team.getName(), WrapperPlayServerTeams.TeamMode.CREATE,
+                    Optional.of(info), names);
+
+            for (ArenaPlayer player : this.getPlayers()) {
+                PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
+            }
             for (Map.Entry<DropType, LocationXYZ> entry : team.getSpawners().entries()) {
                 new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, team).init();
             }
@@ -439,6 +451,19 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 Arena.this.load();
             }
         }, (long) Arena.this.getSettings().getGameEndDelay() * 20 * 50);
+
+        for (Team team : this.teams) {
+            List<String> names = new ArrayList<>();
+            for (ArenaPlayer player : team.getPlayers()) {
+                names.add(player.getName());
+            }
+            WrapperPlayServerTeams teams = new WrapperPlayServerTeams(team.getName(), WrapperPlayServerTeams.TeamMode.REMOVE,
+                    Optional.empty(), names);
+
+            for (ArenaPlayer player : this.getPlayers()) {
+                PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
+            }
+        }
 
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);

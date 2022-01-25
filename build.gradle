@@ -24,7 +24,7 @@ allprojects {
     }
 
     dependencies {
-        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.7-SNAPSHOT'
+        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.7-TEST-SNAPSHOT'
     }
 
     build {
