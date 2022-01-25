@@ -1,10 +1,16 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.Color;
+import com.pepedevs.dbedwars.api.util.NBTUtils;
+import com.pepedevs.dbedwars.configuration.Lang;
+import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
+import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import com.pepedevs.radium.utils.math.LocationUtils;
 import com.pepedevs.radium.utils.reflection.accessor.FieldAccessor;
 import com.pepedevs.radium.utils.reflection.bukkit.BukkitReflection;
-import com.pepedevs.radium.utils.reflection.general.ClassReflection;
-import com.pepedevs.radium.utils.reflection.general.MethodReflection;
 import com.pepedevs.radium.utils.reflection.resolver.FieldResolver;
 import com.pepedevs.radium.utils.reflection.resolver.MethodResolver;
 import com.pepedevs.radium.utils.reflection.resolver.ResolverQuery;
@@ -13,16 +19,6 @@ import com.pepedevs.radium.utils.reflection.resolver.minecraft.NMSClassResolver;
 import com.pepedevs.radium.utils.reflection.resolver.wrapper.ClassWrapper;
 import com.pepedevs.radium.utils.reflection.resolver.wrapper.MethodWrapper;
 import com.pepedevs.radium.utils.xseries.XMaterial;
-import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
-import com.pepedevs.dbedwars.api.messaging.message.Message;
-import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.dbedwars.api.util.Color;
-import com.pepedevs.dbedwars.api.util.NBTUtils;
-import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.dbedwars.configuration.translator.LegacyTranslator;
-import com.pepedevs.dbedwars.configuration.translator.MiniMessageTranslator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -34,8 +30,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 public class Utils {
 
@@ -185,6 +182,15 @@ public class Utils {
             return "" + ((LegacyTranslator) Lang.getTranslator()).getCHAR() + color.getChatColor().getChar();
         }
         return null;
+    }
+
+    public static Location getRandomPointAround(final Location centre, final int range, final Predicate<Location> constrain) {
+        Vector v = Vector.getRandom().normalize().multiply(ThreadLocalRandom.current().nextDouble(range));
+        Location loc = centre.clone().add(v);
+        if (constrain.test(loc))
+            return loc;
+        else
+            return Utils.getRandomPointAround(centre, range, constrain);
     }
 
     static {

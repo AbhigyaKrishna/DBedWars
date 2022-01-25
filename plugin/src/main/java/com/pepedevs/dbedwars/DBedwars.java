@@ -46,6 +46,7 @@ public final class DBedwars extends PluginAdapter {
 
     private String mainWorld;
 
+    private FeatureManager featureManager;
     private ConfigHandler configHandler;
     private WorldHandler worldHandler;
     private GuiHandler guiHandler;
@@ -72,6 +73,8 @@ public final class DBedwars extends PluginAdapter {
         Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
+        this.featureManager = new FeatureManager(this);
+        this.featureManager.registerDefaults();
 
         PacketEvents.getAPI().getSettings().bStats(true).debug(false).checkForUpdates(false);
         PacketEvents.getAPI().init();
@@ -248,6 +251,10 @@ public final class DBedwars extends PluginAdapter {
 
     public HologramManager getHologramManager() {
         return this.hologramManager;
+    }
+
+    public FeatureManager getFeatureManager() {
+        return featureManager;
     }
 
     private void initDatabase() {

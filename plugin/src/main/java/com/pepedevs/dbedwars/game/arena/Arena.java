@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
+import com.pepedevs.dbedwars.api.feature.custom.ArenaEndFireworkFeature;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.Team;
@@ -32,6 +33,7 @@ import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
 import com.pepedevs.dbedwars.utils.Utils;
 import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.Acceptor;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
@@ -465,14 +467,21 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
             }
         }
 
+        this.plugin.getFeatureManager().runFeature("ArenaEndFireworkFeature", ArenaEndFireworkFeature.class, new Acceptor<ArenaEndFireworkFeature>() {
+            @Override
+            public boolean accept(ArenaEndFireworkFeature feature) {
+                feature.spawn(list.get(0).getTeam(), Arena.this);
+                return true;
+            }
+        });
+
         // TODO: give config?
         LinkedHashMap<ArenaPlayer, Integer> leaderboard = Utils.getGameLeaderBoard(this.players);
         StringBuilder builder = new StringBuilder("<gold>" + StringUtils.repeat("⬛", 35));
         //TODO IMPLEMENT FROM LANG
         byte b = 0;
         for (Map.Entry<ArenaPlayer, Integer> entry : leaderboard.entrySet()) {
-            if (b == 4) break;
-            b++;
+            if (b++ == 4) break;
             builder.append("\n<green>").append(b).append(". ").append(entry.getKey().getPlayer().getName()).append("   ").append(entry.getValue()).append("pts");
         }
         builder.append("\n<gold>").append(StringUtils.repeat("⬛", 35));
