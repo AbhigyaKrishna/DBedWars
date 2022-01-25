@@ -61,6 +61,8 @@ public interface DropType extends Cloneable {
 
     DropType clone();
 
+    String toString();
+
     interface Tier extends Cloneable {
 
         double getUpgradeDelay();
@@ -84,6 +86,9 @@ public interface DropType extends Cloneable {
         Map<String, Drop> getDropMap();
 
         Tier clone();
+
+        String toString();
+
     }
 
     interface Drop extends Cloneable {
@@ -103,5 +108,7 @@ public interface DropType extends Cloneable {
         void setMaxSpawn(int maxSpawn);
 
         Drop clone();
+
+        String toString();
     }
 }

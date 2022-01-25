@@ -371,4 +371,24 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
     public boolean remove() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Spawner{" +
+                "plugin=" + plugin +
+                ", drop=" + drop +
+                ", arena=" + arena +
+                ", team=" + team +
+                ", location=" + location +
+                ", box=" + box +
+                ", registered=" + registered +
+                ", level=" + level +
+                ", tier=" + tier +
+                ", lastUpgrade=" + lastUpgrade +
+                ", particle=" + particle +
+                ", start=" + start +
+                ", hologram=" + hologram +
+                ", items=" + items +
+                '}';
+    }
 }

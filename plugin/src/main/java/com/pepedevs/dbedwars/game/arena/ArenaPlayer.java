@@ -283,4 +283,25 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
         this.respawning = true;
         DBedwars.getInstance().getThreadHandler().submitAsync(new RespawnTask(DBedwars.getInstance(), this));
     }
+
+    @Override
+    public String toString() {
+        return "ArenaPlayer{" +
+                "player=" + player +
+                ", name='" + name + '\'' +
+                ", arena=" + arena +
+                ", team=" + team +
+                ", spectator=" + spectator +
+                ", bedDestroy=" + bedDestroy +
+                ", kill=" + kill +
+                ", finalKill=" + finalKill +
+                ", death=" + death +
+                ", respawning=" + respawning +
+                ", finalKilled=" + finalKilled +
+                ", lastHitTag=" + lastHitTag +
+                ", lastHitTime=" + lastHitTime +
+                ", shopView=" + shopView +
+                ", lastBackup=" + lastBackup +
+                '}';
+    }
 }

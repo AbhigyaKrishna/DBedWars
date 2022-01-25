@@ -443,4 +443,35 @@ public class ArenaSettings implements com.pepedevs.dbedwars.api.game.settings.Ar
         this.availableTeams = new HashSet<>(cfgArena.getTeams());
         this.drops = cfgArena.getSpawners();
     }
+
+    @Override
+    public String toString() {
+        return "ArenaSettings{" +
+                "plugin=" + plugin +
+                ", arena=" + arena +
+                ", name='" + name + '\'' +
+                ", customName='" + customName + '\'' +
+                ", worldEnv=" + worldEnv +
+                ", lobby=" + lobby +
+                ", spectatorLocation=" + spectatorLocation +
+                ", lobbyPosMax=" + lobbyPosMax +
+                ", lobbyPosMin=" + lobbyPosMin +
+                ", icon=" + icon +
+                ", teamPlayers=" + teamPlayers +
+                ", minPlayers=" + minPlayers +
+                ", startTimer=" + startTimer +
+                ", respawnTime=" + respawnTime +
+                ", islandRadius=" + islandRadius +
+                ", minYAxis=" + minYAxis +
+                ", playerHitTagLength=" + playerHitTagLength +
+                ", gameEndDelay=" + gameEndDelay +
+                ", disableHunger=" + disableHunger +
+                ", bedDestroyPoint=" + bedDestroyPoint +
+                ", killPoint=" + killPoint +
+                ", finalKillPoint=" + finalKillPoint +
+                ", deathPoint=" + deathPoint +
+                ", drops=" + drops +
+                ", availableTeams=" + availableTeams +
+                '}';
+    }
 }

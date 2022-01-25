@@ -70,4 +70,6 @@ public interface Team extends AbstractMessaging {
     void spawnShopNpc(LocationXYZYP location);
 
     void spawnUpgradesNpc(LocationXYZYP location);
+
+    String toString();
 }

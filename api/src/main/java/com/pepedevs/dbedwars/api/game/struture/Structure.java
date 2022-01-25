@@ -18,4 +18,6 @@ public interface Structure {
     Block getCentre();
 
     void setCentre(Block centre);
+
+    String toString();
 }

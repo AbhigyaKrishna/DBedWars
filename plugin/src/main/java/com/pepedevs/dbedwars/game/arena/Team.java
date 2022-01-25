@@ -332,4 +332,23 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
         return new ArrayList<>(this.players);
     }
 
+    @Override
+    public String toString() {
+        return "Team{" +
+                "plugin=" + plugin +
+                ", color=" + color +
+                ", cfgTeam=" + cfgTeam +
+                ", bedLocation=" + bedLocation +
+                ", spawn=" + spawn +
+                ", shopNpcLocation=" + shopNpcLocation +
+                ", upgradesNpcLocation=" + upgradesNpcLocation +
+                ", spawners=" + spawners +
+                ", arena=" + arena +
+                ", bedBroken=" + bedBroken +
+                ", eliminated=" + eliminated +
+                ", players=" + players +
+                ", islandArea=" + islandArea +
+                ", trapQueue=" + trapQueue +
+                '}';
+    }
 }

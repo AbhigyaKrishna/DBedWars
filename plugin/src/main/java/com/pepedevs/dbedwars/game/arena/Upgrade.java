@@ -38,4 +38,14 @@ public class Upgrade implements com.pepedevs.dbedwars.api.game.Upgrade {
     public Set<Consumer<Team>> getPermanentActions() {
         return this.permanentActions;
     }
+
+    @Override
+    public String toString() {
+        return "Upgrade{" +
+                "id='" + id + '\'' +
+                ", tier='" + tier + '\'' +
+                ", team=" + team +
+                ", permanentActions=" + permanentActions +
+                '}';
+    }
 }

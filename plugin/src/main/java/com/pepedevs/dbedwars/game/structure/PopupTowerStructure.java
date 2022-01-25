@@ -643,4 +643,17 @@ public class PopupTowerStructure implements DirectionalStructure {
             return blocks;
         }
     }
+
+    @Override
+    public String toString() {
+        return "PopupTowerStructure{" +
+                "northBlocks=" + northBlocks +
+                ", westBlocks=" + westBlocks +
+                ", eastBlocks=" + eastBlocks +
+                ", southBlocks=" + southBlocks +
+                ", blocksPerSecond=" + blocksPerSecond +
+                ", centre=" + centre +
+                ", baseMat=" + baseMat +
+                '}';
+    }
 }

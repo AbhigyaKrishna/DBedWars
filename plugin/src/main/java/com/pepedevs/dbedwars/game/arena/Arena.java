@@ -741,4 +741,23 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         return new ArrayList<>(this.players);
     }
 
+    @Override
+    public String toString() {
+        return "Arena{" +
+                "plugin=" + plugin +
+                ", cfgArena=" + cfgArena +
+                ", settings=" + settings +
+                ", world=" + world +
+                ", status=" + status +
+                ", enabled=" + enabled +
+                ", startTime=" + startTime +
+                ", scoreboard=" + scoreboard +
+                ", arenaHandler=" + arenaHandler +
+                ", gameHandler=" + gameHandler +
+                ", teams=" + teams +
+                ", players=" + players +
+                ", removed=" + removed +
+                ", spawners=" + spawners +
+                '}';
+    }
 }

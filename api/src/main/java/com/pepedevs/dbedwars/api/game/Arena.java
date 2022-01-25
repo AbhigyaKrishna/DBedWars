@@ -106,4 +106,6 @@ public interface Arena extends AbstractMessaging {
     void setLobbyScoreboard(Player player);
 
     boolean stop();
+
+    String toString();
 }

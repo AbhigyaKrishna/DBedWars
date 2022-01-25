@@ -112,4 +112,14 @@ public class Trap implements com.pepedevs.dbedwars.api.game.Trap {
     public Map<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> getActions() {
         return actions;
     }
+
+    @Override
+    public String toString() {
+        return "Trap{" +
+                "id='" + id + '\'' +
+                ", cfgTrap=" + cfgTrap +
+                ", triggerType=" + triggerType +
+                ", actions=" + actions +
+                '}';
+    }
 }

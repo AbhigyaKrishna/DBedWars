@@ -130,4 +130,7 @@ public interface ArenaSettings {
     int getDeathPoint();
 
     void setDeathPoint(int deathPoint);
+
+    String toString();
+
 }

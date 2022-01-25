@@ -74,4 +74,6 @@ public interface ArenaPlayer extends PlayerMember {
 
     void queueRespawn();
 
+    String toString();
+
 }
