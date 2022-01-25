@@ -110,6 +110,19 @@ public class ConfigurableDatabase implements Loadable {
         public boolean isSsl() {
             return ssl;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableMySQL{" +
+                    "host='" + host + '\'' +
+                    ", port=" + port +
+                    ", databaseName='" + databaseName + '\'' +
+                    ", username='" + username + '\'' +
+                    ", password='" + password + '\'' +
+                    ", reconnect=" + reconnect +
+                    ", ssl=" + ssl +
+                    '}';
+        }
     }
 
     public static class ConfigurableMongoDB implements Loadable {
@@ -149,5 +162,23 @@ public class ConfigurableDatabase implements Loadable {
         public String getDatabaseName() {
             return databaseName;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableMongoDB{" +
+                    "host='" + host + '\'' +
+                    ", port=" + port +
+                    ", databaseName='" + databaseName + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableDatabase{" +
+                "database='" + database + '\'' +
+                ", mySQL=" + mySQL +
+                ", mongoDB=" + mongoDB +
+                '}';
     }
 }

@@ -97,4 +97,12 @@ public class GuiConfigHandler {
 
         return items;
     }
+
+    @Override
+    public String toString() {
+        return "GuiConfigHandler{" +
+                "file=" + file +
+                ", config=" + config +
+                '}';
+    }
 }

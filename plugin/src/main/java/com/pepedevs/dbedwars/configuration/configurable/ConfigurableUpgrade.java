@@ -233,8 +233,54 @@ public class ConfigurableUpgrade implements Loadable {
                     public List<String> getGoal() {
                         return this.goal;
                     }
+
+                    @Override
+                    public String toString() {
+                        return "ConfigurableTierAction{" +
+                                "target='" + target + '\'' +
+                                ", goal=" + goal +
+                                '}';
+                    }
+                }
+
+                @Override
+                public String toString() {
+                    return "ConfigurableUpgradeTier{" +
+                            "material='" + material + '\'' +
+                            ", amount=" + amount +
+                            ", name='" + name + '\'' +
+                            ", lore=" + lore +
+                            ", cost='" + cost + '\'' +
+                            ", actions=" + actions +
+                            '}';
                 }
             }
+
+            @Override
+            public String toString() {
+                return "ConfigurableItem{" +
+                        "id='" + id + '\'' +
+                        ", type='" + type + '\'' +
+                        ", tiers=" + tiers +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableUpgradePage{" +
+                    "title='" + title + '\'' +
+                    ", pattern=" + pattern +
+                    ", items=" + items +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableUpgrade{" +
+                "defaultPage='" + defaultPage + '\'' +
+                ", pages=" + pages +
+                '}';
     }
 }

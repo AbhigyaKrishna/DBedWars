@@ -231,4 +231,25 @@ public class ConfigurableArena implements Configurable {
 
         return this.arena;
     }
+
+    @Override
+    public String toString() {
+        return "ConfigurableArena{" +
+                "arena=" + arena +
+                ", identifier='" + identifier + '\'' +
+                ", enabled=" + enabled +
+                ", worldEnv='" + worldEnv + '\'' +
+                ", icon='" + icon + '\'' +
+                ", lobbyLoc='" + lobbyLoc + '\'' +
+                ", lobbyPosMax='" + lobbyPosMax + '\'' +
+                ", lobbyPosMin='" + lobbyPosMin + '\'' +
+                ", spectatorLocation='" + spectatorLocation + '\'' +
+                ", playerInTeam=" + playerInTeam +
+                ", minPlayers=" + minPlayers +
+                ", customName='" + customName + '\'' +
+                ", teams=" + teams +
+                ", spawners=" + spawners +
+                ", override=" + override +
+                '}';
+    }
 }

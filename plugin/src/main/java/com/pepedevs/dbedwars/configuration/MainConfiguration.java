@@ -190,6 +190,23 @@ public class MainConfiguration implements Loadable {
         public boolean isDisableHunger() {
             return disableHunger;
         }
+
+        @Override
+        public String toString() {
+            return "ArenaSection{" +
+                    "startTimer=" + startTimer +
+                    ", respawnTime=" + respawnTime +
+                    ", islandRadius=" + islandRadius +
+                    ", minYAxis=" + minYAxis +
+                    ", playerHitTagLength=" + playerHitTagLength +
+                    ", gameEndDelay=" + gameEndDelay +
+                    ", bedDestroyPoint=" + bedDestroyPoint +
+                    ", killPoint=" + killPoint +
+                    ", finalKillPoint=" + finalKillPoint +
+                    ", deathPoint=" + deathPoint +
+                    ", disableHunger=" + disableHunger +
+                    '}';
+        }
     }
 
     public static class TrapSection implements Loadable {
@@ -232,6 +249,15 @@ public class MainConfiguration implements Loadable {
 
         public List<String> getQueueCost() {
             return this.queueCost;
+        }
+
+        @Override
+        public String toString() {
+            return "TrapSection{" +
+                    "trapQueueEnabled=" + trapQueueEnabled +
+                    ", trapQueueLimit=" + trapQueueLimit +
+                    ", queueCost=" + queueCost +
+                    '}';
         }
     }
 
@@ -306,6 +332,13 @@ public class MainConfiguration implements Loadable {
                 return this.character;
             }
 
+            @Override
+            public String toString() {
+                return "LegacySettingsSection{" +
+                        "translationChar='" + translationChar + '\'' +
+                        ", character=" + character +
+                        '}';
+            }
         }
 
         public static class ModernSettingsSection implements Loadable {
@@ -424,8 +457,51 @@ public class MainConfiguration implements Loadable {
                 public boolean isTranslatable() {
                     return translatable;
                 }
+
+                @Override
+                public String toString() {
+                    return "TransformationsSection{" +
+                            "clickEvent=" + clickEvent +
+                            ", color=" + color +
+                            ", decoration=" + decoration +
+                            ", font=" + font +
+                            ", gradient=" + gradient +
+                            ", hoverEvent=" + hoverEvent +
+                            ", insertion=" + insertion +
+                            ", keybind=" + keybind +
+                            ", rainbow=" + rainbow +
+                            ", translatable=" + translatable +
+                            '}';
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "ModernSettingsSection{" +
+                        "transformations=" + transformations +
+                        ", discordFlavour=" + discordFlavour +
+                        '}';
             }
         }
 
+        @Override
+        public String toString() {
+            return "LangSection{" +
+                    "parseType='" + parseType + '\'' +
+                    ", serverLanguage='" + serverLanguage + '\'' +
+                    ", legacySettings=" + legacySettings +
+                    ", modernSettings=" + modernSettings +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "MainConfiguration{" +
+                "plugin=" + plugin +
+                ", arenaSection=" + arenaSection +
+                ", trapSection=" + trapSection +
+                ", langSection=" + langSection +
+                '}';
     }
 }

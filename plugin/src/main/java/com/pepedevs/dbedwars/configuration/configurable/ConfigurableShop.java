@@ -161,6 +161,28 @@ public class ConfigurableShop implements Loadable {
             public ConfigurableAttribute getAttribute() {
                 return attribute;
             }
+
+            @Override
+            public String toString() {
+                return "BwGUIItem{" +
+                        "itemName='" + itemName + '\'' +
+                        ", itemLore=" + itemLore +
+                        ", material='" + material + '\'' +
+                        ", amount=" + amount +
+                        ", enchant=" + enchant +
+                        ", attribute=" + attribute +
+                        '}';
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurablePage{" +
+                    "guiTitle='" + guiTitle + '\'' +
+                    ", pattern=" + pattern +
+                    ", items=" + items +
+                    '}';
         }
     }
 
@@ -311,6 +333,42 @@ public class ConfigurableShop implements Loadable {
             public int getAutoEquipSlot() {
                 return autoEquipSlot;
             }
+
+            @Override
+            public String toString() {
+                return "AttributeItems{" +
+                        "enchant=" + enchant +
+                        ", customItem='" + customItem + '\'' +
+                        ", material='" + material + '\'' +
+                        ", amount=" + amount +
+                        ", name='" + name + '\'' +
+                        ", lore=" + lore +
+                        ", autoEquipSlot=" + autoEquipSlot +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableAttribute{" +
+                    "type='" + type + '\'' +
+                    ", pageToChangeTo='" + pageToChangeTo + '\'' +
+                    ", cost='" + cost + '\'' +
+                    ", nextTier='" + nextTier + '\'' +
+                    ", previousTier='" + previousTier + '\'' +
+                    ", downgradeEvent='" + downgradeEvent + '\'' +
+                    ", command=" + command +
+                    ", itemsToGive=" + itemsToGive +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableShop{" +
+                "defaultPage='" + defaultPage + '\'' +
+                ", pages=" + pages +
+                ", commonItems=" + commonItems +
+                '}';
     }
 }

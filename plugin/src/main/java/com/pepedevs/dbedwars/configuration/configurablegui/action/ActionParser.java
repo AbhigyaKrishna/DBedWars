@@ -130,4 +130,14 @@ public class ActionParser {
         this.clickType = clickType;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ActionParser{" +
+                "type=" + type +
+                ", action='" + action + '\'' +
+                ", priority=" + priority +
+                ", clickType=" + clickType +
+                '}';
+    }
 }

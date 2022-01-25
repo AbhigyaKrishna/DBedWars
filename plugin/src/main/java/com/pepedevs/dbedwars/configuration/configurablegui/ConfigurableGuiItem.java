@@ -183,5 +183,31 @@ public class ConfigurableGuiItem implements Loadable {
 
             return this.itemAction;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableGuiItemAction{" +
+                    "itemAction=" + itemAction +
+                    ", type='" + type + '\'' +
+                    ", priority='" + priority + '\'' +
+                    ", action='" + action + '\'' +
+                    ", clickType='" + clickType + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableGuiItem{" +
+                "flags=" + flags +
+                ", enchantments=" + enchantments +
+                ", itemActions=" + itemActions +
+                ", type='" + type + '\'' +
+                ", size=" + size +
+                ", name='" + name + '\'' +
+                ", lore=" + lore +
+                ", data=" + data +
+                ", glowing=" + glowing +
+                '}';
     }
 }

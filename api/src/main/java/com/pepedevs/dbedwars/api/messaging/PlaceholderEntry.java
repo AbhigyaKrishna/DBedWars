@@ -15,6 +15,16 @@ public interface PlaceholderEntry {
             public Supplier<String> getReplacement() {
                 return replacementSupplier;
             }
+
+            @Override
+            public String toString() {
+                return "PlaceholderEntry{" +
+                        "placeholder=" +
+                        placeholder +
+                        "replacementSupplier=" +
+                        replacementSupplier +
+                        '}';
+            }
         };
     }
 
@@ -34,6 +44,16 @@ public interface PlaceholderEntry {
                     }
                 };
             }
+
+            @Override
+            public String toString() {
+                return "PlaceholderEntry{" +
+                        "placeholder=" +
+                        placeholder +
+                        "replacement=" +
+                        replacement +
+                        '}';
+            }
         };
     }
 
@@ -48,4 +68,6 @@ public interface PlaceholderEntry {
     String getPlaceholder();
 
     Supplier<String> getReplacement();
+
+    String toString();
 }

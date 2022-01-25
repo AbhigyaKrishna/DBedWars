@@ -184,6 +184,13 @@ public class ConfigurableArenaOverride implements Loadable {
                 }
             }
         }
+
+        @Override
+        public String toString() {
+            return "SpawnerOverride{" +
+                    "spawners=" + spawners +
+                    '}';
+        }
     }
 
     public class ConfigOverride implements Loadable {
@@ -236,5 +243,21 @@ public class ConfigurableArenaOverride implements Loadable {
             if (this.config.getDeathPoint() != Integer.MIN_VALUE)
                 arena.getSettings().setDeathPoint(this.config.getDeathPoint());
         }
+
+        @Override
+        public String toString() {
+            return "ConfigOverride{" +
+                    "config=" + config +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableArenaOverride{" +
+                "plugin=" + plugin +
+                ", spawnerOverride=" + spawnerOverride +
+                ", configOverride=" + configOverride +
+                '}';
     }
 }

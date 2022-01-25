@@ -96,5 +96,23 @@ public class ConfigurableTrap implements Loadable {
         public List<String> getExecutables() {
             return executables;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableTrapAction{" +
+                    "target='" + target + '\'' +
+                    ", executables=" + executables +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableTrap{" +
+                "key='" + key + '\'' +
+                ", id='" + id + '\'' +
+                ", trigger='" + trigger + '\'' +
+                ", trapActions=" + trapActions +
+                '}';
     }
 }

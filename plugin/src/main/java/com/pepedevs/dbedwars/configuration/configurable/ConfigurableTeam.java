@@ -131,4 +131,17 @@ public class ConfigurableTeam implements Configurable {
 
         return this.team;
     }
+
+    @Override
+    public String toString() {
+        return "ConfigurableTeam{" +
+                "spawners=" + spawners +
+                ", team=" + team +
+                ", color='" + color + '\'' +
+                ", bedLocation='" + bedLocation + '\'' +
+                ", spawn='" + spawn + '\'' +
+                ", shopNpc='" + shopNpc + '\'' +
+                ", upgrades='" + upgrades + '\'' +
+                '}';
+    }
 }

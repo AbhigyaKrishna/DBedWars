@@ -69,6 +69,15 @@ public class ConfigurableHologram implements Loadable {
         public String getAnimationEndTask() {
             return animationEndTask;
         }
+
+        @Override
+        public String toString() {
+            return "HologramConfig{" +
+                    "mode='" + mode + '\'' +
+                    ", animationEndTask='" + animationEndTask + '\'' +
+                    ", section=" + section +
+                    '}';
+        }
     }
 
     public static class ConfigurableBabyHologram implements Loadable {
@@ -122,5 +131,16 @@ public class ConfigurableHologram implements Loadable {
         public int getTicksPerAnimationCycle() {
             return ticksPerAnimationCycle;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableBabyHologram{" +
+                    "degreeRotatedPerCycle=" + degreeRotatedPerCycle +
+                    ", verticalDisplacement=" + verticalDisplacement +
+                    ", ticksPerAnimationCycle=" + ticksPerAnimationCycle +
+                    ", slowAtEndEnabled=" + slowAtEndEnabled +
+                    '}';
+        }
     }
+
 }

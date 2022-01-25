@@ -5,7 +5,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
 
-@SuppressWarnings("unchecked")
 public class MiniMessageWrapper {
 
     private static final MiniMessage FULL_MINI;

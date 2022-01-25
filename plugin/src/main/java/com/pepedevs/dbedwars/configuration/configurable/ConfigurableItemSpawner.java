@@ -244,6 +244,18 @@ public class ConfigurableItemSpawner implements Loadable {
         public Map<String, ConfigurableDrop> getActions() {
             return this.actions;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableTiers{" +
+                    "key='" + key + '\'' +
+                    ", seconds=" + seconds +
+                    ", upgradeEffect='" + upgradeEffect + '\'' +
+                    ", upgradeSound='" + upgradeSound + '\'' +
+                    ", message='" + message + '\'' +
+                    ", actions=" + actions +
+                    '}';
+        }
     }
 
     public static class ConfigurableDrop implements Loadable {
@@ -296,5 +308,37 @@ public class ConfigurableItemSpawner implements Loadable {
         public int getLimit() {
             return this.limit;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableDrop{" +
+                    "key='" + key + '\'' +
+                    ", material='" + material + '\'' +
+                    ", delay=" + delay +
+                    ", limit=" + limit +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableItemSpawner{" +
+                "plugin=" + plugin +
+                ", key='" + key + '\'' +
+                ", id='" + id + '\'' +
+                ", icon='" + icon + '\'' +
+                ", spawnSound='" + spawnSound + '\'' +
+                ", spawnEffect='" + spawnEffect + '\'' +
+                ", radius=" + radius +
+                ", merge=" + merge +
+                ", split=" + split +
+                ", timedUpgrade=" + timedUpgrade +
+                ", teamSpawner=" + teamSpawner +
+                ", hologramEnabled=" + hologramEnabled +
+                ", hologramMaterial='" + hologramMaterial + '\'' +
+                ", hologramText=" + hologramText +
+                ", tiers=" + tiers +
+                ", dropType=" + dropType +
+                '}';
     }
 }

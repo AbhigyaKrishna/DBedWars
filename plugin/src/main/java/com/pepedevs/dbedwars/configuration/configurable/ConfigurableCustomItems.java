@@ -145,6 +145,17 @@ public class ConfigurableCustomItems implements Loadable {
         public String getSound() {
             return sound;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurablePopupTower{" +
+                    "name='" + name + '\'' +
+                    ", lore=" + lore +
+                    ", sound='" + sound + '\'' +
+                    ", particle='" + particle + '\'' +
+                    ", mainBlock='" + mainBlock + '\'' +
+                    '}';
+        }
     }
 
     public static class ConfigurableTNT implements Loadable {
@@ -221,6 +232,19 @@ public class ConfigurableCustomItems implements Loadable {
 
         public KnockBack getKnockBack() {
             return knockBack;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurableTNT{" +
+                    "name='" + name + '\'' +
+                    ", lore=" + lore +
+                    ", autoIgniteTNT=" + autoIgniteTNT +
+                    ", fixRandomExplosion=" + fixRandomExplosion +
+                    ", isBetterTNTAnimationEnabled=" + isBetterTNTAnimationEnabled +
+                    ", fuseTicks=" + fuseTicks +
+                    ", knockBack=" + knockBack +
+                    '}';
         }
     }
 
@@ -315,6 +339,21 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isExplosionFireEnabled() {
             return explosionFire;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableFireball{" +
+                    "displayName='" + displayName + '\'' +
+                    ", lore=" + lore +
+                    ", leftClickThrow=" + leftClickThrow +
+                    ", fixDirection=" + fixDirection +
+                    ", explosionYield=" + explosionYield +
+                    ", speedMultiplier=" + speedMultiplier +
+                    ", potionEffects=" + potionEffects +
+                    ", explosionFire=" + explosionFire +
+                    ", knockBack=" + knockBack +
+                    '}';
+        }
     }
 
     public static class ConfigurableBridgeEgg implements Loadable {
@@ -387,6 +426,19 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isFlipBridgeEnabled() {
             return flipBridgeEnabled;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableBridgeEgg{" +
+                    "displayName='" + displayName + '\'' +
+                    ", lore=" + lore +
+                    ", keepAliveTimeOut=" + keepAliveTimeOut +
+                    ", minDistanceFromPlayer=" + minDistanceFromPlayer +
+                    ", maxDistanceFromPlayer=" + maxDistanceFromPlayer +
+                    ", maxDownStack=" + maxDownStack +
+                    ", flipBridgeEnabled=" + flipBridgeEnabled +
+                    '}';
+        }
     }
 
     public static class ConfigurableWaterBucket implements Loadable {
@@ -431,6 +483,15 @@ public class ConfigurableCustomItems implements Loadable {
 
         public String getDisplayName() {
             return displayName;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurableWaterBucket{" +
+                    "displayName='" + displayName + '\'' +
+                    ", lore=" + lore +
+                    ", removeOnUse=" + removeOnUse +
+                    '}';
         }
     }
 
@@ -525,6 +586,21 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isAnimationEnabled() {
             return animationEnabled;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableSponge{" +
+                    "displayName='" + displayName + '\'' +
+                    ", lore=" + lore +
+                    ", animationEnabled=" + animationEnabled +
+                    ", radiusForParticles=" + radiusForParticles +
+                    ", removeSpongeOnAnimationEnd=" + removeSpongeOnAnimationEnd +
+                    ", soundBoxIncrease='" + soundBoxIncrease + '\'' +
+                    ", soundOnAnimationEnd='" + soundOnAnimationEnd + '\'' +
+                    ", allowBreaking=" + allowBreaking +
+                    ", breakTryMessage='" + breakTryMessage + '\'' +
+                    '}';
+        }
     }
 
     public static class ConfigurableDreamDefender implements Loadable {
@@ -609,6 +685,20 @@ public class ConfigurableCustomItems implements Loadable {
 
         public int getTicksUntilDespawn() {
             return ticksUntilDespawn;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurableDreamDefender{" +
+                    "itemName='" + itemName + '\'' +
+                    ", itemLore=" + itemLore +
+                    ", golemDisplayName='" + golemDisplayName + '\'' +
+                    ", healthSymbol='" + healthSymbol + '\'' +
+                    ", healthColorCodes='" + healthColorCodes + '\'' +
+                    ", healthIndicatorCount=" + healthIndicatorCount +
+                    ", golemPotionEffects=" + golemPotionEffects +
+                    ", ticksUntilDespawn=" + ticksUntilDespawn +
+                    '}';
         }
     }
 
@@ -695,6 +785,20 @@ public class ConfigurableCustomItems implements Loadable {
         public String getItemName() {
             return itemName;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableBedBug{" +
+                    "itemName='" + itemName + '\'' +
+                    ", itemLore=" + itemLore +
+                    ", bedBugDisplayName='" + bedBugDisplayName + '\'' +
+                    ", healthSymbol='" + healthSymbol + '\'' +
+                    ", healthColorCodes='" + healthColorCodes + '\'' +
+                    ", healthIndicatorCount=" + healthIndicatorCount +
+                    ", bedBugPotionEffects=" + bedBugPotionEffects +
+                    ", ticksUntilDespawn=" + ticksUntilDespawn +
+                    '}';
+        }
     }
 
     public static class ConfigurableBlastProofGlass implements Loadable {
@@ -731,6 +835,14 @@ public class ConfigurableCustomItems implements Loadable {
 
         public String getGlassItemName() {
             return glassItemName;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurableBlastProofGlass{" +
+                    "glassItemName='" + glassItemName + '\'' +
+                    ", glassItemLore=" + glassItemLore +
+                    '}';
         }
     }
 
@@ -793,5 +905,31 @@ public class ConfigurableCustomItems implements Loadable {
         public boolean isEnabled() {
             return enabled;
         }
+
+        @Override
+        public String toString() {
+            return "KnockBack{" +
+                    "enabled=" + enabled +
+                    ", radiusEntities=" + radiusEntities +
+                    ", distanceModifier=" + distanceModifier +
+                    ", heightForce=" + heightForce +
+                    ", horizontalForce=" + horizontalForce +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableCustomItems{" +
+                "fireball=" + fireball +
+                ", TNT=" + TNT +
+                ", popupTower=" + popupTower +
+                ", bridgeEgg=" + bridgeEgg +
+                ", waterBucket=" + waterBucket +
+                ", sponge=" + sponge +
+                ", dreamDefender=" + dreamDefender +
+                ", bedBug=" + bedBug +
+                ", blastProofGlass=" + blastProofGlass +
+                '}';
     }
 }

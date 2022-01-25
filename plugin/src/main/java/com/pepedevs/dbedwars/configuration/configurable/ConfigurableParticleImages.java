@@ -71,6 +71,13 @@ public class ConfigurableParticleImages implements Loadable {
         public String getDownscaling() {
             return downscaling;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableParticleImagesGlobalSettings{" +
+                    "downscaling='" + downscaling + '\'' +
+                    '}';
+        }
     }
 
     public static class ConfigurableParticleImageSettings implements Loadable {
@@ -108,5 +115,21 @@ public class ConfigurableParticleImages implements Loadable {
         public String getFormat() {
             return format;
         }
+
+        @Override
+        public String toString() {
+            return "ConfigurableParticleImageSettings{" +
+                    "format='" + format + '\'' +
+                    ", dimensions='" + dimensions + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurableParticleImages{" +
+                "globalSettings=" + globalSettings +
+                ", imageSettings=" + imageSettings +
+                '}';
     }
 }
