@@ -1,18 +1,18 @@
 global:
   title: 'BedWars'
   content:
-    - '&7%date%'
+    - '&7{date}'
     - ''
-    - '&f%next_event% in %next_event_time_left%'
+    - '&f{next_event} in {next_event_time_left}'
     - ''
-    - '%team_red_color%R &fRed: %team_red_player_formatted%' #%team_{team}_player_formatted% will return '✔' if bed not broken and '✘' if team eleminated else number
-    - '%team_blue_color%B &fBlue: %team_blue_players_formatted%'
-    - '%team_green_color%G &fGreen: %team_green_players_formatted%'
-    - '%team_yellow_color%Y &fYellow: %team_yellow_players_formatted%'
-    - '%team_aqua_color%A &fAqua: %team_aqua_players_formatted%'
-    - '%team_white_color%W &fWhite: %team_white_players_formatted%'
-    - '%team_pink_color%P &fPink: %team_pink_players_formatted%'
-    - '%team_gray_color%G &fGray: %team_gray_players_formatted%'
+    - '{team_red_color}R &fRed: {team_red_player_formatted}' #{team_<team>_player_formatted} will return '✔' if bed not broken and '✘' if team eleminated else number
+    - '{team_blue_color}B &fBlue: {team_blue_players_formatted}'
+    - '{team_green_color}G &fGreen: {team_green_players_formatted}'
+    - '{team_yellow_color}Y &fYellow: {team_yellow_players_formatted}'
+    - '{team_aqua_color}A &fAqua: {team_aqua_players_formatted}'
+    - '{team_white_color}W &fWhite: {team_white_players_formatted}'
+    - '{team_pink_color}P &fPink: {team_pink_players_formatted}'
+    - '{team_gray_color}G &fGray: {team_gray_players_formatted}'
     - ''
     - '&eplay.example.net'
 
