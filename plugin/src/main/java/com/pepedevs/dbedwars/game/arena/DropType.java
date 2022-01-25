@@ -189,6 +189,28 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
         }
     }
 
+    @Override
+    public String toString() {
+        return "DropType{" +
+                "plugin=" + plugin +
+                ", cfgSpawner=" + cfgSpawner +
+                ", spawner=" + spawner +
+                ", configId='" + configId + '\'' +
+                ", id='" + id + '\'' +
+                ", icon=" + icon +
+                ", sound=" + sound +
+                ", effect=" + effect +
+                ", radius=" + radius +
+                ", teamSpawner=" + teamSpawner +
+                ", merge=" + merge +
+                ", split=" + split +
+                ", hologramEnabled=" + hologramEnabled +
+                ", hologramItem=" + hologramItem +
+                ", hologramText=" + hologramText +
+                ", tiers=" + tiers +
+                '}';
+    }
+
     public static class Tier implements com.pepedevs.dbedwars.api.game.spawner.DropType.Tier {
 
         private double delay;
@@ -266,6 +288,17 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
                 throw new AssertionError();
             }
         }
+
+        @Override
+        public String toString() {
+            return "Tier{" +
+                    "delay=" + delay +
+                    ", upgradeSound=" + upgradeSound +
+                    ", upgradeEffect=" + upgradeEffect +
+                    ", upgradeMessage='" + upgradeMessage + '\'' +
+                    ", drops=" + drops +
+                    '}';
+        }
     }
 
     public static class Drop implements com.pepedevs.dbedwars.api.game.spawner.DropType.Drop {
@@ -324,6 +357,16 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
             } catch (CloneNotSupportedException e) {
                 throw new AssertionError();
             }
+        }
+
+        @Override
+        public String toString() {
+            return "Drop{" +
+                    "key='" + key + '\'' +
+                    ", item=" + item +
+                    ", delay=" + delay +
+                    ", maxSpawn=" + maxSpawn +
+                    '}';
         }
     }
 }

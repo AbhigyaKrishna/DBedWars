@@ -12,4 +12,6 @@ public interface Upgrade {
     Team getTeam();
 
     Set<Consumer<Team>> getPermanentActions();
+
+    String toString();
 }
