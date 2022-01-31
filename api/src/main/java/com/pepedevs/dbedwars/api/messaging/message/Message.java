@@ -11,6 +11,20 @@ public abstract class Message {
     protected List<String> message;
     protected List<PlaceholderEntry> placeholders;
 
+    public static Message empty() {
+        return new Message("") {
+            @Override
+            public Component[] asComponent() {
+                return new Component[]{Component.empty()};
+            }
+
+            @Override
+            public Component[] asComponentWithPAPI(Player player) {
+                return new Component[]{Component.empty()};
+            }
+        };
+    }
+
     protected Message(String message, PlaceholderEntry... placeholders) {
         this.message = Collections.synchronizedList(new ArrayList<>());
         this.message.add(message);

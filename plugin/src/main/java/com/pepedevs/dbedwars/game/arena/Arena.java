@@ -22,6 +22,7 @@ import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
+import com.pepedevs.dbedwars.features.BedWarsFeatures;
 import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
@@ -258,10 +259,11 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public List<ArenaPlayer> getSpectators() {
+        // TODO: rework
         List<ArenaPlayer> players = new ArrayList<>();
-        for (ArenaPlayer player : this.getPlayers()) {
-            if (player.isSpectator()) players.add(player);
-        }
+//        for (ArenaPlayer player : this.getPlayers()) {
+//            if (player.isSpectator()) players.add(player);
+//        }
         return players;
     }
 
@@ -467,7 +469,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
             }
         }
 
-        this.plugin.getFeatureManager().runFeature("ArenaEndFireworkFeature", ArenaEndFireworkFeature.class, new Acceptor<ArenaEndFireworkFeature>() {
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.ARENA_END_FIREWORK_FEATURE, ArenaEndFireworkFeature.class, new Acceptor<ArenaEndFireworkFeature>() {
             @Override
             public boolean accept(ArenaEndFireworkFeature feature) {
                 feature.spawn(list.get(0).getTeam(), Arena.this);
@@ -499,7 +501,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public void addPlayer(Player player) {
-        ArenaPlayer arenaPlayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(player, this);
+        ArenaPlayer arenaPlayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(this.plugin, player, this);
         this.addPlayer(arenaPlayer);
     }
 
@@ -531,7 +533,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public void addPlayer(Player player, Team team) {
-        ArenaPlayer aPlayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(player, this);
+        ArenaPlayer aPlayer = new com.pepedevs.dbedwars.game.arena.ArenaPlayer(this.plugin, player, this);
         this.addPlayer(aPlayer);
     }
 
@@ -710,7 +712,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
         bed.getDrops().clear();
         bed.breakNaturally();
         event.getAffectedTeam().setBedBroken(true);
-        event.getDestroyer().addBedDestroy();
+        event.getDestroyer().getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS).increment();
         // TODO: Add more effect
         this.sendMessage(event.getBedBrokenMessages(), new Predicate<MessagingMember>() {
             @Override

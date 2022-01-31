@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.api.game;
 
 public enum DeathCause {
+
     ATTACK,
     FALL,
     VELOCITY,
@@ -15,4 +16,5 @@ public enum DeathCause {
     CRUSHED,
     UNKNOWN,
     ;
+
 }

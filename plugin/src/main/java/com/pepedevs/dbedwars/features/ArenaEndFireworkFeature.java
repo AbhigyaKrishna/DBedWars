@@ -12,7 +12,6 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Predicate;
 
@@ -20,15 +19,8 @@ public class ArenaEndFireworkFeature extends com.pepedevs.dbedwars.api.feature.c
 
     private final DBedwars plugin;
 
-    private FireworkEffectAT effect;
-
     public ArenaEndFireworkFeature(DBedwars plugin) {
         this.plugin = plugin;
-    }
-
-    @Override
-    public void loadFromConfig() {
-        this.effect = new FireworkEffectAT(FireworkEffect.Type.BALL, true, false, new ArrayList<>(), Collections.singletonList(Color.YELLOW));
     }
 
     @Override
@@ -43,11 +35,11 @@ public class ArenaEndFireworkFeature extends com.pepedevs.dbedwars.api.feature.c
 
     @Override
     public void spawn(Team winner, Arena arena) {
-        this.effect.addBaseColors(winner.getColor().getColor());
+        FireworkEffectAT effect = new FireworkEffectAT(FireworkEffect.Type.BALL, true, false, Collections.singletonList(winner.getColor().getColor()), Collections.singletonList(Color.YELLOW));
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (arena.getStatus() == ArenaStatus.ENDING) {
+                if (arena.getStatus() == ArenaStatus.ENDING && arena.getWorld() != null) {
                     for (ArenaPlayer player : arena.getPlayers()) {
                         if (player.isFinalKilled())
                             continue;
@@ -57,7 +49,7 @@ public class ArenaEndFireworkFeature extends com.pepedevs.dbedwars.api.feature.c
                                 return location.getY() > player.getPlayer().getLocation().getY() + 10;
                             }
                         });
-                        ArenaEndFireworkFeature.this.effect.spawn(loc);
+                        effect.spawn(loc);
                     }
                     ArenaEndFireworkFeature.this.plugin.getThreadHandler().runTaskLater(this, 40L);
                 }

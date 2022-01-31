@@ -1,50 +1,24 @@
 package com.pepedevs.dbedwars.api.game;
 
-import com.pepedevs.radium.utils.entity.UUIDPlayer;
 import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.api.messaging.member.PlayerMember;
+import com.pepedevs.dbedwars.api.objects.points.Points;
+import com.pepedevs.dbedwars.api.util.Key;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public interface ArenaPlayer extends PlayerMember {
 
     Arena getArena();
 
-    void setArena(Arena arena);
-
     Team getTeam();
 
     void setTeam(Team team);
 
-    boolean isSpectator();
-
-    void setSpectator(boolean spectator);
-
-    void addKill();
-
-    void setKill(int count);
-
-    int getKills();
-
-    void addFinalKills();
-
-    int getFinalKills();
-
-    void setFinalKills(int count);
-
-    void addDeath();
-
-    int getDeath();
-
-    void setDeath(int count);
-
-    void addBedDestroy();
-
-    short getBedDestroy();
-
-    void setBedDestroy(short bedDestroy);
+    Points getPoints();
 
     void kill(DeathCause reason);
 
@@ -52,7 +26,7 @@ public interface ArenaPlayer extends PlayerMember {
 
     void setFinalKilled(boolean flag);
 
-    UUIDPlayer getUUIDPlayer();
+    UUID getUUID();
 
     String getName();
 
@@ -60,20 +34,27 @@ public interface ArenaPlayer extends PlayerMember {
 
     void spawn(Location location);
 
+    boolean isHitTagged();
+
     ArenaPlayer getLastHitTagged();
 
-    void setLastHitTag(ArenaPlayer player);
-
-    Instant getLastHitTime();
-
-    void setLastHitTime(Instant instant);
+    void setLastHitTag(ArenaPlayer player, Instant instant);
 
     boolean isRespawning();
 
+    void setRespawning(boolean flag);
+
     ShopView getShopView();
 
-    void queueRespawn();
-
     String toString();
+
+    class PlayerPoints {
+
+        public static final Key<String> KILLS = Key.of("kills");
+        public static final Key<String> DEATH = Key.of("death");
+        public static final Key<String> BEDS = Key.of("beds");
+        public static final Key<String> FINAL_KILLS = Key.of("final_kills");
+
+    }
 
 }

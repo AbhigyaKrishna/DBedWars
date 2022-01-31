@@ -5,7 +5,9 @@ import com.google.common.collect.Multimap;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.BedWarsFeature;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.features.ArenaEndFireworkFeature;
+import com.pepedevs.dbedwars.features.DeathAnimationFeature;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.radium.utils.Acceptor;
 
@@ -15,7 +17,7 @@ import java.util.EnumMap;
 
 public class FeatureManager {
 
-    private final Multimap<String, BedWarsFeature> features = ArrayListMultimap.create();
+    private final Multimap<Key<String>, BedWarsFeature> features = ArrayListMultimap.create();
 
     private final DBedwars plugin;
 
@@ -25,21 +27,22 @@ public class FeatureManager {
 
     public void registerDefaults() {
         this.registerFeature(new ArenaEndFireworkFeature(this.plugin));
+        this.registerFeature(new DeathAnimationFeature(this.plugin));
     }
 
     public void registerFeature(BedWarsFeature feature) {
-        this.features.put(feature.getName(), feature);
+        this.features.put(feature.getKey(), feature);
     }
 
     public void unregisterFeature(BedWarsFeature feature) {
-        this.features.remove(feature.getName(), feature);
+        this.features.remove(Key.of(feature.getKey()), feature);
     }
 
-    public Collection<BedWarsFeature> unregisterAllFeature(String featureName) {
-        return this.features.removeAll(featureName);
+    public Collection<BedWarsFeature> unregisterAllFeature(Key<String> featureKey) {
+        return this.features.removeAll(featureKey);
     }
 
-    public Collection<BedWarsFeature> getFeature(String featureName) {
+    public Collection<BedWarsFeature> getFeature(Key<String> featureName) {
         return this.features.get(featureName);
     }
 
@@ -47,11 +50,11 @@ public class FeatureManager {
         return this.features.values();
     }
 
-    public boolean hasFeature(String featureName) {
+    public boolean hasFeature(Key<String> featureName) {
         return this.features.containsKey(featureName);
     }
 
-    public <T extends BedWarsFeature> void runFeature(String featureName, Class<T> type, Acceptor<T> trigger) {
+    public <T extends BedWarsFeature> void runFeature(Key<String> featureName, Class<T> type, Acceptor<T> trigger) {
         EnumMap<FeaturePriority, Collection<BedWarsFeature>> map = new EnumMap<>(FeaturePriority.class);
         for (BedWarsFeature feature : this.getFeature(featureName)) {
             if (!map.containsKey(feature.getPriority()) || map.get(feature.getPriority()) == null) {
@@ -65,7 +68,7 @@ public class FeatureManager {
                 for (BedWarsFeature feature : map.get(priority)) {
                     if (!feature.getClass().equals(type)) continue;
                     if (!feature.isEnabled()) continue;
-                    Debugger.debug("Running feature " + feature.getName() + " with priority " + priority.name());
+                    Debugger.debug("Running feature " + feature.getKey() + " with priority " + priority.name());
                     trigger.accept((T) feature);
                 }
             }

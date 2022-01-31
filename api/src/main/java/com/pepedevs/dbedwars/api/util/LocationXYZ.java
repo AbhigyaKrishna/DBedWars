@@ -3,6 +3,7 @@ package com.pepedevs.dbedwars.api.util;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class LocationXYZ implements Cloneable {
@@ -114,6 +115,10 @@ public class LocationXYZ implements Cloneable {
 
     public Location toBukkit(World world) {
         return new Location(world, this.x, this.y, this.z);
+    }
+
+    public void teleport(World world, Player player) {
+        player.teleport(this.toBukkit(world));
     }
 
     public Vector toVector() {

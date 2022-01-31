@@ -2,13 +2,14 @@ package com.pepedevs.dbedwars.api.feature.custom;
 
 import com.pepedevs.dbedwars.api.feature.BedWarsFeature;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
-import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.Team;
+import org.bukkit.entity.Player;
 
-public abstract class ArenaEndFireworkFeature extends BedWarsFeature {
+import java.util.Collection;
 
-    public ArenaEndFireworkFeature() {
-        super("ArenaEndFireworkFeature");
+public abstract class DeathAnimationFeature extends BedWarsFeature {
+
+    public DeathAnimationFeature() {
+        super("DeathAnimationFeature");
     }
 
     @Override
@@ -21,6 +22,6 @@ public abstract class ArenaEndFireworkFeature extends BedWarsFeature {
         return FeaturePriority.NORMAL;
     }
 
-    public abstract void spawn(Team winner, Arena arena);
+    public abstract void play(Player player, Collection<Player> viewers);
 
 }

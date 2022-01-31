@@ -35,6 +35,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class GameListener extends PluginHandler {
             return;
         }
 
-        if (player.isSpectator() || player.getTeam() == null) {
+        if (/*player.isSpectator() || */player.getTeam() == null) {
             event.setCancelled(true);
             return;
         }
@@ -228,7 +229,7 @@ public class GameListener extends PluginHandler {
         ArenaPlayer player = this.arena.getAsArenaPlayer((Player) event.getEntity()).orElse(null);
         if (player == null) return;
 
-        this.arena.getAsArenaPlayer((Player) event.getDamager()).ifPresent(player::setLastHitTag);
+        this.arena.getAsArenaPlayer((Player) event.getDamager()).ifPresent(ap -> player.setLastHitTag(ap, Instant.now()));
     }
 
     @EventHandler

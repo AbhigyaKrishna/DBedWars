@@ -1,20 +1,23 @@
 package com.pepedevs.dbedwars.api.feature;
 
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.Keyed;
 import com.pepedevs.radium.utils.Initializable;
 import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.radium.utils.Validable;
 
-public abstract class BedWarsFeature implements Initializable, Tickable, Validable {
+public abstract class BedWarsFeature implements Initializable, Tickable, Validable, Keyed<String> {
 
-    protected final String name;
+    protected final Key<String> key;
     protected boolean enabled = true;
 
-    public BedWarsFeature(String name) {
-        this.name = name;
+    public BedWarsFeature(String key) {
+        this.key = Key.of(key);
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public Key<String> getKey() {
+        return key;
     }
 
     public void load() {
