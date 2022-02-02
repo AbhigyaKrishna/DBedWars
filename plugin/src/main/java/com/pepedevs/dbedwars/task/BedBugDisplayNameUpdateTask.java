@@ -1,5 +1,8 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.api.util.Color;
+import com.pepedevs.radium.placeholders.Placeholder;
 import com.pepedevs.radium.task.Workload;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Team;
@@ -45,24 +48,21 @@ public class BedBugDisplayNameUpdateTask implements Workload {
                 silverfish.getMaxHealth(),
                 cfgBedBug.getHealthIndicatorCount(),
                 cfgBedBug.getHealthSymbol(),
-                ChatColor.getByChar(
-                        cfgBedBug
-                                .getHealthColorCodes()
-                                .split(":")[0]
-                                .replaceAll("%team_color%", String.valueOf(teamColor.getChar()))),
-                ChatColor.getByChar(
-                        cfgBedBug
-                                .getHealthColorCodes()
-                                .split(":")[1]
-                                .replaceAll("%team_color%", String.valueOf(teamColor.getChar())))));
+                Color.from()
+                ChatColor.getByChar(cfgBedBug
+                        .getHealthFilledColorCode()
+                        .replace("%team_color%", String.valueOf(teamColor.getChar()))),
+                ChatColor.getByChar(cfgBedBug
+                        .getHealthColorCodes()
+                        .split(":")[1]
+                        .replace("%team_color%", String.valueOf(teamColor.getChar())))));
     }
 
     private String displayNameParser() {
         String s = cfgBedBug.getBedBugDisplayName();
-        s =
-                s.replaceAll("%team_color%", "&" + teamColor.toString())
-                        .replaceAll("%time_left%", getTimeLeft() + "s")
-                        .replaceAll("%health_bar%", getHealthLeftString());
+        s = s.replace("%team_color%", "&" + teamColor.toString())
+                .replace("%time_left%", getTimeLeft() + "s")
+                .replace("%health_bar%", getHealthLeftString());
         return StringUtils.translateAlternateColorCodes(s);
     }
 

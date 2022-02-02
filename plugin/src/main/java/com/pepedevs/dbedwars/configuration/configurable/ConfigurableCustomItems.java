@@ -178,7 +178,7 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "fuse-ticks")
         private int fuseTicks;
 
-        private KnockBack knockBack;
+        private ConfigurableKnockBack knockBack;
 
         protected ConfigurableTNT() {
             name = "";
@@ -186,7 +186,7 @@ public class ConfigurableCustomItems implements Loadable {
             autoIgniteTNT = true;
             fixRandomExplosion = true;
             fuseTicks = 52;
-            knockBack = new KnockBack();
+            knockBack = new ConfigurableKnockBack();
             isBetterTNTAnimationEnabled = true;
         }
 
@@ -230,7 +230,7 @@ public class ConfigurableCustomItems implements Loadable {
             return name;
         }
 
-        public KnockBack getKnockBack() {
+        public ConfigurableKnockBack getKnockBack() {
             return knockBack;
         }
 
@@ -274,7 +274,7 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "explosion-fire")
         private boolean explosionFire;
 
-        private KnockBack knockBack;
+        private ConfigurableKnockBack knockBack;
 
         protected ConfigurableFireball() {
             displayName = "";
@@ -289,7 +289,7 @@ public class ConfigurableCustomItems implements Loadable {
 
         @Override
         public Loadable load(ConfigurationSection section) {
-            knockBack = new KnockBack();
+            knockBack = new ConfigurableKnockBack();
             knockBack.load(section.getConfigurationSection("knockback"));
             return this.loadEntries(section);
         }
@@ -324,7 +324,7 @@ public class ConfigurableCustomItems implements Loadable {
             return speedMultiplier;
         }
 
-        public KnockBack getKnockBack() {
+        public ConfigurableKnockBack getKnockBack() {
             return knockBack;
         }
 
@@ -716,8 +716,11 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "health-symbol")
         private String healthSymbol;
 
-        @LoadableEntry(key = "health-color-codes")
-        private String healthColorCodes;
+        @LoadableEntry(key = "health-filled-color-code")
+        private String healthFilledColorCode;
+
+        @LoadableEntry(key = "health-missing-color-code")
+        private String healthMissingColorCode;
 
         @LoadableEntry(key = "health-indicator-count")
         private int healthIndicatorCount;
@@ -731,9 +734,10 @@ public class ConfigurableCustomItems implements Loadable {
         public ConfigurableBedBug() {
             itemName = "Snowball";
             itemLore = new ArrayList<>();
-            bedBugDisplayName = "&0[ %health_bar% &0]";
+            bedBugDisplayName = "<black>[ <health_bar> ]";
             healthSymbol = "⏹ ";
-            healthColorCodes = "%team_color%:8";
+            healthFilledColorCode = "<team_color>";
+            healthMissingColorCode = "<dark_gray>";
             healthIndicatorCount = 5;
             bedBugPotionEffects = new ArrayList<>();
             ticksUntilDespawn = 300;
@@ -774,8 +778,12 @@ public class ConfigurableCustomItems implements Loadable {
             return itemLore;
         }
 
-        public String getHealthColorCodes() {
-            return healthColorCodes;
+        public String getHealthFilledColorCode() {
+            return healthFilledColorCode;
+        }
+
+        public String getHealthMissingColorCode() {
+            return healthMissingColorCode;
         }
 
         public String getHealthSymbol() {
@@ -846,7 +854,7 @@ public class ConfigurableCustomItems implements Loadable {
         }
     }
 
-    public static class KnockBack implements Loadable {
+    public static class ConfigurableKnockBack implements Loadable {
 
         @LoadableEntry(key = "enabled")
         private boolean enabled;
@@ -863,7 +871,7 @@ public class ConfigurableCustomItems implements Loadable {
         @LoadableEntry(key = "horizontal-force")
         private double horizontalForce;
 
-        protected KnockBack() {
+        protected ConfigurableKnockBack() {
             enabled = true;
             radiusEntities = 3;
             distanceModifier = 16;

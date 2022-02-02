@@ -25,10 +25,9 @@ import java.util.Random;
 
 public class TNTItem extends PluginActionItem {
 
-    public static final FixedMetadataValue TNT_PRIMED_META =
-            new FixedMetadataValue(DBedwars.getInstance(), true);
+    public static final FixedMetadataValue TNT_PRIMED_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
-    private final ConfigurableCustomItems.KnockBack cfgKB;
+    private final ConfigurableCustomItems.ConfigurableKnockBack cfgKB;
 
     public TNTItem(DBedwars plugin) {
         super(
@@ -41,65 +40,32 @@ public class TNTItem extends PluginActionItem {
     }
 
     @Override
-    public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onTNTPlace(BlockPlaceEvent event) {
-        if (!cfgTNT.isAutoIgniteTNTEnabled()) {
-            return;
-        }
-        event.getBlockPlaced().setType(Material.AIR);
-        TNTPrimed tntPrimed =
-                event.getPlayer()
-                        .getWorld()
-                        .spawn(
-                                event.getBlockPlaced().getLocation().add(0.5, 0, 0.5),
-                                TNTPrimed.class);
-        tntPrimed.setFuseTicks(cfgTNT.getFuseTicks());
-        if (!cfgTNT.isBetterTNTAnimationEnabled()) {
-            return;
-        }
-        tntPrimed.setVelocity(
-                VectorUtils.rotateAroundAxisY(
-                        new Vector(0.01, 0.40, 0.01), new Random().nextInt(360)));
-        tntPrimed.setMetadata("isDBedwarsTNT", TNT_PRIMED_META);
+
     }
 
     public void onTNTExplode(EntityExplodeEvent event) {
         if (cfgTNT.isFixRandomExplosionEnabled()) {
-            event.getEntity()
-                    .teleport(
-                            event.getEntity()
-                                    .getLocation()
-                                    .clone()
-                                    .getBlock()
-                                    .getLocation()
-                                    .add(0.5, 0, 0.5));
+            event.getEntity().teleport(event.getEntity().getLocation().getBlock().getLocation().add(0.5, 0, 0.5));
         }
         double radius = cfgTNT.getKnockBack().getRadiusEntities();
-        List<Entity> nearbyEntities =
-                (List<Entity>)
-                        event.getLocation()
-                                .getWorld()
-                                .getNearbyEntities(event.getLocation(), radius, radius, radius);
+        List<Entity> nearbyEntities = (List<Entity>) event.getLocation().getWorld().getNearbyEntities(event.getLocation(), radius, radius, radius);
         for (Entity entity : nearbyEntities) {
-            if (entity instanceof LivingEntity)
-                giveKB((LivingEntity) entity, event.getLocation(), event);
+            if (entity instanceof LivingEntity) giveKB((LivingEntity) entity, event.getLocation(), event);
         }
     }
 
     private void giveKB(LivingEntity player, Location fbl, EntityExplodeEvent e) {
-        if (!cfgKB.isEnabled()) {
-            return;
-        }
+        if (!cfgKB.isEnabled()) return;
         Location loc = player.getLocation();
         double distance = (e.getYield() * cfgTNT.getKnockBack().getDistanceModifier());
         distance *= 1.0D;
         double hf = cfgTNT.getKnockBack().getHeightForce() / 2.0D;
         double rf = cfgTNT.getKnockBack().getHorizontalForce() / 2.0D;
-        player.setVelocity(
-                fbl.toVector().subtract(loc.toVector()).normalize().multiply(-1.0D * rf).setY(hf));
-        if (player instanceof org.bukkit.entity.Player) {
+        player.setVelocity(fbl.toVector().subtract(loc.toVector()).normalize().multiply(-1.0D * rf).setY(hf));
+        if (player instanceof Player) {
             EntityDamageEvent DamageEvent =
                     new EntityDamageEvent(
                             player,

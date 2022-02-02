@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.api.nms;
 
+import org.bukkit.entity.Silverfish;
+
 public interface IBedBug {
 
     IBedBug clearDefaultPathfinding();
@@ -9,4 +11,6 @@ public interface IBedBug {
     IBedBug initTargets(double reachModifier);
 
     IBedBug setChaseRadius(float radius);
+
+    Silverfish getSilverFish();
 }

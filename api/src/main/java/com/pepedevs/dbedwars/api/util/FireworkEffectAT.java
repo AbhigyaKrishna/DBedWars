@@ -6,6 +6,8 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.permissions.PermissionAttachment;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -81,6 +83,7 @@ public class FireworkEffectAT {
         return builder.build().getFadeColors();
     }
 
+    @Contract
     public void setType(FireworkEffect.Type type) {
         builder.with(type);
     }

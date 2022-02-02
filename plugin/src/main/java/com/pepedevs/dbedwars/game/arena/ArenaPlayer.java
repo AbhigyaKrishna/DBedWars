@@ -14,7 +14,7 @@ import com.pepedevs.dbedwars.api.objects.points.IntegerCount;
 import com.pepedevs.dbedwars.api.objects.points.Points;
 import com.pepedevs.dbedwars.cache.InventoryBackup;
 import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.dbedwars.features.BedWarsFeatures;
+import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.task.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;

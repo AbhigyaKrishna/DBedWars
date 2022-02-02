@@ -6,8 +6,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.BedWarsFeature;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
 import com.pepedevs.dbedwars.api.util.Key;
-import com.pepedevs.dbedwars.features.ArenaEndFireworkFeature;
-import com.pepedevs.dbedwars.features.DeathAnimationFeature;
+import com.pepedevs.dbedwars.features.*;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.radium.utils.Acceptor;
 
@@ -28,6 +27,13 @@ public class FeatureManager {
     public void registerDefaults() {
         this.registerFeature(new ArenaEndFireworkFeature(this.plugin));
         this.registerFeature(new DeathAnimationFeature(this.plugin));
+        this.registerFeature(new BedBugChaseFeature(this.plugin));
+        this.registerFeature(new BedBugDisplayNameUpdateFeature(this.plugin));
+        this.registerFeature(new DreamDefenderChaseFeature(this.plugin));
+        this.registerFeature(new DreamDefenderDisplayNameUpdateFeature(this.plugin));
+        this.registerFeature(new FireballLaunchFeature(this.plugin));
+        this.registerFeature(new SpongePlaceFeature(this.plugin));
+        this.registerFeature(new TNTPlaceFeature(this.plugin));
     }
 
     public void registerFeature(BedWarsFeature feature) {

@@ -22,7 +22,7 @@ import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
-import com.pepedevs.dbedwars.features.BedWarsFeatures;
+import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;

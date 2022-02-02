@@ -1,57 +1,42 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.radium.task.Workload;
 import com.pepedevs.radium.utils.xseries.XBlock;
-import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.Arena;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 
 public class BridgeEggWorkloadTask implements Workload {
 
     private final DBedwars plugin;
-    private final int keepAliveTimeout;
-    private final double maxEggDistance;
-    private final Player player;
-    private final Projectile egg;
-    private final double maxDownStack;
-    private final double minDistanceToStartPlacingBlocks;
-    private final DyeColor dyeColor;
+    private final Egg egg;
     private final BlockFace[] faces;
-    private final Arena arena;
+    private final ConfigurableCustomItems.ConfigurableBridgeEgg cfg;
+    private final ArenaPlayer arenaPlayer;
     private int tick;
     private long timestamp;
     private Block lastBlock;
 
     public BridgeEggWorkloadTask(
             DBedwars plugin,
-            Arena arena,
-            Player player,
-            DyeColor dyeColor,
-            Projectile egg,
-            double minDistanceToPlaceBlocks,
-            int ticksToKeepEggAliveFor,
-            double distanceToKeepEggAliveFor,
-            double maxDownStack,
-            boolean flipBridge) {
+            ArenaPlayer arenaPlayer,
+            Egg egg,
+            ConfigurableCustomItems.ConfigurableBridgeEgg cfg) {
         this.plugin = plugin;
-        this.arena = arena;
+        this.cfg = cfg;
+        this.arenaPlayer = arenaPlayer;
         tick = 0;
-        keepAliveTimeout = ticksToKeepEggAliveFor;
-        maxEggDistance = distanceToKeepEggAliveFor;
-        this.player = player;
         this.egg = egg;
-        this.maxDownStack = maxDownStack;
-        this.minDistanceToStartPlacingBlocks = minDistanceToPlaceBlocks;
-        this.dyeColor = dyeColor;
         this.lastBlock = null;
-        faces = getDirection(player, flipBridge);
+        faces = this.getDirection(arenaPlayer.getPlayer(), cfg.isFlipBridgeEnabled());
     }
 
     @Override
@@ -60,9 +45,10 @@ public class BridgeEggWorkloadTask implements Workload {
         tick++;
         Location eggLocation = egg.getLocation().clone();
         Block block = eggLocation.subtract(0, 2, 0).getBlock();
-        placeBlock(block, dyeColor);
-        placeBlock(block.getRelative(faces[0]), dyeColor);
-        placeBlock(block.getRelative(faces[1]), dyeColor);
+        DyeColor color = arenaPlayer.getTeam().getColor().getDyeColor();
+        placeBlock(block, color);
+        placeBlock(block.getRelative(faces[0]), color);
+        placeBlock(block.getRelative(faces[1]), color);
     }
 
     @Override
@@ -70,13 +56,13 @@ public class BridgeEggWorkloadTask implements Workload {
         if (egg.isDead()) {
             return false;
         }
-        if (tick >= keepAliveTimeout) {
+        if (tick >= cfg.getKeepAliveTimeOut()) {
             return false;
         }
-        if (player.getLocation().distance(egg.getLocation()) >= maxEggDistance) {
+        if (this.arenaPlayer.getPlayer().getLocation().distance(egg.getLocation()) >= cfg.getMaxDistanceFromPlayer()) {
             return false;
         }
-        return !(player.getLocation().getY() - egg.getLocation().getY() >= maxDownStack);
+        return !(this.arenaPlayer.getPlayer().getLocation().getY() - egg.getLocation().getY() >= cfg.getMaxDownStack());
     }
 
     @Override
@@ -88,29 +74,28 @@ public class BridgeEggWorkloadTask implements Workload {
         if (egg.isDead()) {
             return false;
         }
-        if (tick >= keepAliveTimeout) {
+        if (tick >= cfg.getKeepAliveTimeOut()) {
             return false;
         }
-        if (player.getLocation().distance(egg.getLocation()) <= minDistanceToStartPlacingBlocks) {
+        if (this.arenaPlayer.getPlayer().getLocation().distance(egg.getLocation()) <= cfg.getMinDistanceFromPlayer()) {
             return false;
         }
-        if (player.getLocation().distance(egg.getLocation()) >= maxEggDistance) {
+        if (this.arenaPlayer.getPlayer().getLocation().distance(egg.getLocation()) >= cfg.getMaxDistanceFromPlayer()) {
             return false;
         }
-        return !(player.getLocation().getY() - egg.getLocation().getY() >= maxDownStack);
+        return !(this.arenaPlayer.getPlayer().getLocation().getY() - egg.getLocation().getY() >= cfg.getMaxDownStack());
     }
 
     private void placeBlock(Block block, DyeColor dyeColor) {
         if (block.getType() == Material.AIR) {
-            plugin.getThreadHandler()
-                    .submitSync(
-                            () -> {
-                                arena.setBlock(block, Material.WOOL);
-                                block.getWorld()
-                                        .playSound(
-                                                block.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                                XBlock.setColor(block, dyeColor);
-                            });
+            plugin.getThreadHandler().submitSync(new Runnable() {
+                @Override
+                public void run() {
+                    BridgeEggWorkloadTask.this.arenaPlayer.getArena().setBlock(block, Material.WOOL);
+                    block.getWorld().playSound(block.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+                    XBlock.setColor(block, dyeColor);
+                }
+            });
         }
     }
 
@@ -186,9 +171,10 @@ public class BridgeEggWorkloadTask implements Workload {
     public void placeEggBlock(Block block) {
         skipBlockFill(block);
         if (block.getType() == Material.AIR) {
-            placeBlock(block, dyeColor);
-            placeBlock(block.getRelative(faces[0]), dyeColor);
-            placeBlock(block.getRelative(faces[1]), dyeColor);
+            DyeColor color = arenaPlayer.getTeam().getColor().getDyeColor();
+            placeBlock(block, color);
+            placeBlock(block.getRelative(faces[0]), color);
+            placeBlock(block.getRelative(faces[1]), color);
         }
     }
 }

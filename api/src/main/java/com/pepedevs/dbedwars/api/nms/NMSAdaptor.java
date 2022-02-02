@@ -28,9 +28,9 @@ public interface NMSAdaptor {
 
     IVillager spawnNPCVillager(Location location);
 
-    IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer);
+    IGolem getBedwarsGolem(IronGolem golem, Team spawningTeam);
 
-    IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
+    IBedBug getAsBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
 
     void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data);
 

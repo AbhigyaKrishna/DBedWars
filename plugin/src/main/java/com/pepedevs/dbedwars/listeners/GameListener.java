@@ -362,14 +362,9 @@ public class GameListener extends PluginHandler {
         Entity entity = event.getEntity();
 
         if (event.getEntityType() == EntityType.SNOWBALL) {
-            if (entity.hasMetadata("isDBedWarsBedBugBall")
-                    && entity.getMetadata("isDBedWarsBedBugBall")
-                            .contains(BedBugSnowball.BED_BUG_BALL_META)) {
-                ((BedBugSnowball)
-                                ((DBedwars) this.getPlugin())
-                                        .getCustomItemHandler()
-                                        .getItem("BED_BUG"))
-                        .onLand(event);
+            if (entity.hasMetadata("isDBedWarsBedBugBall") &&
+                    entity.getMetadata("isDBedWarsBedBugBall").contains(BedBugSnowball.BED_BUG_BALL_META)) {
+                ((BedBugSnowball) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("BED_BUG")).onLand(event);
             }
         }
     }

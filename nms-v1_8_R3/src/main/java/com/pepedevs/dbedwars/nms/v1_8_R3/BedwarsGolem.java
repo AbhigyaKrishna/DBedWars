@@ -15,10 +15,10 @@ public class BedwarsGolem implements IGolem {
     private final Team spawningPlayerTeam;
     private float radius;
 
-    public BedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer) {
+    public BedwarsGolem(IronGolem golem, Team spawningPlayerTeam) {
         this.golem = ((CraftIronGolem) golem).getHandle();
-        this.radius = chaseRadius;
-        this.spawningPlayerTeam = spawningPlayer.getTeam();
+        this.radius = 32;
+        this.spawningPlayerTeam = spawningPlayerTeam;
     }
 
     @Override

@@ -110,12 +110,12 @@ public class NMSUtils implements NMSAdaptor {
     }
 
     @Override
-    public IGolem getBedwarsGolem(IronGolem golem, float chaseRadius, ArenaPlayer spawningPlayer) {
-        return new BedwarsGolem(golem, chaseRadius, spawningPlayer);
+    public IGolem getBedwarsGolem(IronGolem golem, Team spawningPlayerTeam) {
+        return new BedwarsGolem(golem, spawningPlayerTeam);
     }
 
     @Override
-    public IBedBug getBedwarsBedBug(Silverfish bedBug, Team spawningTeam) {
+    public IBedBug getAsBedwarsBedBug(Silverfish bedBug, Team spawningTeam) {
         return new BedwarsBedBug(bedBug, spawningTeam);
     }
 

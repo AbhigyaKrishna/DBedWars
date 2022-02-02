@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.structure;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.struture.DirectionalStructure;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -17,7 +17,7 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     private int blocksPerSecond;
     private Block centre;
-    private XMaterial baseMat;
+    private final XMaterial baseMat;
 
     public PopupTowerStructure(Block centre, XMaterial baseMat) {
 
@@ -31,48 +31,19 @@ public class PopupTowerStructure implements DirectionalStructure {
     }
 
     @Override
-    public Map<Block, XMaterial> getNorthBlocks() {
-        return new LinkedHashMap<>(northBlocks);
-    }
-
-    @Override
-    public void setNorthBlocks(Map<Block, XMaterial> blocks) {
-        this.northBlocks = blocks;
-    }
-
-    @Override
-    public Map<Block, XMaterial> getWestBlocks() {
-        return new LinkedHashMap<>(westBlocks);
-    }
-
-    @Override
-    public void setWestBlocks(Map<Block, XMaterial> blocks) {
-        this.westBlocks = blocks;
-    }
-
-    @Override
-    public Map<Block, XMaterial> getEastBlocks() {
-        return new LinkedHashMap<>(eastBlocks);
-    }
-
-    @Override
-    public void setEastBlocks(Map<Block, XMaterial> blocks) {
-        this.eastBlocks = blocks;
-    }
-
-    @Override
-    public Map<Block, XMaterial> getSouthBlocks() {
-        return new LinkedHashMap<>(southBlocks);
-    }
-
-    @Override
-    public void setSouthBlocks(Map<Block, XMaterial> blocks) {
-        this.southBlocks = blocks;
-    }
-
-    @Override
     public Map<Block, XMaterial> getBlocks(BlockFace face) {
-        return null;
+        switch (face) {
+            case NORTH:
+                return new LinkedHashMap<>(this.northBlocks);
+            case EAST:
+                return new LinkedHashMap<>(this.eastBlocks);
+            case WEST:
+                return new LinkedHashMap<>(this.westBlocks);
+            case SOUTH:
+                return new LinkedHashMap<>(this.southBlocks);
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -94,12 +65,12 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     @Override
     public Map<Block, XMaterial> getBlocks() {
-        return getNorthBlocks();
+        return getBlocks(BlockFace.NORTH);
     }
 
     @Override
     public void setBlocks(Map<Block, XMaterial> blocks) {
-        setNorthBlocks(blocks);
+        setBlocks(BlockFace.NORTH, blocks);
     }
 
     @Override
@@ -136,14 +107,6 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     private void initWestBlocks() {
         this.westBlocks = PopupTowerBlocks.getWestBlocks(this.centre, this.baseMat);
-    }
-
-    public XMaterial getBaseMat() {
-        return baseMat;
-    }
-
-    public void setBaseMat(XMaterial baseMat) {
-        this.baseMat = baseMat;
     }
 
     private static class PopupTowerBlocks {

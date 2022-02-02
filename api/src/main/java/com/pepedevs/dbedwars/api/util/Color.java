@@ -290,6 +290,10 @@ public enum Color {
         return Optional.empty();
     }
 
+    public static Color config() {
+
+    }
+
     public static Color[] getValues() {
         if (values == null) values = values();
         return values();

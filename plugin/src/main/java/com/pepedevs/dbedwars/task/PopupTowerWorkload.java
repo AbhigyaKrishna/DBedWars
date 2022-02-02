@@ -1,15 +1,15 @@
 package com.pepedevs.dbedwars.task;
 
+import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.game.Arena;
+import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.util.SoundVP;
+import com.pepedevs.dbedwars.item.PopupTowerChestItem;
 import com.pepedevs.radium.particles.ParticleBuilder;
 import com.pepedevs.radium.task.Workload;
 import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.radium.utils.xseries.XBlock;
 import com.pepedevs.radium.utils.xseries.XMaterial;
-import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.Arena;
-import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.util.SoundVP;
-import com.pepedevs.dbedwars.item.PopupTowerChestItem;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,38 +40,40 @@ public class PopupTowerWorkload implements Workload {
             SoundVP soundVP,
             ParticleBuilder particleWithoutLocation,
             Block chest,
-            ArenaPlayer player,
+            Team team,
             int blocksPerTick) {
         this.material = material;
         this.sound = soundVP;
         this.particle = particleWithoutLocation;
         this.chest = chest;
-        this.color = player.getTeam().getColor().getDyeColor();
+        this.color = team.getColor().getDyeColor();
         this.blocksPerTick = blocksPerTick;
         this.face = (((Directional) chest.getState().getData()).getFacing().getOppositeFace());
-        this.arena = player.getArena();
+        this.arena = team.getArena();
         initBlockMap();
     }
 
     private void initBlockMap() {
         this.blockMap = new LinkedHashMap<>();
         switch (face) {
-            case EAST:
+            case EAST: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getEastBlocks(chest, material);
                 break;
-            case WEST:
+            }
+            case WEST: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getWestBlocks(chest, material);
                 break;
-            case NORTH:
-                this.blockMap =
-                        PopupTowerChestItem.PopupTowerBlocks.getNorthBlocks(chest, material);
+            }
+            case NORTH: {
+                this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getNorthBlocks(chest, material);
                 break;
-            case SOUTH:
-                this.blockMap =
-                        PopupTowerChestItem.PopupTowerBlocks.getSouthBlocks(chest, material);
+            }
+            case SOUTH: {
+                this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getSouthBlocks(chest, material);
                 break;
+            }
         }
-        blocks = blockMap.keySet().toArray(new Block[0]);
+        this.blocks = blockMap.keySet().toArray(new Block[0]);
     }
 
     @Override

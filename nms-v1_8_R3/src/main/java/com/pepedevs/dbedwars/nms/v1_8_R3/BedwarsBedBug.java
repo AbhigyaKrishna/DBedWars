@@ -47,6 +47,11 @@ public class BedwarsBedBug implements IBedBug {
         return this;
     }
 
+    @Override
+    public Silverfish getSilverFish() {
+        return (Silverfish) this.bedBug;
+    }
+
     private static class PathFindingNearestAttackableTarget<T extends EntityLiving>
             extends PathfinderGoalNearestAttackableTarget<T> {
 
