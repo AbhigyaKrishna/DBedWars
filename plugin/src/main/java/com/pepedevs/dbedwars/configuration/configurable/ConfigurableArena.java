@@ -2,6 +2,8 @@ package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
+import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.utils.configuration.Configurable;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableCollectionEntry;
@@ -25,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ConfigurableArena implements Configurable {
+public class ConfigurableArena implements Configurable, PropertySerializable {
 
     private Arena arena;
 
@@ -252,4 +254,28 @@ public class ConfigurableArena implements Configurable {
                 ", override=" + override +
                 '}';
     }
+
+    @Override
+    public NamedProperties toProperties() {
+        return NamedProperties
+                .builder()
+                .add("name", identifier)
+                .add("enabled", enabled)
+                .add("world-environment", ConfigurationUtils.matchEnum(worldEnv, World.Environment.values()))
+                .add("icon", icon)
+                .add("lobby", NamedProperties.builder()
+                        .add("location", LocationXYZYP.valueOf(lobbyLoc))
+                        .add("corner1", LocationXYZ.valueOf(lobbyPosMax))
+                        .add("corner2", LocationXYZ.valueOf(lobbyPosMin))
+                        .build()
+                )
+                .add("spectatorLocation", LocationXYZYP.valueOf(spectatorLocation))
+                .add("playersInTeam", playerInTeam)
+                .add("minPlayersToStart", minPlayers)
+                .add("customName", customName)
+                .add("teams", teams)
+                .add("spawners", spawners)
+                .build();
+    }
+
 }

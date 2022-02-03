@@ -225,7 +225,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
             this.upgradeEffect = tiers.getUpgradeEffect();
             this.upgradeMessage = tiers.getMessage();
             this.drops = new HashMap<>();
-            for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableDrop> entry : tiers.getActions().entrySet()) {
+            for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop> entry : tiers.getActions().entrySet()) {
                 this.drops.put(entry.getKey(), new Drop(entry.getValue()));
             }
         }
@@ -308,7 +308,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
         private double delay;
         private int maxSpawn;
 
-        public Drop(ConfigurableItemSpawner.ConfigurableDrop a) {
+        public Drop(ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop a) {
             this.key = a.getKey();
             this.item = a.getMaterial();
             this.delay = a.getDelay();

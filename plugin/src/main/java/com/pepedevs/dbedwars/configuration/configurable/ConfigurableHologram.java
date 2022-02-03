@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
+import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
+import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,7 +82,7 @@ public class ConfigurableHologram implements Loadable {
         }
     }
 
-    public static class ConfigurableBabyHologram implements Loadable {
+    public static class ConfigurableBabyHologram implements Loadable, PropertySerializable {
 
         @LoadableEntry(key = "degree-rotated-per-cycle")
         private double degreeRotatedPerCycle;
@@ -140,6 +142,16 @@ public class ConfigurableHologram implements Loadable {
                     ", ticksPerAnimationCycle=" + ticksPerAnimationCycle +
                     ", slowAtEndEnabled=" + slowAtEndEnabled +
                     '}';
+        }
+
+        @Override
+        public NamedProperties toProperties() {
+            return NamedProperties.builder()
+                    .add("degreeRotatedPerCycle", degreeRotatedPerCycle)
+                    .add("verticalBobbingPerCycle", verticalDisplacement)
+                    .add("ticksPerAnimationCycle", ticksPerAnimationCycle)
+                    .add("easeInOut", slowAtEndEnabled)
+                    .build();
         }
     }
 

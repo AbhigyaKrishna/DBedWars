@@ -29,6 +29,13 @@ public class Trap implements com.pepedevs.dbedwars.api.game.Trap {
         this.parseTrapAction();
     }
 
+    public static Trap fromConfig(ConfigurableTrap config) {
+        for (ConfigurableTrap.ConfigurableTrapAction action : config.getTrapActions()) {
+            for (String executable : action.getExecutables()) {
+            }
+        }
+    }
+
     @Override
     public void trigger(ArenaPlayer target, Team team) {
         for (Map.Entry<TrapEnum.TargetType, Set<Consumer<ArenaPlayer>>> entry : this.actions.entrySet()) {

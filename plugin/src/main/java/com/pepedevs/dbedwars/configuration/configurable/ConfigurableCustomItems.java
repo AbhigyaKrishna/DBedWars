@@ -801,7 +801,8 @@ public class ConfigurableCustomItems implements Loadable {
                     ", itemLore=" + itemLore +
                     ", bedBugDisplayName='" + bedBugDisplayName + '\'' +
                     ", healthSymbol='" + healthSymbol + '\'' +
-                    ", healthColorCodes='" + healthColorCodes + '\'' +
+                    ", healthFilledColorCode='" + healthFilledColorCode + '\'' +
+                    ", healthMissingColorCode='" + healthMissingColorCode + '\'' +
                     ", healthIndicatorCount=" + healthIndicatorCount +
                     ", bedBugPotionEffects=" + bedBugPotionEffects +
                     ", ticksUntilDespawn=" + ticksUntilDespawn +

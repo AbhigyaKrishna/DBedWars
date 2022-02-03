@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
+import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
+import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
@@ -14,7 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
 
-public class ConfigurableItemSpawner implements Loadable {
+public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
     private final DBedwars plugin;
 
@@ -162,7 +164,7 @@ public class ConfigurableItemSpawner implements Loadable {
         return this.dropType;
     }
 
-    public static class ConfigurableTiers implements Loadable {
+    public static class ConfigurableTiers implements Loadable, PropertySerializable {
 
         private String key;
 
@@ -246,6 +248,90 @@ public class ConfigurableItemSpawner implements Loadable {
         }
 
         @Override
+        public NamedProperties toProperties() {
+            return NamedProperties.builder()
+                    .add("key", key)
+                    .add("time", seconds)
+                    .add("upgradeEffect", upgradeEffect)
+                    .add("upgradeSound", upgradeSound)
+                    .add("message", message)
+                    .add("actions", actions)
+                    .build();
+        }
+
+        public static class ConfigurableDrop implements Loadable, PropertySerializable {
+
+            private String key;
+
+            @LoadableEntry(key = "material")
+            private String material;
+
+            @LoadableEntry(key = "delay")
+            private double delay;
+
+            @LoadableEntry(key = "limit")
+            private int limit;
+
+            protected ConfigurableDrop(String key) {
+                this.key = key;
+                this.delay = -1;
+                this.limit = -1;
+            }
+
+            @Override
+            public Loadable load(ConfigurationSection section) {
+                return this.loadEntries(section);
+            }
+
+            @Override
+            public boolean isValid() {
+                return this.material != null
+                        && XMaterial.matchXMaterial(this.material.split(":")[0]).isPresent();
+            }
+
+            @Override
+            public boolean isInvalid() {
+                return !this.isValid();
+            }
+
+            public String getKey() {
+                return key;
+            }
+
+            public BwItemStack getMaterial() {
+                return ConfigurationUtils.parseItem(this.material);
+            }
+
+            public double getDelay() {
+                return this.delay;
+            }
+
+            public int getLimit() {
+                return this.limit;
+            }
+
+            @Override
+            public String toString() {
+                return "ConfigurableDrop{" +
+                        "key='" + key + '\'' +
+                        ", material='" + material + '\'' +
+                        ", delay=" + delay +
+                        ", limit=" + limit +
+                        '}';
+            }
+
+            @Override
+            public NamedProperties toProperties() {
+                return NamedProperties.builder()
+                        .add("key", key)
+                        .add("material", ConfigurationUtils.parseItem(this.material))
+                        .add("delay", delay)
+                        .add("limit", limit)
+                        .build();
+            }
+        }
+
+        @Override
         public String toString() {
             return "ConfigurableTiers{" +
                     "key='" + key + '\'' +
@@ -254,68 +340,6 @@ public class ConfigurableItemSpawner implements Loadable {
                     ", upgradeSound='" + upgradeSound + '\'' +
                     ", message='" + message + '\'' +
                     ", actions=" + actions +
-                    '}';
-        }
-    }
-
-    public static class ConfigurableDrop implements Loadable {
-
-        private String key;
-
-        @LoadableEntry(key = "material")
-        private String material;
-
-        @LoadableEntry(key = "delay")
-        private double delay;
-
-        @LoadableEntry(key = "limit")
-        private int limit;
-
-        protected ConfigurableDrop(String key) {
-            this.key = key;
-            this.delay = -1;
-            this.limit = -1;
-        }
-
-        @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
-        }
-
-        @Override
-        public boolean isValid() {
-            return this.material != null
-                    && XMaterial.matchXMaterial(this.material.split(":")[0]).isPresent();
-        }
-
-        @Override
-        public boolean isInvalid() {
-            return !this.isValid();
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public BwItemStack getMaterial() {
-            return ConfigurationUtils.parseItem(this.material);
-        }
-
-        public double getDelay() {
-            return this.delay;
-        }
-
-        public int getLimit() {
-            return this.limit;
-        }
-
-        @Override
-        public String toString() {
-            return "ConfigurableDrop{" +
-                    "key='" + key + '\'' +
-                    ", material='" + material + '\'' +
-                    ", delay=" + delay +
-                    ", limit=" + limit +
                     '}';
         }
     }
@@ -340,5 +364,27 @@ public class ConfigurableItemSpawner implements Loadable {
                 ", tiers=" + tiers +
                 ", dropType=" + dropType +
                 '}';
+    }
+
+    @Override
+    public NamedProperties toProperties() {
+        return NamedProperties
+                .builder()
+                .add("id", id)
+                .add("icon", icon)
+                .add("spawnSound", SoundVP.valueOf(spawnSound))
+                .add("spawnEffect", spawnEffect)
+                .add("radius", radius)
+                .add("merge", merge)
+                .add("split", split)
+                .add("timedUpgrade", timedUpgrade)
+                .add("teamSpawner", teamSpawner)
+                .add("hologram", NamedProperties.builder()
+                        .add("enabled", hologramEnabled)
+                        .add("material", hologramMaterial)
+                        .add("text", hologramText)
+                        .build())
+                .add("tiers", tiers)
+                .build();
     }
 }

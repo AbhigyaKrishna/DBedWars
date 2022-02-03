@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
+import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
+import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.dbedwars.DBedwars;
@@ -13,7 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurableArenaOverride implements Loadable {
+public class ConfigurableArenaOverride implements Loadable, PropertySerializable {
 
     private static final String SECTION_KEY = "override";
 
@@ -52,6 +54,11 @@ public class ConfigurableArenaOverride implements Loadable {
     public void apply(Arena arena) {
         this.spawnerOverride.apply(arena);
         this.configOverride.apply(arena);
+    }
+
+    @Override
+    public NamedProperties toProperties() {
+        return null;
     }
 
     public class SpawnerOverride implements Loadable {
@@ -93,94 +100,49 @@ public class ConfigurableArenaOverride implements Loadable {
         public void apply(Arena arena) {
             for (ConfigurableItemSpawner s : this.spawners) {
                 if (s.getId() == null) continue;
-
                 SoundVP sound = s.getSpawnSound();
                 ParticleEffect effect = s.getSpawnEffect();
-
                 for (DropType d : arena.getSettings().getDrops().asMap().keySet()) {
-                    if (d.getId().equals(s.getId())) {
-                        if (sound != null) d.setSpawnSound(sound);
-                        if (effect != null) d.setSpawnEffect(effect);
+                    if (!d.getId().equals(s.getId())) continue;
+                    if (sound != null) d.setSpawnSound(sound);
+                    if (effect != null) d.setSpawnEffect(effect);
+                    s.getTiers().forEach((i, ct) -> {
+                        boolean bTier = false;
+                        if (d.hasTier(i)) {
+                            DropType.Tier t = d.getTier(i);
+                            double delay = ct.getSeconds();
+                            SoundVP upgradeSound = ct.getUpgradeSound();
+                            ParticleEffect upgradeEffect = ct.getUpgradeEffect();
+                            String message = ct.getMessage();
 
-                        s.getTiers()
-                                .forEach(
-                                        (i, ct) -> {
-                                            boolean bTier = false;
-                                            if (d.hasTier(i)) {
-                                                DropType.Tier t = d.getTier(i);
-                                                double delay = ct.getSeconds();
-                                                SoundVP upgradeSound = ct.getUpgradeSound();
-                                                ParticleEffect upgradeEffect =
-                                                        ct.getUpgradeEffect();
-                                                String message = ct.getMessage();
+                            if (delay != -1) t.setUpgradeDelay(delay);
+                            if (upgradeSound != null) t.setUpgradeSound(sound);
+                            if (upgradeEffect != null) t.setUpgradeEffect(effect);
+                            if (message != null) t.setUpgradeMessage(message);
+                            ct.getActions().forEach((str, cDrop) -> {
+                                boolean bDrop = false;
+                                for (DropType.Drop drop : t.getDropMap().values()) {
+                                    if (drop.getKey().equals(cDrop.getKey())) {
+                                        if (cDrop.getDelay() != -1) drop.setDelay(cDrop.getDelay());
+                                        if (cDrop.getLimit() != -1) drop.setMaxSpawn(cDrop.getLimit());
+                                        BwItemStack stack = cDrop.getMaterial();
+                                        if (stack != null) drop.setItem(stack);
+                                        bDrop = true;
+                                    }
+                                }
+                                if (!bDrop && cDrop.isValid()) {
+                                    t.getDropMap().put(str, new com.pepedevs.dbedwars.game.arena.DropType.Drop(cDrop));
+                                }
+                            });
 
-                                                if (delay != -1) t.setUpgradeDelay(delay);
-                                                if (upgradeSound != null) t.setUpgradeSound(sound);
-                                                if (upgradeEffect != null)
-                                                    t.setUpgradeEffect(effect);
-                                                if (message != null) t.setUpgradeMessage(message);
-
-                                                ct.getActions()
-                                                        .forEach(
-                                                                (str, cDrop) -> {
-                                                                    boolean bDrop = false;
-                                                                    for (DropType.Drop drop :
-                                                                            t.getDropMap()
-                                                                                    .values()) {
-                                                                        if (drop.getKey()
-                                                                                .equals(
-                                                                                        cDrop
-                                                                                                .getKey())) {
-                                                                            if (cDrop.getDelay()
-                                                                                    != -1)
-                                                                                drop.setDelay(
-                                                                                        cDrop
-                                                                                                .getDelay());
-                                                                            if (cDrop.getLimit()
-                                                                                    != -1)
-                                                                                drop.setMaxSpawn(
-                                                                                        cDrop
-                                                                                                .getLimit());
-                                                                            BwItemStack stack =
-                                                                                    cDrop
-                                                                                            .getMaterial();
-                                                                            if (stack != null)
-                                                                                drop.setItem(stack);
-
-                                                                            bDrop = true;
-                                                                        }
-                                                                    }
-                                                                    if (!bDrop) {
-                                                                        if (cDrop.isValid()) {
-                                                                            t.getDropMap()
-                                                                                    .put(
-                                                                                            str,
-                                                                                            new com
-                                                                                                    .pepedevs
-                                                                                                    .dbedwars
-                                                                                                    .game
-                                                                                                    .arena
-                                                                                                    .DropType
-                                                                                                    .Drop(
-                                                                                                    cDrop));
-                                                                        }
-                                                                    }
-                                                                });
-
-                                                bTier = true;
-                                            }
-                                            if (!bTier) {
-                                                if (ct.isValid()) {
-                                                    d.getTiers()
-                                                            .put(
-                                                                    i,
-                                                                    new com.pepedevs.dbedwars.game
-                                                                            .arena.DropType.Tier(
-                                                                            ct));
-                                                }
-                                            }
-                                        });
-                    }
+                            bTier = true;
+                        }
+                        if (!bTier) {
+                            if (ct.isValid()) {
+                                d.getTiers().put(i, new com.pepedevs.dbedwars.game.arena.DropType.Tier(ct));
+                            }
+                        }
+                    });
                 }
             }
         }
