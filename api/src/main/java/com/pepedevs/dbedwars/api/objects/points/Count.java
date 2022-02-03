@@ -30,18 +30,73 @@ public abstract class Count<T extends Number> extends Number {
 
     public abstract void divide(T delta);
 
-    public abstract T incrementAndGet();
+    public T incrementAndGet() {
+        this.increment();
+        return this.get();
+    }
 
-    public abstract T getAndIncrement();
+    public T getAndIncrement() {
+        T oldValue = this.get();
+        this.increment();
+        return oldValue;
+    }
 
-    public abstract T decrementAndGet();
+    public T decrementAndGet() {
+        this.decrement();
+        return this.get();
+    }
 
-    public abstract T getAndDecrement();
+    public T getAndDecrement() {
+        T oldValue = this.get();
+        this.decrement();
+        return oldValue;
+    }
 
-    public abstract T addAndGet(T delta);
+    public T addAndGet(T delta) {
+        this.add(delta);
+        return this.get();
+    }
 
-    public abstract T getAndAdd(T delta);
+    public T getAndAdd(T delta) {
+        T oldValue = this.get();
+        this.add(delta);
+        return oldValue;
+    }
 
-    public abstract T getAndSet(T newValue);
+    public T getAndSet(T newValue) {
+        T oldValue = this.get();
+        this.set(newValue);
+        return oldValue;
+    }
+
+    @Override
+    public int intValue() {
+        return this.value.intValue();
+    }
+
+    @Override
+    public long longValue() {
+        return this.value.longValue();
+    }
+
+    @Override
+    public float floatValue() {
+        return this.value.floatValue();
+    }
+
+    @Override
+    public double doubleValue() {
+        return this.value.doubleValue();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Count && this.value.equals(((Count) obj).value);
+    }
+
+    @Override
+    public String toString() {
+        return this.value.toString();
+    }
 
 }

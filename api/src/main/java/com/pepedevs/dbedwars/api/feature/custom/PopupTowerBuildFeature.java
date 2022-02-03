@@ -9,7 +9,7 @@ public abstract class PopupTowerBuildFeature extends BedWarsFeature {
 
 
     public PopupTowerBuildFeature() {
-        super(BedWarsFeatures.POPUP_TOWER_BUILD_FEATURE.getKey());
+        super(BedWarsFeatures.POPUP_TOWER_BUILD_FEATURE.get());
     }
 
     @Override

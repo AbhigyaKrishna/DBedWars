@@ -10,7 +10,7 @@ import java.util.Collection;
 public abstract class DeathAnimationFeature extends BedWarsFeature {
 
     public DeathAnimationFeature() {
-        super(BedWarsFeatures.DEATH_ANIMATION_FEATURE.getKey());
+        super(BedWarsFeatures.DEATH_ANIMATION_FEATURE.get());
     }
 
     @Override

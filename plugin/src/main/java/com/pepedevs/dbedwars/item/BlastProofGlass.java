@@ -14,17 +14,30 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BlastProofGlass extends PluginActionItem {
 
     private final DBedwars plugin;
 
+    private static final Predicate<Material> GLASS_PREDICATE = new Predicate<Material>() {
+        @Override
+        public boolean test(Material material) {
+            return !material.name().contains("GLASS");
+        }
+    };
+    private static final Predicate<Material> GLASS_OR_ENDSTONE_PREDICATE = new Predicate<Material>() {
+        @Override
+        public boolean test(Material material) {
+            return GLASS_PREDICATE.test(material) || XMaterial.END_STONE.parseMaterial().equals(material);
+        }
+    };
+
     public BlastProofGlass(DBedwars plugin) {
 
         //TODO COLOR BASED ON TEAMS
 
-        super(
-                plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemName(),
+        super(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemName(),
                 plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemLore(),
                 XMaterial.GLASS.parseMaterial());
         this.plugin = plugin;
@@ -39,14 +52,8 @@ public class BlastProofGlass extends PluginActionItem {
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
             if (block.getType() != Material.AIR) {
-                if (Utils.containsGlass(
-                                getBlockPathX(
-                                        event.getEntity().getLocation().getBlock().getLocation(),
-                                        block.getLocation()))
-                        && Utils.containsGlass(
-                                getBlockPathY(
-                                        event.getEntity().getLocation().getBlock().getLocation(),
-                                        block.getLocation()))) {
+                if (Utils.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)
+                        && Utils.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)) {
                     blockIterator.remove();
                 }
             }
@@ -60,16 +67,9 @@ public class BlastProofGlass extends PluginActionItem {
             if (XMaterial.matchXMaterial(block.getType()) == XMaterial.END_STONE) {
                 blockIterator.remove();
             }
-            if (block.getType() != Material.AIR
-                    && XMaterial.matchXMaterial(block.getType()) != XMaterial.END_STONE) {
-                if (Utils.containsGlassOrEndstone(
-                                getBlockPathX(
-                                        event.getEntity().getLocation().getBlock().getLocation(),
-                                        block.getLocation()))
-                        && Utils.containsGlassOrEndstone(
-                                getBlockPathY(
-                                        event.getEntity().getLocation().getBlock().getLocation(),
-                                        block.getLocation()))) {
+            if (block.getType() != Material.AIR && XMaterial.matchXMaterial(block.getType()) != XMaterial.END_STONE) {
+                if (Utils.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)
+                        && Utils.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)) {
                     blockIterator.remove();
                 }
             }

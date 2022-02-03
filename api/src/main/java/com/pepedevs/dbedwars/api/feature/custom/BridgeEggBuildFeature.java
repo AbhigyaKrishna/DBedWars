@@ -8,7 +8,7 @@ import org.bukkit.entity.Egg;
 public abstract class BridgeEggBuildFeature extends BedWarsFeature {
 
     public BridgeEggBuildFeature() {
-        super(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE.getKey());
+        super(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE.get());
     }
 
     public abstract void startBuilding(Egg egg, ArenaPlayer arenaPlayer);

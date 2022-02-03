@@ -6,6 +6,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
 import com.pepedevs.dbedwars.api.feature.custom.ArenaEndFireworkFeature;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.api.game.ArenaSpectator;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
@@ -74,6 +75,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     private Set<Team> teams;
     private Set<ArenaPlayer> players;
+    private Set<ArenaSpectator> spectators;
     private Map<ArenaPlayer, KickReason> removed;
     private List<Spawner> spawners;
 
@@ -83,6 +85,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
+        this.spectators = new HashSet<>();
         this.status = ArenaStatus.STOPPED;
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);

@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
@@ -24,10 +25,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -116,17 +119,21 @@ public class Utils {
         return list.toArray(arrays[0]);
     }
 
-    public static boolean containsGlass(List<Material> materials) {
-        List<Material> list = new ArrayList<>(materials);
-        list.removeIf(material -> !material.name().contains("GLASS"));
-        return list.size() >= 1;
+    public static boolean contains(List<Material> materials, XMaterial... toCheck) {
+        for (Material material : materials) {
+            for (XMaterial xMaterial : toCheck) {
+                if (material.equals(xMaterial.parseMaterial())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public static boolean containsGlassOrEndstone(List<Material> materials) {
-        if (containsGlass(materials)) return true;
-        List<Material> list = new ArrayList<>(materials);
-        materials.removeIf(material -> XMaterial.matchXMaterial(material) != XMaterial.END_STONE);
-        return list.size() >= 1;
+    public static <T> boolean anyMatch(List<T> list, Predicate<T> predicate) {
+        List<T> temp = new ArrayList<>(list);
+        temp.removeIf(predicate);
+        return temp.size() >= 1;
     }
 
     public static LinkedHashMap<ArenaPlayer, Integer> getGameLeaderBoard(
@@ -150,10 +157,10 @@ public class Utils {
     }
 
     public static int calculatePoint(ArenaPlayer player) {
-        return (player.getKills() * player.getArena().getSettings().getKillPoint())
-                + (player.getFinalKills() * player.getArena().getSettings().getFinalKillPoint())
-                + (player.getDeath() * player.getArena().getSettings().getDeathPoint())
-                + (player.getBedDestroy() * player.getArena().getSettings().getBedDestroyPoint());
+        return (player.getPoints().getCount(ArenaPlayer.PlayerPoints.KILLS).intValue() * player.getArena().getSettings().getKillPoint())
+                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.FINAL_KILLS).intValue() * player.getArena().getSettings().getFinalKillPoint())
+                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.DEATH).intValue() * player.getArena().getSettings().getDeathPoint())
+                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS).intValue() * player.getArena().getSettings().getBedDestroyPoint());
     }
 
     public static void useItem(Player player) {
@@ -191,6 +198,18 @@ public class Utils {
             return loc;
         else
             return Utils.getRandomPointAround(centre, range, constrain);
+    }
+
+    public static boolean hasMetaData(Entity entity, String key, Object value) {
+        if (entity.hasMetadata(key)) {
+            DBedwars plugin = DBedwars.getInstance();
+            for (MetadataValue v : entity.getMetadata(key)) {
+                if (v.getOwningPlugin().equals(plugin) && v.value().equals(value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     static {

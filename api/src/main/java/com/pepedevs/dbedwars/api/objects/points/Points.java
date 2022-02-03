@@ -4,7 +4,6 @@ import com.pepedevs.dbedwars.api.util.Key;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Points {
 
@@ -12,7 +11,7 @@ public class Points {
 
     public void registerCount(Key<String> key, Count<?> count) {
         if (this.points.containsKey(key)) {
-            throw new IllegalArgumentException("A count with the name " + key.getKey() + " already exists!");
+            throw new IllegalArgumentException("A count with the name " + key.get() + " already exists!");
         }
         this.points.put(key, count);
     }

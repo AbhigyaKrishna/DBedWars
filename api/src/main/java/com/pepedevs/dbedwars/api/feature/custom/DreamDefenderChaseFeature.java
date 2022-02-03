@@ -8,7 +8,7 @@ import org.bukkit.entity.IronGolem;
 public abstract class DreamDefenderChaseFeature extends BedWarsFeature {
 
     public DreamDefenderChaseFeature() {
-        super(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE.getKey());
+        super(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE.get());
     }
 
     public abstract void startChasing(IronGolem ironGolem, ArenaPlayer spawningPlayer);

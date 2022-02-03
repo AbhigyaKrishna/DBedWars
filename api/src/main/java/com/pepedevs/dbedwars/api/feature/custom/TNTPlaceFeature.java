@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 public abstract class TNTPlaceFeature extends BedWarsFeature {
 
     public TNTPlaceFeature() {
-        super(BedWarsFeatures.TNT_PLACE_FEATURE.getKey());
+        super(BedWarsFeatures.TNT_PLACE_FEATURE.get());
     }
 
     public abstract void onPlace(Block block, ArenaPlayer placer);

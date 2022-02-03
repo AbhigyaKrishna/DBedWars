@@ -9,7 +9,7 @@ import com.pepedevs.dbedwars.api.game.Team;
 public abstract class ArenaEndFireworkFeature extends BedWarsFeature {
 
     public ArenaEndFireworkFeature() {
-        super(BedWarsFeatures.ARENA_END_FIREWORK_FEATURE.getKey());
+        super(BedWarsFeatures.ARENA_END_FIREWORK_FEATURE.get());
     }
 
     @Override

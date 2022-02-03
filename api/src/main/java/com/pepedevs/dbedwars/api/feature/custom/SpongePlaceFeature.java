@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 public abstract class SpongePlaceFeature extends BedWarsFeature {
 
     public SpongePlaceFeature() {
-        super(BedWarsFeatures.SPONGE_PLACE_FEATURE.getKey());
+        super(BedWarsFeatures.SPONGE_PLACE_FEATURE.get());
     }
 
     @Override

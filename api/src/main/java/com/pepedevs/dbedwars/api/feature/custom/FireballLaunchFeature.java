@@ -8,7 +8,7 @@ import org.bukkit.entity.Fireball;
 public abstract class FireballLaunchFeature extends BedWarsFeature {
 
     public FireballLaunchFeature() {
-        super(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE.getKey());
+        super(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE.get());
     }
 
     @Override

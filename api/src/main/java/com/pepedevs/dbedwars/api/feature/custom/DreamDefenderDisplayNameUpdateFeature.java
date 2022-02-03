@@ -8,7 +8,7 @@ import org.bukkit.entity.IronGolem;
 public abstract class DreamDefenderDisplayNameUpdateFeature extends BedWarsFeature {
 
     public DreamDefenderDisplayNameUpdateFeature() {
-        super(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE.getKey());
+        super(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE.get());
     }
 
     public abstract void start(IronGolem ironGolem, ArenaPlayer spawningPlayer);

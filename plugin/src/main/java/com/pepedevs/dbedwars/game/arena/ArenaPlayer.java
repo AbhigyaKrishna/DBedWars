@@ -96,7 +96,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                 public boolean accept(DeathAnimationFeature feature) {
                     List<Player> players = new ArrayList<>();
                     for (com.pepedevs.dbedwars.api.game.ArenaPlayer arenaPlayer : ArenaPlayer.this.arena.getPlayers()) {
-                        if (arenaPlayer.getPlayer().getUniqueId().equals(event.getVictim().getUUID())) continue;
+                        if (arenaPlayer.getUUID().equals(event.getVictim().getUUID())) continue;
                         players.add(arenaPlayer.getPlayer());
                     }
                     feature.play(event.getVictim().getPlayer(), players);

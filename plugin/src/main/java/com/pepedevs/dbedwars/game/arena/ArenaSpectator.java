@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.game;
+package com.pepedevs.dbedwars.game.arena;
 
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class ArenaSpectator extends PlayerMember {
+public class ArenaSpectator extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaSpectator {
 
     private final UUID uuid;
     private final String name;
@@ -31,18 +31,17 @@ public class ArenaSpectator extends PlayerMember {
         }
     }
 
-    public void toggle() {
-
-    }
-
+    @Override
     public UUID getUUID() {
         return this.uuid;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public Arena getArena() {
         return this.arena;
     }
@@ -52,18 +51,22 @@ public class ArenaSpectator extends PlayerMember {
         return Bukkit.getPlayer(this.uuid);
     }
 
+    @Override
     public void teleport(double x, double y, double z) {
         this.getPlayer().teleport(new Location(this.arena.getWorld(), x, y, z));
     }
 
+    @Override
     public void teleport(Location location) {
         this.getPlayer().teleport(location);
     }
 
+    @Override
     public void teleport(LocationXYZ location) {
         location.teleport(this.arena.getWorld(), this.getPlayer());
     }
 
+    @Override
     public void teleport(LocationXYZYP location) {
         location.teleport(this.arena.getWorld(), this.getPlayer());
     }
