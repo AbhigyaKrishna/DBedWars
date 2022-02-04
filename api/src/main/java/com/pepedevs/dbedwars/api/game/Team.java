@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.api.game;
 
 import com.google.common.collect.Multimap;
+import com.pepedevs.dbedwars.api.game.trap.Trap;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
@@ -8,7 +9,6 @@ import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.Set;

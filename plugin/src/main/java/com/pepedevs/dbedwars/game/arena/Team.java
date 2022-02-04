@@ -9,7 +9,7 @@ import com.pepedevs.dbedwars.api.events.PlayerLeaveTeamEvent;
 import com.pepedevs.dbedwars.api.events.TrapTriggerEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.game.Trap;
+import com.pepedevs.dbedwars.api.game.trap.Trap;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.util.Color;

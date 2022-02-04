@@ -2,19 +2,20 @@ package com.pepedevs.dbedwars.action.translators;
 
 import com.pepedevs.dbedwars.action.actions.ConsoleCommandAction;
 import com.pepedevs.dbedwars.api.action.Action;
+import com.pepedevs.dbedwars.api.action.ActionPlaceholder;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
 
-public class ConsoleCommandActionTranslator implements ActionTranslator<Void> {
+public class ConsoleCommandActionTranslator implements ActionTranslator<Void, ConsoleCommandAction> {
 
     @Override
-    public Action<Void> serialize(String untranslated) {
+    public ConsoleCommandAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
         return new ConsoleCommandAction(untranslated);
     }
 
     @Override
-    public String deserialize(Action<Void> action) {
-        return ((ConsoleCommandAction) action).getCommand();
+    public String deserialize(ConsoleCommandAction action) {
+        return action.getCommand();
     }
 
     @Override

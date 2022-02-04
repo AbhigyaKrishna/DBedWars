@@ -6,9 +6,9 @@ import java.util.Collection;
 
 public interface ActionTranslationRegistry {
 
-    <T> void registerTranslation(ActionTranslator<T> action);
+    <T, K extends Action<T>> void registerTranslation(ActionTranslator<T, K> action);
 
-    Collection<ActionTranslator<?>> getRegisteredTranslations();
+    Collection<ActionTranslator<?, ? extends Action>> getRegisteredTranslations();
 
     boolean isRegistered(Key<String> key);
 
@@ -18,8 +18,8 @@ public interface ActionTranslationRegistry {
 
     void unregisterTranslation(String key);
 
-    ActionTranslator<?> getTranslator(Key<String> key);
+    ActionTranslator<?, ? extends Action> getTranslator(Key<String> key);
 
-    ActionTranslator<?> getTranslator(String key);
+    ActionTranslator<?, ? extends Action> getTranslator(String key);
 
 }

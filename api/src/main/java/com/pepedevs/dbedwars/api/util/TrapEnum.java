@@ -221,6 +221,7 @@ public class TrapEnum {
     }
 
     public enum TargetType {
+        TRAP_BUYER,
         TEAM,
         ENEMY_TEAM,
         ENEMY_AT_BASE,
@@ -233,15 +234,6 @@ public class TrapEnum {
 
         public static final TargetType[] VALUES = values();
 
-        public static TargetType match(String s) {
-            for (TargetType value : VALUES) {
-                if (value.name().equalsIgnoreCase(s)
-                        || value.name().replace("_", "-").equalsIgnoreCase(s)
-                        || value.name().replace("_", "").equalsIgnoreCase(s)) return value;
-            }
-
-            return null;
-        }
     }
 
     public enum TriggerType {
@@ -255,16 +247,6 @@ public class TrapEnum {
 
         TriggerType(String simpleName) {
             this.simpleName = simpleName;
-        }
-
-        public static TriggerType matchTrigger(String trigger) {
-            for (TriggerType t : values()) {
-                if (t.name().equalsIgnoreCase(trigger)
-                        || t.name().replace("_", " ").equalsIgnoreCase(trigger)
-                        || t.getSimpleName().equalsIgnoreCase(trigger)) return t;
-            }
-
-            return null;
         }
 
         public String getSimpleName() {

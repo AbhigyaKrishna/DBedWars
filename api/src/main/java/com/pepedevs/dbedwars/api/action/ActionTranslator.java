@@ -2,10 +2,10 @@ package com.pepedevs.dbedwars.api.action;
 
 import com.pepedevs.dbedwars.api.util.Keyed;
 
-public interface ActionTranslator <T>  extends Keyed<String> {
+public interface ActionTranslator<T, K extends Action<T>> extends Keyed<String> {
 
-    Action<T> serialize(String untranslated);
+    K serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders);
 
-    String deserialize(Action<T> action);
+    String deserialize(K action);
 
 }

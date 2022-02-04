@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.action;
 
+import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionTranslationRegistry;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
@@ -11,19 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TranslationRegistryImpl implements ActionTranslationRegistry {
 
-    private final Map<Key<String>, ActionTranslator<?>> registeredTranslators;
+    private final Map<Key<String>, ActionTranslator<?, ? extends Action>> registeredTranslators;
 
     public TranslationRegistryImpl() {
         this.registeredTranslators = new ConcurrentHashMap<>();
     }
 
     @Override
-    public <T> void registerTranslation(ActionTranslator<T> translator) {
+    public <T, K extends Action<T>> void registerTranslation(ActionTranslator<T, K> translator) {
         this.registeredTranslators.put(translator.getKey(), translator);
     }
 
     @Override
-    public Collection<ActionTranslator<?>> getRegisteredTranslations() {
+    public Collection<ActionTranslator<?, ? extends Action>> getRegisteredTranslations() {
         return Collections.unmodifiableCollection(this.registeredTranslators.values());
     }
 
@@ -54,16 +55,16 @@ public class TranslationRegistryImpl implements ActionTranslationRegistry {
     }
 
     @Override
-    public ActionTranslator<?> getTranslator(Key<String> key) {
-        for (Map.Entry<Key<String>, ActionTranslator<?>> entry : this.registeredTranslators.entrySet()) {
+    public ActionTranslator<?, ? extends Action> getTranslator(Key<String> key) {
+        for (Map.Entry<Key<String>, ActionTranslator<?, ? extends Action>> entry : this.registeredTranslators.entrySet()) {
             if (entry.getKey().equals(key)) return entry.getValue();
         }
         return null;
     }
 
     @Override
-    public ActionTranslator<?> getTranslator(String key) {
-        for (Map.Entry<Key<String>, ActionTranslator<?>> entry : this.registeredTranslators.entrySet()) {
+    public ActionTranslator<?, ? extends Action> getTranslator(String key) {
+        for (Map.Entry<Key<String>, ActionTranslator<?, ? extends Action>> entry : this.registeredTranslators.entrySet()) {
             if (entry.getKey().get().equals(key)) return entry.getValue();
         }
         return null;

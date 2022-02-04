@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.api.events;
 import com.pepedevs.radium.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.game.Trap;
+import com.pepedevs.dbedwars.api.game.trap.Trap;
 import org.bukkit.event.HandlerList;
 
 public class TrapTriggerEvent extends CustomEventCancellable {

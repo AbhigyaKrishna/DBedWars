@@ -1,35 +1,25 @@
 package com.pepedevs.dbedwars.action.actions;
 
 import com.pepedevs.dbedwars.api.action.Action;
+import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
 import com.pepedevs.radium.utils.xseries.XSound;
 
 public class SoundAction implements Action<PlayerMember> {
 
-    private final XSound sound;
-    private final float volume;
-    private final float pitch;
+    private final SoundVP sound;
 
-    public SoundAction(XSound sound, float volume, float pitch) {
+    public SoundAction(SoundVP sound) {
         this.sound = sound;
-        this.volume = volume;
-        this.pitch = pitch;
     }
 
     @Override
     public void execute(PlayerMember player) {
-        player.getPlayer().playSound(player.getPlayer().getLocation(), sound.parseSound(), volume, pitch);
+        sound.play(player.getPlayer());
     }
 
-    public XSound getSound() {
+    public SoundVP getSound() {
         return sound;
     }
 
-    public float getVolume() {
-        return volume;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
 }
