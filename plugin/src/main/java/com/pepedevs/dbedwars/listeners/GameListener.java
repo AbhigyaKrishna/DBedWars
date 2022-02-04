@@ -1,8 +1,5 @@
 package com.pepedevs.dbedwars.listeners;
 
-import com.pepedevs.radium.utils.PluginHandler;
-import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.PlayerBaseEnterEvent;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -11,11 +8,12 @@ import com.pepedevs.dbedwars.api.game.DeathCause;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
-import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.item.*;
 import com.pepedevs.dbedwars.utils.Utils;
+import com.pepedevs.radium.utils.PluginHandler;
+import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -38,6 +36,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class GameListener extends PluginHandler {
 
@@ -54,7 +53,9 @@ public class GameListener extends PluginHandler {
     public void handleItemMerge(ItemMergeEvent event) {
         if (!event.getEntity().getWorld().equals(this.arena.getWorld())) return;
 
-        if (Utils.isUnMergeable(event.getEntity().getItemStack())) event.setCancelled(true);
+        if (Utils.hasMetaData(event.getEntity(), "merge", false)) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -288,29 +289,24 @@ public class GameListener extends PluginHandler {
             return;
         }
 
-        if (event.getItem().hasMetadata("split")) {
-            Optional<Spawner> spawner =
-                    this.arena.getSpawner(LocationXYZ.valueOf(event.getItem().getLocation()), 1);
-            spawner.ifPresent(
-                    s -> {
-                        Collection<Entity> entities =
-                                this.arena
-                                        .getWorld()
-                                        .getNearbyEntities(
-                                                s.getLocation(),
-                                                s.getDropType().getSpawnRadius(),
-                                                s.getDropType().getSpawnRadius(),
-                                                s.getDropType().getSpawnRadius());
-                        entities.remove(event.getPlayer());
-                        for (Entity entity : entities) {
-                            if (entity instanceof Player
-                                    && this.arena.isArenaPlayer((Player) entity)) {
-                                ((Player) entity)
-                                        .getInventory()
-                                        .addItem(event.getItem().getItemStack());
-                            }
+        if (Utils.hasMetaData(event.getItem(), "split", true)) {
+            Optional<Spawner> spawner = this.arena.getSpawner(LocationXYZ.valueOf(event.getItem().getLocation()), 1);
+            spawner.ifPresent(new Consumer<Spawner>() {
+                @Override
+                public void accept(Spawner spawner) {
+                    Collection<Entity> entities = GameListener.this.arena.getWorld().getNearbyEntities(
+                            spawner.getLocation(),
+                            spawner.getDropType().getSpawnRadius(),
+                            spawner.getDropType().getSpawnRadius(),
+                            spawner.getDropType().getSpawnRadius());
+                    entities.remove(event.getPlayer());
+                    for (Entity entity : entities) {
+                        if (entity instanceof Player && GameListener.this.arena.isArenaPlayer((Player) entity)) {
+                            ((Player) entity).getInventory().addItem(event.getItem().getItemStack());
                         }
-                    });
+                    }
+                }
+            });
         }
     }
 

@@ -46,4 +46,9 @@ public abstract class HologramRotateTask {
     public Hologram getHologram() {
         return this.hologram;
     }
+
+    public enum TaskEndAction {
+        REVERSE,
+        REPEAT
+    }
 }

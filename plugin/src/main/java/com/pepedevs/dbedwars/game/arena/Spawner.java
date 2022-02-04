@@ -1,17 +1,5 @@
 package com.pepedevs.dbedwars.game.arena;
 
-import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.radium.holograms.hologramline.HeadHologramLine;
-import com.pepedevs.radium.holograms.hologramline.TextHologramLine;
-import com.pepedevs.radium.holograms.object.Hologram;
-import com.pepedevs.radium.holograms.object.HologramLineType;
-import com.pepedevs.radium.holograms.object.HologramPage;
-import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.particles.ParticleEffect;
-import com.pepedevs.radium.task.Workload;
-import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.SpawnerDropItemEvent;
 import com.pepedevs.dbedwars.api.events.SpawnerUpgradeEvent;
@@ -23,6 +11,17 @@ import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.configuration.ConfigMessage;
+import com.pepedevs.dbedwars.configuration.Lang;
+import com.pepedevs.radium.holograms.hologramline.HeadHologramLine;
+import com.pepedevs.radium.holograms.hologramline.TextHologramLine;
+import com.pepedevs.radium.holograms.object.Hologram;
+import com.pepedevs.radium.holograms.object.HologramLineType;
+import com.pepedevs.radium.holograms.object.HologramPage;
+import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.particles.ParticleEffect;
+import com.pepedevs.radium.task.Workload;
+import com.pepedevs.radium.utils.math.collision.BoundingBox;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -92,7 +91,7 @@ public class Spawner implements com.pepedevs.dbedwars.api.game.spawner.Spawner {
                     this.plugin
                             .getHologramManager()
                             .createHologram(
-                                    this.drop.getId() + "@" + UUID.randomUUID().toString(), loc);
+                                    this.drop.getId() + "@" + UUID.randomUUID(), loc);
             HologramPage page = this.hologram.getPages().get(0);
             page.addLine(new HeadHologramLine(loc, this.drop.getHologramMaterial().toItemStack()));
             loc.subtract(0, HologramLineType.HEAD.getOffsetY(), 0);

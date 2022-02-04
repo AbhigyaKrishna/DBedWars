@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.configuration.configurable.ConfigurableHologram;
+import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -113,5 +115,9 @@ public class ConfigurationUtils {
             if (type != null) attributes.add(type);
         }
         return attributes;
+    }
+
+    public static Hologram createHologram(ConfigurableHologram hologram) {
+
     }
 }

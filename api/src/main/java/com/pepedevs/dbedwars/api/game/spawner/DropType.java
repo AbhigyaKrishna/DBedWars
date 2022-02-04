@@ -1,5 +1,8 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
+import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Keyed;
+import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.SoundVP;
@@ -63,7 +66,7 @@ public interface DropType extends Cloneable {
 
     String toString();
 
-    interface Tier extends Cloneable {
+    interface Tier extends Cloneable, PropertySerializable, Keyed<Integer> {
 
         double getUpgradeDelay();
 
@@ -77,9 +80,9 @@ public interface DropType extends Cloneable {
 
         void setUpgradeEffect(ParticleEffect effect);
 
-        String getUpgradeMessage();
+        Message getUpgradeMessage();
 
-        void setUpgradeMessage(String message);
+        void setUpgradeMessage(Message message);
 
         List<Drop> getDrops();
 
@@ -91,9 +94,7 @@ public interface DropType extends Cloneable {
 
     }
 
-    interface Drop extends Cloneable {
-
-        String getKey();
+    interface Drop extends Cloneable, PropertySerializable, Keyed<String> {
 
         BwItemStack getItem();
 

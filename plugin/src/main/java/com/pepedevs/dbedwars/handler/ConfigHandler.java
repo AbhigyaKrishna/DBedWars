@@ -27,6 +27,7 @@ public class ConfigHandler {
     private ConfigurableShop shop;
     private ConfigurableUpgrade upgrade;
     private ConfigurableCustomItems customItems;
+    private ConfigurableHologram holograms;
 
     public ConfigHandler(DBedwars plugin) {
         this.plugin = plugin;
@@ -94,6 +95,8 @@ public class ConfigHandler {
         this.plugin.getGameManager().load();
         this.customItems = new ConfigurableCustomItems();
         this.customItems.load(YamlConfiguration.loadConfiguration(PluginFiles.CUSTOM_ITEMS));
+        this.holograms = new ConfigurableHologram();
+        this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
     }
 
     private void loadArena() {
@@ -170,6 +173,10 @@ public class ConfigHandler {
 
     public ConfigurableCustomItems getCustomItems() {
         return this.customItems;
+    }
+
+    public ConfigurableHologram getHolograms() {
+        return holograms;
     }
 
 }

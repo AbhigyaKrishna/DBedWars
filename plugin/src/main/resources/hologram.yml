@@ -1,24 +1,27 @@
-holograms:
-  diamond-spawner:
-    mode: 'baby'
-    animation-cycle-end-control: 'reverse' #repeat/reverse
-    lines:
-      - ''
-      - ''
-      - ''
-    rotation:
-      degree-rotated-per-cycle: 540
-      vertical-bobbing-per-cycle: 0.5
-      ticks-per-animation-cycle: 60
-      ease-in-out: true
-  emerald-spawner:
-    mode: 'expert'
-    animation-cycle-end-control: 'reverse' #repeat/reverse
-    keyframes:
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
-      - '[TICKS:10] 0:0:0:90:0'
+diamond-spawner:
+  mode: 'baby'
+  animation-cycle-end-control: 'reverse' #repeat/reverse
+  text:
+    - ''
+    - ''
+    - ''
+  rotation:
+    degree-rotated-per-cycle: 540
+    vertical-bobbing-per-cycle: 0.5
+    ticks-per-animation-cycle: 60
+    ease-in-out: true
+emerald-spawner:
+  mode: 'expert'
+  animation-cycle-end-control: 'reverse' #repeat/reverse
+  text:
+    - ''
+    - ''
+    - ''
+  keyframes:
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'
+    - '[TICKS:10] 0:0:0:90:0'

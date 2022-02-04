@@ -4,6 +4,7 @@ import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 import com.pepedevs.radium.utils.configuration.Loadable;
+import com.pepedevs.radium.utils.configuration.annotations.LoadableCollectionEntry;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
 import com.pepedevs.radium.utils.reflection.general.EnumReflection;
 import com.pepedevs.radium.utils.xseries.XMaterial;
@@ -49,37 +50,32 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
     @LoadableEntry(key = "team-spawner")
     private boolean teamSpawner;
 
-    @LoadableEntry(key = "hologram.enabled")
+    @LoadableEntry(key = "enabled", subsection = "hologram")
     private boolean hologramEnabled;
 
-    @LoadableEntry(key = "hologram.material")
-    private String hologramMaterial;
+    @LoadableEntry(key = "id", subsection = "hologram")
+    private String hologramId;
 
-    @LoadableEntry(key = "hologram.text")
-    private List<String> hologramText;
-
+    @LoadableCollectionEntry(subsection = "tiers")
     private Map<Integer, ConfigurableTiers> tiers;
-
-    private DropType dropType;
 
     public ConfigurableItemSpawner(DBedwars plugin, String key) {
         this.plugin = plugin;
         this.key = key;
-        this.hologramText = new ArrayList<>();
         this.tiers = new LinkedHashMap<>();
         this.radius = 1;
     }
 
     @Override
     public Loadable load(ConfigurationSection section) {
-        ConfigurationSection tierSection = section.getConfigurationSection("tiers");
-        if (tierSection != null) {
-            for (String key : tierSection.getKeys(false)) {
-                ConfigurableTiers tier = new ConfigurableTiers(key);
-                tier.load(tierSection.getConfigurationSection(key));
-                if (tier.isValid()) this.tiers.put(Integer.parseInt(key), tier);
-            }
-        }
+//        ConfigurationSection tierSection = section.getConfigurationSection("tiers");
+//        if (tierSection != null) {
+//            for (String key : tierSection.getKeys(false)) {
+//                ConfigurableTiers tier = new ConfigurableTiers(key);
+//                tier.load(tierSection.getConfigurationSection(key));
+//                if (tier.isValid()) this.tiers.put(Integer.parseInt(key), tier);
+//            }
+//        }
         return this.loadEntries(section);
     }
 
@@ -142,26 +138,12 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         return this.hologramEnabled;
     }
 
-    public BwItemStack getHologramMaterial() {
-        return this.hologramMaterial != null
-                ? ConfigurationUtils.parseItem(this.hologramMaterial)
-                : null;
-    }
-
-    public List<String> getHologramText() {
-        return this.hologramText;
+    public String getHologramId() {
+        return hologramId;
     }
 
     public Map<Integer, ConfigurableTiers> getTiers() {
         return tiers;
-    }
-
-    public DropType toDropType() {
-        if (this.dropType == null) {
-            this.dropType = new com.pepedevs.dbedwars.game.arena.DropType(this.plugin, this);
-        }
-
-        return this.dropType;
     }
 
     public static class ConfigurableTiers implements Loadable, PropertySerializable {
@@ -359,10 +341,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
                 ", timedUpgrade=" + timedUpgrade +
                 ", teamSpawner=" + teamSpawner +
                 ", hologramEnabled=" + hologramEnabled +
-                ", hologramMaterial='" + hologramMaterial + '\'' +
-                ", hologramText=" + hologramText +
+                ", hologramId='" + hologramId + '\'' +
                 ", tiers=" + tiers +
-                ", dropType=" + dropType +
                 '}';
     }
 

@@ -137,6 +137,13 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
         return this.properties.iterator();
     }
 
+    @Override
+    public String toString() {
+        return "NamedProperties{" +
+                "properties=" + properties +
+                '}';
+    }
+
     public static class Builder implements com.pepedevs.dbedwars.api.util.Builder<NamedProperties> {
 
         private final ArrayList<NamedKey<?>> keys = new ArrayList<>();
