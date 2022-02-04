@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.action.translators;
 
-import com.pepedevs.dbedwars.action.SoundAction;
+import com.pepedevs.dbedwars.action.actions.SoundAction;
 import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;

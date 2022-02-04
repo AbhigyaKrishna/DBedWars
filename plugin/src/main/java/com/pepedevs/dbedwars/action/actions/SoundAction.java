@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.action;
+package com.pepedevs.dbedwars.action.actions;
 
 import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
