@@ -5,7 +5,7 @@ import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
 
-public class ConsoleCommandTranslator implements ActionTranslator<Void> {
+public class ConsoleCommandActionTranslator implements ActionTranslator<Void> {
 
     @Override
     public Action<Void> serialize(String untranslated) {

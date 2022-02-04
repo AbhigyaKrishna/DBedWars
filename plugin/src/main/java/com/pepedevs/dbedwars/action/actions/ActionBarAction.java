@@ -1,23 +1,23 @@
 package com.pepedevs.dbedwars.action.actions;
 
 import com.pepedevs.dbedwars.api.action.Action;
-import com.pepedevs.dbedwars.configuration.Lang;
+import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 
 public class ActionBarAction implements Action<AbstractMessaging> {
 
-    private final String line;
+    private final Message message;
 
-    public ActionBarAction(String line) {
-        this.line = line;
+    public ActionBarAction(Message message) {
+        this.message = message;
     }
 
     @Override
     public void execute(AbstractMessaging abstractMessaging) {
-        abstractMessaging.sendActionBar(Lang.getTranslator().asMessage(line));
+        abstractMessaging.sendActionBar(this.message);
     }
 
-    public String getMessage() {
-        return line;
+    public Message getMessage() {
+        return this.message;
     }
 }

@@ -3,23 +3,23 @@ package com.pepedevs.dbedwars.action.translators;
 import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
-import com.pepedevs.dbedwars.messaging.AbstractMessaging;
+import org.bukkit.entity.Entity;
 
-public class ActionBarTranslator implements ActionTranslator<AbstractMessaging> {
+public class TeleportActionTranslator implements ActionTranslator<Entity> {
 
     @Override
-    public Action<AbstractMessaging> serialize(String untranslated) {
+    public Action<Entity> serialize(String untranslated) {
         return null;
     }
 
     @Override
-    public String deserialize(Action<AbstractMessaging> action) {
+    public String deserialize(Action<Entity> action) {
         return null;
     }
 
     @Override
     public Key<String> getKey() {
-        return null;
+        return Key.of("TELEPORT");
     }
 
 }

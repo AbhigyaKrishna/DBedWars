@@ -6,7 +6,7 @@ import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
 import org.bukkit.command.CommandSender;
 
-public class CommandTranslator implements ActionTranslator<CommandSender> {
+public class CommandActionTranslator implements ActionTranslator<CommandSender> {
 
     @Override
     public Action<CommandSender> serialize(String untranslated) {
