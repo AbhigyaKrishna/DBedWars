@@ -7,6 +7,8 @@ import org.bukkit.entity.Entity;
 
 public class SoundVP implements Cloneable {
 
+    private static final String SEPARATOR = ";";
+
     private final XSound sound;
     private float volume;
     private float pitch;
@@ -22,7 +24,7 @@ public class SoundVP implements Cloneable {
     }
 
     public static SoundVP valueOf(String str) {
-        String[] s = str.split(":");
+        String[] s = str.split(SEPARATOR);
         XSound sound = XSound.matchXSound(s[0]).orElse(null);
         if (sound == null) return null;
 
@@ -32,15 +34,13 @@ public class SoundVP implements Cloneable {
         if (s.length > 1) {
             try {
                 volume = Float.parseFloat(s[1]);
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored) {}
         }
 
         if (s.length > 2) {
             try {
                 pitch = Float.parseFloat(s[2]);
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored) {}
         }
 
         return new SoundVP(sound, volume, pitch);
@@ -82,7 +82,7 @@ public class SoundVP implements Cloneable {
 
     @Override
     public String toString() {
-        return this.sound.name() + ":" + this.volume + ":" + this.pitch;
+        return this.sound.name() + SEPARATOR + this.volume + SEPARATOR + this.pitch;
     }
 
     @Override

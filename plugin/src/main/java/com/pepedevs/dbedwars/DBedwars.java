@@ -2,6 +2,8 @@ package com.pepedevs.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
+import com.pepedevs.dbedwars.action.TranslationRegistryImpl;
+import com.pepedevs.dbedwars.api.action.ActionTranslationRegistry;
 import com.pepedevs.radium.database.DatabaseType;
 import com.pepedevs.radium.holograms.HologramManager;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
@@ -55,6 +57,7 @@ public final class DBedwars extends PluginAdapter {
     private HologramManager hologramManager;
 
     private Messaging messaging;
+    private ActionTranslationRegistry actionRegistry;
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
 
@@ -75,6 +78,7 @@ public final class DBedwars extends PluginAdapter {
         this.nmsAdaptor = this.registerNMSAdaptor();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
+        this.actionRegistry = new TranslationRegistryImpl();
 
         PacketEvents.getAPI().getSettings().bStats(true).debug(false).checkForUpdates(false);
         PacketEvents.getAPI().init();
@@ -297,6 +301,10 @@ public final class DBedwars extends PluginAdapter {
             default:
                 return null;
         }
+    }
+
+    public ActionTranslationRegistry actionRegistry() {
+        return actionRegistry;
     }
 
     private boolean checkSWM(org.bukkit.plugin.Plugin plugin) {
