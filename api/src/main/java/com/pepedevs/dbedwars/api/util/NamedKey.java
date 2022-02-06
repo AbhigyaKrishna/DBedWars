@@ -35,4 +35,9 @@ public class NamedKey<T> extends Key<T> {
                 '}';
     }
 
+    @Override
+    public int hashCode() {
+        return identifier.hashCode() + key.hashCode();
+    }
+
 }

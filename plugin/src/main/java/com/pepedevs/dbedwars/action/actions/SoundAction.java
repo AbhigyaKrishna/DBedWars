@@ -7,19 +7,26 @@ import com.pepedevs.radium.utils.xseries.XSound;
 
 public class SoundAction implements Action<PlayerMember> {
 
+    private final PlayerMember member;
     private final SoundVP sound;
 
-    public SoundAction(SoundVP sound) {
+    public SoundAction(SoundVP sound, PlayerMember member) {
+        this.member = member;
         this.sound = sound;
     }
 
     @Override
-    public void execute(PlayerMember player) {
-        sound.play(player.getPlayer());
+    public void execute() {
+        this.sound.play(this.getHandle().getPlayer());
+    }
+
+    @Override
+    public PlayerMember getHandle() {
+        return this.member;
     }
 
     public SoundVP getSound() {
-        return sound;
+        return this.sound;
     }
 
 }

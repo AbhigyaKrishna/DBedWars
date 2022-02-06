@@ -5,8 +5,10 @@ import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionPlaceholder;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.api.util.Key;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
-public class ConsoleCommandActionTranslator implements ActionTranslator<Void, ConsoleCommandAction> {
+public class ConsoleCommandActionTranslator implements ActionTranslator<CommandSender, ConsoleCommandAction> {
 
     @Override
     public ConsoleCommandAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {

@@ -6,18 +6,26 @@ import org.bukkit.command.CommandSender;
 
 public class CommandAction implements Action<CommandSender> {
 
+    private final CommandSender sender;
     private final String command;
 
-    public CommandAction(String command) {
+    public CommandAction(String command, CommandSender sender) {
+        this.sender = sender;
         this.command = command;
     }
 
     @Override
-    public void execute(CommandSender commandSender) {
-        Bukkit.dispatchCommand(commandSender, command);
+    public void execute() {
+        Bukkit.dispatchCommand(this.getHandle(), command);
+    }
+
+    @Override
+    public CommandSender getHandle() {
+        return this.sender;
     }
 
     public String getCommand() {
         return command;
     }
+
 }

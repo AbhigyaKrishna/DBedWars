@@ -11,7 +11,13 @@ public class FireworkActionTranslator implements ActionTranslator<Location, Fire
 
     @Override
     public FireworkAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
-        return new FireworkAction(FireworkEffectAT.valueOf(untranslated));
+        Location location = null;
+        for (ActionPlaceholder<?, ?> placeholder : placeholders) {
+            if (placeholder.getKey().equals(Key.of("LOCATION"))) {
+                location = (Location) placeholder.getPlaceholder();
+            }
+        }
+        return new FireworkAction(FireworkEffectAT.valueOf(untranslated), location);
     }
 
     @Override

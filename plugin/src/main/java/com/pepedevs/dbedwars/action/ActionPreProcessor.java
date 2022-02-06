@@ -21,16 +21,12 @@ public class ActionPreProcessor {
     private static final Matcher DELAY_MATCHER = Pattern.compile("\\[DELAY=(?<delayValue>\\d+[a-z])]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher ACTION_MATCHER = Pattern.compile("(.*) ?\\[(?<action>[A-Z]+?)] ?(?<arguments>.+)", Pattern.CASE_INSENSITIVE).matcher("");
 
-    public static ProcessedActionHolder<?> process(String input, ActionPlaceholder<?, ?>... placeholders) {
+    public static ProcessedActionHolder process(String input, ActionPlaceholder<?, ?>... placeholders) {
         ACTION_MATCHER.reset(input);
         if (!ACTION_MATCHER.matches()) throw new IllegalArgumentException("Invalid action format");
         String actionName = ACTION_MATCHER.group("action");
         ActionTranslator<?, ?> translator = PLUGIN.actionRegistry().getTranslator(actionName);
-        List<ActionPlaceholder<?, ?>> translatorPlaceholders = new ArrayList<>();
-        for (ActionPlaceholder<?, ?> placeholder : placeholders) {
-            if (translator.getKey().get().equalsIgnoreCase(placeholder.forTranslator())) translatorPlaceholders.add(placeholder);
-        }
-        return new ProcessedActionHolder(translator.serialize(ACTION_MATCHER.group("arguments"), translatorPlaceholders.toArray(new ActionPlaceholder[0])), shouldExecute(input), delay(input));
+        return new ProcessedActionHolder(translator.serialize(ACTION_MATCHER.group("arguments"), placeholders), shouldExecute(input), delay(input));
     }
 
     private static boolean shouldExecute(String input) {

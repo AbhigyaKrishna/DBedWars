@@ -10,7 +10,13 @@ public class CommandActionTranslator implements ActionTranslator<CommandSender, 
 
     @Override
     public CommandAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
-        return new CommandAction(untranslated);
+        CommandSender sender = null;
+        for (ActionPlaceholder<?, ?> placeholder : placeholders) {
+            if (placeholder.getKey().equals("SENDER")) {
+                sender = (CommandSender) placeholder.getPlaceholder();
+            }
+        }
+        return new CommandAction(untranslated, sender);
     }
 
     @Override

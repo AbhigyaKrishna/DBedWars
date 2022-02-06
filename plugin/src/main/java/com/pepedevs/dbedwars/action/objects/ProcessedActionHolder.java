@@ -4,13 +4,13 @@ import com.pepedevs.dbedwars.api.action.Action;
 
 import java.time.Duration;
 
-public class ProcessedActionHolder<K> {
+public class ProcessedActionHolder {
 
-    private final Action<K> action;
+    private final Action<?> action;
     private final boolean shouldExecute;
     private final Duration delay;
 
-    public ProcessedActionHolder(Action<K> action, boolean shouldExecute, Duration delay) {
+    public ProcessedActionHolder(Action<?> action, boolean shouldExecute, Duration delay) {
         this.action = action;
         this.shouldExecute = shouldExecute;
         this.delay = delay;

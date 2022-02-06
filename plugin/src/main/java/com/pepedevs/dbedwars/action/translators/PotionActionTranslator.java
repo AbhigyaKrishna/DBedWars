@@ -12,7 +12,13 @@ public class PotionActionTranslator implements ActionTranslator<LivingEntity, Po
 
     @Override
     public PotionAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
-        return new PotionAction(PotionEffectAT.valueOf(untranslated));
+        LivingEntity entity = null;
+        for (ActionPlaceholder<?, ?> placeholder : placeholders) {
+            if (placeholder.getKey().equals("ENTITY")) {
+                entity = (LivingEntity) placeholder.getPlaceholder();
+            }
+        }
+        return new PotionAction(PotionEffectAT.valueOf(untranslated), entity);
     }
 
     @Override

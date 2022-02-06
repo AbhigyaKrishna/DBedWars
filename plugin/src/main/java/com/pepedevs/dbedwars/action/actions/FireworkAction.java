@@ -6,19 +6,26 @@ import org.bukkit.Location;
 
 public class FireworkAction implements Action<Location> {
 
+    private final Location location;
     private final FireworkEffectAT fireworkEffectAT;
 
-    public FireworkAction(FireworkEffectAT fireworkEffectAT) {
+    public FireworkAction(FireworkEffectAT fireworkEffectAT, Location location) {
+        this.location = location;
         this.fireworkEffectAT = fireworkEffectAT;
     }
 
     @Override
-    public void execute(Location location) {
-        this.fireworkEffectAT.spawn(location);
+    public void execute() {
+        this.fireworkEffectAT.spawn(this.getHandle());
+    }
+
+    @Override
+    public Location getHandle() {
+        return this.location;
     }
 
     public FireworkEffectAT getFireworkEffectAT() {
-        return fireworkEffectAT;
+        return this.fireworkEffectAT;
     }
 
 }

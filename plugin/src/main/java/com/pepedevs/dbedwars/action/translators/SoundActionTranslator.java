@@ -12,9 +12,13 @@ public class SoundActionTranslator implements ActionTranslator<PlayerMember, Sou
 
     @Override
     public SoundAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
-        SoundVP soundVP = SoundVP.valueOf(untranslated);
-        if (soundVP == null) return null;
-        return new SoundAction(soundVP);
+        PlayerMember member = null;
+        for (ActionPlaceholder<?, ?> placeholder : placeholders) {
+            if (placeholder.getKey().equals(Key.of("MEMBER"))) {
+                member = (PlayerMember) placeholder.getPlaceholder();
+            }
+        }
+        return new SoundAction(SoundVP.valueOf(untranslated), member);
     }
 
     @Override

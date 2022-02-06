@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.api.util;
 
+import java.util.Objects;
+
 public class Key<T> implements Cloneable {
 
     protected final T key;
@@ -18,7 +20,7 @@ public class Key<T> implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Key && ((Key) obj).key.equals(this.key);
+        return this.key.equals(obj) || (obj instanceof Key && ((Key) obj).key.equals(this.key));
     }
 
     @Override
@@ -31,6 +33,11 @@ public class Key<T> implements Cloneable {
         return "Key{" +
                 "key=" + key +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
     }
 
 }
