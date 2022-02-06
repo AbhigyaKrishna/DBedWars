@@ -1,9 +1,14 @@
 package com.pepedevs.dbedwars.game.arena.traps;
 
+import com.pepedevs.dbedwars.action.ActionPreProcessor;
+import com.pepedevs.dbedwars.action.objects.ProcessedActionHolder;
+import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
+import com.pepedevs.dbedwars.api.task.DelayedTask;
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
+import com.pepedevs.radium.task.CancellableWorkload;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -137,10 +142,15 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
 
         @Override
         public void execute(Collection<ArenaPlayer> victim) {
-            for (String action : this.actions) {
-                // TODO Parse action
+            for (ArenaPlayer arenaPlayer : victim) {
+                for (String executable : this.actions) {
+                    ProcessedActionHolder<?> actionHolder = ActionPreProcessor.process(executable);
+                    if (!actionHolder.shouldExecute()) continue;
+                }
             }
         }
+
+        private static
 
     }
 }

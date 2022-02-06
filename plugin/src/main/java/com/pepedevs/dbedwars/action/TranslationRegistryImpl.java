@@ -65,7 +65,7 @@ public class TranslationRegistryImpl implements ActionTranslationRegistry {
     @Override
     public ActionTranslator<?, ? extends Action> getTranslator(String key) {
         for (Map.Entry<Key<String>, ActionTranslator<?, ? extends Action>> entry : this.registeredTranslators.entrySet()) {
-            if (entry.getKey().get().equals(key)) return entry.getValue();
+            if (entry.getKey().get().equalsIgnoreCase(key)) return entry.getValue();
         }
         return null;
     }
