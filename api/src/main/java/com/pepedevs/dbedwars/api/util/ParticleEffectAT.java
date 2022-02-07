@@ -7,13 +7,16 @@ import com.pepedevs.radium.particles.ParticleEffect;
 import java.awt.Color;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@SuppressWarnings(value = "unused")
 public class ParticleEffectAT {
 
     private ParticleEffect effect;
     private AtomicInteger amount;
     private AtomicDouble speed;
     private Color color;
+
+    public static ParticleEffectAT valueOf(String particle) {
+        return new ParticleEffectAT(particle);
+    }
 
     public ParticleEffectAT(ParticleEffect effect) {
         this.effect = effect;
@@ -117,7 +120,6 @@ public class ParticleEffectAT {
     }
 
     public ParticleBuilder build() {
-
         ParticleBuilder builder = new ParticleBuilder(effect);
         if (this.amount != null) builder.setAmount(amount.get());
         if (this.speed != null) builder.setSpeed(speed.floatValue());

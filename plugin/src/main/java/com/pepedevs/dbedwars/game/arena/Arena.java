@@ -393,7 +393,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
             }
             for (Map.Entry<DropType, LocationXYZ> entry : team.getSpawners().entries()) {
-                new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, team).init();
+                com.pepedevs.dbedwars.game.arena.spawner.Spawner spawner = new com.pepedevs.dbedwars.game.arena.spawner.Spawner(this.plugin, entry.getKey(), this, Optional.of(team));
+                spawner.init(entry.getValue().toBukkit(this.getWorld()), 1);
+                this.spawners.add(spawner);
             }
             team.spawnShopNpc(team.getShopNpc());
             team.spawnUpgradesNpc(team.getUpgradesNpc());
@@ -401,7 +403,9 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
         Debugger.debug("Setting spawners");
         for (Map.Entry<DropType, LocationXYZ> entry : this.settings.getDrops().entries()) {
-            new com.pepedevs.dbedwars.game.arena.Spawner(this.plugin, entry.getKey(), entry.getValue().toBukkit(this.getWorld()), this, null).init();
+            com.pepedevs.dbedwars.game.arena.spawner.Spawner spawner = new com.pepedevs.dbedwars.game.arena.spawner.Spawner(this.plugin, entry.getKey(), this, Optional.empty());
+            spawner.init(entry.getValue().toBukkit(this.getWorld()), 1);
+            this.spawners.add(spawner);
         }
 
         Debugger.debug("Setting lobby");

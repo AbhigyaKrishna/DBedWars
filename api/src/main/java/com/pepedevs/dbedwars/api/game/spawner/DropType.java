@@ -1,36 +1,36 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
+import com.pepedevs.dbedwars.api.hologram.Hologram;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
-import com.pepedevs.dbedwars.api.util.Keyed;
+import com.pepedevs.dbedwars.api.util.*;
 import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
-import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.dbedwars.api.util.SoundVP;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public interface DropType extends Cloneable {
+public interface DropType extends Cloneable, Keyed<String> {
 
-    String getConfigId();
+    Key<BwItemStack> getIcon();
 
-    String getId();
+    void setIcon(BwItemStack icon);
 
-    String getSimpleName();
+    SoundVP getSoundEffect();
 
-    BwItemStack getIcon();
+    void setSoundEffect(SoundVP sound);
 
-    SoundVP getSpawnSound();
+    ParticleEffectAT getParticleEffect();
 
-    void setSpawnSound(SoundVP sound);
-
-    ParticleEffect getSpawnEffect();
-
-    void setSpawnEffect(ParticleEffect effect);
+    void setParticleEffect(ParticleEffectAT effect);
 
     int getSpawnRadius();
 
     void setSpawnRadius(int radius);
+
+    Hologram getHologram();
+
+    void setHologram(Hologram hologram);
 
     boolean isTeamSpawner();
 
@@ -44,23 +44,11 @@ public interface DropType extends Cloneable {
 
     void setSplitable(boolean flag);
 
-    boolean isHologramEnabled();
-
-    void setHologramEnabled(boolean flag);
-
-    BwItemStack getHologramMaterial();
-
-    void setHologramMaterial(BwItemStack stack);
-
-    List<String> getHologramText();
-
     Tier getTier(int level);
 
     boolean hasTier(int level);
 
-    Map<Integer, Tier> getTiers();
-
-    boolean isRegistered();
+    Collection<Tier> getTiers();
 
     DropType clone();
 
@@ -84,9 +72,7 @@ public interface DropType extends Cloneable {
 
         void setUpgradeMessage(Message message);
 
-        List<Drop> getDrops();
-
-        Map<String, Drop> getDropMap();
+        Collection<Drop> getDrops();
 
         Tier clone();
 

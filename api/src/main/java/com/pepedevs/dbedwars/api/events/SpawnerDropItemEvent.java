@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.api.events;
 
+import com.pepedevs.dbedwars.api.game.spawner.ResourceItem;
 import com.pepedevs.radium.events.CustomEventCancellable;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;
@@ -16,26 +17,20 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
     private final Arena arena;
     private final DropType dropType;
     private final Spawner spawner;
-    private final Team team;
-    private final int level;
-    private final DropType.Tier tier;
-    private DropType.Drop drop;
+    private final DropType.Drop drop;
+    private ResourceItem resourceItem;
 
     public SpawnerDropItemEvent(
             Arena arena,
             DropType dropType,
             DropType.Drop drop,
-            Spawner spawner,
-            Team team,
-            int level,
-            DropType.Tier tier) {
+            ResourceItem resourceItem,
+            Spawner spawner) {
         this.arena = arena;
         this.dropType = dropType;
         this.drop = drop;
+        this.resourceItem = resourceItem;
         this.spawner = spawner;
-        this.team = team;
-        this.level = level;
-        this.tier = tier;
     }
 
     public static HandlerList getHandlerList() {
@@ -54,29 +49,16 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
         return drop;
     }
 
-    public void setDrop(DropType.Drop drop) {
-        this.drop = drop;
+    public ResourceItem getResourceItem() {
+        return resourceItem;
+    }
+
+    public void setResourceItem(ResourceItem resourceItem) {
+        this.resourceItem = resourceItem;
     }
 
     public Spawner getSpawner() {
         return spawner;
-    }
-
-    public boolean isTeamSpawner() {
-        return this.team != null;
-    }
-
-    @Nullable
-    public Team getTeam() {
-        return team;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public DropType.Tier getTier() {
-        return tier;
     }
 
     @NotNull
@@ -91,10 +73,8 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
                 "arena=" + arena +
                 ", dropType=" + dropType +
                 ", spawner=" + spawner +
-                ", team=" + team +
-                ", level=" + level +
-                ", tier=" + tier +
                 ", drop=" + drop +
+                ", resourceItem=" + resourceItem +
                 ", cancelled=" + cancelled +
                 '}';
     }

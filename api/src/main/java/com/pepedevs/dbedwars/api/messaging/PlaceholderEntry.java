@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public interface PlaceholderEntry {
 
-    static PlaceholderEntry of(String placeholder, Supplier<String> replacementSupplier) {
+    static PlaceholderEntry of(String placeholder, Supplier<String> replacement) {
         return new PlaceholderEntry() {
             @Override
             public String getPlaceholder() {
@@ -13,18 +13,9 @@ public interface PlaceholderEntry {
 
             @Override
             public Supplier<String> getReplacement() {
-                return replacementSupplier;
+                return replacement;
             }
 
-            @Override
-            public String toString() {
-                return "PlaceholderEntry{" +
-                        "placeholder=" +
-                        placeholder +
-                        "replacementSupplier=" +
-                        replacementSupplier +
-                        '}';
-            }
         };
     }
 
@@ -45,15 +36,6 @@ public interface PlaceholderEntry {
                 };
             }
 
-            @Override
-            public String toString() {
-                return "PlaceholderEntry{" +
-                        "placeholder=" +
-                        placeholder +
-                        "replacement=" +
-                        replacement +
-                        '}';
-            }
         };
     }
 
@@ -61,13 +43,15 @@ public interface PlaceholderEntry {
         return of("<".concat(placeholder).concat(">"), replacement);
     }
 
-    static PlaceholderEntry symbol(String placeholder, Supplier<String> replacementSupplier) {
-        return of("<".concat(placeholder).concat(">"), replacementSupplier);
+    static PlaceholderEntry symbol(String placeholder, Supplier<String> replacement) {
+        return of("<".concat(placeholder).concat(">"), replacement);
     }
 
     String getPlaceholder();
 
     Supplier<String> getReplacement();
 
-    String toString();
+    default String apply(String message) {
+        return message.replace(this.getPlaceholder(), this.getReplacement().get());
+    }
 }

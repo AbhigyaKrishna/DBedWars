@@ -1,25 +1,21 @@
 package com.pepedevs.dbedwars.game.arena.spawner;
 
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.spawner.DropType;
+import com.pepedevs.dbedwars.api.hologram.Hologram;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Key;
-import com.pepedevs.dbedwars.api.util.Keyed;
+import com.pepedevs.dbedwars.api.util.ParticleEffectAT;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertyName;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableItemSpawner;
-import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.radium.particles.ParticleEffect;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DropTypeNew implements Keyed<String> {
+public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType {
 
     private final DBedwars plugin;
     private final Key<String> key;
@@ -27,17 +23,21 @@ public class DropTypeNew implements Keyed<String> {
     private Key<BwItemStack> icon;
     private int radius;
     private SoundVP soundEffect;
-    private ParticleEffect particleEffect;
+    private ParticleEffectAT particleEffect;
     private Hologram hologram;
+    private boolean teamSpawner, merging, spliting;
 
-    private Map<Integer, DropType.Tier> tiers = new HashMap<>();
+    private Map<Integer, com.pepedevs.dbedwars.api.game.spawner.DropType.Tier> tiers = new HashMap<>();
 
-    public static DropTypeNew fromConfig(DBedwars plugin, ConfigurableItemSpawner cfg) {
-        DropTypeNew dropType = new DropTypeNew(plugin, cfg.getId());
+    public static DropType fromConfig(DBedwars plugin, ConfigurableItemSpawner cfg) {
+        DropType dropType = new DropType(plugin, cfg.getId());
         dropType.radius = cfg.getRadius();
         dropType.icon = Key.of(cfg.getIcon());
         dropType.soundEffect = cfg.getSpawnSound();
         dropType.particleEffect = cfg.getSpawnEffect();
+        dropType.teamSpawner = cfg.isTeamSpawner();
+        dropType.merging = cfg.isMerge();
+        dropType.spliting = cfg.isSplit();
 
         for (Map.Entry<Integer, ConfigurableItemSpawner.ConfigurableTiers> entry : cfg.getTiers().entrySet()) {
             dropType.tiers.put(entry.getKey(), Tier.fromConfig(entry.getKey(), entry.getValue()));
@@ -45,25 +45,113 @@ public class DropTypeNew implements Keyed<String> {
         return dropType;
     }
 
-    public DropTypeNew(DBedwars plugin, String key) {
+    public DropType(DBedwars plugin, String key) {
         this.plugin = plugin;
         this.key = Key.of(key);
     }
 
+    @Override
     public Key<BwItemStack> getIcon() {
         return this.icon.clone();
     }
 
+    @Override
     public void setIcon(BwItemStack viewItem) {
         this.icon = Key.of(viewItem);
     }
 
-    public int getRadius() {
+    @Override
+    public int getSpawnRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    @Override
+    public void setSpawnRadius(int radius) {
         this.radius = radius;
+    }
+
+    @Override
+    public SoundVP getSoundEffect() {
+        return this.soundEffect;
+    }
+
+    @Override
+    public void setSoundEffect(SoundVP soundEffect) {
+        this.soundEffect = soundEffect;
+    }
+
+    @Override
+    public ParticleEffectAT getParticleEffect() {
+        return this.particleEffect;
+    }
+
+    @Override
+    public void setParticleEffect(ParticleEffectAT particleEffect) {
+        this.particleEffect = particleEffect;
+    }
+
+    @Override
+    public Hologram getHologram() {
+        return this.hologram;
+    }
+
+    @Override
+    public void setHologram(Hologram hologram) {
+        this.hologram = hologram;
+    }
+
+    @Override
+    public boolean isTeamSpawner() {
+        return this.teamSpawner;
+    }
+
+    @Override
+    public void setTeamSpawner(boolean flag) {
+        this.teamSpawner = flag;
+    }
+
+    @Override
+    public boolean isMerging() {
+        return this.merging;
+    }
+
+    @Override
+    public void setMerging(boolean flag) {
+        this.merging = flag;
+    }
+
+    @Override
+    public boolean isSplitable() {
+        return this.spliting;
+    }
+
+    @Override
+    public void setSplitable(boolean flag) {
+        this.spliting = flag;
+    }
+
+    @Override
+    public com.pepedevs.dbedwars.api.game.spawner.DropType.Tier getTier(int level) {
+        return this.tiers.get(level);
+    }
+
+    @Override
+    public boolean hasTier(int level) {
+        return this.getTier(level) != null;
+    }
+
+    @Override
+    public Collection<com.pepedevs.dbedwars.api.game.spawner.DropType.Tier> getTiers() {
+        return this.tiers.values();
+    }
+
+    @Override
+    public com.pepedevs.dbedwars.api.game.spawner.DropType clone() {
+        try {
+            return (DropType) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     @Override
@@ -71,7 +159,7 @@ public class DropTypeNew implements Keyed<String> {
         return key;
     }
 
-    public static class Tier implements DropType.Tier {
+    public static class Tier implements com.pepedevs.dbedwars.api.game.spawner.DropType.Tier {
 
         @PropertyName("key")
         private final Key<Integer> key;
@@ -92,7 +180,7 @@ public class DropTypeNew implements Keyed<String> {
             tier.upgradeSound = cfg.getUpgradeSound();
             tier.upgradeEffect = cfg.getUpgradeEffect();
             tier.upgradeMessage = Lang.getTranslator().asMessage(cfg.getMessage());
-            for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableDrop> entry : cfg.getActions().entrySet()) {
+            for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop> entry : cfg.getActions().entrySet()) {
                 tier.drops.put(entry.getKey(), Drop.fromConfig(entry.getValue()));
             }
             return tier;
@@ -157,13 +245,8 @@ public class DropTypeNew implements Keyed<String> {
         }
 
         @Override
-        public List<com.pepedevs.dbedwars.api.game.spawner.DropType.Drop> getDrops() {
+        public Collection<com.pepedevs.dbedwars.api.game.spawner.DropType.Drop> getDrops() {
             return new ArrayList<>(this.drops.values());
-        }
-
-        @Override
-        public Map<String, com.pepedevs.dbedwars.api.game.spawner.DropType.Drop> getDropMap() {
-            return this.drops;
         }
 
         @Override
@@ -202,7 +285,7 @@ public class DropTypeNew implements Keyed<String> {
 
     }
 
-    public static class Drop implements DropType.Drop {
+    public static class Drop implements com.pepedevs.dbedwars.api.game.spawner.DropType.Drop {
 
         @PropertyName("key")
         private final Key<String> key;
@@ -213,7 +296,7 @@ public class DropTypeNew implements Keyed<String> {
         @PropertyName("max-spawn")
         private int maxSpawn;
 
-        public static Drop fromConfig(ConfigurableItemSpawner.ConfigurableDrop cfg) {
+        public static Drop fromConfig(ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop cfg) {
             Drop drop = new Drop(cfg.getKey());
             drop.item = cfg.getMaterial();
             drop.delay = cfg.getDelay();
@@ -244,7 +327,7 @@ public class DropTypeNew implements Keyed<String> {
 
         @Override
         public void setItem(BwItemStack stack) {
-            this.item = item;
+            this.item = stack;
         }
 
         @Override

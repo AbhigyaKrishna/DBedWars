@@ -76,7 +76,7 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
     public String setPlaceholders(final String message, PlaceholderEntry... entries) {
         String replaced = message;
         for (PlaceholderEntry entry : entries) {
-            replaced = message.replace(entry.getPlaceholder(), entry.getReplacement().get());
+            replaced = entry.apply(replaced);
         }
         return replaced;
     }

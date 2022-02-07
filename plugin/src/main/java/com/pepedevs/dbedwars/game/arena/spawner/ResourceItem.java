@@ -2,6 +2,8 @@ package com.pepedevs.dbedwars.game.arena.spawner;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -35,9 +37,22 @@ public class ResourceItem implements com.pepedevs.dbedwars.api.game.spawner.Reso
             throw new IllegalStateException("Tried to drop item which is already dropped on location `" + this.itemEntity.getLocation() + " !");
         }
 
-        this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
-        this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
-        this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
+        if (!Bukkit.isPrimaryThread()) {
+            SchedulerUtils.runTask(new Runnable() {
+                @Override
+                public void run() {
+                    ResourceItem.this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
+                    ResourceItem.this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
+                    ResourceItem.this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
+                }
+            }, DBedwars.getInstance());
+        } else {
+            this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
+            this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
+            this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
+        }
+
+
     }
 
     @Override

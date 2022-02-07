@@ -131,7 +131,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                                     }
                                 }
                                 if (!bDrop && cDrop.isValid()) {
-                                    t.getDropMap().put(str, new com.pepedevs.dbedwars.game.arena.DropType.Drop(cDrop));
+                                    t.getDropMap().put(str, new com.pepedevs.dbedwars.game.arena.spawner.DropType.Drop(cDrop));
                                 }
                             });
 
@@ -139,7 +139,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                         }
                         if (!bTier) {
                             if (ct.isValid()) {
-                                d.getTiers().put(i, new com.pepedevs.dbedwars.game.arena.DropType.Tier(ct));
+                                d.getTiers().put(i, new com.pepedevs.dbedwars.game.arena.spawner.DropType.Tier(ct));
                             }
                         }
                     });

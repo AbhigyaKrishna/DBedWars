@@ -1,18 +1,18 @@
 package com.pepedevs.dbedwars.api.game.spawner;
 
+import com.pepedevs.dbedwars.api.util.Keyed;
 import com.pepedevs.radium.particles.ParticleBuilder;
+import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.Team;
 import org.bukkit.Location;
 
 import java.time.Instant;
+import java.util.Optional;
 
-public interface Spawner {
-
-    void init();
-
-    void tick();
+public interface Spawner extends Tickable, Keyed<DropType> {
 
     void spawn(DropType.Drop drop);
 
@@ -28,19 +28,13 @@ public interface Spawner {
 
     Arena getArena();
 
-    Team getTeam();
+    Optional<Team> getTeam();
 
     BoundingBox getBoundingBox();
-
-    int getLevel();
 
     DropType.Tier getTier();
 
     Instant getLastUpgrade();
-
-    ParticleBuilder getParticle();
-
-    boolean exists();
 
     boolean remove();
 

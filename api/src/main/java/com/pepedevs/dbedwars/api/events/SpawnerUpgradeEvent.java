@@ -16,27 +16,18 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
     private final Arena arena;
     private final DropType dropType;
     private final Spawner spawner;
-    private final Team team;
-    private final int currentLevel;
-    private int nextLevel;
-    private DropType.Tier currentTier;
+    private final DropType.Tier currentTier;
     private DropType.Tier nextTier;
 
     public SpawnerUpgradeEvent(
             Arena arena,
             DropType dropType,
             Spawner spawner,
-            Team team,
-            int currentLevel,
-            int nextLevel,
             DropType.Tier currentTier,
             DropType.Tier nextTier) {
         this.arena = arena;
         this.dropType = dropType;
         this.spawner = spawner;
-        this.team = team;
-        this.currentLevel = currentLevel;
-        this.nextLevel = nextLevel;
         this.currentTier = currentTier;
         this.nextTier = nextTier;
     }
@@ -57,34 +48,16 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
         return spawner;
     }
 
-    public boolean isTeamSpawner() {
-        return this.team != null;
-    }
-
-    @Nullable
-    public Team getTeam() {
-        return team;
-    }
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public int getNextLevel() {
-        return nextLevel;
-    }
-
-    public void setNextLevel(int nextLevel) {
-        this.nextLevel = nextLevel;
-        this.nextTier = this.dropType.getTier(this.nextLevel);
-    }
-
     public DropType.Tier getCurrentTier() {
         return currentTier;
     }
 
     public DropType.Tier getNextTier() {
         return nextTier;
+    }
+
+    public void setNextTier(DropType.Tier nextTier) {
+        this.nextTier = nextTier;
     }
 
     @NotNull
@@ -99,9 +72,6 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
                 "arena=" + arena +
                 ", dropType=" + dropType +
                 ", spawner=" + spawner +
-                ", team=" + team +
-                ", currentLevel=" + currentLevel +
-                ", nextLevel=" + nextLevel +
                 ", currentTier=" + currentTier +
                 ", nextTier=" + nextTier +
                 ", cancelled=" + cancelled +

@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
+import com.pepedevs.dbedwars.api.util.ParticleEffectAT;
 import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
@@ -110,8 +111,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         return this.spawnSound != null ? SoundVP.valueOf(this.spawnSound) : null;
     }
 
-    public ParticleEffect getSpawnEffect() {
-        return EnumReflection.getEnumConstant(ParticleEffect.class, this.spawnEffect);
+    public ParticleEffectAT getSpawnEffect() {
+        return ParticleEffectAT.valueOf(this.spawnEffect);
     }
 
     public int getRadius() {
@@ -361,8 +362,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
                 .add("teamSpawner", teamSpawner)
                 .add("hologram", NamedProperties.builder()
                         .add("enabled", hologramEnabled)
-                        .add("material", hologramMaterial)
-                        .add("text", hologramText)
+                        .add("id", hologramId)
                         .build())
                 .add("tiers", tiers)
                 .build();

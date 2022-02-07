@@ -144,13 +144,11 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
         public void execute(Collection<ArenaPlayer> victim) {
             for (ArenaPlayer arenaPlayer : victim) {
                 for (String executable : this.actions) {
-                    ProcessedActionHolder<?> actionHolder = ActionPreProcessor.process(executable);
+                    ProcessedActionHolder actionHolder = ActionPreProcessor.process(executable);
                     if (!actionHolder.shouldExecute()) continue;
                 }
             }
         }
-
-        private static
 
     }
 }
