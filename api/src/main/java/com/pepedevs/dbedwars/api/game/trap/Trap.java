@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.api.game.trap;
 
-import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.Keyed;
@@ -18,14 +17,13 @@ public interface Trap extends Keyed<String> {
 
     ArenaPlayer getTrapBuyer();
 
-    interface TrapAction extends Action<Collection<ArenaPlayer>> {
+    interface TrapAction {
 
         Trap getTrap();
 
         Collection<ArenaPlayer> getTarget(ArenaPlayer target);
 
-        @Override
-        void execute(Collection<ArenaPlayer> victim);
+        void execute(Collection<ArenaPlayer> targets);
 
     }
 

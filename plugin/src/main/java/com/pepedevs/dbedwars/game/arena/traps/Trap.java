@@ -141,8 +141,8 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
         }
 
         @Override
-        public void execute(Collection<ArenaPlayer> victim) {
-            for (ArenaPlayer arenaPlayer : victim) {
+        public void execute(Collection<ArenaPlayer> targets) {
+            for (ArenaPlayer arenaPlayer : targets) {
                 for (String executable : this.actions) {
                     ProcessedActionHolder actionHolder = ActionPreProcessor.process(executable);
                     if (!actionHolder.shouldExecute()) continue;
