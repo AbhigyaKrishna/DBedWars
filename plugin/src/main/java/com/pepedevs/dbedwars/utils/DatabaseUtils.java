@@ -21,8 +21,7 @@ public class DatabaseUtils {
                                                 .getDatabaseBridge()
                                                 .getAsDataCache(
                                                         "UUID",
-                                                        player.getUUIDPlayer()
-                                                                .getUniqueId()
+                                                        player.getUUID()
                                                                 .toString(),
                                                         "PLAYER_STATS");
                                 PlayerStats stat;
@@ -34,7 +33,7 @@ public class DatabaseUtils {
                                 } else {
                                     stat =
                                             new PlayerStats(
-                                                    player.getUUIDPlayer().getUniqueId().toString(),
+                                                    player.getUUID().toString(),
                                                     player.getName());
                                     stat.setCOINS(10);
                                     stat.setLEVEL(1);

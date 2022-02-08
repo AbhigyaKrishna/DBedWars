@@ -9,7 +9,6 @@ import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.util.Key;
-import com.pepedevs.dbedwars.api.util.TrapEnum;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -35,13 +34,6 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
         return this.key;
     }
 
-//    public static Trap fromConfig(ConfigurableTrap config) {
-//        for (ConfigurableTrap.ConfigurableTrapAction action : config.getTrapActions()) {
-//            for (String executable : action.getExecutables()) {
-//            }
-//        }
-//    }
-
     @Override
     public Team getTrapOwner() {
         return this.buyer.getTeam();
@@ -54,24 +46,11 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
 
     @Override
     public void trigger(ArenaPlayer target) {
-
+        for (com.pepedevs.dbedwars.api.game.trap.Trap.TrapAction value : this.actions.values()) {
+            value.execute(value.getActionTarget(target));
+        }
     }
 
-    private void parseTrapAction() {
-//        for (ConfigurableTrap.ConfigurableTrapAction action : cfgTrap.getTrapActions()) {
-//            TrapEnum.TargetType targetType = TrapEnum.TargetType.match(action.getTarget());
-//            Set<Consumer<ArenaPlayer>> actions = new HashSet<>();
-//            for (String executable : action.getExecutables()) {
-//                for (TrapEnum.ActionType value : TrapEnum.ActionType.VALUES) {
-//                    if (executable.startsWith("[" + value.name()))
-//                        actions.add(value.getAction(executable));
-//                }
-//            }
-//            this.actions.put(targetType, actions);
-//        }
-    }
-
-    @Override
     public TrapEnum.TriggerType getTriggerType() {
         return triggerType;
     }
@@ -162,7 +141,7 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
 
         private ActionPlaceholder<String, PlaceholderEntry>[] getStandardPlaceholders(ArenaPlayer arenaPlayer) {
             List<ActionPlaceholder<String, PlaceholderEntry>> placeholders = new ArrayList<>();
-            return new ActionPlaceholder[]{
+            return new ActionPlaceholder[] {
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("player_name", arenaPlayer.getPlayer().getName())),
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_name", arenaPlayer.getTeam().getName())),
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_color", arenaPlayer.getTeam().getColor().toString())),
@@ -183,8 +162,5 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getSettings().getName()))
             };
         }
-
-
-
     }
 }

@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.configuration.configurable;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableCollectionEntry;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
-import com.pepedevs.dbedwars.api.util.TrapEnum;
+import com.pepedevs.dbedwars.game.arena.traps.TrapEnum;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;

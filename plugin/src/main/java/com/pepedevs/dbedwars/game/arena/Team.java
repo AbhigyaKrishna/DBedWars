@@ -15,7 +15,7 @@ import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
-import com.pepedevs.dbedwars.api.util.TrapEnum;
+import com.pepedevs.dbedwars.game.arena.traps.TrapEnum;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableTeam;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
 
@@ -224,13 +224,8 @@ public class Team extends AbstractMessaging implements com.pepedevs.dbedwars.api
         return this.trapQueue;
     }
 
-    @Override
     public void triggerTrap(TrapEnum.TriggerType trigger, ArenaPlayer target) {
-        if (this.plugin
-                .getConfigHandler()
-                .getMainConfiguration()
-                .getTrapSection()
-                .isTrapQueueEnabled()) {
+        if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled()) {
             for (Trap trap : new LinkedList<>(this.trapQueue)) {
                 if (trap.getTriggerType() == trigger) {
                     TrapTriggerEvent event = new TrapTriggerEvent(trap, target, this);

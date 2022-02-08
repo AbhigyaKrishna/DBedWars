@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.util;
+package com.pepedevs.dbedwars.game.arena.traps;
 
 public class TrapEnum {
 
