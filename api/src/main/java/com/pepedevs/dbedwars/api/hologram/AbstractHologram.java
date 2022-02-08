@@ -63,4 +63,3 @@ public abstract class AbstractHologram {
         return this.location;
     }
 }
-

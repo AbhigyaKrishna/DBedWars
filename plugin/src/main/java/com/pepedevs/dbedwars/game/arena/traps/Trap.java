@@ -140,8 +140,7 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
         }
 
         private ActionPlaceholder<String, PlaceholderEntry>[] getStandardPlaceholders(ArenaPlayer arenaPlayer) {
-            List<ActionPlaceholder<String, PlaceholderEntry>> placeholders = new ArrayList<>();
-            return new ActionPlaceholder[] {
+            return new ActionPlaceholder[]{
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("player_name", arenaPlayer.getPlayer().getName())),
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_name", arenaPlayer.getTeam().getName())),
                     ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_color", arenaPlayer.getTeam().getColor().toString())),

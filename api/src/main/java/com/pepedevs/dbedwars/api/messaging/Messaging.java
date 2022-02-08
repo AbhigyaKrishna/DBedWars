@@ -9,7 +9,7 @@ public abstract class Messaging {
 
     private static Messaging instance;
 
-    public Messaging() {
+    protected Messaging() {
         instance = this;
     }
 

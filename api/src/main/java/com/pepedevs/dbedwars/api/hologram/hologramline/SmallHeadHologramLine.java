@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.hologram.lines;
+package com.pepedevs.dbedwars.api.hologram.hologramline;
 
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
 import com.pepedevs.radium.holograms.utils.PacketUtils;
@@ -6,21 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class SmallHeadHologramLine extends HologramLine {
-
-    private ItemStack content;
+public class SmallHeadHologramLine extends HologramLine<ItemStack> {
 
     public SmallHeadHologramLine(Location location, ItemStack item) {
-        super(location, HologramLineType.SMALL_HEAD);
-        this.content = item;
-    }
-
-    public ItemStack getContent() {
-        return content;
-    }
-
-    public void setContent(ItemStack content) {
-        this.content = content;
+        super(location, Type.SMALL_HEAD, item);
     }
 
     @Override
@@ -30,7 +19,7 @@ public class SmallHeadHologramLine extends HologramLine {
 
             PacketUtils.showFakeEntityArmorStand(
                     player, this.getLocation(), this.entityIds[0], true, true, true);
-            PacketUtils.helmetFakeEntity(player, this.content, this.entityIds[0]);
+            PacketUtils.helmetFakeEntity(player, this.getContent(), this.entityIds[0]);
             this.viewers.add(player.getUniqueId());
         }
     }

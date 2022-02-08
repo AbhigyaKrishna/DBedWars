@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.hologram.lines;
+package com.pepedevs.dbedwars.api.hologram.hologramline;
 
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
 import com.pepedevs.radium.holograms.utils.PacketUtils;
@@ -6,13 +6,10 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class TextHologramLine extends HologramLine {
-
-    private Component content;
+public class TextHologramLine extends HologramLine<Component> {
 
     public TextHologramLine(Location location, Component content) {
-        super(location, HologramLineType.TEXT);
-        this.content = content;
+        super(location, Type.TEXT, content);
         //        this.height = this.getParent().getParent().getSettings().getHeightText();
     }
 
@@ -31,12 +28,4 @@ public class TextHologramLine extends HologramLine {
 
     @Override
     public void destroy() {}
-
-    public Component getContent() {
-        return content;
-    }
-
-    public void setContent(Component content) {
-        this.content = content;
-    }
 }

@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.hologram.lines;
+package com.pepedevs.dbedwars.api.hologram.hologramline;
 
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
@@ -12,25 +12,14 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class EntityHologramLine extends HologramLine {
-
-    private EntityType content;
+public class EntityHologramLine extends HologramLine<EntityType> {
 
     public EntityHologramLine(Location location, EntityType entity) {
-        super(location, HologramLineType.ENTITY);
+        super(location, Type.ENTITY, entity);
         Validate.isTrue(
                 HologramEntities.isAllowed(entity),
                 "EntityType `" + entity.name() + "` cannot be used in the hologram!");
-        this.content = entity;
         this.entityIds[1] = PacketUtils.getFreeEntityId();
-    }
-
-    public EntityType getContent() {
-        return this.content;
-    }
-
-    public void setContent(EntityType entity) {
-        this.content = entity;
     }
 
     @Override
@@ -39,10 +28,10 @@ public class EntityHologramLine extends HologramLine {
             if (this.isVisible(player)) continue;
             PacketUtils.showFakeEntityArmorStand(player, this.getLocation(), this.entityIds[0], true, true, true);
 
-            if (this.content.isAlive())
-                PacketUtils.showFakeEntityLiving(player, this.getLocation(), EntityTypes.getByName(this.content.name()), this.entityIds[1]);
+            if (this.getContent().isAlive())
+                PacketUtils.showFakeEntityLiving(player, this.getLocation(), EntityTypes.getByName(this.getContent().name()), this.entityIds[1]);
             else
-                PacketUtils.showFakeEntity(player, this.getLocation(), EntityTypes.getByName(this.content.name()), this.entityIds[1]);
+                PacketUtils.showFakeEntity(player, this.getLocation(), EntityTypes.getByName(this.getContent().name()), this.entityIds[1]);
 
             PacketUtils.attachFakeEntity(player, this.entityIds[0], this.entityIds[1]);
             this.viewers.add(player.getUniqueId());

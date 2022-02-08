@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api.hologram;
 
-import com.pepedevs.dbedwars.api.hologram.lines.HologramLineType;
 import com.pepedevs.dbedwars.api.util.ClickType;
+import com.pepedevs.radium.holograms.object.HologramPage;
 import com.pepedevs.radium.holograms.utils.PacketUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -13,18 +13,20 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-public abstract class HologramLine extends AbstractHologram {
+public abstract class HologramLine<C> extends AbstractHologram {
 
     protected HologramPage parent;
-    protected final HologramLineType type;
+    protected final Type type;
     protected BiFunction<Component, Player, Component> messageParse = (component, player) -> component;
     protected final int[] entityIds;
+    private C content;
 
-    protected HologramLine(Location location, HologramLineType type) {
+    protected HologramLine(Location location, Type type, C content) {
         super(location);
         this.type = type;
         this.entityIds = new int[2];
         this.entityIds[0] = PacketUtils.getFreeEntityId();
+        this.content = content;
     }
 
     @Override
@@ -69,8 +71,16 @@ public abstract class HologramLine extends AbstractHologram {
         }
     }
 
-    public HologramLineType getType() {
+    public Type getType() {
         return this.type;
+    }
+
+    public C getContent() {
+        return this.content;
+    }
+
+    public void setContent(C content) {
+        this.content = content;
     }
 
     protected int[] getEntityIds() {
@@ -102,5 +112,24 @@ public abstract class HologramLine extends AbstractHologram {
             list.add(this.messageParse.apply(s, player));
         }
         return list;
+    }
+
+    public enum Type {
+        UNKNOWN(0),
+        TEXT(-0.5),
+        HEAD(-2.0),
+        SMALL_HEAD(-1.1875),
+        ICON(-0.55),
+        ENTITY(0);
+
+        private final double offsetY;
+
+        Type(double offsetY) {
+            this.offsetY = offsetY;
+        }
+
+        public double getOffsetY() {
+            return this.offsetY;
+        }
     }
 }

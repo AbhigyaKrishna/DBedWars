@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.hologram.lines;
+package com.pepedevs.dbedwars.api.hologram.hologramline;
 
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
 import com.pepedevs.radium.holograms.utils.PacketUtils;
@@ -9,22 +9,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class IconHologramLine extends HologramLine {
+public class IconHologramLine extends HologramLine<ItemStack> {
 
-    private ItemStack content;
 
     public IconHologramLine(Location location, ItemStack item) {
-        super(location, HologramLineType.ICON);
-        this.content = item;
+        super(location, Type.ICON, item);
         this.entityIds[1] = PacketUtils.getFreeEntityId();
-    }
-
-    public ItemStack getContent() {
-        return content;
-    }
-
-    public void setContent(ItemStack content) {
-        this.content = content;
     }
 
     @Override
@@ -33,7 +23,7 @@ public class IconHologramLine extends HologramLine {
             if (this.isVisible(player)) continue;
 
             PacketUtils.showFakeEntityArmorStand(player, this.getLocation(), this.entityIds[0], true, true, true);
-            PacketUtils.showFakeEntityItem(player, this.getLocation(), this.content, this.entityIds[1]);
+            PacketUtils.showFakeEntityItem(player, this.getLocation(), this.getContent(), this.entityIds[1]);
             PacketUtils.attachFakeEntity(player, this.entityIds[0], this.entityIds[1]);
             this.viewers.add(player.getUniqueId());
         }
