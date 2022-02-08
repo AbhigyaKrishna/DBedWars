@@ -44,9 +44,65 @@ allprojects {
         /*relocate 'com.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.api'
         relocate 'io.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.spigot'*/
     }
+    def targetJavaVersion = 8
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding 'UTF-8'
+        if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+            options.release = targetJavaVersion
+        }
+    }
+
+    java {
+        def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        if (JavaVersion.current() < javaVersion) {
+            toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+        }
+    }
 
     shadowJar.shouldRunAfter build
 
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+repositories {
+    maven {
+        name = 'CodeMC'
+        url = 'https://repo.codemc.org/repository/maven-public/'
+    }
+    maven {
+        name = 'aikar'
+        url = "https://repo.aikar.co/content/groups/aikar/"
+    }
+    maven {
+        name = 'spigot-public'
+        url = "https://hub.spigotmc.org/nexus/content/groups/public/"
+    }
+    maven {
+        name = 'jitpack'
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    implementation project(':nms-v1_8_R3')
+    implementation project(':hooks:cmi-hook')
+    implementation 'org.reflections:reflections:0.9.12'
+    implementation 'de.tr7zw:item-nbt-api:2.8.0'
+    implementation 'redis.clients:jedis:3.7.1'
+    implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
+    implementation 'com.github.retrooper:packetevents:spigot-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
+    compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
 }
 
 build {
