@@ -1,15 +1,15 @@
 package com.pepedevs.dbedwars.action.actions;
 
 import com.pepedevs.dbedwars.api.action.Action;
-import com.pepedevs.dbedwars.api.util.FireworkEffectAT;
+import com.pepedevs.dbedwars.api.util.FireworkEffectC;
 import org.bukkit.Location;
 
 public class FireworkAction implements Action<Location> {
 
     private final Location location;
-    private final FireworkEffectAT fireworkEffectAT;
+    private final FireworkEffectC fireworkEffectAT;
 
-    public FireworkAction(FireworkEffectAT fireworkEffectAT, Location location) {
+    public FireworkAction(FireworkEffectC fireworkEffectAT, Location location) {
         this.location = location;
         this.fireworkEffectAT = fireworkEffectAT;
     }
@@ -24,7 +24,7 @@ public class FireworkAction implements Action<Location> {
         return this.location;
     }
 
-    public FireworkEffectAT getFireworkEffectAT() {
+    public FireworkEffectC getFireworkEffectAT() {
         return this.fireworkEffectAT;
     }
 

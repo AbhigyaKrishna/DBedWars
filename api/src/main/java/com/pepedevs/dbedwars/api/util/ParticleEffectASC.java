@@ -7,62 +7,62 @@ import com.pepedevs.radium.particles.ParticleEffect;
 import java.awt.Color;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ParticleEffectAT {
+public class ParticleEffectASC {
 
     private ParticleEffect effect;
     private AtomicInteger amount;
     private AtomicDouble speed;
     private Color color;
 
-    public static ParticleEffectAT valueOf(String particle) {
-        return new ParticleEffectAT(particle);
+    public static ParticleEffectASC valueOf(String particle) {
+        return new ParticleEffectASC(particle);
     }
 
-    public ParticleEffectAT(ParticleEffect effect) {
+    public ParticleEffectASC(ParticleEffect effect) {
         this.effect = effect;
     }
 
-    public ParticleEffectAT(ParticleEffect particle, int amount, float speed) {
+    public ParticleEffectASC(ParticleEffect particle, int amount, float speed) {
         this.effect = particle;
         setSpeed(speed);
         setAmount(amount);
     }
 
-    public ParticleEffectAT(ParticleEffect particle, int amount) {
+    public ParticleEffectASC(ParticleEffect particle, int amount) {
         this.effect = particle;
         setAmount(amount);
     }
 
-    public ParticleEffectAT(ParticleEffect particle, float speed) {
+    public ParticleEffectASC(ParticleEffect particle, float speed) {
         this.effect = particle;
         setSpeed(speed);
     }
 
-    public ParticleEffectAT(ParticleEffect effect, Color color) {
+    public ParticleEffectASC(ParticleEffect effect, Color color) {
         this.effect = effect;
         setColor(color);
     }
 
-    public ParticleEffectAT(ParticleEffect particle, int amount, float speed, Color color) {
+    public ParticleEffectASC(ParticleEffect particle, int amount, float speed, Color color) {
         this.effect = particle;
         setSpeed(speed);
         setAmount(amount);
         setColor(color);
     }
 
-    public ParticleEffectAT(ParticleEffect particle, int amount, Color color) {
+    public ParticleEffectASC(ParticleEffect particle, int amount, Color color) {
         this.effect = particle;
         setAmount(amount);
         setColor(color);
     }
 
-    public ParticleEffectAT(ParticleEffect particle, float speed, Color color) {
+    public ParticleEffectASC(ParticleEffect particle, float speed, Color color) {
         this.effect = particle;
         setSpeed(speed);
         setColor(color);
     }
 
-    public ParticleEffectAT(String particle) {
+    public ParticleEffectASC(String particle) {
         String[] split = particle.split(":");
 
         if (split.length == 0)

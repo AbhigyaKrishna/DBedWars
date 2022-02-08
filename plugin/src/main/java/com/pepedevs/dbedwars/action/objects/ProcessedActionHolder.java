@@ -9,11 +9,13 @@ public class ProcessedActionHolder {
     private final Action<?> action;
     private final boolean shouldExecute;
     private final Duration delay;
+    private final int repeats;
 
-    public ProcessedActionHolder(Action<?> action, boolean shouldExecute, Duration delay) {
+    public ProcessedActionHolder(Action<?> action, boolean shouldExecute, Duration delay, int repeats) {
         this.action = action;
         this.shouldExecute = shouldExecute;
         this.delay = delay;
+        this.repeats = repeats;
     }
 
     public Action<?> getAction() {
@@ -28,4 +30,7 @@ public class ProcessedActionHolder {
         return delay;
     }
 
+    public int getRepeats() {
+        return repeats;
+    }
 }

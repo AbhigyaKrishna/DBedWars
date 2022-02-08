@@ -6,14 +6,13 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.permissions.PermissionAttachment;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class FireworkEffectAT {
+public class FireworkEffectC {
 
     // FIREWORK[SMALL/LARGE/STAR/CREEPEER/BURST:NONE/TWINKLE/TRAIL:BASECOLORS:FADECOLORS]
 
@@ -22,14 +21,14 @@ public class FireworkEffectAT {
 
     private final FireworkEffect.Builder builder;
 
-    public FireworkEffectAT(FireworkEffect.Type type, List<Color> baseColors) {
+    public FireworkEffectC(FireworkEffect.Type type, List<Color> baseColors) {
         this.builder = FireworkEffect.builder().with(type);
         for (Color color : baseColors) {
             builder.withColor(color);
         }
     }
 
-    public FireworkEffectAT(FireworkEffect.Type type, boolean twinkle, boolean trail, Collection<Color> baseColors, Collection<Color> fadeColors) {
+    public FireworkEffectC(FireworkEffect.Type type, boolean twinkle, boolean trail, Collection<Color> baseColors, Collection<Color> fadeColors) {
         this.builder = FireworkEffect.builder().with(type).flicker(twinkle).trail(trail);
         for (Color color : baseColors) {
             builder.withColor(color);
@@ -39,11 +38,11 @@ public class FireworkEffectAT {
         }
     }
 
-    public static FireworkEffectAT valueOf(String firework) {
+    public static FireworkEffectC valueOf(String firework) {
         String[] params = firework.split(SEPERATOR);
         if (params.length < 1) return null;
         FireworkEffect.Type type = EnumReflection.getEnumConstant(FireworkEffect.Type.class, params[0]);
-        FireworkEffectAT returnVal = new FireworkEffectAT((type == null ? FireworkEffect.Type.BALL : type), Collections.emptyList());
+        FireworkEffectC returnVal = new FireworkEffectC((type == null ? FireworkEffect.Type.BALL : type), Collections.emptyList());
         if (params.length < 2) return returnVal;
         String[] p = params[1].split(SEPERATOR_2);
         for (String s : p) {

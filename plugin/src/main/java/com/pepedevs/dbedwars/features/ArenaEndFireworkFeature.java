@@ -6,7 +6,7 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.util.FireworkEffectAT;
+import com.pepedevs.dbedwars.api.util.FireworkEffectC;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -35,7 +35,7 @@ public class ArenaEndFireworkFeature extends com.pepedevs.dbedwars.api.feature.c
 
     @Override
     public void spawn(Team winner, Arena arena) {
-        FireworkEffectAT effect = new FireworkEffectAT(FireworkEffect.Type.BALL, true, false, Collections.singletonList(winner.getColor().getColor()), Collections.singletonList(Color.YELLOW));
+        FireworkEffectC effect = new FireworkEffectC(FireworkEffect.Type.BALL, true, false, Collections.singletonList(winner.getColor().getColor()), Collections.singletonList(Color.YELLOW));
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

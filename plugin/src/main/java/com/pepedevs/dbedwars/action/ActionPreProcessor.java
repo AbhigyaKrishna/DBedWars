@@ -7,8 +7,6 @@ import com.pepedevs.dbedwars.api.action.ActionTranslator;
 import com.pepedevs.dbedwars.utils.TimeUtil;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +17,7 @@ public class ActionPreProcessor {
 
     private static final Matcher CHANCE_MATCHER = Pattern.compile("\\[CHANCE=(?<chanceValue>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher DELAY_MATCHER = Pattern.compile("\\[DELAY=(?<delayValue>\\d+[a-z])]", Pattern.CASE_INSENSITIVE).matcher("");
+    private static final Matcher REPEAT_MATCHER = Pattern.compile("\\[REPEAT=(?<repeatValue>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher ACTION_MATCHER = Pattern.compile("(.*) ?\\[(?<action>[A-Z]+?)] ?(?<arguments>.+)", Pattern.CASE_INSENSITIVE).matcher("");
 
     public static ProcessedActionHolder process(String input, ActionPlaceholder<?, ?>... placeholders) {
@@ -26,7 +25,7 @@ public class ActionPreProcessor {
         if (!ACTION_MATCHER.matches()) throw new IllegalArgumentException("Invalid action format");
         String actionName = ACTION_MATCHER.group("action");
         ActionTranslator<?, ?> translator = PLUGIN.actionRegistry().getTranslator(actionName);
-        return new ProcessedActionHolder(translator.serialize(ACTION_MATCHER.group("arguments"), placeholders), shouldExecute(input), delay(input));
+        return new ProcessedActionHolder(translator.serialize(ACTION_MATCHER.group("arguments"), placeholders), shouldExecute(input), delay(input), getRepeats(input));
     }
 
     private static boolean shouldExecute(String input) {
@@ -45,6 +44,18 @@ public class ActionPreProcessor {
             return TimeUtil.parse(delayValue);
         }
         return Duration.ZERO;
+    }
+
+    private static int getRepeats(String input) {
+        REPEAT_MATCHER.reset(input);
+        if (REPEAT_MATCHER.matches()) {
+            try {
+                return Integer.parseInt(REPEAT_MATCHER.group("repeatValue"));
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 
 }

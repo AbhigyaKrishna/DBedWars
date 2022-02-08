@@ -16,12 +16,14 @@ public class ActionBarActionTranslator implements ActionTranslator<AbstractMessa
     @Override
     public ActionBarAction serialize(String untranslated, ActionPlaceholder<?, ?>... placeholders) {
         AbstractMessaging messaging = null;
-        List<PlaceholderEntry> entries = new ArrayList<>();
+        final List<PlaceholderEntry> entries = new ArrayList<>();
         for (ActionPlaceholder<?, ?> placeholder : placeholders) {
-            if (placeholder.getKey().equals("MESSAGING")) {
-                messaging = (AbstractMessaging) placeholder.getPlaceholder();
+            if (placeholder.getValue() instanceof AbstractMessaging) {
+                messaging = (AbstractMessaging) placeholder.getValue();
             } else if (placeholder.getKey().equals("MESSAGE_PLACEHOLDER")) {
-                entries.add((PlaceholderEntry) placeholder.getPlaceholder());
+                entries.add((PlaceholderEntry) placeholder.getValue());
+            } else if (placeholder.getKey().equals("PLACEHOLDER")) {
+                untranslated = ((PlaceholderEntry) placeholder.getValue()).apply(untranslated);
             }
         }
         return new ActionBarAction(Lang.getTranslator().asMessage(untranslated, entries.toArray(new PlaceholderEntry[0])), messaging);

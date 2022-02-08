@@ -1,14 +1,16 @@
 package com.pepedevs.dbedwars.game.arena.traps;
 
 import com.pepedevs.dbedwars.action.ActionPreProcessor;
+import com.pepedevs.dbedwars.action.ActionUtil;
+import com.pepedevs.dbedwars.action.objects.ActionExecutor;
 import com.pepedevs.dbedwars.action.objects.ProcessedActionHolder;
-import com.pepedevs.dbedwars.api.action.Action;
+import com.pepedevs.dbedwars.api.action.ActionPlaceholder;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
-import com.pepedevs.dbedwars.api.task.DelayedTask;
+import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.TrapEnum;
-import com.pepedevs.radium.task.CancellableWorkload;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -90,7 +92,7 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
         }
 
         @Override
-        public Collection<ArenaPlayer> getTarget(ArenaPlayer target) {
+        public Collection<ArenaPlayer> getActionTarget(ArenaPlayer target) {
             switch (this.targetType) {
                 case TRAP_BUYER: {
                     return Collections.singleton(this.getTrap().getTrapBuyer());
@@ -142,13 +144,47 @@ public class Trap implements com.pepedevs.dbedwars.api.game.trap.Trap {
 
         @Override
         public void execute(Collection<ArenaPlayer> targets) {
-            for (ArenaPlayer arenaPlayer : targets) {
+            for (ArenaPlayer target : targets) {
                 for (String executable : this.actions) {
-                    ProcessedActionHolder actionHolder = ActionPreProcessor.process(executable);
-                    if (!actionHolder.shouldExecute()) continue;
+                    for (ArenaPlayer actionTarget : this.getActionTarget(target)) {
+                        List<ActionPlaceholder<?, ?>> placeholders = new ArrayList<>();
+                        ActionPlaceholder<Void, ArenaPlayer> arenaPlayer = ActionUtil.getAsVoidPlaceholder(actionTarget);
+                        ActionPlaceholder<Void, Player> vanillaPlayer = ActionUtil.getAsVoidPlaceholder(actionTarget.getPlayer());
+                        placeholders.add(arenaPlayer);
+                        placeholders.add(vanillaPlayer);
+                        placeholders.addAll(Arrays.asList(this.getStandardPlaceholders(actionTarget)));
+                        ProcessedActionHolder holder = ActionPreProcessor.process(executable, placeholders.toArray(new ActionPlaceholder[0]));
+                        ActionExecutor.execute(holder);
+                    }
                 }
             }
         }
+
+        private ActionPlaceholder<String, PlaceholderEntry>[] getStandardPlaceholders(ArenaPlayer arenaPlayer) {
+            List<ActionPlaceholder<String, PlaceholderEntry>> placeholders = new ArrayList<>();
+            return new ActionPlaceholder[]{
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("player_name", arenaPlayer.getPlayer().getName())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_name", arenaPlayer.getTeam().getName())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_color", arenaPlayer.getTeam().getColor().toString())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_size", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_players_remaining", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("enemies_remaining", String.valueOf(arenaPlayer.getArena().getPlayers().size() - arenaPlayer.getTeam().getPlayers().size()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("x_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockX()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("y_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockY()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("z_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockZ()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("x_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getX()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("y_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getY()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("z_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getZ()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("pitch", String.valueOf(arenaPlayer.getPlayer().getLocation().getPitch()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("yaw", String.valueOf(arenaPlayer.getPlayer().getLocation().getYaw()))),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("world_name", arenaPlayer.getPlayer().getWorld().getName())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("world_environment", arenaPlayer.getPlayer().getWorld().getEnvironment().toString())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("arena_display_name", arenaPlayer.getArena().getSettings().getCustomName())),
+                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getSettings().getName()))
+            };
+        }
+
+
 
     }
 }

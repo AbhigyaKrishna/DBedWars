@@ -7,8 +7,6 @@ import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 public interface DropType extends Cloneable, Keyed<String> {
 
@@ -20,9 +18,9 @@ public interface DropType extends Cloneable, Keyed<String> {
 
     void setSoundEffect(SoundVP sound);
 
-    ParticleEffectAT getParticleEffect();
+    ParticleEffectASC getParticleEffect();
 
-    void setParticleEffect(ParticleEffectAT effect);
+    void setParticleEffect(ParticleEffectASC effect);
 
     int getSpawnRadius();
 

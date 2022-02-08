@@ -1,16 +1,14 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
-import com.pepedevs.dbedwars.api.util.ParticleEffectAT;
+import com.pepedevs.dbedwars.api.util.ParticleEffectASC;
 import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
 import com.pepedevs.radium.particles.ParticleEffect;
 import com.pepedevs.radium.utils.configuration.Loadable;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableCollectionEntry;
 import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
-import com.pepedevs.radium.utils.reflection.general.EnumReflection;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
@@ -111,8 +109,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         return this.spawnSound != null ? SoundVP.valueOf(this.spawnSound) : null;
     }
 
-    public ParticleEffectAT getSpawnEffect() {
-        return ParticleEffectAT.valueOf(this.spawnEffect);
+    public ParticleEffectASC getSpawnEffect() {
+        return ParticleEffectASC.valueOf(this.spawnEffect);
     }
 
     public int getRadius() {

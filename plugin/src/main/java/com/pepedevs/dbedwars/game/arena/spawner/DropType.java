@@ -5,7 +5,7 @@ import com.pepedevs.dbedwars.api.hologram.Hologram;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Key;
-import com.pepedevs.dbedwars.api.util.ParticleEffectAT;
+import com.pepedevs.dbedwars.api.util.ParticleEffectASC;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertyName;
@@ -23,7 +23,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
     private Key<BwItemStack> icon;
     private int radius;
     private SoundVP soundEffect;
-    private ParticleEffectAT particleEffect;
+    private ParticleEffectASC particleEffect;
     private Hologram hologram;
     private boolean teamSpawner, merging, spliting;
 
@@ -81,12 +81,12 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
     }
 
     @Override
-    public ParticleEffectAT getParticleEffect() {
+    public ParticleEffectASC getParticleEffect() {
         return this.particleEffect;
     }
 
     @Override
-    public void setParticleEffect(ParticleEffectAT particleEffect) {
+    public void setParticleEffect(ParticleEffectASC particleEffect) {
         this.particleEffect = particleEffect;
     }
 

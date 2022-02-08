@@ -21,7 +21,7 @@ public interface Trap extends Keyed<String> {
 
         Trap getTrap();
 
-        Collection<ArenaPlayer> getTarget(ArenaPlayer target);
+        Collection<ArenaPlayer> getActionTarget(ArenaPlayer target);
 
         void execute(Collection<ArenaPlayer> targets);
 

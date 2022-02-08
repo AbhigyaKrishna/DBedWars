@@ -16,7 +16,7 @@ public class ActionBarAction implements Action<AbstractMessaging> {
 
     @Override
     public void execute() {
-        this.getHandle().sendActionBar(this.message);
+        this.getHandle().sendActionBar(this.getMessage());
     }
 
     @Override
