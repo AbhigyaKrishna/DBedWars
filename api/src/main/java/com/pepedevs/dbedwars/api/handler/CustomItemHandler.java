@@ -1,12 +1,12 @@
 package com.pepedevs.dbedwars.api.handler;
 
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 
 public interface CustomItemHandler {
 
-    void registerItem(String id, PluginActionItem item);
+    void registerItem(BedWarsActionItem item);
 
     void unregisterItem(String id);
 
-    PluginActionItem getItem(String id);
+    BedWarsActionItem getItem(String id);
 }

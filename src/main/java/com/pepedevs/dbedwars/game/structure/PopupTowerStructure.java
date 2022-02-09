@@ -33,13 +33,13 @@ public class PopupTowerStructure implements DirectionalStructure {
     @Override
     public Map<Block, XMaterial> getBlocks(BlockFace face) {
         switch (face) {
-            case BlockFace.NORTH:
+            case NORTH:
                 return new LinkedHashMap<>(this.northBlocks);
-            case BlockFace.EAST:
+            case EAST:
                 return new LinkedHashMap<>(this.eastBlocks);
-            case BlockFace.WEST:
+            case WEST:
                 return new LinkedHashMap<>(this.westBlocks);
-            case BlockFace.SOUTH:
+            case SOUTH:
                 return new LinkedHashMap<>(this.southBlocks);
             default:
                 return null;
@@ -49,16 +49,16 @@ public class PopupTowerStructure implements DirectionalStructure {
     @Override
     public void setBlocks(BlockFace face, Map<Block, XMaterial> blocks) {
         switch (face) {
-            case BlockFace.NORTH:
+            case NORTH:
                 this.northBlocks = blocks;
                 return;
-            case BlockFace.EAST:
+            case EAST:
                 this.eastBlocks = blocks;
                 return;
-            case BlockFace.WEST:
+            case WEST:
                 this.westBlocks = blocks;
                 return;
-            case BlockFace.SOUTH:
+            case SOUTH:
                 this.southBlocks = blocks;
         }
     }

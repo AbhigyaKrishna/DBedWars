@@ -1,8 +1,7 @@
 package com.pepedevs.dbedwars.api.util.item;
 
-import com.pepedevs.dbedwars.api.feature.BedWarsFeature;
-import com.pepedevs.radium.item.ActionItemBase;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
+import com.pepedevs.dbedwars.api.util.Keyed;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -12,13 +11,13 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public abstract class PluginActionItem extends ActionItemBase {
+public abstract class BedWarsActionItem extends ActionItemBase implements Keyed<String> {
 
-    public PluginActionItem(String display_name, Collection<String> lore, Material material) {
+    public BedWarsActionItem(String display_name, Collection<String> lore, Material material) {
         super(display_name, lore, material);
     }
 
-    public PluginActionItem(Component display_name, Collection<Component> lore, Material material) {
+    public BedWarsActionItem(Component display_name, Collection<Component> lore, Material material) {
         super(display_name, lore, material);
     }
 

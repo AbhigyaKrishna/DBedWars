@@ -5,7 +5,8 @@ import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.api.feature.custom.SpongePlaceFeature;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.radium.item.ActionItem;
@@ -21,7 +22,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Sponge extends PluginActionItem {
+public class Sponge extends BedWarsActionItem {
 
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableSponge cfgSponge;
@@ -39,7 +40,7 @@ public class Sponge extends PluginActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onSpongePlace(BlockPlaceEvent event) {
         event.getBlock().setMetadata("isBedwarsSponge", SPONGE_META);
@@ -67,4 +68,10 @@ public class Sponge extends PluginActionItem {
                 event.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes(cfgSponge.getBreakTryMessage()));
         }
     }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("SPONGE");
+    }
+
 }

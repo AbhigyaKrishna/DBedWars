@@ -1,11 +1,12 @@
 package com.pepedevs.dbedwars.item;
 
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.radium.item.ActionItem;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -15,8 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InnerCustomItem {
-    SIMPLE_SETUP_ITEM(
-            new PluginActionItem(
+    SIMPLE_SETUP_ITEM(new BedWarsActionItem(
                     StringUtils.translateAlternateColorCodes("&bSimple Arena Setup"),
                     StringUtils.translateAlternateColorCodes(
                             new ArrayList<>(
@@ -24,9 +24,14 @@ public enum InnerCustomItem {
                                             "&7Right click to view arena settings panel."))),
                     XMaterial.NETHER_STAR.parseMaterial()) {
                 @Override
+                public Key<String> getKey() {
+                    return null;
+                }
+
+                @Override
                 public void onActionPerform(
                         Player player,
-                        ActionItem.EnumAction enumAction,
+                        EnumAction enumAction,
                         PlayerInteractEvent playerInteractEvent) {
                     Map<String, Object> info = new HashMap<>();
                     info.put(
@@ -39,9 +44,9 @@ public enum InnerCustomItem {
                                                     "arena",
                                                     String.class)));
                     info.put("page", 1);
-                    if (enumAction == ActionItem.EnumAction.RIGHT_CLICK
-                            || enumAction == ActionItem.EnumAction.RIGHT_CLICK_SNEAKING
-                            || enumAction == ActionItem.EnumAction.RIGHT_CLICK_SPRINTING)
+                    if (enumAction == EnumAction.RIGHT_CLICK
+                            || enumAction == EnumAction.RIGHT_CLICK_SNEAKING
+                            || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
                         DBedwars.getInstance()
                                 .getGuiHandler()
                                 .getGuis()
@@ -51,7 +56,7 @@ public enum InnerCustomItem {
             }),
 
     ADVANCED_SETUP_ITEM(
-            new PluginActionItem(
+            new BedWarsActionItem(
                     StringUtils.translateAlternateColorCodes("&bAdvanced Arena Setup"),
                     StringUtils.translateAlternateColorCodes(
                             new ArrayList<>(
@@ -59,9 +64,14 @@ public enum InnerCustomItem {
                                             "&7Right click to view arena settings panel."))),
                     XMaterial.NETHER_STAR.parseMaterial()) {
                 @Override
+                public Key<String> getKey() {
+                    return null;
+                }
+
+                @Override
                 public void onActionPerform(
                         Player player,
-                        ActionItem.EnumAction enumAction,
+                        EnumAction enumAction,
                         PlayerInteractEvent playerInteractEvent) {
                     Map<String, Object> info = new HashMap<>();
                     info.put(
@@ -74,9 +84,9 @@ public enum InnerCustomItem {
                                                     "arena",
                                                     String.class)));
                     info.put("page", 1);
-                    if (enumAction == ActionItem.EnumAction.RIGHT_CLICK
-                            || enumAction == ActionItem.EnumAction.RIGHT_CLICK_SNEAKING
-                            || enumAction == ActionItem.EnumAction.RIGHT_CLICK_SPRINTING)
+                    if (enumAction == EnumAction.RIGHT_CLICK
+                            || enumAction == EnumAction.RIGHT_CLICK_SNEAKING
+                            || enumAction == EnumAction.RIGHT_CLICK_SPRINTING)
                         DBedwars.getInstance()
                                 .getGuiHandler()
                                 .getGuis()
@@ -86,13 +96,13 @@ public enum InnerCustomItem {
             }),
     ;
 
-    private final PluginActionItem item;
+    private final BedWarsActionItem item;
 
-    InnerCustomItem(PluginActionItem item) {
+    InnerCustomItem(BedWarsActionItem item) {
         this.item = item;
     }
 
-    public PluginActionItem getItem() {
+    public BedWarsActionItem getItem() {
         return item;
     }
 }

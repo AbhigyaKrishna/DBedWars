@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.api.feature;
 
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.Keyed;
-import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.dbedwars.api.util.Initializable;
 import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.radium.utils.Validable;
 

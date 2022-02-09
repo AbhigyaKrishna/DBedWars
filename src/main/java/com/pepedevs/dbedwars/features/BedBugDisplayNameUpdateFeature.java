@@ -32,8 +32,7 @@ public class BedBugDisplayNameUpdateFeature extends com.pepedevs.dbedwars.api.fe
         Workload workload = new BedBugDisplayNameUpdateTask(
                 bedBug.getSilverFish(),
                 thrower.getTeam(),
-                this.plugin.getConfigHandler().getCustomItems().getBedBug()
-        );
+                this.plugin.getConfigHandler().getCustomItems().getBedBug());
         this.plugin.getThreadHandler().submitAsync(workload);
     }
 

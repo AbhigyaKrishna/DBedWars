@@ -1,8 +1,9 @@
 package com.pepedevs.dbedwars.item;
 
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BlastProofGlass extends PluginActionItem {
+public class BlastProofGlass extends BedWarsActionItem {
 
     private final DBedwars plugin;
 
@@ -214,4 +215,10 @@ public class BlastProofGlass extends PluginActionItem {
 
         return materials;
     }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("BLAST_PROOF_GLASS");
+    }
+
 }

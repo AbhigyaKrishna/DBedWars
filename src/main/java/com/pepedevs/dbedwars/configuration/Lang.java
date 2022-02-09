@@ -15,6 +15,10 @@ public enum Lang {
 
     PREFIX("prefix", "<gold>[ <blue>Bedwars <gold>]"),
 
+    /* Some default plugin messages */
+    UNKNOWN_COMMAND("plugin-default.unknown-command","<red>This is an unknown command. use <gold>/bedwars help <red>for more info."),
+    NO_PERMISSION("plugin-default.no-permission","<red>You don't have permission for this!"),
+
     /* General */
     ARENA("general.arena", "arena"),
     COLOR_YELLOW("general.color-yellow", "yellow"),
@@ -33,18 +37,31 @@ public enum Lang {
     COLOR_BROWN("general.color-brown", "brown"),
     COLOR_BLACK("general.color-black", "black"),
 
-    /* Bedwars commands */
-    NO_ARENA_FOUND_W_NAME("arena.no-arena-found", "<red>No arena found with this name!"),
-    NOT_IN_AN_ARENA("arena.not-in-arena", "<red>You are not in a arena!"),
+    /*
 
-    /* Arena */
-    BED_BROKEN_OTHERS("a", "<defend_team_color><defend_team_name> 's Bed <gray>was destroyed by <attack_team_color><attack_team_name>"),
-    BED_BROKEN_SELF("b", "<gray>Your bed was destroyed by <defend_team_color><defend_team_name>"),
-    ARENA_JOIN_MESSAGE("c", "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"),
-    ARENA_LEAVE_MESSAGE("d","<green><player_name> <yellow>has quit!"),
-    ARENA_START_MESSAGE("e", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", "<white>                                 <bold>Bed Wars", "<yellow><bold>     Protect your bed and destroy the enemy beds.", "<yellow><bold>      Upgrade yourself and your team by collecting,<yellow><bold>    Iron, Gold, Emerald and Diamond from generators", "<yellow><bold>                  to access powerful upgrades.", "", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
-    FINAL_KILL_MESSAGE("f", "<victim_team_color><player_name> <gray>died. <aqua><bold>FINAL KILL!}"),
-    GAME_END_MESSAGE("g", ""),
+     */
+    REJOIN_PLAYER_MESSAGE("gameplay.rejoin.player-rejoin-message","<green>Rejoining to match..."),
+    REJOIN_BROADCAST_MESSAGE("gameplay.rejoin.player-rejoin-broadcast","<gray><player_name> has reconnected to the match"),
+    REJOIN_FAILED_GAME_ENDED("gameplay.rejoin.player-rejoin-game-ended","<red>You cannot reconnect to the match! Either the match ended or your bed is broken"),
+
+    /* Bedwars commands */
+    NO_ARENA_FOUND_W_NAME("command-response.no-arena-found", "<red>No arena found with this name!"),
+    NOT_IN_AN_ARENA("command-response.not-in-arena", "<red>You are not in a arena!"),
+    SPECIFIED_ARENA_IS_FULL("command-response.arena-is-full","<red>This arena is currently full! Try again later..."),
+    BLOCKED_COMMAND("command-response.blocked-command","<red>You cannot use this command during match!"),
+
+    /* Game - Pregame*/
+    ARENA_JOIN_MESSAGE("gameplay.pregame.player-arena-join", "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"),
+    ARENA_LEAVE_MESSAGE("gameplay.pregame.player-arena-leave","<green><player_name> <yellow>has quit!"),
+
+    /* Game - Ingame*/
+    BED_BROKEN_OTHERS("gameplay.ingame.bed-broken-broadcast-others", "<defend_team_color><defend_team_name> 's Bed <gray>was destroyed by <attack_team_color><attack_team_name>"),
+    BED_BROKEN_SELF("gameplay.ingame.bed-broken-broadcast-self", "<gray>Your bed was destroyed by <defend_team_color><defend_team_name>"),
+    ARENA_START_MESSAGE("gameplay.ingame.game-start", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", "<white>                                 <bold>Bed Wars", "<yellow><bold>     Protect your bed and destroy the enemy beds.", "<yellow><bold>      Upgrade yourself and your team by collecting,<yellow><bold>    Iron, Gold, Emerald and Diamond from generators", "<yellow><bold>                  to access powerful upgrades.", "", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
+
+    /* Game - Postgame*/
+    FINAL_KILL_MESSAGE("gameplay.postgame.final-kill", "<victim_team_color><player_name> <gray>died. <aqua><bold>FINAL KILL!"),
+    GAME_END_MESSAGE("gameplay.postgame.", ""),
 
     ;
 

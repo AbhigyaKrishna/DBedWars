@@ -7,7 +7,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.view.AttributeType;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.LEnchant;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableShop;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 
@@ -72,7 +72,7 @@ public class Attribute implements com.pepedevs.dbedwars.api.game.view.Attribute 
                     this.keyEntry.put("item-" + isTeamColor + "-" + atrItem.getKey(), stack);
                 } else if (atrItem.getValue().getCustomItem() != null) {
                     try {
-                        PluginActionItem item =
+                        BedWarsActionItem item =
                                 DBedwars.getInstance()
                                         .getCustomItemHandler()
                                         .getItem(atrItem.getValue().getCustomItem());

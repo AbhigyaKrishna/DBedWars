@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.api;
 
 import com.pepedevs.radium.holograms.HologramManager;
-import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.api.handler.*;
 
 public abstract class DBedWarsAPI {

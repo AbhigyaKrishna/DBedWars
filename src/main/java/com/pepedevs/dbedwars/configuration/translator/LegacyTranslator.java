@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.configuration.translator;
 
-import com.pepedevs.radium.adventure.AdventureUtils;
+import com.pepedevs.dbedwars.api.adventure.AdventureUtils;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;

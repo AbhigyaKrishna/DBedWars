@@ -4,14 +4,14 @@ import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.pepedevs.dbedwars.action.TranslationRegistryImpl;
 import com.pepedevs.dbedwars.api.action.ActionTranslationRegistry;
+import com.pepedevs.dbedwars.api.plugin.Plugin;
+import com.pepedevs.dbedwars.api.plugin.PluginAdapter;
+import com.pepedevs.dbedwars.api.plugin.PluginDependence;
 import com.pepedevs.radium.database.DatabaseType;
 import com.pepedevs.radium.holograms.HologramManager;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
-import com.pepedevs.radium.plugin.Plugin;
-import com.pepedevs.radium.plugin.PluginAdapter;
-import com.pepedevs.radium.plugin.PluginDependence;
 import com.pepedevs.radium.utils.ServerPropertiesUtils;
-import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.nms.NMSAdaptor;
 import com.pepedevs.dbedwars.commands.BedwarsCommand;
@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Random;
+import java.util.logging.Level;
 
 public final class DBedwars extends PluginAdapter {
 
@@ -328,39 +329,30 @@ public final class DBedwars extends PluginAdapter {
             case "1.0.2":
             case "1.0.1":
             case "1.0.0-BETA":
-                this.getLogger()
-                        .severe(
-                                "Could not hook into SlimeWorldManager support! You are running"
-                                        + " an unsupported version");
+                Debugger.debug("Could not hook into SlimeWorldManager support! You are running" + " an unsupported version", Level.SEVERE);
                 return false;
         }
         return true;
     }
 
     private void registerCustomItems() {
-        this.customItemHandler.registerItem("FIREBALL", new FireballItem(this));
-        this.customItemHandler.registerItem("TNT", new TNTItem(this));
-        this.customItemHandler.registerItem("BRIDGE_EGG", new BridgeEgg(this));
-        this.customItemHandler.registerItem("WATER_BUCKET", new WaterBucket(this));
-        this.customItemHandler.registerItem("SPONGE", new Sponge(this));
-        this.customItemHandler.registerItem("DREAM_DEFENDER", new DreamDefenderSpawnEgg(this));
-        this.customItemHandler.registerItem("BED_BUG", new BedBugSnowball(this));
-        this.customItemHandler.registerItem("POPUP_TOWER", new PopupTowerChestItem(this));
-        this.customItemHandler.registerItem("BLAST_PROOF_GLASS", new BlastProofGlass(this));
+        this.customItemHandler.registerItem(new FireballItem(this));
+        this.customItemHandler.registerItem(new TNTItem(this));
+        this.customItemHandler.registerItem(new BridgeEgg(this));
+        this.customItemHandler.registerItem(new WaterBucket(this));
+        this.customItemHandler.registerItem(new Sponge(this));
+        this.customItemHandler.registerItem(new DreamDefenderSpawnEgg(this));
+        this.customItemHandler.registerItem(new BedBugSnowball(this));
+        this.customItemHandler.registerItem(new PopupTowerChestItem(this));
+        this.customItemHandler.registerItem(new BlastProofGlass(this));
     }
 
     @Override
-    public @NotNull ChunkGenerator getDefaultWorldGenerator(
-            @NotNull String worldName, @Nullable String id) {
+    public @NotNull ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
         return new ChunkGenerator() {
             @NotNull
             @Override
-            public ChunkData generateChunkData(
-                    @NotNull World world,
-                    @NotNull Random random,
-                    int x,
-                    int z,
-                    @NotNull ChunkGenerator.BiomeGrid biome) {
+            public ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int x, int z, @NotNull ChunkGenerator.BiomeGrid biome) {
                 return this.createChunkData(world);
             }
         };

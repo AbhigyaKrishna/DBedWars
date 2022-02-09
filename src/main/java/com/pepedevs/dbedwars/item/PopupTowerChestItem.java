@@ -3,7 +3,8 @@ package com.pepedevs.dbedwars.item;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.features.PopupTowerBuildFeature;
@@ -17,7 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class PopupTowerChestItem extends PluginActionItem {
+public class PopupTowerChestItem extends BedWarsActionItem {
 
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurablePopupTower cfgPopupTower;
@@ -42,6 +43,11 @@ public class PopupTowerChestItem extends PluginActionItem {
             }
         });
 
+    }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("POPUP_TOWER");
     }
 
     public static class PopupTowerBlocks {
