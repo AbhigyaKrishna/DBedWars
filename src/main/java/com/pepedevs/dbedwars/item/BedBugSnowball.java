@@ -7,10 +7,10 @@ import com.pepedevs.dbedwars.api.feature.custom.BedBugDisplayNameUpdateFeature;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.radium.events.EventUtils;
-import com.pepedevs.radium.item.ActionItem;
+import com.pepedevs.dbedwars.api.util.EventUtils;
 import com.pepedevs.radium.utils.Acceptor;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.Entity;
@@ -24,7 +24,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class BedBugSnowball extends PluginActionItem {
+public class BedBugSnowball extends BedWarsActionItem {
 
     public static final FixedMetadataValue BED_BUG_BALL_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
@@ -39,7 +39,7 @@ public class BedBugSnowball extends PluginActionItem {
     }
 
     @Override
-    public void onActionPerform(Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         if (!EventUtils.isRightClick(playerInteractEvent.getAction())) return;
         Arena arena = plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null) return;
@@ -81,6 +81,11 @@ public class BedBugSnowball extends PluginActionItem {
                 return true;
             }
         });
+    }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("BED_BUG");
     }
 
 }

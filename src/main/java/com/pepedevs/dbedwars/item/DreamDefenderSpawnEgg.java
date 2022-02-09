@@ -6,8 +6,9 @@ import com.pepedevs.dbedwars.api.feature.custom.DreamDefenderChaseFeature;
 import com.pepedevs.dbedwars.api.feature.custom.DreamDefenderDisplayNameUpdateFeature;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.PotionEffectAT;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import com.pepedevs.dbedwars.utils.Utils;
@@ -25,7 +26,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class DreamDefenderSpawnEgg extends PluginActionItem {
+public class DreamDefenderSpawnEgg extends BedWarsActionItem {
 
     public static final FixedMetadataValue DREAM_DEFENDER_SPAWN_EGG_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
@@ -45,7 +46,7 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
     }
 
     @Override
-    public void onActionPerform(Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         if (playerInteractEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null) return;
@@ -82,4 +83,10 @@ public class DreamDefenderSpawnEgg extends PluginActionItem {
     public void onDeath(EntityDeathEvent event) {
         event.getDrops().clear();
     }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("DREAM_DEFENDER");
+    }
+
 }

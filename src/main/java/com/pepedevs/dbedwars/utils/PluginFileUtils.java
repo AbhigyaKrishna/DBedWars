@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.utils;
 
 import com.pepedevs.radium.utils.FileUtils;
-import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import org.bukkit.configuration.file.FileConfiguration;

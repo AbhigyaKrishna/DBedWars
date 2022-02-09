@@ -1,8 +1,9 @@
 package com.pepedevs.dbedwars.item;
 
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.radium.item.ActionItem;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.bukkit.Bukkit;
@@ -11,18 +12,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TNTItem extends PluginActionItem {
+public class TNTItem extends BedWarsActionItem {
 
     public static final FixedMetadataValue TNT_PRIMED_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
@@ -39,7 +38,7 @@ public class TNTItem extends PluginActionItem {
     }
 
     @Override
-    public void onActionPerform(Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
 
     public void onTNTPlace(BlockPlaceEvent event) {
 
@@ -74,4 +73,10 @@ public class TNTItem extends PluginActionItem {
             if (!DamageEvent.isCancelled()) player.damage(DamageEvent.getFinalDamage());
         }
     }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("TNT");
+    }
+
 }

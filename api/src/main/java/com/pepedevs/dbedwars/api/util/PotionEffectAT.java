@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.util;
 
-import com.pepedevs.radium.utils.version.Version;
+import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.radium.utils.xseries.XPotion;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import org.bukkit.entity.LivingEntity;

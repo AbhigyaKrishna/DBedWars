@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.utils;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.radium.scoreboard.Scoreboard;
 import com.pepedevs.radium.task.Workload;
-import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.dbedwars.api.util.Initializable;
 import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;

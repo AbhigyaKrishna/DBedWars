@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.api.game.spawner;
 
 import com.pepedevs.dbedwars.api.util.Keyed;
 import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.dbedwars.api.util.Initializable;
 import com.pepedevs.radium.utils.Tickable;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.dbedwars.api.game.Arena;

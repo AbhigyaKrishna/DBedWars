@@ -9,7 +9,7 @@ import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.api.game.spawner.ResourceItem;
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.NBTUtils;
-import com.pepedevs.radium.utils.Initializable;
+import com.pepedevs.dbedwars.api.util.Initializable;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

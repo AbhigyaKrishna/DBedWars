@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 public class Debugger {
 
     private static boolean ENABLED;
-    private static final Logger LOGGER = Logger.getLogger("DBedwars");
+    private static final Logger LOGGER = Logger.getLogger("DBedWars");
 
     public static void debug(Object object) {
         debug(object.toString());

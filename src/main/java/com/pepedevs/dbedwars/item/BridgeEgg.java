@@ -7,9 +7,10 @@ import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.dbedwars.api.util.item.PluginActionItem;
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.radium.events.EventUtils;
+import com.pepedevs.dbedwars.api.util.EventUtils;
 import com.pepedevs.radium.item.ActionItem;
 import com.pepedevs.radium.utils.Acceptor;
 import com.pepedevs.radium.utils.xseries.XMaterial;
@@ -21,7 +22,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class BridgeEgg extends PluginActionItem {
+public class BridgeEgg extends BedWarsActionItem {
 
     public static final FixedMetadataValue BRIDGE_EGG_META =
             new FixedMetadataValue(DBedwars.getInstance(), true);
@@ -36,7 +37,7 @@ public class BridgeEgg extends PluginActionItem {
     }
 
     @Override
-    public void onActionPerform(Player player, ActionItem.EnumAction enumAction, PlayerInteractEvent event) {
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent event) {
         if (!EventUtils.isRightClick(event.getAction())) {
             return;
         }
@@ -58,6 +59,11 @@ public class BridgeEgg extends PluginActionItem {
                 return true;
             }
         });
+    }
+
+    @Override
+    public Key<String> getKey() {
+        return Key.of("BRIDGE_EGG");
     }
 
     // TODO IDK HOW TO BLOCK CHICKEN SPAWNS HERE (UPDATE MEIN KARLEGE)
