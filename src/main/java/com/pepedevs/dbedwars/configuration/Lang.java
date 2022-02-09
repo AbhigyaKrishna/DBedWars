@@ -34,14 +34,14 @@ public enum Lang {
     COLOR_BLACK("general.color-black", "black"),
 
     /* Bedwars commands */
-    NO_ARENA_FOUND_W_NAME("arena.no-arena-found", "<red>No arena found with this name!"),
-    NOT_IN_AN_ARENA("arena.not-in-arena", "<red>You are not in a arena!"),
+    NO_ARENA_FOUND_W_NAME("command-response.no-arena-found", "<red>No arena found with this name!"),
+    NOT_IN_AN_ARENA("command-response.not-in-arena", "<red>You are not in a arena!"),
 
     /* Arena */
     BED_BROKEN_OTHERS("a", "<defend_team_color><defend_team_name> 's Bed <gray>was destroyed by <attack_team_color><attack_team_name>"),
     BED_BROKEN_SELF("b", "<gray>Your bed was destroyed by <defend_team_color><defend_team_name>"),
-    ARENA_JOIN_MESSAGE("c", "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"),
-    ARENA_LEAVE_MESSAGE("d","<green><player_name> <yellow>has quit!"),
+    ARENA_JOIN_MESSAGE("gameplay.pre-game.player-arena-join", "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"),
+    ARENA_LEAVE_MESSAGE("gameplay.pre-game.player-arena-leave","<green><player_name> <yellow>has quit!"),
     ARENA_START_MESSAGE("e", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬", "<white>                                 <bold>Bed Wars", "<yellow><bold>     Protect your bed and destroy the enemy beds.", "<yellow><bold>      Upgrade yourself and your team by collecting,<yellow><bold>    Iron, Gold, Emerald and Diamond from generators", "<yellow><bold>                  to access powerful upgrades.", "", "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"),
     FINAL_KILL_MESSAGE("f", "<victim_team_color><player_name> <gray>died. <aqua><bold>FINAL KILL!}"),
     GAME_END_MESSAGE("g", ""),

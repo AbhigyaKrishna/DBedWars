@@ -1,19 +1,29 @@
-prefix: '&6[ &9Bedwars &6]'
+prefix: "&6[ &9Bedwars &6]"
 
 general:
-  arena: 'arena'
-  color-yellow: 'yellow'
-  color-orange: 'orange'
-  color-red: 'red'
-  color-blue: 'blue'
-  color-lightBlue: 'light blue'
-  color-cyan: 'cyan'
-  color-lime: 'lime'
-  color-green: 'green'
-  color-purple: 'purple'
-  color-pink: 'pink'
-  color-white: 'white'
-  color-lightGray: 'light gray'
-  color-gray: 'gray'
-  color-brown: 'brown'
-  color-black: 'black'
+  arena: "arena"
+  color-yellow: "yellow"
+  color-orange: "orange"
+  color-red: "red"
+  color-blue: "blue"
+  color-lightBlue: "light blue"
+  color-cyan: "cyan"
+  color-lime: "lime"
+  color-green: "green"
+  color-purple: "purple"
+  color-pink: "pink"
+  color-white: "white"
+  color-lightGray: "light gray"
+  color-gray: "gray"
+  color-brown: "brown"
+  color-black: "black"
+
+command-response:
+  no-arena-found: "<red>No arena found with this name!"
+  not-in-arena: "<red>You are not in a arena!"
+
+gameplay:
+  pre-game:
+    player-arena-join: "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"
+    player-arena-leave: "<green><player_name> <yellow>has quit!"
+

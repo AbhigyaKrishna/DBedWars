@@ -88,6 +88,9 @@ repositories {
         name = 'jitpack'
         url = "https://jitpack.io"
     }
+    maven {
+        url "https://repo.glaremasters.me/repository/concuncan/"
+    }
 }
 
 dependencies {
