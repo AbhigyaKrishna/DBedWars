@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.spawner;
 
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.hologram.Hologram;
+import com.pepedevs.dbedwars.hologram.HologramImpl;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Key;
@@ -24,7 +24,7 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
     private int radius;
     private SoundVP soundEffect;
     private ParticleEffectASC particleEffect;
-    private Hologram hologram;
+    private HologramImpl hologram;
     private boolean teamSpawner, merging, spliting;
 
     private Map<Integer, com.pepedevs.dbedwars.api.game.spawner.DropType.Tier> tiers = new HashMap<>();
@@ -91,12 +91,12 @@ public class DropType implements com.pepedevs.dbedwars.api.game.spawner.DropType
     }
 
     @Override
-    public Hologram getHologram() {
+    public HologramImpl getHologram() {
         return this.hologram;
     }
 
     @Override
-    public void setHologram(Hologram hologram) {
+    public void setHologram(HologramImpl hologram) {
         this.hologram = hologram;
     }
 

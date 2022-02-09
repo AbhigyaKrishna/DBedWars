@@ -10,13 +10,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public abstract class AbstractHologram {
+public abstract class HologramObject {
 
     protected final Set<UUID> viewers;
     protected Location location;
     protected final Set<HologramClickAction> actions;
 
-    protected AbstractHologram(Location location) {
+    protected HologramObject(Location location) {
         this.location = location;
         this.location.setPitch(0.0f);
         this.viewers = Collections.synchronizedSet(new HashSet<>());
@@ -63,3 +63,4 @@ public abstract class AbstractHologram {
         return this.location;
     }
 }
+
