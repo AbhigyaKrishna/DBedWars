@@ -1,15 +1,15 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.task.CancellableTask;
+import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import org.bukkit.Location;
 
 public abstract class HologramRotateTask {
 
     protected final DBedwars plugin;
     protected final Hologram hologram;
-    protected CancellableTask task;
+    protected CancellableWorkload task;
 
     public HologramRotateTask(DBedwars plugin, Hologram hologram) {
         this.plugin = plugin;

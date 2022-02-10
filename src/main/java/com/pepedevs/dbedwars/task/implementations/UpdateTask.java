@@ -1,6 +1,6 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
-import com.pepedevs.radium.utils.Tickable;
+import com.pepedevs.dbedwars.api.util.Tickable;
 import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;

@@ -19,6 +19,14 @@ allprojects {
         maven {
             url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
         }
+        maven {
+            name = 'spigot-snapshots'
+            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
     }
 
     dependencies {
@@ -89,7 +97,8 @@ repositories {
         url = "https://jitpack.io"
     }
     maven {
-        url "https://repo.glaremasters.me/repository/concuncan/"
+        name = 'glaremasters'
+        url = "https://repo.glaremasters.me/repository/concuncan/"
     }
 }
 

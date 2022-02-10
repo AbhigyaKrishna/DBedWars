@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.DBedwars;

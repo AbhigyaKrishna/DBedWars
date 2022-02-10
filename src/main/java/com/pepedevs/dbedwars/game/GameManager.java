@@ -6,7 +6,7 @@ import com.pepedevs.dbedwars.api.game.ArenaStatus;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableItemSpawner;
-import com.pepedevs.dbedwars.task.ArenaStartTask;
+import com.pepedevs.dbedwars.task.implementations.ArenaStartTask;
 
 import java.util.*;
 

@@ -4,7 +4,7 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import com.pepedevs.dbedwars.task.SpongeAnimationTask;
+import com.pepedevs.dbedwars.task.implementations.SpongeAnimationTask;
 import org.bukkit.block.Block;
 
 public class SpongePlaceFeature extends com.pepedevs.dbedwars.api.feature.custom.SpongePlaceFeature {

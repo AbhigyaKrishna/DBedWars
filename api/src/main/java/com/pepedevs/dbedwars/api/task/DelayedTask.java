@@ -1,7 +1,5 @@
 package com.pepedevs.dbedwars.api.task;
 
-import com.pepedevs.radium.task.Workload;
-
 public abstract class DelayedTask implements Workload {
 
     private boolean run;

@@ -1,8 +1,8 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.task.CancellableTask;
+import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
 
 import java.util.AbstractMap;
@@ -33,7 +33,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         this.plugin.getThreadHandler().submitAsync(this.task);
     }
 
-    private class HologramRotate extends CancellableTask {
+    private class HologramRotate extends CancellableWorkload {
 
         private final HologramExpertRotateTask task;
         private final short delayMillis;

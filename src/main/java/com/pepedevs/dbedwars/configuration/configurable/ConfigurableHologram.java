@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.pepedevs.dbedwars.api.util.properies.NamedProperties;
 import com.pepedevs.dbedwars.api.util.properies.PropertySerializable;
-import com.pepedevs.dbedwars.task.HologramRotateTask;
+import com.pepedevs.dbedwars.task.implementations.HologramRotateTask;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import com.pepedevs.dbedwars.configuration.util.Loadable;
 import com.pepedevs.dbedwars.configuration.util.annotations.LoadableEntry;

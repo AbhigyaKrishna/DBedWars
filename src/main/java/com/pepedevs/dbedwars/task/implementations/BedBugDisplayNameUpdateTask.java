@@ -1,8 +1,8 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.util.Color;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableCustomItems;

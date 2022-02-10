@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.configuration.util.yaml;
 
-import com.pepedevs.dbedwars.configuration.util.yaml.YamlConfigurationCommentsOptions;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;

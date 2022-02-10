@@ -3,8 +3,8 @@ package com.pepedevs.dbedwars.features;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
-import com.pepedevs.dbedwars.task.GolemDisplayNameUpdateTask;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.task.implementations.GolemDisplayNameUpdateTask;
+import com.pepedevs.dbedwars.api.task.Workload;
 import org.bukkit.entity.IronGolem;
 
 public class DreamDefenderDisplayNameUpdateFeature extends com.pepedevs.dbedwars.api.feature.custom.DreamDefenderDisplayNameUpdateFeature {

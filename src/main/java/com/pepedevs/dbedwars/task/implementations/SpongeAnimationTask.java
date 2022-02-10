@@ -1,8 +1,8 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.radium.particles.ParticleBuilder;
 import com.pepedevs.radium.particles.ParticleEffect;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.radium.utils.math.LocationUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.SoundVP;

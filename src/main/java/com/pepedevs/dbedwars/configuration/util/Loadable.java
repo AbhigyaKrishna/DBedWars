@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.configuration.util;
 
-import com.pepedevs.radium.utils.Validable;
+import com.pepedevs.dbedwars.api.util.Validable;
 import com.pepedevs.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
 import com.pepedevs.dbedwars.configuration.util.annotations.LoadableEntry;
 import com.pepedevs.radium.utils.reflection.DataType;

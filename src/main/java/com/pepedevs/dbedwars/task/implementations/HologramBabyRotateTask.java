@@ -1,8 +1,8 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.task.CancellableTask;
+import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 
 public class HologramBabyRotateTask extends HologramRotateTask {
 
@@ -45,7 +45,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         this.plugin.getThreadHandler().submitAsync(this.task);
     }
 
-    private class HologramRotateSlow extends CancellableTask {
+    private class HologramRotateSlow extends CancellableWorkload {
 
         private final HologramBabyRotateTask task;
         private final float horizontalAcceleration;
@@ -99,7 +99,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         }
     }
 
-    private class HologramRotateNoSlow extends CancellableTask {
+    private class HologramRotateNoSlow extends CancellableWorkload {
 
         private final HologramBabyRotateTask task;
 
