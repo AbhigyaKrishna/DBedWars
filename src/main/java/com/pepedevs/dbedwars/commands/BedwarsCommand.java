@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.Subcommand;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.setup.BaseTeamDetection;
 import com.pepedevs.dbedwars.setup.GenDetection;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.messaging.Messaging;

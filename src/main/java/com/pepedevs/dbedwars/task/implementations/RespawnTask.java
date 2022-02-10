@@ -1,11 +1,11 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
-import com.pepedevs.dbedwars.api.task.CancellableTask;
+import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -14,7 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-public class RespawnTask extends CancellableTask implements Listener {
+public class RespawnTask extends CancellableWorkload implements Listener {
 
     private final DBedwars plugin;
     private final ArenaPlayer player;

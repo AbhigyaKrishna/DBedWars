@@ -3,8 +3,8 @@ package com.pepedevs.dbedwars.api.feature;
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.util.Keyed;
 import com.pepedevs.dbedwars.api.util.Initializable;
-import com.pepedevs.radium.utils.Tickable;
-import com.pepedevs.radium.utils.Validable;
+import com.pepedevs.dbedwars.api.util.Tickable;
+import com.pepedevs.dbedwars.api.util.Validable;
 
 public abstract class BedWarsFeature implements Initializable, Tickable, Validable, Keyed<String> {
 

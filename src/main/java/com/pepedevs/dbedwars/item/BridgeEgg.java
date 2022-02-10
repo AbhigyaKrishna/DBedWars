@@ -12,7 +12,7 @@ import com.pepedevs.dbedwars.api.util.item.BedWarsActionItem;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.api.util.EventUtils;
 import com.pepedevs.radium.item.ActionItem;
-import com.pepedevs.radium.utils.Acceptor;
+import com.pepedevs.dbedwars.api.util.Acceptor;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;

@@ -4,8 +4,8 @@ import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.feature.FeaturePriority;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.nms.IBedBug;
-import com.pepedevs.dbedwars.task.BedBugDisplayNameUpdateTask;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.task.implementations.BedBugDisplayNameUpdateTask;
+import com.pepedevs.dbedwars.api.task.Workload;
 import org.bukkit.entity.Silverfish;
 
 public class BedBugDisplayNameUpdateFeature extends com.pepedevs.dbedwars.api.feature.custom.BedBugDisplayNameUpdateFeature {

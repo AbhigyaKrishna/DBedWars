@@ -8,13 +8,13 @@ import com.pepedevs.dbedwars.api.feature.FeaturePriority;
 import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.features.*;
 import com.pepedevs.dbedwars.utils.Debugger;
-import com.pepedevs.radium.utils.Acceptor;
+import com.pepedevs.dbedwars.api.util.Acceptor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 
-public class FeatureManager {
+public class FeatureManager implements com.pepedevs.dbedwars.api.feature.FeatureManager {
 
     private final Multimap<Key<String>, BedWarsFeature> features = ArrayListMultimap.create();
 
@@ -36,33 +36,40 @@ public class FeatureManager {
         this.registerFeature(new TNTPlaceFeature(this.plugin));
     }
 
+    @Override
     public void registerFeature(BedWarsFeature feature) {
         this.features.put(feature.getKey(), feature);
     }
 
+    @Override
     public void unregisterFeature(BedWarsFeature feature) {
-        this.features.remove(Key.of(feature.getKey()), feature);
+        this.features.remove(feature.getKey(), feature);
     }
 
+    @Override
     public Collection<BedWarsFeature> unregisterAllFeature(Key<String> featureKey) {
         return this.features.removeAll(featureKey);
     }
 
+    @Override
     public Collection<BedWarsFeature> getFeature(Key<String> featureName) {
         return this.features.get(featureName);
     }
 
+    @Override
     public Collection<BedWarsFeature> getAllFeatures() {
         return this.features.values();
     }
 
-    public boolean hasFeature(Key<String> featureName) {
-        return this.features.containsKey(featureName);
+    @Override
+    public boolean hasFeature(Key<String> featureKey) {
+        return this.features.containsKey(featureKey);
     }
 
-    public <T extends BedWarsFeature> void runFeature(Key<String> featureName, Class<T> type, Acceptor<T> trigger) {
+    @Override
+    public <T extends BedWarsFeature> void runFeature(Key<String> featureKey, Class<T> type, Acceptor<T> trigger) {
         EnumMap<FeaturePriority, Collection<BedWarsFeature>> map = new EnumMap<>(FeaturePriority.class);
-        for (BedWarsFeature feature : this.getFeature(featureName)) {
+        for (BedWarsFeature feature : this.getFeature(featureKey)) {
             if (!map.containsKey(feature.getPriority()) || map.get(feature.getPriority()) == null) {
                 map.put(feature.getPriority(), new ArrayList<>());
             }

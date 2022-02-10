@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
@@ -6,7 +6,7 @@ import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.item.PopupTowerChestItem;
 import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import com.pepedevs.radium.utils.xseries.XBlock;
 import com.pepedevs.radium.utils.xseries.XMaterial;
@@ -56,19 +56,19 @@ public class PopupTowerWorkload implements Workload {
     private void initBlockMap() {
         this.blockMap = new LinkedHashMap<>();
         switch (face) {
-            case BlockFace.EAST: {
+            case EAST: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getEastBlocks(chest, material);
                 break;
             }
-            case BlockFace.WEST: {
+            case WEST: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getWestBlocks(chest, material);
                 break;
             }
-            case BlockFace.NORTH: {
+            case NORTH: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getNorthBlocks(chest, material);
                 break;
             }
-            case BlockFace.SOUTH: {
+            case SOUTH: {
                 this.blockMap = PopupTowerChestItem.PopupTowerBlocks.getSouthBlocks(chest, material);
                 break;
             }

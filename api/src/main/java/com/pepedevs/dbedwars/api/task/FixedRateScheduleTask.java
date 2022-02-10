@@ -1,7 +1,5 @@
 package com.pepedevs.dbedwars.api.task;
 
-import com.pepedevs.radium.task.Workload;
-
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 

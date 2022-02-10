@@ -12,14 +12,15 @@ import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.objects.points.IntegerCount;
 import com.pepedevs.dbedwars.api.objects.points.Points;
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.cache.InventoryBackup;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.messaging.member.PlayerMember;
-import com.pepedevs.dbedwars.task.RespawnTask;
+import com.pepedevs.dbedwars.task.implementations.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
-import com.pepedevs.radium.utils.Acceptor;
-import com.pepedevs.radium.utils.Pair;
+import com.pepedevs.dbedwars.api.util.Acceptor;
+import com.pepedevs.dbedwars.api.util.Pair;
 import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -35,7 +36,7 @@ import java.util.UUID;
 public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.api.game.ArenaPlayer {
 
     private final DBedwars plugin;
-    private final UUID uuid;
+    private final Key<UUID> key;
     private final String name;
     private final Arena arena;
 
@@ -49,7 +50,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
     public ArenaPlayer(DBedwars plugin, Player player, Arena arena) {
         super(player);
         this.plugin = plugin;
-        this.uuid = player.getUniqueId();
+        this.key = Key.of(player.getUniqueId());
         this.name = player.getName();
         this.arena = arena;
         this.points = new Points();
@@ -57,6 +58,11 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
         this.points.registerCount(PlayerPoints.DEATH, new IntegerCount());
         this.points.registerCount(PlayerPoints.BEDS, new IntegerCount());
         this.points.registerCount(PlayerPoints.FINAL_KILLS, new IntegerCount());
+    }
+
+    @Override
+    public Key<UUID> getKey() {
+        return this.key;
     }
 
     @Override
@@ -155,7 +161,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
 
     @Override
     public UUID getUUID() {
-        return this.uuid;
+        return this.key.get();
     }
 
     @Override
@@ -165,7 +171,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
 
     @Override
     public Player getPlayer() {
-        return Bukkit.getPlayer(this.uuid);
+        return Bukkit.getPlayer(this.getUUID());
     }
 
     @Override

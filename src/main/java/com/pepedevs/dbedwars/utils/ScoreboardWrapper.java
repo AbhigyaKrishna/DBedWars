@@ -2,13 +2,13 @@ package com.pepedevs.dbedwars.utils;
 
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.radium.scoreboard.Scoreboard;
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.api.util.Initializable;
-import com.pepedevs.radium.utils.Tickable;
+import com.pepedevs.dbedwars.api.util.Tickable;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.configuration.Lang;
-import com.pepedevs.dbedwars.task.UpdateTask;
+import com.pepedevs.dbedwars.task.implementations.UpdateTask;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 

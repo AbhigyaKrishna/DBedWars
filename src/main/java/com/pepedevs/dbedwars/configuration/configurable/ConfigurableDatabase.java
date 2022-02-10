@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.pepedevs.radium.database.DatabaseType;
-import com.pepedevs.radium.utils.configuration.Loadable;
-import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
+import com.pepedevs.dbedwars.configuration.util.Loadable;
+import com.pepedevs.dbedwars.configuration.util.annotations.LoadableEntry;
 import com.pepedevs.dbedwars.utils.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 

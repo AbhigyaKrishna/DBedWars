@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.configuration;
 
-import com.pepedevs.radium.utils.configuration.Configurable;
+import com.pepedevs.dbedwars.configuration.util.Configurable;
 
 import java.io.File;
 

@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.handler;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
 import com.pepedevs.dbedwars.hooks.SlimeWorldManagerHook;
-import com.pepedevs.dbedwars.task.DefaultWorldAdaptor;
+import com.pepedevs.dbedwars.task.implementations.DefaultWorldAdaptor;
 
 public class WorldHandler {
 

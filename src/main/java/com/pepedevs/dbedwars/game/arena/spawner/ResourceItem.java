@@ -34,7 +34,7 @@ public class ResourceItem implements com.pepedevs.dbedwars.api.game.spawner.Reso
     @Override
     public void drop(Location location) {
         if (this.isDropped()) {
-            throw new IllegalStateException("Tried to drop item which is already dropped on location `" + this.itemEntity.getLocation() + " !");
+            throw new IllegalStateException("Tried to drop item which is already dropped on location `" + this.itemEntity.getLocation() + "` !");
         }
 
         if (!Bukkit.isPrimaryThread()) {
@@ -51,8 +51,6 @@ public class ResourceItem implements com.pepedevs.dbedwars.api.game.spawner.Reso
             this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
             this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
         }
-
-
     }
 
     @Override

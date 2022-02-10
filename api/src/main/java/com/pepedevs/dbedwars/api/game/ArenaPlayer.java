@@ -4,13 +4,14 @@ import com.pepedevs.dbedwars.api.game.view.ShopView;
 import com.pepedevs.dbedwars.api.messaging.member.PlayerMember;
 import com.pepedevs.dbedwars.api.objects.points.Points;
 import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.Keyed;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public interface ArenaPlayer extends PlayerMember {
+public interface ArenaPlayer extends PlayerMember, Keyed<UUID> {
 
     Arena getArena();
 

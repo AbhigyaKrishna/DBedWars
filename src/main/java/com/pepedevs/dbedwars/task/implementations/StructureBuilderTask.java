@@ -1,6 +1,6 @@
-package com.pepedevs.dbedwars.task;
+package com.pepedevs.dbedwars.task.implementations;
 
-import com.pepedevs.radium.task.Workload;
+import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.radium.utils.xseries.XBlock;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.api.game.Arena;

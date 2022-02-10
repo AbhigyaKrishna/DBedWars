@@ -2,10 +2,10 @@ package com.pepedevs.dbedwars.configuration.configurable;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.pepedevs.radium.utils.configuration.Configurable;
-import com.pepedevs.radium.utils.configuration.Loadable;
-import com.pepedevs.radium.utils.configuration.annotations.LoadableEntry;
-import com.pepedevs.radium.utils.configuration.annotations.SaveableEntry;
+import com.pepedevs.dbedwars.configuration.util.Configurable;
+import com.pepedevs.dbedwars.configuration.util.Loadable;
+import com.pepedevs.dbedwars.configuration.util.annotations.LoadableEntry;
+import com.pepedevs.dbedwars.configuration.util.annotations.SaveableEntry;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Team;
 import com.pepedevs.dbedwars.api.game.spawner.DropType;
