@@ -5,4 +5,4 @@ dependencies {
     compileOnly parent
 }
 
-description = 'featherboard-hook'
+description = 'quickboard-hook'

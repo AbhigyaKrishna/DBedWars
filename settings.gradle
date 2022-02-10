@@ -5,4 +5,3 @@ include(':nms-v1_8_R3')
 include(':hooks:cmi-hook')
 include(':hooks:featherboard-hook')
 include (':hooks:quickboard-hook')
-
