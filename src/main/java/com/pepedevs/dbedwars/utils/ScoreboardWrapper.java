@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.utils;
 
+import com.pepedevs.dbedwars.api.messaging.Placeholder;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.radium.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.task.Workload;
@@ -35,7 +36,7 @@ public class ScoreboardWrapper extends Scoreboard implements Initializable, Tick
 
     private String rawTitle;
     private List<String> rawContent;
-    private List<PlaceholderEntry> placeholderEntries;
+    private List<Placeholder> placeholderEntries;
 
     public ScoreboardWrapper(String title, List<String> content, List<PlaceholderEntry> entries) {
         super(Lang.getTranslator().translate(title));
@@ -51,8 +52,8 @@ public class ScoreboardWrapper extends Scoreboard implements Initializable, Tick
             public Component apply(Player player, Component component) {
                 String s = Lang.getTranslator().untranslate(component);
                 s = PlaceholderUtil.placeholder(player, s);
-                for (PlaceholderEntry placeholderEntry : placeholderEntries) {
-                    s = s.replace(placeholderEntry.getPlaceholder(), placeholderEntry.getReplacement().get());
+                for (Placeholder placeholderEntry : placeholderEntries) {
+                    s = s.replace(placeholderEntry.getKey(), placeholderEntry.getPlaceholder().get());
                 }
                 return Lang.getTranslator().translate(s);
             }

@@ -27,8 +27,10 @@ public abstract class Messaging {
 
     public abstract Component translateAlternateColorCodes(String message);
 
-    public abstract String setPlaceholders(String message, PlaceholderEntry... entries);
+    public abstract String setPlaceholders(final String message, Placeholder... entries);
 
-    public abstract String setPlaceholders(String message, Player player);
+    public abstract String setPlaceholders(final String message, final Player player, Placeholder... entries);
+
+    public abstract String setPapiPlaceholders(final String message, Player player);
 
 }

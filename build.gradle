@@ -20,6 +20,9 @@ allprojects {
             url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
         }
         maven {
+            url 'https://repo.pepedevs.com/nexus/repository/public-libs/'
+        }
+        maven {
             name = 'spigot-snapshots'
             url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
         }

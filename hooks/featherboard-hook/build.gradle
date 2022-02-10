@@ -1,7 +1,8 @@
 dependencies {
     implementation project(':api')
+    compileOnly 'be.maximvdw:featherboard:5.0.1a'
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }
 
-description = 'cmi-hook'
+description = 'featherboard-hook'

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.messaging.message;
 
-import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
+import com.pepedevs.dbedwars.api.messaging.Placeholder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -9,7 +9,7 @@ import java.util.*;
 public abstract class Message {
 
     protected List<String> message;
-    protected List<PlaceholderEntry> placeholders;
+    protected List<Placeholder> placeholders;
 
     public static Message empty() {
         return new Message("") {
@@ -25,14 +25,14 @@ public abstract class Message {
         };
     }
 
-    protected Message(String message, PlaceholderEntry... placeholders) {
+    protected Message(String message, Placeholder... placeholders) {
         this.message = Collections.synchronizedList(new ArrayList<>());
         this.message.add(message);
         this.placeholders = new ArrayList<>();
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
-    protected Message(Collection<String> message, PlaceholderEntry... placeholders) {
+    protected Message(Collection<String> message, Placeholder... placeholders) {
         this.message = Collections.synchronizedList(new ArrayList<>(message));
         this.placeholders = new ArrayList<>();
         this.placeholders.addAll(Arrays.asList(placeholders));
@@ -75,7 +75,7 @@ public abstract class Message {
         return new ArrayList<>(this.message);
     }
 
-    public void addPlaceholders(PlaceholderEntry... placeholders) {
+    public void addPlaceholders(Placeholder... placeholders) {
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
@@ -83,7 +83,7 @@ public abstract class Message {
         this.placeholders.remove(index);
     }
 
-    public void removePlaceholders(PlaceholderEntry... placeholders) {
+    public void removePlaceholders(Placeholder... placeholders) {
         this.placeholders.removeAll(Arrays.asList(placeholders));
     }
 

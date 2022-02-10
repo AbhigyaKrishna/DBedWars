@@ -1,18 +1,20 @@
 package com.pepedevs.dbedwars.api.messaging;
 
+import com.pepedevs.dbedwars.api.util.Key;
+
 import java.util.function.Supplier;
 
-public interface PlaceholderEntry {
+public interface PlaceholderEntry extends Placeholder {
 
     static PlaceholderEntry of(String placeholder, Supplier<String> replacement) {
         return new PlaceholderEntry() {
             @Override
-            public String getPlaceholder() {
-                return placeholder;
+            public Key<String> getKey() {
+                return Key.of(placeholder);
             }
 
             @Override
-            public Supplier<String> getReplacement() {
+            public Supplier<String> getPlaceholder() {
                 return replacement;
             }
 
@@ -22,12 +24,12 @@ public interface PlaceholderEntry {
     static PlaceholderEntry of(String placeholder, String replacement) {
         return new PlaceholderEntry() {
             @Override
-            public String getPlaceholder() {
-                return placeholder;
+            public Key<String> getKey() {
+                return Key.of(placeholder);
             }
 
             @Override
-            public Supplier<String> getReplacement() {
+            public Supplier<String> getPlaceholder() {
                 return new Supplier<String>() {
                     @Override
                     public String get() {
@@ -47,11 +49,12 @@ public interface PlaceholderEntry {
         return of("<".concat(placeholder).concat(">"), replacement);
     }
 
-    String getPlaceholder();
+    @Override
+    Key<String> getKey();
 
-    Supplier<String> getReplacement();
+    Supplier<String> getPlaceholder();
 
     default String apply(String message) {
-        return message.replace(this.getPlaceholder(), this.getReplacement().get());
+        return message.replace(this.getKey().get(), this.getPlaceholder().get());
     }
 }

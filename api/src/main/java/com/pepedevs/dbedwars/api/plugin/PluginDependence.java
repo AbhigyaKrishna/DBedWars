@@ -37,6 +37,8 @@ import java.util.function.Function;
  */
 public abstract class PluginDependence implements Function<Plugin, Boolean> {
 
+    private static PluginDependence instance;
+
     /** The name of the depending plugin */
     protected final String name;
 
@@ -51,9 +53,12 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
      */
     public PluginDependence(final String name) {
         Validate.notNull(name, "the name cannot be null!");
+        instance = this;
         this.name = name;
         this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
     }
+
+    public abstract void disable();
 
     /**
      * Gets the name of the depending plugin.
@@ -75,5 +80,9 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
      */
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public static <T extends PluginDependence> T get() {
+        return (T) instance;
     }
 }

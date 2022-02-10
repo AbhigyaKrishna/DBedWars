@@ -1,5 +1,7 @@
 package com.pepedevs.dbedwars.messaging;
 
+import com.pepedevs.dbedwars.api.messaging.Placeholder;
+import com.pepedevs.dbedwars.api.messaging.PlayerPlaceholderEntry;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
@@ -73,16 +75,31 @@ public class Messaging extends com.pepedevs.dbedwars.api.messaging.Messaging {
     }
 
     @Override
-    public String setPlaceholders(final String message, PlaceholderEntry... entries) {
+    public String setPlaceholders(final String message, Placeholder... entries) {
         String replaced = message;
-        for (PlaceholderEntry entry : entries) {
-            replaced = entry.apply(replaced);
+        for (Placeholder entry : entries) {
+            if (entry instanceof PlaceholderEntry) {
+                replaced = ((PlaceholderEntry) entry).apply(replaced);
+            }
         }
         return replaced;
     }
 
     @Override
-    public String setPlaceholders(String message, Player player) {
+    public String setPlaceholders(final String message, final Player player, Placeholder... entries) {
+        String replaced = message;
+        for (Placeholder entry : entries) {
+            if (entry instanceof PlaceholderEntry) {
+                replaced = ((PlaceholderEntry) entry).apply(replaced);
+            } else if (entry instanceof PlayerPlaceholderEntry) {
+                replaced = ((PlayerPlaceholderEntry) entry).apply(replaced, player);
+            }
+        }
+        return replaced;
+    }
+
+    @Override
+    public String setPapiPlaceholders(final String message, Player player) {
         return PlaceholderUtil.placeholder(player, message);
     }
 
