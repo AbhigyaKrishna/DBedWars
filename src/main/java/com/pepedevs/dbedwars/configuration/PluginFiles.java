@@ -21,6 +21,7 @@ public class PluginFiles {
 
     /* Language Files */
     public static final File EN_US = new File(LANGUAGES, "en_US.yml");
+    public static final File ACTION_MESSAGES_EN_US = new File(LANGUAGES,"action_messages_en_US.yml");
 
     /* Files */
     public static final File CONFIG = new File(PLUGIN_DATA_FOLDER, "config.yml");
@@ -49,7 +50,8 @@ public class PluginFiles {
 
     public static File[] getLanguageFiles() {
         return new File[] {
-                EN_US
+                EN_US,
+                ACTION_MESSAGES_EN_US
         };
     }
 
