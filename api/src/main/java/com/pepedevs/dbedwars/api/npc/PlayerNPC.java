@@ -1,25 +1,37 @@
 package com.pepedevs.dbedwars.api.npc;
 
+import com.pepedevs.dbedwars.api.util.BedwarsCompletable;
 import com.pepedevs.dbedwars.api.util.Skin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PlayerNPC {
+public abstract class PlayerNPC implements BedwarsNPC{
 
-    public abstract void setSkin(Skin skin);
+    private final String ID;
 
-    public abstract void hideNameTag();
+    public PlayerNPC(String ID) {
+        this.ID = ID;
+    }
 
-    public abstract void showNameTag();
+    @Override
+    public String getID() {
+        return this.ID;
+    }
 
-    public abstract void showInTab();
+    public abstract BedwarsCompletable<PlayerNPC> setSkin(Skin skin);
 
-    public abstract void hideFromTab();
+    public abstract BedwarsCompletable<PlayerNPC> hideNameTag();
+
+    public abstract BedwarsCompletable<PlayerNPC> showNameTag();
+
+    public abstract BedwarsCompletable<PlayerNPC> showInTab();
+
+    public abstract BedwarsCompletable<PlayerNPC> hideFromTab();
 
     public abstract SkinData getSkinData();
 
-    public void showSkinParts(SkinData.SkinPart... skinParts) {
+    public BedwarsCompletable<PlayerNPC> showSkinParts(SkinData.SkinPart... skinParts) {
         for (SkinData.SkinPart part : skinParts) {
             switch (part) {
                 case CAPE: {
@@ -51,10 +63,10 @@ public abstract class PlayerNPC {
                 }
             }
         }
-        this.updateSkinData();
+        return this.updateSkinData();
     }
 
-    public void hideSkinParts(SkinData.SkinPart... skinParts) {
+    public BedwarsCompletable<PlayerNPC> hideSkinParts(SkinData.SkinPart... skinParts) {
         for (SkinData.SkinPart part : skinParts) {
             switch (part) {
                 case CAPE: {
@@ -86,7 +98,7 @@ public abstract class PlayerNPC {
                 }
             }
         }
-        this.updateSkinData();
+        return this.updateSkinData();
     }
 
     public SkinData.SkinPart[] getShownSkinParts() {
@@ -101,6 +113,6 @@ public abstract class PlayerNPC {
         return shownSkinParts.toArray(new SkinData.SkinPart[0]);
     }
 
-    protected abstract void updateSkinData();
+    protected abstract BedwarsCompletable<PlayerNPC> updateSkinData();
 
 }

@@ -10,72 +10,64 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
-public abstract class BedwarsNPC {
+public interface BedwarsNPC {
 
-    private final String ID;
+    int getEntityId();
 
-    public BedwarsNPC(String ID) {
-        this.ID = ID;
-    }
+    BedwarsCompletable<BedwarsNPC> setEntityId(int id);
 
-    public abstract int getEntityId();
+    String getID();
 
-    public abstract BedwarsCompletable<BedwarsNPC> setEntityId(int id);
+    BedwarsCompletable<BedwarsNPC> spawn();
 
-    public String getId() {
-        return this.ID;
-    }
+    BedwarsCompletable<BedwarsNPC> teleport(Location location);
 
-    public abstract BedwarsCompletable<BedwarsNPC> spawn();
+    Location getLocation();
 
-    public abstract BedwarsCompletable<BedwarsNPC> teleport(Location location);
+    BedwarsCompletable<BedwarsNPC> look(float yaw, float pitch);
 
-    public abstract Location getLocation();
+    BedwarsCompletable<BedwarsNPC> lookAt(Vector direction);
 
-    public abstract BedwarsCompletable<BedwarsNPC> look(float yaw, float pitch);
+    BedwarsCompletable<BedwarsNPC> lookAt(Location location);
 
-    public abstract BedwarsCompletable<BedwarsNPC> lookAt(Vector direction);
+    BedwarsCompletable<BedwarsNPC> destroy();
 
-    public abstract BedwarsCompletable<BedwarsNPC> lookAt(Location location);
+    Set<UUID> getViewers();
 
-    public abstract BedwarsCompletable<BedwarsNPC> destroy();
+    BedwarsCompletable<BedwarsNPC> hide(Player player);
 
-    public abstract Set<UUID> getViewers();
+    BedwarsCompletable<BedwarsNPC> silentHide(Player player);
 
-    public abstract BedwarsCompletable<BedwarsNPC> hide(Player player);
+    BedwarsCompletable<BedwarsNPC> show(Player player);
 
-    public abstract BedwarsCompletable<BedwarsNPC> silentHide(Player player);
+    BedwarsCompletable<BedwarsNPC> forceShow(Player player);
 
-    public abstract BedwarsCompletable<BedwarsNPC> show(Player player);
+    BedwarsCompletable<BedwarsNPC> addInShownList(Player player);
 
-    public abstract BedwarsCompletable<BedwarsNPC> forceShow(Player player);
+    Collection<NPCClickAction> getClickActions();
 
-    public abstract BedwarsCompletable<BedwarsNPC> addInShownList(Player player);
+    void addClickAction(NPCClickAction action);
 
-    public abstract Collection<NPCClickAction> getClickActions();
+    NPCData getNpcData();
 
-    public abstract void addClickAction(NPCClickAction action);
-
-    public abstract NPCData getNpcData();
-
-    public void setCrouching(boolean crouching) {
+    default void setCrouching(boolean crouching) {
         this.getNpcData().setCrouched(crouching);
         this.updateNPCData();
     }
 
-    public boolean isCrouching() {
+    default boolean isCrouching() {
         return this.getNpcData().isCrouched();
     }
 
-    public void setOnFire(boolean onFire) {
+    default void setOnFire(boolean onFire) {
         this.getNpcData().setOnFire(onFire);
         this.updateNPCData();
     }
 
-    public boolean isOnFire() {
+    default boolean isOnFire() {
         return this.getNpcData().isOnFire();
     }
 
-    protected abstract void updateNPCData();
+    void updateNPCData();
 
 }
