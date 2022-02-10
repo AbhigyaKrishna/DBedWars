@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.hologram;
 
-import com.pepedevs.dbedwars.api.hologram.HologramClickAction;
+import com.pepedevs.dbedwars.api.util.ClickAction;
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
 import com.pepedevs.dbedwars.api.hologram.HologramPage;
 import com.pepedevs.dbedwars.api.util.ClickType;
@@ -104,7 +104,7 @@ public class HologramLineImpl<C> extends HologramLine <C> {
 
         for (int id : this.entityIds) {
             if (id == entityId) {
-                for (HologramClickAction action : this.actions) {
+                for (ClickAction action : this.actions) {
                     action.onClick(player, clickType);
                 }
                 return true;

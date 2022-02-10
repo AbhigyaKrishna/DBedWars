@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.hologram;
 
 import com.pepedevs.dbedwars.api.hologram.Hologram;
-import com.pepedevs.dbedwars.api.hologram.HologramClickAction;
+import com.pepedevs.dbedwars.api.util.ClickAction;
 import com.pepedevs.dbedwars.api.hologram.HologramLine;
 import com.pepedevs.dbedwars.api.hologram.HologramPage;
 
@@ -15,7 +15,7 @@ public class HologramPageImpl extends HologramPage {
     private int index;
     private final List<Integer> clickableEntityIds;
     private final List<HologramLine<?>> lines;
-    private final Set<HologramClickAction> actions;
+    private final Set<ClickAction> actions;
 
     public HologramPageImpl(HologramImpl parent, int index) {
         this.parent = parent;
@@ -58,17 +58,17 @@ public class HologramPageImpl extends HologramPage {
     }
 
     @Override
-    public void addAction(HologramClickAction action) {
+    public void addAction(ClickAction action) {
         this.actions.add(action);
     }
 
     @Override
-    public Set<HologramClickAction> getActions() {
+    public Set<ClickAction> getActions() {
         return Collections.unmodifiableSet(this.actions);
     }
 
     @Override
-    public void removeAction(Predicate<HologramClickAction> predicate) {
+    public void removeAction(Predicate<ClickAction> predicate) {
         this.actions.removeIf(predicate);
     }
 

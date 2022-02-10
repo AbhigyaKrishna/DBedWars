@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.hologram;
 
 import com.pepedevs.dbedwars.api.hologram.*;
+import com.pepedevs.dbedwars.api.util.ClickAction;
 import com.pepedevs.dbedwars.api.util.ClickType;
 import com.pepedevs.radium.holograms.HologramManager;
 import org.bukkit.Bukkit;
@@ -132,10 +133,10 @@ public class HologramImpl extends Hologram {
         HologramPage page = this.pages.get(this.viewerPages.get(player.getUniqueId()));
         for (HologramLine<?> line : page.getLines()) {
             if (line.handleClick(player, entityId, clickType)) {
-                for (HologramClickAction action : page.getActions()) {
+                for (ClickAction action : page.getActions()) {
                     action.onClick(player, clickType);
                 }
-                for (HologramClickAction action : this.actions) {
+                for (ClickAction action : this.actions) {
                     action.onClick(player, clickType);
                 }
                 return true;

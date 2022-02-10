@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.api.hologram;
 
+import com.pepedevs.dbedwars.api.util.ClickAction;
 import com.pepedevs.dbedwars.api.util.ClickType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ public abstract class HologramObject {
 
     protected final Set<UUID> viewers;
     protected Location location;
-    protected final Set<HologramClickAction> actions;
+    protected final Set<ClickAction> actions;
 
     protected HologramObject(Location location) {
         this.location = location;
@@ -35,15 +36,15 @@ public abstract class HologramObject {
 
     public abstract boolean handleClick(Player player, int entityId, ClickType clickType);
 
-    public void addAction(HologramClickAction action) {
+    public void addAction(ClickAction action) {
         this.actions.add(action);
     }
 
-    public Set<HologramClickAction> getActions() {
+    public Set<ClickAction> getActions() {
         return Collections.unmodifiableSet(this.actions);
     }
 
-    public void removeAction(Predicate<HologramClickAction> predicate) {
+    public void removeAction(Predicate<ClickAction> predicate) {
         this.actions.removeIf(predicate);
     }
 
