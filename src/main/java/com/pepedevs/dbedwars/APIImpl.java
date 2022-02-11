@@ -57,4 +57,10 @@ public final class APIImpl extends DBedWarsAPI {
     public Version getVersion() {
         return this.plugin.getServerVersion();
     }
+
+    @Override
+    public DBedwars getPlugin() {
+        return this.plugin;
+    }
+
 }
