@@ -1,12 +1,15 @@
 package com.pepedevs.dbedwars.api.hooks.scoreboard;
 
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Key;
+import com.pepedevs.dbedwars.api.util.Keyed;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
-public interface Scoreboard {
+public interface Scoreboard extends Keyed<String> {
 
     void setTitle(Message title);
 
@@ -26,7 +29,7 @@ public interface Scoreboard {
 
     void setLine(int index, Message line);
 
-    Collection<Message> getLines();
+    List<Message> getLines();
 
     void clearLines();
 
@@ -35,5 +38,4 @@ public interface Scoreboard {
     Player getViewer();
 
     void update();
-
 }

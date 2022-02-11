@@ -101,7 +101,7 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     @Override
-    public Collection<Message> getLines() {
+    public List<Message> getLines() {
         return Collections.unmodifiableList(this.elements);
     }
 

@@ -2,17 +2,17 @@ package com.pepedevs.dbedwars.api.npc;
 
 import org.bukkit.entity.EntityType;
 
-public abstract class EntityNPC <T extends EntityType> implements BedwarsNPC {
+public abstract class EntityNPC implements BedwarsNPC {
 
-    private final T entityType;
+    private final EntityType entityType;
     private final String ID;
 
-    public EntityNPC(String ID, T entityType) {
+    public EntityNPC(String ID, EntityType entityType) {
         this.ID = ID;
         this.entityType = entityType;
     }
 
-    public T getEntityType(){
+    public EntityType getEntityType() {
         return this.entityType;
     }
 

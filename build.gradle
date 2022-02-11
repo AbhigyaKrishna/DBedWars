@@ -111,6 +111,7 @@ dependencies {
     implementation project(':hooks:cmi-hook')
     implementation project(':hooks:featherboard-hook')
     implementation project(':hooks:quickboard-hook')
+    implementation project(':hooks:tab-hook')
     implementation 'org.reflections:reflections:0.9.12'
     implementation 'de.tr7zw:item-nbt-api:2.8.0'
     implementation 'redis.clients:jedis:3.7.1'

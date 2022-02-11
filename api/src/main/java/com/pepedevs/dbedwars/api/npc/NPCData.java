@@ -10,6 +10,6 @@ public abstract class NPCData {
 
     protected abstract void setCrouched(boolean isCrouched);
 
-    public abstract byte buildByte();
+    protected abstract byte buildByte();
 
 }

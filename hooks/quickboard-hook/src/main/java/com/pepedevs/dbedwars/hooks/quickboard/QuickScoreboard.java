@@ -4,6 +4,7 @@ import com.pepedevs.dbedwars.api.adventure.AdventureUtils;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Key;
 import me.tade.quickboard.PlayerBoard;
 import org.bukkit.entity.Player;
 
@@ -49,7 +50,7 @@ public class QuickScoreboard implements Scoreboard {
     }
 
     @Override
-    public Collection<Message> getLines() {
+    public List<Message> getLines() {
         List<Message> lines = new ArrayList<>();
         for (String line : this.board.getList()) {
             lines.add(LegacyMessage.from(line));
@@ -78,4 +79,8 @@ public class QuickScoreboard implements Scoreboard {
         this.board.updateTitle();
     }
 
+    @Override
+    public Key<String> getKey() {
+        return null;
+    }
 }
