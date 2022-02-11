@@ -5,9 +5,6 @@ import java.util.concurrent.TimeUnit;
 /** A duration that can be converted to milliseconds, seconds, minutes, hours or days. */
 public class Duration {
 
-    /** Represents the zero in the {@link Duration} */
-    public static final Duration ZERO = new Duration(0L, TimeUnit.NANOSECONDS);
-
     protected long duration;
     protected TimeUnit unit;
 
@@ -38,6 +35,11 @@ public class Duration {
      */
     public Duration(long millis) {
         this(millis, TimeUnit.MILLISECONDS);
+    }
+
+    /** Represents the zero in the {@link Duration} */
+    public static Duration zero() {
+        return new Duration(0L, TimeUnit.NANOSECONDS);
     }
 
     /**
@@ -260,7 +262,7 @@ public class Duration {
      * @return true if duration is zero, else false
      */
     public boolean isZero() {
-        return ZERO.equals(this);
+        return Duration.zero().equals(this);
     }
 
     @Override
