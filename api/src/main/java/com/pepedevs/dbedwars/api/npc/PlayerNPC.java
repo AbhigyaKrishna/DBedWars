@@ -1,37 +1,26 @@
 package com.pepedevs.dbedwars.api.npc;
 
-import com.pepedevs.dbedwars.api.util.BedwarsCompletable;
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.util.Skin;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PlayerNPC implements BedwarsNPC{
+public interface PlayerNPC extends BedwarsNPC{
 
-    private final String ID;
+    ActionFuture<PlayerNPC> setSkin(Skin skin);
 
-    public PlayerNPC(String ID) {
-        this.ID = ID;
-    }
+    ActionFuture<PlayerNPC> hideNameTag();
 
-    @Override
-    public String getID() {
-        return this.ID;
-    }
+    ActionFuture<PlayerNPC> showNameTag();
 
-    public abstract BedwarsCompletable<PlayerNPC> setSkin(Skin skin);
+    ActionFuture<PlayerNPC> showInTab();
 
-    public abstract BedwarsCompletable<PlayerNPC> hideNameTag();
+    ActionFuture<PlayerNPC> hideFromTab();
 
-    public abstract BedwarsCompletable<PlayerNPC> showNameTag();
+    SkinData getSkinData();
 
-    public abstract BedwarsCompletable<PlayerNPC> showInTab();
-
-    public abstract BedwarsCompletable<PlayerNPC> hideFromTab();
-
-    public abstract SkinData getSkinData();
-
-    public BedwarsCompletable<PlayerNPC> showSkinParts(SkinData.SkinPart... skinParts) {
+    default ActionFuture<PlayerNPC> showSkinParts(SkinData.SkinPart... skinParts) {
         for (SkinData.SkinPart part : skinParts) {
             switch (part) {
                 case CAPE: {
@@ -66,7 +55,7 @@ public abstract class PlayerNPC implements BedwarsNPC{
         return this.updateSkinData();
     }
 
-    public BedwarsCompletable<PlayerNPC> hideSkinParts(SkinData.SkinPart... skinParts) {
+    default ActionFuture<PlayerNPC> hideSkinParts(SkinData.SkinPart... skinParts) {
         for (SkinData.SkinPart part : skinParts) {
             switch (part) {
                 case CAPE: {
@@ -101,7 +90,7 @@ public abstract class PlayerNPC implements BedwarsNPC{
         return this.updateSkinData();
     }
 
-    public SkinData.SkinPart[] getShownSkinParts() {
+    default SkinData.SkinPart[] getShownSkinParts() {
         List<SkinData.SkinPart> shownSkinParts = new ArrayList<>();
         if (this.getSkinData().isCapeEnabled()) shownSkinParts.add(SkinData.SkinPart.CAPE);
         if (this.getSkinData().isJacketEnabled()) shownSkinParts.add(SkinData.SkinPart.JACKET);
@@ -113,6 +102,6 @@ public abstract class PlayerNPC implements BedwarsNPC{
         return shownSkinParts.toArray(new SkinData.SkinPart[0]);
     }
 
-    protected abstract BedwarsCompletable<PlayerNPC> updateSkinData();
+    ActionFuture<PlayerNPC> updateSkinData();
 
 }

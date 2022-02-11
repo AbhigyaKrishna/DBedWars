@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.api.npc;
 
-import com.pepedevs.dbedwars.api.util.BedwarsCompletable;
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,37 +12,37 @@ import java.util.UUID;
 
 public interface BedwarsNPC {
 
-    int getEntityId();
+    int getEntityID();
 
-    BedwarsCompletable<BedwarsNPC> setEntityId(int id);
+    ActionFuture<BedwarsNPC> setEntityId(int id);
 
     String getID();
 
-    BedwarsCompletable<BedwarsNPC> spawn();
+    ActionFuture<BedwarsNPC> spawn();
 
-    BedwarsCompletable<BedwarsNPC> teleport(Location location);
+    ActionFuture<BedwarsNPC> teleport(Location location);
 
     Location getLocation();
 
-    BedwarsCompletable<BedwarsNPC> look(float yaw, float pitch);
+    ActionFuture<BedwarsNPC> lookAt(float yaw, float pitch);
 
-    BedwarsCompletable<BedwarsNPC> lookAt(Vector direction);
+    ActionFuture<BedwarsNPC> lookAt(Vector direction);
 
-    BedwarsCompletable<BedwarsNPC> lookAt(Location location);
+    ActionFuture<BedwarsNPC> lookAt(Location location);
 
-    BedwarsCompletable<BedwarsNPC> destroy();
+    ActionFuture<BedwarsNPC> destroy();
 
     Set<UUID> getViewers();
 
-    BedwarsCompletable<BedwarsNPC> hide(Player player);
+    ActionFuture<BedwarsNPC> hide(Player player);
 
-    BedwarsCompletable<BedwarsNPC> silentHide(Player player);
+    ActionFuture<BedwarsNPC> silentHide(Player player);
 
-    BedwarsCompletable<BedwarsNPC> show(Player player);
+    ActionFuture<BedwarsNPC> show(Player player);
 
-    BedwarsCompletable<BedwarsNPC> forceShow(Player player);
+    ActionFuture<BedwarsNPC> forceShow(Player player);
 
-    BedwarsCompletable<BedwarsNPC> addInShownList(Player player);
+    ActionFuture<BedwarsNPC> addInShownList(Player player);
 
     Collection<NPCClickAction> getClickActions();
 
@@ -50,24 +50,24 @@ public interface BedwarsNPC {
 
     NPCData getNpcData();
 
-    default void setCrouching(boolean crouching) {
+    default ActionFuture<BedwarsNPC> setCrouching(boolean crouching) {
         this.getNpcData().setCrouched(crouching);
-        this.updateNPCData();
+        return this.updateNPCData();
     }
 
     default boolean isCrouching() {
         return this.getNpcData().isCrouched();
     }
 
-    default void setOnFire(boolean onFire) {
+    default ActionFuture<BedwarsNPC> setOnFire(boolean onFire) {
         this.getNpcData().setOnFire(onFire);
-        this.updateNPCData();
+        return this.updateNPCData();
     }
 
     default boolean isOnFire() {
         return this.getNpcData().isOnFire();
     }
 
-    void updateNPCData();
+    ActionFuture<BedwarsNPC> updateNPCData();
 
 }
