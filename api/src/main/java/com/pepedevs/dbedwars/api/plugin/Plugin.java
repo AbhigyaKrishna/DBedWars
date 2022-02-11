@@ -14,10 +14,10 @@ public abstract class Plugin extends JavaPlugin {
     @Override
     public final void onEnable() {
         /* checking the plugin dependencies */
-        if (getDependences() != null && getDependences().length > 0) {
-            for (PluginDependence dependence : getDependences()) {
-                final org.bukkit.plugin.Plugin plugin =
-                        Bukkit.getPluginManager().getPlugin(dependence.getName());
+        PluginDependence[] dependencies = getDependences();
+        if (dependencies != null && dependencies.length > 0) {
+            for (PluginDependence dependence : dependencies) {
+                final org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager().getPlugin(dependence.getName());
                 final Boolean result = dependence.apply(plugin);
 
                 if (result == null || !result) {
