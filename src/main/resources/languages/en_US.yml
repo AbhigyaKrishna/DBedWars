@@ -33,22 +33,6 @@ gameplay:
     player-arena-join: "<green><player_name> <yellow>has joined (<aqua><current_players></aqua>/<aqua><max_players></aqua>)!"
     player-arena-leave: "<green><player_name> <yellow>has quit!"
     countdown-insufficent-players: "<red>There aren't enough players for the arena! Countdown has been stopped!"
-    game-start-count-down:
-      - "[TITLE][DELAY = 0s]<yellow>❺"
-      - "[MESSAGE][DELAY = 0s]<yellow>The game starts in <gold><countdown> <yellow>seconds!"
-      - "[SOUND][DELAY = 0s]block.note_block.bell"
-      - "[TITLE][DELAY = 1s]<yellow>❹"
-      - "[MESSAGE][DELAY = 1s]<yellow>The game starts in <gold><countdown> <yellow>seconds!"
-      - "[SOUND][DELAY = 1s]block.note_block.bell"
-      - "[TITLE][DELAY = 2s]<red>❸"
-      - "[MESSAGE][DELAY = 2s]<red>The game starts in <gold><countdown> <red>seconds!"
-      - "[SOUND][DELAY = 2s]block.note_block.bell"
-      - "[TITLE][DELAY = 3s]<red>❷"
-      - "[MESSAGE][DELAY = 3s]<red>The game starts in <gold><countdown> <red>seconds!"
-      - "[SOUND][DELAY = 3s]block.note_block.bell"
-      - "[TITLE][DELAY = 4s]<red>❶"
-      - "[MESSAGE][DELAY = 4s]<red>The game starts in <gold><countdown> <red>seconds!"
-      - "[SOUND][DELAY = 4s]block.note_block.bell"
   ingame:
     game-start:
       - "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"

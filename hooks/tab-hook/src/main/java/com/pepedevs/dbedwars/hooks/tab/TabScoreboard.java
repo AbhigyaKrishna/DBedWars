@@ -10,21 +10,20 @@ import me.neznamy.tab.api.scoreboard.Line;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class TabScoreboard implements Scoreboard {
 
     private final TabHook tabHook;
     private final TabScoreboardHook scoreboardHook;
     private final me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl tabScoreboard;
+    private final UUID playerID;
 
-    public TabScoreboard(TabHook tabHook, TabScoreboardHook scoreboardHook, me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl scoreboard) {
+    public TabScoreboard(UUID playerID,TabHook tabHook, TabScoreboardHook scoreboardHook, me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl scoreboard) {
         this.tabHook = tabHook;
         this.scoreboardHook = scoreboardHook;
         this.tabScoreboard = scoreboard;
+        this.playerID = playerID;
     }
 
     @Override
@@ -77,11 +76,7 @@ public class TabScoreboard implements Scoreboard {
 
     @Override
     public Player getViewer() {
-        try {
-            return Bukkit.getPlayer(this.tabScoreboard.getPlayers().iterator().next().getUniqueId());
-        } catch (Exception ignored) {
-            return null;
-        }
+        return Bukkit.getPlayer(playerID);
     }
 
     @Override

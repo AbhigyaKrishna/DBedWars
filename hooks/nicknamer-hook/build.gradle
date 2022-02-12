@@ -1,0 +1,14 @@
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'org.inventivetalent.nicknamer:api:3.19.0-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'nametagedit-hook'

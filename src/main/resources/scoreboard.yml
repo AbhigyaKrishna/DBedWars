@@ -15,5 +15,4 @@ global:
     - '{team_gray_color}G &fGray: {team_gray_players_formatted}'
     - ''
     - '&eplay.example.net'
-
   update-ticks: 5

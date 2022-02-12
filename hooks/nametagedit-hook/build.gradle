@@ -1,0 +1,14 @@
+repositories {
+    maven {
+        url 'https://ci.nametagedit.com/plugin/repository/everything/'
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'com.nametagedit:nametagedit:4.5.4'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'nametagedit-hook'

@@ -42,7 +42,7 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
     /** The name of the depending plugin */
     protected final String name;
 
-    protected final boolean enabled;
+    protected boolean enabled;
 
     /**
      * Construct the plugin dependence. Note the plugin {@code name} is case-sensitive.
@@ -58,7 +58,9 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
         this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
-    public abstract void disable();
+    public void disable(){
+
+    }
 
     /**
      * Gets the name of the depending plugin.
