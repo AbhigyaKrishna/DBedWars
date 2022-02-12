@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.api.future;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -34,7 +35,7 @@ public abstract class SuccessAction<K, V> implements Runnable {
         return new SuccessAction<K, V>(future, newFuture) {
             @Override
             public void run() {
-                newFuture.completeFuture(fn.apply(future.getResult()));
+                newFuture.complete(fn.apply(future.getResult()));
             }
         };
     }
@@ -44,6 +45,24 @@ public abstract class SuccessAction<K, V> implements Runnable {
             @Override
             public void run() {
                 fn.run();
+            }
+        };
+    }
+
+    static <K, V> SuccessAction<K, V> ofThrowable(ActionFuture<K> future, ActionFuture<V> newFuture, BiFunction<? super K, Throwable, ? extends V> fn) {
+        return new SuccessAction<K, V>(future, newFuture) {
+            @Override
+            public void run() {
+                newFuture.complete(fn.apply(future.getResult(), future.getThrowable()));
+            }
+        };
+    }
+
+    static <K, V> SuccessAction<K, V> ofThrowable(ActionFuture<K> future, ActionFuture<V> newFuture, Function<Throwable, ? extends V> fn) {
+        return new SuccessAction<K, V>(future, newFuture) {
+            @Override
+            public void run() {
+                newFuture.complete(fn.apply(future.getThrowable()));
             }
         };
     }

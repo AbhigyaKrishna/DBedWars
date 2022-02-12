@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTe
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
 import com.pepedevs.dbedwars.api.feature.custom.ArenaEndFireworkFeature;
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.ArenaSpectator;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
@@ -29,7 +30,7 @@ import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
 import com.pepedevs.dbedwars.listeners.GameListener;
 import com.pepedevs.dbedwars.messaging.AbstractMessaging;
-import com.pepedevs.dbedwars.task.implementations.DefaultWorldAdaptor;
+import com.pepedevs.dbedwars.task.implementations.WorldAdaptorImpl;
 import com.pepedevs.dbedwars.utils.DatabaseUtils;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
@@ -38,7 +39,7 @@ import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.api.util.Acceptor;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
 import com.pepedevs.radium.utils.world.GameRuleType;
 import com.pepedevs.radium.utils.world.WorldUtils;
@@ -58,7 +59,10 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.api.game.Arena {
 
@@ -179,51 +183,59 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
     }
 
     @Override
-    public World loadWorld() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        if (Arena.this.plugin.getServer().getWorld(Arena.this.settings.getName()) == null) {
-            Debugger.debug("World is null");
-            if (this.plugin.getGeneratorHandler().getWorldAdaptor() instanceof DefaultWorldAdaptor) {
-                Debugger.debug("Default World generator");
-                SchedulerUtils.runTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        Debugger.debug("Loading world: " + Arena.this.settings.getName());
+    public ActionFuture<World> loadWorld() {
+        return ActionFuture.supplyAsync(new Supplier<World>() {
+            @Override
+            public World get() {
+                CompletableFuture<Void> future = new CompletableFuture<>();
+                if (Arena.this.plugin.getServer().getWorld(Arena.this.settings.getName()) == null) {
+                    Debugger.debug("World is null");
+                    if (Arena.this.plugin.getGeneratorHandler().getWorldAdaptor() instanceof WorldAdaptorImpl) {
+                        Debugger.debug("Default World generator");
+                        SchedulerUtils.runTask(new Runnable() {
+                            @Override
+                            public void run() {
+                                Debugger.debug("Loading world: " + Arena.this.settings.getName());
+                                Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(Arena.this.settings.getName(), Arena.this.settings.getWorldEnv());
+                                Debugger.debug("World loaded: " + Arena.this.settings.getName());
+                                future.complete(null);
+                            }
+                        });
+                    } else {
                         Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(Arena.this.settings.getName(), Arena.this.settings.getWorldEnv());
-                        Debugger.debug("World loaded: " + Arena.this.settings.getName());
                         future.complete(null);
                     }
-                }, this.plugin);
-            } else {
-                this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(this.settings.getName(), this.settings.getWorldEnv());
-                future.complete(null);
+                } else {
+                    future.complete(null);
+                }
+                Debugger.debug("World loaded!");
+                return Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().loadWorldFromSave(Arena.this.settings.getName());
             }
-        } else {
-            future.complete(null);
-        }
-        Debugger.debug("Waiting for world to load...");
-        future.join();
-        Debugger.debug("World loaded!");
-        return this.plugin.getGeneratorHandler().getWorldAdaptor().loadWorldFromSave(this.settings.getName());
+        });
     }
 
     @Override
-    public void load() {
+    public ActionFuture<Void> load() {
         if (!this.enabled)
             throw new IllegalStateException("Tried loading arena which isn't enabled!");
 
+        //TODO use future
         this.setStatus(ArenaStatus.REGENERATING);
-        World world = this.loadWorld();
-        GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
-        GameRuleType.MOB_SPAWNING.apply(world, false);
-        GameRuleType.KEEP_INVENTORY.apply(world, true);
-        GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
-        GameRuleType.SPECTATORS_GENERATE_CHUNKS.apply(world, false);
-        GameRuleDisableDaylightCycle gameRule = new GameRuleDisableDaylightCycle(8000);
-        gameRule.apply(world);
-        this.setWorld(world);
-        this.arenaHandler.register();
-        this.setStatus(ArenaStatus.IDLING);
+        return this.loadWorld().thenAccept(new Consumer<World>() {
+            @Override
+            public void accept(World world) {
+                GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
+                GameRuleType.MOB_SPAWNING.apply(world, false);
+                GameRuleType.KEEP_INVENTORY.apply(world, true);
+                GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
+                GameRuleType.SPECTATORS_GENERATE_CHUNKS.apply(world, false);
+                GameRuleDisableDaylightCycle gameRule = new GameRuleDisableDaylightCycle(8000);
+                gameRule.apply(world);
+                Arena.this.setWorld(world);
+                Arena.this.arenaHandler.register();
+                Arena.this.setStatus(ArenaStatus.IDLING);
+            }
+        });
     }
 
     @Override
@@ -455,7 +467,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                         }
                         teleported.complete(null);
                     }
-                }, Arena.this.plugin);
+                });
                 try {
                     teleported.get();
                 } catch (InterruptedException | ExecutionException ignored) {}

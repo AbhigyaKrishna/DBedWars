@@ -4,7 +4,7 @@ import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import com.pepedevs.dbedwars.api.task.Task;
 import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.task.TaskQueueHandler;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.task.implementations.UpdateTask;
 
@@ -39,7 +39,7 @@ public class ThreadHandler implements com.pepedevs.dbedwars.api.handler.ThreadHa
         this.task.submit(new Workload() {
             @Override
             public void compute() {
-                SchedulerUtils.runTask(runnable, ThreadHandler.this.plugin);
+                SchedulerUtils.runTask(runnable);
             }
         });
     }

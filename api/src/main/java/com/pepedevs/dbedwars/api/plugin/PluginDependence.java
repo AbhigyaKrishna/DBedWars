@@ -16,24 +16,6 @@ import java.util.function.Function;
  * be disabled automatically.
  *
  * <p>Also the developer can send messages to the console when checking the received plugin.
- *
- * <p>
- *
- * <h1>Implementation example: </h1>
- *
- * <pre><code>
- * PluginDependence dependence = new PluginDependence("ProtocolLib") { <br>
- *    {@code @Override} <br>
- *     public Boolean apply (org.bukkit.plugin.Plugin plugin) { <br>
- *         if (plugin == null) { <br>
- *             ConsoleUtil.sendPluginMessage(ChatColor.RED, "ProtocolLib couldn't be found!", MyPlugin.getInstance()); <br>
- *         } else { <br>
- *             return true; // returning <strong>true</strong> will not disable the plugin. <br>
- *         } <br>
- *         return null; // returning <strong>null</strong> or <strong> false</strong> will disable the plugin automatically <br>
- *     } <br>
- * }; <br>
- * </code></pre>
  */
 public abstract class PluginDependence implements Function<Plugin, Boolean> {
 
@@ -58,7 +40,7 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
         this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
-    public void disable(){
+    public void disable() {
 
     }
 

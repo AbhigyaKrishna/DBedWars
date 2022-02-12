@@ -2,7 +2,7 @@ package com.pepedevs.dbedwars.game.arena.spawner;
 
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -45,7 +45,7 @@ public class ResourceItem implements com.pepedevs.dbedwars.api.game.spawner.Reso
                     ResourceItem.this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
                     ResourceItem.this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
                 }
-            }, DBedwars.getInstance());
+            });
         } else {
             this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
             this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));

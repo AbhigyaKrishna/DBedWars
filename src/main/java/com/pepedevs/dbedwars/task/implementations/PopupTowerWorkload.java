@@ -7,7 +7,7 @@ import com.pepedevs.dbedwars.api.util.SoundVP;
 import com.pepedevs.dbedwars.item.PopupTowerChestItem;
 import com.pepedevs.radium.particles.ParticleBuilder;
 import com.pepedevs.dbedwars.api.task.Workload;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.radium.utils.xseries.XBlock;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.DyeColor;
@@ -96,8 +96,7 @@ public class PopupTowerWorkload implements Workload {
                                     }
                                 }
                             }
-                        },
-                        DBedwars.getInstance());
+                        });
                 sound.play(block.getLocation());
                 particle.setLocation(block.getLocation()).display();
             }

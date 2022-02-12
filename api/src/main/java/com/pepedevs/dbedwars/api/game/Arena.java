@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.api.game;
 
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.game.settings.ArenaSettings;
 import com.pepedevs.dbedwars.api.game.spawner.Spawner;
 import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
@@ -33,9 +34,9 @@ public interface Arena extends AbstractMessaging {
 
     void reloadData();
 
-    World loadWorld();
+    ActionFuture<World> loadWorld();
 
-    void load();
+    ActionFuture<Void> load();
 
     void enable(boolean flag);
 

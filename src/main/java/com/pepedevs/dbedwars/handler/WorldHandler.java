@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.handler;
 
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
+import com.pepedevs.dbedwars.api.hooks.world.WorldAdaptor;
 import com.pepedevs.dbedwars.hooks.SlimeWorldManagerHook;
-import com.pepedevs.dbedwars.task.implementations.DefaultWorldAdaptor;
+import com.pepedevs.dbedwars.task.implementations.WorldAdaptorImpl;
 
 public class WorldHandler {
 
@@ -16,7 +16,7 @@ public class WorldHandler {
         if (plugin.getDependences()[1].isEnabled()) {
             this.worldAdaptor = new SlimeWorldManagerHook(this.plugin);
             ((SlimeWorldManagerHook) this.worldAdaptor).setup();
-        } else this.worldAdaptor = new DefaultWorldAdaptor(plugin);
+        } else this.worldAdaptor = new WorldAdaptorImpl(plugin);
     }
 
     public WorldAdaptor getWorldAdaptor() {

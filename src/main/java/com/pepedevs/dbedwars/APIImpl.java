@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars;
 
+import com.pepedevs.dbedwars.api.hooks.world.WorldAdaptor;
 import com.pepedevs.radium.holograms.HologramManager;
 import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.api.DBedWarsAPI;

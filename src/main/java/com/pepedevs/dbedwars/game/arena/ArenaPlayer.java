@@ -21,7 +21,7 @@ import com.pepedevs.dbedwars.task.implementations.RespawnTask;
 import com.pepedevs.dbedwars.utils.Utils;
 import com.pepedevs.dbedwars.api.util.Acceptor;
 import com.pepedevs.dbedwars.api.util.Pair;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -187,7 +187,7 @@ public class ArenaPlayer extends PlayerMember implements com.pepedevs.dbedwars.a
                 ArenaPlayer.this.getPlayer().teleport(location);
                 ArenaPlayer.this.getPlayer().setHealth(20);
             }
-        }, DBedwars.getInstance());
+        });
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.api.util.Tickable;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.game.Arena;
 import com.pepedevs.dbedwars.api.game.ArenaStatus;
@@ -34,7 +34,7 @@ public final class UpdateTask implements Runnable {
 
         this.started = Instant.now();
         this.startedMillis = this.started.toEpochMilli();
-        this.task = SchedulerUtils.runTaskTimerAsynchronously(this, 0L, 1L, this.plugin);
+        this.task = SchedulerUtils.runTaskTimerAsynchronously(this, 0L, 1L);
         return true;
     }
 
