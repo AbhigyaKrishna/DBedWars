@@ -10,4 +10,5 @@ include(':hooks:vault-hook')
 include (':hooks:nametagedit-hook')
 include (':hooks:viphide-hook')
 include (':hooks:nicknamer-hook')
+include (':hooks:nickapi-hook')
 

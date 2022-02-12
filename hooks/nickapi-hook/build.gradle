@@ -1,0 +1,14 @@
+repositories {
+    maven {
+        url 'https://haoshoku.xyz:1234/repository/public/'
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'xyz.haoshoku.nick:nickapi:6.3.3-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'nickapi-hook'
