@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.handler;
+package com.pepedevs.dbedwars.api.hooks.world;
 
 import org.bukkit.World;
 

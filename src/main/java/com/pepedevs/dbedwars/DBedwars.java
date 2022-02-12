@@ -58,7 +58,7 @@ public final class DBedwars extends PluginAdapter {
     private HologramManager hologramManager;
 
     private Messaging messaging;
-    private ActionTranslationRegistry actionRegistry;
+    private TranslationRegistryImpl actionRegistry;
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
 
@@ -80,6 +80,7 @@ public final class DBedwars extends PluginAdapter {
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
         this.actionRegistry = new TranslationRegistryImpl();
+        this.actionRegistry.registerDefaults();
 
         PacketEvents.getAPI().getSettings().bStats(true).debug(false).checkForUpdates(false);
         PacketEvents.getAPI().init();
@@ -100,6 +101,7 @@ public final class DBedwars extends PluginAdapter {
     @Override
     public void onDisable() {
         this.threadHandler.destroy();
+        PacketEvents.getAPI().terminate();
     }
 
     /**

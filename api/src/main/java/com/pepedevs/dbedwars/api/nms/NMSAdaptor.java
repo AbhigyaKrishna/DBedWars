@@ -1,6 +1,5 @@
 package com.pepedevs.dbedwars.api.nms;
 
-import com.pepedevs.dbedwars.api.game.ArenaPlayer;
 import com.pepedevs.dbedwars.api.game.Team;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -1,5 +1,6 @@
 package com.pepedevs.dbedwars.action;
 
+import com.pepedevs.dbedwars.action.translators.*;
 import com.pepedevs.dbedwars.api.action.Action;
 import com.pepedevs.dbedwars.api.action.ActionTranslationRegistry;
 import com.pepedevs.dbedwars.api.action.ActionTranslator;
@@ -16,6 +17,18 @@ public class TranslationRegistryImpl implements ActionTranslationRegistry {
 
     public TranslationRegistryImpl() {
         this.registeredTranslators = new ConcurrentHashMap<>();
+    }
+
+    public void registerDefaults() {
+        this.registerTranslation(new ActionBarActionTranslator());
+        this.registerTranslation(new CommandActionTranslator());
+        this.registerTranslation(new ConsoleCommandActionTranslator());
+        this.registerTranslation(new FireworkActionTranslator());
+        this.registerTranslation(new PotionActionTranslator());
+        this.registerTranslation(new SendMessageActionTranslator());
+        this.registerTranslation(new SoundActionTranslator());
+        this.registerTranslation(new TeleportActionTranslator());
+        this.registerTranslation(new TitleActionTranslator());
     }
 
     @Override

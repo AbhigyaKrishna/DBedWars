@@ -32,8 +32,7 @@ public class NMSUtils implements NMSAdaptor {
     @Override
     public void clearRegionFileCache(World world) {
         try {
-            ChunkProviderServer chunkProviderServer =
-                    ((CraftWorld) world).getHandle().chunkProviderServer;
+            ChunkProviderServer chunkProviderServer = ((CraftWorld) world).getHandle().chunkProviderServer;
             IChunkLoader chunkLoader = FieldReflection.getValue(chunkProviderServer, "chunkLoader");
             File file = FieldReflection.getValue(chunkLoader, "d");
             file = new File(file, "region");
@@ -42,13 +41,11 @@ public class NMSUtils implements NMSAdaptor {
             }
 
             File[] files = file.listFiles();
-            int num = files.length;
-            int n = 0;
 
-            while (n < num) {
-                File current = files[n];
-                RegionFileCache.a.remove(current);
-                ++n;
+            for (File current : files) {
+                synchronized (RegionFileCache.a) {
+                    RegionFileCache.a.remove(current);
+                }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -60,8 +57,12 @@ public class NMSUtils implements NMSAdaptor {
         WorldServer ws = ((CraftWorld) world).getHandle();
         LongObjectHashMap<Chunk> objMap = ws.chunkProviderServer.chunks;
         for (Chunk c : objMap.values()) c.removeEntities();
-        ws.chunkProviderServer.chunks.clear();
-        ws.chunkProviderServer.unloadQueue.clear();
+        synchronized (ws.chunkProviderServer.chunks) {
+            ws.chunkProviderServer.chunks.clear();
+        }
+        synchronized (ws.chunkProviderServer.unloadQueue) {
+            ws.chunkProviderServer.unloadQueue.clear();
+        }
     }
 
     @Override

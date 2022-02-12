@@ -6,9 +6,9 @@ import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
+import com.pepedevs.dbedwars.api.hooks.world.WorldAdaptor;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -85,8 +85,7 @@ public class SlimeWorldManagerHook implements WorldAdaptor {
                                             : "file")
                                     : "file";
                     this.loader = slime.getLoader(l);
-                },
-                this.plugin);
+                });
     }
 
     public boolean isEnabled() {

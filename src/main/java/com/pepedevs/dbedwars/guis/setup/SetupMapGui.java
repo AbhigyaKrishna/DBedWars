@@ -9,7 +9,7 @@ import com.pepedevs.radium.gui.inventory.item.action.ItemActionPriority;
 import com.pepedevs.radium.gui.inventory.item.voidaction.VoidActionItem;
 import com.pepedevs.radium.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.scheduler.SchedulerUtils;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.radium.utils.world.WorldUtils;
 import com.pepedevs.radium.utils.xseries.XMaterial;
 import com.pepedevs.dbedwars.DBedwars;
@@ -260,9 +260,7 @@ public class SetupMapGui extends IMenu<BookItemMenu> {
                                                                                                             true);
                                                                                         }
                                                                                     }
-                                                                                },
-                                                                                SetupMapGui.this
-                                                                                        .plugin);
+                                                                                });
                                                                     });
 
                                                     try {

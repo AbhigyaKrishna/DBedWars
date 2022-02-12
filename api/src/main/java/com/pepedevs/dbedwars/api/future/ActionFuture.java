@@ -4,11 +4,12 @@ import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.api.util.Duration;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public final class ActionFuture<T> {
+public class ActionFuture<T> {
 
     public static <T> ActionFuture<T> supplyAsync(Supplier<? extends T> supplier) {
         return supplyAsync(supplier, null);
@@ -34,11 +35,10 @@ public final class ActionFuture<T> {
         return new ActionFuture<>(value);
     }
 
-    private T result = null;
-    private Throwable throwable;
-    private Duration delay;
-    private ActionFuture<?> nextFuture;
-    private SuccessAction<?, ?> successAction;
+    protected T result = null;
+    protected Throwable throwable;
+    protected Duration delay;
+    protected SuccessAction<?, ?> successAction;
 
     public ActionFuture() {
     }
@@ -47,7 +47,7 @@ public final class ActionFuture<T> {
         this.result = value;
     }
 
-    public void completeFuture(T value) {
+    public void complete(T value) {
         this.result = value;
     }
 
@@ -59,6 +59,10 @@ public final class ActionFuture<T> {
         return result;
     }
 
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
     public ActionFuture<T> delay(Duration delay) {
         this.delay = delay;
         return this;
@@ -66,28 +70,37 @@ public final class ActionFuture<T> {
 
     public ActionFuture<Void> thenAccept(Consumer<? super T> consumer) {
         ActionFuture<Void> future = new ActionFuture<>();
-        this.nextFuture = future;
         this.successAction = SuccessAction.of(this, future, consumer);
         return future;
     }
 
     public <U> ActionFuture<U> thenApply(Function<? super T, ? extends U> function) {
         ActionFuture<U> future = new ActionFuture<>();
-        this.nextFuture = future;
         this.successAction = SuccessAction.of(this, future, function);
         return future;
     }
 
     public ActionFuture<Void> thenRun(Runnable runnable) {
         ActionFuture<Void> future = new ActionFuture<>();
-        this.nextFuture = future;
         this.successAction = SuccessAction.of(this, future, runnable);
         return future;
     }
 
-    private void postComplete() {
-        if (this.nextFuture != null && this.successAction != null) {
-            DBedWarsAPI.getApi().getThreadHandler().submitAsync(new AsyncRun(this.nextFuture, this.successAction, this.delay));
+    public <U> ActionFuture<U> handle(BiFunction<? super T, Throwable, ? extends U> function) {
+        ActionFuture<U> future = new ActionFuture<>();
+        this.successAction = SuccessAction.ofThrowable(this, future, function);
+        return future;
+    }
+
+    public <U> ActionFuture<U> exceptionally(Function<Throwable, ? extends U> function) {
+        ActionFuture<U> future = new ActionFuture<>();
+        this.successAction = SuccessAction.ofThrowable(this, future, function);
+        return future;
+    }
+
+    protected void postComplete() {
+        if (this.successAction != null) {
+            DBedWarsAPI.getApi().getThreadHandler().submitAsync(new AsyncRun(this.successAction.getNewFuture(), this.successAction, this.delay));
         }
     }
 
@@ -151,7 +164,7 @@ public final class ActionFuture<T> {
         public void run() {
             if (dep.result == null) {
                 try {
-                    dep.completeFuture(fn.get());
+                    dep.complete(fn.get());
                 } catch (Throwable throwable) {
                     dep.completeExceptionally(throwable);
                 }

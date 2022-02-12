@@ -1,8 +1,8 @@
 package com.pepedevs.dbedwars.task.implementations;
 
-import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.api.handler.WorldAdaptor;
+import com.pepedevs.dbedwars.api.hooks.world.WorldAdaptor;
+import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
 import org.bukkit.*;
@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.List;
 
-public class DefaultWorldAdaptor implements WorldAdaptor {
+public class WorldAdaptorImpl implements WorldAdaptor {
 
     private final DBedwars plugin;
 
-    public DefaultWorldAdaptor(DBedwars plugin) {
+    public WorldAdaptorImpl(DBedwars plugin) {
         this.plugin = plugin;
     }
 
