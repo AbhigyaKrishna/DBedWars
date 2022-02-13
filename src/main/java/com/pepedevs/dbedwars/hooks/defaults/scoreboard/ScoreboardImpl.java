@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.hooks.defaultImpl.scoreboard;
+package com.pepedevs.dbedwars.hooks.defaults.scoreboard;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.AdventureSerializer;

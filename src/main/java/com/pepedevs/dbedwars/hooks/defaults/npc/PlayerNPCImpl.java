@@ -1,12 +1,12 @@
-package com.pepedevs.dbedwars.npc;
+package com.pepedevs.dbedwars.hooks.defaults.npc;
 
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
+import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
-import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.dbedwars.api.future.ActionFuture;
@@ -142,7 +142,7 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(new Supplier<PlayerNPC>() {
             @Override
             public PlayerNPC get() {
-                EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, PlayerNPCImpl.this.skinData.buildByte());
+                EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildByte(PlayerNPCImpl.this.skinData));
                 switch (Version.SERVER_VERSION) {
                     case v1_8_R1:
                     case v1_8_R2:

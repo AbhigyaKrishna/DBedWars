@@ -1,0 +1,14 @@
+repositories {
+    maven {
+        url 'https://repo.citizensnpcs.co/'
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'net.citizensnpcs:citizensapi:2.0.29-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'citizens-hook'

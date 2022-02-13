@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.npc;
+package com.pepedevs.dbedwars.hooks.citizens.npc;
 
 import com.pepedevs.dbedwars.api.npc.SkinData;
 
@@ -20,19 +20,6 @@ public class SkinDataImpl extends SkinData {
         this.leftPantsLegEnabled = true;
         this.rightPantsLegEnabled = true;
         this.hatEnabled = true;
-    }
-
-    @Override
-    public byte buildByte() {
-        byte a = (byte) 0x00;
-        if (capeEnabled) a = (byte) (a | (byte) 0x01);
-        if (jacketEnabled) a = (byte) (a | (byte) 0x02);
-        if (leftSleeveEnabled) a = (byte) (a | (byte) 0x04);
-        if (rightSleeveEnabled) a = (byte) (a | (byte) 0x08);
-        if (leftPantsLegEnabled) a = (byte) (a | (byte) 0x10);
-        if (rightPantsLegEnabled) a = (byte) (a | (byte) 0x20);
-        if (hatEnabled) a = (byte) (a | (byte) 0x40);
-        return a;
     }
 
     @Override
@@ -105,4 +92,5 @@ public class SkinDataImpl extends SkinData {
         this.hatEnabled = hatEnabled;
     }
 }
+
 

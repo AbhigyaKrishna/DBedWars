@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.npc;
+package com.pepedevs.dbedwars.hooks.defaults.npc;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
@@ -43,13 +43,12 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
     }
 
-    @Override
+
     public int getEntityID() {
         return this.entityID;
     }
 
-    @Override
-    public ActionFuture<BedwarsNPC> setEntityId(int id) {
+    public ActionFuture<BedwarsNPC> setEntityID(int id) {
         return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
             @Override
             public BedwarsNPC get() {
@@ -59,7 +58,6 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         });
     }
 
-    @Override
     public String getID() {
         return this.ID;
     }
@@ -127,26 +125,14 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> lookAt(Vector direction) {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                Location a = new Location(null, 0, 1, 0);
-                a.setDirection(direction);
-                BedwarsNPCImpl.this.lookAt(a.getYaw(), a.getPitch());
-                return BedwarsNPCImpl.this;
-            }
-        });
+        Location a = new Location(null, 0, 1, 0);
+        a.setDirection(direction);
+        return this.lookAt(a.getYaw(), a.getPitch());
     }
 
     @Override
     public ActionFuture<BedwarsNPC> lookAt(Location location) {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                BedwarsNPCImpl.this.lookAt(location.getYaw(), location.getPitch());
-                return BedwarsNPCImpl.this;
-            }
-        });
+        return BedwarsNPCImpl.this.lookAt(location.getYaw(), location.getPitch());
     }
 
     @Override
@@ -186,7 +172,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         });
     }
 
-    @Override
+
     public ActionFuture<BedwarsNPC> silentHide(Player player) {
         return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
             @Override
@@ -212,7 +198,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         });
     }
 
-    @Override
+
     public ActionFuture<BedwarsNPC> forceShow(Player player) {
         return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
             @Override
@@ -223,7 +209,6 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         });
     }
 
-    @Override
     public ActionFuture<BedwarsNPC> addInShownList(Player player) {
         return null;
     }
@@ -248,7 +233,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
             @Override
             public BedwarsNPC get() {
-                WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(BedwarsNPCImpl.this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, BedwarsNPCImpl.this.npcData.buildByte())));
+                WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(BedwarsNPCImpl.this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildByte(BedwarsNPCImpl.this.npcData))));
                 for (UUID uuid : BedwarsNPCImpl.this.shown) {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player == null) continue;

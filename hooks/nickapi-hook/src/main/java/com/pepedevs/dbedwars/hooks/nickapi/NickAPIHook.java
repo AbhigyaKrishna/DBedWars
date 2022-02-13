@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
 public class NickAPIHook extends PluginDependence implements NickNameHook {
+
     public NickAPIHook() {
         super("NickAPI");
     }
