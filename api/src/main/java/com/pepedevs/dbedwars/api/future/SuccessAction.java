@@ -73,16 +73,16 @@ public abstract class SuccessAction<K, V> implements Runnable {
         };
     }
 
-    static <K, V> SuccessAction<K, V> composeFuture(ActionFuture<K> future, ActionFuture<V> newFuture, Function<? super K, ActionFuture<? extends V>> fn) {
+    static <K, V> SuccessAction<K, V> composeFuture(ActionFuture<K> future, ActionFuture<V> newFuture, Function<? super K, ? extends ActionFuture<V>> fn) {
         return new ComposeSuccessAction<>(future, newFuture, fn);
     }
 
     protected static class ComposeSuccessAction<K, V> extends SuccessAction<K, V> {
 
-        private final Function<? super K, ? extends ActionFuture<? extends V>> fn;
-        protected ActionFuture<? extends V> composedFuture;
+        private final Function<? super K, ? extends ActionFuture<V>> fn;
+        protected ActionFuture<V> composedFuture;
 
-        protected ComposeSuccessAction(ActionFuture<K> future, ActionFuture<V> newFuture, Function<? super K, ActionFuture<? extends V>> fn) {
+        protected ComposeSuccessAction(ActionFuture<K> future, ActionFuture<V> newFuture, Function<? super K, ? extends ActionFuture<V>> fn) {
             super(SuccessActionType.COMPOSE, future, newFuture);
             this.fn = fn;
         }
@@ -92,7 +92,7 @@ public abstract class SuccessAction<K, V> implements Runnable {
             this.composedFuture = fn.apply(future.getResult());
         }
 
-        public ActionFuture<? extends V> getComposedFuture() {
+        public ActionFuture<V> getComposedFuture() {
             return composedFuture;
         }
 

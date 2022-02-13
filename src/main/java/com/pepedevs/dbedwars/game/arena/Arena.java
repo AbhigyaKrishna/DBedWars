@@ -56,6 +56,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -178,46 +179,30 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     @Override
     public ActionFuture<World> loadWorld() {
-        return ActionFuture.supplyAsync(new Supplier<World>() {
+        World world = this.plugin.getServer().getWorld(this.settings.getName());
+        ActionFuture<World> future;
+        if (world == null) {
+            future = this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(this.settings.getName(), this.settings.getWorldEnv());
+        } else {
+            future = ActionFuture.completedFuture(world);
+        }
+        return future.thenCompose(new Function<World, ActionFuture<World>>() {
             @Override
-            public World get() {
-                CompletableFuture<Void> future = new CompletableFuture<>();
-                if (Arena.this.plugin.getServer().getWorld(Arena.this.settings.getName()) == null) {
-                    Debugger.debug("World is null");
-                    if (Arena.this.plugin.getGeneratorHandler().getWorldAdaptor() instanceof WorldAdaptorImpl) {
-                        Debugger.debug("Default World generator");
-                        SchedulerUtils.runTask(new Runnable() {
-                            @Override
-                            public void run() {
-                                Debugger.debug("Loading world: " + Arena.this.settings.getName());
-                                Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(Arena.this.settings.getName(), Arena.this.settings.getWorldEnv());
-                                Debugger.debug("World loaded: " + Arena.this.settings.getName());
-                                future.complete(null);
-                            }
-                        });
-                    } else {
-                        Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().createWorld(Arena.this.settings.getName(), Arena.this.settings.getWorldEnv());
-                        future.complete(null);
-                    }
-                } else {
-                    future.complete(null);
-                }
-                Debugger.debug("World loaded!");
+            public ActionFuture<World> apply(World world) {
                 return Arena.this.plugin.getGeneratorHandler().getWorldAdaptor().loadWorldFromSave(Arena.this.settings.getName());
             }
         });
     }
 
     @Override
-    public ActionFuture<Void> load() {
+    public ActionFuture<World> load() {
         if (!this.enabled)
             throw new IllegalStateException("Tried loading arena which isn't enabled!");
 
-        //TODO use future
         this.setStatus(ArenaStatus.REGENERATING);
-        return this.loadWorld().thenAccept(new Consumer<World>() {
+        return this.loadWorld().thenApply(new Function<World, World>() {
             @Override
-            public void accept(World world) {
+            public World apply(World world) {
                 GameRuleType.SHOW_DEATH_MESSAGES.apply(world, false);
                 GameRuleType.MOB_SPAWNING.apply(world, false);
                 GameRuleType.KEEP_INVENTORY.apply(world, true);
@@ -228,6 +213,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
                 Arena.this.setWorld(world);
                 Arena.this.arenaHandler.register();
                 Arena.this.setStatus(ArenaStatus.IDLING);
+                return world;
             }
         });
     }

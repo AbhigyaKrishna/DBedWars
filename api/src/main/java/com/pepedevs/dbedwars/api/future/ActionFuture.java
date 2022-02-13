@@ -47,14 +47,17 @@ public class ActionFuture<T> {
 
     public ActionFuture(T value) {
         this.result = value;
+        this.completed = true;
     }
 
     public void complete(T value) {
         this.result = value;
+        this.completed = true;
     }
 
     public void completeExceptionally(Throwable throwable) {
         this.throwable = throwable;
+        this.completed = true;
     }
 
     public T getResult() {
@@ -104,7 +107,7 @@ public class ActionFuture<T> {
         return future;
     }
 
-    public <U> ActionFuture<U> thenCompose(Function<? super T, ActionFuture<? extends U>> function) {
+    public <U> ActionFuture<U> thenCompose(Function<? super T, ? extends ActionFuture<U>> function) {
         ActionFuture<U> future = new ActionFuture<>();
         this.successAction = SuccessAction.composeFuture(this, future, function);
         return future;
@@ -138,8 +141,8 @@ public class ActionFuture<T> {
             if (this.delay == null || this.delay.isZero()) {
                 this.run();
             } else {
-                this.delay = null;
                 DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay.toMillis());
+                this.delay = null;
             }
         }
 
@@ -174,8 +177,8 @@ public class ActionFuture<T> {
             if (this.delay == null || this.delay.isZero()) {
                 this.run();
             } else {
-                this.delay = null;
                 DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay.toMillis());
+                this.delay = null;
             }
         }
 
