@@ -100,6 +100,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     public void onDisable() {
+        super.onDisable();
         this.threadHandler.destroy();
         PacketEvents.getAPI().terminate();
     }

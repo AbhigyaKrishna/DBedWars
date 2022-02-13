@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.events.*;
+import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.api.feature.custom.ArenaEndFireworkFeature;
 import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.game.ArenaPlayer;
@@ -17,14 +18,12 @@ import com.pepedevs.dbedwars.api.messaging.PlaceholderEntry;
 import com.pepedevs.dbedwars.api.messaging.member.MessagingMember;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
-import com.pepedevs.dbedwars.api.util.Color;
-import com.pepedevs.dbedwars.api.util.KickReason;
-import com.pepedevs.dbedwars.api.util.LocationXYZ;
+import com.pepedevs.dbedwars.api.task.Workload;
+import com.pepedevs.dbedwars.api.util.*;
 import com.pepedevs.dbedwars.configuration.Lang;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableArena;
 import com.pepedevs.dbedwars.configuration.configurable.ConfigurableScoreboard;
-import com.pepedevs.dbedwars.api.feature.BedWarsFeatures;
 import com.pepedevs.dbedwars.game.TeamAssigner;
 import com.pepedevs.dbedwars.game.arena.view.shoptest.ShopView;
 import com.pepedevs.dbedwars.listeners.ArenaListener;
@@ -35,11 +34,8 @@ import com.pepedevs.dbedwars.utils.DatabaseUtils;
 import com.pepedevs.dbedwars.utils.Debugger;
 import com.pepedevs.dbedwars.utils.ScoreboardWrapper;
 import com.pepedevs.dbedwars.utils.Utils;
-import com.pepedevs.dbedwars.api.task.Workload;
-import com.pepedevs.dbedwars.api.util.Acceptor;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.math.collision.BoundingBox;
-import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
 import com.pepedevs.radium.utils.world.GameRuleType;
 import com.pepedevs.radium.utils.world.WorldUtils;
@@ -60,7 +56,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -85,8 +80,7 @@ public class Arena extends AbstractMessaging implements com.pepedevs.dbedwars.ap
 
     public Arena(DBedwars plugin) {
         this.plugin = plugin;
-        this.settings =
-                new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
+        this.settings = new com.pepedevs.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.spectators = new HashSet<>();

@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.api.future;
 
 import com.pepedevs.dbedwars.api.DBedWarsAPI;
+import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.api.util.Duration;
 
@@ -37,6 +38,7 @@ public class ActionFuture<T> {
 
     protected T result = null;
     protected Throwable throwable;
+    protected boolean completed = false;
     protected Duration delay;
     protected SuccessAction<?, ?> successAction;
 
@@ -45,22 +47,29 @@ public class ActionFuture<T> {
 
     public ActionFuture(T value) {
         this.result = value;
+        this.completed = true;
     }
 
     public void complete(T value) {
+        this.completed = true;
         this.result = value;
     }
 
     public void completeExceptionally(Throwable throwable) {
+        this.completed = true;
         this.throwable = throwable;
     }
 
     public T getResult() {
-        return result;
+        return this.result;
     }
 
     public Throwable getThrowable() {
-        return throwable;
+        return this.throwable;
+    }
+
+    public boolean isCompleted() {
+        return this.completed;
     }
 
     public ActionFuture<T> delay(Duration delay) {
@@ -98,9 +107,19 @@ public class ActionFuture<T> {
         return future;
     }
 
+    public <U> ActionFuture<U> thenCompose(Function<? super T, ActionFuture<? extends U>> function) {
+        ActionFuture<U> future = new ActionFuture<>();
+        this.successAction = SuccessAction.composeFuture(this, future, function);
+        return future;
+    }
+
     protected void postComplete() {
         if (this.successAction != null) {
-            DBedWarsAPI.getApi().getThreadHandler().submitAsync(new AsyncRun(this.successAction.getNewFuture(), this.successAction, this.delay));
+            if (this.successAction.getType() == SuccessAction.SuccessActionType.COMPOSE) {
+                DBedWarsAPI.getApi().getThreadHandler().submitAsync(new ComposeFuture<>(this.successAction.getNewFuture(), this.successAction, this.delay));
+            } else {
+                DBedWarsAPI.getApi().getThreadHandler().submitAsync(new AsyncRun(this.successAction.getNewFuture(), this.successAction, this.delay));
+            }
         }
     }
 
@@ -128,12 +147,14 @@ public class ActionFuture<T> {
 
         @Override
         public void run() {
-            try {
-                fn.run();
-            } catch (Throwable throwable) {
-                dep.completeExceptionally(throwable);
+            if (!this.dep.isCompleted()) {
+                try {
+                    this.fn.run();
+                } catch (Throwable throwable) {
+                    this.dep.completeExceptionally(throwable);
+                }
             }
-            dep.postComplete();
+            this.dep.postComplete();
         }
 
     }
@@ -162,14 +183,51 @@ public class ActionFuture<T> {
 
         @Override
         public void run() {
-            if (dep.result == null) {
+            if (!this.dep.isCompleted()) {
                 try {
-                    dep.complete(fn.get());
+                    this.dep.complete(this.fn.get());
                 } catch (Throwable throwable) {
-                    dep.completeExceptionally(throwable);
+                    this.dep.completeExceptionally(throwable);
                 }
             }
-            dep.postComplete();
+            this.dep.postComplete();
+        }
+
+    }
+
+    static final class ComposeFuture<V> extends CancellableWorkload {
+
+        final long start = System.currentTimeMillis();
+        private boolean delayed = false;
+
+        ActionFuture<V> dep;
+        SuccessAction.ComposeSuccessAction<?, V> fn;
+        Duration delay;
+
+        ComposeFuture(ActionFuture<V> dep, SuccessAction<?, ?> fn, Duration delay) {
+            this.dep = dep;
+            this.fn = (SuccessAction.ComposeSuccessAction<?, V>) fn;
+            this.delay = delay;
+        }
+
+        @Override
+        public void compute() {
+            this.delayed = true;
+            if (this.fn.getComposedFuture() == null) {
+                this.fn.run();
+            }
+
+            if (this.fn.getComposedFuture().isCompleted()) {
+                this.setCancelled(true);
+                this.dep.complete(this.fn.getComposedFuture().getResult());
+                this.dep.throwable = this.fn.getComposedFuture().throwable;
+                this.dep.postComplete();
+            }
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return !this.isCancelled() && (this.delayed || System.currentTimeMillis() - this.start >= this.delay.toMillis());
         }
 
     }

@@ -11,12 +11,20 @@ import java.net.URL;
 /** An implementation of {@link JavaPlugin} that adds some useful utilities. */
 public abstract class Plugin extends JavaPlugin {
 
+    protected PluginDependence[] dependencies;
+
     @Override
     public final void onEnable() {
+        /* Set up the plugin */
+        if (!setUp() || !isEnabled()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         /* checking the plugin dependencies */
-        PluginDependence[] dependencies = getDependences();
-        if (dependencies != null && dependencies.length > 0) {
-            for (PluginDependence dependence : dependencies) {
+        this.dependencies = getDependences();
+        if (this.dependencies != null && this.dependencies.length > 0) {
+            for (PluginDependence dependence : this.dependencies) {
                 final org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager().getPlugin(dependence.getName());
                 final Boolean result = dependence.apply(plugin);
 
@@ -25,12 +33,6 @@ public abstract class Plugin extends JavaPlugin {
                     return;
                 }
             }
-        }
-
-        /* plugin setup */
-        if (!setUp() || !isEnabled()) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
         }
 
         /* finalizing plugin setup */
@@ -48,6 +50,15 @@ public abstract class Plugin extends JavaPlugin {
         }
         if (!success) {
             Bukkit.getPluginManager().disablePlugin(this);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        for (PluginDependence dependency : this.dependencies) {
+            if (dependency.isEnabled()) {
+                dependency.disable();
+            }
         }
     }
 
