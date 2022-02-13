@@ -47,16 +47,13 @@ public class ActionFuture<T> {
 
     public ActionFuture(T value) {
         this.result = value;
-        this.completed = true;
     }
 
     public void complete(T value) {
-        this.completed = true;
         this.result = value;
     }
 
     public void completeExceptionally(Throwable throwable) {
-        this.completed = true;
         this.throwable = throwable;
     }
 
@@ -114,6 +111,7 @@ public class ActionFuture<T> {
     }
 
     protected void postComplete() {
+        this.completed = true;
         if (this.successAction != null) {
             if (this.successAction.getType() == SuccessAction.SuccessActionType.COMPOSE) {
                 DBedWarsAPI.getApi().getThreadHandler().submitAsync(new ComposeFuture<>(this.successAction.getNewFuture(), this.successAction, this.delay));
@@ -207,7 +205,7 @@ public class ActionFuture<T> {
         ComposeFuture(ActionFuture<V> dep, SuccessAction<?, ?> fn, Duration delay) {
             this.dep = dep;
             this.fn = (SuccessAction.ComposeSuccessAction<?, V>) fn;
-            this.delay = delay;
+            this.delay = delay == null ? Duration.zero() : delay;
         }
 
         @Override
