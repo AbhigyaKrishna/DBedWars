@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.hooks.defaultImpl.scoreboard;
+package com.pepedevs.dbedwars.hooks.defaults.scoreboard;
 
 import com.pepedevs.dbedwars.api.hooks.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.ScoreboardHook;

@@ -12,12 +12,6 @@ import java.util.UUID;
 
 public interface BedwarsNPC {
 
-    int getEntityID();
-
-    ActionFuture<BedwarsNPC> setEntityId(int id);
-
-    String getID();
-
     ActionFuture<BedwarsNPC> spawn();
 
     ActionFuture<BedwarsNPC> teleport(Location location);
@@ -36,13 +30,7 @@ public interface BedwarsNPC {
 
     ActionFuture<BedwarsNPC> hide(Player player);
 
-    ActionFuture<BedwarsNPC> silentHide(Player player);
-
     ActionFuture<BedwarsNPC> show(Player player);
-
-    ActionFuture<BedwarsNPC> forceShow(Player player);
-
-    ActionFuture<BedwarsNPC> addInShownList(Player player);
 
     Collection<NPCClickAction> getClickActions();
 

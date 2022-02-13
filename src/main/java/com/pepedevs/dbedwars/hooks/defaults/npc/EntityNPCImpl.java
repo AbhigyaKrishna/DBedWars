@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.npc;
+package com.pepedevs.dbedwars.hooks.defaults.npc;
 
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.util.Vector3d;

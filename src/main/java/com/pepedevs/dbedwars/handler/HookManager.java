@@ -3,7 +3,7 @@ package com.pepedevs.dbedwars.handler;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.ScoreboardHook;
 import com.pepedevs.dbedwars.api.plugin.PluginDependence;
-import com.pepedevs.dbedwars.hooks.defaultImpl.scoreboard.ScoreboardHookImpl;
+import com.pepedevs.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
 import com.pepedevs.dbedwars.hooks.featherboard.FeatherBoardHook;
 import com.pepedevs.dbedwars.hooks.quickboard.QuickBoardHook;
 

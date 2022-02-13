@@ -30,8 +30,6 @@ public abstract class SkinData {
 
     protected abstract void setHatEnabled(boolean enabled);
 
-    public abstract byte buildByte();
-
     public enum SkinPart {
         CAPE,
         JACKET,
