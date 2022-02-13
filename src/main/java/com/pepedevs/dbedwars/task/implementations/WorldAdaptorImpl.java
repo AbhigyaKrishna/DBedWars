@@ -1,7 +1,9 @@
 package com.pepedevs.dbedwars.task.implementations;
 
 import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.hooks.world.WorldAdaptor;
+import com.pepedevs.dbedwars.api.util.SchedulerUtils;
 import com.pepedevs.dbedwars.api.version.Version;
 import com.pepedevs.dbedwars.configuration.PluginFiles;
 import com.pepedevs.dbedwars.utils.PluginFileUtils;
@@ -10,6 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class WorldAdaptorImpl implements WorldAdaptor {
 
@@ -20,49 +25,79 @@ public class WorldAdaptorImpl implements WorldAdaptor {
     }
 
     @Override
-    public World createWorld(String worldName, World.Environment environment) {
-        if (Bukkit.getWorld(worldName) != null) return Bukkit.getWorld(worldName);
+    public ActionFuture<World> createWorld(String worldName, World.Environment environment) {
+        if (Bukkit.getWorld(worldName) != null) return ActionFuture.completedFuture(Bukkit.getWorld(worldName));
 
-        WorldCreator wc = new WorldCreator(worldName);
-        wc.environment(environment);
-        wc.type(WorldType.FLAT);
-        if (plugin.getServerVersion().isNewerEquals(Version.v1_13_R1)) {
-            wc.generator(this.plugin.getDescription().getName());
-        } else {
-            wc.generatorSettings("2;0;1");
-        }
-        return wc.createWorld();
-    }
-
-    @Override
-    public World loadWorldFromFolder(String worldName) {
-        if (Bukkit.getWorld(worldName) != null) return Bukkit.getWorld(worldName);
-
-        WorldCreator wc = new WorldCreator(worldName);
-        return wc.createWorld();
-    }
-
-    @Override
-    public World loadWorldFromSave(String fileName) {
-        World world = Bukkit.getWorld(fileName);
-        if (world == null) {
-            world = this.createWorld(fileName, World.Environment.NORMAL);
-        }
-
-        PluginFileUtils.copyWorldRegion(fileName, fileName);
-
-        this.plugin.getNMSAdaptor().clearRegionFileCache(world);
-        this.plugin.getNMSAdaptor().clearChunkCache(world);
-        World finalWorld = world;
-        this.plugin.getThreadHandler().runTaskLater(new Runnable() {
+        return ActionFuture.supplyAsync(new Supplier<World>() {
             @Override
-            public void run() {
-                for (Player player : finalWorld.getPlayers()) {
-                    plugin.getNMSAdaptor().refreshPlayerChunk(player);
-                }
+            public World get() {
+                CompletableFuture<World> future = new CompletableFuture<>();
+                SchedulerUtils.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        WorldCreator wc = new WorldCreator(worldName);
+                        wc.environment(environment);
+                        wc.type(WorldType.FLAT);
+                        if (plugin.getServerVersion().isNewerEquals(Version.v1_13_R1)) {
+                            wc.generator(WorldAdaptorImpl.this.plugin.getDescription().getName());
+                        } else {
+                            wc.generatorSettings("2;0;1");
+                        }
+                        future.complete(wc.createWorld());
+                    }
+                });
+                return future.join();
             }
-        }, 20 * 50);
-        return world;
+        });
+    }
+
+    @Override
+    public ActionFuture<World> loadWorldFromFolder(String worldName) {
+        if (Bukkit.getWorld(worldName) != null) return ActionFuture.completedFuture(Bukkit.getWorld(worldName));
+
+        return ActionFuture.supplyAsync(new Supplier<World>() {
+            @Override
+            public World get() {
+                CompletableFuture<World> future = new CompletableFuture<>();
+                SchedulerUtils.runTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        WorldCreator wc = new WorldCreator(worldName);
+                        future.complete(wc.createWorld());
+                    }
+                });
+                return future.join();
+            }
+        });
+    }
+
+    @Override
+    public ActionFuture<World> loadWorldFromSave(String fileName) {
+        World world = Bukkit.getWorld(fileName);
+        ActionFuture<World> future = ActionFuture.completedFuture(world);
+        if (world == null) {
+            future = this.createWorld(fileName, World.Environment.NORMAL);
+        }
+
+        return future.thenApply(new Function<World, World>() {
+            @Override
+            public World apply(World world) {
+                PluginFileUtils.copyWorldRegion(fileName, fileName);
+
+                WorldAdaptorImpl.this.plugin.getNMSAdaptor().clearRegionFileCache(world);
+                WorldAdaptorImpl.this.plugin.getNMSAdaptor().clearChunkCache(world);
+                World finalWorld = world;
+                WorldAdaptorImpl.this.plugin.getThreadHandler().runTaskLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Player player : finalWorld.getPlayers()) {
+                            plugin.getNMSAdaptor().refreshPlayerChunk(player);
+                        }
+                    }
+                }, 20 * 50);
+                return world;
+            }
+        });
     }
 
     @Override

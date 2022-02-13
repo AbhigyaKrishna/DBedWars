@@ -36,7 +36,7 @@ public interface Arena extends AbstractMessaging {
 
     ActionFuture<World> loadWorld();
 
-    ActionFuture<Void> load();
+    ActionFuture<World> load();
 
     void enable(boolean flag);
 

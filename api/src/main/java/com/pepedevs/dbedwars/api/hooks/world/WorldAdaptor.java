@@ -1,14 +1,15 @@
 package com.pepedevs.dbedwars.api.hooks.world;
 
+import com.pepedevs.dbedwars.api.future.ActionFuture;
 import org.bukkit.World;
 
 public interface WorldAdaptor {
 
-    World createWorld(String worldName, World.Environment environment);
+    ActionFuture<World> createWorld(String worldName, World.Environment environment);
 
-    World loadWorldFromFolder(String worldName);
+    ActionFuture<World> loadWorldFromFolder(String worldName);
 
-    World loadWorldFromSave(String fileName);
+    ActionFuture<World> loadWorldFromSave(String fileName);
 
     boolean saveWorld(String worldName, String name);
 
