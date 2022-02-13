@@ -233,7 +233,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
             @Override
             public BedwarsNPC get() {
-                WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(BedwarsNPCImpl.this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildByte(BedwarsNPCImpl.this.npcData))));
+                WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(BedwarsNPCImpl.this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildNPCDataByte(BedwarsNPCImpl.this.npcData))));
                 for (UUID uuid : BedwarsNPCImpl.this.shown) {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player == null) continue;

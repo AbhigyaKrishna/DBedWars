@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.hologram.utils;
+package com.pepedevs.dbedwars.hooks.defaults.hologram;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;

@@ -8,7 +8,6 @@ import java.util.List;
 public abstract class Hologram extends HologramObject {
 
     protected final String ID;
-    protected HologramSettings settings;
 
     protected Hologram(String ID, Location location) {
         super(location);
@@ -22,10 +21,6 @@ public abstract class Hologram extends HologramObject {
     public abstract HologramPage addPage();
 
     public abstract void changePage(int page, Player player);
-
-    public abstract HologramSettings getSettings();
-
-    public abstract void changeSettings(HologramSettings settings);
 
     public abstract List<HologramPage> getPages();
 }

@@ -142,7 +142,7 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(new Supplier<PlayerNPC>() {
             @Override
             public PlayerNPC get() {
-                EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildByte(PlayerNPCImpl.this.skinData));
+                EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildSkinDataByte(PlayerNPCImpl.this.skinData));
                 switch (Version.SERVER_VERSION) {
                     case v1_8_R1:
                     case v1_8_R2:

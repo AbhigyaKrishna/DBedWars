@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.game.arena.spawner;
 
 import com.pepedevs.dbedwars.DBedwars;
-import com.pepedevs.dbedwars.hologram.HologramImpl;
+import com.pepedevs.dbedwars.hooks.defaults.hologram.HologramImpl;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.BwItemStack;
 import com.pepedevs.dbedwars.api.util.Key;
