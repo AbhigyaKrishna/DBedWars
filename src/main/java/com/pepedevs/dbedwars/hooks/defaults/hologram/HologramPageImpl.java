@@ -14,7 +14,6 @@ public class HologramPageImpl implements HologramPage {
 
     private final HologramImpl parent;
     private int index;
-    private final List<Integer> clickableEntityIds;
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
@@ -23,7 +22,6 @@ public class HologramPageImpl implements HologramPage {
     public HologramPageImpl(HologramImpl parent, int index) {
         this.parent = parent;
         this.index = index;
-        this.clickableEntityIds = Collections.synchronizedList(new ArrayList<>());
         this.lines = Collections.synchronizedList(new ArrayList<>());
         this.actions = Collections.synchronizedSet(new java.util.HashSet<>());
     }
@@ -39,10 +37,6 @@ public class HologramPageImpl implements HologramPage {
 
     public int getIndex() {
         return index;
-    }
-
-    public List<Integer> getClickableEntityIds() {
-        return clickableEntityIds;
     }
 
     @Override

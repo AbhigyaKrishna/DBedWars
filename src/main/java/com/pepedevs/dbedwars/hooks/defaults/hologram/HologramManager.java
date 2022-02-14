@@ -4,10 +4,13 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.pepedevs.dbedwars.DBedwars;
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramLine;
+import com.pepedevs.dbedwars.api.hooks.hologram.HologramPage;
 import com.pepedevs.dbedwars.api.task.Task;
 import com.pepedevs.dbedwars.api.task.Workload;
 import com.pepedevs.dbedwars.task.TaskQueueHandler;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ public class HologramManager {
         HologramPacketListener packetListener = new HologramPacketListener(this);
         this.packetEventsAPI = PacketEvents.getAPI();
         this.packetEventsAPI.getEventManager().registerListener(packetListener);
+        this.startUpdateTask();
     }
 
     public void spawnHologram(HologramImpl hologram) {
@@ -86,7 +90,65 @@ public class HologramManager {
         }
     }
 
-    public void startUpdateTask() {
+    public void updateHologram(HologramImpl hologram) {
+        HologramDataHolder holder = null;
+        for (HologramDataHolder value : this.holograms.values()) {
+            if (value.getHologram().equals(hologram)) {
+                holder = value;
+                break;
+            }
+        }
+        if (holder == null) throw new IllegalArgumentException("Hologram not found! Try creating it first");
+        for (UUID uuid : hologram.getViewerPages().keySet()) {
+            Player player = this.plugin.getServer().getPlayer(uuid);
+            if (player == null) continue;
+            this.updateContent(hologram, player);
+            this.updateLocation(hologram, player);
+        }
+        hologram.updateContent();
+        holder.setLastUpdateTime(System.currentTimeMillis());
+    }
+
+    public void spawnHologram(HologramImpl hologram, Player player) {
+        if (!hologram.isVisible(player)) return;
+        HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(player.getUniqueId(), 0));
+        Map<HologramLineImpl<?>, Location> map = this.mapLocations(page);
+        for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet()) {
+            if (entry.getKey().getContent() instanceof Component) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.updateFakeEntityCustomName(player, (Component) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+            }
+        }
+    }
+
+    public void despawnHologram(HologramImpl hologram, Player player) {
+        HologramPage page = hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
+        for (HologramLine<?> line : page.getLines()) {
+            HologramLineImpl<?> lineImpl = (HologramLineImpl<?>) line;
+            PacketUtils.hideFakeEntities(player, lineImpl.getEntityIds());
+        }
+    }
+
+    public void updateContent(HologramImpl hologram, Player player) {
+        if (!hologram.isVisible(player)) return;
+        HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
+        for (HologramLine<?> line : page.getLines()) {
+            HologramLineImpl<?> lineImpl = (HologramLineImpl<?>) line;
+            if (lineImpl.getContent() instanceof Component) {
+                PacketUtils.updateFakeEntityCustomName(player, (Component) lineImpl.getContent(), lineImpl.getEntityIds()[0]);
+            }
+        }
+    }
+
+    public void updateLocation(HologramImpl hologram, Player player) {
+        HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
+        Map<HologramLineImpl<?>, Location> map = this.mapLocations(page);
+        for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet())
+            for (int entityId : entry.getKey().getEntityIds())
+                PacketUtils.teleportFakeEntity(player, entry.getValue(), entityId);
+    }
+
+    private void startUpdateTask() {
         this.thread.submit(new Workload() {
 
             private long lastRun = System.currentTimeMillis();
@@ -114,20 +176,7 @@ public class HologramManager {
         });
     }
 
-    public void updateHologram(HologramImpl hologram) {
-        HologramDataHolder holder = null;
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                holder = value;
-                break;
-            }
-        }
-        if (holder == null) throw new IllegalArgumentException("Hologram not found! Try creating it first");
-        holder.getHologram().update();
-        holder.setLastUpdateTime(System.currentTimeMillis());
-    }
-
-    private static Map<HologramLineImpl<?>, Location> mapLocations(HologramPageImpl page) {
+    private Map<HologramLineImpl<?>, Location> mapLocations(HologramPageImpl page) {
         Map<HologramLineImpl<?>, Location> returnMap = new HashMap<>();
         Location l = page.getParent().getLocation();
         for (HologramLine<?> line : page.getLines()) {

@@ -7,7 +7,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramLine;
-import com.pepedevs.dbedwars.api.hooks.hologram.HologramPage;
 import com.pepedevs.dbedwars.api.util.ClickAction;
 import com.pepedevs.dbedwars.api.util.ClickType;
 import org.bukkit.entity.Player;
