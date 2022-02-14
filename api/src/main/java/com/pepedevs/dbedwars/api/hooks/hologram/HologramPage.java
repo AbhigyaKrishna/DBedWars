@@ -15,6 +15,10 @@ public interface HologramPage {
 
     <C> HologramLine<C> changeLine(int index, C content, int height);
 
+    void removeLine(int index);
+
+    <C> HologramLine<C> insertNewLine(int index, C content, int height);
+
     Set<ClickAction> getActions();
 
     boolean addAction(ClickAction clickAction);

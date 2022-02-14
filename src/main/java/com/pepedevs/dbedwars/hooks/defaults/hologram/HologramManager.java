@@ -12,10 +12,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class HologramManager {
 
@@ -24,15 +21,14 @@ public class HologramManager {
     private final DBedwars plugin;
     private final Task thread;
     private final Map<String, HologramDataHolder> holograms;
-    private final PacketEventsAPI<?> packetEventsAPI;
 
     private HologramManager() {
         this.plugin = DBedwars.getInstance();
         this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
         this.holograms = Collections.synchronizedMap(new HashMap<>());
         HologramPacketListener packetListener = new HologramPacketListener(this);
-        this.packetEventsAPI = PacketEvents.getAPI();
-        this.packetEventsAPI.getEventManager().registerListener(packetListener);
+        PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
+        packetEventsAPI.getEventManager().registerListener(packetListener);
         this.startUpdateTask();
     }
 
@@ -129,6 +125,11 @@ public class HologramManager {
         }
     }
 
+    public void respawnHologram(HologramImpl hologram, Player player) {
+        this.despawnHologram(hologram, player);
+        this.spawnHologram(hologram, player);
+    }
+
     public void updateContent(HologramImpl hologram, Player player) {
         if (!hologram.isVisible(player)) return;
         HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
@@ -179,7 +180,9 @@ public class HologramManager {
     private Map<HologramLineImpl<?>, Location> mapLocations(HologramPageImpl page) {
         Map<HologramLineImpl<?>, Location> returnMap = new HashMap<>();
         Location l = page.getParent().getLocation();
-        for (HologramLine<?> line : page.getLines()) {
+        List<HologramLine<?>> usedLines = new ArrayList<>(page.getLines());
+        if (page.getParent().isInverted()) Collections.reverse(usedLines);
+        for (HologramLine<?> line : usedLines) {
             HologramLineImpl<?> line1 = (HologramLineImpl<?>) line;
             returnMap.put(line1, l);
             l.add(0, (line1.getHeight() + page.getLineGap()) * (page.getParent().isInverted() ? 1 : -1), 0);

@@ -4,24 +4,21 @@ import com.pepedevs.dbedwars.api.hooks.hologram.Hologram;
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramPage;
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramLine;
 import com.pepedevs.dbedwars.api.util.ClickAction;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HologramPageImpl implements HologramPage {
 
     private final HologramImpl parent;
-    private int index;
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
     private double lineGap = 0.1;
 
-    public HologramPageImpl(HologramImpl parent, int index) {
+    public HologramPageImpl(HologramImpl parent) {
         this.parent = parent;
-        this.index = index;
         this.lines = Collections.synchronizedList(new ArrayList<>());
         this.actions = Collections.synchronizedSet(new java.util.HashSet<>());
     }
@@ -31,14 +28,6 @@ public class HologramPageImpl implements HologramPage {
         return parent;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
     @Override
     public List<HologramLine<?>> getLines() {
         return Collections.unmodifiableList(this.lines);
@@ -46,15 +35,37 @@ public class HologramPageImpl implements HologramPage {
 
     @Override
     public <C> HologramLine<C> addNewLine(C content, int height) {
-        HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height, lines.size());
+        HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
         this.lines.add(line);
         return line;
     }
 
     @Override
     public <C> HologramLine<C> changeLine(int index, C content, int height) {
-        HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height, index);
+        HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
         this.lines.set(index, line);
+        for (UUID uuid : this.getParent().getViewerPages().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+        }
+        return line;
+    }
+
+    @Override
+    public void removeLine(int index) {
+        this.lines.remove(index);
+        for (UUID uuid : this.getParent().getViewerPages().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+        }
+    }
+
+    @Override
+    public <C> HologramLine<C> insertNewLine(int index, C content, int height) {
+        HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
+        this.lines.add(index, line);
         return line;
     }
 

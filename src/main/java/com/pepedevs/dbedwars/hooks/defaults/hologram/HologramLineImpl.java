@@ -9,14 +9,12 @@ public class HologramLineImpl<C> implements HologramLine<C> {
     private final int[] entityIds = new int[]{PacketUtils.getFreeEntityId(), PacketUtils.getFreeEntityId()};
     private C content;
 
-    private int index;
     private final int height;
 
-    public HologramLineImpl(HologramPageImpl parent, C content, int height, int index) {
+    public HologramLineImpl(HologramPageImpl parent, C content, int height) {
         this.parent = parent;
         this.content = content;
         this.height = height;
-        this.index = index;
     }
 
     @Override
@@ -40,14 +38,6 @@ public class HologramLineImpl<C> implements HologramLine<C> {
 
     public int getHeight() {
         return height;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
 }

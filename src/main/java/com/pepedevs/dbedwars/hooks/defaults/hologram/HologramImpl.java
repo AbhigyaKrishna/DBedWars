@@ -35,7 +35,7 @@ public class HologramImpl implements Hologram {
 
     @Override
     public HologramPage addPage() {
-        HologramPageImpl hologramPage = new HologramPageImpl(this, this.hologramPages.size());
+        HologramPageImpl hologramPage = new HologramPageImpl(this);
         this.hologramPages.add(hologramPage);
         return hologramPage;
     }
