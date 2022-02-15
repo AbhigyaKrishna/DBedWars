@@ -1,8 +1,8 @@
 dependencies {
     implementation project(':api')
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    compileOnly 'com.Zrips:CMI:9.0.3.0'
+    compileOnly 'me.blvckbytes:AutoNicker:1.0'
     compileOnly parent
 }
 
-description = 'cmi-hook'
+description = 'autonicker-hook'
