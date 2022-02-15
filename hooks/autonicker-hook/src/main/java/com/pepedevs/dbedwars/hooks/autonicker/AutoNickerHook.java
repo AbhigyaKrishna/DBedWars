@@ -39,7 +39,7 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
             return;
 
         //NEVER RUN THIS ON SYNC. This guy uses Thread#sleep()
-        session.setName(nick,false);
+        session.setName(nick, false);
     }
 
     @Override

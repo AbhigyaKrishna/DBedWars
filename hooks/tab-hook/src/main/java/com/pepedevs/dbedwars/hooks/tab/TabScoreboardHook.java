@@ -43,4 +43,9 @@ public class TabScoreboardHook implements ScoreboardHook {
         return scoreboard;
     }
 
+    @Override
+    public Scoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines) {
+        return null;
+    }
+
 }

@@ -56,4 +56,9 @@ public class QuickBoardHook extends PluginDependence implements ScoreboardHook {
         return new QuickScoreboard(board);
     }
 
+    @Override
+    public Scoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines) {
+        return null;
+    }
+
 }

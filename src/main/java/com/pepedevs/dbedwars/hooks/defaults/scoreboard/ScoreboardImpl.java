@@ -9,6 +9,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUp
 import com.pepedevs.dbedwars.api.adventure.AdventureUtils;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Key;
 import com.pepedevs.dbedwars.api.version.Version;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -34,8 +35,9 @@ public class ScoreboardImpl implements Scoreboard {
     private List<Message> elements;
     private Message oldTitle;
     private List<Message> oldElements;
+    private final Key<String> keyName;
 
-    public ScoreboardImpl(Player player, Message title) {
+    public ScoreboardImpl(Player player, Message title, String name) {
         Validate.isTrue(!(title.getLines().get(0).length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
                 "Title is longer than 32 chars.");
         this.id = "bwboard-" + ThreadLocalRandom.current().nextInt(99999);
@@ -44,6 +46,7 @@ public class ScoreboardImpl implements Scoreboard {
         this.oldTitle = this.title;
         this.elements = new CopyOnWriteArrayList<>();
         this.oldElements = new CopyOnWriteArrayList<>();
+        this.keyName = Key.of(name);
     }
 
     public void show() {
@@ -261,4 +264,8 @@ public class ScoreboardImpl implements Scoreboard {
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
+    @Override
+    public Key<String> getKey() {
+        return this.keyName;
+    }
 }

@@ -1,0 +1,9 @@
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'net.dev.eazynick:EazyNick:3.11'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'eazynick-hook'
