@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.hooks.citizens.npc;
 
-import com.pepedevs.dbedwars.api.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
 
 public class NPCDataImpl extends NPCData {
 

@@ -22,7 +22,7 @@ public class HologramManager {
     private final Task thread;
     private final Map<String, HologramDataHolder> holograms;
 
-    private HologramManager() {
+    public HologramManager() {
         this.plugin = DBedwars.getInstance();
         this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
         this.holograms = Collections.synchronizedMap(new HashMap<>());

@@ -2,6 +2,10 @@ package com.pepedevs.dbedwars.hooks.defaults.hologram;
 
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramLine;
 import com.pepedevs.dbedwars.api.hooks.hologram.HologramPage;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class HologramLineImpl<C> implements HologramLine<C> {
 
@@ -9,9 +13,9 @@ public class HologramLineImpl<C> implements HologramLine<C> {
     private final int[] entityIds = new int[]{PacketUtils.getFreeEntityId(), PacketUtils.getFreeEntityId()};
     private C content;
 
-    private final int height;
+    private final float height;
 
-    public HologramLineImpl(HologramPageImpl parent, C content, int height) {
+    public HologramLineImpl(HologramPageImpl parent, C content, float height) {
         this.parent = parent;
         this.content = content;
         this.height = height;
@@ -33,10 +37,16 @@ public class HologramLineImpl<C> implements HologramLine<C> {
 
     @Override
     public void setContent(C content) {
+        for (UUID uuid : this.parent.getParent().getViewerPages().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            HologramManager.getInstance().updateContent((HologramImpl) this.getParent(), player);
+        }
         this.content = content;
     }
 
-    public int getHeight() {
+    @Override
+    public float getHeight() {
         return height;
     }
 

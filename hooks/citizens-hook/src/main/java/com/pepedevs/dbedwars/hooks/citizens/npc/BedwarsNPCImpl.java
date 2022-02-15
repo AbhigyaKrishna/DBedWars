@@ -1,12 +1,14 @@
 package com.pepedevs.dbedwars.hooks.citizens.npc;
 
 import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.npc.BedwarsNPC;
-import com.pepedevs.dbedwars.api.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.hologram.Hologram;
+import com.pepedevs.dbedwars.api.hooks.npc.BedwarsNPC;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -20,6 +22,8 @@ import java.util.function.Supplier;
 
 public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
+    //TODO INIT
+    private Hologram hologram;
     private Location location;
     private final NPCData npcData;
 
@@ -29,6 +33,11 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         this.location = location;
         this.npcData = npcData;
         this.citizensNPC = this.createNPC();
+    }
+
+    @Override
+    public Hologram getNameHologram() {
+        return hologram;
     }
 
     @Override

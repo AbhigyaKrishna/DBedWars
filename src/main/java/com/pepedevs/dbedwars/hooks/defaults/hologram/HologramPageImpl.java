@@ -34,14 +34,19 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public <C> HologramLine<C> addNewLine(C content, int height) {
+    public <C> HologramLine<C> addNewLine(C content, float height) {
         HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
         this.lines.add(line);
+        for (UUID uuid : this.parent.getViewerPages().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+        }
         return line;
     }
 
     @Override
-    public <C> HologramLine<C> changeLine(int index, C content, int height) {
+    public <C> HologramLine<C> changeLine(int index, C content, float height) {
         HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
         this.lines.set(index, line);
         for (UUID uuid : this.getParent().getViewerPages().keySet()) {
@@ -63,9 +68,14 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public <C> HologramLine<C> insertNewLine(int index, C content, int height) {
+    public <C> HologramLine<C> insertNewLine(int index, C content, float height) {
         HologramLineImpl<C> line = new HologramLineImpl<>(this, content, height);
         this.lines.add(index, line);
+        for (UUID uuid : this.parent.getViewerPages().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+        }
         return line;
     }
 

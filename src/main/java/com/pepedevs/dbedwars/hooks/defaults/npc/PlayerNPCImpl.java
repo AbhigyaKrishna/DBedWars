@@ -10,9 +10,9 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPl
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.npc.NPCData;
-import com.pepedevs.dbedwars.api.npc.PlayerNPC;
-import com.pepedevs.dbedwars.api.npc.SkinData;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.npc.PlayerNPC;
+import com.pepedevs.dbedwars.api.hooks.npc.SkinData;
 import com.pepedevs.dbedwars.api.util.Skin;
 import com.pepedevs.radium.utils.version.Version;
 import net.kyori.adventure.text.Component;

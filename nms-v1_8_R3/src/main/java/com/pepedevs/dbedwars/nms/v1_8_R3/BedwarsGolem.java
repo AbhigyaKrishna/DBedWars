@@ -77,7 +77,8 @@ public class BedwarsGolem implements IGolem {
                             .getArena()
                             .getAsArenaPlayer(((EntityPlayer) entityLiving).getBukkitEntity());
             if (!optionalPlayer.isPresent()) return false;
-            if (optionalPlayer.get().isSpectator()) return false;
+            //TODO
+            /*if (optionalPlayer.get().isSpectator()) return false;*/
             return !spawningTeam.getPlayers().contains(optionalPlayer.get());
         }
     }

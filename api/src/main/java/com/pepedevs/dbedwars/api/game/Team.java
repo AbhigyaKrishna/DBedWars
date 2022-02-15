@@ -8,7 +8,6 @@ import com.pepedevs.dbedwars.api.messaging.AbstractMessaging;
 import com.pepedevs.dbedwars.api.util.Color;
 import com.pepedevs.dbedwars.api.util.LocationXYZ;
 import com.pepedevs.dbedwars.api.util.LocationXYZYP;
-import com.pepedevs.dbedwars.api.util.TrapEnum;
 
 import java.util.List;
 import java.util.Set;
@@ -64,8 +63,6 @@ public interface Team extends AbstractMessaging {
     BoundingBox getIslandArea();
 
     List<Trap> getTrapQueue();
-
-    void triggerTrap(TrapEnum.TriggerType trigger, ArenaPlayer target);
 
     void spawnShopNpc(LocationXYZYP location);
 

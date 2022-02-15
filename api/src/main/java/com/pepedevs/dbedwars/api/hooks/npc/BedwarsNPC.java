@@ -1,6 +1,7 @@
-package com.pepedevs.dbedwars.api.npc;
+package com.pepedevs.dbedwars.api.hooks.npc;
 
 import com.pepedevs.dbedwars.api.future.ActionFuture;
+import com.pepedevs.dbedwars.api.hooks.hologram.Hologram;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,6 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface BedwarsNPC {
+
+    Hologram getNameHologram();
 
     ActionFuture<BedwarsNPC> spawn();
 

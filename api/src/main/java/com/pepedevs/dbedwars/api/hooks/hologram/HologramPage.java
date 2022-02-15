@@ -11,13 +11,13 @@ public interface HologramPage {
 
     List<HologramLine<?>> getLines();
 
-    <C> HologramLine<C> addNewLine(C content, int height);
+    <C> HologramLine<C> addNewLine(C content, float height);
 
-    <C> HologramLine<C> changeLine(int index, C content, int height);
+    <C> HologramLine<C> changeLine(int index, C content, float height);
 
     void removeLine(int index);
 
-    <C> HologramLine<C> insertNewLine(int index, C content, int height);
+    <C> HologramLine<C> insertNewLine(int index, C content, float height);
 
     Set<ClickAction> getActions();
 

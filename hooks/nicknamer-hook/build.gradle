@@ -6,7 +6,11 @@ repositories {
 
 dependencies {
     implementation project(':api')
-    compileOnly 'org.inventivetalent.nicknamer:api:3.19.0-SNAPSHOT'
+    compileOnly ("org.inventivetalent.nicknamer:api:3.19.0-SNAPSHOT") {
+        exclude group: 'com.destroystokyo.paper', module: 'paper-api'
+        exclude group: 'org.inventivetalent', module: 'mc-wrappers'
+        exclude group: 'org.inventivetalent', module: 'apimanager'
+    }
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

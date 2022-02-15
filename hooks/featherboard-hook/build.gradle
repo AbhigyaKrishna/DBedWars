@@ -1,3 +1,9 @@
+repositories {
+    maven {
+        url = uri("https://papermc.io/repo/repository/maven-public/")
+    }
+}
+
 dependencies {
     implementation project(':api')
     compileOnly 'be.maximvdw:featherboard:5.0.1a'

@@ -1,6 +1,6 @@
 package com.pepedevs.dbedwars.hooks.defaults.npc;
 
-import com.pepedevs.dbedwars.api.npc.SkinData;
+import com.pepedevs.dbedwars.api.hooks.npc.SkinData;
 
 public class SkinDataImpl extends SkinData {
 
