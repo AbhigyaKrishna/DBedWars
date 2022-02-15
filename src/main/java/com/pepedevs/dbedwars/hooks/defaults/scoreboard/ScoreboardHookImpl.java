@@ -2,7 +2,9 @@ package com.pepedevs.dbedwars.hooks.defaults.scoreboard;
 
 import com.pepedevs.dbedwars.api.hooks.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import com.pepedevs.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Duration;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -29,8 +31,21 @@ public class ScoreboardHookImpl implements ScoreboardHook {
     }
 
     @Override
-    public Scoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines) {
-        return null;
+    public UpdatingScoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines, Duration delay) {
+        UpdatingScoreBoardImpl scoreboard = new UpdatingScoreBoardImpl(player, title,delay);
+        scoreboard.addLines(lines);
+        scoreboard.show();
+        this.scoreboards.put(player.getUniqueId(), scoreboard);
+        return scoreboard;
+    }
+
+    @Override
+    public void removeScoreboard(Player player) {
+        ScoreboardImpl scoreboard = (ScoreboardImpl) scoreboards.remove(player.getUniqueId());
+        if(scoreboard == null)
+            return;
+
+        scoreboard.hide();
     }
 
 }

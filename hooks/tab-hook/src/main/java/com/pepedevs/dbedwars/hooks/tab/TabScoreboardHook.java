@@ -3,7 +3,9 @@ package com.pepedevs.dbedwars.hooks.tab;
 import com.pepedevs.dbedwars.api.adventure.AdventureUtils;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.Scoreboard;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import com.pepedevs.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Duration;
 import me.neznamy.tab.api.scoreboard.ScoreboardManager;
 import me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl;
 import org.bukkit.entity.Player;
@@ -44,8 +46,25 @@ public class TabScoreboardHook implements ScoreboardHook {
     }
 
     @Override
-    public Scoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines) {
-        return null;
+    public UpdatingScoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines, Duration delay) {
+        List<String> scoreboardLines = new ArrayList<>();
+        for (Message line : lines) {
+            scoreboardLines.add(AdventureUtils.toVanillaString(line.asComponentWithPAPI(player)[0]));
+        }
+
+        final ScoreboardImpl tabScoreboard = (ScoreboardImpl) manager.createScoreboard(player.getUniqueId().toString(), AdventureUtils.toVanillaString(title.asComponentWithPAPI(player)[0]), scoreboardLines);
+        final UpdatingTabScoreboard scoreboard = new UpdatingTabScoreboard(player.getUniqueId(), this.hook,this, tabScoreboard,delay);
+        this.scoreboardMap.put(player.getUniqueId(), scoreboard);
+        return scoreboard;
+    }
+
+    @Override
+    public void removeScoreboard(Player player) {
+        final TabScoreboard tabScoreboard = scoreboardMap.remove(player.getUniqueId());
+        if(tabScoreboard == null)
+            return;
+
+        tabScoreboard.getTabScoreboard().unregister();
     }
 
 }

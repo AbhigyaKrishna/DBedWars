@@ -38,4 +38,5 @@ public interface Scoreboard extends Keyed<String> {
     Player getViewer();
 
     void update();
+
 }

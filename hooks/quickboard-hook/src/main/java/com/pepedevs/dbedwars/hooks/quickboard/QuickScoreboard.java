@@ -79,6 +79,7 @@ public class QuickScoreboard implements Scoreboard {
         this.board.updateTitle();
     }
 
+
     @Override
     public Key<String> getKey() {
         return null;

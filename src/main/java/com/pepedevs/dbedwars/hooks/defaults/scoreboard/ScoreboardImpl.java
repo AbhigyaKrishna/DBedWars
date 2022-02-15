@@ -37,7 +37,7 @@ public class ScoreboardImpl implements Scoreboard {
     private List<Message> oldElements;
     private final Key<String> keyName;
 
-    public ScoreboardImpl(Player player, Message title, String name) {
+    public ScoreboardImpl(Player player, Message title) {
         Validate.isTrue(!(title.getLines().get(0).length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
                 "Title is longer than 32 chars.");
         this.id = "bwboard-" + ThreadLocalRandom.current().nextInt(99999);
@@ -46,7 +46,7 @@ public class ScoreboardImpl implements Scoreboard {
         this.oldTitle = this.title;
         this.elements = new CopyOnWriteArrayList<>();
         this.oldElements = new CopyOnWriteArrayList<>();
-        this.keyName = Key.of(name);
+        this.keyName = Key.of(this.id);
     }
 
     public void show() {
@@ -56,6 +56,10 @@ public class ScoreboardImpl implements Scoreboard {
             this.sendScorePacket(i, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM);
             this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.CREATE);
         }
+    }
+
+    public void hide(){
+
     }
 
     @Override

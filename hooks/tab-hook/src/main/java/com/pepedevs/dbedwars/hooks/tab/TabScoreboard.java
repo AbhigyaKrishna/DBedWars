@@ -7,6 +7,7 @@ import com.pepedevs.dbedwars.api.messaging.message.LegacyMessage;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.util.Key;
 import me.neznamy.tab.api.scoreboard.Line;
+import me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -85,5 +86,9 @@ public class TabScoreboard implements Scoreboard {
     @Override
     public Key<String> getKey() {
         return Key.of(this.tabScoreboard.getName());
+    }
+
+    public ScoreboardImpl getTabScoreboard() {
+        return tabScoreboard;
     }
 }

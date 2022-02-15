@@ -1,6 +1,7 @@
 package com.pepedevs.dbedwars.api.hooks.scoreboard;
 
 import com.pepedevs.dbedwars.api.messaging.message.Message;
+import com.pepedevs.dbedwars.api.util.Duration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Score;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,8 @@ public interface ScoreboardHook {
 
     Scoreboard createStaticScoreboard(Player player, Message title, List<Message> lines);
 
-    Scoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines);
+    UpdatingScoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines, Duration delay);
+
+    void removeScoreboard(Player player);
 
 }

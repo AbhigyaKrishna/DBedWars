@@ -1,20 +1,21 @@
-package com.pepedevs.dbedwars.hooks.defaults.scoreboard;
+package com.pepedevs.dbedwars.hooks.tab;
 
-import com.pepedevs.dbedwars.DBedwars;
+import com.pepedevs.dbedwars.api.DBedWarsAPI;
 import com.pepedevs.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import com.pepedevs.dbedwars.api.messaging.message.Message;
 import com.pepedevs.dbedwars.api.task.CancellableWorkload;
 import com.pepedevs.dbedwars.api.util.Duration;
-import org.bukkit.entity.Player;
+import me.neznamy.tab.shared.features.scoreboard.ScoreboardImpl;
 
+import java.util.UUID;
 
-public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingScoreboard {
+public class UpdatingTabScoreboard extends TabScoreboard implements UpdatingScoreboard {
 
     private final CancellableWorkload cancellableWorkload;
     private Duration delayDuration;
 
-    public UpdatingScoreBoardImpl(Player player, Message title, Duration delayDuration) {
-        super(player, title);
+    public UpdatingTabScoreboard(UUID playerID, TabHook tabHook, TabScoreboardHook scoreboardHook, ScoreboardImpl scoreboard, Duration delayDuration) {
+        super(playerID, tabHook, scoreboardHook, scoreboard);
         this.delayDuration = delayDuration;
         this.cancellableWorkload = new CancellableWorkload() {
             long updatedLastAt = System.currentTimeMillis();
@@ -40,7 +41,7 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
 
     @Override
     public void startUpdate() {
-        DBedwars.getInstance().getThreadHandler().submitAsync(this.cancellableWorkload);
+        DBedWarsAPI.getApi().getThreadHandler().submitAsync(this.cancellableWorkload);
     }
 
     @Override
@@ -67,5 +68,4 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
     public void setDelay(Duration delay) {
         this.delayDuration = delay;
     }
-
 }
