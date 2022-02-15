@@ -13,6 +13,5 @@ include(':hooks:viphide-hook')
 include(':hooks:nicknamer-hook')
 include(':hooks:nickapi-hook')
 include(':hooks:autonicker-hook')
-include 'hooks:betternick-hook'
-findProject(':hooks:betternick-hook')?.name = 'betternick-hook'
+include(':hooks:betternick-hook')
 
