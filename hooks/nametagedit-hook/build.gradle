@@ -6,7 +6,9 @@ repositories {
 
 dependencies {
     implementation project(':api')
-    compileOnly 'com.nametagedit:nametagedit:4.5.4'
+    compileOnly ("com.nametagedit:nametagedit:4.5.4") {
+        exclude group: 'org.bstats.bStats-Metrics', module: 'bstats-bukkit'
+    }
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

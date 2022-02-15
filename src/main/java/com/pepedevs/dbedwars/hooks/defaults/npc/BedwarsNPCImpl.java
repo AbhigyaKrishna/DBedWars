@@ -8,10 +8,13 @@ import com.github.retrooper.packetevents.util.MathUtil;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
 import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.npc.BedwarsNPC;
-import com.pepedevs.dbedwars.api.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.hologram.Hologram;
+import com.pepedevs.dbedwars.api.hooks.npc.BedwarsNPC;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
+import com.pepedevs.dbedwars.hooks.defaults.hologram.HologramImpl;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import com.pepedevs.radium.utils.reflection.bukkit.EntityReflection;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,6 +28,8 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
 
+    //TODO INIT
+    private Hologram hologram;
     private final String ID;
     private final NPCData npcData;
 
@@ -35,14 +40,22 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     protected Set<NPCClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
     protected Set<UUID> shown = Collections.synchronizedSet(new HashSet<>());
 
-    public BedwarsNPCImpl(String ID, Location location, NPCData npcData) {
+    public BedwarsNPCImpl(String ID, Location location, NPCData npcData, Component name) {
         this.ID = ID;
         this.npcData = npcData;
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
+        this.hologram = new HologramImpl(this.location.clone().add(0, 1, 0));
+        this.hologram.setInverted(true);
+        this.hologram.addPage().addNewLine(name, 0.5F);
     }
 
+
+    @Override
+    public Hologram getNameHologram() {
+        return this.hologram;
+    }
 
     public int getEntityID() {
         return this.entityID;

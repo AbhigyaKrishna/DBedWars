@@ -1,12 +1,12 @@
 plugins {
-    id 'java-library'
+    id 'java'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 allprojects {
     group 'DBedwars'
     version '1.0'
-    apply plugin: 'java-library'
+    apply plugin: 'java'
     apply plugin: 'com.github.johnrengelman.shadow'
 
 
@@ -51,6 +51,7 @@ allprojects {
         relocate 'org.reflections', 'com.pepedevs.dbedwars.libraries.reflections'
         relocate 'co.aikar.commands', 'com.pepedevs.dbedwars.libraries.acf'
         relocate 'co.aikar.locales', 'com.pepedevs.dbedwars.libraries.locales'
+        relocate 'org.bstats', 'com.pepedevs.dbedwars.libraries.bstats'
         /*relocate 'com.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.api'
         relocate 'io.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.spigot'*/
     }
@@ -77,6 +78,10 @@ allprojects {
 }
 
 compileJava {
+
+    targetCompatibility = 8
+    sourceCompatibility = 8
+
     options.compilerArgs += ["-parameters"]
     options.fork = true
     options.forkOptions.executable = 'javac'
@@ -116,7 +121,8 @@ dependencies {
     implementation 'de.tr7zw:item-nbt-api:2.8.0'
     implementation 'redis.clients:jedis:3.7.1'
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
-    implementation 'com.github.retrooper:packetevents:spigot-SNAPSHOT'
+    implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'

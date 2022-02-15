@@ -1,14 +1,11 @@
 package com.pepedevs.dbedwars.hooks.featherboard;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
-import com.pepedevs.dbedwars.api.future.ActionFuture;
 import com.pepedevs.dbedwars.api.messaging.Messaging;
 import com.pepedevs.dbedwars.api.messaging.message.AdventureMessage;
 import com.pepedevs.dbedwars.api.plugin.PluginDependence;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.function.Supplier;
 
 public class FeatherBoardHook extends PluginDependence {
 

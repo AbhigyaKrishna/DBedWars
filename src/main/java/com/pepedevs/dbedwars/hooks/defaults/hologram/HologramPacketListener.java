@@ -29,6 +29,7 @@ public class HologramPacketListener extends PacketListenerAbstract {
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             Player player = (Player) event.getPlayer();
+
             WrapperPlayClientInteractEntity packet = new WrapperPlayClientInteractEntity(event);
             if (cooldown.asMap().containsKey(player.getUniqueId())
                     && cooldown.asMap().getOrDefault(player.getUniqueId(), -1)

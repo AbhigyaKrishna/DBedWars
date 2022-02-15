@@ -1,4 +1,4 @@
-package com.pepedevs.dbedwars.api.npc;
+package com.pepedevs.dbedwars.api.hooks.npc;
 
 public abstract class NPCData {
 

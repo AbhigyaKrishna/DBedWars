@@ -1,7 +1,7 @@
 package com.pepedevs.dbedwars.hooks.citizens.npc;
 
-import com.pepedevs.dbedwars.api.npc.EntityNPC;
-import com.pepedevs.dbedwars.api.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.npc.EntityNPC;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;

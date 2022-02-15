@@ -1,9 +1,9 @@
 package com.pepedevs.dbedwars.hooks.citizens.npc;
 
 import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.npc.NPCData;
-import com.pepedevs.dbedwars.api.npc.PlayerNPC;
-import com.pepedevs.dbedwars.api.npc.SkinData;
+import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
+import com.pepedevs.dbedwars.api.hooks.npc.PlayerNPC;
+import com.pepedevs.dbedwars.api.hooks.npc.SkinData;
 import com.pepedevs.dbedwars.api.util.Skin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;

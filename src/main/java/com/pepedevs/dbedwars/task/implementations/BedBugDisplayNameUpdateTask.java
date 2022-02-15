@@ -47,12 +47,11 @@ public class BedBugDisplayNameUpdateTask implements Workload {
                 silverfish.getMaxHealth(),
                 cfgBedBug.getHealthIndicatorCount(),
                 cfgBedBug.getHealthSymbol(),
-                Color.from()
                 ChatColor.getByChar(cfgBedBug
                         .getHealthFilledColorCode()
                         .replace("%team_color%", String.valueOf(teamColor.getChar()))),
                 ChatColor.getByChar(cfgBedBug
-                        .getHealthColorCodes()
+                        .getHealthMissingColorCode()
                         .split(":")[1]
                         .replace("%team_color%", String.valueOf(teamColor.getChar())))));
     }

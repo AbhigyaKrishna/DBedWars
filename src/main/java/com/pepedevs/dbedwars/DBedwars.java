@@ -7,8 +7,8 @@ import com.pepedevs.dbedwars.api.action.ActionTranslationRegistry;
 import com.pepedevs.dbedwars.api.plugin.Plugin;
 import com.pepedevs.dbedwars.api.plugin.PluginAdapter;
 import com.pepedevs.dbedwars.api.plugin.PluginDependence;
+import com.pepedevs.dbedwars.hooks.defaults.hologram.HologramManager;
 import com.pepedevs.radium.database.DatabaseType;
-import com.pepedevs.radium.holograms.HologramManager;
 import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.radium.utils.ServerPropertiesUtils;
 import com.pepedevs.dbedwars.api.version.Version;
@@ -179,7 +179,7 @@ public final class DBedwars extends PluginAdapter {
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
-        this.hologramManager = new HologramManager(this, this.threadHandler.getUpdaterTask());
+        this.hologramManager = new HologramManager();
 
         this.threadHandler.submitAsync(
                 () -> {

@@ -8,4 +8,5 @@ public interface HologramLine<C> {
 
     void setContent(C content);
 
+    float getHeight();
 }

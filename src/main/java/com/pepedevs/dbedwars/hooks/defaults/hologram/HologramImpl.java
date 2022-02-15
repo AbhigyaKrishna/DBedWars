@@ -116,7 +116,7 @@ public class HologramImpl implements Hologram {
 
     public void show(Player... players) {
         for (Player player : players) {
-            HologramManager.getInstance().spawnHologram(this, player);
+            HologramManager.getInstance().respawnHologram(this, player);
         }
     }
 
