@@ -16,4 +16,4 @@ include(':hooks:autonicker-hook')
 include(':hooks:betternick-hook')
 include(':hooks:eazynick-hook')
 include(':hooks:pvplevels-hook')
-
+include(':hooks:citizens-hook')

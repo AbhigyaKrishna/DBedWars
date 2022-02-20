@@ -41,19 +41,19 @@ allprojects {
     }
 
     shadowJar {
-        relocate 'de.tr7zw.changeme.nbtapi', 'com.pepedevs.dbedwars.libraries.nbtapi'
-        relocate 'de.tr7zw.annotations', 'com.pepedevs.dbedwars.libraries.nbtapi.annotations'
-        relocate 'de.tr7zw.nbtinjector', 'com.pepedevs.dbedwars.libraries.nbtapi.nbtinjector'
+        relocate 'de.tr7zw.changeme.nbtapi', 'org.zibble.dbedwars.libraries.nbtapi'
+        relocate 'de.tr7zw.annotations', 'org.zibble.dbedwars.libraries.nbtapi.annotations'
+        relocate 'de.tr7zw.nbtinjector', 'org.zibble.dbedwars.libraries.nbtapi.nbtinjector'
 
-        relocate 'redis.clients.jedis', 'com.pepedevs.dbedwars.libraries.jedis'
-        relocate 'redis.clients.util', 'com.pepedevs.dbedwars.libraries.jedis.util'
+        relocate 'redis.clients.jedis', 'org.zibble.dbedwars.libraries.jedis'
+        relocate 'redis.clients.util', 'org.zibble.dbedwars.libraries.jedis.util'
 
-        relocate 'org.reflections', 'com.pepedevs.dbedwars.libraries.reflections'
-        relocate 'co.aikar.commands', 'com.pepedevs.dbedwars.libraries.acf'
-        relocate 'co.aikar.locales', 'com.pepedevs.dbedwars.libraries.locales'
-        relocate 'org.bstats', 'com.pepedevs.dbedwars.libraries.bstats'
-        /*relocate 'com.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.api'
-        relocate 'io.github.retrooper.packetevents', 'com.pepedevs.dbedwars.libraries.packetevents.spigot'*/
+        relocate 'org.reflections', 'org.zibble.dbedwars.libraries.reflections'
+        relocate 'co.aikar.commands', 'org.zibble.dbedwars.libraries.acf'
+        relocate 'co.aikar.locales', 'org.zibble.dbedwars.libraries.locales'
+        relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
+        /*relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
+        relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'*/
     }
     def targetJavaVersion = 8
 
