@@ -58,8 +58,11 @@ public class ScoreboardImpl implements Scoreboard {
         }
     }
 
-    public void hide(){
-
+    public void hide() {
+        for (int i = 0; i < this.elements.size(); i++) {
+            this.sendTeamPacket(i - 1, WrapperPlayServerTeams.TeamMode.REMOVE);
+        }
+        this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE);
     }
 
     @Override
