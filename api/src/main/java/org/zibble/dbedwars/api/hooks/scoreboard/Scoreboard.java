@@ -38,4 +38,10 @@ public interface Scoreboard extends Keyed<String> {
 
     void update();
 
+    void show();
+
+    void hide();
+
+    boolean isShown();
+
 }

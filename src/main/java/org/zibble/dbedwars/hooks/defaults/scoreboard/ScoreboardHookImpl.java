@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ScoreboardHookImpl implements ScoreboardHook {
 
-    private final Map<UUID, ScoreboardImpl> scoreboards = new ConcurrentHashMap<>();
+    private final Map<UUID, Scoreboard> scoreboards = new ConcurrentHashMap<>();
 
     @Override
     public Scoreboard getCurrentScoreboard(Player player) {
@@ -26,23 +26,22 @@ public class ScoreboardHookImpl implements ScoreboardHook {
         ScoreboardImpl scoreboard = new ScoreboardImpl(player, title);
         scoreboard.addLines(lines);
         scoreboard.show();
-        this.scoreboards.put(player.getUniqueId(), scoreboard);
-        return scoreboard;
+        return this.scoreboards.put(player.getUniqueId(), scoreboard);
     }
 
     @Override
     public UpdatingScoreboard createDynamicScoreboard(Player player, Message title, List<Message> lines, Duration delay) {
-        UpdatingScoreBoardImpl scoreboard = new UpdatingScoreBoardImpl(player, title,delay);
+        UpdatingScoreBoardImpl scoreboard = new UpdatingScoreBoardImpl(player, title, delay);
         scoreboard.addLines(lines);
         scoreboard.show();
-        this.scoreboards.put(player.getUniqueId(), scoreboard);
-        return scoreboard;
+        scoreboard.startUpdate();
+        return (UpdatingScoreboard) this.scoreboards.put(player.getUniqueId(), scoreboard);
     }
 
     @Override
     public void removeScoreboard(Player player) {
-        ScoreboardImpl scoreboard = scoreboards.remove(player.getUniqueId());
-        if(scoreboard == null)
+        Scoreboard scoreboard = scoreboards.remove(player.getUniqueId());
+        if (scoreboard == null)
             return;
 
         scoreboard.hide();

@@ -25,17 +25,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ScoreboardImpl implements Scoreboard {
 
-    private static final int MAX_DISPLAY_NAME_LENGTH = 32;
-    private static final int MAX_ELEMENTS_LENGTH = 48;
-    private static final ChatColor[] COLOR_CODES = ChatColor.values();
+    protected static final int MAX_DISPLAY_NAME_LENGTH = 32;
+    protected static final int MAX_ELEMENTS_LENGTH = 48;
+    protected static final ChatColor[] COLOR_CODES = ChatColor.values();
 
-    private final String id;
-    private UUID uuid;
-    private Message title;
-    private List<Message> elements;
-    private Message oldTitle;
-    private List<Message> oldElements;
-    private final Key<String> keyName;
+    protected final String id;
+    protected UUID uuid;
+    protected Message title;
+    protected List<Message> elements;
+    protected Message oldTitle;
+    protected List<Message> oldElements;
+    protected final Key<String> keyName;
+    protected boolean shown;
 
     public ScoreboardImpl(Player player, Message title) {
         Validate.isTrue(!(title.getLines().get(0).length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
@@ -49,6 +50,7 @@ public class ScoreboardImpl implements Scoreboard {
         this.keyName = Key.of(this.id);
     }
 
+    @Override
     public void show() {
         this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.CREATE);
         this.sendDisplayObjectivePacket();
@@ -56,13 +58,21 @@ public class ScoreboardImpl implements Scoreboard {
             this.sendScorePacket(i, WrapperPlayServerUpdateScore.Action.CREATE_OR_UPDATE_ITEM);
             this.sendTeamPacket(i, WrapperPlayServerTeams.TeamMode.CREATE);
         }
+        this.shown = true;
     }
 
+    @Override
     public void hide() {
         for (int i = 0; i < this.elements.size(); i++) {
             this.sendTeamPacket(i - 1, WrapperPlayServerTeams.TeamMode.REMOVE);
         }
         this.sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode.REMOVE);
+        this.shown = false;
+    }
+
+    @Override
+    public boolean isShown() {
+        return this.shown;
     }
 
     @Override
@@ -203,24 +213,24 @@ public class ScoreboardImpl implements Scoreboard {
 
     // ------------------------------------
 
-    private void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode) {
+    protected void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode) {
         WrapperPlayServerScoreboardObjective packet = new WrapperPlayServerScoreboardObjective(this.id, mode,
                 Optional.of(AdventureUtils.toVanillaString(this.title.asComponentWithPAPI(this.getViewer())[0])),
                 Optional.of(WrapperPlayServerScoreboardObjective.HealthDisplay.INTEGER));
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
-    private void sendDisplayObjectivePacket() {
+    protected void sendDisplayObjectivePacket() {
         WrapperPlayServerDisplayScoreboard packet = new WrapperPlayServerDisplayScoreboard(1, this.id);
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
-    private void sendScorePacket(int score, WrapperPlayServerUpdateScore.Action action) {
+    protected void sendScorePacket(int score, WrapperPlayServerUpdateScore.Action action) {
         WrapperPlayServerUpdateScore packet = new WrapperPlayServerUpdateScore(COLOR_CODES[score].toString(), action, this.id, Optional.of(score));
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
-    private void sendTeamPacket(int score, WrapperPlayServerTeams.TeamMode mode) {
+    protected void sendTeamPacket(int score, WrapperPlayServerTeams.TeamMode mode) {
         if (mode == WrapperPlayServerTeams.TeamMode.ADD_ENTITIES || mode == WrapperPlayServerTeams.TeamMode.REMOVE_ENTITIES) {
             throw new UnsupportedOperationException();
         }
