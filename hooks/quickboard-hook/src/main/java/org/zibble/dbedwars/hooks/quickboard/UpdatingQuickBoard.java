@@ -114,6 +114,7 @@ public class UpdatingQuickBoard extends QuickScoreboard implements UpdatingScore
 
     @Override
     public void startUpdate() {
+        this.task.setCancelled(false);
         DBedWarsAPI.getApi().getThreadHandler().submitAsync(this.task);
     }
 

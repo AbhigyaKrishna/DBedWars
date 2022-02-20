@@ -104,6 +104,7 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
 
     @Override
     public void startUpdate() {
+        this.task.setCancelled(false);
         DBedwars.getInstance().getThreadHandler().submitAsync(this.task);
     }
 

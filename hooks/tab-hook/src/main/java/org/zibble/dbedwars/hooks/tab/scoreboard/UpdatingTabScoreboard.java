@@ -117,6 +117,7 @@ public class UpdatingTabScoreboard extends TabScoreboard implements UpdatingScor
 
     @Override
     public void startUpdate() {
+        this.task.setCancelled(false);
         DBedWarsAPI.getApi().getThreadHandler().submitAsync(this.task);
     }
 
