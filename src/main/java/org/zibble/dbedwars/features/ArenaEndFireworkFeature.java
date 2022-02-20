@@ -9,7 +9,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.util.FireworkEffectC;
+import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.utils.Utils;
 
 import java.util.Collections;

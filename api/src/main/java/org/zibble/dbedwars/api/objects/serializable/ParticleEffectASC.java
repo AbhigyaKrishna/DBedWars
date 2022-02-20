@@ -1,10 +1,10 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.pepedevs.radium.particles.ParticleBuilder;
 import com.pepedevs.radium.particles.ParticleEffect;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParticleEffectASC {

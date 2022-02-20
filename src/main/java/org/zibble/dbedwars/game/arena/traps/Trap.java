@@ -48,6 +48,7 @@ public class Trap implements org.zibble.dbedwars.api.game.trap.Trap {
     public void trigger(ArenaPlayer target) {
         for (org.zibble.dbedwars.api.game.trap.Trap.TrapAction value : this.actions.values()) {
             value.execute(value.getActionTarget(target));
+            break;
         }
     }
 

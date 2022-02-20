@@ -4,8 +4,8 @@ import org.zibble.dbedwars.action.actions.TitleAction;
 import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.objects.serializable.TitleST;
 import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.TitleST;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 public class TitleActionTranslator implements ActionTranslator<AbstractMessaging, TitleAction> {

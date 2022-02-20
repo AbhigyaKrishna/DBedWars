@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import com.pepedevs.radium.utils.reflection.general.EnumReflection;
 import org.bukkit.Color;

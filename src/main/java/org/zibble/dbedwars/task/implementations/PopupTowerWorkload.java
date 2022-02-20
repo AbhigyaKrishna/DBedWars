@@ -11,9 +11,9 @@ import org.bukkit.material.Colorable;
 import org.bukkit.material.Directional;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
-import org.zibble.dbedwars.api.util.SoundVP;
 import org.zibble.dbedwars.item.PopupTowerChestItem;
 
 import java.util.HashMap;

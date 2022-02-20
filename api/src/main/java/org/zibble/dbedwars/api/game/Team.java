@@ -1,13 +1,13 @@
 package org.zibble.dbedwars.api.game;
 
 import com.google.common.collect.Multimap;
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.LocationXYZ;
-import org.zibble.dbedwars.api.util.LocationXYZYP;
 
 import java.util.List;
 import java.util.Set;

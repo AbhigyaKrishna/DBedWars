@@ -2,7 +2,7 @@ package org.zibble.dbedwars.action.actions;
 
 import org.bukkit.entity.LivingEntity;
 import org.zibble.dbedwars.api.action.Action;
-import org.zibble.dbedwars.api.util.PotionEffectAT;
+import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 
 public class PotionAction implements Action<LivingEntity> {
 

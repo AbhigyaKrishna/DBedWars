@@ -4,8 +4,8 @@ import org.zibble.dbedwars.action.actions.SoundAction;
 import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.SoundVP;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
 public class SoundActionTranslator implements ActionTranslator<PlayerMember, SoundAction> {

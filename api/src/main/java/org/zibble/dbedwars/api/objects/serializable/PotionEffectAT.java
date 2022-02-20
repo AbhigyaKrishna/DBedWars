@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import com.pepedevs.radium.utils.xseries.XPotion;
 import org.bukkit.entity.LivingEntity;

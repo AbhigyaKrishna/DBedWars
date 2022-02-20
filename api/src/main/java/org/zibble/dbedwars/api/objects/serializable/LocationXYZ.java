@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -17,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.LocationXYZYP;
 import org.zibble.dbedwars.api.util.gui.IMenu;
 import org.zibble.dbedwars.item.InnerCustomItem;
 

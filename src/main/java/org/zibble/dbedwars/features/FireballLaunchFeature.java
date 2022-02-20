@@ -4,7 +4,7 @@ import org.bukkit.entity.Fireball;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.util.PotionEffectAT;
+import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.utils.Utils;
 

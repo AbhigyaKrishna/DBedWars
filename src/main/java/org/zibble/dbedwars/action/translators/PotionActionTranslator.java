@@ -5,8 +5,8 @@ import org.zibble.dbedwars.action.actions.PotionAction;
 import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.PotionEffectAT;
 
 public class PotionActionTranslator implements ActionTranslator<LivingEntity, PotionAction> {
 

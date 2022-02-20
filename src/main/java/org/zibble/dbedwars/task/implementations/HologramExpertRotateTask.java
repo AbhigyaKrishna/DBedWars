@@ -2,8 +2,8 @@ package org.zibble.dbedwars.task.implementations;
 
 import com.pepedevs.radium.holograms.object.Hologram;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
-import org.zibble.dbedwars.api.util.LocationXYZYP;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;

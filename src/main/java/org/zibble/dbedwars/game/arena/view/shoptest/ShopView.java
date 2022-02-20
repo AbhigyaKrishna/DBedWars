@@ -3,8 +3,8 @@ package org.zibble.dbedwars.game.arena.view.shoptest;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.LEnchant;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 

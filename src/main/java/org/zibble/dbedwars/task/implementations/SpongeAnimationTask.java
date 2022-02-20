@@ -7,8 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.Workload;
-import org.zibble.dbedwars.api.util.SoundVP;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -171,6 +171,8 @@ public enum Color {
             StainedGlassColor.BLACK,
             DyeColor.BLACK);
 
+    public static final Color[] VALUES = values();
+
     private final byte data;
     private final org.bukkit.Color color;
     private final ChatColor chatColor;
@@ -181,8 +183,6 @@ public enum Color {
     private final WoolColor woolColor;
     private final StainedGlassColor glassColor;
     private final DyeColor dyeColor;
-
-    private static Color[] values;
 
     Color(byte data,
           org.bukkit.Color color,
@@ -247,49 +247,45 @@ public enum Color {
     }
 
     public static Optional<Color> from(org.bukkit.Color color) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.color.equals(color)) return Optional.of(value);
         }
         return Optional.empty();
     }
 
     public static Optional<Color> from(ChatColor color) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.chatColor == color) return Optional.of(value);
         }
         return Optional.empty();
     }
 
     public static Optional<Color> from(NamedTextColor color) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.colorComponent.equals(color)) return Optional.of(value);
         }
         return Optional.empty();
     }
 
     public static Optional<Color> from(String miniCode) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.miniCode.equalsIgnoreCase(miniCode)) return Optional.of(value);
         }
         return Optional.empty();
     }
 
     public static Optional<Color> from(DyeColor dyeColor) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.dyeColor == dyeColor) return Optional.of(value);
         }
         return Optional.empty();
     }
 
     public static Optional<Color> from(byte data) {
-        for (Color value : getValues()) {
+        for (Color value : VALUES) {
             if (value.data == data) return Optional.of(value);
         }
         return Optional.empty();
     }
 
-    public static Color[] getValues() {
-        if (values == null) values = values();
-        return values();
-    }
 }

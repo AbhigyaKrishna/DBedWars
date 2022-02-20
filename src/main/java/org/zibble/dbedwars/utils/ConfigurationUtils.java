@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.game.view.AttributeType;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.LocationXYZ;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
 
 import java.util.*;

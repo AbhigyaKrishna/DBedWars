@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.action.actions;
 
 import org.zibble.dbedwars.api.action.Action;
-import org.zibble.dbedwars.api.util.SoundVP;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
 public class SoundAction implements Action<PlayerMember> {

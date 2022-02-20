@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.Nullable;
-import org.zibble.dbedwars.api.util.SoundVP;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 
 public class ActionParser {
 

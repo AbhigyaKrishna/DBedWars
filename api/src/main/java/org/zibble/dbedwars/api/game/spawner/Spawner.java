@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.api.game.spawner;
 
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import org.bukkit.Location;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.util.Keyed;
 import org.zibble.dbedwars.api.util.Tickable;
 

@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;

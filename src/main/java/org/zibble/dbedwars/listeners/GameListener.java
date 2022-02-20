@@ -28,7 +28,7 @@ import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
-import org.zibble.dbedwars.api.util.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.utils.Utils;

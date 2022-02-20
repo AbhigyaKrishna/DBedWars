@@ -5,7 +5,7 @@ import org.zibble.dbedwars.action.actions.FireworkAction;
 import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
-import org.zibble.dbedwars.api.util.FireworkEffectC;
+import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.api.util.Key;
 
 public class FireworkActionTranslator implements ActionTranslator<Location, FireworkAction> {

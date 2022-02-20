@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -11,6 +10,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.game.spawner.ResourceItem;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.util.Initializable;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.NBTUtils;

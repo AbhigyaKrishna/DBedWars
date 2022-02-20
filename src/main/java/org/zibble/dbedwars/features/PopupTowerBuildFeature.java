@@ -8,7 +8,7 @@ import org.bukkit.block.Chest;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.util.SoundVP;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.task.implementations.PopupTowerWorkload;
 

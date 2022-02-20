@@ -8,10 +8,10 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.LocationXYZ;
-import org.zibble.dbedwars.api.util.LocationXYZYP;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 
 import java.util.*;

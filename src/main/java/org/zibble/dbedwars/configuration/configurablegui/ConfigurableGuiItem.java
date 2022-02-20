@@ -11,7 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.zibble.dbedwars.api.util.LEnchant;
+import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.configuration.configurablegui.action.ActionParser;
 import org.zibble.dbedwars.configuration.configurablegui.action.ActionType;
 import org.zibble.dbedwars.configuration.util.Loadable;

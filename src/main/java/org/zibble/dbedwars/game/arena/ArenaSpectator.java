@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.util.LocationXYZ;
-import org.zibble.dbedwars.api.util.LocationXYZYP;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
 import java.util.UUID;
