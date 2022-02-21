@@ -1,10 +1,10 @@
 package org.zibble.dbedwars.hooks.citizens.npc;
 
-import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
-import com.pepedevs.dbedwars.api.hooks.npc.PlayerNPC;
-import com.pepedevs.dbedwars.api.hooks.npc.SkinData;
-import com.pepedevs.dbedwars.api.util.Skin;
+import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.hooks.npc.SkinData;
+import org.zibble.dbedwars.api.util.Skin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;

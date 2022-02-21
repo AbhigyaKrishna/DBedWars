@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.hooks.citizens.npc;
 
-import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.hooks.npc.NPCData;
 
 public class NPCDataImpl extends NPCData {
 

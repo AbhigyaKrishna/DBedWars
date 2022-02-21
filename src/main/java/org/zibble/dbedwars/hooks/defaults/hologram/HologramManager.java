@@ -2,15 +2,15 @@ package org.zibble.dbedwars.hooks.defaults.hologram;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.task.TaskQueueHandler;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 

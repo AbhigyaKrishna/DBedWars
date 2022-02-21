@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.hooks.citizens.npc;
 
-import com.pepedevs.dbedwars.api.future.ActionFuture;
-import com.pepedevs.dbedwars.api.hooks.hologram.Hologram;
-import com.pepedevs.dbedwars.api.hooks.npc.BedwarsNPC;
-import com.pepedevs.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;

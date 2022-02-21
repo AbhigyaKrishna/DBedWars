@@ -21,6 +21,12 @@ public class HologramLineImpl<C> implements HologramLine<C> {
         this.height = height;
     }
 
+    public HologramLineImpl(HologramPageImpl parent, C content, Height height) {
+        this.parent = parent;
+        this.content = content;
+        this.height = height.getVal();
+    }
+
     @Override
     public HologramPage getParent() {
         return parent;
@@ -50,4 +56,21 @@ public class HologramLineImpl<C> implements HologramLine<C> {
         return height;
     }
 
+    public enum Height {
+        TEXT(0.5F),
+        HEAD(2.0F),
+        SMALL_HEAD(1.1875F),
+        ICON(0.55F),
+        ;
+
+        private final float height;
+
+        Height(float height) {
+            this.height = height;
+        }
+
+        public float getVal() {
+            return height;
+        }
+    }
 }

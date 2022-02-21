@@ -1,8 +1,17 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
+import com.pepedevs.radium.utils.version.Version;
+
 public enum HologramEntities {
 
-    CREEPER(1.8F),
+    CREEPER {
+
+        @Override
+        public float getHeight(Version version) {
+        
+        }
+
+    },
     SKELETON(1.8F),
     SPIDER(0.9F),
     GIANT(10.8F),
@@ -42,7 +51,5 @@ public enum HologramEntities {
         this.height = height;
     }
 
-    public float getHeight() {
-        return height;
-    }
+    public abstract float getHeight(Version version);
 }

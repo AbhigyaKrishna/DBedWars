@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
+import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
+import org.zibble.dbedwars.api.util.ClickAction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.hooks.hologram.Hologram;
-import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
-import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
-import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.*;
 

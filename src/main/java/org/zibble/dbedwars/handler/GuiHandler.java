@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("rawtypes")
 public class GuiHandler implements org.zibble.dbedwars.api.handler.GuiHandler {
 
-    private static final String GUI_PACKAGE = "com.pepedevs.dbedwars.guis";
+    private static final String GUI_PACKAGE = "org.zibble.dbedwars.guis";
 
     private final DBedwars plugin;
     private final Map<String, IMenu> guis;
