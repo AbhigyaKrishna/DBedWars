@@ -1,5 +1,8 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.List;
@@ -11,13 +14,27 @@ public interface HologramPage {
 
     List<HologramLine<?>> getLines();
 
-    <C> HologramLine<C> addNewLine(C content, float height);
+    HologramLine.Text addNewTextLine(Component text);
 
-    <C> HologramLine<C> changeLine(int index, C content, float height);
+    HologramLine.Head addNewHeadLine(ItemStack itemStack);
+
+    HologramLine.SmallHead addNewSmallHeadLine(ItemStack itemStack);
+
+    HologramLine.Icon addNewIconLine(ItemStack itemStack);
+
+    HologramLine.Entity addNewEntityLine(HologramEntityType entityType);
 
     void removeLine(int index);
 
-    <C> HologramLine<C> insertNewLine(int index, C content, float height);
+    HologramLine.Text insertNewTextLine(int index, Component text);
+
+    HologramLine.Head insertNewHeadLine(int index, ItemStack itemStack);
+
+    HologramLine.SmallHead insertNewSmallHeadLine(int index, ItemStack itemStack);
+
+    HologramLine.Icon insertNewIconLine(int index, ItemStack itemStack);
+
+    HologramLine.Entity insertNewEntityLine(int index, HologramEntityType entityType);
 
     Set<ClickAction> getActions();
 
