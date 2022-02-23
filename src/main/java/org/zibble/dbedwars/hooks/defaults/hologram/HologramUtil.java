@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
+import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.configuration.Lang;
 import com.pepedevs.radium.utils.reflection.general.EnumReflection;
@@ -22,7 +23,7 @@ public class HologramUtil {
         TEXT_MATCHER.reset(string);
         if (TEXT_MATCHER.matches()) {
             String text = TEXT_MATCHER.group("text");
-            return new HologramLineImpl<>(page, Lang.getTranslator().translate(text), HologramLineImpl.Height.TEXT);
+            return new HologramLineImpl.Text(page, Lang.getTranslator().translate(text));
         }
 
         HEAD_MATCHER.reset(string);
@@ -30,7 +31,7 @@ public class HologramUtil {
             String head = HEAD_MATCHER.group("head");
             ItemStack itemStack = getItemStack(head);
             if (itemStack == null) return null;
-            return new HologramLineImpl<>(page, itemStack, HologramLineImpl.Height.HEAD);
+            return new HologramLineImpl.Head(page, itemStack);
         }
 
         SMALL_HEAD_MATCHER.reset(string);
@@ -38,7 +39,7 @@ public class HologramUtil {
             String smallHead = SMALL_HEAD_MATCHER.group("smallHead");
             ItemStack itemStack = getItemStack(smallHead);
             if (itemStack == null) return null;
-            return new HologramLineImpl<>(page, itemStack, HologramLineImpl.Height.SMALL_HEAD);
+            return new HologramLineImpl.SmallHead(page, itemStack);
         }
 
         ICON_MATCHER.reset(string);
@@ -46,15 +47,15 @@ public class HologramUtil {
             String icon = ICON_MATCHER.group("icon");
             ItemStack itemStack = getItemStack(icon);
             if (itemStack == null) return null;
-            return new HologramLineImpl<>(page, itemStack, HologramLineImpl.Height.ICON);
+            return new HologramLineImpl.Icon(page, itemStack);
         }
 
         ENTITY_MATCHER.reset(string);
         if (ENTITY_MATCHER.matches()) {
             String entity = ENTITY_MATCHER.group("entity");
-            EntityType entityType = EnumReflection.getEnumConstant(EntityType.class, entity);
-            if (entityType == null) return null;
-            return new HologramLineImpl<>(page, entity, );
+            HologramEntityType mapped = EnumReflection.getEnumConstant(HologramEntityType.class, entity);
+            if (mapped == null) return null;
+            return new HologramLineImpl.Entity(page, mapped);
         }
 
         return null;

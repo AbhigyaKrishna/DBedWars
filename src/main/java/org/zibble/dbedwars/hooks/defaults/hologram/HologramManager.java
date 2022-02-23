@@ -2,6 +2,9 @@ package org.zibble.dbedwars.hooks.defaults.hologram;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
@@ -101,7 +104,6 @@ public class HologramManager {
             this.updateContent(hologram, player);
             this.updateLocation(hologram, player);
         }
-        hologram.updateContent();
         holder.setLastUpdateTime(System.currentTimeMillis());
     }
 
@@ -110,9 +112,34 @@ public class HologramManager {
         HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(player.getUniqueId(), 0));
         Map<HologramLineImpl<?>, Location> map = this.mapLocations(page);
         for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet()) {
-            if (entry.getKey().getContent() instanceof Component) {
+            if (entry.getKey().getContent() instanceof HologramLine.Text) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
                 PacketUtils.updateFakeEntityCustomName(player, (Component) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Head) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, false, true);
+                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.SmallHead) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Icon) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.showFakeEntityItem(player, entry.getValue(), (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[1]);
+                PacketUtils.attachFakeEntity(player, entry.getKey().getEntityIds()[0], entry.getKey().getEntityIds()[1]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Entity) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                if (((EntityType) entry.getKey().getContent()).isAlive()) {
+                    PacketUtils.showFakeEntityLiving(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
+                } else {
+                    PacketUtils.showFakeEntity(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
+                }
             }
         }
     }
