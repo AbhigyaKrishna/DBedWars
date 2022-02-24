@@ -1,5 +1,8 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
+import com.pepedevs.radium.utils.itemstack.ItemStackUtils;
+import org.apache.commons.lang.enums.EnumUtils;
+import org.bukkit.Material;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.configuration.Lang;
@@ -62,7 +65,40 @@ public class HologramUtil {
     }
 
     private static ItemStack getItemStack(final String item) {
-        return null;
+        final String[] split = item.split(":");
+
+        if(split.length < 1)
+            return null;
+
+        if(split[0].startsWith("PLAYER_HEAD")){
+            if(split.length < 2)
+                return null;
+
+            int amount = 1;
+
+            if(split.length == 3) {
+                amount = Integer.parseInt(split[2]);
+                amount = amount <= 0 ? 1 : amount;
+            }
+
+            final ItemStack skull = ItemStackUtils.getSkull(split[1]);
+            skull.setAmount(amount);
+            return skull;
+        }else {
+            Material material = Material.getMaterial(split[0]);
+            if(material == null)
+                return null;
+
+            int amount = 1;
+
+            if(split.length == 2) {
+                amount = Integer.parseInt(split[1]);
+                amount = amount <= 0 ? 1 : amount;
+            }
+
+            return new ItemStack(material,amount);
+        }
     }
+
 
 }
