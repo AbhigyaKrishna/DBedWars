@@ -3,6 +3,8 @@ package org.zibble.dbedwars.utils.serializer;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.utils.json.Json;
 
+import java.util.Optional;
+
 public interface Serializer<T> {
 
     Json serialize(@NotNull final T object);
