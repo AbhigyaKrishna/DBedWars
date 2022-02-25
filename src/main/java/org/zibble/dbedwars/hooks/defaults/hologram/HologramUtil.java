@@ -1,13 +1,11 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
 import com.pepedevs.radium.utils.itemstack.ItemStackUtils;
-import org.apache.commons.lang.enums.EnumUtils;
 import org.bukkit.Material;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.configuration.Lang;
 import com.pepedevs.radium.utils.reflection.general.EnumReflection;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.regex.Matcher;
