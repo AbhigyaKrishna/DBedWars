@@ -8,10 +8,12 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.settings.ArenaSettings;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.KickReason;
-import org.zibble.dbedwars.api.util.LocationXYZ;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,29 +24,19 @@ public interface Arena extends AbstractMessaging {
 
     World getWorld();
 
-    void setWorld(World world);
-
     ArenaStatus getStatus();
 
     void setStatus(ArenaStatus status);
-
-    boolean saveWorld(String worldFolder, boolean overwriteCache);
-
-    boolean saveData(boolean overwriteData);
-
-    void reloadData();
 
     ActionFuture<World> loadWorld();
 
     ActionFuture<World> load();
 
-    void enable(boolean flag);
-
     Team getTeam(Color color);
 
-    List<Team> getTeams();
+    Set<Team> getTeams();
 
-    List<ArenaPlayer> getSpectators();
+    List<ArenaSpectator> getSpectators();
 
     void addSpawner(Spawner spawner);
 
@@ -56,21 +48,17 @@ public interface Arena extends AbstractMessaging {
 
     boolean isCurrentlyRegenerating();
 
-    boolean isConfigured();
-
-    boolean isEnabled();
-
     boolean start();
 
     boolean end();
 
-    void addPlayer(Player player);
+    void joinGame(Player player);
 
-    void addPlayer(ArenaPlayer player);
+    void joinGame(ArenaPlayer player);
 
-    void addPlayer(Player player, Team team);
+    void joinGame(Player player, Team team);
 
-    void addPlayer(ArenaPlayer player, Team team);
+    void joinGame(ArenaPlayer player, Team team);
 
     boolean kickPlayer(ArenaPlayer player);
 
@@ -84,13 +72,11 @@ public interface Arena extends AbstractMessaging {
 
     Block setBlock(Block block, Material material);
 
-    long getGameStartTime();
+    Instant getGameStartTime();
 
-    long getRunningTime();
+    Duration getRunningTime();
 
     boolean isSleeping();
-
-    Set<ArenaPlayer> getPlayersInTeam(Team team);
 
     Set<Team> getRemainingTeams();
 
@@ -101,10 +87,6 @@ public interface Arena extends AbstractMessaging {
     boolean isArenaPlayer(Player player);
 
     void destroyBed(ArenaPlayer player, Team affected);
-
-    void setIngameScoreboard(ArenaPlayer player);
-
-    void setLobbyScoreboard(Player player);
 
     boolean stop();
 

@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DropType implements org.zibble.dbedwars.api.game.spawner.DropType {
+public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropType {
 
     private final DBedwars plugin;
     private final Key<String> key;
@@ -32,8 +32,8 @@ public class DropType implements org.zibble.dbedwars.api.game.spawner.DropType {
 
     private Map<Integer, org.zibble.dbedwars.api.game.spawner.DropType.Tier> tiers = new HashMap<>();
 
-    public static DropType fromConfig(DBedwars plugin, ConfigurableItemSpawner cfg) {
-        DropType dropType = new DropType(plugin, cfg.getId());
+    public static DropTypeImpl fromConfig(DBedwars plugin, ConfigurableItemSpawner cfg) {
+        DropTypeImpl dropType = new DropTypeImpl(plugin, cfg.getId());
         dropType.radius = cfg.getRadius();
         dropType.icon = Key.of(cfg.getIcon());
         dropType.soundEffect = cfg.getSpawnSound();
@@ -48,7 +48,7 @@ public class DropType implements org.zibble.dbedwars.api.game.spawner.DropType {
         return dropType;
     }
 
-    public DropType(DBedwars plugin, String key) {
+    public DropTypeImpl(DBedwars plugin, String key) {
         this.plugin = plugin;
         this.key = Key.of(key);
     }
@@ -151,7 +151,7 @@ public class DropType implements org.zibble.dbedwars.api.game.spawner.DropType {
     @Override
     public org.zibble.dbedwars.api.game.spawner.DropType clone() {
         try {
-            return (DropType) super.clone();
+            return (DropTypeImpl) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }

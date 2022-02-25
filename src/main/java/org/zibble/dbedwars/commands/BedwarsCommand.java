@@ -43,7 +43,7 @@ public class BedwarsCommand extends BaseCommand {
                 BedwarsCommand.this.plugin.getThreadHandler().submitSync(new Runnable() {
                     @Override
                     public void run() {
-                                arena.addPlayer(player);
+                                arena.joinGame(player);
                             }
                 });
             }

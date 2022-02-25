@@ -11,19 +11,21 @@ import org.zibble.dbedwars.api.events.TeamEliminateEvent;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.DeathAnimationFeature;
 import org.zibble.dbedwars.api.game.Arena;
+import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.view.ShopView;
+import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.points.IntegerCount;
 import org.zibble.dbedwars.api.objects.points.Points;
-import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.cache.InventoryBackup;
 import org.zibble.dbedwars.configuration.Lang;
-import org.zibble.dbedwars.messaging.member.PlayerMember;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
 import org.zibble.dbedwars.utils.Utils;
 
@@ -31,43 +33,27 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api.game.ArenaPlayer {
+public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
 
     private final DBedwars plugin;
-    private final Key<UUID> key;
-    private final String name;
-    private final Arena arena;
 
     private Team team;
+    private Scoreboard scoreboard;
     private final Points points;
     private boolean finalKilled;
     private boolean respawning;
-    private Pair<org.zibble.dbedwars.api.game.ArenaPlayer, Instant> lastHit;
+    private Pair<ArenaPlayer, Instant> lastHit;
     private InventoryBackup inventoryBackup;
 
-    public ArenaPlayer(DBedwars plugin, Player player, Arena arena) {
-        super(player);
+    public ArenaPlayerImpl(DBedwars plugin, Player player, Arena arena) {
+        super(player, arena);
         this.plugin = plugin;
-        this.key = Key.of(player.getUniqueId());
-        this.name = player.getName();
-        this.arena = arena;
         this.points = new Points();
         this.points.registerCount(PlayerPoints.KILLS, new IntegerCount());
         this.points.registerCount(PlayerPoints.DEATH, new IntegerCount());
         this.points.registerCount(PlayerPoints.BEDS, new IntegerCount());
         this.points.registerCount(PlayerPoints.FINAL_KILLS, new IntegerCount());
-    }
-
-    @Override
-    public Key<UUID> getKey() {
-        return this.key;
-    }
-
-    @Override
-    public Arena getArena() {
-        return this.arena;
     }
 
     @Override
@@ -86,6 +72,16 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
     }
 
     @Override
+    public Scoreboard getScoreboard() {
+        return this.scoreboard;
+    }
+
+    @Override
+    public void setScoreboard(Scoreboard scoreboard) {
+        this.scoreboard = scoreboard;
+    }
+
+    @Override
     public void kill(DeathCause reason) {
         PlayerKillEvent event;
         if (this.team.isBedBroken()) {
@@ -97,17 +93,14 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
             event.getVictim().getPoints().getCount(PlayerPoints.DEATH).increment();
             if (event.getAttacker() != null) event.getAttacker().getPoints().getCount(PlayerPoints.FINAL_KILLS).increment();
 
-            this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DEATH_ANIMATION_FEATURE, DeathAnimationFeature.class, new Acceptor<DeathAnimationFeature>() {
-                @Override
-                public boolean accept(DeathAnimationFeature feature) {
-                    List<Player> players = new ArrayList<>();
-                    for (org.zibble.dbedwars.api.game.ArenaPlayer arenaPlayer : ArenaPlayer.this.arena.getPlayers()) {
-                        if (arenaPlayer.getUUID().equals(event.getVictim().getUUID())) continue;
-                        players.add(arenaPlayer.getPlayer());
-                    }
-                    feature.play(event.getVictim().getPlayer(), players);
-                    return true;
+            this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DEATH_ANIMATION_FEATURE, DeathAnimationFeature.class, feature -> {
+                List<Player> players = new ArrayList<>();
+                for (ArenaPlayer arenaPlayer : this.arena.getPlayers()) {
+                    if (arenaPlayer.getUUID().equals(event.getVictim().getUUID())) continue;
+                    players.add(arenaPlayer.getPlayer());
                 }
+                feature.play(event.getVictim().getPlayer(), players);
+                return true;
             });
 
             event.getVictim().getPlayer().getInventory().clear();
@@ -117,7 +110,7 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
             // TODO: Make spectator
 
             boolean bool = true;
-            for (org.zibble.dbedwars.api.game.ArenaPlayer arenaPlayer : event.getVictim().getTeam().getPlayers()) {
+            for (ArenaPlayer arenaPlayer : event.getVictim().getTeam().getPlayers()) {
                 bool = bool && arenaPlayer.isFinalKilled();
             }
             if (bool) {
@@ -160,11 +153,6 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
     }
 
     @Override
-    public UUID getUUID() {
-        return this.key.get();
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
@@ -176,27 +164,24 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
 
     @Override
     public void spawn(Location location) {
-        SchedulerUtils.runTask(new Runnable() {
-            @Override
-            public void run() {
-                ArenaPlayer.this.getPlayer().setGameMode(GameMode.SURVIVAL);
-                Utils.setSpawnInventory(ArenaPlayer.this.getPlayer(), ArenaPlayer.this.team);
-                if (ArenaPlayer.this.inventoryBackup != null) {
-                    ArenaPlayer.this.inventoryBackup.applyPermanents(ArenaPlayer.this.getPlayer());
-                }
-                ArenaPlayer.this.getPlayer().teleport(location);
-                ArenaPlayer.this.getPlayer().setHealth(20);
+        SchedulerUtils.runTask(() -> {
+            this.getPlayer().setGameMode(GameMode.SURVIVAL);
+            Utils.setSpawnInventory(this.getPlayer(), this.team);
+            if (this.inventoryBackup != null) {
+                this.inventoryBackup.applyPermanents(this.getPlayer());
             }
+            this.getPlayer().teleport(location);
+            this.getPlayer().setHealth(20);
         });
     }
 
     @Override
-    public org.zibble.dbedwars.api.game.ArenaPlayer getLastHitTagged() {
+    public ArenaPlayer getLastHitTagged() {
         return this.isHitTagged() ? this.lastHit.getKey() : null;
     }
 
     @Override
-    public void setLastHitTag(org.zibble.dbedwars.api.game.ArenaPlayer player, Instant instant) {
+    public void setLastHitTag(ArenaPlayer player, Instant instant) {
         this.lastHit = new Pair<>(player, instant);
     }
 
@@ -213,6 +198,19 @@ public class ArenaPlayer extends PlayerMember implements org.zibble.dbedwars.api
     @Override
     public ShopView getShopView() {
         return null;
+    }
+
+    public void initScoreboard(ConfigurableScoreboard cfg) {
+        // TODO: add placeholders
+        List<Message> lines = new ArrayList<>();
+        for (String s : cfg.getContent()) {
+            lines.add(Lang.getTranslator().asMessage(s));
+        }
+        this.scoreboard = this.plugin.getHookManager().getScoreboardHook().createDynamicScoreboard(
+                this.getPlayer(),
+                Lang.getTranslator().asMessage(cfg.getTitle()),
+                lines,
+                Duration.ofMilliseconds(cfg.getUpdateTick() * 50L));
     }
 
 }

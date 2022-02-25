@@ -1,14 +1,14 @@
 package org.zibble.dbedwars.hooks.citizens.npc;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
 import org.zibble.dbedwars.api.util.Skin;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 
 public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
 

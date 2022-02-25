@@ -56,6 +56,7 @@ public final class DBedwars extends PluginAdapter {
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
     private HologramManager hologramManager;
+    private HookManager hookManager;
 
     private Messaging messaging;
     private TranslationRegistryImpl actionRegistry;
@@ -77,6 +78,8 @@ public final class DBedwars extends PluginAdapter {
         Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
         this.nmsAdaptor = this.registerNMSAdaptor();
+        this.hookManager = new HookManager(this);
+        this.hookManager.load();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
         this.actionRegistry = new TranslationRegistryImpl();
@@ -263,6 +266,10 @@ public final class DBedwars extends PluginAdapter {
 
     public FeatureManager getFeatureManager() {
         return featureManager;
+    }
+
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     private void initDatabase() {

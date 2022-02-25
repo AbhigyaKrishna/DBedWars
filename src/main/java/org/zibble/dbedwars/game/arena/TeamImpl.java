@@ -1,13 +1,18 @@
 package org.zibble.dbedwars.game.arena;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.PlayerJoinTeamEvent;
 import org.zibble.dbedwars.api.events.PlayerLeaveTeamEvent;
 import org.zibble.dbedwars.api.events.TrapTriggerEvent;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
@@ -15,17 +20,16 @@ import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableTeam;
+import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.game.arena.traps.TrapEnum;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 import java.util.*;
 
-public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.game.Team {
+public class TeamImpl extends AbstractMessaging implements Team {
 
     private final DBedwars plugin;
     private final Color color;
-    private ConfigurableTeam cfgTeam;
     private LocationXYZ bedLocation;
     private LocationXYZYP spawn;
     private LocationXYZYP shopNpcLocation;
@@ -37,24 +41,16 @@ public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.g
     private boolean eliminated;
     private Set<ArenaPlayer> players;
     private BoundingBox islandArea;
-    //    private NPC shopNpc;
-    //    private NPC upgradesNpc;
 
     private List<Trap> trapQueue;
 
-    public Team(DBedwars plugin, Color color) {
+    public TeamImpl(DBedwars plugin, Color color) {
         this.plugin = plugin;
         this.color = color;
         this.spawners = ArrayListMultimap.create();
         if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled())
             this.trapQueue = new ArrayList<>(this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().getTrapQueueLimit());
         else this.trapQueue = new ArrayList<>();
-    }
-
-    public Team(DBedwars plugin, ConfigurableTeam cfgTeam) {
-        this(plugin, cfgTeam.getColor());
-        this.cfgTeam = cfgTeam;
-        this.reloadData();
     }
 
     @Override
@@ -117,39 +113,42 @@ public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.g
         this.upgradesNpcLocation = location;
     }
 
-    @Override
-    public void reloadData() {
-        if (this.cfgTeam == null) return;
-
-        this.bedLocation = this.cfgTeam.getBedLocation();
-        this.spawn = this.cfgTeam.getSpawn();
-        this.shopNpcLocation = this.cfgTeam.getShopNpc();
-        this.upgradesNpcLocation = this.cfgTeam.getUpgrades();
-        this.spawners = this.cfgTeam.getSpawners();
-    }
-
-    @Override
-    public boolean isConfigured() {
-        return this.bedLocation != null
-                && this.spawn != null
-                && this.shopNpcLocation != null
-                && this.upgradesNpcLocation != null;
-    }
-
-    @Override
     public void init(Arena arena) {
         this.arena = arena;
         this.players = new HashSet<>();
         this.bedBroken = false;
         this.eliminated = false;
-        this.islandArea =
-                new BoundingBox(
+        this.islandArea = new BoundingBox(
                         this.spawn.getX() - this.arena.getSettings().getIslandRadius(),
                         this.spawn.getY() - 50,
                         this.spawn.getZ() - this.arena.getSettings().getIslandRadius(),
                         this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
                         this.spawn.getY() + 50,
                         this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
+
+        List<String> names = new ArrayList<>();
+        for (ArenaPlayer player : this.getPlayers()) {
+            names.add(player.getName());
+        }
+        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+                Component.text(this.getColor().getName(), this.getColor().getColorComponent()),
+                null,
+                null,
+                WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+                WrapperPlayServerTeams.CollisionRule.ALWAYS,
+                this.getColor().getColorComponent(),
+                WrapperPlayServerTeams.OptionData.NONE
+        );
+        WrapperPlayServerTeams teams = new WrapperPlayServerTeams(this.getName(), WrapperPlayServerTeams.TeamMode.CREATE,
+                Optional.of(info), names);
+        for (ArenaPlayer player : this.arena.getPlayers()) {
+            TextComponent nameComponent = Component.text("[", this.getColor().getColorComponent())
+                    .append(Lang.valueOf("COLOR_" + this.getColor().getName()).asMessage().asComponentWithPAPI(player.getPlayer())[0]
+                            .color(this.getColor().getColorComponent()))
+                    .append(Component.text("] ", this.getColor().getColorComponent()));
+            info.setPrefix(nameComponent);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
+        }
     }
 
     @Override
@@ -159,8 +158,7 @@ public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.g
 
     @Override
     public void addPlayer(ArenaPlayer player) {
-        PlayerJoinTeamEvent event =
-                new PlayerJoinTeamEvent(player.getPlayer(), player, this.arena, this);
+        PlayerJoinTeamEvent event = new PlayerJoinTeamEvent(player.getPlayer(), player, this.arena, this);
         event.call();
 
         if (event.isCancelled()) return;
@@ -253,61 +251,8 @@ public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.g
         }
     }
 
-    @Override
-    public void spawnShopNpc(LocationXYZYP location) {
-        //        this.shopNpc =
-        //                NPC.builder()
-        //                        .location(this.shopNpcLocation.toBukkit(this.arena.getWorld()))
-        //                        .profile(
-        //                                new Profile(
-        //                                        UUID.randomUUID(),
-        //
-        // StringUtils.translateAlternateColorCodes("&eShop"),
-        //                                        new Skin("", "")))
-        //                        .lookAtPlayer(true)
-        //                        .imitatePlayer(false)
-        //                        .build(DBedwars.getInstance().getNpcHandler());
-        //        this.shopNpc.addInteractAction(
-        //                (npc, player, clickType) -> {
-        //                    Optional<ArenaPlayer> ap = this.arena.getAsArenaPlayer(player);
-        //                    ap.ifPresent(
-        //                            arenaPlayer -> {
-        //                                PlayerOpenShopEvent event =
-        //                                        new PlayerOpenShopEvent(
-        //                                                arenaPlayer, this.arena,
-        // arenaPlayer.getShopView());
-        //                                event.call();
-        //
-        //                                if (event.isCancelled()) return;
-        //
-        //                                DBedwars.getInstance()
-        //                                        .getGuiHandler()
-        //                                        .getGuis()
-        //                                        .get("SHOP")
-        //                                        .open(
-        //                                                null,
-        //                                                Collections.singletonMap("player",
-        // arenaPlayer),
-        //                                                player);
-        //                            });
-        //                });
-    }
+    public void initNpc() {
 
-    @Override
-    public void spawnUpgradesNpc(LocationXYZYP location) {
-        //        this.upgradesNpc =
-        //                NPC.builder()
-        //
-        // .location(this.upgradesNpcLocation.toBukkit(this.arena.getWorld()))
-        //                        .profile(
-        //                                new Profile(
-        //                                        UUID.randomUUID(),
-        //
-        // StringUtils.translateAlternateColorCodes("&eUpgrades"),
-        //                                        new Skin("", "")))
-        //                        .lookAtPlayer(true)
-        //                        .imitatePlayer(false)
-        //                        .build(DBedwars.getInstance().getNpcHandler());
     }
 
     public void clearCache() {
@@ -332,7 +277,6 @@ public class Team extends AbstractMessaging implements org.zibble.dbedwars.api.g
         return "Team{" +
                 "plugin=" + plugin +
                 ", color=" + color +
-                ", cfgTeam=" + cfgTeam +
                 ", bedLocation=" + bedLocation +
                 ", spawn=" + spawn +
                 ", shopNpcLocation=" + shopNpcLocation +

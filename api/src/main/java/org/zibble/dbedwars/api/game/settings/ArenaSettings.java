@@ -15,8 +15,6 @@ import java.util.Set;
 
 public interface ArenaSettings {
 
-    Arena getArena();
-
     String getName();
 
     void setName(String name);
@@ -130,7 +128,5 @@ public interface ArenaSettings {
     int getDeathPoint();
 
     void setDeathPoint(int deathPoint);
-
-    String toString();
 
 }

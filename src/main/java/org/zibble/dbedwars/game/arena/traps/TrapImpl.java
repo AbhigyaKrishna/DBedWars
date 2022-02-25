@@ -14,7 +14,7 @@ import org.zibble.dbedwars.api.util.Key;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Trap implements org.zibble.dbedwars.api.game.trap.Trap {
+public class TrapImpl implements org.zibble.dbedwars.api.game.trap.Trap {
 
     private Key<String> key;
     private final ArenaPlayer buyer;
@@ -22,7 +22,7 @@ public class Trap implements org.zibble.dbedwars.api.game.trap.Trap {
 
     private Map<TrapEnum.TargetType, org.zibble.dbedwars.api.game.trap.Trap.TrapAction> actions;
 
-    public Trap(String key, ArenaPlayer buyer, TrapEnum.TriggerType trigger, Set<TrapEnum.TargetType> targetTypes) {
+    public TrapImpl(String key, ArenaPlayer buyer, TrapEnum.TriggerType trigger, Set<TrapEnum.TargetType> targetTypes) {
         this.key = Key.of(key);
         this.triggerType = trigger;
         this.buyer = buyer;
@@ -68,7 +68,7 @@ public class Trap implements org.zibble.dbedwars.api.game.trap.Trap {
 
         @Override
         public org.zibble.dbedwars.api.game.trap.Trap getTrap() {
-            return Trap.this;
+            return TrapImpl.this;
         }
 
         @Override

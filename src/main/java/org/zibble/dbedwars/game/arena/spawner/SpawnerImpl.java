@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Spawner implements org.zibble.dbedwars.api.game.spawner.Spawner, Initializable {
+public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner, Initializable {
 
     private final DBedwars plugin;
     private final Key<DropType> key;
@@ -37,7 +37,7 @@ public class Spawner implements org.zibble.dbedwars.api.game.spawner.Spawner, In
     private Instant lastUpgrade;
     private final Map<DropType.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
 
-    public Spawner(DBedwars plugin, DropType dropType, Arena arena, Optional<Team> team) {
+    public SpawnerImpl(DBedwars plugin, DropType dropType, Arena arena, Optional<Team> team) {
         this.plugin = plugin;
         this.key = Key.of(dropType);
         this.arena = arena;

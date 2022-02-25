@@ -3,7 +3,6 @@ package org.zibble.dbedwars.game.arena;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.math.collision.BoundingBox;
 import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
 import com.pepedevs.radium.utils.world.GameRuleType;
 import com.pepedevs.radium.utils.world.WorldUtils;
@@ -32,13 +31,20 @@ import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.task.Workload;
-import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.api.util.Acceptor;
+import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.KickReason;
+import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.game.TeamAssigner;
+import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
+import org.zibble.dbedwars.game.arena.spawner.SpawnerImpl;
 import org.zibble.dbedwars.game.arena.view.shoptest.ShopView;
 import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
@@ -78,7 +84,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
 
     public Arena(DBedwars plugin) {
         this.plugin = plugin;
-        this.settings = new org.zibble.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this);
+        this.settings = new ArenaSettingsImpl(this.plugin, this);
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.spectators = new HashSet<>();
@@ -91,7 +97,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
         this(plugin);
         this.cfgArena = cfg;
         this.settings =
-                new org.zibble.dbedwars.game.arena.settings.ArenaSettings(this.plugin, this, cfg);
+                new ArenaSettingsImpl(this.plugin, this, cfg);
         this.enabled = this.isConfigured() && cfg.isEnabled();
     }
 
@@ -167,7 +173,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     public void reloadData() {
         if (this.cfgArena == null) return;
 
-        ((org.zibble.dbedwars.game.arena.settings.ArenaSettings) this.settings)
+        ((ArenaSettingsImpl) this.settings)
                 .update(this.cfgArena);
         for (Team team : this.settings.getAvailableTeams()) {
             this.reloadData();
@@ -382,7 +388,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
                 PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
             }
             for (Map.Entry<DropType, LocationXYZ> entry : team.getSpawners().entries()) {
-                org.zibble.dbedwars.game.arena.spawner.Spawner spawner = new org.zibble.dbedwars.game.arena.spawner.Spawner(this.plugin, entry.getKey(), this, Optional.of(team));
+                SpawnerImpl spawner = new SpawnerImpl(this.plugin, entry.getKey(), this, Optional.of(team));
                 spawner.init(entry.getValue().toBukkit(this.getWorld()), 1);
                 this.spawners.add(spawner);
             }
@@ -392,7 +398,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
 
         Debugger.debug("Setting spawners");
         for (Map.Entry<DropType, LocationXYZ> entry : this.settings.getDrops().entries()) {
-            org.zibble.dbedwars.game.arena.spawner.Spawner spawner = new org.zibble.dbedwars.game.arena.spawner.Spawner(this.plugin, entry.getKey(), this, Optional.empty());
+            SpawnerImpl spawner = new SpawnerImpl(this.plugin, entry.getKey(), this, Optional.empty());
             spawner.init(entry.getValue().toBukkit(this.getWorld()), 1);
             this.spawners.add(spawner);
         }
@@ -496,13 +502,13 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     }
 
     @Override
-    public void addPlayer(Player player) {
-        ArenaPlayer arenaPlayer = new org.zibble.dbedwars.game.arena.ArenaPlayer(this.plugin, player, this);
-        this.addPlayer(arenaPlayer);
+    public void joinGame(Player player) {
+        ArenaPlayer arenaPlayer = new ArenaPlayerImpl(this.plugin, player, this);
+        this.joinGame(arenaPlayer);
     }
 
     @Override
-    public void addPlayer(ArenaPlayer player) {
+    public void joinGame(ArenaPlayer player) {
         PlayerJoinArenaLobbyEvent event =
                 new PlayerJoinArenaLobbyEvent(
                         player.getPlayer(), this, this.settings.getLobby().toBukkit(this.world));
@@ -528,13 +534,13 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     }
 
     @Override
-    public void addPlayer(Player player, Team team) {
-        ArenaPlayer aPlayer = new org.zibble.dbedwars.game.arena.ArenaPlayer(this.plugin, player, this);
-        this.addPlayer(aPlayer);
+    public void joinGame(Player player, Team team) {
+        ArenaPlayer aPlayer = new ArenaPlayerImpl(this.plugin, player, this);
+        this.joinGame(aPlayer);
     }
 
     @Override
-    public void addPlayer(ArenaPlayer player, Team team) {
+    public void joinGame(ArenaPlayer player, Team team) {
         PlayerJoinArenaLobbyEvent event =
                 new PlayerJoinArenaLobbyEvent(
                         player.getPlayer(), this, this.settings.getLobby().toBukkit(this.world));
@@ -735,7 +741,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     private void scheduleMessage(org.zibble.dbedwars.api.game.Arena arena, Player player, int size, boolean join) {
         this.plugin.getThreadHandler().getTaskHandler().runTaskLater(this.plugin.getThreadHandler().getTask().getID(), new Runnable() {
 
-           private final PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
+            private final PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
                     PlaceholderEntry.symbol("player_name", player.getName()),
                     PlaceholderEntry.symbol("current_players", String.valueOf(size)),
                     PlaceholderEntry.symbol("max_players", String.valueOf(arena.getSettings().getMaxPlayer()))
@@ -752,7 +758,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
 
     private void clearCache() {
         for (Team team : this.teams) {
-            ((org.zibble.dbedwars.game.arena.Team) team).clearCache();
+            ((TeamImpl) team).clearCache();
             team = null;
         }
         for (ArenaPlayer player : this.players) {
@@ -773,23 +779,4 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
         return new ArrayList<>(this.players);
     }
 
-    @Override
-    public String toString() {
-        return "Arena{" +
-                "plugin=" + plugin +
-                ", cfgArena=" + cfgArena +
-                ", settings=" + settings +
-                ", world=" + world +
-                ", status=" + status +
-                ", enabled=" + enabled +
-                ", startTime=" + startTime +
-                ", scoreboard=" + scoreboard +
-                ", arenaHandler=" + arenaHandler +
-                ", gameHandler=" + gameHandler +
-                ", teams=" + teams +
-                ", players=" + players +
-                ", removed=" + removed +
-                ", spawners=" + spawners +
-                '}';
-    }
 }

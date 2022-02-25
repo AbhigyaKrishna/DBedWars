@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.hooks.citizens;
 
+import org.bukkit.plugin.Plugin;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
-import org.bukkit.plugin.Plugin;
 
 public class CitizensHook extends PluginDependence {
 

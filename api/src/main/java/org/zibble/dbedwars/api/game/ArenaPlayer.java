@@ -3,15 +3,14 @@ package org.zibble.dbedwars.api.game;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.view.ShopView;
-import org.zibble.dbedwars.api.messaging.member.PlayerMember;
+import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.objects.points.Points;
 import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.Keyed;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public interface ArenaPlayer extends PlayerMember, Keyed<UUID> {
+public interface ArenaPlayer extends ArenaSpectator {
 
     Arena getArena();
 
@@ -20,6 +19,10 @@ public interface ArenaPlayer extends PlayerMember, Keyed<UUID> {
     void setTeam(Team team);
 
     Points getPoints();
+
+    Scoreboard getScoreboard();
+
+    void setScoreboard(Scoreboard scoreboard);
 
     void kill(DeathCause reason);
 

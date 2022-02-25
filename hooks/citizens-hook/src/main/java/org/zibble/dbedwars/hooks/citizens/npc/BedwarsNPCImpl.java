@@ -1,9 +1,5 @@
 package org.zibble.dbedwars.hooks.citizens.npc;
 
-import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.hooks.hologram.Hologram;
-import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
-import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import com.pepedevs.radium.npc.action.NPCClickAction;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
@@ -12,6 +8,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
+import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.NPCData;
 
 import java.util.Collection;
 import java.util.HashSet;

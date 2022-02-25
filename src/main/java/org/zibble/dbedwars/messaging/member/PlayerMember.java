@@ -1,6 +1,9 @@
 package org.zibble.dbedwars.messaging.member;
 
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.util.Key;
+
+import java.util.UUID;
 
 public class PlayerMember extends MessagingMember implements org.zibble.dbedwars.api.messaging.member.PlayerMember {
 
@@ -21,6 +24,11 @@ public class PlayerMember extends MessagingMember implements org.zibble.dbedwars
     @Override
     public Player getPlayer() {
         return (Player) this.getSender();
+    }
+
+    @Override
+    public Key<UUID> getKey() {
+        return Key.of(this.getPlayer().getUniqueId());
     }
 
 }

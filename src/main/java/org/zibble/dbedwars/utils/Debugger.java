@@ -72,6 +72,14 @@ public class Debugger {
         if (ENABLED) LOGGER.log(level, s);
     }
 
+    public static void debug(String prefix, String s) {
+        debug(prefix, s, Level.INFO);
+    }
+
+    public static void debug(String prefix, String s, Level level) {
+        if (ENABLED) LOGGER.log(level, "[" + prefix + "] " + s);
+    }
+
     public static void setEnabled(boolean enabled) {
         ENABLED = enabled;
     }

@@ -1,13 +1,15 @@
 package org.zibble.dbedwars.api.game;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 
 import java.util.UUID;
 
-public interface ArenaSpectator {
+public interface ArenaSpectator extends PlayerMember {
 
     UUID getUUID();
 
@@ -24,5 +26,7 @@ public interface ArenaSpectator {
     void teleport(LocationXYZ location);
 
     void teleport(LocationXYZYP location);
+
+    GameMode getGameMode();
 
 }

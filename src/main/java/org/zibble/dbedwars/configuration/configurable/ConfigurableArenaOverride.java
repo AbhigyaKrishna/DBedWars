@@ -11,6 +11,7 @@ import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.util.Loadable;
+import org.zibble.dbedwars.game.arena.spawner.DropTypeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +132,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                                     }
                                 }
                                 if (!bDrop && cDrop.isValid()) {
-                                    t.getDropMap().put(str, new org.zibble.dbedwars.game.arena.spawner.DropType.Drop(cDrop));
+                                    t.getDropMap().put(str, new DropTypeImpl.Drop(cDrop));
                                 }
                             });
 
@@ -139,7 +140,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                         }
                         if (!bTier) {
                             if (ct.isValid()) {
-                                d.getTiers().put(i, new org.zibble.dbedwars.game.arena.spawner.DropType.Tier(ct));
+                                d.getTiers().put(i, new DropTypeImpl.Tier(ct));
                             }
                         }
                     });

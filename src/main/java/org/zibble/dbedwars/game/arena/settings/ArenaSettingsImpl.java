@@ -5,21 +5,19 @@ import com.google.common.collect.Multimap;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.game.settings.ArenaSettings;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
+import org.zibble.dbedwars.api.util.properies.NamedProperties;
+import org.zibble.dbedwars.game.arena.TeamImpl;
 
 import java.util.*;
 
-public class ArenaSettings implements org.zibble.dbedwars.api.game.settings.ArenaSettings {
-
-    private final DBedwars plugin;
-    private final Arena arena;
+public class ArenaSettingsImpl implements ArenaSettings {
 
     private String name;
     private String customName;
@@ -49,90 +47,26 @@ public class ArenaSettings implements org.zibble.dbedwars.api.game.settings.Aren
     private Multimap<DropType, LocationXYZ> drops;
     private Set<Team> availableTeams;
 
-    public ArenaSettings(DBedwars plugin, Arena arena) {
-        this.plugin = plugin;
-        this.arena = arena;
+    public ArenaSettingsImpl() {
         this.teamPlayers = 1;
         this.worldEnv = World.Environment.NORMAL;
         this.drops = ArrayListMultimap.create();
         this.availableTeams = new HashSet<>();
-
-        this.startTimer =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getStartTimer();
-        this.respawnTime =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getRespawnTime();
-        this.islandRadius =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getIslandRadius();
-        this.minYAxis =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getMinYAxis();
-        this.playerHitTagLength =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getPlayerHitTagLength();
-        this.gameEndDelay =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getGameEndDelay();
-        this.disableHunger =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .isDisableHunger();
-        this.bedDestroyPoint =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getBedDestroyPoint();
-        this.killPoint =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getKillPoint();
-        this.finalKillPoint =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getFinalKillPoint();
-        this.deathPoint =
-                this.plugin
-                        .getConfigHandler()
-                        .getMainConfiguration()
-                        .getArenaSection()
-                        .getDeathPoint();
     }
 
-    public ArenaSettings(DBedwars plugin, Arena arena, ConfigurableArena cfgArena) {
-        this(plugin, arena);
-        this.update(cfgArena);
-    }
-
-    @Override
-    public Arena getArena() {
-        return this.arena;
+    public ArenaSettingsImpl(NamedProperties properties) {
+        this();
+        this.startTimer = properties.getValue("startTimer");
+        this.respawnTime = properties.getValue("respawnTime");
+        this.islandRadius = properties.getValue("islandRadius");
+        this.minYAxis = properties.getValue("minYAxis");
+        this.playerHitTagLength = properties.getValue("playerHitTagLength");
+        this.gameEndDelay = properties.getValue("gameEndDelay");
+        this.disableHunger = properties.getValue("disableHunger", true);
+        this.bedDestroyPoint = properties.getValue("bedDestroyPoint");
+        this.killPoint = properties.getValue("killPoint");
+        this.finalKillPoint = properties.getValue("finalKillPoint");
+        this.deathPoint = properties.getValue("deathPoint");
     }
 
     @Override
@@ -286,7 +220,7 @@ public class ArenaSettings implements org.zibble.dbedwars.api.game.settings.Aren
 
     @Override
     public void enableTeam(Color teamColor) {
-        this.availableTeams.add(new org.zibble.dbedwars.game.arena.Team(plugin, teamColor));
+        this.availableTeams.add(new TeamImpl(DBedwars.getInstance(), teamColor));
     }
 
     @Override
@@ -429,49 +363,4 @@ public class ArenaSettings implements org.zibble.dbedwars.api.game.settings.Aren
         this.deathPoint = deathPoint;
     }
 
-    public void update(ConfigurableArena cfgArena) {
-        this.name = cfgArena.getIdentifier();
-        this.customName = cfgArena.getCustomName();
-        this.worldEnv = cfgArena.getWorldEnv();
-        this.icon = cfgArena.getIcon();
-        this.lobby = cfgArena.getLobbyLoc();
-        this.lobbyPosMax = cfgArena.getLobbyPosMax();
-        this.lobbyPosMin = cfgArena.getLobbyPosMin();
-        this.spectatorLocation = cfgArena.getSpectatorLocation();
-        this.teamPlayers = cfgArena.getPlayerInTeam();
-        this.minPlayers = cfgArena.getMinPlayers();
-        this.availableTeams = new HashSet<>(cfgArena.getTeams());
-        this.drops = cfgArena.getSpawners();
-    }
-
-    @Override
-    public String toString() {
-        return "ArenaSettings{" +
-                "plugin=" + plugin +
-                ", arena=" + arena +
-                ", name='" + name + '\'' +
-                ", customName='" + customName + '\'' +
-                ", worldEnv=" + worldEnv +
-                ", lobby=" + lobby +
-                ", spectatorLocation=" + spectatorLocation +
-                ", lobbyPosMax=" + lobbyPosMax +
-                ", lobbyPosMin=" + lobbyPosMin +
-                ", icon=" + icon +
-                ", teamPlayers=" + teamPlayers +
-                ", minPlayers=" + minPlayers +
-                ", startTimer=" + startTimer +
-                ", respawnTime=" + respawnTime +
-                ", islandRadius=" + islandRadius +
-                ", minYAxis=" + minYAxis +
-                ", playerHitTagLength=" + playerHitTagLength +
-                ", gameEndDelay=" + gameEndDelay +
-                ", disableHunger=" + disableHunger +
-                ", bedDestroyPoint=" + bedDestroyPoint +
-                ", killPoint=" + killPoint +
-                ", finalKillPoint=" + finalKillPoint +
-                ", deathPoint=" + deathPoint +
-                ", drops=" + drops +
-                ", availableTeams=" + availableTeams +
-                '}';
-    }
 }

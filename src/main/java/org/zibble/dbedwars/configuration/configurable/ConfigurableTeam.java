@@ -13,6 +13,7 @@ import org.zibble.dbedwars.configuration.util.Configurable;
 import org.zibble.dbedwars.configuration.util.Loadable;
 import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
 import org.zibble.dbedwars.configuration.util.annotations.SaveableEntry;
+import org.zibble.dbedwars.game.arena.TeamImpl;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class ConfigurableTeam implements Configurable {
     public Team toTeam() {
         if (this.team == null)
             return this.team =
-                    new org.zibble.dbedwars.game.arena.Team(DBedwars.getInstance(), this);
+                    new TeamImpl(DBedwars.getInstance(), this);
 
         return this.team;
     }

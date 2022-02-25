@@ -6,7 +6,7 @@ import com.pepedevs.radium.utils.json.Json;
 import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.cache.DataCache;
-import org.zibble.dbedwars.utils.JSONBuilder;
+import org.zibble.dbedwars.utils.json.JSONBuilder;
 
 import java.io.File;
 import java.io.IOException;

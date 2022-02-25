@@ -1,11 +1,12 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.player.CustomPlayerEventCancellable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.zibble.dbedwars.api.events.player.CustomPlayerEventCancellable;
 import org.zibble.dbedwars.api.game.Arena;
+import org.zibble.dbedwars.api.messaging.message.Message;
 
 public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
 
@@ -13,11 +14,13 @@ public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
 
     private final Arena arena;
     private Location location;
+    private Message joinMessage;
 
-    public PlayerJoinArenaLobbyEvent(Player player, Arena arena, Location location) {
+    public PlayerJoinArenaLobbyEvent(Player player, Arena arena, Location location, Message joinMessage) {
         super(player);
         this.arena = arena;
         this.location = location;
+        this.joinMessage = joinMessage;
     }
 
     public static HandlerList getHandlerList() {
@@ -36,19 +39,18 @@ public class PlayerJoinArenaLobbyEvent extends CustomPlayerEventCancellable {
         this.location = location;
     }
 
+    public Message getJoinMessage() {
+        return joinMessage;
+    }
+
+    public void setJoinMessage(Message joinMessage) {
+        this.joinMessage = joinMessage;
+    }
+
     @NotNull
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    @Override
-    public String toString() {
-        return "PlayerJoinArenaLobbyEvent{" +
-                "arena=" + arena +
-                ", location=" + location +
-                ", cancelled=" + cancelled +
-                ", player=" + player +
-                '}';
-    }
 }

@@ -38,12 +38,6 @@ public interface Team extends AbstractMessaging {
 
     void setUpgradesNpc(LocationXYZYP location);
 
-    void reloadData();
-
-    boolean isConfigured();
-
-    void init(Arena arena);
-
     Arena getArena();
 
     void addPlayer(ArenaPlayer player);
@@ -64,9 +58,4 @@ public interface Team extends AbstractMessaging {
 
     List<Trap> getTrapQueue();
 
-    void spawnShopNpc(LocationXYZYP location);
-
-    void spawnUpgradesNpc(LocationXYZYP location);
-
-    String toString();
 }

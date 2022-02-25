@@ -9,7 +9,7 @@ import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.cache.DataCache;
-import org.zibble.dbedwars.utils.JSONBuilder;
+import org.zibble.dbedwars.utils.json.JSONBuilder;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
