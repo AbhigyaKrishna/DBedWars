@@ -17,7 +17,7 @@ public class EazyNickHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into EazyNick!"));
         }
         return true;
@@ -46,4 +46,5 @@ public class EazyNickHook extends PluginDependence implements NickNameHook {
         final NickManager manager = new NickManager(player);
         return isPlayerNicked(player) ? manager.getNickName() : manager.getRealName();
     }
+
 }
