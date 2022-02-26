@@ -112,10 +112,12 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
         return false;
     }
 
+    @Override
     public PlaceholderHook getPlaceholderHook() {
         return this.placeholderHook;
     }
 
+    @Override
     public void setPlaceholderHook(PlaceholderHook placeholderHook) {
         this.placeholderHook = placeholderHook;
     }

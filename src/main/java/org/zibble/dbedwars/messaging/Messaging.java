@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.messaging;
 
-import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -99,8 +98,8 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
     }
 
     @Override
-    public String setPapiPlaceholders(final String message, Player player) {
-        return PlaceholderUtil.placeholder(player, message);
+    public String setRegisteredPlaceholders(final String message, Player player) {
+        return this.plugin.getHookManager().getPlaceholderHook().setPlaceholders(player, message);
     }
 
 }

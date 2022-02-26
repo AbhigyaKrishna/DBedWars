@@ -3,7 +3,6 @@ package org.zibble.dbedwars;
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.pepedevs.radium.database.DatabaseType;
-import com.pepedevs.radium.placeholders.PlaceholderUtil;
 import com.pepedevs.radium.utils.ServerPropertiesUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.World;
@@ -98,8 +97,6 @@ public final class DBedwars extends PluginAdapter {
 
         boolean spawnNpc = ServerPropertiesUtils.getBooleanProperty("spawn-npcs", false);
         int spawnProt = ServerPropertiesUtils.getIntProperty("spawn-protection", -1);
-
-        PlaceholderUtil.tryHook(this);
         return true;
     }
 

@@ -59,7 +59,7 @@ public class AdventureMessage extends Message {
         Component[] components = new Component[this.message.size()];
         for (int i = 0; i < this.message.size(); i++) {
             String replaced = Messaging.get().setPlaceholders(this.message.get(i), player, entries);
-            String replacedWithPAPI = Messaging.get().setPapiPlaceholders(replaced, player);
+            String replacedWithPAPI = Messaging.get().setRegisteredPlaceholders(replaced, player);
             components[i] = Messaging.get().parseMini(replacedWithPAPI);
         }
         return components;
