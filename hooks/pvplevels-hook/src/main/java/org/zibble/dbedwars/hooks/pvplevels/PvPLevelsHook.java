@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.hooks.points.PointsHook;
+import org.zibble.dbedwars.api.messaging.Messaging;
+import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 
 public class PvPLevelsHook extends PluginDependence implements PointsHook {
@@ -20,8 +22,9 @@ public class PvPLevelsHook extends PluginDependence implements PointsHook {
     public Boolean apply(Plugin plugin) {
         if(plugin != null){
             api = PvPLevelsAPI.getInstance();
+            Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into PvPLevels!"));
         }
-        return null;
+        return true;
     }
 
     @Override

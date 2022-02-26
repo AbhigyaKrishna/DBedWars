@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
+import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.configuration.PluginFiles;
@@ -11,12 +12,14 @@ import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
 import org.zibble.dbedwars.hooks.betternick.BetterNickHook;
 import org.zibble.dbedwars.hooks.citizens.CitizensHook;
 import org.zibble.dbedwars.hooks.cmi.CMIHook;
+import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
 import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
 import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
 import org.zibble.dbedwars.hooks.nametagedit.NameTagEditHook;
 import org.zibble.dbedwars.hooks.nickapi.NickAPIHook;
 import org.zibble.dbedwars.hooks.nicknamer.NickNamerHook;
+import org.zibble.dbedwars.hooks.placeholderapi.PlaceholderAPIHook;
 import org.zibble.dbedwars.hooks.pvplevels.PvPLevelsHook;
 import org.zibble.dbedwars.hooks.quickboard.QuickBoardHook;
 import org.zibble.dbedwars.hooks.slimeworldmanager.SlimeWorldManagerHook;
@@ -33,6 +36,7 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     private PluginDependence[] dependencies;
 
     private ScoreboardHook scoreboardHook;
+    private PlaceholderHook placeholderHook;
     private List<NickNameHook> nickNameHooks;
 
     public HookManager(DBedwars plugin) {
@@ -47,6 +51,7 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
                 new NameTagEditHook(),
                 new NickAPIHook(),
                 new NickNamerHook(),
+                new PlaceholderAPIHook(),
                 new PvPLevelsHook(),
                 new QuickBoardHook(),
                 new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
@@ -58,6 +63,12 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     public void load() {
         this.scoreboardHook = new ScoreboardHookImpl();
+
+        if (PlaceholderAPIHook.get().isEnabled())
+            this.placeholderHook = new PlaceholderAPIHook();
+        else
+            this.placeholderHook = new PlaceholderHookImpl();
+
         this.nickNameHooks = new ArrayList<>();
         if (AutoNickerHook.get().isEnabled())
             nickNameHooks.add(AutoNickerHook.get());
@@ -101,7 +112,14 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
         return false;
     }
 
-    @Override
+    public PlaceholderHook getPlaceholderHook() {
+        return this.placeholderHook;
+    }
+
+    public void setPlaceholderHook(PlaceholderHook placeholderHook) {
+        this.placeholderHook = placeholderHook;
+    }
+
     public PluginDependence[] getDependencies() {
         return this.dependencies;
     }

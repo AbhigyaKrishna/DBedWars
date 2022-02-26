@@ -28,8 +28,7 @@ public class BedwarsCommand extends BaseCommand {
 
     @Subcommand("start")
     public void onStart(Player player, String arenaName) {
-        if (!this.plugin.getGameManager().containsArena(arenaName)
-                || !this.plugin.getGameManager().getArena(arenaName).isEnabled()) {
+        if (!this.plugin.getGameManager().containsArena(arenaName)) {
             Messaging.get().getMessagingMember(player).sendMessage(Lang.NO_ARENA_FOUND_W_NAME.asMessage());
             return;
         }

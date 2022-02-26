@@ -122,6 +122,7 @@ dependencies {
     implementation project(':hooks:nametagedit-hook')
     implementation project(':hooks:nickapi-hook')
     implementation project(':hooks:nicknamer-hook')
+    implementation project(':hooks:placeholderapi-hook')
     implementation project(':hooks:pvplevels-hook')
     implementation project(':hooks:quickboard-hook')
     implementation project(':hooks:slimeworldmanager-hook')

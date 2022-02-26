@@ -17,3 +17,6 @@ include(':hooks:betternick-hook')
 include(':hooks:eazynick-hook')
 include(':hooks:pvplevels-hook')
 include(':hooks:citizens-hook')
+include 'hooks:placeholderapi-hook'
+findProject(':hooks:placeholderapi-hook')?.name = 'placeholderapi-hook'
+
