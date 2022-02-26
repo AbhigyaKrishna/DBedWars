@@ -1,0 +1,12 @@
+repositories {
+    maven { url 'https://repo.codemc.org/repository/maven-releases/' }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'net.skinsrestorer:skinsrestorer-api:14.1.10'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'skinrestorer-hook'

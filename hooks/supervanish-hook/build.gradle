@@ -1,0 +1,12 @@
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'com.github.LeonMangler:SuperVanish:6.2.6-4'
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    compileOnly parent
+}
+
+description = 'supervanish-hook'
