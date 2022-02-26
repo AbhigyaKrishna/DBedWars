@@ -2,10 +2,12 @@ package org.zibble.dbedwars.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
@@ -14,15 +16,19 @@ import org.zibble.dbedwars.hooks.citizens.CitizensHook;
 import org.zibble.dbedwars.hooks.cmi.CMIHook;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
+import org.zibble.dbedwars.hooks.defaults.vanish.VanishImpl;
 import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
 import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
 import org.zibble.dbedwars.hooks.nametagedit.NameTagEditHook;
 import org.zibble.dbedwars.hooks.nickapi.NickAPIHook;
 import org.zibble.dbedwars.hooks.nicknamer.NickNamerHook;
 import org.zibble.dbedwars.hooks.placeholderapi.PlaceholderAPIHook;
+import org.zibble.dbedwars.hooks.premiumvanish.PremiumVanishHook;
 import org.zibble.dbedwars.hooks.pvplevels.PvPLevelsHook;
 import org.zibble.dbedwars.hooks.quickboard.QuickBoardHook;
+import org.zibble.dbedwars.hooks.skinrestorer.SkinRestorerHook;
 import org.zibble.dbedwars.hooks.slimeworldmanager.SlimeWorldManagerHook;
+import org.zibble.dbedwars.hooks.supervanish.SuperVanishHook;
 import org.zibble.dbedwars.hooks.tab.TabHook;
 import org.zibble.dbedwars.hooks.vault.VaultHook;
 import org.zibble.dbedwars.hooks.viphide.VIPHideHook;
@@ -37,6 +43,7 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     private ScoreboardHook scoreboardHook;
     private PlaceholderHook placeholderHook;
+    private VanishHook vanishHook;
     private List<NickNameHook> nickNameHooks;
 
     public HookManager(DBedwars plugin) {
@@ -52,9 +59,12 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
                 new NickAPIHook(),
                 new NickNamerHook(),
                 new PlaceholderAPIHook(),
+                new PremiumVanishHook(),
                 new PvPLevelsHook(),
                 new QuickBoardHook(),
+                new SkinRestorerHook(),
                 new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
+                new SuperVanishHook(),
                 new TabHook(),
                 new VaultHook(),
                 new VIPHideHook(),
@@ -63,6 +73,7 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     public void load() {
         this.scoreboardHook = new ScoreboardHookImpl();
+        this.vanishHook = new VanishImpl();
 
         if (PlaceholderAPIHook.get().isEnabled())
             this.placeholderHook = new PlaceholderAPIHook();
@@ -96,6 +107,19 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     @Override
     public void setScoreboardHook(ScoreboardHook scoreboardHook) {
         this.scoreboardHook = scoreboardHook;
+    }
+
+    @Override
+    public VanishHook getVanishHook() {
+        return vanishHook;
+    }
+
+    @Override
+    public void setVanishHook(VanishHook vanishHook) {
+        if (this.vanishHook instanceof VanishImpl) {
+            HandlerList.unregisterAll((VanishImpl) this.vanishHook);
+        }
+        this.vanishHook = vanishHook;
     }
 
     @Override

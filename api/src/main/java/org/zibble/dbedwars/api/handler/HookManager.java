@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 
 import java.util.List;
 
@@ -13,12 +14,16 @@ public interface HookManager {
 
     void setScoreboardHook(ScoreboardHook scoreboardHook);
 
-    List<NickNameHook> getNickNameHooks();
+    VanishHook getVanishHook();
 
-    boolean isNicked(Player player);
+    void setVanishHook(VanishHook vanishHook);
 
     PlaceholderHook getPlaceholderHook();
 
     void setPlaceholderHook(PlaceholderHook placeholderHook);
+
+    List<NickNameHook> getNickNameHooks();
+
+    boolean isNicked(Player player);
 
 }

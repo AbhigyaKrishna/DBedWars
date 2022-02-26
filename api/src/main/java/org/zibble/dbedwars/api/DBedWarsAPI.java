@@ -1,10 +1,7 @@
 package org.zibble.dbedwars.api;
 
 import com.pepedevs.radium.holograms.HologramManager;
-import org.zibble.dbedwars.api.handler.CustomItemHandler;
-import org.zibble.dbedwars.api.handler.GameManager;
-import org.zibble.dbedwars.api.handler.GuiHandler;
-import org.zibble.dbedwars.api.handler.ThreadHandler;
+import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.version.Version;
@@ -34,6 +31,8 @@ public abstract class DBedWarsAPI {
     public abstract GuiHandler getGuiHandler();
 
     public abstract ThreadHandler getThreadHandler();
+
+    public abstract HookManager getHookManager();
 
     public abstract HologramManager getHologramFactory();
 

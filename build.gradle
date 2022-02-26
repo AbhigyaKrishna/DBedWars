@@ -125,8 +125,10 @@ dependencies {
     implementation project(':hooks:placeholderapi-hook')
     implementation project(':hooks:pvplevels-hook')
     implementation project(':hooks:quickboard-hook')
+    implementation project(':hooks:skinrestorer-hook')
     implementation project(':hooks:slimeworldmanager-hook')
     implementation project(':hooks:tab-hook')
+    implementation project(':hooks:vanish-hook')
     implementation project(':hooks:vault-hook')
     implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.9.12'
