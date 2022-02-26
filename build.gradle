@@ -113,10 +113,22 @@ repositories {
 dependencies {
     implementation project(':api')
     implementation project(':nms-v1_8_R3')
+    implementation project(':hooks:autonicker-hook')
+    implementation project(':hooks:betternick-hook')
+    implementation project(':hooks:citizens-hook')
     implementation project(':hooks:cmi-hook')
+    implementation project(':hooks:eazynick-hook')
     implementation project(':hooks:featherboard-hook')
+    implementation project(':hooks:nametagedit-hook')
+    implementation project(':hooks:nickapi-hook')
+    implementation project(':hooks:nicknamer-hook')
+    implementation project(':hooks:placeholderapi-hook')
+    implementation project(':hooks:pvplevels-hook')
     implementation project(':hooks:quickboard-hook')
+    implementation project(':hooks:slimeworldmanager-hook')
     implementation project(':hooks:tab-hook')
+    implementation project(':hooks:vault-hook')
+    implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.9.12'
     implementation 'de.tr7zw:item-nbt-api:2.8.0'
     implementation 'redis.clients:jedis:3.7.1'
