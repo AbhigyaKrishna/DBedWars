@@ -14,7 +14,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven {
-            url 'https://repo.pepedevs.com/nexus/repository/maven-public/'
+                url 'https://repo.pepedevs.com/nexus/repository/maven-public/'
         }
         maven {
             url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
@@ -137,6 +137,7 @@ dependencies {
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
+    implementation 'com.github.Zibb-le:inventory-framework:-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
