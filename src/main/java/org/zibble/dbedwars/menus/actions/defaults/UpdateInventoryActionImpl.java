@@ -18,7 +18,8 @@ public class UpdateInventoryActionImpl implements MenuActions {
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull String[] args) {
-        player.updateInventory();
+        //TODO
+
         return true;
     }
 }

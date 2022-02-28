@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.menus.actions;
 
 import org.jetbrains.annotations.NotNull;
-import org.zibble.dbedwars.api.exceptions.DuplicateActionDefinition;
+import org.zibble.dbedwars.api.exceptions.DuplicateActionDefinitionException;
 import org.zibble.dbedwars.api.menu.MenuActions;
 import org.zibble.dbedwars.handler.MenuHandler;
 import org.zibble.dbedwars.menus.actions.defaults.*;
@@ -25,15 +25,15 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     }
 
     @Override
-    public void register(@NotNull MenuActions menuActions) throws DuplicateActionDefinition {
+    public void register(@NotNull MenuActions menuActions) throws DuplicateActionDefinitionException {
         if(actionRegister.containsKey(menuActions.tag()))
-            throw new DuplicateActionDefinition("Tag for action ["+menuActions.tag()+" , "+menuActions.description()+"] is already definied!");
+            throw new DuplicateActionDefinitionException("Tag for action ["+menuActions.tag()+" , "+menuActions.description()+"] is already definied!");
 
         actionRegister.put(menuActions.tag(), menuActions);
     }
 
     @Override
-    public void register(@NotNull MenuActions... menuActions) throws DuplicateActionDefinition {
+    public void register(@NotNull MenuActions... menuActions) throws DuplicateActionDefinitionException {
         for(MenuActions actions : menuActions){
             this.register(actions);
         }
@@ -67,15 +67,13 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     private void doDefaultRegistration(){
         try {
             register(
-                    new BroadcastActionImpl(),
                     new SendMessageActionImpl(),
                     new CloseInventoryActionImpl(),
                     new UpdateInventoryActionImpl(),
                     new CommandConsoleActionImpl(),
-                    new PlayerCommandActionImpl(),
-                    new TitleActionImpl()
+                    new PlayerCommandActionImpl()
             );
-        } catch (DuplicateActionDefinition e) {
+        } catch (DuplicateActionDefinitionException e) {
             e.printStackTrace();
         }
     }
