@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.menus;
+package org.zibble.dbedwars.menus.player;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

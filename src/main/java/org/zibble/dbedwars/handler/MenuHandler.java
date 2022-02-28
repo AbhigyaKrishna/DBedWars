@@ -8,46 +8,34 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.menus.actions.ActionRegistry;
-import org.zibble.dbedwars.menus.MenuPlayer;
+import org.zibble.dbedwars.menus.player.MenuPlayer;
+import org.zibble.dbedwars.menus.player.MenuPlayerProvider;
 
 import java.util.HashMap;
 
-public class MenuHandler implements Listener {
+public class MenuHandler implements org.zibble.dbedwars.api.handler.MenuHandler {
 
-    private static final HashMap<Player, MenuPlayer> playerCache;
-
-    static {
-        playerCache = new HashMap<>();
-    }
 
     private final DBedwars plugin;
     private final ActionRegistry actionRegistry;
+    private final MenuPlayerProvider playerProvider;
 
     public MenuHandler(DBedwars plugin) {
         this.plugin = plugin;
-        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.actionRegistry = new ActionRegistry(this);
-    }
-
-    @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent event){
-        playerCache.put(event.getPlayer(), new MenuPlayer(event.getPlayer()));
-    }
-
-    @EventHandler
-    public void onPlayerQuitEvent(PlayerQuitEvent event){
-        playerCache.remove(event.getPlayer());
-    }
-
-    public static MenuPlayer ofMenuPlayer(@NotNull Player player){
-        return playerCache.get(player);
+        this.playerProvider = new MenuPlayerProvider(this);
     }
 
     public DBedwars getPlugin() {
         return plugin;
     }
 
+    @Override
     public ActionRegistry getActionRegistry() {
         return actionRegistry;
+    }
+
+    public MenuPlayerProvider getPlayerProvider() {
+        return playerProvider;
     }
 }

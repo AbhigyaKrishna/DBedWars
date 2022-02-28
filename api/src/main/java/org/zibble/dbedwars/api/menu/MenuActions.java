@@ -10,7 +10,4 @@ public interface MenuActions {
     String description();
 
     boolean execute(@NotNull final Player player, @NotNull final String[] args);
-
-
-
 }

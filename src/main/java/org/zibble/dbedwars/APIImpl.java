@@ -55,6 +55,11 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
+    public MenuHandler getMenuHandler() {
+        return this.plugin.getMenuHandler();
+    }
+
+    @Override
     public HologramManager getHologramFactory() {
         return this.plugin.getHologramManager();
     }

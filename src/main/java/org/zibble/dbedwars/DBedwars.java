@@ -56,6 +56,7 @@ public final class DBedwars extends PluginAdapter {
     private ThreadHandler threadHandler;
     private HologramManager hologramManager;
     private HookManager hookManager;
+    private MenuHandler menuHandler;
 
     private Messaging messaging;
     private TranslationRegistryImpl actionRegistry;
@@ -180,6 +181,7 @@ public final class DBedwars extends PluginAdapter {
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.hologramManager = new HologramManager();
+        this.menuHandler = new MenuHandler(this);
 
         this.threadHandler.submitAsync(
                 () -> {
@@ -267,6 +269,10 @@ public final class DBedwars extends PluginAdapter {
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public MenuHandler getMenuHandler() {
+        return menuHandler;
     }
 
     private void initDatabase() {
