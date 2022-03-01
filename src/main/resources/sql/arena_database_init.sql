@@ -1,5 +1,5 @@
 -- Create arena category table
-CREATE TABLE IF NOT EXISTS `ARENA_CATEGORY_{category}`
+CREATE TABLE IF NOT EXISTS `arena_{name}`
 (
     `UUID` VARCHAR
 (

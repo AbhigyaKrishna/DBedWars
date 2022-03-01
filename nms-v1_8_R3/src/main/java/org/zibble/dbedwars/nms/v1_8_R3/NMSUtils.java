@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.nms.v1_8_R3;
 
+import com.mojang.authlib.GameProfile;
 import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
@@ -21,6 +22,8 @@ import org.zibble.dbedwars.api.nms.IBedBug;
 import org.zibble.dbedwars.api.nms.IGolem;
 import org.zibble.dbedwars.api.nms.IVillager;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
+import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
+import org.zibble.dbedwars.api.objects.profile.Property;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -147,11 +150,21 @@ public class NMSUtils implements NMSAdaptor {
     }
 
     @Override
-    public void sendDeathAnimation(Player player, Collection<Player> viewers) {
-        PacketPlayOutEntityStatus packet = new PacketPlayOutEntityStatus(((CraftPlayer) player).getHandle(), (byte) 3);
-        for (Player viewer : viewers) {
-            ((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(packet);
+    public PlayerGameProfile getProfile(Player player) {
+        GameProfile gameProfile = ((CraftPlayer) player).getHandle().getProfile();
+        List<Property> properties = new ArrayList<>();
+        for (com.mojang.authlib.properties.Property textures : gameProfile.getProperties().get("textures")) {
+            properties.add(Property.builder()
+                    .name(textures.getName())
+                    .value(textures.getValue())
+                    .signature(textures.getSignature())
+                    .build());
         }
+        return PlayerGameProfile.builder()
+                .uuid(gameProfile.getId())
+                .name(gameProfile.getName())
+                .properties(properties)
+                .build();
     }
 
 }

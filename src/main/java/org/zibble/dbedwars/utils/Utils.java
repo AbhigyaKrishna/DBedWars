@@ -1,5 +1,7 @@
 package org.zibble.dbedwars.utils;
 
+import com.github.retrooper.packetevents.protocol.player.TextureProperty;
+import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.pepedevs.radium.utils.math.LocationUtils;
 import com.pepedevs.radium.utils.reflection.accessor.FieldAccessor;
 import com.pepedevs.radium.utils.reflection.bukkit.BukkitReflection;
@@ -26,6 +28,8 @@ import org.bukkit.util.Vector;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
+import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.NBTUtils;
@@ -210,6 +214,14 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static UserProfile asProtocolProfile(PlayerGameProfile profile) {
+        List<TextureProperty> properties = new ArrayList<>();
+        for (Property property : profile.getProperties()) {
+            properties.add(new TextureProperty(property.getName(), property.getValue(), property.getSignature()));
+        }
+        return new UserProfile(profile.getUuid(), profile.getName(), properties);
     }
 
     static {

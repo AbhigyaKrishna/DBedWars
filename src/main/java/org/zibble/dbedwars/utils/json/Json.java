@@ -15,6 +15,9 @@ import java.util.Set;
 /** Represents a utility class for handling Json. */
 public final class Json {
 
+    public static final Gson GSON = new GsonBuilder().serializeNulls().create();
+    public static final Gson GSON_PRETTY = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+
     private final JsonObject handle;
     private final Json root;
     private final JsonOptions options;

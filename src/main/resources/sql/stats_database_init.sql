@@ -1,17 +1,17 @@
 -- Create table `PLAYER_STATS`
 CREATE TABLE IF NOT EXISTS `PLAYER_STATS`
 (
-    `UUID` VARCHAR
+    `uuid` VARCHAR
 (
     36
 ) UNIQUE PRIMARY KEY NOT NULL,
-    `NAME` VARCHAR
+    `name` VARCHAR
 (
     16
 ) NOT NULL,
-    `LEVEL` INT NOT NULL,
-    `LEVEL_PROGRESS` DOUBLE NOT NULL,
-    `COINS` DOUBLE NOT NULL,
-    `WINSTREAK` SMALLINT NOT NULL,
-    `POINTS` DOUBLE NOT NULL
+    `level` INT NOT NULL,
+    `level_progress` DOUBLE NOT NULL,
+    `coins` DOUBLE NOT NULL,
+    `winstreak` SMALLINT NOT NULL,
+    `points` DOUBLE NOT NULL
     );

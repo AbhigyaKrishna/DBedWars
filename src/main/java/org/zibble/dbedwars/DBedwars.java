@@ -22,10 +22,10 @@ import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.commands.BedwarsCommand;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableDatabase;
-import org.zibble.dbedwars.database.DatabaseBridge;
-import org.zibble.dbedwars.database.MongoDB;
-import org.zibble.dbedwars.database.MySQL;
-import org.zibble.dbedwars.database.SQLite;
+import org.zibble.dbedwars.database.bridge.DatabaseBridge;
+import org.zibble.dbedwars.database.bridge.MongoDBBridge;
+import org.zibble.dbedwars.database.bridge.MySQLBridge;
+import org.zibble.dbedwars.database.bridge.SQLiteBridge;
 import org.zibble.dbedwars.game.GameManager;
 import org.zibble.dbedwars.handler.*;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
@@ -288,7 +288,7 @@ public final class DBedwars extends PluginAdapter {
             ConfigurableDatabase.ConfigurableMySQL cfg =
                     this.getConfigHandler().getDatabase().getMySQL();
             this.database =
-                    new MySQL(
+                    new MySQLBridge(
                             this,
                             cfg.getHost(),
                             cfg.getPort(),
@@ -300,9 +300,9 @@ public final class DBedwars extends PluginAdapter {
         } else if (type == DatabaseType.MongoDB) {
             ConfigurableDatabase.ConfigurableMongoDB cfg =
                     this.getConfigHandler().getDatabase().getMongoDB();
-            this.database = new MongoDB(this, cfg.getHost(), cfg.getPort(), cfg.getDatabaseName());
+            this.database = new MongoDBBridge(cfg.getHost(), cfg.getPort(), cfg.getDatabaseName());
         } else {
-            this.database = new SQLite(this);
+            this.database = new SQLiteBridge(this);
         }
 
         this.database.init();

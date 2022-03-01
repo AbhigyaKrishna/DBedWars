@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 
 import java.util.Collection;
 
@@ -33,6 +34,6 @@ public interface NMSAdaptor {
 
     void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data);
 
-    void sendDeathAnimation(Player player, Collection<Player> viewers);
+    PlayerGameProfile getProfile(Player player);
 
 }
