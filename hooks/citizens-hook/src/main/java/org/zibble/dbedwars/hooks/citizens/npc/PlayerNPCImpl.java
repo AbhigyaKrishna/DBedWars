@@ -2,6 +2,7 @@ package org.zibble.dbedwars.hooks.citizens.npc;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -14,8 +15,8 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
 
     private final SkinData skinData;
 
-    public PlayerNPCImpl(Location location, NPCData npcData, SkinData skinData) {
-        super(location, npcData);
+    public PlayerNPCImpl(Location location, NPCData npcData, SkinData skinData, Component name) {
+        super(location, npcData, name);
         this.skinData = skinData;
     }
 

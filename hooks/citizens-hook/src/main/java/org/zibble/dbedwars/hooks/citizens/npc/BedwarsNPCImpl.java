@@ -4,6 +4,7 @@ import com.pepedevs.radium.npc.action.NPCClickAction;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -28,7 +29,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     private NPC citizensNPC;
 
-    public BedwarsNPCImpl(Location location, NPCData npcData) {
+    public BedwarsNPCImpl(Location location, NPCData npcData, Component name) {
         this.location = location;
         this.npcData = npcData;
         this.citizensNPC = this.createNPC();
@@ -41,25 +42,19 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> spawn() {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                if (BedwarsNPCImpl.this.citizensNPC == null) BedwarsNPCImpl.this.citizensNPC = BedwarsNPCImpl.this.createNPC();
-                BedwarsNPCImpl.this.citizensNPC.spawn(location, SpawnReason.PLUGIN);
-                return BedwarsNPCImpl.this;
-            }
+        return ActionFuture.supplyAsync(() -> {
+            if (BedwarsNPCImpl.this.citizensNPC == null) BedwarsNPCImpl.this.citizensNPC = BedwarsNPCImpl.this.createNPC();
+            BedwarsNPCImpl.this.citizensNPC.spawn(location, SpawnReason.PLUGIN);
+            return BedwarsNPCImpl.this;
         });
     }
 
     @Override
     public ActionFuture<BedwarsNPC> teleport(Location location) {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                BedwarsNPCImpl.this.location = location;
-                BedwarsNPCImpl.this.citizensNPC.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                return BedwarsNPCImpl.this;
-            }
+        return ActionFuture.supplyAsync(() -> {
+            BedwarsNPCImpl.this.location = location;
+            BedwarsNPCImpl.this.citizensNPC.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            return BedwarsNPCImpl.this;
         });
     }
 
@@ -84,13 +79,10 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> lookAt(Location location) {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                BedwarsNPCImpl.this.location.setDirection((location.toVector().subtract(BedwarsNPCImpl.this.location.toVector())));
-                BedwarsNPCImpl.this.citizensNPC.faceLocation(location);
-                return BedwarsNPCImpl.this;
-            }
+        return ActionFuture.supplyAsync(() -> {
+            BedwarsNPCImpl.this.location.setDirection((location.toVector().subtract(BedwarsNPCImpl.this.location.toVector())));
+            BedwarsNPCImpl.this.citizensNPC.faceLocation(location);
+            return BedwarsNPCImpl.this;
         });
     }
 
