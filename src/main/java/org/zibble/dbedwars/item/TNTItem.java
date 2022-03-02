@@ -14,8 +14,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,8 @@ public class TNTItem extends BedWarsActionItem {
 
     public TNTItem(DBedwars plugin) {
         super(
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getTNT().getLore()),
                 Material.TNT);
         this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTNT();

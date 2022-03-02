@@ -4,9 +4,9 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.action.objects.ProcessedActionHolder;
 import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.utils.TimeUtil;
 
-import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +43,7 @@ public class ActionPreProcessor {
             String delayValue = DELAY_MATCHER.group("delayValue");
             return TimeUtil.parse(delayValue);
         }
-        return Duration.ZERO;
+        return Duration.zero();
     }
 
     private static int getRepeats(String input) {

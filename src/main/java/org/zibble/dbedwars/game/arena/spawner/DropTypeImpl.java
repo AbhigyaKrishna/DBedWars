@@ -10,8 +10,8 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertyName;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -182,7 +182,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
             tier.delay = cfg.getSeconds();
             tier.upgradeSound = cfg.getUpgradeSound();
             tier.upgradeEffect = cfg.getUpgradeEffect();
-            tier.upgradeMessage = Lang.getTranslator().asMessage(cfg.getMessage());
+            tier.upgradeMessage = ConfigLang.getTranslator().asMessage(cfg.getMessage());
             for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop> entry : cfg.getActions().entrySet()) {
                 tier.drops.put(entry.getKey(), Drop.fromConfig(entry.getValue()));
             }

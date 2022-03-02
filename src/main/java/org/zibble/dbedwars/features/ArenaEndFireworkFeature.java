@@ -10,6 +10,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.utils.Utils;
 
 import java.util.Collections;
@@ -51,11 +52,11 @@ public class ArenaEndFireworkFeature extends org.zibble.dbedwars.api.feature.cus
                         });
                         effect.spawn(loc);
                     }
-                    ArenaEndFireworkFeature.this.plugin.getThreadHandler().runTaskLater(this, 40L);
+                    ArenaEndFireworkFeature.this.plugin.getThreadHandler().runTaskLater(this, Duration.ofMilliseconds(40));
                 }
             }
         };
-        this.plugin.getThreadHandler().runTaskLater(runnable, 40L);
+        this.plugin.getThreadHandler().runTaskLater(runnable, Duration.ofMilliseconds(40));
     }
 
     @Override

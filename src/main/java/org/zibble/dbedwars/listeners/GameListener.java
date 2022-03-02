@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.listeners;
 
-import com.pepedevs.radium.utils.PluginHandler;
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -29,6 +28,7 @@ import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.plugin.PluginHandler;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.utils.Utils;
@@ -69,7 +69,7 @@ public class GameListener extends PluginHandler {
             return;
         }
 
-        if (/*player.isSpectator() || */player.getTeam() == null) {
+        if (player.getTeam() == null) {
             event.setCancelled(true);
             return;
         }
@@ -389,11 +389,6 @@ public class GameListener extends PluginHandler {
 
     @Override
     protected boolean isAllowMultipleInstances() {
-        return true;
-    }
-
-    @Override
-    protected boolean isSingleInstanceForAllPlugin() {
         return true;
     }
 

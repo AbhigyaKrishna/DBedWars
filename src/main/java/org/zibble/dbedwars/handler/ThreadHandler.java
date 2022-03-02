@@ -4,6 +4,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.task.TaskQueueHandler;
 import org.zibble.dbedwars.task.implementations.UpdateTask;
@@ -63,12 +64,12 @@ public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHand
         }
     }
 
-    public CancellableWorkload runTaskLater(Runnable runnable, long delayMillis) {
-        return this.handler.runTaskLater(this.task.getID(), runnable, delayMillis);
+    public CancellableWorkload runTaskLater(Runnable runnable, Duration delay) {
+        return this.handler.runTaskLater(this.task.getID(), runnable, delay.toMillis());
     }
 
-    public CancellableWorkload runTaskTimer(Runnable runnable, long interval) {
-        return this.handler.runTaskTimer(this.task.getID(), runnable, interval);
+    public CancellableWorkload runTaskTimer(Runnable runnable, Duration interval) {
+        return this.handler.runTaskTimer(this.task.getID(), runnable, interval.toMillis());
     }
 
     public TaskQueueHandler getTaskHandler() {

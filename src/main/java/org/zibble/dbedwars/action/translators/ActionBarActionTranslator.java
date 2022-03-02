@@ -5,7 +5,7 @@ import org.zibble.dbedwars.api.action.ActionPlaceholder;
 import org.zibble.dbedwars.api.action.ActionTranslator;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ActionBarActionTranslator implements ActionTranslator<AbstractMessa
                 untranslated = ((PlaceholderEntry) placeholder.getValue()).apply(untranslated);
             }
         }
-        return new ActionBarAction(Lang.getTranslator().asMessage(untranslated, entries.toArray(new PlaceholderEntry[0])), messaging);
+        return new ActionBarAction(ConfigLang.getTranslator().asMessage(untranslated, entries.toArray(new PlaceholderEntry[0])), messaging);
     }
 
     @Override

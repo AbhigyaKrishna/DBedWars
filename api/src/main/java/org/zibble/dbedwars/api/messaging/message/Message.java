@@ -6,23 +6,13 @@ import org.zibble.dbedwars.api.messaging.Placeholder;
 
 import java.util.*;
 
-public abstract class Message {
+public abstract class Message implements Cloneable {
 
     protected List<String> message;
     protected List<Placeholder> placeholders;
 
     public static Message empty() {
-        return new Message("") {
-            @Override
-            public Component[] asComponent() {
-                return new Component[]{Component.empty()};
-            }
-
-            @Override
-            public Component[] asComponentWithPAPI(Player player) {
-                return new Component[]{Component.empty()};
-            }
-        };
+        return new EmptyMessage();
     }
 
     protected Message(String message, Placeholder... placeholders) {
@@ -94,5 +84,31 @@ public abstract class Message {
     public abstract Component[] asComponent();
 
     public abstract Component[] asComponentWithPAPI(Player player);
+
+    @Override
+    public abstract Message clone();
+
+    protected static class EmptyMessage extends Message {
+
+        protected EmptyMessage() {
+            super("");
+        }
+
+        @Override
+        public Component[] asComponent() {
+            return new Component[0];
+        }
+
+        @Override
+        public Component[] asComponentWithPAPI(Player player) {
+            return new Component[0];
+        }
+
+        @Override
+        public Message clone() {
+            return new EmptyMessage();
+        }
+
+    }
 
 }

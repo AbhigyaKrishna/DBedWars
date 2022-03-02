@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.utils;
 
-import com.pepedevs.radium.utils.FileUtils;
 import com.pepedevs.radium.utils.reflection.resolver.MethodResolver;
 import com.pepedevs.radium.utils.reflection.resolver.ResolverQuery;
 import com.pepedevs.radium.utils.reflection.resolver.wrapper.MethodWrapper;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;

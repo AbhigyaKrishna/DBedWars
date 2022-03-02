@@ -17,7 +17,7 @@ public class ActionExecutor {
                     action.getAction().execute();
                 }
             }
-        }, action.getDelay().toMillis());
+        }, action.getDelay());
     }
 
 }

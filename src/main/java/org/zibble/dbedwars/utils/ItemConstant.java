@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 
 public enum ItemConstant {
     SWORD(

@@ -7,7 +7,7 @@ import com.pepedevs.radium.utils.world.GameRuleDisableDaylightCycle;
 import com.pepedevs.radium.utils.world.GameRuleType;
 import com.pepedevs.radium.utils.world.WorldUtils;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.configLang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -38,10 +38,10 @@ import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.KickReason;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.TeamAssigner;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.game.arena.spawner.SpawnerImpl;
@@ -72,7 +72,6 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     private ArenaStatus status;
     private boolean enabled;
     private Instant startTime;
-    private ScoreboardWrapper scoreboard;
     private ArenaListener arenaHandler;
     private GameListener gameHandler;
 
@@ -702,9 +701,9 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
                 PlaceholderEntry.symbol("attack_team_name", player.getTeam().getName()),
                 PlaceholderEntry.symbol("attack_name", player.getName())
         };
-        Message bedBrokenOthers = Lang.BED_BROKEN_OTHERS.asMessage();
+        Message bedBrokenOthers = ConfigLang.BED_BROKEN_OTHERS.asMessage();
         bedBrokenOthers.addPlaceholders(bedBrokenPlaceholders);
-        Message bedBrokenSelf = Lang.BED_BROKEN_SELF.asMessage();
+        Message bedBrokenSelf = ConfigLang.BED_BROKEN_SELF.asMessage();
         bedBrokenSelf.addPlaceholders(bedBrokenPlaceholders);
         BedDestroyEvent event = new BedDestroyEvent(player, affected, bed, this, bedBrokenOthers, bedBrokenSelf);
         event.call();
@@ -749,7 +748,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
 
             @Override
             public void run() {
-                Message message = (join ? Lang.ARENA_JOIN_MESSAGE.asMessage() : Lang.ARENA_LEAVE_MESSAGE.asMessage());
+                Message message = (join ? ConfigLang.ARENA_JOIN_MESSAGE.asMessage() : ConfigLang.ARENA_LEAVE_MESSAGE.asMessage());
                 message.addPlaceholders(joinLeavePlaceholders);
                 arena.sendMessage(message);
             }

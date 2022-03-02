@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;

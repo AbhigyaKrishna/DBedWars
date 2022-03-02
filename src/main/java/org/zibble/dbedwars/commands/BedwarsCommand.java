@@ -11,7 +11,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.setup.BaseTeamDetection;
 import org.zibble.dbedwars.setup.GenDetection;
 
@@ -29,7 +29,7 @@ public class BedwarsCommand extends BaseCommand {
     @Subcommand("start")
     public void onStart(Player player, String arenaName) {
         if (!this.plugin.getGameManager().containsArena(arenaName)) {
-            Messaging.get().getMessagingMember(player).sendMessage(Lang.NO_ARENA_FOUND_W_NAME.asMessage());
+            Messaging.get().getMessagingMember(player).sendMessage(ConfigLang.NO_ARENA_FOUND_W_NAME.asMessage());
             return;
         }
 
@@ -39,12 +39,7 @@ public class BedwarsCommand extends BaseCommand {
             public void compute() {
                 if (arena.getWorld() == null)
                     arena.load();
-                BedwarsCommand.this.plugin.getThreadHandler().submitSync(new Runnable() {
-                    @Override
-                    public void run() {
-                                arena.joinGame(player);
-                            }
-                });
+                BedwarsCommand.this.plugin.getThreadHandler().submitSync(() -> arena.joinGame(player));
             }
         });
     }
@@ -53,7 +48,7 @@ public class BedwarsCommand extends BaseCommand {
     public void onEnd(Player player) {
         Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null) {
-            Messaging.get().getMessagingMember(player).sendMessage(Lang.NOT_IN_AN_ARENA.asMessage());
+            Messaging.get().getMessagingMember(player).sendMessage(ConfigLang.NOT_IN_AN_ARENA.asMessage());
             return;
         }
 
@@ -62,7 +57,7 @@ public class BedwarsCommand extends BaseCommand {
 
     @Subcommand("message")
     public void test(Player player, String type) {
-        Messaging.get().getMessagingMember(player).sendMessage(Lang.valueOf(type).asMessage());
+        Messaging.get().getMessagingMember(player).sendMessage(ConfigLang.valueOf(type).asMessage());
     }
 
     @Subcommand("testspawn")

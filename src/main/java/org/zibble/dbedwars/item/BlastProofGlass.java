@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.item;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.item;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -20,8 +20,8 @@ import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.Utils;
 
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class FireballItem extends BedWarsActionItem {
 
     public FireballItem(DBedwars plugin) {
         super(
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
         this.plugin = plugin;

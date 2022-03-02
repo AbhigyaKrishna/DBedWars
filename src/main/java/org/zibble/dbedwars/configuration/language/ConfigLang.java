@@ -1,8 +1,11 @@
-package org.zibble.dbedwars.configuration;
+package org.zibble.dbedwars.configuration.language;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.translator.ConfigTranslator;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
 import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
@@ -11,7 +14,7 @@ import org.zibble.dbedwars.messaging.MiniMessageWrapper;
 import java.io.File;
 import java.util.EnumMap;
 
-public enum Lang {
+public enum ConfigLang implements Lang {
 
     PREFIX("prefix", "<gold>[ <blue>Bedwars <gold>]"),
 
@@ -146,7 +149,7 @@ public enum Lang {
     SETUP_TEAM_GEN(),
     ;
 
-    private static final EnumMap<Lang, Message> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
+    private static final EnumMap<ConfigLang, Message> SERVER_LOADED_LANG = new EnumMap<>(ConfigLang.class);
 
     private static ConfigTranslator TRANSLATOR;
 
@@ -161,7 +164,7 @@ public enum Lang {
     public static void load(File file) {
         SERVER_LOADED_LANG.clear();
         if (!file.exists()) {
-            for (Lang value : Lang.values()) {
+            for (ConfigLang value : ConfigLang.values()) {
                 Message message = AdventureMessage.from(new String[0]);
                 for (String s : value.getDefault()) {
                     message.addLine(s);
@@ -172,25 +175,22 @@ public enum Lang {
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        for (Lang lang : Lang.values()) {
-            if (config.isList(lang.getKey())) {
-                String[] strings = config.getStringList(lang.getKey()).toArray(new String[0]);
+        for (ConfigLang configLang : ConfigLang.values()) {
+            if (config.isList(configLang.getKey())) {
+                String[] strings = config.getStringList(configLang.getKey()).toArray(new String[0]);
                 Message message = ConfigMessage.from(new String[0]);
                 for (String string : strings) {
                     message.addLine(string);
                 }
-                SERVER_LOADED_LANG.put(lang, message);
+                SERVER_LOADED_LANG.put(configLang, message);
                 continue;
             }
-            String value = config.getString(lang.getKey());
+            String value = config.getString(configLang.getKey());
             if (value != null) {
-                SERVER_LOADED_LANG.put(lang, ConfigMessage.from(value));
+                SERVER_LOADED_LANG.put(configLang, ConfigMessage.from(value));
             } else {
-                Message message = AdventureMessage.from(new String[0]);
-                for (String s : lang.getDefault()) {
-                    message.addLine(s);
-                }
-                SERVER_LOADED_LANG.put(lang, message);
+                Message message = AdventureMessage.from(configLang.getDefault());
+                SERVER_LOADED_LANG.put(configLang, message);
             }
         }
     }
@@ -202,7 +202,7 @@ public enum Lang {
     private final String key;
     private final String[] def;
 
-    Lang(String key, String... def) {
+    ConfigLang(String key, String... def) {
         this.key = key;
         this.def = def;
     }
@@ -219,8 +219,16 @@ public enum Lang {
         return this.asMessage().getMessage();
     }
 
+    @Override
     public Message asMessage() {
-        return SERVER_LOADED_LANG.get(this);
+        return SERVER_LOADED_LANG.get(this).clone();
+    }
+
+    @Override
+    public Message asMessage(Placeholder... placeholders) {
+        Message message = this.asMessage();
+        message.addPlaceholders(placeholders);
+        return message;
     }
 
 }

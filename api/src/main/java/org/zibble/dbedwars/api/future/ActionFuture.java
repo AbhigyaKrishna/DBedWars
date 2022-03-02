@@ -141,7 +141,7 @@ public class ActionFuture<T> {
             if (this.delay == null || this.delay.isZero()) {
                 this.run();
             } else {
-                DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay.toMillis());
+                DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay);
                 this.delay = null;
             }
         }
@@ -177,7 +177,7 @@ public class ActionFuture<T> {
             if (this.delay == null || this.delay.isZero()) {
                 this.run();
             } else {
-                DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay.toMillis());
+                DBedWarsAPI.getApi().getThreadHandler().runTaskLater(this, this.delay);
                 this.delay = null;
             }
         }

@@ -7,6 +7,7 @@ import org.zibble.dbedwars.api.messaging.Placeholder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class LegacyMessage extends Message {
 
@@ -23,6 +24,10 @@ public class LegacyMessage extends Message {
     }
 
     protected LegacyMessage(String message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected LegacyMessage(Collection<String> message, Placeholder... placeholders) {
         super(message, placeholders);
     }
 
@@ -51,6 +56,11 @@ public class LegacyMessage extends Message {
             components[i] = Messaging.get().translateAlternateColorCodes(replacedWithPAPI);
         }
         return components;
+    }
+
+    @Override
+    public LegacyMessage clone() {
+        return new LegacyMessage(this.message, this.placeholders.toArray(new Placeholder[0]));
     }
 
 }

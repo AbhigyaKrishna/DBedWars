@@ -6,7 +6,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.menu.MenuActions;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.Messaging;
 
 public class SendMessageActionImpl implements MenuActions {
@@ -29,7 +29,7 @@ public class SendMessageActionImpl implements MenuActions {
             return false;
         }
 
-        Message message = Lang.getTranslator().asMessage(args[1],
+        Message message = ConfigLang.getTranslator().asMessage(args[1],
                 PlaceholderEntry.symbol("name", player.getName())
         );
         if(args.length > 2) {

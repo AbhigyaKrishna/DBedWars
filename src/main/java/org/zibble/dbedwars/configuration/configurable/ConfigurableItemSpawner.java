@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.configuration.configurable;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.particles.ParticleEffect;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;

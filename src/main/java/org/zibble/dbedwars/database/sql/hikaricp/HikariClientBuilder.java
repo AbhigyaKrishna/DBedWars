@@ -2,8 +2,8 @@ package org.zibble.dbedwars.database.sql.hikaricp;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.configLang.StringUtils;
+import org.apache.commons.configLang.Validate;
 
 import java.util.Properties;
 

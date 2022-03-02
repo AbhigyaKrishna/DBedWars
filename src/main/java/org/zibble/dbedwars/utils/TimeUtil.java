@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.utils;
 
-import java.time.Duration;
+import org.zibble.dbedwars.api.util.Duration;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,7 +72,7 @@ public class TimeUtil {
         if (MILLISECONDS.find()) {
             millis = Integer.parseInt(MILLISECONDS.group("milliseconds").replace("ms", ""));
         }
-        return Duration.ofMillis(years * 31536000000L + months * 2628000000L + weeks * 604800000L + days * 86400000L + hours * 3600000L + minutes * 60000L + seconds * 1000L + ticks * 50L + millis);
+        return Duration.ofMilliseconds(years * 31536000000L + months * 2628000000L + weeks * 604800000L + days * 86400000L + hours * 3600000L + minutes * 60000L + seconds * 1000L + ticks * 50L + millis);
     }
 
 }

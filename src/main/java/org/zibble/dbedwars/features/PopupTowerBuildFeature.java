@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.features;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.pepedevs.radium.particles.ParticleBuilder;
 import com.pepedevs.radium.particles.ParticleEffect;
-import com.pepedevs.radium.utils.xseries.XMaterial;
-import com.pepedevs.radium.utils.xseries.XSound;
 import org.bukkit.block.Chest;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;

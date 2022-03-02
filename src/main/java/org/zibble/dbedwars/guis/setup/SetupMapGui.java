@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.guis.setup;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.inventory.Item;
 import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
 import com.pepedevs.radium.gui.inventory.custom.book.BookItemMenu;
@@ -10,7 +11,6 @@ import com.pepedevs.radium.gui.inventory.item.voidaction.VoidActionItem;
 import com.pepedevs.radium.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.world.WorldUtils;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

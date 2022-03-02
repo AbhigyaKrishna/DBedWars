@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.item;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -15,8 +15,8 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -29,8 +29,8 @@ public class Sponge extends BedWarsActionItem {
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
-        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
                 XMaterial.SPONGE.parseMaterial());
         this.plugin = plugin;

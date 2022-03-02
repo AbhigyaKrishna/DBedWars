@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.game.struture;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.block.Block;
 
 import java.util.Map;

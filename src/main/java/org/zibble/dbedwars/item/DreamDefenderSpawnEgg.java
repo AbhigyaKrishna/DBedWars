@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.item;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
@@ -18,8 +18,8 @@ import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.Utils;
 
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
 
     public DreamDefenderSpawnEgg(DBedwars plugin) {
-        super(Lang.getTranslator().translate(plugin.getConfigHandler()
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler()
                         .getCustomItems()
                         .getDreamDefender()
                         .getItemName()),
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore() == null ? new ArrayList<>()
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore()),
                 XMaterial.WOLF_SPAWN_EGG.parseMaterial());
         this.plugin = plugin;
