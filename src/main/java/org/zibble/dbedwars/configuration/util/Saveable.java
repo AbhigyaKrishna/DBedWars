@@ -1,12 +1,12 @@
 package org.zibble.dbedwars.configuration.util;
 
-import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.util.annotations.SaveableCollectionEntry;
 import org.zibble.dbedwars.configuration.util.annotations.SaveableEntry;
 import org.zibble.dbedwars.configuration.util.yaml.YamlUtils;
+import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

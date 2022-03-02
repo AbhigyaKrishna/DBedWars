@@ -1,12 +1,12 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import com.pepedevs.radium.utils.reflection.general.EnumReflection;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.Contract;
+import org.zibble.dbedwars.utils.reflection.general.EnumReflection;
 
 import java.util.Collection;
 import java.util.Collections;

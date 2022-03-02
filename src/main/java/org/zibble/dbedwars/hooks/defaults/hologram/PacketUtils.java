@@ -14,12 +14,12 @@ import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
 import com.pepedevs.radium.adventure.AdventureUtils;
-import com.pepedevs.radium.utils.reflection.bukkit.EntityReflection;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
 

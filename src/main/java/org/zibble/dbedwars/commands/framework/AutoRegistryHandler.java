@@ -24,8 +24,8 @@ public class AutoRegistryHandler {
     public Map<Pair<String, String[]>, ? extends AbstractCommandNode> baseNodes() {
         Map<Pair<String, String[]>, AbstractCommandNode> returnVal = new HashMap<>();
         Set<Class<?>> classes = new HashSet<>();
-        for (String aPackage : PACKAGES) {
-            Reflections reflections = new Reflections(aPackage);
+        for (String pkg : PACKAGES) {
+            Reflections reflections = new Reflections(pkg);
             classes.addAll(reflections.getTypesAnnotatedWith(ParentCommandNode.class));
         }
         for (Class<?> aClass : classes) {

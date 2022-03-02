@@ -1,10 +1,10 @@
 package org.zibble.dbedwars.utils.gamerule;
 
-import com.pepedevs.radium.utils.reflection.DataType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
 import org.bukkit.metadata.MetadataValue;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.utils.reflection.DataType;
 
 public enum GameRuleType {
     FIRE_TICK {

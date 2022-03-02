@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.nms.v1_8_R3;
 
 import com.mojang.authlib.GameProfile;
-import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,6 +23,7 @@ import org.zibble.dbedwars.api.nms.IVillager;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
+import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 
 import java.io.File;
 import java.util.ArrayList;

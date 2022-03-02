@@ -1,13 +1,13 @@
 package org.zibble.dbedwars.configuration.util;
 
-import com.pepedevs.radium.utils.reflection.DataType;
-import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.api.util.Validable;
 import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
 import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.utils.reflection.DataType;
+import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

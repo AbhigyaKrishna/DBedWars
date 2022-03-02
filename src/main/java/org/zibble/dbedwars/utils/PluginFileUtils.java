@@ -1,14 +1,14 @@
 package org.zibble.dbedwars.utils;
 
-import com.pepedevs.radium.utils.reflection.resolver.MethodResolver;
-import com.pepedevs.radium.utils.reflection.resolver.ResolverQuery;
-import com.pepedevs.radium.utils.reflection.resolver.wrapper.MethodWrapper;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.configuration.PluginFiles;
+import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
+import org.zibble.dbedwars.utils.reflection.resolver.ResolverQuery;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 
 import java.io.*;
 import java.net.MalformedURLException;
