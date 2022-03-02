@@ -15,5 +15,6 @@ public final class BedWarsFeatures {
     public static final Key<String> POPUP_TOWER_BUILD_FEATURE = Key.of("PopupTowerBuildFeature");
     public static final Key<String> SPONGE_PLACE_FEATURE = Key.of("SpongePlaceFeature");
     public static final Key<String> TNT_PLACE_FEATURE = Key.of("TntPlaceFeature");
+    public static final Key<String> PRECISE_LOCATION = Key.of("PreciseLocation");
 
 }

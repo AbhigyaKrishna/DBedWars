@@ -54,6 +54,7 @@ public class HologramUtil {
         ENTITY_MATCHER.reset(string);
         if (ENTITY_MATCHER.matches()) {
             String entity = ENTITY_MATCHER.group("entity");
+            //TODO REWORK GETTING ENTITY TYPE
             HologramEntityType mapped = EnumReflection.getEnumConstant(HologramEntityType.class, entity);
             if (mapped == null) return null;
             return new HologramLineImpl.Entity(page, mapped);
@@ -62,6 +63,7 @@ public class HologramUtil {
         return null;
     }
 
+    //TODO AVENGER AK
     private static ItemStack getItemStack(final String item) {
         final String[] split = item.split(":");
 

@@ -130,6 +130,20 @@ public enum Lang {
     //Crushed Death
     DEATH_MESSAGE_CRUSHED_BY_PLAYER("death-messages.crushed.by-player","<victim_color><victim_player> <white>was crushed by <attacker_color><attacker_player><white>."),
     DEATH_MESSAGE_CRUSHED_NO_PLAYER("death-messages.crushed.no-player","<victim_color><victim_player> <white>got pressed like a bottle of sauce."),
+
+    //SETUP MESSAGES
+    SETUP_START(),
+    SETUP_ARENA_DISPLAY_NAME_SET(),
+    SETUP_WORLD_CLEANUP_PROMPT(),
+    SETUP_WORLD_CLEANUP_CLEANING(),
+    SETUP_WORLD_MOB_SPAWNING_DISABLED(),
+    SETUP_WAITING_LOCATION_PROMPT(),
+    SETUP_TEAM_START(),
+    SETUP_TEAM_SPAWN(),
+    SETUP_TEAM_SHOP(),
+    SETUP_TEAM_UPGRADES(),
+    SETUP_TEAM_BED(),
+    SETUP_TEAM_GEN(),
     ;
 
     private static final EnumMap<Lang, Message> SERVER_LOADED_LANG = new EnumMap<>(Lang.class);
