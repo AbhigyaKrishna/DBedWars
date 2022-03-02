@@ -2,7 +2,6 @@ package org.zibble.dbedwars;
 
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
-import com.pepedevs.radium.database.DatabaseType;
 import com.pepedevs.radium.utils.ServerPropertiesUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.World;
@@ -21,14 +20,12 @@ import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.commands.BedwarsCommand;
 import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableDatabase;
-import org.zibble.dbedwars.database.bridge.DatabaseBridge;
-import org.zibble.dbedwars.database.bridge.MongoDBBridge;
-import org.zibble.dbedwars.database.bridge.MySQLBridge;
-import org.zibble.dbedwars.database.bridge.SQLiteBridge;
+import org.zibble.dbedwars.database.DatabaseType;
+import org.zibble.dbedwars.database.bridge.*;
 import org.zibble.dbedwars.game.GameManager;
 import org.zibble.dbedwars.handler.*;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
+import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
@@ -77,6 +74,8 @@ public final class DBedwars extends PluginAdapter {
     protected boolean setUp() {
         Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
+        this.threadHandler = new ThreadHandler(this);
+        this.threadHandler.runThreads(4);
         this.nmsAdaptor = this.registerNMSAdaptor();
         this.hookManager = new HookManager(this);
         this.hookManager.load();
@@ -174,8 +173,6 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
-        this.threadHandler = new ThreadHandler(this);
-        this.threadHandler.runThreads(4);
         this.worldHandler = new WorldHandler(this);
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
@@ -278,34 +275,38 @@ public final class DBedwars extends PluginAdapter {
     private void initDatabase() {
         DatabaseType type;
         if (this.getConfigHandler().getDatabase().isValid())
-            type =
-                    ConfigurationUtils.matchEnum(
-                            this.getConfigHandler().getDatabase().getDatabase(),
-                            DatabaseType.values());
+            type = ConfigurationUtils.matchEnum(this.getConfigHandler().getDatabase().getDatabase(), DatabaseType.values());
         else type = DatabaseType.SQLite;
 
+
+
         if (type == DatabaseType.MYSQL) {
-            ConfigurableDatabase.ConfigurableMySQL cfg =
-                    this.getConfigHandler().getDatabase().getMySQL();
-            this.database =
-                    new MySQLBridge(
-                            this,
-                            cfg.getHost(),
-                            cfg.getPort(),
-                            cfg.getDatabaseName(),
-                            cfg.getUsername(),
-                            cfg.getPassword(),
-                            cfg.isReconnect(),
-                            cfg.isSsl());
+            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.MongoDB) {
-            ConfigurableDatabase.ConfigurableMongoDB cfg =
-                    this.getConfigHandler().getDatabase().getMongoDB();
-            this.database = new MongoDBBridge(cfg.getHost(), cfg.getPort(), cfg.getDatabaseName());
+            this.loadLibrary(ExternalLibrary.MONGO_DATABASE);
+            this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongoDB());
+        } else if (type == DatabaseType.H2) {
+            this.loadLibrary(ExternalLibrary.H2_DATABASE);
+            this.database = new H2DatabaseBridge();
+        } else if (type == DatabaseType.HikariCP) {
+            this.loadLibrary(ExternalLibrary.HIKARI_CP);
+            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMySQL());
+        } else if (type == DatabaseType.PostGreSQL) {
+            this.loadLibrary(ExternalLibrary.POSTGRESQL_DATABASE);
+            this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else {
-            this.database = new SQLiteBridge(this);
+            this.loadLibrary(ExternalLibrary.SQLITE_DATABASE);
+            this.database = new SQLiteBridge();
         }
 
         this.database.init();
+    }
+
+    private void loadLibrary(ExternalLibrary library) {
+        if (!library.exists()) {
+            library.download();
+        }
+        library.load();
     }
 
     private NMSAdaptor registerNMSAdaptor() {

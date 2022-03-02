@@ -7,6 +7,7 @@ import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
+import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
 import java.util.HashSet;
@@ -38,11 +39,17 @@ public class ConfigHandler {
     }
 
     public void initFiles() {
+        boolean shouldDownloadAll = !PluginFiles.LIBRARIES_CACHE.isDirectory();
+
         for (File folder : PluginFiles.getDirectories()) {
             if (!folder.isDirectory())
                 if (!folder.mkdirs()) {
                     this.plugin.getLogger().severe(String.format(ERROR_WRITE_FILE, folder.getName()));
                 }
+        }
+
+        if (shouldDownloadAll) {
+            ExternalLibrary.downloadAll();
         }
 
         for (File languageFile : PluginFiles.getLanguageFiles()) {

@@ -1,6 +1,9 @@
 package org.zibble.dbedwars.utils;
 
 import com.pepedevs.radium.utils.FileUtils;
+import com.pepedevs.radium.utils.reflection.resolver.MethodResolver;
+import com.pepedevs.radium.utils.reflection.resolver.ResolverQuery;
+import com.pepedevs.radium.utils.reflection.resolver.wrapper.MethodWrapper;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
@@ -8,11 +11,17 @@ import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.configuration.PluginFiles;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class PluginFileUtils {
+
+    public static MethodWrapper ADD_URL_METHOD = new MethodResolver(URLClassLoader.class)
+            .resolveWrapper(ResolverQuery.builder().with("addUrl", URL.class).build());
 
     public static FileConfiguration set(File file, String key, Object value) {
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);
@@ -51,8 +60,7 @@ public class PluginFileUtils {
                 }
             }
 
-            if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1)
-                    && poi.isDirectory()) {
+            if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1) && poi.isDirectory()) {
 
                 files = poi.listFiles();
                 for (File current : files) {
@@ -98,9 +106,7 @@ public class PluginFileUtils {
         if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1)
                 && poi.exists()) {
             for (File current : poi.listFiles()) {
-                if (current != null
-                        && current.getName() != null
-                        && current.getName().endsWith(".mca")) {
+                if (current != null && current.getName().endsWith(".mca")) {
                     current.delete();
                 }
             }
@@ -125,11 +131,8 @@ public class PluginFileUtils {
             int count;
             while ((entry = zip.getNextEntry()) != null) {
 
-                String sub =
-                        (!entry.getName().contains("/") && !entry.getName().contains("\\")
-                                        ? region_dbw.getName() + "/"
-                                        : "")
-                                + entry.getName();
+                String sub = (!entry.getName().contains("/") && !entry.getName().contains("\\") ? region_dbw.getName() + "/" : "")
+                        + entry.getName();
                 File subFile = new File(worldFolder, sub);
                 if (subFile.exists()) {
                     subFile.delete();
@@ -157,13 +160,11 @@ public class PluginFileUtils {
 
     public static void saveZip(File folder, File worldFolder, ZipOutputStream zip) {
         for (File current : folder.listFiles()) {
-            if (current.isDirectory()) saveZip(current, worldFolder, zip);
+            if (current.isDirectory())
+                saveZip(current, worldFolder, zip);
             else {
                 try {
-                    zip.putNextEntry(
-                            new ZipEntry(
-                                    current.getAbsolutePath()
-                                            .replace(worldFolder.getAbsolutePath(), "")));
+                    zip.putNextEntry(new ZipEntry(current.getAbsolutePath().replace(worldFolder.getAbsolutePath(), "")));
                     FileUtils.copyFile(current, zip);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -171,4 +172,28 @@ public class PluginFileUtils {
             }
         }
     }
+
+    public static boolean downloadFile(String url, File file) {
+        try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void loadJar(File file) {
+        try {
+            ADD_URL_METHOD.invoke(DBedwars.class.getClassLoader(), file.toURI().toURL());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

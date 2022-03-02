@@ -136,6 +136,12 @@ public class ConfigurableDatabase implements Loadable {
         @LoadableEntry(key = "database-name")
         private String databaseName;
 
+        @LoadableEntry(key = "username")
+        private String username;
+
+        @LoadableEntry(key = "password")
+        private String password;
+
         @Override
         public Loadable load(ConfigurationSection section) {
             return this.loadEntries(section);
@@ -163,14 +169,25 @@ public class ConfigurableDatabase implements Loadable {
             return databaseName;
         }
 
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
         @Override
         public String toString() {
             return "ConfigurableMongoDB{" +
                     "host='" + host + '\'' +
                     ", port=" + port +
                     ", databaseName='" + databaseName + '\'' +
+                    ", username='" + username + '\'' +
+                    ", password='" + password + '\'' +
                     '}';
         }
+
     }
 
     @Override

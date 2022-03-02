@@ -3,11 +3,10 @@ package org.zibble.dbedwars.database.bridge;
 import org.apache.commons.io.IOUtils;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.database.Database;
-import org.zibble.dbedwars.database.data.table.DataTable;
+import org.zibble.dbedwars.database.data.PlayerDataCache;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
-import org.zibble.dbedwars.database.data.PlayerDataCache;
+import org.zibble.dbedwars.database.data.table.DataTable;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
 import java.io.IOException;
@@ -22,6 +21,7 @@ import java.util.function.Consumer;
 public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     private final SQLDatabase database;
+    private boolean initialized;
 
     public SQLDatabaseBridge(SQLDatabase database) {
         this.database = database;
@@ -29,12 +29,18 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     @Override
     public void init() {
+        if (this.initialized) {
+            throw new IllegalStateException("Database already initialized!");
+        }
+
         try {
             this.database.connect();
             this.querySQLFile("sql/stats_database_init.sql", this.database::executeAsync);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        this.initialized = true;
     }
 
     @Override
@@ -87,7 +93,11 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
     }
 
     @Override
-    public Database getHandle() {
+    public boolean isInitialized() {
+        return this.initialized;
+    }
+
+    public SQLDatabase getDatabase() {
         return this.database;
     }
 
