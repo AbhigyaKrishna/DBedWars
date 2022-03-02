@@ -1,6 +1,5 @@
 package org.zibble.dbedwars;
 
-import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.pepedevs.radium.utils.ServerPropertiesUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
@@ -18,7 +17,7 @@ import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.plugin.PluginAdapter;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.api.version.Version;
-import org.zibble.dbedwars.commands.BedwarsCommand;
+import org.zibble.dbedwars.commands.framework.CommandRegistryImpl;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
@@ -56,6 +55,7 @@ public final class DBedwars extends PluginAdapter {
 
     private Messaging messaging;
     private TranslationRegistryImpl actionRegistry;
+    private CommandRegistryImpl commandRegistry;
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
 
@@ -82,6 +82,7 @@ public final class DBedwars extends PluginAdapter {
         this.featureManager.registerDefaults();
         this.actionRegistry = new TranslationRegistryImpl();
         this.actionRegistry.registerDefaults();
+        this.commandRegistry = new CommandRegistryImpl(this);
         this.messaging = new Messaging(this);
         this.messaging.init(this.getServer().getConsoleSender());
 
@@ -194,10 +195,10 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands() {
-        PaperCommandManager manager = new PaperCommandManager(this);
+        this.commandRegistry.registerInBukkit();
+        /*PaperCommandManager manager = new PaperCommandManager(this);
         manager.enableUnstableAPI("help");
-        manager.registerCommand(new BedwarsCommand(this));
-
+        manager.registerCommand(new BedwarsCommand(this));*/
         return true;
     }
 

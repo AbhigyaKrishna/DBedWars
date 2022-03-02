@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
 
@@ -32,7 +33,7 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
     private final UserProfile userProfile;
     private final WrapperPlayServerPlayerInfo.PlayerData info;
 
-    public PlayerNPCImpl(String ID, Location location, Component name, NPCData npcData, SkinData skinData) {
+    public PlayerNPCImpl(String ID, Location location, NPCData npcData, SkinData skinData, Component name) {
         super(ID, location, npcData, name);
         this.skinData = skinData;
         this.userProfile = new UserProfile(this.getUUID(), "");
@@ -47,25 +48,25 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
     @Override
     public ActionFuture<PlayerNPC> setSkin(Skin skin) {
         return ActionFuture.supplyAsync(() -> {
-            this.userProfile.getTextureProperties().clear();
-            this.userProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
-            return this;
+            PlayerNPCImpl.this.userProfile.getTextureProperties().clear();
+            PlayerNPCImpl.this.userProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
+            return PlayerNPCImpl.this;
         });
     }
 
     @Override
     public ActionFuture<PlayerNPC> hideNameTag() {
         return ActionFuture.supplyAsync(() -> {
-            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.getUUID().toString().substring(0, 8),
+            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + PlayerNPCImpl.this.getUUID().toString().substring(0, 8),
                     WrapperPlayServerTeams.TeamMode.REMOVE,
                     Optional.empty(),
-                    this.userProfile.getName());
-            for (UUID uuid : this.shown) {
+                    PlayerNPCImpl.this.userProfile.getName());
+            for (UUID uuid : PlayerNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return this;
+            return PlayerNPCImpl.this;
         });
     }
 
@@ -75,13 +76,13 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
             WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + PlayerNPCImpl.this.getUUID().toString().substring(0, 8),
                     WrapperPlayServerTeams.TeamMode.CREATE,
                     Optional.empty(),
-                    this.userProfile.getName());
-            for (UUID uuid : this.shown) {
+                    PlayerNPCImpl.this.userProfile.getName());
+            for (UUID uuid : PlayerNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return this;
+            return PlayerNPCImpl.this;
         });
     }
 
@@ -90,14 +91,14 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(() -> {
             WrapperPlayServerPlayerInfo infoAddPacket = new WrapperPlayServerPlayerInfo(
                     WrapperPlayServerPlayerInfo.Action.ADD_PLAYER,
-                    this.info
+                    PlayerNPCImpl.this.info
             );
             for (UUID uuid : PlayerNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoAddPacket);
             }
-            return this;
+            return PlayerNPCImpl.this;
         });
     }
 
@@ -106,14 +107,14 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(() -> {
             WrapperPlayServerPlayerInfo infoRemovePlayer = new WrapperPlayServerPlayerInfo(
                     WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
-                    this.info
+                    PlayerNPCImpl.this.info
             );
-            for (UUID uuid : this.shown) {
+            for (UUID uuid : PlayerNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoRemovePlayer);
             }
-            return this;
+            return PlayerNPCImpl.this;
         });
     }
 
@@ -125,7 +126,7 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
     @Override
     public ActionFuture<PlayerNPC> updateSkinData() {
         return ActionFuture.supplyAsync(() -> {
-            EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildSkinDataByte(this.skinData));
+            EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildSkinDataByte(PlayerNPCImpl.this.skinData));
             switch (Version.SERVER_VERSION) {
                 case v1_8_R1:
                 case v1_8_R2:
@@ -157,18 +158,16 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
                 }
                 case v1_17_R1:
                 case v1_18_R1: {
-                    entityData.setIndex(6);
-                    entityData.setType(EntityDataTypes.ENTITY_POSE);
-                    entityData.setValue(EntityPose.CROUCHING);
+                    entityData.setIndex(17);
                 }
             }
-            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.getEntityID(), Collections.singletonList(entityData));
-            for (UUID uuid : this.shown) {
+            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(PlayerNPCImpl.this.getEntityID(), Collections.singletonList(entityData));
+            for (UUID uuid : PlayerNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return this;
+            return PlayerNPCImpl.this;
         });
     }
 

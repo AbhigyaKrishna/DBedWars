@@ -16,7 +16,7 @@ public class EntityNPCImpl extends BedwarsNPCImpl implements EntityNPC {
 
     private final EntityType entityType;
 
-    public EntityNPCImpl(String ID, EntityType entityType, Component name, Location location, NPCData npcData) {
+    public EntityNPCImpl(String ID, EntityType entityType, Location location, NPCData npcData, Component name) {
         super(ID, location, npcData, name);
         this.entityType = entityType;
     }
