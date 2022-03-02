@@ -47,7 +47,6 @@ public final class DBedwars extends PluginAdapter {
 
     private FeatureManager featureManager;
     private ConfigHandler configHandler;
-    private WorldHandler worldHandler;
     private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
@@ -173,7 +172,6 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
-        this.worldHandler = new WorldHandler(this);
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
@@ -226,10 +224,6 @@ public final class DBedwars extends PluginAdapter {
 
     public String getMainWorld() {
         return this.mainWorld;
-    }
-
-    public WorldHandler getGeneratorHandler() {
-        return this.worldHandler;
     }
 
     public CustomItemHandler getCustomItemHandler() {

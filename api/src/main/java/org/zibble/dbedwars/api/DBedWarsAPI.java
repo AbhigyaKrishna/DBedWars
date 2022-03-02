@@ -24,8 +24,6 @@ public abstract class DBedWarsAPI {
 
     public abstract GameManager getGameManager();
 
-    public abstract WorldAdaptor getGeneratorHandler();
-
     public abstract CustomItemHandler getCustomItemHandler();
 
     public abstract GuiHandler getGuiHandler();

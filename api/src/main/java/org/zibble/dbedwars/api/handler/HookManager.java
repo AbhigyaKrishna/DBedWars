@@ -5,10 +5,15 @@ import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
+import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 
 import java.util.List;
 
 public interface HookManager {
+
+    WorldAdaptor getWorldAdaptor();
+
+    void setWorldAdaptor(WorldAdaptor worldAdaptor);
 
     ScoreboardHook getScoreboardHook();
 

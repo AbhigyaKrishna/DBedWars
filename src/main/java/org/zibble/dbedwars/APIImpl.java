@@ -30,11 +30,6 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public WorldAdaptor getGeneratorHandler() {
-        return this.plugin.getGeneratorHandler().getWorldAdaptor();
-    }
-
-    @Override
     public CustomItemHandler getCustomItemHandler() {
         return this.plugin.getCustomItemHandler();
     }

@@ -103,7 +103,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
 
     @Override
     public ActionFuture<World> loadWorld() {
-        return this.plugin.getGeneratorHandler().getWorldAdaptor().loadWorldFromSave(
+        return this.plugin.getHookManager().getWorldAdaptor().loadWorldFromSave(
                 worldFileName,
                 String.format(WORlD_NAME_FORMAT, this.getName()),
                 this.getSettings().getWorldEnv());

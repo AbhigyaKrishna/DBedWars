@@ -27,7 +27,8 @@ public final class PacketUtils {
 
     private static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
 
-    private PacketUtils() {}
+    private PacketUtils() {
+    }
 
     public static int getFreeEntityId() {
         return EntityReflection.getFreeEntityId();
@@ -52,7 +53,7 @@ public final class PacketUtils {
         Validate.notNull(location);
         EntityData entityData = new EntityData(15, EntityDataTypes.BYTE, (byte) 0);
         WrapperPlayServerSpawnLivingEntity packet = new WrapperPlayServerSpawnLivingEntity(
-            entityId,
+                entityId,
                 UUID.randomUUID(),
                 entityType,
                 convert(location),

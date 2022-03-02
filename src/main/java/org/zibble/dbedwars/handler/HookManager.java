@@ -8,6 +8,7 @@ import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
+import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
@@ -17,6 +18,7 @@ import org.zibble.dbedwars.hooks.cmi.CMIHook;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
 import org.zibble.dbedwars.hooks.defaults.vanish.VanishImpl;
+import org.zibble.dbedwars.hooks.defaults.world.WorldAdaptorImpl;
 import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
 import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
 import org.zibble.dbedwars.hooks.nametagedit.NameTagEditHook;
@@ -41,6 +43,7 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     private final DBedwars plugin;
     private PluginDependence[] dependencies;
 
+    private WorldAdaptor worldAdaptor;
     private ScoreboardHook scoreboardHook;
     private PlaceholderHook placeholderHook;
     private VanishHook vanishHook;
@@ -72,6 +75,11 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     }
 
     public void load() {
+        if (SlimeWorldManagerHook.get().isEnabled())
+            this.worldAdaptor = SlimeWorldManagerHook.get();
+        else
+            this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
+
         this.scoreboardHook = new ScoreboardHookImpl();
         this.vanishHook = new VanishImpl();
 
@@ -97,6 +105,16 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
             nickNameHooks.add(NickNamerHook.get());
         if (VIPHideHook.get().isEnabled())
             nickNameHooks.add(VIPHideHook.get());
+    }
+
+    @Override
+    public WorldAdaptor getWorldAdaptor() {
+        return worldAdaptor;
+    }
+
+    @Override
+    public void setWorldAdaptor(WorldAdaptor worldAdaptor) {
+        this.worldAdaptor = worldAdaptor;
     }
 
     @Override

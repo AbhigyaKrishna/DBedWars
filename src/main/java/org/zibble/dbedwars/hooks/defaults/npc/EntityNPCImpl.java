@@ -3,6 +3,7 @@ package org.zibble.dbedwars.hooks.defaults.npc;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnLivingEntity;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -15,8 +16,8 @@ public class EntityNPCImpl extends BedwarsNPCImpl implements EntityNPC {
 
     private final EntityType entityType;
 
-    public EntityNPCImpl(String ID, EntityType entityType, Location location, NPCData npcData) {
-        super(ID, location, npcData);
+    public EntityNPCImpl(String ID, EntityType entityType, Component name, Location location, NPCData npcData) {
+        super(ID, location, npcData, name);
         this.entityType = entityType;
     }
 

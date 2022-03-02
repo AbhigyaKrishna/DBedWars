@@ -48,7 +48,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
         this.hologram = new HologramImpl(this.location.clone().add(0, 1, 0));
         this.hologram.setInverted(true);
-        this.hologram.addPage().addNewLine(name, 0.5F);
+        this.hologram.addPage().addNewTextLine(name);
     }
 
 
