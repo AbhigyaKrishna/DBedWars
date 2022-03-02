@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.configuration.configurablegui;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.inventory.item.action.ActionItem;
 import com.pepedevs.radium.gui.inventory.item.action.ItemAction;
 import com.pepedevs.radium.gui.inventory.item.action.ItemActionPriority;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.itemstack.ItemMetaBuilder;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.ClickType;

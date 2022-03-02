@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.task.implementations;
 
-import com.pepedevs.radium.utils.xseries.XBlock;
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XBlock;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.zibble.dbedwars.api.game.Arena;

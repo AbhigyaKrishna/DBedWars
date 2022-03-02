@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.game.setup;
 
-import com.pepedevs.radium.utils.xseries.XSound;
+import com.cryptomorin.xseries.XSound;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,7 +11,7 @@ import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.inventoryframework.menu.inventory.AnvilMenu;
 
@@ -40,7 +40,7 @@ public class SetupSession {
         this.player.setGameMode(GameMode.CREATIVE);
         this.player.setAllowFlight(true);
         this.player.setFlying(true);
-        Message startMessage = Lang.SETUP_START.asMessage();
+        Message startMessage = ConfigLang.SETUP_START.asMessage();
         startMessage.addPlaceholders(PlaceholderEntry.symbol("world", this.world.getName()));
         this.playerMember.sendMessage(startMessage, true);
         this.promptArenaCustomNameSet();
@@ -48,7 +48,7 @@ public class SetupSession {
 
     public void promptArenaCustomNameSet() {
         AnvilMenu menu = new AnvilMenu();
-        Message message = Lang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
+        Message message = ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
         menu.setOutputClick(s -> {
             this.dataHolder.setArenaCustomName(s);
             message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
@@ -59,28 +59,28 @@ public class SetupSession {
         menu.onClose(player -> {
             this.dataHolder.setArenaCustomName(this.world.getName());
             message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", this.world.getName()));
-            this.playerMember.sendMessage(Lang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage(), true);
+            this.playerMember.sendMessage(ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage(), true);
         });
     }
 
     public void promptCleanupWorldEntity() {
-        this.playerMember.sendMessage(Lang.SETUP_WORLD_CLEANUP_PROMPT.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_PROMPT.asMessage(), true);
     }
 
     public void cleanupWorldEntities() {
         this.world.getEntities().forEach(entity -> {
             if (!SetupUtil.isAllowedEntity(entity)) entity.remove();
         });
-        this.playerMember.sendMessage(Lang.SETUP_WORLD_CLEANUP_CLEANING.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage(), true);
     }
 
     public void disableMobSpawning() {
         this.world.setGameRuleValue("doMobSpawning", "false");
-        this.playerMember.sendMessage(Lang.SETUP_WORLD_MOB_SPAWNING_DISABLED.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_MOB_SPAWNING_DISABLED.asMessage(), true);
     }
 
     public void promptSetupWaitingLocation() {
-        this.playerMember.sendMessage(Lang.SETUP_WAITING_LOCATION_PROMPT.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WAITING_LOCATION_PROMPT.asMessage(), true);
     }
 
     public void setupWaitingLocation(Location location) {
@@ -98,37 +98,37 @@ public class SetupSession {
     }
 
     public void startSetupTeam(Color color) {
-        Message message = Lang.SETUP_TEAM_START.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_START.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
     public void setupTeamSpawn(Color color) {
-        Message message = Lang.SETUP_TEAM_SPAWN.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_SPAWN.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
     public void setupTeamShopNPC(Color color) {
-        Message message = Lang.SETUP_TEAM_SHOP.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_SHOP.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
     public void setupTeamUpgradesNPC(Color color) {
-        Message message = Lang.SETUP_TEAM_UPGRADES.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_UPGRADES.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
     public void setupBedLocation(Color color) {
-        Message message = Lang.SETUP_TEAM_BED.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_BED.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
     public void setupGenLocation(Color color) {
-        Message message = Lang.SETUP_TEAM_GEN.asMessage();
+        Message message = ConfigLang.SETUP_TEAM_GEN.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }

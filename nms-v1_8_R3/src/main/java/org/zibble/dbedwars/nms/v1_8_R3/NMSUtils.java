@@ -27,7 +27,6 @@ import org.zibble.dbedwars.api.objects.profile.Property;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class NMSUtils implements NMSAdaptor {

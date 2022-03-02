@@ -1,5 +1,5 @@
 -- Create table `PLAYER_STATS`
-CREATE TABLE IF NOT EXISTS `PLAYER_STATS`
+CREATE TABLE IF NOT EXISTS `player_stars`
 (
     `uuid` VARCHAR
 (

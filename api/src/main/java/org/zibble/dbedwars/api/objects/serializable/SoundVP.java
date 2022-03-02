@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import com.pepedevs.radium.utils.xseries.XSound;
+import com.cryptomorin.xseries.XSound;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;

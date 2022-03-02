@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.guis.anvil;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.anvil.AnvilItem;
 import com.pepedevs.radium.gui.anvil.AnvilMenu;
 import com.pepedevs.radium.gui.anvil.action.AnvilItemClickAction;
 import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
 import com.pepedevs.radium.utils.StringUtils;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.DBedwars;

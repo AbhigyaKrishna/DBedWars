@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.utils;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.pepedevs.radium.utils.math.LocationUtils;
@@ -12,7 +13,6 @@ import com.pepedevs.radium.utils.reflection.resolver.minecraft.CraftClassResolve
 import com.pepedevs.radium.utils.reflection.resolver.minecraft.NMSClassResolver;
 import com.pepedevs.radium.utils.reflection.resolver.wrapper.ClassWrapper;
 import com.pepedevs.radium.utils.reflection.resolver.wrapper.MethodWrapper;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -33,7 +33,7 @@ import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.NBTUtils;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
 import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
 
@@ -187,10 +187,10 @@ public class Utils {
     }
 
     public static String getConfigCode(Color color) {
-        if (Lang.getTranslator() instanceof MiniMessageTranslator) {
+        if (ConfigLang.getTranslator() instanceof MiniMessageTranslator) {
             return color.getMiniCode();
-        }else if (Lang.getTranslator() instanceof LegacyTranslator) {
-            return "" + ((LegacyTranslator) Lang.getTranslator()).getCHAR() + color.getChatColor().getChar();
+        }else if (ConfigLang.getTranslator() instanceof LegacyTranslator) {
+            return "" + ((LegacyTranslator) ConfigLang.getTranslator()).getCHAR() + color.getChatColor().getChar();
         }
         return null;
     }

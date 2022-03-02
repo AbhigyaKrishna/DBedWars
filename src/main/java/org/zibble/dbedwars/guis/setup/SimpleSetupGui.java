@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.guis.setup;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.inventory.ItemMenu;
 import com.pepedevs.radium.gui.inventory.action.ItemClickAction;
 import com.pepedevs.radium.gui.inventory.item.action.ActionItem;
@@ -9,7 +10,6 @@ import com.pepedevs.radium.gui.inventory.size.ItemMenuSize;
 import com.pepedevs.radium.utils.StringUtils;
 import com.pepedevs.radium.utils.itemstack.stainedglass.StainedGlassItemStack;
 import com.pepedevs.radium.utils.itemstack.wool.WoolItemStack;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

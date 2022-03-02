@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.item;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -16,7 +16,7 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,8 +28,8 @@ public class BridgeEgg extends BedWarsActionItem {
     private final DBedwars plugin;
 
     public BridgeEgg(DBedwars plugin) {
-        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
-                Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore()),
                 XMaterial.EGG.parseMaterial());
         this.plugin = plugin;

@@ -7,9 +7,9 @@ public interface WorldAdaptor {
 
     ActionFuture<World> createWorld(String worldName, World.Environment environment);
 
-    ActionFuture<World> loadWorldFromFolder(String worldName);
+    ActionFuture<World> loadWorldFromFolder(String worldName, World.Environment environment);
 
-    ActionFuture<World> loadWorldFromSave(String fileName);
+    ActionFuture<World> loadWorldFromSave(String fileName, String worldName, World.Environment environment);
 
     boolean saveWorld(String worldName, String name);
 

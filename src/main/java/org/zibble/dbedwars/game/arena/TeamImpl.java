@@ -20,7 +20,7 @@ import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.traps.TrapEnum;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
@@ -143,7 +143,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
                 Optional.of(info), names);
         for (ArenaPlayer player : this.arena.getPlayers()) {
             TextComponent nameComponent = Component.text("[", this.getColor().getColorComponent())
-                    .append(Lang.valueOf("COLOR_" + this.getColor().getName()).asMessage().asComponentWithPAPI(player.getPlayer())[0]
+                    .append(ConfigLang.valueOf("COLOR_" + this.getColor().getName()).asMessage().asComponentWithPAPI(player.getPlayer())[0]
                             .color(this.getColor().getColorComponent()))
                     .append(Component.text("] ", this.getColor().getColorComponent()));
             info.setPrefix(nameComponent);

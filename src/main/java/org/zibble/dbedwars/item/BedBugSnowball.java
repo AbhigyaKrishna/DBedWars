@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.item;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
@@ -19,7 +19,7 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.Lang;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -30,8 +30,8 @@ public class BedBugSnowball extends BedWarsActionItem {
     private final DBedwars plugin;
 
     public BedBugSnowball(DBedwars plugin) {
-        super(Lang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
-                Lang.getTranslator().translate(
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
+                ConfigLang.getTranslator().translate(
                         plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore()),
                 XMaterial.SNOWBALL.parseMaterial());

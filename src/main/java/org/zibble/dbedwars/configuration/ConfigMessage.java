@@ -5,9 +5,11 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class ConfigMessage extends Message {
 
@@ -23,6 +25,10 @@ public class ConfigMessage extends Message {
         super(message, placeholders);
     }
 
+    protected ConfigMessage(Collection<String> message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
     protected ConfigMessage(String[] message, Placeholder... placeholders) {
         super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
@@ -33,7 +39,7 @@ public class ConfigMessage extends Message {
         Component[] components = new Component[this.message.size()];
         for (int i = 0; i < this.message.size(); i++) {
             String replaced = Messaging.get().setPlaceholders(this.message.get(i), entries);
-            components[i] = Lang.getTranslator().translate(replaced);
+            components[i] = ConfigLang.getTranslator().translate(replaced);
         }
         return components;
     }
@@ -45,8 +51,14 @@ public class ConfigMessage extends Message {
         for (int i = 0; i < this.message.size(); i++) {
             String replaced = Messaging.get().setPlaceholders(this.message.get(i), player, entries);
             String replacedWithPAPI = Messaging.get().setRegisteredPlaceholders(replaced, player);
-            components[i] = Lang.getTranslator().translate(replacedWithPAPI);
+            components[i] = ConfigLang.getTranslator().translate(replacedWithPAPI);
         }
         return components;
     }
+
+    @Override
+    public ConfigMessage clone() {
+        return new ConfigMessage(this.message, this.placeholders.toArray(new Placeholder[0]));
+    }
+
 }

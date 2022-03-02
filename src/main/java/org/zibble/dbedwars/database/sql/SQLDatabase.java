@@ -5,7 +5,10 @@ import org.zibble.dbedwars.database.Database;
 import org.zibble.dbedwars.database.DatabaseType;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public abstract class SQLDatabase extends Database {
 

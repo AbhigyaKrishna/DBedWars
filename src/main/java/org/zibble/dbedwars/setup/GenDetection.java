@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.setup;
 
-import com.pepedevs.radium.utils.xseries.XMaterial;
-import com.pepedevs.radium.utils.xseries.XTag;
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XTag;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

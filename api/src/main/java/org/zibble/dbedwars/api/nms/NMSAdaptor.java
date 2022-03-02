@@ -10,8 +10,6 @@ import org.bukkit.entity.Silverfish;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 
-import java.util.Collection;
-
 public interface NMSAdaptor {
 
     void clearRegionFileCache(World world);

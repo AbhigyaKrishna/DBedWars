@@ -3,10 +3,10 @@ package org.zibble.dbedwars.handler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
@@ -74,18 +74,18 @@ public class ConfigHandler {
     }
 
     public void initLanguage() {
-        Lang.init(this.mainConfiguration.getLangSection());
+        ConfigLang.init(this.mainConfiguration.getLangSection());
         boolean loaded = false;
         for (File languageFile : PluginFiles.LANGUAGES.listFiles()) {
             if (languageFile.getName().replace(".yml", "").equals(this.mainConfiguration.getLangSection().getServerLanguage())) {
                 loaded = true;
-                Lang.load(languageFile);
+                ConfigLang.load(languageFile);
                 break;
             }
         }
 
         if (!loaded)
-            Lang.load(PluginFiles.EN_US);
+            ConfigLang.load(PluginFiles.EN_US);
     }
 
     public void loadConfigurations() {

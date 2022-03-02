@@ -2,6 +2,7 @@ package org.zibble.dbedwars.api.handler;
 
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.task.Workload;
+import org.zibble.dbedwars.api.util.Duration;
 
 import java.util.Collection;
 
@@ -15,8 +16,8 @@ public interface ThreadHandler {
 
     void submitAsync(Collection<Workload> load);
 
-    CancellableWorkload runTaskLater(Runnable runnable, long delayMillis);
+    CancellableWorkload runTaskLater(Runnable runnable, Duration delay);
 
-    CancellableWorkload runTaskTimer(Runnable runnable, long interval);
+    CancellableWorkload runTaskTimer(Runnable runnable, Duration interval);
 
 }

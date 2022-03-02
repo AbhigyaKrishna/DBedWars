@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.game.arena.view.shoptest;
 
-import com.pepedevs.radium.utils.xseries.XItemStack;
+import com.cryptomorin.xseries.XItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;

@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.task.implementations;
 
+import com.cryptomorin.xseries.XBlock;
+import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.utils.xseries.XBlock;
-import com.pepedevs.radium.utils.xseries.XMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

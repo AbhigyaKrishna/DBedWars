@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import com.pepedevs.radium.utils.xseries.XPotion;
+import com.cryptomorin.xseries.XPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;

@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.task.implementations;
 
-import com.pepedevs.radium.utils.xseries.XBlock;
+import com.cryptomorin.xseries.XBlock;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

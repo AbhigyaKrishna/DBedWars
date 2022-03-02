@@ -24,8 +24,8 @@ import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.cache.InventoryBackup;
-import org.zibble.dbedwars.configuration.Lang;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
 import org.zibble.dbedwars.utils.Utils;
 
@@ -86,7 +86,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         PlayerKillEvent event;
         if (this.team.isBedBroken()) {
             // Get message from config
-            event = new PlayerFinalKillEvent(this, this.getLastHitTagged(), this.arena, reason, Lang.FINAL_KILL_MESSAGE.asMessage());
+            event = new PlayerFinalKillEvent(this, this.getLastHitTagged(), this.arena, reason, ConfigLang.FINAL_KILL_MESSAGE.asMessage());
             event.call();
             if (event.isCancelled()) return;
 
@@ -204,11 +204,11 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         // TODO: add placeholders
         List<Message> lines = new ArrayList<>();
         for (String s : cfg.getContent()) {
-            lines.add(Lang.getTranslator().asMessage(s));
+            lines.add(ConfigLang.getTranslator().asMessage(s));
         }
         this.scoreboard = this.plugin.getHookManager().getScoreboardHook().createDynamicScoreboard(
                 this.getPlayer(),
-                Lang.getTranslator().asMessage(cfg.getTitle()),
+                ConfigLang.getTranslator().asMessage(cfg.getTitle()),
                 lines,
                 Duration.ofMilliseconds(cfg.getUpdateTick() * 50L));
     }

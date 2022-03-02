@@ -2,7 +2,6 @@ package org.zibble.dbedwars.api.game.settings;
 
 import com.google.common.collect.Multimap;
 import org.bukkit.World;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;

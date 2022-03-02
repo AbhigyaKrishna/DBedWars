@@ -7,6 +7,7 @@ import org.zibble.dbedwars.api.messaging.Placeholder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class AdventureMessage extends Message {
 
@@ -38,6 +39,10 @@ public class AdventureMessage extends Message {
         super(message, placeholders);
     }
 
+    protected AdventureMessage(Collection<String> message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
     protected AdventureMessage(String[] message, Placeholder... placeholders) {
         super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
@@ -63,6 +68,11 @@ public class AdventureMessage extends Message {
             components[i] = Messaging.get().parseMini(replacedWithPAPI);
         }
         return components;
+    }
+
+    @Override
+    public AdventureMessage clone() {
+        return new AdventureMessage(this.message, this.placeholders.toArray(new Placeholder[0]));
     }
 
 }

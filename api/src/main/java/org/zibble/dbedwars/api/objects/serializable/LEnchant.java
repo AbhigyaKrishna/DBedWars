@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import com.pepedevs.radium.utils.xseries.XEnchantment;
+import com.cryptomorin.xseries.XEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 

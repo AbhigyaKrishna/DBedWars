@@ -1,8 +1,7 @@
 package org.zibble.dbedwars.action.objects;
 
 import org.zibble.dbedwars.api.action.Action;
-
-import java.time.Duration;
+import org.zibble.dbedwars.api.util.Duration;
 
 public class ProcessedActionHolder {
 

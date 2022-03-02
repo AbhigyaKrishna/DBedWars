@@ -14,5 +14,5 @@ dependencies {
     implementation 'de.tr7zw:nbt-data-api:2.8.0'
     implementation 'de.tr7zw:nbt-injector:2.8.0'
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
-    compileOnly 'com.github.cryptomorin:XSeries:8.6.1'
+    api 'com.github.cryptomorin:XSeries:8.6.2'
 }

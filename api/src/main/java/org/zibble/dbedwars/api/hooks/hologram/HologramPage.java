@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.util.ClickAction;
 
