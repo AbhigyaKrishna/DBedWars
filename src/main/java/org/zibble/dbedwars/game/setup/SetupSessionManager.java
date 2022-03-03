@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SetupSessionManager {
 
-    private final Map<UUID, SetupSession> onGoingSessions;
+    private final Map<UUID, SetupSessionImpl> onGoingSessions;
     private final DBedwars plugin;
 
     public SetupSessionManager(DBedwars plugin) {
@@ -19,7 +19,7 @@ public class SetupSessionManager {
     }
 
     public void startSetupSession(World world, Player player) {
-        SetupSession setupSession = new SetupSession(world, player);
+        SetupSessionImpl setupSession = new SetupSessionImpl(world, player);
         setupSession.init();
         this.onGoingSessions.put(player.getUniqueId(), setupSession);
     }
@@ -28,7 +28,7 @@ public class SetupSessionManager {
         return this.onGoingSessions.containsKey(player.getUniqueId());
     }
 
-    public SetupSession getSetupSessionOf(Player player) {
+    public SetupSessionImpl getSetupSessionOf(Player player) {
         return this.onGoingSessions.get(player.getUniqueId());
     }
 

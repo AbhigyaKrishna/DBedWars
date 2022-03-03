@@ -6,6 +6,17 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 
 public enum PluginLang implements Lang {
 
+    HOLOGRAM_SETUP_TEAM_SPAWN(),
+    HOLOGRAM_SETUP_TEAM_SHOP(),
+    HOLOGRAM_SETUP_TEAM_UPGRADES(),
+    HOLOGRAM_SETUP_TEAM_BED(),
+    HOLOGRAM_SETUP_TEAM_GEN(),
+    SETUP_TEAM_SPAWN(),
+    SETUP_TEAM_SHOP(),
+    SETUP_TEAM_UPGRADES(),
+    SETUP_TEAM_BED(),
+    SETUP_TEAM_GEN(),
+
     ;
 
     private final Message message;

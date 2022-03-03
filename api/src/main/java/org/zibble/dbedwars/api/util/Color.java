@@ -183,6 +183,7 @@ public enum Color {
     private final WoolColor woolColor;
     private final StainedGlassColor glassColor;
     private final DyeColor dyeColor;
+    private final java.awt.Color javaColor;
 
     Color(byte data,
           org.bukkit.Color color,
@@ -204,6 +205,7 @@ public enum Color {
         this.woolColor = woolColor;
         this.glassColor = glassColor;
         this.dyeColor = dyeColor;
+        this.javaColor = new java.awt.Color(color.asRGB());
     }
 
     public byte getData() {
@@ -244,6 +246,10 @@ public enum Color {
 
     public DyeColor getDyeColor() {
         return dyeColor;
+    }
+
+    public java.awt.Color asJavaColor() {
+        return new java.awt.Color(this.javaColor.getRGB());
     }
 
     public static Optional<Color> from(org.bukkit.Color color) {
