@@ -105,6 +105,13 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
             nickNameHooks.add(NickNamerHook.get());
         if (VIPHideHook.get().isEnabled())
             nickNameHooks.add(VIPHideHook.get());
+
+        this.worldAdaptor.init();
+        this.scoreboardHook.init();
+        this.placeholderHook.init();
+        this.vanishHook.init();
+        for (NickNameHook nickNameHook : this.nickNameHooks)
+            nickNameHook.init();
     }
 
     @Override
@@ -114,7 +121,11 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     @Override
     public void setWorldAdaptor(WorldAdaptor worldAdaptor) {
+        synchronized (this) {
+            this.worldAdaptor.disable();
+        }
         this.worldAdaptor = worldAdaptor;
+        this.worldAdaptor.init();
     }
 
     @Override
@@ -124,7 +135,11 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     @Override
     public void setScoreboardHook(ScoreboardHook scoreboardHook) {
+        synchronized (this) {
+            this.scoreboardHook.disable();
+        }
         this.scoreboardHook = scoreboardHook;
+        this.scoreboardHook.init();
     }
 
     @Override
@@ -134,10 +149,11 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     @Override
     public void setVanishHook(VanishHook vanishHook) {
-        if (this.vanishHook instanceof VanishImpl) {
-            HandlerList.unregisterAll((VanishImpl) this.vanishHook);
+        synchronized (this) {
+            this.vanishHook.disable();
         }
         this.vanishHook = vanishHook;
+        this.vanishHook.init();
     }
 
     @Override
@@ -161,7 +177,11 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
 
     @Override
     public void setPlaceholderHook(PlaceholderHook placeholderHook) {
+        synchronized (this) {
+            this.placeholderHook.disable();
+        }
         this.placeholderHook = placeholderHook;
+        this.placeholderHook.init();
     }
 
     public PluginDependence[] getDependencies() {

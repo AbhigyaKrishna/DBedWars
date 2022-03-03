@@ -1,6 +1,5 @@
-package org.zibble.dbedwars.hooks.citizens.npc;
+package org.zibble.dbedwars.hooks.citizens;
 
-import com.pepedevs.radium.npc.action.NPCClickAction;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
@@ -13,25 +12,26 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.util.ClickAction;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Supplier;
+import java.util.*;
 
 public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     //TODO INIT
+    private final CitizensHook hook;
     private Hologram hologram;
     private Location location;
     private final NPCData npcData;
 
     private NPC citizensNPC;
+    private final Set<ClickAction> clickActions;
 
     public BedwarsNPCImpl(Location location, NPCData npcData, Component name) {
+        this.hook = CitizensHook.get();
         this.location = location;
         this.npcData = npcData;
+        this.clickActions = new HashSet<>();
         this.citizensNPC = this.createNPC();
     }
 
@@ -42,19 +42,20 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> spawn() {
+        this.hook.getNpcs().add(this);
         return ActionFuture.supplyAsync(() -> {
-            if (BedwarsNPCImpl.this.citizensNPC == null) BedwarsNPCImpl.this.citizensNPC = BedwarsNPCImpl.this.createNPC();
-            BedwarsNPCImpl.this.citizensNPC.spawn(location, SpawnReason.PLUGIN);
-            return BedwarsNPCImpl.this;
+            if (this.citizensNPC == null) this.citizensNPC = this.createNPC();
+            this.citizensNPC.spawn(location, SpawnReason.PLUGIN);
+            return this;
         });
     }
 
     @Override
     public ActionFuture<BedwarsNPC> teleport(Location location) {
         return ActionFuture.supplyAsync(() -> {
-            BedwarsNPCImpl.this.location = location;
-            BedwarsNPCImpl.this.citizensNPC.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            return BedwarsNPCImpl.this;
+            this.location = location;
+            this.citizensNPC.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            return this;
         });
     }
 
@@ -80,21 +81,19 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     @Override
     public ActionFuture<BedwarsNPC> lookAt(Location location) {
         return ActionFuture.supplyAsync(() -> {
-            BedwarsNPCImpl.this.location.setDirection((location.toVector().subtract(BedwarsNPCImpl.this.location.toVector())));
-            BedwarsNPCImpl.this.citizensNPC.faceLocation(location);
-            return BedwarsNPCImpl.this;
+            this.location.setDirection((location.toVector().subtract(this.location.toVector())));
+            this.citizensNPC.faceLocation(location);
+            return this;
         });
     }
 
     @Override
     public ActionFuture<BedwarsNPC> destroy() {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                BedwarsNPCImpl.this.citizensNPC.destroy();
-                BedwarsNPCImpl.this.citizensNPC = null;
-                return BedwarsNPCImpl.this;
-            }
+        return ActionFuture.supplyAsync(() -> {
+            this.citizensNPC.destroy();
+            this.citizensNPC = null;
+            this.hook.getNpcs().remove(this);
+            return this;
         });
     }
 
@@ -118,14 +117,13 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     }
 
     @Override
-    public Collection<NPCClickAction> getClickActions() {
-        //TODO
-        return null;
+    public Collection<ClickAction> getClickActions() {
+        return Collections.unmodifiableSet(this.clickActions);
     }
 
     @Override
-    public void addClickAction(NPCClickAction action) {
-        //TODO
+    public void addClickAction(ClickAction action) {
+        this.clickActions.add(action);
     }
 
     @Override
@@ -135,22 +133,19 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> updateNPCData() {
-        return ActionFuture.supplyAsync(new Supplier<BedwarsNPC>() {
-            @Override
-            public BedwarsNPC get() {
-                if (BedwarsNPCImpl.this.npcData.isCrouched()) {
-                    BedwarsNPCImpl.this.citizensNPC.getOrAddTrait(CitizensAPI.getTraitFactory().getTrait("sneak").getClass());
-                } else {
-                    BedwarsNPCImpl.this.citizensNPC.removeTrait(CitizensAPI.getTraitFactory().getTrait("sneak").getClass());
-                }
-
-                if (BedwarsNPCImpl.this.npcData.isOnFire()) {
-                    BedwarsNPCImpl.this.citizensNPC.getEntity().setFireTicks(Integer.MAX_VALUE);
-                } else {
-                    BedwarsNPCImpl.this.citizensNPC.getEntity().setFireTicks(0);
-                }
-                return BedwarsNPCImpl.this;
+        return ActionFuture.supplyAsync(() -> {
+            if (this.npcData.isCrouched()) {
+                this.citizensNPC.getOrAddTrait(CitizensAPI.getTraitFactory().getTrait("sneak").getClass());
+            } else {
+                this.citizensNPC.removeTrait(CitizensAPI.getTraitFactory().getTrait("sneak").getClass());
             }
+
+            if (this.npcData.isOnFire()) {
+                this.citizensNPC.getEntity().setFireTicks(Integer.MAX_VALUE);
+            } else {
+                this.citizensNPC.getEntity().setFireTicks(0);
+            }
+            return this;
         });
     }
 

@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.hooks.defaults.scoreboard;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
@@ -45,6 +46,15 @@ public class ScoreboardHookImpl implements ScoreboardHook {
             return;
 
         scoreboard.hide();
+    }
+
+    @Override
+    public void disable() {
+        for (UUID uuid : this.scoreboards.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            this.removeScoreboard(player);
+        }
     }
 
 }

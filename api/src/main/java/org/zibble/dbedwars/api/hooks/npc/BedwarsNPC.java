@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.api.hooks.npc;
 
-import com.pepedevs.radium.npc.action.NPCClickAction;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.Collection;
 import java.util.Set;
@@ -35,9 +35,9 @@ public interface BedwarsNPC {
 
     ActionFuture<BedwarsNPC> show(Player player);
 
-    Collection<NPCClickAction> getClickActions();
+    Collection<ClickAction> getClickActions();
 
-    void addClickAction(NPCClickAction action);
+    void addClickAction(ClickAction action);
 
     NPCData getNpcData();
 

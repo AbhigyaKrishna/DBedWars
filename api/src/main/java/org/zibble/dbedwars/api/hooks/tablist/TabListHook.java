@@ -3,10 +3,11 @@ package org.zibble.dbedwars.api.hooks.tablist;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.hooks.Hook;
 
 import java.util.UUID;
 
-public interface TabListHook {
+public interface TabListHook extends Hook {
 
     void initTabForGame(@NotNull Arena arena);
 

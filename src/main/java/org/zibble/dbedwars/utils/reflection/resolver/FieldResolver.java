@@ -1,11 +1,9 @@
 package org.zibble.dbedwars.utils.reflection.resolver;
 
-import org.zibble.dbedwars.utils.reflection.accessor.FieldAccessor;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 
 import java.lang.reflect.Field;
 
-/** Resolver for fields */
 public class FieldResolver extends MemberResolver<Field> {
 
     public FieldResolver(Class<?> clazz) {
@@ -32,32 +30,17 @@ public class FieldResolver extends MemberResolver<Field> {
         return null;
     }
 
-    @Deprecated
     @Override
     public FieldWrapper resolveIndexWrapper(int index) {
-        return new FieldWrapper<>(this.resolveIndexSilent(index));
+        return new FieldWrapper(this.resolveIndexSilent(index));
     }
 
-    @Deprecated
     public FieldWrapper resolveWrapper(String... names) {
-        return new FieldWrapper<>(this.resolveSilent(names));
+        return new FieldWrapper(this.resolveSilent(names));
     }
 
-    @Deprecated
     public FieldWrapper resolveWrapper(ResolverQuery... queries) {
-        return new FieldWrapper<>(this.resolveSilent(queries));
-    }
-
-    public FieldAccessor resolveIndexAccessor(int index) {
-        return new FieldAccessor(this.resolveIndexSilent(index));
-    }
-
-    public FieldAccessor resolveAccessor(String... names) {
-        return new FieldAccessor(this.resolveSilent(names));
-    }
-
-    public FieldAccessor resolveAccessor(ResolverQuery... queries) {
-        return new FieldAccessor(this.resolveSilent(queries));
+        return new FieldWrapper(this.resolveSilent(queries));
     }
 
     public Field resolveSilent(String... names) {
@@ -134,12 +117,11 @@ public class FieldResolver extends MemberResolver<Field> {
                 return field;
             }
         }
-        throw new NoSuchFieldException(
-                "Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
+        throw new NoSuchFieldException("Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
     }
 
-    public FieldAccessor resolveByFirstTypeAccessor(Class<?> type) {
-        return new FieldAccessor(this.resolveByFirstTypeSilent(type));
+    public FieldWrapper resolveByFirstTypeAccessor(Class<?> type) {
+        return new FieldWrapper(this.resolveByFirstTypeSilent(type));
     }
 
     /**
@@ -157,14 +139,6 @@ public class FieldResolver extends MemberResolver<Field> {
         return null;
     }
 
-    /**
-     * Attempts to find the first field which extends/implements the specified type
-     *
-     * @param type Type to find
-     * @return the Field
-     * @throws ReflectiveOperationException (usually never)
-     * @see #resolveByLastType(Class)
-     */
     public Field resolveByFirstExtendingType(Class<?> type) throws ReflectiveOperationException {
         for (Field field : this.clazz.getDeclaredFields()) {
             if (type.isAssignableFrom(field.getType())) {
@@ -172,17 +146,9 @@ public class FieldResolver extends MemberResolver<Field> {
                 return field;
             }
         }
-        throw new NoSuchFieldException(
-                "Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
+        throw new NoSuchFieldException("Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
     }
 
-    /**
-     * Attempts to find the first field which extends/implements the specified type
-     *
-     * @param type Type to find
-     * @return the Field
-     * @see #resolveByLastTypeSilent(Class)
-     */
     public Field resolveByFirstExtendingTypeSilent(Class<?> type) {
         try {
             return this.resolveByFirstExtendingType(type);
@@ -191,18 +157,10 @@ public class FieldResolver extends MemberResolver<Field> {
         return null;
     }
 
-    public FieldAccessor resolveByFirstExtendingTypeAccessor(Class<?> type) {
-        return new FieldAccessor(this.resolveByFirstExtendingTypeSilent(type));
+    public FieldWrapper resolveByFirstExtendingTypeAccessor(Class<?> type) {
+        return new FieldWrapper(this.resolveByFirstExtendingTypeSilent(type));
     }
 
-    /**
-     * Attempts to find the last field of the specified type
-     *
-     * @param type Type to find
-     * @return the Field
-     * @throws ReflectiveOperationException (usually never)
-     * @see #resolveByFirstType(Class)
-     */
     public Field resolveByLastType(Class<?> type) throws ReflectiveOperationException {
         Field field = null;
         for (Field field1 : this.clazz.getDeclaredFields()) {
@@ -211,11 +169,7 @@ public class FieldResolver extends MemberResolver<Field> {
             }
         }
         if (field == null) {
-            throw new NoSuchFieldException(
-                    "Could not resolve field of type '"
-                            + type.toString()
-                            + "' in class "
-                            + this.clazz);
+            throw new NoSuchFieldException("Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
         }
         field.setAccessible(true);
         return field;
@@ -229,18 +183,10 @@ public class FieldResolver extends MemberResolver<Field> {
         return null;
     }
 
-    public FieldAccessor resolveByLastTypeAccessor(Class<?> type) {
-        return new FieldAccessor(resolveByLastTypeSilent(type));
+    public FieldWrapper resolveByLastTypeAccessor(Class<?> type) {
+        return new FieldWrapper(resolveByLastTypeSilent(type));
     }
 
-    /**
-     * Attempts to find the last field which extends/implements the specified type
-     *
-     * @param type Type to find
-     * @return the Field
-     * @throws ReflectiveOperationException (usually never)
-     * @see #resolveByFirstType(Class)
-     */
     public Field resolveByLastExtendingType(Class<?> type) throws ReflectiveOperationException {
         Field field = null;
         for (Field field1 : this.clazz.getDeclaredFields()) {
@@ -249,11 +195,7 @@ public class FieldResolver extends MemberResolver<Field> {
             }
         }
         if (field == null) {
-            throw new NoSuchFieldException(
-                    "Could not resolve field of type '"
-                            + type.toString()
-                            + "' in class "
-                            + this.clazz);
+            throw new NoSuchFieldException("Could not resolve field of type '" + type.toString() + "' in class " + this.clazz);
         }
         field.setAccessible(true);
         return field;
@@ -267,13 +209,13 @@ public class FieldResolver extends MemberResolver<Field> {
         return null;
     }
 
-    public FieldAccessor resolveByLastExtendingTypeAccessor(Class<?> type) {
-        return new FieldAccessor(this.resolveByLastExtendingTypeSilent(type));
+    public FieldWrapper resolveByLastExtendingTypeAccessor(Class<?> type) {
+        return new FieldWrapper(this.resolveByLastExtendingTypeSilent(type));
     }
 
     @Override
     protected NoSuchFieldException notFoundException(String joinedNames) {
-        return new NoSuchFieldException(
-                "Could not resolve field for " + joinedNames + " in class " + this.clazz);
+        return new NoSuchFieldException("Could not resolve field for " + joinedNames + " in class " + this.clazz);
     }
+
 }

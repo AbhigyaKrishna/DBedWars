@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.hooks.citizens.npc;
+package org.zibble.dbedwars.hooks.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;

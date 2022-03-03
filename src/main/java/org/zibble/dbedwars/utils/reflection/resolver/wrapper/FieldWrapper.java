@@ -1,14 +1,153 @@
 package org.zibble.dbedwars.utils.reflection.resolver.wrapper;
 
-import java.lang.reflect.Field;
-import java.util.Objects;
+import org.zibble.dbedwars.utils.reflection.DataType;
+import sun.misc.Unsafe;
 
-public class FieldWrapper<R> extends WrapperAbstract {
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+
+public class FieldWrapper extends WrapperAbstract {
 
     private final Field field;
 
     public FieldWrapper(Field field) {
         this.field = field;
+        field.setAccessible(true);
+    }
+
+    private static void setField(Object object, Object value, Field foundField) {
+        boolean isStatic = (foundField.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
+        if (isStatic) {
+            setStaticFieldUsingUnsafe(foundField, value);
+        } else {
+            setFieldUsingUnsafe(foundField, object, value);
+        }
+    }
+
+    private static void setStaticFieldUsingUnsafe(final Field field, final Object newValue) {
+        try {
+            field.setAccessible(true);
+            int fieldModifiersMask = field.getModifiers();
+            boolean isFinalModifierPresent =
+                    (fieldModifiersMask & Modifier.FINAL) == Modifier.FINAL;
+            if (isFinalModifierPresent) {
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    try {
+                        Unsafe unsafe = getUnsafe();
+                        long offset = unsafe.staticFieldOffset(field);
+                        Object base = unsafe.staticFieldBase(field);
+                        setFieldUsingUnsafe(base, field.getType(), offset, newValue, unsafe);
+                        return null;
+                    } catch (Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                });
+            } else {
+                field.set(null, newValue);
+            }
+        } catch (SecurityException | IllegalAccessException | IllegalArgumentException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static void setFieldUsingUnsafe(final Field field, final Object object, final Object newValue) {
+        try {
+            field.setAccessible(true);
+            int fieldModifiersMask = field.getModifiers();
+            boolean isFinalModifierPresent = (fieldModifiersMask & Modifier.FINAL) == Modifier.FINAL;
+            if (isFinalModifierPresent) {
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    try {
+                        Unsafe unsafe = getUnsafe();
+                        long offset = unsafe.objectFieldOffset(field);
+                        setFieldUsingUnsafe(object, field.getType(), offset, newValue, unsafe);
+                        return null;
+                    } catch (Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                });
+            } else {
+                try {
+                    field.set(object, newValue);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        } catch (SecurityException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static Unsafe getUnsafe()
+            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
+            SecurityException {
+        Field field = Unsafe.class.getDeclaredField("theUnsafe");
+        field.setAccessible(true);
+        return (Unsafe) field.get(null);
+    }
+
+    private static void setFieldUsingUnsafe(Object base, Class<?> type, long offset, Object newValue, Unsafe unsafe) {
+        if (DataType.INTEGER.isType(type)) {
+            unsafe.putInt(base, offset, ((Integer) newValue));
+        } else if (DataType.SHORT.isType(type)) {
+            unsafe.putShort(base, offset, ((Short) newValue));
+        } else if (DataType.LONG.isType(type)) {
+            unsafe.putLong(base, offset, ((Long) newValue));
+        } else if (DataType.BYTE.isType(type)) {
+            unsafe.putByte(base, offset, ((Byte) newValue));
+        } else if (DataType.BOOLEAN.isType(type)) {
+            unsafe.putBoolean(base, offset, ((Boolean) newValue));
+        } else if (DataType.FLOAT.isType(type)) {
+            unsafe.putFloat(base, offset, ((Float) newValue));
+        } else if (DataType.DOUBLE.isType(type)) {
+            unsafe.putDouble(base, offset, ((Double) newValue));
+        } else if (DataType.CHARACTER.isType(type)) {
+            unsafe.putChar(base, offset, ((Character) newValue));
+        } else {
+            unsafe.putObject(base, offset, newValue);
+        }
+    }
+
+    public boolean isStatic() {
+        return Modifier.isStatic(field.getModifiers());
+    }
+
+    public boolean isPublic() {
+        return Modifier.isPublic(field.getModifiers());
+    }
+
+    public boolean isFinal() {
+        return Modifier.isFinal(field.getModifiers());
+    }
+
+    public <T> T get(Object obj) {
+        try {
+            return (T) field.get(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T> T getSilent(Object obj) {
+        try {
+            return (T) field.get(obj);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public <T> void set(Object obj, T value) {
+        setField(obj, value, field);
+    }
+
+    public Class<?> getType() {
+        return this.field.getType();
+    }
+
+    public Field getField() {
+        return this.field;
     }
 
     @Override
@@ -16,61 +155,4 @@ public class FieldWrapper<R> extends WrapperAbstract {
         return this.field != null;
     }
 
-    public String getName() {
-        return this.field.getName();
-    }
-
-    public R get(Object object) {
-        try {
-            return (R) this.field.get(object);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public R getSilent(Object object) {
-        try {
-            return (R) this.field.get(object);
-        } catch (IllegalAccessException ignored) {
-        }
-        return null;
-    }
-
-    public void set(Object object, R value) {
-        try {
-            this.field.set(object, value);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void setSilent(Object object, R value) {
-        try {
-            this.field.set(object, value);
-        } catch (IllegalAccessException ignored) {
-        }
-    }
-
-    public Field getField() {
-        return field;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-
-        FieldWrapper<?> that = (FieldWrapper<?>) object;
-
-        return Objects.equals(field, that.field);
-    }
-
-    @Override
-    public int hashCode() {
-        return field != null ? field.hashCode() : 0;
-    }
 }
