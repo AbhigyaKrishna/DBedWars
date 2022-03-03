@@ -33,9 +33,11 @@ public class ClassResolver extends ResolverAbstract<Class> {
 
     @Override
     protected Class resolveObject(ResolverQuery query) throws ReflectiveOperationException {
-        return CLASS_CACHE.containsKey(query.getName()) ?
-                CLASS_CACHE.get(query.getName()) :
-                CLASS_CACHE.put(query.getName(), Class.forName(query.getName()));
+        if (CLASS_CACHE.containsKey(query.getName())) {
+            return CLASS_CACHE.get(query.getName());
+        }
+        Class clazz = Class.forName(query.getName());
+        return CLASS_CACHE.put(query.getName(), clazz);
     }
 
     @Override

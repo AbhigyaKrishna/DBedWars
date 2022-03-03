@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.resolver;
 
 import org.zibble.dbedwars.utils.reflection.accessor.FieldAccessor;
-import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 
 import java.lang.reflect.Field;
@@ -19,7 +18,9 @@ public class FieldResolver extends MemberResolver<Field> {
 
     @Override
     public Field resolveIndex(int index) throws IndexOutOfBoundsException, ReflectiveOperationException {
-        return FieldReflection.setAccessible(this.clazz.getDeclaredFields()[index]);
+        Field field = this.clazz.getDeclaredFields()[index];
+        field.setAccessible(true);
+        return field;
     }
 
     @Override
@@ -96,7 +97,14 @@ public class FieldResolver extends MemberResolver<Field> {
     @Override
     protected Field resolveObject(ResolverQuery query) throws ReflectiveOperationException {
         if (query.getTypes() == null || query.getTypes().length == 0) {
-            return FieldReflection.getAccessible(this.clazz, query.getName());
+            Field field;
+            try {
+                field = this.clazz.getDeclaredField(query.getName());
+            } catch (NoSuchFieldException e) {
+                field = this.clazz.getField(query.getName());
+            }
+            field.setAccessible(true);
+            return field;
         } else {
             for (Field field : this.clazz.getDeclaredFields()) {
                 if (field.getName().equals(query.getName())) {
@@ -122,7 +130,8 @@ public class FieldResolver extends MemberResolver<Field> {
     public Field resolveByFirstType(Class<?> type) throws ReflectiveOperationException {
         for (Field field : this.clazz.getDeclaredFields()) {
             if (field.getType().equals(type)) {
-                return FieldReflection.setAccessible(field);
+                field.setAccessible(true);
+                return field;
             }
         }
         throw new NoSuchFieldException(
@@ -159,7 +168,8 @@ public class FieldResolver extends MemberResolver<Field> {
     public Field resolveByFirstExtendingType(Class<?> type) throws ReflectiveOperationException {
         for (Field field : this.clazz.getDeclaredFields()) {
             if (type.isAssignableFrom(field.getType())) {
-                return FieldReflection.setAccessible(field);
+                field.setAccessible(true);
+                return field;
             }
         }
         throw new NoSuchFieldException(
@@ -207,7 +217,8 @@ public class FieldResolver extends MemberResolver<Field> {
                             + "' in class "
                             + this.clazz);
         }
-        return FieldReflection.setAccessible(field);
+        field.setAccessible(true);
+        return field;
     }
 
     public Field resolveByLastTypeSilent(Class<?> type) {
@@ -244,7 +255,8 @@ public class FieldResolver extends MemberResolver<Field> {
                             + "' in class "
                             + this.clazz);
         }
-        return FieldReflection.setAccessible(field);
+        field.setAccessible(true);
+        return field;
     }
 
     public Field resolveByLastExtendingTypeSilent(Class<?> type) {

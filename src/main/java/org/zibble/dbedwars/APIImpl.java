@@ -3,7 +3,6 @@ package org.zibble.dbedwars;
 import com.pepedevs.radium.holograms.HologramManager;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.handler.*;
-import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.version.Version;
 
 public final class APIImpl extends DBedWarsAPI {

@@ -3,11 +3,9 @@ package org.zibble.dbedwars.utils.reflection.annotation;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.utils.reflection.accessor.FieldAccessor;
-import org.zibble.dbedwars.utils.reflection.resolver.ClassResolver;
-import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
-import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
-import org.zibble.dbedwars.utils.reflection.resolver.ResolverQuery;
+import org.zibble.dbedwars.utils.reflection.resolver.*;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 
@@ -23,7 +21,7 @@ public class ReflectionAnnotations {
     public static final ReflectionAnnotations INSTANCE = new ReflectionAnnotations();
 
     static final Pattern CLASS_REF_PATTERN = Pattern.compile("@Class\\((.*)\\)");
-    static final Pattern PARAMETER_PATTERN = Pattern.compile(".*\\((.*)\\)");
+    static final Pattern PARAMETER_PATTERN = Pattern.compile("(.*)\\((.*)\\)");
     static final Pattern COMMAS_PATTERN = Pattern.compile("([^,\\[]*\\[[^]]*])(?:,|$)|([^,\\[\\]]+(?:,|$))");
 
     ClassResolver classResolver = new ClassResolver();
@@ -36,16 +34,19 @@ public class ReflectionAnnotations {
 
     public <T> void load(@NotNull java.lang.Class<T> clazz, T toLoad) {
 
-        for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
-            Class classAnnotation = field.getAnnotation(Class.class);
-            Field fieldAnnotation = field.getAnnotation(Field.class);
-            Method methodAnnotation = field.getAnnotation(Method.class);
+        for (java.lang.reflect.Field f : clazz.getDeclaredFields()) {
+            Class classAnnotation = f.getAnnotation(Class.class);
+            Field fieldAnnotation = f.getAnnotation(Field.class);
+            Method methodAnnotation = f.getAnnotation(Method.class);
+            Constructor constructorAnnotation = f.getAnnotation(Constructor.class);
 
-            if (classAnnotation == null && fieldAnnotation == null && methodAnnotation == null) {
+            if (classAnnotation == null && fieldAnnotation == null && methodAnnotation == null && constructorAnnotation == null) {
                 continue;
             } else {
-                field.setAccessible(true);
+                f.setAccessible(true);
             }
+
+            FieldAccessor field = new FieldAccessor(f);
 
             if (classAnnotation != null) {
                 List<String> nameList = this.parseAnnotationVersions(Class.class, classAnnotation);
@@ -55,12 +56,12 @@ public class ReflectionAnnotations {
                     } else if (java.lang.Class.class.isAssignableFrom(field.getType())) {
                         field.set(toLoad, this.resolveClass(nameList, java.lang.Class.class));
                     } else {
-                        this.throwInvalidFieldType(field, clazz, "Class or ClassWrapper");
+                        this.throwInvalidFieldType(f, clazz, "Class or ClassWrapper");
                         return;
                     }
                 } catch (ReflectiveOperationException e) {
                     if (!classAnnotation.ignoreExceptions()) {
-                        this.throwReflectionException("@Class", field, clazz, e);
+                        this.throwReflectionException("@Class", f, clazz, e);
                         return;
                     }
                 }
@@ -70,7 +71,12 @@ public class ReflectionAnnotations {
                     throw new IllegalArgumentException("@Field names cannot be empty");
                 String[] names = nameList.toArray(new String[0]);
                 try {
-                    FieldResolver fieldResolver = new FieldResolver(this.parseClass(Field.class, fieldAnnotation, clazz, toLoad));
+                    FieldResolver fieldResolver;
+                    if (fieldAnnotation.className().isEmpty()) {
+                        fieldResolver = new FieldResolver(fieldAnnotation.clazz());
+                    } else {
+                        fieldResolver = new FieldResolver(this.parseClass(Field.class, fieldAnnotation, clazz, toLoad));
+                    }
                     if (FieldAccessor.class.isAssignableFrom(field.getType())) {
                         field.set(toLoad, fieldResolver.resolveAccessor(names));
                     } else if (FieldWrapper.class.isAssignableFrom(field.getType())) {
@@ -78,12 +84,12 @@ public class ReflectionAnnotations {
                     } else if (java.lang.reflect.Field.class.isAssignableFrom(field.getType())) {
                         field.set(toLoad, fieldResolver.resolve(names));
                     } else {
-                        this.throwInvalidFieldType(field, clazz, "Field, FieldWrapper, or FieldAccessor");
+                        this.throwInvalidFieldType(f, clazz, "Field, FieldWrapper, or FieldAccessor");
                         return;
                     }
                 } catch (ReflectiveOperationException e) {
                     if (!fieldAnnotation.ignoreExceptions()) {
-                        this.throwReflectionException("@Field", field, clazz, e);
+                        this.throwReflectionException("@Field", f, clazz, e);
                         return;
                     }
                 }
@@ -94,30 +100,57 @@ public class ReflectionAnnotations {
                 String[] names = nameList.toArray(new String[0]);
 
                 try {
-                    MethodResolver methodResolver = new MethodResolver(this.parseClass(Method.class, methodAnnotation, clazz, toLoad));
+                    MethodResolver methodResolver;
+                    if (methodAnnotation.className().isEmpty()) {
+                        methodResolver = new MethodResolver(methodAnnotation.clazz());
+                    } else {
+                        methodResolver = new MethodResolver(this.parseClass(Method.class, methodAnnotation, clazz, toLoad));
+                    }
                     ResolverQuery.Builder query = ResolverQuery.builder();
                     for (String name : names) {
                         Matcher matcher = PARAMETER_PATTERN.matcher(name);
-                        String parameters = matcher.matches() ? matcher.group(1) : "";
+                        String parameters = matcher.matches() ? matcher.group(2) : "";
+                        String s = matcher.matches() ? matcher.group(1) : name;
                         Matcher commasMatcher = COMMAS_PATTERN.matcher(parameters);
                         List<java.lang.Class<?>> parameterList = new ArrayList<>(commasMatcher.groupCount());
                         while (commasMatcher.find()) {
                             String p = commasMatcher.group().trim();
                             parameterList.add(this.resolveClass(Collections.singletonList(this.parseClass(p, clazz, toLoad)), java.lang.Class.class));
                         }
-                        query.with(name, parameterList.toArray(new java.lang.Class<?>[0]));
+                        query.with(s, parameterList.toArray(new java.lang.Class<?>[0]));
                     }
                     if (MethodWrapper.class.isAssignableFrom(field.getType())) {
                         field.set(toLoad, methodResolver.resolveWrapper(query.build()));
                     } else if (java.lang.reflect.Method.class.isAssignableFrom(field.getType())) {
                         field.set(toLoad, methodResolver.resolve(query.build()));
                     } else {
-                        this.throwInvalidFieldType(field, clazz, "Method or MethodWrapper");
+                        this.throwInvalidFieldType(f, clazz, "Method or MethodWrapper");
                         return;
                     }
                 } catch (ReflectiveOperationException e) {
                     if (!methodAnnotation.ignoreExceptions()) {
-                        this.throwReflectionException("@Method", field, clazz, e);
+                        this.throwReflectionException("@Method", f, clazz, e);
+                        return;
+                    }
+                }
+            } else if (constructorAnnotation != null) {
+                try {
+                    ConstructorResolver constructorResolver;
+                    if (constructorAnnotation.className().isEmpty()) {
+                        constructorResolver = new ConstructorResolver(constructorAnnotation.clazz());
+                    } else {
+                        constructorResolver = new ConstructorResolver(this.parseClass(Constructor.class, constructorAnnotation, clazz, toLoad));
+                    }
+                    if (ConstructorWrapper.class.isAssignableFrom(field.getType())) {
+                        field.set(toLoad, constructorResolver.resolveWrapper(constructorAnnotation.parameters()));
+                    } else if (java.lang.reflect.Constructor.class.isAssignableFrom(field.getType())) {
+                        field.set(toLoad, constructorResolver.resolve(constructorAnnotation.parameters()));
+                    } else {
+                        this.throwInvalidFieldType(f, clazz, "Constructor or ConstructorWrapper");
+                    }
+                } catch (ReflectiveOperationException e) {
+                    if (!constructorAnnotation.ignoreExceptions()) {
+                        this.throwReflectionException("@Constructor", f, clazz, e);
                         return;
                     }
                 }
@@ -144,33 +177,39 @@ public class ReflectionAnnotations {
     <A extends Annotation> List<String> parseAnnotationVersions(java.lang.Class<A> clazz, A annotation) {
         List<String> list = new ArrayList<>();
 
-        try {
-            String[] names = (String[]) clazz.getMethod("value").invoke(annotation);
-            Version[] versions = (Version[]) clazz.getMethod("versions").invoke(annotation);
+        String[] names = new String[0];
+        Version[] versions = new Version[0];
+        if (annotation instanceof Class) {
+            names = ((Class) annotation).value();
+            versions = ((Class) annotation).versions();
+        } else if (annotation instanceof Method) {
+            names = ((Method) annotation).value();
+            versions = ((Method) annotation).versions();
+        } else if (annotation instanceof Field) {
+            names = ((Field) annotation).value();
+            versions = ((Field) annotation).versions();
+        }
 
-            if (versions.length == 0) { // No versions specified -> directly use the names
-                Collections.addAll(list, names);
-            } else {
-                if (versions.length > names.length) {
-                    throw new RuntimeException(
-                            "versions array cannot have more elements than the names ("
-                                    + clazz
-                                    + ")");
-                }
-                for (int i = 0; i < versions.length; i++) {
-                    if (Version.SERVER_VERSION == versions[i]) { // Wohoo, perfect match!
-                        list.add(names[i]);
-                    } else {
-                        if (names[i].startsWith(">") && Version.SERVER_VERSION.isNewer(versions[i])) { // Match if the current version is newer
-                            list.add(names[i].substring(1));
-                        } else if (names[i].startsWith("<") && Version.SERVER_VERSION.isOlder(versions[i])) { // Match if the current version is older
-                            list.add(names[i].substring(1));
-                        }
+        if (versions.length == 0) { // No versions specified -> directly use the names
+            Collections.addAll(list, names);
+        } else {
+            if (versions.length > names.length) {
+                throw new RuntimeException(
+                        "versions array cannot have more elements than the names ("
+                                + clazz
+                                + ")");
+            }
+            for (int i = 0; i < versions.length; i++) {
+                if (Version.SERVER_VERSION == versions[i]) { // Wohoo, perfect match!
+                    list.add(names[i]);
+                } else {
+                    if (names[i].startsWith(">") && Version.SERVER_VERSION.isNewer(versions[i])) { // Match if the current version is newer
+                        list.add(names[i].substring(1));
+                    } else if (names[i].startsWith("<") && Version.SERVER_VERSION.isOlder(versions[i])) { // Match if the current version is older
+                        list.add(names[i].substring(1));
                     }
                 }
             }
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
         }
 
         return list;
@@ -233,4 +272,5 @@ public class ReflectionAnnotations {
                         + clazz,
                 exception);
     }
+
 }

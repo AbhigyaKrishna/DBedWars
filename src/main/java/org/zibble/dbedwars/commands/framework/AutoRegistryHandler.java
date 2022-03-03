@@ -1,12 +1,15 @@
 package org.zibble.dbedwars.commands.framework;
 
+import com.google.common.collect.ImmutableMap;
 import org.reflections.Reflections;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.commands.annotations.ParentCommandNode;
 import org.zibble.dbedwars.api.commands.annotations.Permission;
 import org.zibble.dbedwars.api.commands.annotations.SubCommandNode;
 import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
 import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,11 +17,17 @@ import java.util.*;
 
 public class AutoRegistryHandler {
 
-    private static final String[] PACKAGES = new String[]{""};
+    private static final List<String> PACKAGES = new ArrayList<>(1);
     private final DBedwars plugin;
+
+    private final Map<Class<?>, Object> available_parameters;
 
     public AutoRegistryHandler(DBedwars commandNodes) {
         this.plugin = commandNodes;
+        this.available_parameters = ImmutableMap.<Class<?>, Object>builder()
+                .put(DBedwars.class, plugin)
+                .put(DBedWarsAPI.class, DBedWarsAPI.getApi())
+                .build();
     }
 
     public Map<Pair<String, String[]>, ? extends AbstractCommandNode> baseNodes() {
@@ -28,18 +37,22 @@ public class AutoRegistryHandler {
             Reflections reflections = new Reflections(pkg);
             classes.addAll(reflections.getTypesAnnotatedWith(ParentCommandNode.class));
         }
-        for (Class<?> aClass : classes) {
-            Constructor<?> constructor;
-            try {
-                constructor = aClass.getConstructor(DBedwars.class);
-                constructor.setAccessible(true);
-                Object o = constructor.newInstance(this.plugin);
-                ParentCommandNode node = o.getClass().getAnnotation(ParentCommandNode.class);
-                Pair<String, String[]> pair = new Pair<>(node.value(), node.aliases());
-                returnVal.put(pair, (AbstractCommandNode) o);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+        for (Class<?> clazz : classes) {
+            for (Constructor<?> constructor : clazz.getConstructors()) {
+                ConstructorWrapper wrapper = new ConstructorWrapper(constructor);
+                //TODO: Check if the constructor has the correct number of parameters
             }
+//            Constructor<?> constructor;
+//            try {
+//                constructor = aClass.getConstructor(DBedwars.class);
+//                constructor.setAccessible(true);
+//                Object o = constructor.newInstance(this.plugin);
+//                ParentCommandNode node = o.getClass().getAnnotation(ParentCommandNode.class);
+//                Pair<String, String[]> pair = new Pair<>(node.value(), node.aliases());
+//                returnVal.put(pair, (AbstractCommandNode) o);
+//            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
 
         }
         return returnVal;

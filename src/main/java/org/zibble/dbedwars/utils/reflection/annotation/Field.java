@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.annotation;
 
-import com.pepedevs.radium.utils.version.Version;
+import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 
 import java.lang.annotation.ElementType;
@@ -16,12 +16,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Field {
 
-    /**
-     * Name of the class to load this field from
-     *
-     * @return name of the class
-     */
-    String className();
+    java.lang.Class<?> clazz() default Object.class;
+
+    String className() default "";
 
     /**
      * Possible names of the field. Use <code>&gt;</code> or <code>&lt;</code> as a name prefix in
