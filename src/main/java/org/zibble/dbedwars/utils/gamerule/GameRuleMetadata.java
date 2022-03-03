@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.gamerule;
 
-import org.apache.commons.configLang.Validate;
+import org.apache.commons.lang.Validate;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.NumberConversions;
