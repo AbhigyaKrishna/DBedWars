@@ -25,7 +25,7 @@ public class EntityNPCImpl extends BedwarsNPCImpl implements EntityNPC {
     protected void viewPacket(Player player) {
         WrapperPlayServerSpawnLivingEntity packet = new WrapperPlayServerSpawnLivingEntity(this.getEntityID(),
                 this.getUUID(),
-                EntityTypes.getByName(this.entityType.name().toLowerCase()),
+                EntityTypes.getByName("minecraft:" + this.entityType.name().toLowerCase()),
                 super.convert(this.getLocation()),
                 this.getLocation().getYaw(),
                 this.getLocation().getPitch(),

@@ -33,7 +33,7 @@ public @interface Class {
     Version[] versions() default {};
 
     /**
-     * Whether to ignore any org.zibble.dbedwars.utils.reflection exceptions thrown. Defaults to
+     * Whether to ignore any reflection exceptions thrown. Defaults to
      * <code>true</code>
      *
      * @return whether to ignore exceptions

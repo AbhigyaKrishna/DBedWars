@@ -2,8 +2,9 @@ package org.zibble.dbedwars.api.hooks.economy;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.zibble.dbedwars.api.hooks.Hook;
 
-public interface EconomyHook {
+public interface EconomyHook extends Hook {
 
     double getBalance(@NotNull final Player player);
 

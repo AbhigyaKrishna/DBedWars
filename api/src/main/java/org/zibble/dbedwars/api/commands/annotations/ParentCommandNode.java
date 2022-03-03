@@ -8,6 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ParentCommandNode {
+
     String value();
+
     String[] aliases() default {};
+    
 }

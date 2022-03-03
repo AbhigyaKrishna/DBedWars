@@ -2,10 +2,11 @@ package org.zibble.dbedwars.api.hooks.placholder;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.hooks.Hook;
 
 import java.util.List;
 
-public interface PlaceholderHook {
+public interface PlaceholderHook extends Hook {
 
     void register(PlaceholderRegistry registry);
 

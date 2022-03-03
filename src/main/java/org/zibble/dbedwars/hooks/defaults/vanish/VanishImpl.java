@@ -13,6 +13,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -33,7 +34,22 @@ public class VanishImpl implements VanishHook, Listener {
 
     public VanishImpl() {
         this.vanished = Collections.synchronizedMap(new HashMap<>());
+    }
+
+    @Override
+    public void init() {
         Bukkit.getServer().getPluginManager().registerEvents(this, DBedwars.getInstance());
+    }
+
+    @Override
+    public void disable() {
+        for (UUID uuid : this.vanished.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            this.unVanish(player);
+        }
+        this.vanished.clear();
+        HandlerList.unregisterAll(this);
     }
 
     @Override

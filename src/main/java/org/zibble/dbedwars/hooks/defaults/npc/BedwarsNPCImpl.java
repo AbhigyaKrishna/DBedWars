@@ -7,7 +7,7 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.util.MathUtil;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
-import com.pepedevs.radium.npc.action.NPCClickAction;
+import com.pepedevs.radium.utils.reflection.bukkit.EntityReflection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,8 +17,8 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.util.ClickAction;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramImpl;
-import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -36,7 +36,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     private final UUID uuid;
     private Location location;
 
-    protected Set<NPCClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
+    protected Set<ClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
     protected Set<UUID> shown = Collections.synchronizedSet(new HashSet<>());
 
     public BedwarsNPCImpl(String ID, Location location, NPCData npcData, Component name) {
@@ -199,12 +199,12 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     }
 
     @Override
-    public Collection<NPCClickAction> getClickActions() {
+    public Collection<ClickAction> getClickActions() {
         return Collections.unmodifiableCollection(this.clickActions);
     }
 
     @Override
-    public void addClickAction(NPCClickAction action) {
+    public void addClickAction(ClickAction action) {
         this.clickActions.add(action);
     }
 

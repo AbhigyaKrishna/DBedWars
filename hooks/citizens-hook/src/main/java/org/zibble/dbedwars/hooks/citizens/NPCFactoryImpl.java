@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.hooks.citizens.npc;
+package org.zibble.dbedwars.hooks.citizens;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;

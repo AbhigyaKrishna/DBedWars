@@ -2,8 +2,9 @@ package org.zibble.dbedwars.api.hooks.world;
 
 import org.bukkit.World;
 import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.api.hooks.Hook;
 
-public interface WorldAdaptor {
+public interface WorldAdaptor extends Hook {
 
     ActionFuture<World> createWorld(String worldName, World.Environment environment);
 

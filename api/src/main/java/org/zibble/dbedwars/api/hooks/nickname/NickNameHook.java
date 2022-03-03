@@ -2,8 +2,9 @@ package org.zibble.dbedwars.api.hooks.nickname;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.zibble.dbedwars.api.hooks.Hook;
 
-public interface NickNameHook {
+public interface NickNameHook extends Hook {
 
     boolean isPlayerNicked(@NotNull final Player player);
 
