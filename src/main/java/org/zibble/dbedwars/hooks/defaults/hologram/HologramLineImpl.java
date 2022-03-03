@@ -49,7 +49,7 @@ public abstract class HologramLineImpl<C> implements HologramLine<C> {
         for (UUID uuid : this.parent.getParent().getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().updateContent((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().updateContent((HologramImpl) this.getParent(), player);
         }
         this.content = content;
     }

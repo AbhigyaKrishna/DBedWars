@@ -116,19 +116,19 @@ public class HologramImpl implements Hologram {
 
     public void show(Player... players) {
         for (Player player : players) {
-            HologramManager.getInstance().respawnHologram(this, player);
+            HologramFactoryImpl.getInstance().respawnHologram(this, player);
         }
     }
 
     public void updateContent(Player... players) {
         for (Player player : players) {
-            HologramManager.getInstance().updateContent(this, player);
+            HologramFactoryImpl.getInstance().updateContent(this, player);
         }
     }
 
     public void updateLocation(Player... players) {
         for (Player player : players) {
-            HologramManager.getInstance().updateLocation(this, player);
+            HologramFactoryImpl.getInstance().updateLocation(this, player);
         }
     }
 
@@ -136,7 +136,7 @@ public class HologramImpl implements Hologram {
         for (Player player : players) {
             this.viewerPages.remove(player.getUniqueId());
             this.viewers.remove(player.getUniqueId());
-            HologramManager.getInstance().despawnHologram(this, player);
+            HologramFactoryImpl.getInstance().despawnHologram(this, player);
         }
     }
 
@@ -168,7 +168,7 @@ public class HologramImpl implements Hologram {
         for (UUID viewer : this.viewers) {
             Player player = Bukkit.getPlayer(viewer);
             if (player == null) continue;
-            HologramManager.getInstance().updateLocation(this, player);
+            HologramFactoryImpl.getInstance().updateLocation(this, player);
         }
     }
 }

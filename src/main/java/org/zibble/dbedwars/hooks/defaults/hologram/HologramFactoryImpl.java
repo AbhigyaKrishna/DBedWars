@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.task.Task;
@@ -17,15 +18,15 @@ import org.zibble.dbedwars.task.TaskQueueHandler;
 
 import java.util.*;
 
-public class HologramManager {
+public class HologramFactoryImpl implements HologramFactory {
 
-    private static final HologramManager INSTANCE = new HologramManager();
+    private static final HologramFactoryImpl INSTANCE = new HologramFactoryImpl();
 
     private final DBedwars plugin;
     private final Task thread;
     private final Map<String, HologramDataHolder> holograms;
 
-    public HologramManager() {
+    public HologramFactoryImpl() {
         this.plugin = DBedwars.getInstance();
         this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
         this.holograms = Collections.synchronizedMap(new HashMap<>());
@@ -33,6 +34,43 @@ public class HologramManager {
         PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
         packetEventsAPI.getEventManager().registerListener(packetListener);
         this.startUpdateTask();
+    }
+
+    public void spawnHologram(HologramImpl hologram, Player player) {
+        if (!hologram.isVisible(player)) return;
+        HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(player.getUniqueId(), 0));
+        Map<HologramLineImpl<?>, Location> map = this.mapLocations(page);
+        for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet()) {
+            if (entry.getKey().getContent() instanceof HologramLine.Text) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.updateFakeEntityCustomName(player, (Component) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Head) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, false, true);
+                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.SmallHead) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Icon) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                PacketUtils.showFakeEntityItem(player, entry.getValue(), (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[1]);
+                PacketUtils.attachFakeEntity(player, entry.getKey().getEntityIds()[0], entry.getKey().getEntityIds()[1]);
+                continue;
+            }
+            if (entry.getKey().getContent() instanceof HologramLine.Entity) {
+                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
+                if (((EntityType) entry.getKey().getContent()).isAlive()) {
+                    PacketUtils.showFakeEntityLiving(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
+                } else {
+                    PacketUtils.showFakeEntity(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
+                }
+            }
+        }
     }
 
     public void spawnHologram(HologramImpl hologram) {
@@ -47,6 +85,7 @@ public class HologramManager {
         holder.setSpawned(true);
     }
 
+    @Override
     public HologramImpl createHologram(Location location) {
         HologramDataHolder holder = new HologramDataHolder(new HologramImpl(location), false);
         this.holograms.put(UUID.randomUUID().toString(), holder);
@@ -107,43 +146,6 @@ public class HologramManager {
         holder.setLastUpdateTime(System.currentTimeMillis());
     }
 
-    public void spawnHologram(HologramImpl hologram, Player player) {
-        if (!hologram.isVisible(player)) return;
-        HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(player.getUniqueId(), 0));
-        Map<HologramLineImpl<?>, Location> map = this.mapLocations(page);
-        for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet()) {
-            if (entry.getKey().getContent() instanceof HologramLine.Text) {
-                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.updateFakeEntityCustomName(player, (Component) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey().getContent() instanceof HologramLine.Head) {
-                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, false, true);
-                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey().getContent() instanceof HologramLine.SmallHead) {
-                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey().getContent() instanceof HologramLine.Icon) {
-                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.showFakeEntityItem(player, entry.getValue(), (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[1]);
-                PacketUtils.attachFakeEntity(player, entry.getKey().getEntityIds()[0], entry.getKey().getEntityIds()[1]);
-                continue;
-            }
-            if (entry.getKey().getContent() instanceof HologramLine.Entity) {
-                PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                if (((EntityType) entry.getKey().getContent()).isAlive()) {
-                    PacketUtils.showFakeEntityLiving(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
-                } else {
-                    PacketUtils.showFakeEntity(player, entry.getValue(), EntityTypes.getByName(((EntityType) entry.getKey().getContent()).name()), entry.getKey().getEntityIds()[1]);
-                }
-            }
-        }
-    }
-
     public void despawnHologram(HologramImpl hologram, Player player) {
         HologramPage page = hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
         for (HologramLine<?> line : page.getLines()) {
@@ -184,9 +186,9 @@ public class HologramManager {
             @Override
             public void compute() {
                 this.lastRun = System.currentTimeMillis();
-                for (HologramDataHolder value : HologramManager.this.holograms.values()) {
+                for (HologramDataHolder value : HologramFactoryImpl.this.holograms.values()) {
                     if (value.isUpdateRegistered() && System.currentTimeMillis() - value.getLastUpdateTime() >= value.getHologram().getUpdateInterval().toMillis())
-                        HologramManager.this.updateHologram(value.getHologram());
+                        HologramFactoryImpl.this.updateHologram(value.getHologram());
 
                 }
             }
@@ -221,7 +223,7 @@ public class HologramManager {
         return holograms;
     }
 
-    public static HologramManager getInstance() {
+    public static HologramFactoryImpl getInstance() {
         return INSTANCE;
     }
 

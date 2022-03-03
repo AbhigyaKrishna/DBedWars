@@ -7,7 +7,7 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.util.MathUtil;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
-import com.pepedevs.radium.utils.reflection.bukkit.EntityReflection;
+import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

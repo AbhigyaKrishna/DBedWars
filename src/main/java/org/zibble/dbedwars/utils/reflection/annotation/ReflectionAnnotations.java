@@ -33,7 +33,7 @@ public class ReflectionAnnotations {
     }
 
     public <T> void load(Class<T> clazz, T object) {
-        for (Field declaredField : clazz.getDeclaredFields()) {
+        fields: for (Field declaredField : clazz.getDeclaredFields()) {
             FieldWrapper field = new FieldWrapper(declaredField);
 
             if (declaredField.isAnnotationPresent(ClassRef.class)) {
@@ -54,7 +54,7 @@ public class ReflectionAnnotations {
                             } else {
                                 throw new UnsupportedOperationException("Class reference can only be used on wrapper or class type");
                             }
-                            return;
+                            continue fields;
                         }
                     } catch (ReflectiveOperationException e) {
                         if (!annotation.ignoreExceptions()) {
@@ -81,7 +81,7 @@ public class ReflectionAnnotations {
                             } else {
                                 throw new UnsupportedOperationException("Constructor reference can only be used on wrapper or class type");
                             }
-                            return;
+                            continue fields;
                         }
                     } catch (ReflectiveOperationException e) {
                         if (!annotation.ignoreExceptions()) {
@@ -121,7 +121,7 @@ public class ReflectionAnnotations {
                             } else {
                                 throw new UnsupportedOperationException("Method reference can only be used on wrapper or class type");
                             }
-                            return;
+                            continue fields;
                         }
                     } catch (ReflectiveOperationException e) {
                         if (!annotation.ignoreExceptions()) {
@@ -141,14 +141,24 @@ public class ReflectionAnnotations {
                             } else {
                                 resolver = new FieldResolver(this.parseClass(annotation.className(), clazz, object));
                             }
+                            String[] values = annotation.value();
+                            ResolverQuery.Builder query = ResolverQuery.builder();
+                            for (String name : values) {
+                                String[] modifier = name.split(" ");
+                                if (modifier.length > 1) {
+                                    query.with(modifier[0], this.parseClass(modifier[1], clazz, object));
+                                } else {
+                                    query.with(modifier[0]);
+                                }
+                            }
                             if (FieldWrapper.class.isAssignableFrom(field.getType())) {
-                                field.set(object, resolver.resolveWrapper(annotation.value()));
+                                field.set(object, resolver.resolveWrapper(query.build()));
                             } else if (Field.class.isAssignableFrom(field.getType())) {
-                                field.set(object, resolver.resolve(annotation.value()));
+                                field.set(object, resolver.resolve(query.build()));
                             } else {
                                 throw new UnsupportedOperationException("Field reference can only be used on wrapper or class type");
                             }
-                            return;
+                            continue fields;
                         }
                     } catch (ReflectiveOperationException e) {
                         if (!annotation.ignoreExceptions()) {
@@ -194,11 +204,31 @@ public class ReflectionAnnotations {
             String fieldName = matcher.group(1); // It's a reference to a previously loaded class
             java.lang.reflect.Field field = objClazz.getField(fieldName);
             if (ClassWrapper.class.isAssignableFrom(field.getType())) {
-                return ((ClassWrapper<?>) field.get(toLoad)).getClass();
+                return ((ClassWrapper<?>) field.get(toLoad)).getClazz();
             } else if (java.lang.Class.class.isAssignableFrom(field.getType())) {
                 return (java.lang.Class<?>) field.get(toLoad);
             }
         }
+
+        if (className.equals("boolean"))
+            return boolean.class;
+        if (className.equals("byte"))
+            return byte.class;
+        if (className.equals("char"))
+            return char.class;
+        if (className.equals("double"))
+            return double.class;
+        if (className.equals("float"))
+            return float.class;
+        if (className.equals("int"))
+            return int.class;
+        if (className.equals("long"))
+            return long.class;
+        if (className.equals("short"))
+            return short.class;
+        if (className.equals("void"))
+            return void.class;
+
         return this.classResolver.resolve(className.replace("{nms}", Version.SERVER_VERSION.getNmsPackage())
                 .replace("{obc}", Version.SERVER_VERSION.getObcPackage()));
     }

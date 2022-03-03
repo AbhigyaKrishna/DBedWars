@@ -603,7 +603,7 @@ public enum HologramEntityType {
     private final float height;
 
     HologramEntityType() {
-        this.height = height(Version.getServerVersion());
+        this.height = height(Version.SERVER_VERSION);
     }
 
     public float getHeight() {

@@ -43,7 +43,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -55,7 +55,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -67,7 +67,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -79,7 +79,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -91,7 +91,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -102,7 +102,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.getParent().getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
     }
 
@@ -113,7 +113,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -125,7 +125,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -137,7 +137,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -149,7 +149,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }
@@ -161,7 +161,7 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.parent.getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramManager.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
         }
         return line;
     }

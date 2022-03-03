@@ -22,4 +22,5 @@ public interface HologramLine<C> {
     interface Icon extends HologramLine<ItemStack> {}
 
     interface Entity extends HologramLine<HologramEntityType> {}
+
 }

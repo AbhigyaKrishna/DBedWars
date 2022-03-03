@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Repeatable(ConstructorRefs.class)
 public @interface ConstructorRef {
 
-    Class<?> clazz();
+    Class<?> clazz() default Object.class;
 
     String className() default "";
 

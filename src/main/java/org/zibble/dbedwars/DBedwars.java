@@ -23,7 +23,7 @@ import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
 import org.zibble.dbedwars.game.GameManager;
 import org.zibble.dbedwars.handler.*;
-import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
+import org.zibble.dbedwars.hooks.defaults.hologram.HologramFactoryImpl;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.messaging.Messaging;
@@ -49,7 +49,7 @@ public final class DBedwars extends PluginAdapter {
     private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
-    private HologramManager hologramManager;
+    private HologramFactoryImpl hologramFactoryImpl;
     private HookManager hookManager;
     private MenuHandler menuHandler;
 
@@ -176,7 +176,7 @@ public final class DBedwars extends PluginAdapter {
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
-        this.hologramManager = new HologramManager();
+        this.hologramFactoryImpl = new HologramFactoryImpl();
         this.menuHandler = new MenuHandler(this);
 
         this.threadHandler.submitAsync(
@@ -251,8 +251,8 @@ public final class DBedwars extends PluginAdapter {
         return this.database;
     }
 
-    public HologramManager getHologramManager() {
-        return this.hologramManager;
+    public HologramFactoryImpl getHologramManager() {
+        return this.hologramFactoryImpl;
     }
 
     public FeatureManager getFeatureManager() {

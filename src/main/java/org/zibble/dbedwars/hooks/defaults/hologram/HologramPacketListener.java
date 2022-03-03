@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
 public class HologramPacketListener extends PacketListenerAbstract {
 
     private final Cache<UUID, Integer> cooldown;
-    private final HologramManager manager;
+    private final HologramFactoryImpl manager;
 
 
-    protected HologramPacketListener(final HologramManager manager) {
+    protected HologramPacketListener(final HologramFactoryImpl manager) {
         this.manager = manager;
         this.cooldown = CacheBuilder.newBuilder().expireAfterWrite(20, TimeUnit.MILLISECONDS).build();
     }
