@@ -12,19 +12,16 @@ import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class AutoRegistryHandler {
 
     private static final List<String> PACKAGES = new ArrayList<>(1);
-    private final DBedwars plugin;
 
-    private final Map<Class<?>, Object> available_parameters;
+    private final Map<Class<?>, Object> availableParameters;
 
-    public AutoRegistryHandler(DBedwars commandNodes) {
-        this.plugin = commandNodes;
-        this.available_parameters = ImmutableMap.<Class<?>, Object>builder()
+    public AutoRegistryHandler(DBedwars plugin) {
+        this.availableParameters = ImmutableMap.<Class<?>, Object>builder()
                 .put(DBedwars.class, plugin)
                 .put(DBedWarsAPI.class, DBedWarsAPI.getApi())
                 .build();
@@ -39,21 +36,23 @@ public class AutoRegistryHandler {
         }
         for (Class<?> clazz : classes) {
             for (Constructor<?> constructor : clazz.getConstructors()) {
-                ConstructorWrapper wrapper = new ConstructorWrapper(constructor);
-                //TODO: Check if the constructor has the correct number of parameters
+                ConstructorWrapper<?> wrapper = new ConstructorWrapper(constructor);
+                boolean canMatch = true;
+                for (Class<?> type : wrapper.getParameterTypes()) {
+                    if (this.availableParameters.containsKey(type)) continue;
+                    canMatch = false;
+                    break;
+                }
+                if (!canMatch) continue;
+                Object[] parameters = new Class[wrapper.getParameterTypes().length];
+                for (int i = 0; i < wrapper.getParameterTypes().length; i++) {
+                    parameters[i] = this.availableParameters.get(wrapper.getParameterTypes()[i]);
+                }
+                AbstractCommandNode node = (AbstractCommandNode) wrapper.newInstance(parameters);
+                ParentCommandNode parent = clazz.getAnnotation(ParentCommandNode.class);
+                returnVal.put(new Pair<>(parent.value(), parent.aliases()), node);
+                break;
             }
-//            Constructor<?> constructor;
-//            try {
-//                constructor = aClass.getConstructor(DBedwars.class);
-//                constructor.setAccessible(true);
-//                Object o = constructor.newInstance(this.plugin);
-//                ParentCommandNode node = o.getClass().getAnnotation(ParentCommandNode.class);
-//                Pair<String, String[]> pair = new Pair<>(node.value(), node.aliases());
-//                returnVal.put(pair, (AbstractCommandNode) o);
-//            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-
         }
         return returnVal;
     }
@@ -64,14 +63,33 @@ public class AutoRegistryHandler {
             Reflections reflections = new Reflections(aPackage);
             classes.addAll(reflections.getTypesAnnotatedWith(SubCommandNode.class));
         }
-        List<Class<?>> sortedClasses = this.sort(classes);
-        System.out.println(sortedClasses);
-        for (Class<?> aClass : sortedClasses) {
-            try {
-                Constructor<?> constructor = aClass.getConstructor(DBedwars.class);
-                constructor.setAccessible(true);
-                Object o = constructor.newInstance(this.plugin);
-                SubCommandNode subCommandNode = aClass.getAnnotation(SubCommandNode.class);
+        List<Class<?>> sortedClasses = new ArrayList<>(classes);
+
+        sortedClasses.sort((a, b) -> {
+            SubCommandNode o1 = a.getAnnotation(SubCommandNode.class);
+            SubCommandNode o2 = b.getAnnotation(SubCommandNode.class);
+            if (o1 == null || o2 == null) throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
+            String[] aRoute = o1.parent().split("\\.");
+            String[] bRoute = o2.parent().split("\\.");
+            return Integer.compare(aRoute.length, bRoute.length);
+        });
+
+        for (Class<?> clazz : sortedClasses) {
+            for (Constructor<?> constructor : clazz.getConstructors()) {
+                ConstructorWrapper<?> wrapper = new ConstructorWrapper(constructor);
+                boolean canMatch = true;
+                for (Class<?> type : wrapper.getParameterTypes()) {
+                    if (this.availableParameters.containsKey(type)) continue;
+                    canMatch = false;
+                    break;
+                }
+                if (!canMatch) continue;
+                Object[] parameters = new Class[wrapper.getParameterTypes().length];
+                for (int i = 0; i < wrapper.getParameterTypes().length; i++) {
+                    parameters[i] = this.availableParameters.get(wrapper.getParameterTypes()[i]);
+                }
+                AbstractCommandNode node = (AbstractCommandNode) wrapper.newInstance(parameters);
+                SubCommandNode subCommandNode = clazz.getAnnotation(SubCommandNode.class);
                 String parent = subCommandNode.parent();
                 String[] parentRoute = parent.split("\\.");
                 String[] subRoute = new String[parentRoute.length - 1];
@@ -83,9 +101,8 @@ public class AutoRegistryHandler {
                     currentParent = registry.getChildNode(currentParent, s);
                     if (currentParent == null) throw new IllegalArgumentException("Invalid parent path at " + s +  " :" + Arrays.toString(parentRoute));
                 }
-                registry.addSubCommandNode(currentParent, new Pair<>(subCommandNode.value(), (AbstractCommandNode) o));
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+                registry.addSubCommandNode(currentParent, new Pair<>(subCommandNode.value(), node));
+                break;
             }
         }
     }
@@ -104,19 +121,6 @@ public class AutoRegistryHandler {
             returnVal.put(k, new Pair<>(permission.value(), permission.noPerm()));
         });
         return returnVal;
-    }
-
-    private List<Class<?>> sort(Set<Class<?>> input) {
-        List<Class<?>> classes = new ArrayList<>(input);
-        classes.sort((a, b) -> {
-            SubCommandNode o1 = a.getAnnotation(SubCommandNode.class);
-            SubCommandNode o2 = b.getAnnotation(SubCommandNode.class);
-            if (o1 == null || o2 == null) throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
-            String[] aRoute = o1.parent().split("\\.");
-            String[] bRoute = o2.parent().split("\\.");
-            return Integer.compare(aRoute.length, bRoute.length);
-        });
-        return classes;
     }
 
 }

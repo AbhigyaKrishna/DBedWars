@@ -27,7 +27,7 @@ public class SetupSessionImpl implements SetupSession {
     private static final Messaging MESSAGING = Messaging.getInstance();
     private static final String TEAM_SETUP_SYMBOL = "[]";
 
-    private final SetupSessionDataHolder dataHolder;
+    private final SetupSessionInfoImpl dataHolder;
     private final World world;
 
     private final Player player;
@@ -42,7 +42,7 @@ public class SetupSessionImpl implements SetupSession {
         this.world = world;
         this.playerMember = MESSAGING.getMessagingMember(player);
         this.runningWorkloads = new ArrayList<>();
-        this.dataHolder = new SetupSessionDataHolder();
+        this.dataHolder = new SetupSessionInfoImpl();
     }
 
     @Override
@@ -172,7 +172,7 @@ public class SetupSessionImpl implements SetupSession {
 
     @Override
     public void setupGenLocation(Color color, Location location) {
-        this.dataHolder.setGenLocation(color, this.world.getSpawnLocation());
+        this.dataHolder.addGenLocation(color, this.world.getSpawnLocation());
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_GEN);
     }
