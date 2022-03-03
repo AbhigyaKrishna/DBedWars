@@ -7,14 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Constructor {
+@interface FieldRefs {
 
-    java.lang.Class<?> clazz();
-
-    String className() default "";
-
-    java.lang.Class<?>[] parameters();
-
-    boolean ignoreExceptions() default true;
+    FieldRef[] value();
 
 }

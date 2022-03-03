@@ -37,7 +37,8 @@ public class ClassResolver extends ResolverAbstract<Class> {
             return CLASS_CACHE.get(query.getName());
         }
         Class clazz = Class.forName(query.getName());
-        return CLASS_CACHE.put(query.getName(), clazz);
+        CLASS_CACHE.put(query.getName(), clazz);
+        return clazz;
     }
 
     @Override

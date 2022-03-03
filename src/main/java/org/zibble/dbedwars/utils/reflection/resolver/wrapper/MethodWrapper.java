@@ -19,11 +19,6 @@ public class MethodWrapper<R> extends WrapperAbstract {
         return MethodSignature.of(method, fullClassNames).getSignature();
     }
 
-    /**
-     * @param method Method to get the signature for
-     * @return the signature
-     * @see #getMethodSignature(Method, boolean)
-     */
     public static String getMethodSignature(Method method) {
         return getMethodSignature(method, false);
     }
@@ -190,30 +185,10 @@ public class MethodWrapper<R> extends WrapperAbstract {
             return signature;
         }
 
-        /**
-         * Checks whether this signature matches another signature. Wildcards are checked in this
-         * signature, but not the other signature.
-         *
-         * @param other signature to check
-         * @return whether the signatures match
-         */
         public boolean matches(MethodSignature other) {
             if (other == null) {
                 return false;
             }
-
-            //			if (!returnType.equals(other.returnType)) {
-            //				if (!isReturnTypeWildcard()) { return false; }
-            //			}
-            //			if (!name.equals(other.name)) {
-            //				if (!isNameWildcard()) { return false; }
-            //			}
-            //			if (parameterTypes.length != other.parameterTypes.length) { return false; }
-            //			for (int i = 0; i < parameterTypes.length; i++) {
-            //				if (!getParameterType(i).equals(other.getParameterType(i))) {
-            //					if (!isParameterWildcard(i)) { return false; }
-            //				}
-            //			}
 
             if (!returnTypePattern.matcher(other.returnType).matches()) {
                 return false;

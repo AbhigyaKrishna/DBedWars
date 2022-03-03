@@ -7,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
 import org.zibble.dbedwars.api.util.Pair;
-import org.zibble.dbedwars.utils.reflection.annotation.Constructor;
+import org.zibble.dbedwars.utils.reflection.annotation.ConstructorRef;
 import org.zibble.dbedwars.utils.reflection.annotation.ReflectionAnnotations;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class BukkitRegistryHandler {
 
-    @Constructor(clazz = PluginCommand.class, parameters = {String.class, Plugin.class})
+    @ConstructorRef(clazz = PluginCommand.class, parameters = {String.class, Plugin.class})
     private final ConstructorWrapper<PluginCommand> PLUGIN_COMMAND_CONSTRUCTOR = null;
 
     private final DBedwars plugin;
@@ -28,7 +28,7 @@ public class BukkitRegistryHandler {
         this.plugin = plugin;
         this.registry = registry;
         ReflectionAnnotations.INSTANCE.load(BukkitRegistryHandler.class, this);
-        commandMap = new FieldResolver(Bukkit.getPluginManager().getClass()).resolveAccessor("commandMap").get(Bukkit.getPluginManager());
+        this.commandMap = new FieldResolver(Bukkit.getPluginManager().getClass()).resolveWrapper("commandMap").get(Bukkit.getPluginManager());
     }
 
     public void registerCommand(String name, String[] aliases, AbstractCommandNode commandNode) {
@@ -38,7 +38,7 @@ public class BukkitRegistryHandler {
         if (pair == null) command.setExecutor(Generators.executor(this.registry, commandNode));
         else command.setExecutor(Generators.executor(this.registry, commandNode, pair));
         command.setTabCompleter(Generators.completer(this.registry, commandNode));
-        commandMap.register(name, command);
+        this.commandMap.register(name, command);
     }
 
 }
