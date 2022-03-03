@@ -142,11 +142,7 @@ public enum ConfigLang implements Lang {
     SETUP_WORLD_MOB_SPAWNING_DISABLED(),
     SETUP_WAITING_LOCATION_PROMPT(),
     SETUP_TEAM_START(),
-    SETUP_TEAM_SPAWN(),
-    SETUP_TEAM_SHOP(),
-    SETUP_TEAM_UPGRADES(),
-    SETUP_TEAM_BED(),
-    SETUP_TEAM_GEN(),
+
     ;
 
     private static final EnumMap<ConfigLang, Message> SERVER_LOADED_LANG = new EnumMap<>(ConfigLang.class);

@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.game.setup;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.zibble.dbedwars.api.util.Color;
 
 import java.util.EnumMap;
@@ -11,13 +12,16 @@ public class SetupSessionDataHolder {
     private String arenaCustomName;
     private Location waitingLocation;
 
+    private Block waitingLocationCorner1;
+    private Block waitingLocationCorner2;
+
     private final Map<Color, TeamDataHolder> teamDataMap = new EnumMap<>(Color.class);
 
     public String getArenaCustomName() {
         return arenaCustomName;
     }
 
-    public void setArenaCustomName(String arenaCustomName) {
+    protected void setArenaCustomName(String arenaCustomName) {
         this.arenaCustomName = arenaCustomName;
     }
 
@@ -25,7 +29,7 @@ public class SetupSessionDataHolder {
         return waitingLocation;
     }
 
-    public void setWaitingLocation(Location waitingLocation) {
+    protected void setWaitingLocation(Location waitingLocation) {
         this.waitingLocation = waitingLocation;
     }
 
@@ -35,7 +39,7 @@ public class SetupSessionDataHolder {
         return holder.spawn;
     }
 
-    public void setTeamSpawn(Color color, Location location) {
+    protected void setTeamSpawn(Color color, Location location) {
         TeamDataHolder holder = this.teamDataMap.get(color);
         if (holder == null) {
             holder = new TeamDataHolder();
@@ -50,7 +54,7 @@ public class SetupSessionDataHolder {
         return holder.shopNPC;
     }
 
-    public void setShopNPC(Color color, Location location) {
+    protected void setShopNPC(Color color, Location location) {
         TeamDataHolder holder = this.teamDataMap.get(color);
         if (holder == null) {
             holder = new TeamDataHolder();
@@ -65,7 +69,7 @@ public class SetupSessionDataHolder {
         return holder.bedLocation;
     }
 
-    public void setTeamBed(Color color, Location location) {
+    protected void setTeamBed(Color color, Location location) {
         TeamDataHolder holder = this.teamDataMap.get(color);
         if (holder == null) {
             holder = new TeamDataHolder();
@@ -80,7 +84,7 @@ public class SetupSessionDataHolder {
         return holder.upgradesNPC;
     }
 
-    public void setUpgradesNPC(Color color, Location location) {
+    protected void setUpgradesNPC(Color color, Location location) {
         TeamDataHolder holder = this.teamDataMap.get(color);
         if (holder == null) {
             holder = new TeamDataHolder();
@@ -95,13 +99,29 @@ public class SetupSessionDataHolder {
         return holder.genLocation;
     }
 
-    public void setGenLocation(Color color, Location location) {
+    protected void setGenLocation(Color color, Location location) {
         TeamDataHolder holder = this.teamDataMap.get(color);
         if (holder == null) {
             holder = new TeamDataHolder();
             this.teamDataMap.put(color, holder);
         }
         holder.genLocation = location;
+    }
+
+    protected void setWaitingLocationCorner1(Block location) {
+        this.waitingLocationCorner1 = location;
+    }
+
+    protected void setWaitingLocationCorner2(Block location) {
+        this.waitingLocationCorner2 = location;
+    }
+
+    public Block getWaitingLocationCorner1() {
+        return waitingLocationCorner1;
+    }
+
+    public Block getWaitingLocationCorner2() {
+        return waitingLocationCorner2;
     }
 
     private static class TeamDataHolder {
