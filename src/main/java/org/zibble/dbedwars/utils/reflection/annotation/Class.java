@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.annotation;
 
-import com.pepedevs.radium.utils.version.Version;
+import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
 
 import java.lang.annotation.ElementType;

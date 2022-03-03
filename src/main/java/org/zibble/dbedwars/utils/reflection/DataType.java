@@ -206,6 +206,10 @@ public enum DataType {
                 && (obj.getClass().equals(getPrimitive()) || obj.getClass().equals(getReference()));
     }
 
+    public boolean isType(Class<?> clazz) {
+        return clazz.equals(getPrimitive()) || clazz.equals(getReference());
+    }
+
     /**
      * Gets whether this represents a number data type.
      *

@@ -6,22 +6,25 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
-import org.zibble.dbedwars.utils.reflection.resolver.ResolverQuery;
+import org.zibble.dbedwars.utils.reflection.annotation.Method;
+import org.zibble.dbedwars.utils.reflection.annotation.ReflectionAnnotations;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class PluginFileUtils {
 
-    public static MethodWrapper ADD_URL_METHOD = new MethodResolver(URLClassLoader.class)
-            .resolveWrapper(ResolverQuery.builder().with("addUrl", URL.class).build());
+    @Method(className = "java.net.URLClassLoader", value = "addURL(java.net.URL)")
+    public static final MethodWrapper ADD_URL_METHOD = null;
+
+    static {
+        ReflectionAnnotations.INSTANCE.load(PluginFileUtils.class);
+    }
 
     public static FileConfiguration set(File file, String key, Object value) {
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(file);

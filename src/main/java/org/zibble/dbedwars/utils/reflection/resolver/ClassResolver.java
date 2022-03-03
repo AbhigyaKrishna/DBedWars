@@ -2,7 +2,12 @@ package org.zibble.dbedwars.utils.reflection.resolver;
 
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClassResolver extends ResolverAbstract<Class> {
+
+    private static final Map<String, Class> CLASS_CACHE = new HashMap<>();
 
     public ClassWrapper resolveWrapper(String... names) {
         return new ClassWrapper<>(this.resolveSilent(names));
@@ -28,7 +33,11 @@ public class ClassResolver extends ResolverAbstract<Class> {
 
     @Override
     protected Class resolveObject(ResolverQuery query) throws ReflectiveOperationException {
-        return Class.forName(query.getName());
+        if (CLASS_CACHE.containsKey(query.getName())) {
+            return CLASS_CACHE.get(query.getName());
+        }
+        Class clazz = Class.forName(query.getName());
+        return CLASS_CACHE.put(query.getName(), clazz);
     }
 
     @Override

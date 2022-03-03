@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.accessor;
 
+import org.zibble.dbedwars.utils.reflection.DataType;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -39,8 +40,7 @@ public class FieldAccessor {
                                         Unsafe unsafe = getUnsafe();
                                         long offset = unsafe.staticFieldOffset(field);
                                         Object base = unsafe.staticFieldBase(field);
-                                        setFieldUsingUnsafe(
-                                                base, field.getType(), offset, newValue, unsafe);
+                                        setFieldUsingUnsafe(base, field.getType(), offset, newValue, unsafe);
                                         return null;
                                     } catch (Throwable t) {
                                         throw new RuntimeException(t);
@@ -54,27 +54,22 @@ public class FieldAccessor {
         }
     }
 
-    private static void setFieldUsingUnsafe(
-            final Field field, final Object object, final Object newValue) {
+    private static void setFieldUsingUnsafe(final Field field, final Object object, final Object newValue) {
         try {
             field.setAccessible(true);
             int fieldModifiersMask = field.getModifiers();
-            boolean isFinalModifierPresent =
-                    (fieldModifiersMask & Modifier.FINAL) == Modifier.FINAL;
+            boolean isFinalModifierPresent = (fieldModifiersMask & Modifier.FINAL) == Modifier.FINAL;
             if (isFinalModifierPresent) {
-                AccessController.doPrivileged(
-                        (PrivilegedAction<Object>)
-                                () -> {
-                                    try {
-                                        Unsafe unsafe = getUnsafe();
-                                        long offset = unsafe.objectFieldOffset(field);
-                                        setFieldUsingUnsafe(
-                                                object, field.getType(), offset, newValue, unsafe);
-                                        return null;
-                                    } catch (Throwable t) {
-                                        throw new RuntimeException(t);
-                                    }
-                                });
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    try {
+                        Unsafe unsafe = getUnsafe();
+                        long offset = unsafe.objectFieldOffset(field);
+                        setFieldUsingUnsafe(object, field.getType(), offset, newValue, unsafe);
+                        return null;
+                    } catch (Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                });
             } else {
                 try {
                     field.set(object, newValue);
@@ -89,29 +84,28 @@ public class FieldAccessor {
 
     private static Unsafe getUnsafe()
             throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
-                    SecurityException {
+            SecurityException {
         Field field = Unsafe.class.getDeclaredField("theUnsafe");
         field.setAccessible(true);
         return (Unsafe) field.get(null);
     }
 
-    private static void setFieldUsingUnsafe(
-            Object base, Class<?> type, long offset, Object newValue, Unsafe unsafe) {
-        if (type == Integer.TYPE) {
+    private static void setFieldUsingUnsafe(Object base, Class<?> type, long offset, Object newValue, Unsafe unsafe) {
+        if (DataType.INTEGER.isType(type)) {
             unsafe.putInt(base, offset, ((Integer) newValue));
-        } else if (type == Short.TYPE) {
+        } else if (DataType.SHORT.isType(type)) {
             unsafe.putShort(base, offset, ((Short) newValue));
-        } else if (type == Long.TYPE) {
+        } else if (DataType.LONG.isType(type)) {
             unsafe.putLong(base, offset, ((Long) newValue));
-        } else if (type == Byte.TYPE) {
+        } else if (DataType.BYTE.isType(type)) {
             unsafe.putByte(base, offset, ((Byte) newValue));
-        } else if (type == Boolean.TYPE) {
+        } else if (DataType.BOOLEAN.isType(type)) {
             unsafe.putBoolean(base, offset, ((Boolean) newValue));
-        } else if (type == Float.TYPE) {
+        } else if (DataType.FLOAT.isType(type)) {
             unsafe.putFloat(base, offset, ((Float) newValue));
-        } else if (type == Double.TYPE) {
+        } else if (DataType.DOUBLE.isType(type)) {
             unsafe.putDouble(base, offset, ((Double) newValue));
-        } else if (type == Character.TYPE) {
+        } else if (DataType.CHARACTER.isType(type)) {
             unsafe.putChar(base, offset, ((Character) newValue));
         } else {
             unsafe.putObject(base, offset, newValue);
@@ -150,4 +144,5 @@ public class FieldAccessor {
     public Field getField() {
         return this.field;
     }
+
 }
