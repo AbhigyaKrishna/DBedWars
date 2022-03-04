@@ -19,7 +19,7 @@ public class ReflectionAnnotations {
 
     public static final ReflectionAnnotations INSTANCE = new ReflectionAnnotations();
 
-    static final Pattern CLASS_REF_PATTERN = Pattern.compile("@Class\\((.*)\\)");
+    static final Pattern VARIABLE_REF_PATTERN = Pattern.compile("@var\\((.*)\\)");
     static final Pattern PARAMETER_PATTERN = Pattern.compile("(.*)\\((.*)\\)");
     static final Pattern COMMAS_PATTERN = Pattern.compile("([^,\\[]*\\[[^]]*])(?:,|$)|([^,\\[\\]]+(?:,|$))");
 
@@ -198,7 +198,7 @@ public class ReflectionAnnotations {
     }
 
     Class<?> parseClass(String className, java.lang.Class<?> objClazz, Object toLoad) throws ReflectiveOperationException {
-        Matcher matcher = CLASS_REF_PATTERN.matcher(className);
+        Matcher matcher = VARIABLE_REF_PATTERN.matcher(className);
         while (matcher.find()) {
             if (matcher.groupCount() != 1) continue;
             String fieldName = matcher.group(1); // It's a reference to a previously loaded class

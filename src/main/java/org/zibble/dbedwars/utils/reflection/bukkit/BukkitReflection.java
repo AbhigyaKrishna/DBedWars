@@ -28,17 +28,17 @@ public class BukkitReflection {
     public static final ClassWrapper<?> NMS_WORLD = null;
     @ClassRef({"{nms}.ResourceKey", "net.minecraft.resources.ResourceKey"})
     public static final ClassWrapper<?> RESOURCE_KEY = null;
-    @MethodRef(className = "@Class(MINECRAFT_SERVER)", value = "getServer()")
+    @MethodRef(className = "@var(MINECRAFT_SERVER)", value = "getServer()")
     public static final MethodWrapper<?> MINECRAFT_SERVER_GET_SERVER = null;
-    @MethodRef(className = "@Class(MINECRAFT_SERVER)", value = "setMotd(java.lang.String)")
+    @MethodRef(className = "@var(MINECRAFT_SERVER)", value = "setMotd(java.lang.String)")
     public static final MethodWrapper<?> MINECRAFT_SERVER_SET_MOTD = null;
-    @MethodRef(className = "@Class(MINECRAFT_SERVER)", value = "getPlayerList()")
+    @MethodRef(className = "@var(MINECRAFT_SERVER)", value = "getPlayerList()")
     public static final MethodWrapper<?> MINECRAFT_SERVER_GET_PLAYER_LIST = null;
-    @MethodRef(className = "@Class(PLAYER_LIST)", value = "sendPacketNearby")
+    @MethodRef(className = "@var(PLAYER_LIST)", value = "sendPacketNearby")
     public static final MethodWrapper<?> SEND_PACKET_NEARBY = null;
-    @FieldRef(className = "@Class(CRAFT_WORLD)", value = "worldBorder")
+    @FieldRef(className = "@var(CRAFT_WORLD)", value = "worldBorder")
     public static final FieldWrapper WORLD_BORDER_FIELD = null;
-    @FieldRef(className = "@Class(CRAFT_WORLD)", value = "world")
+    @FieldRef(className = "@var(CRAFT_WORLD)", value = "world")
     public static final FieldWrapper WORLD_WORLD_SERVER = null;
 
     static {

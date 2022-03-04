@@ -19,15 +19,15 @@ public class PlayerReflection {
     public static final ClassWrapper<?> PLAYER_CONNECTION_CLASS = null;
     @ClassRef({"{nms}.NetworkManager", "net.minecraft.network.NetworkManager"})
     public static final ClassWrapper<?> NETWORK_MANAGER_CLASS = null;
-    @FieldRef(className = "@Class(ENTITY_PLAYER_CLASS)", value = {"@Class(PLAYER_CONNECTION_CLASS) playerConnection", "@Class(PLAYER_CONNECTION_CLASS) b"})
+    @FieldRef(className = "@var(ENTITY_PLAYER_CLASS)", value = {"@var(PLAYER_CONNECTION_CLASS) playerConnection", "@var(PLAYER_CONNECTION_CLASS) b"})
     public static final FieldWrapper PLAYER_CONNECTION_FIELD = null;
-    @FieldRef(className = "@Class(PLAYER_CONNECTION_CLASS)", value = {"@Class(NETWORK_MANAGER_CLASS) networkManager", "@Class(NETWORK_MANAGER_CLASS) a"})
+    @FieldRef(className = "@var(PLAYER_CONNECTION_CLASS)", value = {"@var(NETWORK_MANAGER_CLASS) networkManager", "@var(NETWORK_MANAGER_CLASS) a"})
     public static final FieldWrapper NETWORK_MANAGER_FIELD = null;
-    @FieldRef(className = "@Class(NETWORK_MANAGER_CLASS)", value = {"io.netty.channel.Channel channel", "io.netty.channel.Channel i", "io.netty.channel.Channel k"})
+    @FieldRef(className = "@var(NETWORK_MANAGER_CLASS)", value = {"io.netty.channel.Channel channel", "io.netty.channel.Channel i", "io.netty.channel.Channel k"})
     public static final FieldWrapper CHANNEL_FIELD = null;
-    @MethodRef(className = "@Class(CRAFT_PLAYER_CLASS)", value = "getHandle()")
+    @MethodRef(className = "@var(CRAFT_PLAYER_CLASS)", value = "getHandle()")
     public static final MethodWrapper<?> CRAFT_PLAYER_GET_HANDLE = null;
-    @MethodRef(className = "@Class(PLAYER_CONNECTION_CLASS)", value = "sendPacket")
+    @MethodRef(className = "@var(PLAYER_CONNECTION_CLASS)", value = "sendPacket")
     public static final MethodWrapper<?> SEND_PACKET = null;
 
     static {
@@ -35,7 +35,7 @@ public class PlayerReflection {
     }
 
     public static Object getHandle(Player player) {
-        return CRAFT_PLAYER_GET_HANDLE.invokeSilent(CRAFT_PLAYER_CLASS.getClazz().cast(player));
+        return CRAFT_PLAYER_GET_HANDLE.invoke(player);
     }
 
     public static Object getPlayerConnection(Player player) {
@@ -48,7 +48,7 @@ public class PlayerReflection {
 
     public static void sendPacket(Player player, Object packet) {
         Object connection = PlayerReflection.getPlayerConnection(player);
-        SEND_PACKET.invokeSilent(connection, packet);
+        SEND_PACKET.invoke(connection, packet);
     }
 
 }

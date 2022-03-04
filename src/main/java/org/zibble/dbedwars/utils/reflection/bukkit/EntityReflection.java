@@ -24,27 +24,27 @@ public class EntityReflection {
     public static final ClassWrapper<?> NBT_TAG_COMPOUND = null;
     @ClassRef({"{nms}.DamageSource", "net.minecraft.world.damagesource.DamageSource"})
     public static final ClassWrapper<?> DAMAGE_SOURCE = null;
-    @ConstructorRef(className = "@Class(NBT_TAG_COMPOUND)", parameters = {})
+    @ConstructorRef(className = "@var(NBT_TAG_COMPOUND)", parameters = {})
     public static final ConstructorWrapper<?> NBT_TAG_COMPOUND_CONSTRUCTOR = null;
-    @MethodRef(className = "@Class(NMS_ENTITY_CLASS)", value = "getBoundingBox()")
+    @MethodRef(className = "@var(NMS_ENTITY_CLASS)", value = "getBoundingBox()")
     public static final MethodWrapper<?> NMS_ENTITY_GET_BOUNDING_BOX = null;
-    @MethodRef(className = "@Class(NMS_ENTITY_CLASS)", value = "getHeadHeight()")
+    @MethodRef(className = "@var(NMS_ENTITY_CLASS)", value = "getHeadHeight()")
     public static final MethodWrapper<Float> NMS_ENTITY_GET_HEAD_HEIGHT = null;
-    @MethodRef(className = "@Class(NMS_ENTITY_CLASS)", value = {"isSilent()", "R()", "ad()"})
+    @MethodRef(className = "@var(NMS_ENTITY_CLASS)", value = {"isSilent()", "R()", "ad()"})
     public static final MethodWrapper<Boolean> NMS_ENTITY_IS_SILENT = null;
-    @MethodRef(className = "@Class(NMS_ENTITY_CLASS)", value = {"setSilent(boolean)", "b(boolean)"})
+    @MethodRef(className = "@var(NMS_ENTITY_CLASS)", value = {"setSilent(boolean)", "b(boolean)"})
     public static final MethodWrapper<?> NMS_ENTITY_SET_SILENT = null;
-    @MethodRef(className = "@Class(NMS_ENTITY_CLASS)", value = "isInvulnerable(@Class(DAMAGE_SOURCE))")
+    @MethodRef(className = "@var(NMS_ENTITY_CLASS)", value = "isInvulnerable(@var(DAMAGE_SOURCE))")
     public static final MethodWrapper<Boolean> NMS_ENTITY_IS_INVULNERABLE = null;
-    @MethodRef(className = "@Class(NBT_TAG_COMPOUND)", value = "setInt(java.lang.String, int)")
+    @MethodRef(className = "@var(NBT_TAG_COMPOUND)", value = "setInt(java.lang.String, int)")
     public static final MethodWrapper<?> NBT_TAG_COMPOUND_SET_INT = null;
-    @MethodRef(className = "@Class(ENTITY_LIVING)", value = "c(@Class(NBT_TAG_COMPOUND))")
+    @MethodRef(className = "@var(ENTITY_LIVING)", value = "c(@var(NBT_TAG_COMPOUND))")
     public static final MethodWrapper<?> ENTITY_LIVING_C = null;
-    @MethodRef(className = "@Class(ENTITY_LIVING)", value = "f(@Class(NBT_TAG_COMPOUND))")
+    @MethodRef(className = "@var(ENTITY_LIVING)", value = "f(@var(NBT_TAG_COMPOUND))")
     public static final MethodWrapper<?> ENTITY_LIVING_F = null;
-    @FieldRef(className = "@Class(NMS_ENTITY_CLASS)", value = "boolean invulnerable")
+    @FieldRef(className = "@var(NMS_ENTITY_CLASS)", value = "boolean invulnerable")
     public static final FieldWrapper NMS_ENTITY_INVULNERABLE = null;
-    @FieldRef(className = "@Class(DAMAGE_SOURCE)", value = {"GENERIC", "n"})
+    @FieldRef(className = "@var(DAMAGE_SOURCE)", value = {"GENERIC", "n"})
     public static final FieldWrapper DAMAGE_SOURCE_GENERIC = null;
     public static FieldWrapper ENTITY_COUNTER_FIELD;
 
