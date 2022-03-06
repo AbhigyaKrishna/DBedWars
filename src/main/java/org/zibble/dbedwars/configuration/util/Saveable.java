@@ -12,6 +12,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents an Object that can be saved on a {@link ConfigurationSection}.
@@ -133,7 +135,8 @@ public interface Saveable {
                         }
                     }
                 }
-            } else if (entry.isAnnotationPresent(SaveableCollectionEntry.class)) {
+            }
+            else if (entry.isAnnotationPresent(SaveableCollectionEntry.class)) {
                 SaveableCollectionEntry options =
                         entry.getAnnotation(SaveableCollectionEntry.class);
                 sub_section =
@@ -168,10 +171,7 @@ public interface Saveable {
 
                 int item_count = 0;
                 for (Saveable item : (Collection<Saveable>) value) {
-                    item.save(
-                            sub_section.createSection(
-                                    StringUtils.defaultIfBlank(options.subsectionprefix(), "")
-                                            + item_count++));
+                    item.save(sub_section.createSection(StringUtils.defaultIfBlank(options.subsectionprefix(), "") + item_count++));
                 }
             }
         }

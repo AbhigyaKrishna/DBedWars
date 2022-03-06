@@ -183,7 +183,8 @@ public interface Loadable extends Validable {
                         }
                     }
                 }
-            } else if (entry.isAnnotationPresent(LoadableCollectionEntry.class)) {
+            }
+            else if (entry.isAnnotationPresent(LoadableCollectionEntry.class)) {
                 if (!(Collection.class.isAssignableFrom(entry.getType())
                         || Map.class.isAssignableFrom(entry.getType()))) {
                     throw new UnsupportedOperationException(
@@ -272,7 +273,8 @@ public interface Loadable extends Validable {
                             /* ignore */
                         }
                     }
-                } else if (Map.class.isAssignableFrom(entry.getType())) {
+                }
+                else if (Map.class.isAssignableFrom(entry.getType())) {
                     Map<String, Loadable> map = (Map<String, Loadable>) value;
                     LoadableCollectionEntry options =
                             entry.getAnnotation(LoadableCollectionEntry.class);

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ArenaDataHolder {
 
-    private String name;
+    private String customName;
     private int maxPlayersPerTeam;
     private int minPlayersToStart;
     private boolean enabled;
@@ -33,7 +33,7 @@ public class ArenaDataHolder {
 
     public static ArenaDataHolder fromSetupSession(SetupSessionInfo data) {
         ArenaDataHolder holder = new ArenaDataHolder();
-        holder.name = data.getArenaCustomName();
+        holder.customName = data.getArenaCustomName();
         holder.maxPlayersPerTeam = data.getMaxPlayersPerTeam();
         holder.minPlayersToStart = data.getMinPlayersToStart();
         holder.enabled = false;
@@ -47,7 +47,7 @@ public class ArenaDataHolder {
     }
 
     public void loadInSession(SetupSessionInfoImpl session, World world) {
-        session.setArenaCustomName(this.name);
+        session.setArenaCustomName(this.customName);
         session.setMaxPlayersPerTeam(this.maxPlayersPerTeam);
         session.setMinPlayersToStart(this.minPlayersToStart);
         session.setDimension(this.environment);
@@ -62,8 +62,8 @@ public class ArenaDataHolder {
 
     }
 
-    public String getName() {
-        return name;
+    public String getCustomName() {
+        return customName;
     }
 
     public int getMaxPlayersPerTeam() {

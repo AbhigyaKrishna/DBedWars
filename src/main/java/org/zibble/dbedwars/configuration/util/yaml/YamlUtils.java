@@ -97,9 +97,9 @@ public class YamlUtils {
      */
     public static Set<ConfigurationSection> getSubSections(ConfigurationSection section) {
         Set<ConfigurationSection> sections = new HashSet<>();
-        section.getKeys(false).stream()
-                .filter(key -> section.isConfigurationSection(key))
-                .forEach(key -> sections.add(section.getConfigurationSection(key)));
+        for (String key : section.getKeys(false)) {
+            if (section.isConfigurationSection(key)) sections.add(section.getConfigurationSection(key));
+        }
         return sections;
     }
 
