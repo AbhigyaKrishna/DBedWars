@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.configuration.configurable;
 
-import com.pepedevs.radium.particles.ParticleEffect;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
@@ -12,6 +11,7 @@ import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.util.Loadable;
 import org.zibble.dbedwars.game.arena.spawner.DropTypeImpl;
+import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.ArrayList;
 import java.util.List;

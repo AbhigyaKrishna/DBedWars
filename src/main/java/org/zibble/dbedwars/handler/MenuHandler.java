@@ -2,7 +2,6 @@ package org.zibble.dbedwars.handler;
 
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.menus.actions.ActionRegistry;
-import org.zibble.dbedwars.menus.player.MenuPlayerProvider;
 
 public class MenuHandler implements org.zibble.dbedwars.api.handler.MenuHandler {
 

@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface Permission {
 
     String value();
-    String[] noPerm();
+
+    String[] noPerm() default {};
 
 }

@@ -54,11 +54,6 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public HologramManager getHologramFactory() {
-        return this.plugin.getHologramManager();
-    }
-
-    @Override
     public Version getVersion() {
         return this.plugin.getServerVersion();
     }

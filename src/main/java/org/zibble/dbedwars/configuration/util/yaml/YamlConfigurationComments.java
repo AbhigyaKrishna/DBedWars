@@ -104,18 +104,6 @@ public class YamlConfigurationComments extends YamlConfiguration {
         return header + dump;
     }
 
-    //	protected String insertComments ( String dump ) {
-    //		StringBuilder result = new StringBuilder ( );
-    //		String [ ]    lines  = dump.split ( "\r?\n" , -1 );
-    //
-    //		for ( int i = 0 ; i < lines.length ; i ++ ) {
-    //			String line = lines [ i ];
-    //
-    //
-    //		}
-    //		return dump;
-    //	}
-
     protected String insertComments(String dump) {
         StringBuilder builder = new StringBuilder();
         String[] lines = dump.split("\r?\n", -1);
@@ -127,8 +115,6 @@ public class YamlConfigurationComments extends YamlConfiguration {
             String line_path = "";
             int indent = indentCount(line);
             String node = "";
-
-            //			System.out.println ( ">>>>> i = " + i );
 
             if (i > 0 && indent >= options().indent() && line.indexOf(VALUE_INDICATOR) != -1) {
                 for (int j = i; j >= 0; j--) {
@@ -170,25 +156,11 @@ public class YamlConfigurationComments extends YamlConfiguration {
                 }
             }
 
-            //			System.out.println ( ">>>> node = " + node );
-            //			System.out.println ( ">>>> line_path = " + line_path );
-
-            //			String node_parent_path = node.isEmpty ( ) ? this.getCurrentPath ( )
-            //					: node.substring ( 0 , node.lastIndexOf ( options ( ).pathSeparator ( ) ) );
-
-            //			System.out.println ( ">>>> node_parent_path = " + node_parent_path );
-
             ConfigurationSection section =
                     node.isEmpty()
                             ? this
                             : getConfigurationSection(
                                     node.substring(0, node.lastIndexOf(options().pathSeparator())));
-
-            //			System.out.println ( ">>>> node parent section = " + ( section != null ?
-            // section.getCurrentPath ( ) : "null" ) );
-
-            //			System.out.println ( ">>>>>>> node = " + node );
-            //			System.out.println ( ">>>>>>> line_path = " + line_path );
 
             if (section != null) {
                 //				System.out.println ( ">>>> 0" );
@@ -224,99 +196,13 @@ public class YamlConfigurationComments extends YamlConfiguration {
                     builder.append(LINE_SEPARATOR);
                 }
 
-                //				if ( options ( ).isCommented ( section , line_path ) ) {
-                ////					System.out.println ( ">>>> 3" );
-                //					builder.append ( getIndent ( indent ) +
-                // YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX
-                //							+ options ( ).getComment ( section , line_path ) );
-                //					builder.append ( LINE_SEPARATOR );
-                //				}
             }
-
-            //			System.out.println (  );
-            //			System.out.println ( "------------------" );
-            //			System.out.println (  );
 
             builder.append(line);
             builder.append(LINE_SEPARATOR);
         }
         return builder.toString();
     }
-
-    //	protected String insertComments ( String dump ) {
-    //		StringBuilder builder   = new StringBuilder ( );
-    //		String [ ]    lines     = dump.split ( "\r?\n" , -1 );
-    //		String        last_node = "";
-    //
-    //		System.out.println ( "dump = " + dump );
-    //
-    //		for ( int i = 0 ; i < lines.length ; i ++ ) {
-    //			/* calculate line node */
-    //			String line      = lines [ i ];
-    //			String line_path = "";
-    //			int    indent    = indentCount ( line );
-    //			String node      = "";
-    //
-    //			System.out.println ( ">>>>> i = " + i );
-    //
-    //			if ( i > 0 && indent >= options ( ).indent ( ) && line.indexOf ( VALUE_INDICATOR ) != -1 )
-    // {
-    //				for ( int j = i ; j >= 0 ; j -- ) {
-    //					String line_back        = lines [ j ];
-    //					String line_back_path   = "";
-    //					int    line_back_indent = indentCount ( line_back );
-    //
-    //					if ( ( indent - options ( ).indent ( ) ) < 0 ) {
-    //						break;
-    //					}
-    //
-    //					if ( line_back_indent >= indent ) {
-    //						continue;
-    //					}
-    //
-    //					if ( line_back.trim ( ).startsWith ( COMMENT_PREFIX ) || line_back.trim ( )
-    //							.startsWith ( YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX ) ) {
-    //						continue;
-    //					}
-    //
-    //					/* father section found */
-    //					if ( line_back_indent == ( indent - options ( ).indent ( ) ) ) {
-    //						line_path      = line.trim ( ).substring ( 0 , line.trim ( ).indexOf ( VALUE_INDICATOR )
-    // );
-    //						line_back_path = line_back.trim ( ).substring ( 0 ,
-    //								line_back.trim ( ).indexOf ( VALUE_INDICATOR ) );
-    //						node           = line_back_path + options ( ).pathSeparator ( ) + line_path;
-    //						if ( last_node.endsWith ( options ( ).pathSeparator ( ) + line_back_path ) ) {
-    //							node = last_node + options ( ).pathSeparator ( ) + line_path;
-    //						}
-    //
-    //						last_node = node;
-    //						break;
-    //					}
-    //				}
-    //			}
-    //
-    //			ConfigurationSection section = node.isEmpty ( ) ? this : getConfigurationSection (
-    //					node.substring ( 0 , node.lastIndexOf ( options ( ).pathSeparator ( ) ) ) );
-    //
-    //			if ( section != null ) {
-    //				if ( line_path.trim ( ).isEmpty ( ) && line.trim ( ).indexOf ( VALUE_INDICATOR ) != -1 ) {
-    //					line_path = line.trim ( ).substring ( 0 , line.trim ( ).indexOf ( VALUE_INDICATOR ) );
-    //				}
-    //
-    //				if ( options ( ).isCommented ( section , line_path ) ) {
-    //					builder.append ( getIndent ( indent ) +
-    // YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX
-    //							+ options ( ).getComment ( section , line_path ) );
-    //					builder.append ( LINE_SEPARATOR );
-    //				}
-    //			}
-    //
-    //			builder.append ( line );
-    //			builder.append ( LINE_SEPARATOR );
-    //		}
-    //		return builder.toString ( );
-    //	}
 
     /**
      * Gets the equivalent of the given indent represented on a String.
@@ -344,7 +230,7 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
         Map<?, ?> input;
         try {
-            input = (Map<?, ?>) yaml.load(contents);
+            input = yaml.load(contents);
         } catch (YAMLException e) {
             throw new InvalidConfigurationException(e);
         } catch (ClassCastException e) {

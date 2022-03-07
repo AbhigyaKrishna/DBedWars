@@ -1,7 +1,5 @@
 package org.zibble.dbedwars.game.setup;
 
-import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.particles.ParticleEffect;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -17,6 +15,9 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.Duration;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 public class SetupUtil {
 
@@ -26,7 +27,7 @@ public class SetupUtil {
         return entity instanceof Painting || entity instanceof ItemFrame;
     }
 
-    public static Location precise(SetupSessionImpl setupSession, Location location) {
+    public static Location precise(SetupSession setupSession, Location location) {
         if (!setupSession.isPreciseEnabled) return location;
         final Location[] returnVal = new Location[1];
         PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION, PreciseLocation.class, value -> {
@@ -36,31 +37,14 @@ public class SetupUtil {
         return returnVal[0];
     }
 
-    public static Color[] findTeams(SetupSessionImpl setupSession) {
-
+    public static Color[] findTeams(SetupSession setupSession) {
+        return new Color[0];
     }
 
     public static CancellableWorkload createParticleSpawningTask(Location location, Player player, java.awt.Color color) {
         ParticleEffectASC particleEffect = new ParticleEffectASC(ParticleEffect.REDSTONE,1, 0, color);
         ParticleBuilder builder = particleEffect.build().setLocation(location.clone().add(0, 1, 0));
-        CancellableWorkload cancellableWorkload = new CancellableWorkload() {
-            private long lastRun = System.currentTimeMillis();
-
-            @Override
-            public void compute() {
-                lastRun = System.currentTimeMillis();
-                builder.display(player);
-            }
-
-            @Override
-            public boolean shouldExecute() {
-                if (this.isCancelled()) return false;
-                return System.currentTimeMillis() - this.lastRun > 50;
-            }
-
-        };
-        PLUGIN.getThreadHandler().submitAsync(cancellableWorkload);
-        return cancellableWorkload;
+        return PLUGIN.getThreadHandler().runTaskTimer(() -> builder.display(player), Duration.ofMilliseconds(50));
     }
 
     public static Hologram createHologram(Location location, Player player, Message text) {

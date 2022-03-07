@@ -13,7 +13,7 @@ import org.zibble.dbedwars.api.game.view.AttributeType;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Overridable;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
-import org.zibble.dbedwars.guis.ShopGui;
+import org.zibble.dbedwars.guis.old.ShopGui;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.*;

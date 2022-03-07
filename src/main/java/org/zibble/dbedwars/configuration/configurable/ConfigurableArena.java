@@ -164,8 +164,8 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
         return this.lobbyPosMin != null ? LocationXYZ.valueOf(this.lobbyPosMin) : null;
     }
 
-    public List<Team> getTeams() {
-        return this.teams.stream().map(ConfigurableTeam::toTeam).collect(Collectors.toList());
+    public List<ConfigurableTeam> getTeams() {
+        return this.teams;
     }
 
     public Multimap<DropType, LocationXYZ> getSpawners() {

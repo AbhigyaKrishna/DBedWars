@@ -4,30 +4,37 @@ import com.cryptomorin.xseries.XSound;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.game.setup.SetupSession;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.configuration.language.Lang;
 import org.zibble.dbedwars.configuration.language.PluginLang;
+import org.zibble.dbedwars.game.ArenaDataHolder;
+import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
-import org.zibble.inventoryframework.menu.inventory.AnvilMenu;
+import org.zibble.dbedwars.utils.gamerule.GameRuleType;
+import org.zibble.inventoryframework.protocol.Materials;
+import org.zibble.inventoryframework.protocol.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupSessionImpl implements SetupSession {
+public class SetupSession {
 
     private static final Messaging MESSAGING = Messaging.getInstance();
     private static final String TEAM_SETUP_SYMBOL = "[]";
 
-    private final SetupSessionInfoImpl dataHolder;
+    private final ArenaDataHolder dataHolder;
     private final World world;
 
     private final Player player;
@@ -37,15 +44,14 @@ public class SetupSessionImpl implements SetupSession {
 
     private final List<CancellableWorkload> runningWorkloads;
 
-    protected SetupSessionImpl(World world, Player player) {
+    protected SetupSession(World world, Player player) {
         this.player = player;
         this.world = world;
         this.playerMember = MESSAGING.getMessagingMember(player);
         this.runningWorkloads = new ArrayList<>();
-        this.dataHolder = new SetupSessionInfoImpl();
+        this.dataHolder = new ArenaDataHolder();
     }
 
-    @Override
     public void init() {
         this.player.teleport(world.getSpawnLocation());
         new SoundVP(XSound.ENTITY_PLAYER_LEVELUP, 1, 1).play(this.player);
@@ -54,70 +60,64 @@ public class SetupSessionImpl implements SetupSession {
         this.player.setFlying(true);
         Message startMessage = ConfigLang.SETUP_START.asMessage();
         startMessage.addPlaceholders(PlaceholderEntry.symbol("world", this.world.getName()));
-        this.playerMember.sendMessage(startMessage, true);
-        this.promptArenaCustomNameSet();
+        this.playerMember.sendMessage(startMessage);
     }
 
-    @Override
     public void promptArenaCustomNameSet() {
-        AnvilMenu menu = new AnvilMenu();
         Message message = ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
-        menu.setOutputClick(s -> {
-            this.dataHolder.setArenaCustomName(s);
-            message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
-            this.playerMember.sendMessage(message, true);
-        });
-        menu.mask("ABC");
-        //TODO SET ITEMS
-        menu.onClose(player -> {
-            this.dataHolder.setArenaCustomName(this.world.getName());
-            message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", this.world.getName()));
-            this.playerMember.sendMessage(ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage(), true);
-        });
+        ArenaNameGui.creator()
+                .item(() -> {
+                    ItemStack item = new ItemStack(Materials.PAPER);
+                    item.displayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0]);
+                    return item;
+                })
+                .outputClick((menu, s) -> {
+                    this.dataHolder.setCustomName(ConfigMessage.from(s));
+                    message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
+                    this.playerMember.sendMessage(message, true);
+                })
+                .closeAction((menu, player) -> {
+                    this.dataHolder.setCustomName(ConfigMessage.from(this.world.getName()));
+                    message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", this.world.getName()));
+                    this.playerMember.sendMessage(ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage());
+                })
+                .open(this.player);
     }
 
-    @Override
     public void promptCleanupWorldEntity() {
-        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_PROMPT.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_PROMPT.asMessage());
     }
 
-    @Override
     public void cleanupWorldEntities() {
-        this.world.getEntities().forEach(entity -> {
+        for (Entity entity : this.world.getEntities()) {
             if (!SetupUtil.isAllowedEntity(entity)) entity.remove();
-        });
-        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage(), true);
+        }
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage());
     }
 
-    @Override
     public void disableMobSpawning() {
-        this.world.setGameRuleValue("doMobSpawning", "false");
-        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_MOB_SPAWNING_DISABLED.asMessage(), true);
+        GameRuleType.MOB_SPAWNING.apply(this.world, false);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_MOB_SPAWNING_DISABLED.asMessage());
     }
 
-    @Override
     public void promptSetupWaitingLocation() {
-        this.playerMember.sendMessage(ConfigLang.SETUP_WAITING_LOCATION_PROMPT.asMessage(), true);
+        this.playerMember.sendMessage(ConfigLang.SETUP_WAITING_LOCATION_PROMPT.asMessage());
     }
 
-    @Override
     public void setupWaitingLocation(Location location) {
-        this.dataHolder.setWaitingLocation(SetupUtil.precise(this, location));
+        this.dataHolder.setWaitingLocation(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, Color.WHITE, PluginLang.HOLOGRAM_SETUP_WAITING_LOCATION_SET.asMessage());
         locationSetMessages(this, location, Color.WHITE, PluginLang.SETUP_WAITING_LOCATION_SET.asMessage());
     }
 
-    @Override
-    public void setupLobbyCorner1(Block location) {
-        this.dataHolder.setWaitingLocationCorner1(location);
+    public void setupLobbyCorner1(LocationXYZ location) {
+        this.dataHolder.setLobbyCorner1(location);
     }
 
-    @Override
-    public void setupLobbyCorner2(Block location) {
-        this.dataHolder.setWaitingLocationCorner2(location);
+    public void setupLobbyCorner2(LocationXYZ location) {
+        this.dataHolder.setLobbyCorner2(location);
     }
 
-    @Override
     public void promptSetupTeamsMessage() {
         Color[] colors = SetupUtil.findTeams(this);
         StringBuilder sb = new StringBuilder();
@@ -128,85 +128,75 @@ public class SetupSessionImpl implements SetupSession {
         this.playerMember.sendMessage(message, false);
     }
 
-    @Override
     public void startSetupTeam(Color color) {
         Message message = ConfigLang.SETUP_TEAM_START.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
-    @Override
     public void tryAutoSetupTeam(Color color) {
         Message message = ConfigLang.SETUP_TEAM_AUTO_SETUP_TRY.asMessage();
         message.addPlaceholders(PlaceholderEntry.symbol("team_color", color.getMiniCode()));
         this.playerMember.sendMessage(message, true);
     }
 
-    @Override
     public void setupTeamSpawn(Color color, Location location) {
         this.dataHolder.setTeamSpawn(color, SetupUtil.precise(this, location));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_SPAWN);
     }
 
-    @Override
     public void setupTeamShopNPC(Color color, Location location) {
         this.dataHolder.setShopNPC(color, SetupUtil.precise(this, location));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_SHOP);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_SHOP);
     }
 
-    @Override
     public void setupTeamUpgradesNPC(Color color, Location location) {
         this.dataHolder.setUpgradesNPC(color, location);
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_UPGRADES);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_UPGRADES);
     }
 
-    @Override
     public void setupBedLocation(Color color, Location location) {
         this.dataHolder.setTeamBed(color, SetupUtil.precise(this, location));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_BED);
     }
 
-    @Override
     public void setupGenLocation(Color color, Location location) {
         this.dataHolder.addGenLocation(color, this.world.getSpawnLocation());
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_GEN);
     }
 
-    @Override
     public void cancel() {
-        this.runningWorkloads.forEach(w -> w.setCancelled(true));
+        for (CancellableWorkload task : this.runningWorkloads) {
+            task.setCancelled(true);
+        }
         this.runningWorkloads.clear();
     }
 
-    @Override
     public void complete() {
-        this.runningWorkloads.forEach(w -> w.setCancelled(true));
-        this.runningWorkloads.clear();
+        this.cancel();
     }
 
-    @Override
     public boolean isPreciseEnabled() {
         return this.isPreciseEnabled;
     }
 
-    @Override
     public void setPreciseEnabled(boolean preciseEnabled) {
         isPreciseEnabled = preciseEnabled;
     }
 
 
-    private static void locationSetTasks(SetupSessionImpl setupSession, Location location, Color color, PluginLang lang) {
+    private static void locationSetTasks(SetupSession setupSession, Location location, Color color, Lang lang) {
         SetupUtil.createHologram(location, setupSession.player, lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())));
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, setupSession.player, color.asJavaColor());
         setupSession.runningWorkloads.add(workload);
     }
 
-    public static void locationSetMessages(SetupSessionImpl setupSession, Color color, PluginLang lang) {
+    public static void locationSetMessages(SetupSession setupSession, Color color, Lang lang) {
         setupSession.playerMember.sendMessage(lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())), false);
     }
 

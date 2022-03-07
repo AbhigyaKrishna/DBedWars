@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.guis.setup;
+package org.zibble.dbedwars.guis.old.setup;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.inventory.Item;

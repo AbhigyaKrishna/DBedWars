@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.configuration.util;
+package org.zibble.dbedwars.configuration.framework;
 
 import org.bukkit.configuration.ConfigurationSection;
 

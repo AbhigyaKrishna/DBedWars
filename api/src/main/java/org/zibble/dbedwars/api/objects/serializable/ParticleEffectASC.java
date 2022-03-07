@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.particles.ParticleEffect;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;

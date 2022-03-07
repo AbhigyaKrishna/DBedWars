@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.configuration.util.annotations;
 
 import org.apache.commons.lang.StringUtils;
-import org.zibble.dbedwars.configuration.util.SaveActionType;
+import org.zibble.dbedwars.configuration.framework.SaveActionType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

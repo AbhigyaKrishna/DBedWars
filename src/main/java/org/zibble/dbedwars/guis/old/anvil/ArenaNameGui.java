@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.guis.anvil;
+package org.zibble.dbedwars.guis.old.anvil;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.gui.anvil.AnvilItem;

@@ -4,10 +4,14 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public interface Savable {
 
-    void save();
+    int save(ConfigurationSection section);
 
-    default void saveEntries(ConfigurationSection section) {
-        Saver.save(this, section);
+    default int saveEntries(ConfigurationSection section) {
+        return ConfigSaver.save(this, section);
+    }
+
+    default int saveDefaults(ConfigurationSection section) {
+        return ConfigSaver.saveDefaults(this, section);
     }
 
 }

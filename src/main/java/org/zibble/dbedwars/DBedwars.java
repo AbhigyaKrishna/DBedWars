@@ -31,6 +31,7 @@ import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.PluginFileUtils;
+import org.zibble.inventoryframework.InventoryFramework;
 
 import java.io.File;
 import java.util.Random;
@@ -88,6 +89,7 @@ public final class DBedwars extends PluginAdapter {
 
         PacketEvents.getAPI().getSettings().bStats(true).debug(false).checkForUpdates(false);
         PacketEvents.getAPI().init();
+        InventoryFramework.init(r -> this.threadHandler.submitAsync(r::run));
 
         this.getServer()
                 .getServicesManager()

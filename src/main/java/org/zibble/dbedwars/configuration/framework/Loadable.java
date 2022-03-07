@@ -7,7 +7,7 @@ public interface Loadable {
     void load(ConfigurationSection section);
 
     default void loadEntries(ConfigurationSection section) {
-        Loader.load(this, section);
+        ConfigLoader.load(this, section);
     }
 
 }

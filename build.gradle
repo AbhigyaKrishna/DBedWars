@@ -34,7 +34,6 @@ allprojects {
 
     dependencies {
         compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.9-SNAPSHOT'
-        implementation 'org.zibble:inventoryframework:1.0-SNAPSHOT'
     }
 
     build {
@@ -140,6 +139,7 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     implementation 'com.github.Zibb-le:inventory-framework:-SNAPSHOT'
     implementation 'com.github.cryptomorin:XSeries:8.6.2'
+    implementation 'xyz.xenondevs:particle:1.7'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'

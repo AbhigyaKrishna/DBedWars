@@ -13,7 +13,7 @@ public class GenDetection {
     private GenDetection(){}
     private static final BlockFace[] SQUARE_CHECK;
 
-    private static final EnumMap<BlockFace, BlockFace[]> RECTANGLE_CHECK = new EnumMap<BlockFace, BlockFace[]>(BlockFace.class);
+    private static final EnumMap<BlockFace, BlockFace[]> RECTANGLE_CHECK = new EnumMap<>(BlockFace.class);
 
     public static Optional<Block> detect(Location location, int radius) {
         int x = location.getBlockX();

@@ -3,14 +3,14 @@ pages:
   page-1:
     title: '&7Quick buy'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'A W W W W W W W W'
       - 'X Q Q Q Q Q Q Q X'
       - 'X Q Q Q Q Q Q Q X'
       - 'X Q Q Q Q Q Q Q X'
       - 'X X X X X X X X X'
     items:
-      N1:
+      '1':
         name: '&bQuick buy'
         material: 'NETHER_STAR'
         amount: 1
@@ -21,14 +21,14 @@ pages:
   page-2:
     title: '&7Blocks'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W A W W W W W W W'
       - 'X B C D E F G H X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N2:
+      '2':
         material: 'STAINED_CLAY:%team%'
         name: '&bBlocks'
         lore: [ ]
@@ -148,14 +148,14 @@ pages:
   page-3:
     title: '&7Melee'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W A W W W W W W'
       - 'X B C D E X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N3:
+      '3':
         material: 'GOLDEN_SWORD'
         name: '&bMelee'
         lore: [ ]
@@ -222,14 +222,14 @@ pages:
   page-4:
     title: '&7Armor'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W W A W W W W W'
       - 'X B C D X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N4:
+      '4':
         material: 'CHAINMAIL_BOOTS'
         name: '&bArmor'
         lore: [ ]
@@ -304,14 +304,14 @@ pages:
   page-5:
     title: '&7Tools'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W W W A W W W W'
       - 'X B C D X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N5:
+      '5':
         material: 'STONE_PICKAXE'
         name: '&bTools'
         lore: [ ]
@@ -552,14 +552,14 @@ pages:
   page-6:
     title: '&7Ranged'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W A W W W'
       - 'X B C D E X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N6:
+      '6':
         material: 'BOW'
         amount: 1
         name: '&aRanged'
@@ -633,14 +633,14 @@ pages:
   page-7:
     title: '&7Potions'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W W A W W'
       - 'X B C D X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N7:
+      '7':
         material: 'BREWING_STAND'
         amount: 1
         name: '&aPotions'
@@ -702,14 +702,14 @@ pages:
   page-8:
     title: '&7Utilities'
     pattern:
-      - 'N1 N2 N3 N4 N5 N6 N7 N8 X'
+      - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W W W A W'
       - 'X B C D E F G H X'
       - 'X I J K L X X X X'
       - 'X X X X X X X X X'
       - 'X X X X X X X X X'
     items:
-      N8:
+      '8':
         material: 'TNT'
         amount: 1
         name: '&bUtilities'
@@ -906,7 +906,7 @@ common:
     name: ''
     lore: [ ]
 
-  N1:
+  '1':
     material: 'NETHER_STAR'
     amount: 1
     name: '&aQuick buy'
@@ -916,7 +916,7 @@ common:
       type: 'change-page'
       page: 'page-1'
 
-  N2:
+  '2':
     material: 'STAINED_CLAY'
     amount: 1
     name: '&aBlocks'
@@ -926,7 +926,7 @@ common:
       type: 'change-page'
       page: 'page-2'
 
-  N3:
+  '3':
     material: 'GOLDEN_SWORD'
     amount: 1
     name: '&aMelee'
@@ -936,7 +936,7 @@ common:
       type: 'change-page'
       page: 'page-3'
 
-  N4:
+  '4':
     material: 'CHAINMAIL_BOOTS'
     amount: 1
     name: '&eArmor'
@@ -946,7 +946,7 @@ common:
       type: 'change-page'
       page: 'page-4'
 
-  N5:
+  '5':
     material: 'STONE_PICKAXE'
     amount: 1
     name: '&aTools'
@@ -956,7 +956,7 @@ common:
       type: 'change-page'
       page: 'page-5'
 
-  N6:
+  '6':
     material: 'BOW'
     amount: 1
     name: '&aRanged'
@@ -966,7 +966,7 @@ common:
       type: 'change-page'
       page: 'page-6'
 
-  N7:
+  '7':
     material: 'BREWING_STAND'
     amount: 1
     name: '&aPotions'
@@ -976,7 +976,7 @@ common:
       type: 'change-page'
       page: 'page-7'
 
-  N8:
+  '8':
     material: 'TNT'
     amount: 1
     name: '&aUtility'

@@ -69,8 +69,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param comment The comment
      * @return This object, for chaining
      */
-    public YamlConfigurationCommentsOptions comment(
-            ConfigurationSection section, String path, String comment) {
+    public YamlConfigurationCommentsOptions comment(ConfigurationSection section, String path, String comment) {
         Validate.notNull(section, "The section cannot be null");
         Validate.isTrue(!StringUtils.isBlank(path), "Cannot comment an empty path");
         Validate.isTrue(
@@ -141,21 +140,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
         boolean a = comments.get(section.getCurrentPath()) != null;
         boolean b = a && comments.get(section.getCurrentPath()).containsKey(path);
 
-        //		System.out.println ( ">>>> isCommented: path = " + path );
-        //		System.out.println ( ">>>> isCommented: a = " + a );
-        //		System.out.println ( ">>>> isCommented: b = " + b );
-        //
-        //		if ( a ) {
-        //			System.out.println ( ">>>> paths: " );
-        //
-        //			for ( String paths : comments.get ( section.getCurrentPath ( ) ).keySet ( ) ) {
-        //				System.out.println ( ">>>> - " + paths );
-        //			}
-        //		}
-
         return a && b;
-        //		return comments.get ( section.getCurrentPath ( ) ) != null
-        //				&& comments.get ( section.getCurrentPath ( ) ).containsKey ( path );
     }
 
     /**
@@ -171,8 +156,6 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
         Map<String, String> parent = comments.get(section.getCurrentPath());
 
         return parent != null ? parent.get(path) : null;
-        //		return isCommented ( section , path ) ? comments.get ( section.getCurrentPath ( ) ).get
-        // ( path ) : null;
     }
 
     /**

@@ -34,8 +34,6 @@ public abstract class DBedWarsAPI {
 
     public abstract MenuHandler getMenuHandler();
 
-    public abstract HologramManager getHologramFactory();
-
     public abstract Version getVersion();
 
     public abstract Plugin getPlugin();

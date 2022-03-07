@@ -10,6 +10,10 @@ public class MenuPlayer implements ProtocolPlayer<Player> {
 
     private final Player player;
 
+    public static MenuPlayer of(Player player) {
+        return new MenuPlayer(player);
+    }
+
     public MenuPlayer(Player player) {
         this.player = player;
     }
