@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.configuration.framework;
 
 import com.google.common.collect.Multimap;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.TriFunction;
@@ -113,7 +112,7 @@ public interface ConfigSaver<T> {
             if (Arrays.stream(path.type()).noneMatch(type -> type == ConfigPath.ConfigType.SAVEABLE))
                 continue;
 
-            String key = StringUtils.isBlank(path.subSection()) ? path.value() : path.subSection() + "." + path.value();
+            String key = path.value();
             Object value = field.get(savable);
             if (value == null)
                 continue;
@@ -145,23 +144,21 @@ public interface ConfigSaver<T> {
         Stack<Field> fields = new Stack<>();
         fields.addAll(Arrays.asList(savable.getClass().getDeclaredFields()));
 
-        Class<?>[] innerClasses = Defaults.class.getDeclaredClasses();
-
-        fields.removeIf(field -> !field.isAnnotationPresent(ConfigPath.class) || Arrays.stream(innerClasses).noneMatch(clazz -> field.isAnnotationPresent((Class<? extends Annotation>) clazz)));
+        fields.removeIf(field -> !field.isAnnotationPresent(ConfigPath.class) || Defaults.DEFAULT_TYPES.stream().noneMatch(field::isAnnotationPresent));
         int count = 0;
         while (!fields.isEmpty()) {
             FieldWrapper field = new FieldWrapper(fields.pop());
 
             ConfigPath path = field.getField().getAnnotation(ConfigPath.class);
             Annotation annotation = null;
-            for (Class<?> innerClass : innerClasses) {
-                if (field.getField().isAnnotationPresent((Class<? extends Annotation>) innerClass)) {
-                    annotation = field.getField().getAnnotation((Class<? extends Annotation>) innerClass);
+            for (Class<? extends Annotation> annotationClass : Defaults.DEFAULT_TYPES) {
+                if (field.getField().isAnnotationPresent(annotationClass)) {
+                    annotation = field.getField().getAnnotation(annotationClass);
                     break;
                 }
             }
 
-            String key = StringUtils.isBlank(path.subSection()) ? path.value() : path.subSection() + "." + path.value();
+            String key = path.value();
 
             MethodResolver resolver = new MethodResolver(annotation.getClass());
             SaveActionType saveAction = (SaveActionType) resolver.resolveWrapper("saveAction").invoke(annotation);

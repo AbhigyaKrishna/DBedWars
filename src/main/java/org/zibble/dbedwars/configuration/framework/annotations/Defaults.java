@@ -1,13 +1,14 @@
 package org.zibble.dbedwars.configuration.framework.annotations;
 
+import com.google.common.collect.ImmutableSet;
 import org.zibble.dbedwars.configuration.framework.SaveActionType;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
+import java.util.Set;
 
 public class Defaults {
+
+    public static final Set<Class<? extends Annotation>> DEFAULT_TYPES = ImmutableSet.of(Character.class, String.class, Integer.class, Double.class, Boolean.class);
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)

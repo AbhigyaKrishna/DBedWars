@@ -13,8 +13,6 @@ public @interface ConfigPath {
 
     String value();
 
-    String subSection() default "";
-
     ConfigType[] type() default {ConfigType.SAVEABLE, ConfigType.LOADABLE};
 
     SaveActionType saveAction() default SaveActionType.NORMAL;

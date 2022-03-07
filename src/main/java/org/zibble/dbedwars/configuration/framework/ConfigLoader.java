@@ -2,15 +2,17 @@ package org.zibble.dbedwars.configuration.framework;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.utils.reflection.DataType;
 import org.zibble.dbedwars.utils.reflection.general.EnumReflection;
 import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
+import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
@@ -123,8 +125,26 @@ public interface ConfigLoader<T> {
             if (Arrays.stream(path.type()).noneMatch(type -> type == ConfigPath.ConfigType.LOADABLE))
                 continue;
 
-            String key = StringUtils.isBlank(path.subSection()) ? path.value() : path.subSection() + "." + path.value();
+            String key = path.value();
             Object value = section.get(key);
+
+            if (value == null) {
+                Annotation annotation = null;
+                for (Class<? extends Annotation> annotationClass : Defaults.DEFAULT_TYPES) {
+                    if (field.getField().isAnnotationPresent(annotationClass)) {
+                        annotation = field.getField().getAnnotation(annotationClass);
+                        break;
+                    }
+                }
+
+                if (annotation != null) {
+                    value = new MethodResolver(annotation.getClass()).resolveWrapper("value").invoke(annotation);
+                }
+            }
+
+            if (value == null) {
+                continue;
+            }
 
             for (ConfigLoader<?> loader : LOADERS) {
                 if (loader.isAssignable(field.getType())) {
