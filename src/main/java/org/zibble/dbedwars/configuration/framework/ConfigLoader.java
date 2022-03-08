@@ -30,6 +30,7 @@ public interface ConfigLoader<T> {
     ConfigLoader<Double> DOUBLE_LOADER = declare(DataType.DOUBLE::isType, (field, value) -> (double) value);
     ConfigLoader<Boolean> BOOLEAN_LOADER = declare(DataType.BOOLEAN::isType, (field, value) -> (boolean) value);
     ConfigLoader<String> STRING_LOADER = declare(String.class, (field, value) -> (String) value);
+    ConfigLoader<UUID> UUID_LOADER = declare(UUID.class, (field, value) -> UUID.fromString((String) value));
     ConfigLoader<ConfigurationSection> CONFIGURATION_LOADER = declare(ConfigurationSection.class, (field, value) -> (ConfigurationSection) value);
     ConfigLoader<Enum> ENUM_LOADER = declare(Enum.class, (field, value) -> ConfigurationUtils.matchEnum((String) value, ((Class<Enum>) field.getType()).getEnumConstants()));
     ConfigLoader<Loadable> LOADABLE_LOADER = declare(Loadable.class, (field, value) -> {
@@ -38,7 +39,7 @@ public interface ConfigLoader<T> {
         return loadable;
     });
 
-    List<ConfigLoader<?>> PRIMITIVE_LOADER = Arrays.asList(CHAR_LOADER, INT_LOADER, LONG_LOADER, FLOAT_LOADER, DOUBLE_LOADER, BOOLEAN_LOADER, STRING_LOADER, CONFIGURATION_LOADER, ENUM_LOADER, LOADABLE_LOADER);
+    List<ConfigLoader<?>> PRIMITIVE_LOADER = Arrays.asList(CHAR_LOADER, INT_LOADER, LONG_LOADER, FLOAT_LOADER, DOUBLE_LOADER, BOOLEAN_LOADER, STRING_LOADER, UUID_LOADER, CONFIGURATION_LOADER, ENUM_LOADER, LOADABLE_LOADER);
 
     ConfigLoader<Collection> COLLECTION_LOADER = declare(Collection.class, (field, value) -> {
         Class<?> fieldGeneric = FieldReflection.getParameterizedTypesClasses(field.getField())[0];

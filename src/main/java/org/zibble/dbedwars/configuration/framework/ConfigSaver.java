@@ -34,6 +34,8 @@ public interface ConfigSaver<T> {
             saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
     ConfigSaver<String> STRING_SAVER = declare(String.class, (pair, section, saveFunction) ->
             saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
+    ConfigSaver<UUID> UUID_SAVER = declare(UUID.class, (pair, section, saveFunction) ->
+            saveFunction.apply(pair.getKey(), pair.getValue().toString(), section) ? 1 : 0);
     ConfigSaver<ConfigurationSection> CONFIGURATION_SAVER = declare(ConfigurationSection.class, (pair, section, saveFunction) ->
             saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
     ConfigSaver<Enum> ENUM_SAVER = declare(Enum.class, (pair, section, saveFunction) ->
@@ -43,7 +45,7 @@ public interface ConfigSaver<T> {
         return pair.getValue().save(child);
     });
 
-    List<ConfigSaver<?>> PRIMITIVE_SAVER = Arrays.asList(CHAR_SAVER, INT_SAVER, LONG_SAVER, FLOAT_SAVER, DOUBLE_SAVER, BOOLEAN_SAVER, STRING_SAVER, CONFIGURATION_SAVER, ENUM_SAVER, SAVEABLE_SAVER);
+    List<ConfigSaver<?>> PRIMITIVE_SAVER = Arrays.asList(CHAR_SAVER, INT_SAVER, LONG_SAVER, FLOAT_SAVER, DOUBLE_SAVER, BOOLEAN_SAVER, STRING_SAVER, UUID_SAVER, CONFIGURATION_SAVER, ENUM_SAVER, SAVEABLE_SAVER);
 
     ConfigSaver<Collection> COLLECTION_SAVER = declare(Collection.class, (pair, section, saveFunction) ->
             saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
