@@ -69,10 +69,10 @@ public class ShopView implements org.zibble.dbedwars.api.game.view.ShopView {
         ItemMetaBuilder builder =
                 stack.getItemMetaBuilder()
                         .withDisplayName(
-                                StringUtils.translateAlternateColorCodes(item.getItemName()))
-                        .withLore(StringUtils.translateAlternateColorCodes(item.getItemLore()));
+                                StringUtils.translateAlternateColorCodes(item.getName()))
+                        .withLore(StringUtils.translateAlternateColorCodes(item.getLore()));
         stack.setItemMetaBuilder(builder);
-        item.getEnchant().stream()
+        item.getEnchantment().stream()
                 .map(LEnchant::valueOf)
                 .filter(Objects::nonNull)
                 .forEach(stack::applyEnchant);

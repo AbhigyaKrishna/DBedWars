@@ -24,7 +24,7 @@ public class ShopPage implements org.zibble.dbedwars.api.game.view.ShopPage {
     public void loadFromConfig(
             ShopView view, Map<String, GuiItem> common, ConfigurableShop.ConfigurablePage page) {
         this.view = view;
-        this.title = StringUtils.translateAlternateColorCodes(page.getGuiTitle());
+        this.title = StringUtils.translateAlternateColorCodes(page.getTitle());
         page.getItems()
                 .forEach(
                         (s, item) -> {

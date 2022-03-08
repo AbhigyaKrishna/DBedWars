@@ -64,8 +64,8 @@ public class Attribute implements org.zibble.dbedwars.api.game.view.Attribute {
                                 StringUtils.translateAlternateColorCodes(
                                         atrItem.getValue().getLore()));
                     stack.setItemMetaBuilder(builder);
-                    if (atrItem.getValue().getEnchant() != null)
-                        atrItem.getValue().getEnchant().stream()
+                    if (atrItem.getValue().getEnchantment() != null)
+                        atrItem.getValue().getEnchantment().stream()
                                 .map(LEnchant::valueOf)
                                 .filter(Objects::nonNull)
                                 .forEach(stack::applyEnchant);

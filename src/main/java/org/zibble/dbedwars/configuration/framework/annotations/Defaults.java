@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import org.zibble.dbedwars.configuration.framework.SaveActionType;
 
 import java.lang.annotation.*;
+import java.lang.reflect.Field;
 import java.util.Set;
 
 public class Defaults {

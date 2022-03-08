@@ -278,19 +278,19 @@ public final class DBedwars extends PluginAdapter {
 
 
         if (type == DatabaseType.MYSQL) {
-            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
+            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMysql());
         } else if (type == DatabaseType.MongoDB) {
             this.loadLibrary(ExternalLibrary.MONGO_DATABASE);
-            this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongoDB());
+            this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongodb());
         } else if (type == DatabaseType.H2) {
             this.loadLibrary(ExternalLibrary.H2_DATABASE);
             this.database = new H2DatabaseBridge();
         } else if (type == DatabaseType.HikariCP) {
             this.loadLibrary(ExternalLibrary.HIKARI_CP);
-            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMySQL());
+            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMysql());
         } else if (type == DatabaseType.PostGreSQL) {
             this.loadLibrary(ExternalLibrary.POSTGRESQL_DATABASE);
-            this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMySQL());
+            this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMysql());
         } else {
             this.loadLibrary(ExternalLibrary.SQLITE_DATABASE);
             this.database = new SQLiteBridge();

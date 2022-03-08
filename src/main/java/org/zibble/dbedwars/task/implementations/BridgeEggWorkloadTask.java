@@ -36,7 +36,7 @@ public class BridgeEggWorkloadTask implements Workload {
         tick = 0;
         this.egg = egg;
         this.lastBlock = null;
-        faces = this.getDirection(arenaPlayer.getPlayer(), cfg.isFlipBridgeEnabled());
+        faces = this.getDirection(arenaPlayer.getPlayer(), cfg.isFlipBridge());
     }
 
     @Override

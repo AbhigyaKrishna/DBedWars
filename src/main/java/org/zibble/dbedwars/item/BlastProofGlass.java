@@ -38,8 +38,8 @@ public class BlastProofGlass extends BedWarsActionItem {
 
         //TODO COLOR BASED ON TEAMS
 
-        super(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemName(),
-                plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getGlassItemLore(),
+        super(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getName(),
+                plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getLore(),
                 XMaterial.GLASS.parseMaterial());
         this.plugin = plugin;
     }

@@ -114,7 +114,7 @@ public interface ConfigSaver<T> {
             if (Arrays.stream(path.type()).noneMatch(type -> type == ConfigPath.ConfigType.SAVEABLE))
                 continue;
 
-            String key = path.value().isEmpty() ? field.getField().getName() : path.value();
+            String key = path.value().isEmpty() ? field.getField().getName().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase() : path.value();
             Object value = field.get(savable);
             if (value == null)
                 continue;
@@ -160,7 +160,7 @@ public interface ConfigSaver<T> {
                 }
             }
 
-            String key = path.value();
+            String key = path.value().isEmpty() ? field.getField().getName().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase() : path.value();
 
             MethodResolver resolver = new MethodResolver(annotation.getClass());
             SaveActionType saveAction = (SaveActionType) resolver.resolveWrapper("saveAction").invoke(annotation);

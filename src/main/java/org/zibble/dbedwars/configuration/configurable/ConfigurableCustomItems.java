@@ -1,45 +1,44 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurableCustomItems implements Loadable {
 
+    @ConfigPath
     private ConfigurableFireball fireball;
-    private ConfigurableTNT TNT;
+
+    @ConfigPath
+    private ConfigurableTNT tnt;
+
+    @ConfigPath
     private ConfigurablePopupTower popupTower;
+
+    @ConfigPath
     private ConfigurableBridgeEgg bridgeEgg;
+
+    @ConfigPath
     private ConfigurableWaterBucket waterBucket;
+
+    @ConfigPath
     private ConfigurableSponge sponge;
+
+    @ConfigPath
     private ConfigurableDreamDefender dreamDefender;
+
+    @ConfigPath
     private ConfigurableBedBug bedBug;
+
+    @ConfigPath
     private ConfigurableBlastProofGlass blastProofGlass;
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        fireball = new ConfigurableFireball();
-        fireball.load(section.getConfigurationSection("fireball"));
-        TNT = new ConfigurableTNT();
-        TNT.load(section.getConfigurationSection("tnt"));
-        popupTower = new ConfigurablePopupTower();
-        popupTower.load(section.getConfigurationSection("popup-tower"));
-        bridgeEgg = new ConfigurableBridgeEgg();
-        bridgeEgg.load(section.getConfigurationSection("bridge-egg"));
-        waterBucket = new ConfigurableWaterBucket();
-        waterBucket.load(section.getConfigurationSection("water-bucket"));
-        sponge = new ConfigurableSponge();
-        sponge.load(section.getConfigurationSection("sponge"));
-        dreamDefender = new ConfigurableDreamDefender();
-        dreamDefender.load(section.getConfigurationSection("dream-defender"));
-        bedBug = new ConfigurableBedBug();
-        bedBug.load(section.getConfigurationSection("bed-bug"));
-        blastProofGlass = new ConfigurableBlastProofGlass();
-        blastProofGlass.load(section.getConfigurationSection("blast-proof-glass"));
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -56,8 +55,8 @@ public class ConfigurableCustomItems implements Loadable {
         return fireball;
     }
 
-    public ConfigurableTNT getTNT() {
-        return TNT;
+    public ConfigurableTNT getTnt() {
+        return tnt;
     }
 
     public ConfigurablePopupTower getPopupTower() {
@@ -90,30 +89,24 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurablePopupTower implements Loadable {
 
-        @LoadableEntry(key = "name")
+        @ConfigPath
         private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "sound")
+        @ConfigPath
         private String sound;
 
-        @LoadableEntry(key = "particle")
+        @ConfigPath
         private String particle;
 
-        @LoadableEntry(key = "main-block")
+        @ConfigPath
         private String mainBlock;
 
-        protected ConfigurablePopupTower() {
-            name = "&bCompact Pop-up Tower";
-            lore = new ArrayList<>();
-            mainBlock = "WOOL%team%";
-        }
-
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -160,40 +153,40 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableTNT implements Loadable {
 
-        @LoadableEntry(key = "name")
+        @ConfigPath
         private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "auto-ignite-tnt")
-        private boolean autoIgniteTNT;
+        @ConfigPath
+        private boolean autoIgniteTnt;
 
-        @LoadableEntry(key = "fix-random-explosion")
+        @ConfigPath
         private boolean fixRandomExplosion;
 
-        @LoadableEntry(key = "better-tnt-ignite-animation")
-        private boolean isBetterTNTAnimationEnabled;
+        @ConfigPath
+        private boolean betterTntIgniteAnimation;
 
-        @LoadableEntry(key = "fuse-ticks")
+        @ConfigPath
         private int fuseTicks;
 
-        private ConfigurableKnockBack knockBack;
+        @ConfigPath
+        private ConfigurableKnockBack knockback;
 
         protected ConfigurableTNT() {
-            name = "";
+            /*name = "";
             lore = new ArrayList<>();
-            autoIgniteTNT = true;
+            autoIgniteTnt = true;
             fixRandomExplosion = true;
             fuseTicks = 52;
-            knockBack = new ConfigurableKnockBack();
-            isBetterTNTAnimationEnabled = true;
+            knockback = new ConfigurableKnockBack();
+            betterTntIgniteAnimation = true;*/
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            knockBack.load(section.getConfigurationSection("knockback"));
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -206,8 +199,8 @@ public class ConfigurableCustomItems implements Loadable {
             return false;
         }
 
-        public boolean isBetterTNTAnimationEnabled() {
-            return isBetterTNTAnimationEnabled;
+        public boolean isBetterTntIgniteAnimation() {
+            return betterTntIgniteAnimation;
         }
 
         public List<String> getLore() {
@@ -215,7 +208,7 @@ public class ConfigurableCustomItems implements Loadable {
         }
 
         public boolean isAutoIgniteTNTEnabled() {
-            return autoIgniteTNT;
+            return autoIgniteTnt;
         }
 
         public boolean isFixRandomExplosionEnabled() {
@@ -230,8 +223,8 @@ public class ConfigurableCustomItems implements Loadable {
             return name;
         }
 
-        public ConfigurableKnockBack getKnockBack() {
-            return knockBack;
+        public ConfigurableKnockBack getKnockback() {
+            return knockback;
         }
 
         @Override
@@ -239,59 +232,58 @@ public class ConfigurableCustomItems implements Loadable {
             return "ConfigurableTNT{" +
                     "name='" + name + '\'' +
                     ", lore=" + lore +
-                    ", autoIgniteTNT=" + autoIgniteTNT +
+                    ", autoIgniteTNT=" + autoIgniteTnt +
                     ", fixRandomExplosion=" + fixRandomExplosion +
-                    ", isBetterTNTAnimationEnabled=" + isBetterTNTAnimationEnabled +
+                    ", isBetterTNTAnimationEnabled=" + betterTntIgniteAnimation +
                     ", fuseTicks=" + fuseTicks +
-                    ", knockBack=" + knockBack +
+                    ", knockBack=" + knockback +
                     '}';
         }
     }
 
     public static class ConfigurableFireball implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String displayName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "left-click-throw")
+        @ConfigPath
         private boolean leftClickThrow;
 
-        @LoadableEntry(key = "fix-direction")
+        @ConfigPath
         private boolean fixDirection;
 
-        @LoadableEntry(key = "explosion-yield")
+        @ConfigPath
         private float explosionYield;
 
-        @LoadableEntry(key = "speed-multiplier")
+        @ConfigPath
         private double speedMultiplier;
 
-        @LoadableEntry(key = "throw-effects")
-        private List<String> potionEffects;
+        @ConfigPath
+        private List<String> throwEffects;
 
-        @LoadableEntry(key = "explosion-fire")
+        @ConfigPath
         private boolean explosionFire;
 
-        private ConfigurableKnockBack knockBack;
+        @ConfigPath
+        private ConfigurableKnockBack knockback;
 
         protected ConfigurableFireball() {
-            displayName = "";
+            name = "";
             lore = new ArrayList<>();
             leftClickThrow = false;
             fixDirection = true;
             explosionYield = 4;
             speedMultiplier = 5;
             explosionFire = true;
-            potionEffects = new ArrayList<>();
+            throwEffects = new ArrayList<>();
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            knockBack = new ConfigurableKnockBack();
-            knockBack.load(section.getConfigurationSection("knockback"));
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -324,16 +316,16 @@ public class ConfigurableCustomItems implements Loadable {
             return speedMultiplier;
         }
 
-        public ConfigurableKnockBack getKnockBack() {
-            return knockBack;
+        public ConfigurableKnockBack getKnockback() {
+            return knockback;
         }
 
-        public List<String> getPotionEffects() {
-            return potionEffects;
+        public List<String> getThrowEffects() {
+            return throwEffects;
         }
 
-        public String getDisplayName() {
-            return displayName;
+        public String getName() {
+            return name;
         }
 
         public boolean isExplosionFireEnabled() {
@@ -343,50 +335,50 @@ public class ConfigurableCustomItems implements Loadable {
         @Override
         public String toString() {
             return "ConfigurableFireball{" +
-                    "displayName='" + displayName + '\'' +
+                    "displayName='" + name + '\'' +
                     ", lore=" + lore +
                     ", leftClickThrow=" + leftClickThrow +
                     ", fixDirection=" + fixDirection +
                     ", explosionYield=" + explosionYield +
                     ", speedMultiplier=" + speedMultiplier +
-                    ", potionEffects=" + potionEffects +
+                    ", potionEffects=" + throwEffects +
                     ", explosionFire=" + explosionFire +
-                    ", knockBack=" + knockBack +
+                    ", knockBack=" + knockback +
                     '}';
         }
     }
 
     public static class ConfigurableBridgeEgg implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String displayName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "keep-alive-timeout")
+        @ConfigPath
         private int keepAliveTimeOut;
 
-        @LoadableEntry(key = "min-distance-from-player-to-start-placing-blocks")
+        @ConfigPath("min-distance-from-player-to-start-placing-blocks")
         private int minDistanceFromPlayer;
 
-        @LoadableEntry(key = "max-distance-from-player-to-keep-placing-blocks")
+        @ConfigPath("max-distance-from-player-to-keep-placing-blocks")
         private int maxDistanceFromPlayer;
 
-        @LoadableEntry(key = "max-down-stack")
+        @ConfigPath
         private int maxDownStack;
 
-        @LoadableEntry(key = "flip-bridge")
-        private boolean flipBridgeEnabled;
+        @ConfigPath("flip-bridge")
+        private boolean flipBridge;
 
         public ConfigurableBridgeEgg() {
             lore = new ArrayList<>();
-            flipBridgeEnabled = true;
+            flipBridge = true;
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -400,7 +392,7 @@ public class ConfigurableCustomItems implements Loadable {
         }
 
         public String getName() {
-            return displayName;
+            return name;
         }
 
         public List<String> getLore() {
@@ -423,44 +415,44 @@ public class ConfigurableCustomItems implements Loadable {
             return maxDownStack;
         }
 
-        public boolean isFlipBridgeEnabled() {
-            return flipBridgeEnabled;
+        public boolean isFlipBridge() {
+            return flipBridge;
         }
 
         @Override
         public String toString() {
             return "ConfigurableBridgeEgg{" +
-                    "displayName='" + displayName + '\'' +
+                    "displayName='" + name + '\'' +
                     ", lore=" + lore +
                     ", keepAliveTimeOut=" + keepAliveTimeOut +
                     ", minDistanceFromPlayer=" + minDistanceFromPlayer +
                     ", maxDistanceFromPlayer=" + maxDistanceFromPlayer +
                     ", maxDownStack=" + maxDownStack +
-                    ", flipBridgeEnabled=" + flipBridgeEnabled +
+                    ", flipBridgeEnabled=" + flipBridge +
                     '}';
         }
     }
 
     public static class ConfigurableWaterBucket implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String displayName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "remove-on-use")
+        @ConfigPath("remove-on-use")
         private boolean removeOnUse;
 
         public ConfigurableWaterBucket() {
-            this.displayName = "Water Bucket";
+            this.name = "Water Bucket";
             this.lore = new ArrayList<>();
             this.removeOnUse = true;
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -481,14 +473,14 @@ public class ConfigurableCustomItems implements Loadable {
             return lore;
         }
 
-        public String getDisplayName() {
-            return displayName;
+        public String getName() {
+            return name;
         }
 
         @Override
         public String toString() {
             return "ConfigurableWaterBucket{" +
-                    "displayName='" + displayName + '\'' +
+                    "displayName='" + name + '\'' +
                     ", lore=" + lore +
                     ", removeOnUse=" + removeOnUse +
                     '}';
@@ -497,48 +489,48 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableSponge implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String displayName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
+        @ConfigPath
         private List<String> lore;
 
-        @LoadableEntry(key = "animation-enabled")
+        @ConfigPath
         private boolean animationEnabled;
 
-        @LoadableEntry(key = "radius-for-particles")
+        @ConfigPath
         private int radiusForParticles;
 
-        @LoadableEntry(key = "remove-on-animation-end")
+        @ConfigPath
         private boolean removeSpongeOnAnimationEnd;
 
-        @LoadableEntry(key = "sound-on-box-increase")
-        private String soundBoxIncrease;
+        @ConfigPath
+        private String soundOnBoxIncrease;
 
-        @LoadableEntry(key = "sound-on-end")
-        private String soundOnAnimationEnd;
+        @ConfigPath
+        private String soundOnEnd;
 
-        @LoadableEntry(key = "allow-breaking")
+        @ConfigPath
         private boolean allowBreaking;
 
-        @LoadableEntry(key = "break-message")
+        @ConfigPath
         private String breakTryMessage;
 
         public ConfigurableSponge() {
-            displayName = "SpongeBoy";
+            name = "SpongeBoy";
             lore = new ArrayList<>();
             animationEnabled = true;
             radiusForParticles = 4;
             removeSpongeOnAnimationEnd = true;
-            soundBoxIncrease = "CLICK:0.2:0.5";
-            soundOnAnimationEnd = "SPLASH2:1:1";
+            soundOnBoxIncrease = "CLICK:0.2:0.5";
+            soundOnEnd = "SPLASH2:1:1";
             allowBreaking = false;
             breakTryMessage = "";
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -551,8 +543,8 @@ public class ConfigurableCustomItems implements Loadable {
             return false;
         }
 
-        public String getDisplayName() {
-            return displayName;
+        public String getName() {
+            return name;
         }
 
         public List<String> getLore() {
@@ -567,12 +559,12 @@ public class ConfigurableCustomItems implements Loadable {
             return radiusForParticles;
         }
 
-        public String getSoundBoxIncrease() {
-            return soundBoxIncrease;
+        public String getSoundOnBoxIncrease() {
+            return soundOnBoxIncrease;
         }
 
-        public String getSoundOnAnimationEnd() {
-            return soundOnAnimationEnd;
+        public String getSoundOnEnd() {
+            return soundOnEnd;
         }
 
         public boolean isBreakingAllowed() {
@@ -590,13 +582,13 @@ public class ConfigurableCustomItems implements Loadable {
         @Override
         public String toString() {
             return "ConfigurableSponge{" +
-                    "displayName='" + displayName + '\'' +
+                    "displayName='" + name + '\'' +
                     ", lore=" + lore +
                     ", animationEnabled=" + animationEnabled +
                     ", radiusForParticles=" + radiusForParticles +
                     ", removeSpongeOnAnimationEnd=" + removeSpongeOnAnimationEnd +
-                    ", soundBoxIncrease='" + soundBoxIncrease + '\'' +
-                    ", soundOnAnimationEnd='" + soundOnAnimationEnd + '\'' +
+                    ", soundBoxIncrease='" + soundOnBoxIncrease + '\'' +
+                    ", soundOnAnimationEnd='" + soundOnEnd + '\'' +
                     ", allowBreaking=" + allowBreaking +
                     ", breakTryMessage='" + breakTryMessage + '\'' +
                     '}';
@@ -605,44 +597,44 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableDreamDefender implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String itemName;
+        @ConfigPath("name")
+        private String name;
 
-        @LoadableEntry(key = "lore")
-        private List<String> itemLore;
+        @ConfigPath("lore")
+        private List<String> lore;
 
-        @LoadableEntry(key = "golem-display-name")
+        @ConfigPath("golem-display-name")
         private String golemDisplayName;
 
-        @LoadableEntry(key = "health-symbol")
+        @ConfigPath("health-symbol")
         private String healthSymbol;
 
-        @LoadableEntry(key = "health-color-codes")
+        @ConfigPath("health-color-codes")
         private String healthColorCodes;
 
-        @LoadableEntry(key = "health-indicator-count")
+        @ConfigPath("health-indicator-count")
         private int healthIndicatorCount;
 
-        @LoadableEntry(key = "potion-effects")
-        private List<String> golemPotionEffects;
+        @ConfigPath("potion-effects")
+        private List<String> potionEffects;
 
-        @LoadableEntry(key = "time-until-despawn")
+        @ConfigPath("time-until-despawn")
         private int ticksUntilDespawn;
 
         public ConfigurableDreamDefender() {
-            itemName = "Dream Defender";
-            itemLore = new ArrayList<>();
+            name = "Dream Defender";
+            lore = new ArrayList<>();
             golemDisplayName = "&f%time_left% &0[ %health_bar% &0]";
             healthSymbol = "● ";
             healthColorCodes = "f:8";
             healthIndicatorCount = 10;
-            golemPotionEffects = new ArrayList<>();
+            potionEffects = new ArrayList<>();
             ticksUntilDespawn = 4800;
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -655,12 +647,12 @@ public class ConfigurableCustomItems implements Loadable {
             return false;
         }
 
-        public String getItemName() {
-            return itemName;
+        public String getName() {
+            return name;
         }
 
-        public List<String> getItemLore() {
-            return itemLore;
+        public List<String> getLore() {
+            return lore;
         }
 
         public String getGolemDisplayName() {
@@ -679,8 +671,8 @@ public class ConfigurableCustomItems implements Loadable {
             return healthIndicatorCount;
         }
 
-        public List<String> getGolemPotionEffects() {
-            return golemPotionEffects;
+        public List<String> getPotionEffects() {
+            return potionEffects;
         }
 
         public int getTicksUntilDespawn() {
@@ -690,13 +682,13 @@ public class ConfigurableCustomItems implements Loadable {
         @Override
         public String toString() {
             return "ConfigurableDreamDefender{" +
-                    "itemName='" + itemName + '\'' +
-                    ", itemLore=" + itemLore +
+                    "itemName='" + name + '\'' +
+                    ", itemLore=" + lore +
                     ", golemDisplayName='" + golemDisplayName + '\'' +
                     ", healthSymbol='" + healthSymbol + '\'' +
                     ", healthColorCodes='" + healthColorCodes + '\'' +
                     ", healthIndicatorCount=" + healthIndicatorCount +
-                    ", golemPotionEffects=" + golemPotionEffects +
+                    ", golemPotionEffects=" + potionEffects +
                     ", ticksUntilDespawn=" + ticksUntilDespawn +
                     '}';
         }
@@ -704,48 +696,48 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableBedBug implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String itemName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
-        private List<String> itemLore;
+        @ConfigPath
+        private List<String> lore;
 
-        @LoadableEntry(key = "bed-bug-display-name")
+        @ConfigPath
         private String bedBugDisplayName;
 
-        @LoadableEntry(key = "health-symbol")
+        @ConfigPath
         private String healthSymbol;
 
-        @LoadableEntry(key = "health-filled-color-code")
+        @ConfigPath
         private String healthFilledColorCode;
 
-        @LoadableEntry(key = "health-missing-color-code")
+        @ConfigPath
         private String healthMissingColorCode;
 
-        @LoadableEntry(key = "health-indicator-count")
+        @ConfigPath
         private int healthIndicatorCount;
 
-        @LoadableEntry(key = "potion-effects")
-        private List<String> bedBugPotionEffects;
+        @ConfigPath("potion-effects")
+        private List<String> potionEffects;
 
-        @LoadableEntry(key = "time-until-despawn")
+        @ConfigPath
         private int ticksUntilDespawn;
 
         public ConfigurableBedBug() {
-            itemName = "Snowball";
-            itemLore = new ArrayList<>();
+            name = "Snowball";
+            lore = new ArrayList<>();
             bedBugDisplayName = "<black>[ <health_bar> ]";
             healthSymbol = "⏹ ";
             healthFilledColorCode = "<team_color>";
             healthMissingColorCode = "<dark_gray>";
             healthIndicatorCount = 5;
-            bedBugPotionEffects = new ArrayList<>();
+            potionEffects = new ArrayList<>();
             ticksUntilDespawn = 300;
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -770,12 +762,12 @@ public class ConfigurableCustomItems implements Loadable {
             return bedBugDisplayName;
         }
 
-        public List<String> getBedBugPotionEffects() {
-            return bedBugPotionEffects;
+        public List<String> getPotionEffects() {
+            return potionEffects;
         }
 
-        public List<String> getItemLore() {
-            return itemLore;
+        public List<String> getLore() {
+            return lore;
         }
 
         public String getHealthFilledColorCode() {
@@ -790,21 +782,21 @@ public class ConfigurableCustomItems implements Loadable {
             return healthSymbol;
         }
 
-        public String getItemName() {
-            return itemName;
+        public String getName() {
+            return name;
         }
 
         @Override
         public String toString() {
             return "ConfigurableBedBug{" +
-                    "itemName='" + itemName + '\'' +
-                    ", itemLore=" + itemLore +
+                    "itemName='" + name + '\'' +
+                    ", itemLore=" + lore +
                     ", bedBugDisplayName='" + bedBugDisplayName + '\'' +
                     ", healthSymbol='" + healthSymbol + '\'' +
                     ", healthFilledColorCode='" + healthFilledColorCode + '\'' +
                     ", healthMissingColorCode='" + healthMissingColorCode + '\'' +
                     ", healthIndicatorCount=" + healthIndicatorCount +
-                    ", bedBugPotionEffects=" + bedBugPotionEffects +
+                    ", bedBugPotionEffects=" + potionEffects +
                     ", ticksUntilDespawn=" + ticksUntilDespawn +
                     '}';
         }
@@ -812,20 +804,20 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableBlastProofGlass implements Loadable {
 
-        @LoadableEntry(key = "name")
-        private String glassItemName;
+        @ConfigPath
+        private String name;
 
-        @LoadableEntry(key = "lore")
-        private List<String> glassItemLore;
+        @ConfigPath
+        private List<String> lore;
 
         public ConfigurableBlastProofGlass() {
-            this.glassItemName = "";
-            this.glassItemLore = new ArrayList<>();
+            this.name = "";
+            this.lore = new ArrayList<>();
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -838,38 +830,38 @@ public class ConfigurableCustomItems implements Loadable {
             return false;
         }
 
-        public List<String> getGlassItemLore() {
-            return glassItemLore;
+        public List<String> getLore() {
+            return lore;
         }
 
-        public String getGlassItemName() {
-            return glassItemName;
+        public String getName() {
+            return name;
         }
 
         @Override
         public String toString() {
             return "ConfigurableBlastProofGlass{" +
-                    "glassItemName='" + glassItemName + '\'' +
-                    ", glassItemLore=" + glassItemLore +
+                    "glassItemName='" + name + '\'' +
+                    ", glassItemLore=" + lore +
                     '}';
         }
     }
 
     public static class ConfigurableKnockBack implements Loadable {
 
-        @LoadableEntry(key = "enabled")
+        @ConfigPath
         private boolean enabled;
 
-        @LoadableEntry(key = "radius-entities")
+        @ConfigPath
         private int radiusEntities;
 
-        @LoadableEntry(key = "distance-modifier")
+        @ConfigPath
         private double distanceModifier;
 
-        @LoadableEntry(key = "height-force")
+        @ConfigPath
         private double heightForce;
 
-        @LoadableEntry(key = "horizontal-force")
+        @ConfigPath
         private double horizontalForce;
 
         protected ConfigurableKnockBack() {
@@ -881,8 +873,8 @@ public class ConfigurableCustomItems implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -931,7 +923,7 @@ public class ConfigurableCustomItems implements Loadable {
     public String toString() {
         return "ConfigurableCustomItems{" +
                 "fireball=" + fireball +
-                ", TNT=" + TNT +
+                ", TNT=" + tnt +
                 ", popupTower=" + popupTower +
                 ", bridgeEgg=" + bridgeEgg +
                 ", waterBucket=" + waterBucket +

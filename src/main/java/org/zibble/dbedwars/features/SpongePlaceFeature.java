@@ -29,8 +29,8 @@ public class SpongePlaceFeature extends org.zibble.dbedwars.api.feature.custom.S
                     sponge,
                     cfgSponge.getRadiusForParticles(),
                     cfgSponge.shouldRemoveSpongeOnAnimationEnd(),
-                    cfgSponge.getSoundBoxIncrease(),
-                    cfgSponge.getSoundOnAnimationEnd())
+                    cfgSponge.getSoundOnBoxIncrease(),
+                    cfgSponge.getSoundOnEnd())
             );
         }
     }

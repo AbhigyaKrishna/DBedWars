@@ -27,7 +27,7 @@ public class FireballLaunchFeature extends org.zibble.dbedwars.api.feature.custo
         fireball.setVelocity(fireball.getVelocity().multiply(cfgFireball.getSpeedMultiplier()));
         if (cfgFireball.isFixDirectionEnabled()) Utils.setDirection(fireball, launcher.getPlayer().getEyeLocation().getDirection());
         fireball.setYield(cfgFireball.getExplosionYield());
-        for (String s : cfgFireball.getPotionEffects()) {
+        for (String s : cfgFireball.getThrowEffects()) {
             if (s == null || s.trim().equals("")) return;
             PotionEffectAT effect = PotionEffectAT.valueOf(s);
             if (effect != null) effect.applyTo(launcher.getPlayer());

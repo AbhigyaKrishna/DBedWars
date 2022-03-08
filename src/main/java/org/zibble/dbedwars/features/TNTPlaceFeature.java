@@ -33,12 +33,12 @@ public class TNTPlaceFeature extends org.zibble.dbedwars.api.feature.custom.TNTP
 
     @Override
     public void onPlace(Block block, ArenaPlayer placer) {
-        ConfigurableCustomItems.ConfigurableTNT cfgTNT = this.plugin.getConfigHandler().getCustomItems().getTNT();
+        ConfigurableCustomItems.ConfigurableTNT cfgTNT = this.plugin.getConfigHandler().getCustomItems().getTnt();
         if (!cfgTNT.isAutoIgniteTNTEnabled()) return;
         block.setType(Material.AIR);
         TNTPrimed tntPrimed = placer.getPlayer().getWorld().spawn(block.getLocation().add(0.5, 0, 0.5), TNTPrimed.class);
         tntPrimed.setFuseTicks(cfgTNT.getFuseTicks());
-        if (!cfgTNT.isBetterTNTAnimationEnabled()) return;
+        if (!cfgTNT.isBetterTntIgniteAnimation()) return;
         tntPrimed.setVelocity(VectorUtils.rotateAroundAxisY(new Vector(0.01, 0.40, 0.01), new Random().nextInt(360)));
         tntPrimed.setMetadata("isDBedwarsTNT", TNTItem.TNT_PRIMED_META);
     }

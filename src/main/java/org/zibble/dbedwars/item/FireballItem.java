@@ -38,7 +38,7 @@ public class FireballItem extends BedWarsActionItem {
 
     public FireballItem(DBedwars plugin) {
         super(
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getDisplayName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getName()),
                 ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
                 XMaterial.FIRE_CHARGE.parseMaterial());
@@ -69,7 +69,7 @@ public class FireballItem extends BedWarsActionItem {
     }
 
     public void onFireBallExplode(EntityExplodeEvent e) {
-        ConfigurableCustomItems.ConfigurableKnockBack cfgKB = this.plugin.getConfigHandler().getCustomItems().getFireball().getKnockBack();
+        ConfigurableCustomItems.ConfigurableKnockBack cfgKB = this.plugin.getConfigHandler().getCustomItems().getFireball().getKnockback();
         Location l = e.getLocation();
         double radius = cfgKB.getRadiusEntities();
         List<Entity> nearbyEntities = (List<Entity>) l.getWorld().getNearbyEntities(l, radius, radius, radius);
@@ -79,7 +79,7 @@ public class FireballItem extends BedWarsActionItem {
     }
 
     private void giveKB(LivingEntity entity, Location fbl, EntityExplodeEvent e) {
-        ConfigurableCustomItems.ConfigurableKnockBack cfgKB = this.plugin.getConfigHandler().getCustomItems().getFireball().getKnockBack();
+        ConfigurableCustomItems.ConfigurableKnockBack cfgKB = this.plugin.getConfigHandler().getCustomItems().getFireball().getKnockback();
         if (!cfgKB.isEnabled()) return;
         Location loc = entity.getLocation();
         double distance = (e.getYield() * cfgKB.getDistanceModifier());

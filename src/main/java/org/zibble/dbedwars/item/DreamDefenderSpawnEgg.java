@@ -36,9 +36,9 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
         super(ConfigLang.getTranslator().translate(plugin.getConfigHandler()
                         .getCustomItems()
                         .getDreamDefender()
-                        .getItemName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getDreamDefender().getItemLore()),
+                        .getName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore()),
                 XMaterial.WOLF_SPAWN_EGG.parseMaterial());
         this.plugin = plugin;
         cfgGolem = plugin.getConfigHandler().getCustomItems().getDreamDefender();
@@ -65,7 +65,7 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
             }
         });
 
-        for (String effect : cfgGolem.getGolemPotionEffects()) {
+        for (String effect : cfgGolem.getPotionEffects()) {
             if (effect == null || effect.equals("")) continue;
             PotionEffectAT effectAT = PotionEffectAT.valueOf(effect);
             if (effectAT != null) effectAT.applyTo(ironGolem);

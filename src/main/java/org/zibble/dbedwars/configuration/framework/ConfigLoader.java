@@ -142,7 +142,7 @@ public interface ConfigLoader<T> {
             if (Arrays.stream(path.type()).noneMatch(type -> type == ConfigPath.ConfigType.LOADABLE))
                 continue;
 
-            String key = path.value().isEmpty() ? field.getField().getName() : path.value();
+            String key = path.value().isEmpty() ? field.getField().getName().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase() : path.value();
             Object value = section.get(key);
 
             if (value == null) {

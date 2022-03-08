@@ -51,9 +51,9 @@ sponge:
   lore: [ ]
   animation-enabled: true
   radius-for-particles: 4
-  remove-on-animation-end: true
+  remove-sponge-on-animation-end: true
   allow-breaking: false
-  break-message: '' #sent only is allow-breaking is set to false
+  break-try-message: '' #sent only is allow-breaking is set to false
   sound-on-box-increase: 'CLICK:0.2:0.5'
   sound-on-end: 'SPLASH2:1:1'
 dream-defender:

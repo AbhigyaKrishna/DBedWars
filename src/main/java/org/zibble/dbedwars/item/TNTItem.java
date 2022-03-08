@@ -28,12 +28,12 @@ public class TNTItem extends BedWarsActionItem {
 
     public TNTItem(DBedwars plugin) {
         super(
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTNT().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getTNT().getLore()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTnt().getName()),
+                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTnt().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getTnt().getLore()),
                 Material.TNT);
-        this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTNT();
-        this.cfgKB = cfgTNT.getKnockBack();
+        this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTnt();
+        this.cfgKB = cfgTNT.getKnockback();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TNTItem extends BedWarsActionItem {
         if (cfgTNT.isFixRandomExplosionEnabled()) {
             event.getEntity().teleport(event.getEntity().getLocation().getBlock().getLocation().add(0.5, 0, 0.5));
         }
-        double radius = cfgTNT.getKnockBack().getRadiusEntities();
+        double radius = cfgTNT.getKnockback().getRadiusEntities();
         List<Entity> nearbyEntities = (List<Entity>) event.getLocation().getWorld().getNearbyEntities(event.getLocation(), radius, radius, radius);
         for (Entity entity : nearbyEntities) {
             if (entity instanceof LivingEntity) giveKB((LivingEntity) entity, event.getLocation(), event);
@@ -57,10 +57,10 @@ public class TNTItem extends BedWarsActionItem {
     private void giveKB(LivingEntity player, Location fbl, EntityExplodeEvent e) {
         if (!cfgKB.isEnabled()) return;
         Location loc = player.getLocation();
-        double distance = (e.getYield() * cfgTNT.getKnockBack().getDistanceModifier());
+        double distance = (e.getYield() * cfgTNT.getKnockback().getDistanceModifier());
         distance *= 1.0D;
-        double hf = cfgTNT.getKnockBack().getHeightForce() / 2.0D;
-        double rf = cfgTNT.getKnockBack().getHorizontalForce() / 2.0D;
+        double hf = cfgTNT.getKnockback().getHeightForce() / 2.0D;
+        double rf = cfgTNT.getKnockback().getHorizontalForce() / 2.0D;
         player.setVelocity(fbl.toVector().subtract(loc.toVector()).normalize().multiply(-1.0D * rf).setY(hf));
         if (player instanceof Player) {
             EntityDamageEvent DamageEvent =

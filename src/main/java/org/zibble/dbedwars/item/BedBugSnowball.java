@@ -30,10 +30,10 @@ public class BedBugSnowball extends BedWarsActionItem {
     private final DBedwars plugin;
 
     public BedBugSnowball(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getItemName()),
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getName()),
                 ConfigLang.getTranslator().translate(
-                        plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getBedBug().getItemLore()),
+                        plugin.getConfigHandler().getCustomItems().getBedBug().getLore() == null ? new ArrayList<>()
+                        : plugin.getConfigHandler().getCustomItems().getBedBug().getLore()),
                 XMaterial.SNOWBALL.parseMaterial());
         this.plugin = plugin;
     }

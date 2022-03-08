@@ -29,7 +29,7 @@ public class Sponge extends BedWarsActionItem {
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getDisplayName()),
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getName()),
                 ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
                         : plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
                 XMaterial.SPONGE.parseMaterial());

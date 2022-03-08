@@ -2,25 +2,24 @@ package org.zibble.dbedwars.configuration.configurable;
 
 import com.pepedevs.radium.database.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 public class ConfigurableDatabase implements Loadable {
 
-    @LoadableEntry(key = "database")
+    @ConfigPath
     private String database;
 
-    private ConfigurableMySQL mySQL;
-    private ConfigurableMongoDB mongoDB;
+    @ConfigPath
+    private ConfigurableMySQL mysql;
+
+    @ConfigPath
+    private ConfigurableMongoDB mongodb;
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        this.mySQL = new ConfigurableMySQL();
-        this.mySQL.load(section.getConfigurationSection("mysql"));
-        this.mongoDB = new ConfigurableMongoDB();
-        this.mongoDB.load(section.getConfigurationSection("mongodb"));
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -37,40 +36,40 @@ public class ConfigurableDatabase implements Loadable {
         return database;
     }
 
-    public ConfigurableMySQL getMySQL() {
-        return mySQL;
+    public ConfigurableMySQL getMysql() {
+        return mysql;
     }
 
-    public ConfigurableMongoDB getMongoDB() {
-        return mongoDB;
+    public ConfigurableMongoDB getMongodb() {
+        return mongodb;
     }
 
     public static class ConfigurableMySQL implements Loadable {
 
-        @LoadableEntry(key = "host")
+        @ConfigPath
         private String host;
 
-        @LoadableEntry(key = "port")
+        @ConfigPath
         private int port;
 
-        @LoadableEntry(key = "database-name")
+        @ConfigPath
         private String databaseName;
 
-        @LoadableEntry(key = "username")
+        @ConfigPath
         private String username;
 
-        @LoadableEntry(key = "password")
+        @ConfigPath
         private String password;
 
-        @LoadableEntry(key = "reconnect")
+        @ConfigPath
         private boolean reconnect;
 
-        @LoadableEntry(key = "ssl")
+        @ConfigPath
         private boolean ssl;
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -127,24 +126,24 @@ public class ConfigurableDatabase implements Loadable {
 
     public static class ConfigurableMongoDB implements Loadable {
 
-        @LoadableEntry(key = "host")
+        @ConfigPath
         private String host;
 
-        @LoadableEntry(key = "port")
+        @ConfigPath
         private int port;
 
-        @LoadableEntry(key = "database-name")
+        @ConfigPath
         private String databaseName;
 
-        @LoadableEntry(key = "username")
+        @ConfigPath
         private String username;
 
-        @LoadableEntry(key = "password")
+        @ConfigPath
         private String password;
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -194,8 +193,8 @@ public class ConfigurableDatabase implements Loadable {
     public String toString() {
         return "ConfigurableDatabase{" +
                 "database='" + database + '\'' +
-                ", mySQL=" + mySQL +
-                ", mongoDB=" + mongoDB +
+                ", mySQL=" + mysql +
+                ", mongoDB=" + mongodb +
                 '}';
     }
 }

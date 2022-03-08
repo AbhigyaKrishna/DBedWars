@@ -15,7 +15,7 @@ public class WaterBucket extends BedWarsActionItem {
     private final boolean removeOnUse;
 
     public WaterBucket(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getDisplayName()),
+        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getName()),
                 ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getWaterBucket().getLore()
                         == null
                         ? new ArrayList<>()

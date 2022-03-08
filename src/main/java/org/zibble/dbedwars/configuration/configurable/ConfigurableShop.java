@@ -1,9 +1,8 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,13 +11,13 @@ import java.util.Map;
 
 public class ConfigurableShop implements Loadable {
 
-    @LoadableEntry(key = "default-page")
+    @ConfigPath
     private String defaultPage;
 
-    @LoadableCollectionEntry(subsection = "pages")
+    @ConfigPath
     private Map<String, ConfigurablePage> pages;
 
-    @LoadableCollectionEntry(subsection = "common")
+    @ConfigPath("common")
     private Map<String, ConfigurablePage.BwGUIItem> commonItems;
 
     public ConfigurableShop() {
@@ -27,8 +26,8 @@ public class ConfigurableShop implements Loadable {
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -55,13 +54,13 @@ public class ConfigurableShop implements Loadable {
 
     public static class ConfigurablePage implements Loadable {
 
-        @LoadableEntry(key = "title")
-        private String guiTitle;
+        @ConfigPath
+        private String title;
 
-        @LoadableEntry(key = "pattern")
+        @ConfigPath
         private List<String> pattern;
 
-        @LoadableCollectionEntry(subsection = "items")
+        @ConfigPath
         private Map<String, BwGUIItem> items;
 
         public ConfigurablePage() {
@@ -70,13 +69,13 @@ public class ConfigurableShop implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
         public boolean isValid() {
-            return this.guiTitle != null && !this.pattern.isEmpty();
+            return this.title != null && !this.pattern.isEmpty();
         }
 
         @Override
@@ -92,40 +91,40 @@ public class ConfigurableShop implements Loadable {
             return pattern;
         }
 
-        public String getGuiTitle() {
-            return guiTitle;
+        public String getTitle() {
+            return title;
         }
 
         public static class BwGUIItem implements Loadable {
 
-            @LoadableEntry(key = "name")
-            private String itemName;
+            @ConfigPath
+            private String name;
 
-            @LoadableEntry(key = "lore")
-            private List<String> itemLore;
+            @ConfigPath
+            private List<String> lore;
 
-            @LoadableEntry(key = "material")
+            @ConfigPath
             private String material;
 
-            @LoadableEntry(key = "amount")
+            @ConfigPath
             private int amount;
 
-            @LoadableEntry(key = "enchantment")
-            private List<String> enchant;
+            @ConfigPath
+            private List<String> enchantment;
 
+            @ConfigPath
             private ConfigurableAttribute attribute;
 
             public BwGUIItem() {
                 this.amount = 1;
-                this.itemLore = new ArrayList<>();
+                this.lore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();
-                this.enchant = new ArrayList<>();
+                this.enchantment = new ArrayList<>();
             }
 
             @Override
-            public Loadable load(ConfigurationSection section) {
-                this.attribute.load(section.getConfigurationSection("attribute"));
-                return this.loadEntries(section);
+            public void load(ConfigurationSection section) {
+                this.loadEntries(section);
             }
 
             @Override
@@ -138,12 +137,12 @@ public class ConfigurableShop implements Loadable {
                 return false;
             }
 
-            public List<String> getItemLore() {
-                return itemLore;
+            public List<String> getLore() {
+                return lore;
             }
 
-            public String getItemName() {
-                return itemName;
+            public String getName() {
+                return name;
             }
 
             public int getAmount() {
@@ -154,8 +153,8 @@ public class ConfigurableShop implements Loadable {
                 return material;
             }
 
-            public List<String> getEnchant() {
-                return enchant;
+            public List<String> getEnchantment() {
+                return enchantment;
             }
 
             public ConfigurableAttribute getAttribute() {
@@ -165,11 +164,11 @@ public class ConfigurableShop implements Loadable {
             @Override
             public String toString() {
                 return "BwGUIItem{" +
-                        "itemName='" + itemName + '\'' +
-                        ", itemLore=" + itemLore +
+                        "itemName='" + name + '\'' +
+                        ", itemLore=" + lore +
                         ", material='" + material + '\'' +
                         ", amount=" + amount +
-                        ", enchant=" + enchant +
+                        ", enchant=" + enchantment +
                         ", attribute=" + attribute +
                         '}';
             }
@@ -179,7 +178,7 @@ public class ConfigurableShop implements Loadable {
         @Override
         public String toString() {
             return "ConfigurablePage{" +
-                    "guiTitle='" + guiTitle + '\'' +
+                    "guiTitle='" + title + '\'' +
                     ", pattern=" + pattern +
                     ", items=" + items +
                     '}';
@@ -188,28 +187,28 @@ public class ConfigurableShop implements Loadable {
 
     public static class ConfigurableAttribute implements Loadable {
 
-        @LoadableEntry(key = "type")
+        @ConfigPath
         private String type;
 
-        @LoadableEntry(key = "page")
+        @ConfigPath("page")
         private String pageToChangeTo;
 
-        @LoadableEntry(key = "cost")
+        @ConfigPath
         private String cost;
 
-        @LoadableEntry(key = "next-tier")
+        @ConfigPath
         private String nextTier;
 
-        @LoadableEntry(key = "previous-tier")
+        @ConfigPath
         private String previousTier;
 
-        @LoadableEntry(key = "downgrade-event")
+        @ConfigPath
         private String downgradeEvent;
 
-        @LoadableEntry(key = "command")
+        @ConfigPath
         private List<String> command;
 
-        @LoadableCollectionEntry(subsection = "item")
+        @ConfigPath("item")
         private Map<String, AttributeItems> itemsToGive;
 
         public ConfigurableAttribute() {
@@ -217,8 +216,8 @@ public class ConfigurableShop implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -265,25 +264,25 @@ public class ConfigurableShop implements Loadable {
 
         public static class AttributeItems implements Loadable {
 
-            @LoadableEntry(key = "enchantment")
-            List<String> enchant;
+            @ConfigPath
+            private List<String> enchantment;
 
-            @LoadableEntry(key = "custom-item")
+            @ConfigPath
             private String customItem;
 
-            @LoadableEntry(key = "material")
+            @ConfigPath
             private String material;
 
-            @LoadableEntry(key = "amount")
+            @ConfigPath
             private int amount;
 
-            @LoadableEntry(key = "name")
+            @ConfigPath
             private String name;
 
-            @LoadableEntry(key = "lore")
+            @ConfigPath
             private List<String> lore;
 
-            @LoadableEntry(key = "auto-equip-slot")
+            @ConfigPath
             private int autoEquipSlot;
 
             public AttributeItems() {
@@ -292,8 +291,8 @@ public class ConfigurableShop implements Loadable {
             }
 
             @Override
-            public Loadable load(ConfigurationSection section) {
-                return this.loadEntries(section);
+            public void load(ConfigurationSection section) {
+                this.loadEntries(section);
             }
 
             @Override
@@ -326,8 +325,8 @@ public class ConfigurableShop implements Loadable {
                 return lore;
             }
 
-            public List<String> getEnchant() {
-                return enchant;
+            public List<String> getEnchantment() {
+                return enchantment;
             }
 
             public int getAutoEquipSlot() {
@@ -337,7 +336,7 @@ public class ConfigurableShop implements Loadable {
             @Override
             public String toString() {
                 return "AttributeItems{" +
-                        "enchant=" + enchant +
+                        "enchant=" + enchantment +
                         ", customItem='" + customItem + '\'' +
                         ", material='" + material + '\'' +
                         ", amount=" + amount +
