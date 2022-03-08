@@ -1,116 +1,78 @@
 package org.zibble.dbedwars.configuration.configurable;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
-import org.zibble.dbedwars.configuration.util.Configurable;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
-import org.zibble.dbedwars.configuration.util.annotations.SaveableCollectionEntry;
-import org.zibble.dbedwars.configuration.util.annotations.SaveableEntry;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
+import org.zibble.dbedwars.configuration.framework.Configurable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ConfigurableArena implements Configurable, PropertySerializable {
 
-    private Arena arena;
-
-    @SaveableEntry(key = "name")
-    @LoadableEntry(key = "name")
+    @ConfigPath("name")
     private String identifier;
 
-    @SaveableEntry(key = "enabled")
-    @LoadableEntry(key = "enabled")
+    @ConfigPath("enabled")
     private boolean enabled;
 
-    @SaveableEntry(key = "world-environment")
-    @LoadableEntry(key = "world-environment")
-    private String worldEnv;
+    @ConfigPath("world-environment")
+    private World.Environment environment;
 
-    @SaveableEntry(key = "icon")
-    @LoadableEntry(key = "icon")
+    @ConfigPath("icon")
     private String icon;
 
-    @SaveableEntry(key = "lobby.location")
-    @LoadableEntry(key = "lobby.location")
+    @ConfigPath("lobby.location")
     private String lobbyLoc;
 
-    @SaveableEntry(key = "lobby.corner1")
-    @LoadableEntry(key = "lobby.corner1")
+    @ConfigPath("lobby.corner1")
     private String lobbyPosMax;
 
-    @SaveableEntry(key = "lobby.corner2")
-    @LoadableEntry(key = "lobby.corner2")
+    @ConfigPath("lobby.corner2")
     private String lobbyPosMin;
 
-    @SaveableEntry(key = "spectatorLoc")
-    @LoadableEntry(key = "spectatorLoc")
+    @ConfigPath("spectatorLoc")
     private String spectatorLocation;
 
-    @SaveableEntry(key = "playersInTeam")
-    @LoadableEntry(key = "playersInTeam")
+    @ConfigPath("playersInTeam")
     private int playerInTeam;
 
-    @SaveableEntry(key = "minPlayersToStart")
-    @LoadableEntry(key = "minPlayersToStart")
+    @ConfigPath("minPlayersToStart")
     private int minPlayers;
 
-    @SaveableEntry(key = "customName")
-    @LoadableEntry(key = "customName")
+    @ConfigPath("customName")
     private String customName;
 
-    @SaveableCollectionEntry(subsection = "teams")
-    @LoadableCollectionEntry(subsection = "teams")
-    private List<ConfigurableTeam> teams;
+    @ConfigPath("teams")
+    private Map<String, ConfigurableTeam> teams;
 
-    @SaveableEntry(key = "spawners")
-    @LoadableEntry(key = "spawners")
+    @ConfigPath("spawners")
     private List<String> spawners;
 
+    @ConfigPath("override")
     private ConfigurableArenaOverride override;
 
     public ConfigurableArena() {
-        this.spawners = new ArrayList<>();
-        this.teams = new ArrayList<>();
     }
 
     public ConfigurableArena(Arena arena) {
-        this.arena = arena;
-        this.update();
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
+    public void load(ConfigurationSection section) {
         this.teams.clear();
-        this.override = new ConfigurableArenaOverride(DBedwars.getInstance());
-        this.override.load(section);
-        return this.loadEntries(section);
+        this.loadEntries(section);
     }
 
     @Override
     public boolean isValid() {
         return this.identifier != null;
-    }
-
-    @Override
-    public boolean isInvalid() {
-        return !this.isValid();
     }
 
     @Override
@@ -122,137 +84,112 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
         return identifier;
     }
 
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
-    public World.Environment getWorldEnv() {
-        return World.Environment.valueOf(this.worldEnv);
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public BwItemStack getIcon() {
-        return this.icon != null ? new BwItemStack(Material.valueOf(this.icon)) : null;
+    public World.Environment getEnvironment() {
+        return environment;
     }
 
-    public LocationXYZYP getSpectatorLocation() {
-        return this.spectatorLocation != null
-                ? LocationXYZYP.valueOf(this.spectatorLocation)
-                : null;
+    public void setWorldEnv(World.Environment worldEnv) {
+        this.environment = worldEnv;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getLobbyLoc() {
+        return lobbyLoc;
+    }
+
+    public void setLobbyLoc(String lobbyLoc) {
+        this.lobbyLoc = lobbyLoc;
+    }
+
+    public String getLobbyPosMax() {
+        return lobbyPosMax;
+    }
+
+    public void setLobbyPosMax(String lobbyPosMax) {
+        this.lobbyPosMax = lobbyPosMax;
+    }
+
+    public String getLobbyPosMin() {
+        return lobbyPosMin;
+    }
+
+    public void setLobbyPosMin(String lobbyPosMin) {
+        this.lobbyPosMin = lobbyPosMin;
+    }
+
+    public String getSpectatorLocation() {
+        return spectatorLocation;
+    }
+
+    public void setSpectatorLocation(String spectatorLocation) {
+        this.spectatorLocation = spectatorLocation;
     }
 
     public int getPlayerInTeam() {
         return playerInTeam;
     }
 
+    public void setPlayerInTeam(int playerInTeam) {
+        this.playerInTeam = playerInTeam;
+    }
+
     public int getMinPlayers() {
         return minPlayers;
+    }
+
+    public void setMinPlayers(int minPlayers) {
+        this.minPlayers = minPlayers;
     }
 
     public String getCustomName() {
         return customName;
     }
 
-    public LocationXYZYP getLobbyLoc() {
-        return this.lobbyLoc == null ? null : LocationXYZYP.valueOf(this.lobbyLoc);
+    public void setCustomName(String customName) {
+        this.customName = customName;
     }
 
-    public LocationXYZ getLobbyPosMax() {
-        return this.lobbyPosMax != null ? LocationXYZ.valueOf(this.lobbyPosMax) : null;
+    public Map<String, ConfigurableTeam> getTeams() {
+        return teams;
     }
 
-    public LocationXYZ getLobbyPosMin() {
-        return this.lobbyPosMin != null ? LocationXYZ.valueOf(this.lobbyPosMin) : null;
+    public void setTeams(Map<String, ConfigurableTeam> teams) {
+        this.teams = teams;
     }
 
-    public List<ConfigurableTeam> getTeams() {
-        return this.teams;
+    public List<String> getSpawners() {
+        return spawners;
     }
 
-    public Multimap<DropType, LocationXYZ> getSpawners() {
-        Multimap<DropType, LocationXYZ> multimap = ArrayListMultimap.create();
-        for (String s : this.spawners) {
-            Map.Entry<DropType, LocationXYZ> entry = ConfigurationUtils.parseSpawner(s);
-            if (entry != null) multimap.put(entry.getKey(), entry.getValue());
-        }
-
-        return multimap;
+    public void setSpawners(List<String> spawners) {
+        this.spawners = spawners;
     }
 
-    public void update() {
-        if (this.arena == null)
-            throw new IllegalStateException("Arena is null somehow in the configuration!");
-
-        this.identifier = this.arena.getSettings().getName();
-        this.enabled = this.arena.isEnabled();
-        this.worldEnv = this.arena.getSettings().getWorldEnv().name();
-        this.icon =
-                this.arena.getSettings().getIcon() != null
-                        ? this.arena.getSettings().getIcon().getType().name()
-                        : null;
-        this.lobbyLoc =
-                this.arena.getSettings().getLobby() != null
-                        ? this.arena.getSettings().getLobby().toString()
-                        : null;
-        this.lobbyPosMax =
-                this.arena.getSettings().getLobbyPosMax() != null
-                        ? this.arena.getSettings().getLobbyPosMax().toString()
-                        : null;
-        this.lobbyPosMin =
-                this.arena.getSettings().getLobbyPosMin() != null
-                        ? this.arena.getSettings().getLobbyPosMin().toString()
-                        : null;
-        this.spectatorLocation =
-                this.arena.getSettings().getSpectatorLocation() != null
-                        ? this.arena.getSettings().getSpectatorLocation().toString()
-                        : null;
-        this.minPlayers = this.arena.getSettings().getMinPlayers();
-        this.playerInTeam = this.arena.getSettings().getTeamPlayers();
-        this.customName = this.arena.getSettings().getCustomName();
-        this.teams =
-                this.arena.getSettings().getAvailableTeams() != null
-                        ? this.arena.getSettings().getAvailableTeams().stream()
-                                .map(ConfigurableTeam::new)
-                                .collect(Collectors.toList())
-                        : new ArrayList<>();
-        this.spawners =
-                this.arena.getSettings().getDrops() != null
-                        ? this.arena.getSettings().getDrops().entries().stream()
-                                .map(
-                                        e ->
-                                                ConfigurationUtils.serializeSpawner(
-                                                        e.getKey(), e.getValue()))
-                                .collect(Collectors.toList())
-                        : new ArrayList<>();
+    public ConfigurableArenaOverride getOverride() {
+        return override;
     }
 
-    public Arena toArena() {
-        if (this.arena == null) {
-            this.arena = new org.zibble.dbedwars.game.arena.Arena(DBedwars.getInstance(), this);
-            if (this.override != null) this.override.apply(this.arena);
-        }
-
-        return this.arena;
-    }
-
-    @Override
-    public String toString() {
-        return "ConfigurableArena{" +
-                "arena=" + arena +
-                ", identifier='" + identifier + '\'' +
-                ", enabled=" + enabled +
-                ", worldEnv='" + worldEnv + '\'' +
-                ", icon='" + icon + '\'' +
-                ", lobbyLoc='" + lobbyLoc + '\'' +
-                ", lobbyPosMax='" + lobbyPosMax + '\'' +
-                ", lobbyPosMin='" + lobbyPosMin + '\'' +
-                ", spectatorLocation='" + spectatorLocation + '\'' +
-                ", playerInTeam=" + playerInTeam +
-                ", minPlayers=" + minPlayers +
-                ", customName='" + customName + '\'' +
-                ", teams=" + teams +
-                ", spawners=" + spawners +
-                ", override=" + override +
-                '}';
+    public void setOverride(ConfigurableArenaOverride override) {
+        this.override = override;
     }
 
     @Override
@@ -261,7 +198,7 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
                 .builder()
                 .add("name", identifier)
                 .add("enabled", enabled)
-                .add("world-environment", ConfigurationUtils.matchEnum(worldEnv, World.Environment.values()))
+                .add("world-environment", this.environment)
                 .add("icon", icon)
                 .add("lobby", NamedProperties.builder()
                         .add("location", LocationXYZYP.valueOf(lobbyLoc))
@@ -276,6 +213,94 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
                 .add("teams", teams)
                 .add("spawners", spawners)
                 .build();
+    }
+
+    public static class ConfigurableTeam implements Configurable {
+
+        @ConfigPath("color")
+        private Color color;
+
+        @ConfigPath("bed")
+        private String bedLocation;
+
+        @ConfigPath("spawn")
+        private String spawn;
+
+        @ConfigPath("shop")
+        private String shopNpc;
+
+        @ConfigPath("upgrades")
+        private String upgradesNpc;
+
+        @ConfigPath("spawners")
+        public List<String> spawners;
+
+        public ConfigurableTeam() {
+        }
+
+        @Override
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
+        public int save(ConfigurationSection section) {
+            return this.saveEntries(section);
+        }
+
+        public List<String> getSpawners() {
+            return spawners;
+        }
+
+        public void setSpawners(List<String> spawners) {
+            this.spawners = spawners;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
+        }
+
+        public String getBedLocation() {
+            return bedLocation;
+        }
+
+        public void setBedLocation(String bedLocation) {
+            this.bedLocation = bedLocation;
+        }
+
+        public String getSpawn() {
+            return spawn;
+        }
+
+        public void setSpawn(String spawn) {
+            this.spawn = spawn;
+        }
+
+        public String getShopNpc() {
+            return shopNpc;
+        }
+
+        public void setShopNpc(String shopNpc) {
+            this.shopNpc = shopNpc;
+        }
+
+        public String getUpgradesNpc() {
+            return upgradesNpc;
+        }
+
+        public void setUpgradesNpc(String upgradesNpc) {
+            this.upgradesNpc = upgradesNpc;
+        }
+
     }
 
 }

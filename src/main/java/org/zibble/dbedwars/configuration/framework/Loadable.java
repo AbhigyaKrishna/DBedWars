@@ -1,8 +1,9 @@
 package org.zibble.dbedwars.configuration.framework;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.zibble.dbedwars.api.util.Validable;
 
-public interface Loadable {
+public interface Loadable extends Validable {
 
     void load(ConfigurationSection section);
 

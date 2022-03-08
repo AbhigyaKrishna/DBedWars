@@ -44,12 +44,12 @@ public class SetupSession {
 
     private final List<CancellableWorkload> runningWorkloads;
 
-    protected SetupSession(World world, Player player) {
+    protected SetupSession(World world, Player player, ArenaDataHolder dataHolder) {
         this.player = player;
         this.world = world;
         this.playerMember = MESSAGING.getMessagingMember(player);
         this.runningWorkloads = new ArrayList<>();
-        this.dataHolder = new ArenaDataHolder();
+        this.dataHolder = dataHolder;
     }
 
     public void init() {
@@ -141,31 +141,32 @@ public class SetupSession {
     }
 
     public void setupTeamSpawn(Color color, Location location) {
-        this.dataHolder.setTeamSpawn(color, SetupUtil.precise(this, location));
+        this.dataHolder.getTeamData(color).setSpawnLocation(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_SPAWN);
     }
 
     public void setupTeamShopNPC(Color color, Location location) {
-        this.dataHolder.setShopNPC(color, SetupUtil.precise(this, location));
+        this.dataHolder.getTeamData(color).setShopNPC(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_SHOP);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_SHOP);
     }
 
     public void setupTeamUpgradesNPC(Color color, Location location) {
-        this.dataHolder.setUpgradesNPC(color, location);
+        this.dataHolder.getTeamData(color).setUpgradesNPC(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_UPGRADES);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_UPGRADES);
     }
 
     public void setupBedLocation(Color color, Location location) {
-        this.dataHolder.setTeamBed(color, SetupUtil.precise(this, location));
+        this.dataHolder.getTeamData(color).setBed(LocationXYZ.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_BED);
     }
 
     public void setupGenLocation(Color color, Location location) {
-        this.dataHolder.addGenLocation(color, this.world.getSpawnLocation());
+        // TODO
+        this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolder.SpawnerDataHolder.of(null, LocationXYZ.valueOf(this.world.getSpawnLocation())));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_GEN);
     }

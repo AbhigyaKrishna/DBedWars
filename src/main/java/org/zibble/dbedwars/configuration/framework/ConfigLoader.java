@@ -5,8 +5,8 @@ import com.google.common.collect.Multimap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
+import org.zibble.dbedwars.utils.ConfigurationUtils;
 import org.zibble.dbedwars.utils.reflection.DataType;
-import org.zibble.dbedwars.utils.reflection.general.EnumReflection;
 import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
@@ -31,7 +31,7 @@ public interface ConfigLoader<T> {
     ConfigLoader<Boolean> BOOLEAN_LOADER = declare(DataType.BOOLEAN::isType, (field, value) -> (boolean) value);
     ConfigLoader<String> STRING_LOADER = declare(String.class, (field, value) -> (String) value);
     ConfigLoader<ConfigurationSection> CONFIGURATION_LOADER = declare(ConfigurationSection.class, (field, value) -> (ConfigurationSection) value);
-    ConfigLoader<Enum> ENUM_LOADER = declare(Enum.class, (field, value) -> EnumReflection.getEnumConstant((Class<Enum>) field.getType(), (String) value));
+    ConfigLoader<Enum> ENUM_LOADER = declare(Enum.class, (field, value) -> ConfigurationUtils.matchEnum((String) value, ((Class<Enum>) field.getType()).getEnumConstants()));
     ConfigLoader<Loadable> LOADABLE_LOADER = declare(Loadable.class, (field, value) -> {
         Loadable loadable = new ClassWrapper<>((Class<Loadable>) field.getType()).newInstance();
         loadable.load((ConfigurationSection) value);
@@ -43,16 +43,22 @@ public interface ConfigLoader<T> {
     ConfigLoader<Collection> COLLECTION_LOADER = declare(Collection.class, (field, value) -> {
         Class<?> fieldGeneric = FieldReflection.getParameterizedTypesClasses(field.getField())[0];
         Class<?> valueGeneric = (Class<?>) ((ParameterizedType) value.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        if (value.getClass().equals(field.getType()) && fieldGeneric.equals(valueGeneric))
-            return (Collection) value;
-        else {
+        Collection col = null;
+        if (field.getType().isAssignableFrom(List.class)) {
+            col = new ArrayList();
+        } else if (field.getType().isAssignableFrom(Set.class)) {
+            col = new LinkedHashSet();
+        }
+        if (value.getClass().equals(field.getType()) && fieldGeneric.equals(valueGeneric)) {
+            col.addAll((Collection) value);
+            return col;
+        } else {
             ConfigLoader<?> loader = PRIMITIVE_LOADER.stream().filter(l -> l.isAssignable(fieldGeneric)).findFirst().orElse(null);
             if (loader == null)
                 throw new IllegalArgumentException("No loader found for " + fieldGeneric.getName());
-            Collection collection = new LinkedList();
             for (Object o : (Collection) value)
-                collection.add(loader.load(field, o));
-            return collection;
+                col.add(loader.load(field, o));
+            return col;
         }
     });
     ConfigLoader<Map> MAP_LOADER = declare(Map.class, (field, value) -> {
@@ -76,7 +82,17 @@ public interface ConfigLoader<T> {
         ConfigurationSection section = (ConfigurationSection) value;
         Multimap multimap = LinkedHashMultimap.create();
         for (String key : section.getKeys(false)) {
-            multimap.putAll(key, COLLECTION_LOADER.load(field, section.get(key)));
+            Object val = section.get(key);
+            Class<?> valueGeneric = (Class<?>) ((ParameterizedType) val.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            if (valueGeneric.equals(classes[1])) {
+                multimap.putAll(key, (Collection) val);
+            } else {
+                ConfigLoader<?> loader = PRIMITIVE_LOADER.stream().filter(l -> l.isAssignable(classes[1])).findFirst().orElse(null);
+                if (loader == null)
+                    throw new IllegalArgumentException("No loader found for " + classes[1].getName());
+                for (Object o : (Collection) val)
+                    multimap.put(key, loader.load(field, o));
+            }
         }
         return multimap;
     });

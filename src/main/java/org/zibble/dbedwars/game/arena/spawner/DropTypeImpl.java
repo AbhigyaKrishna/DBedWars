@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
 import com.pepedevs.radium.particles.ParticleEffect;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropType {
 
-    private final DBedwars plugin;
     private final Key<String> key;
 
     private Key<BwItemStack> icon;
@@ -32,8 +30,8 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
 
     private Map<Integer, org.zibble.dbedwars.api.game.spawner.DropType.Tier> tiers = new HashMap<>();
 
-    public static DropTypeImpl fromConfig(DBedwars plugin, ConfigurableItemSpawner cfg) {
-        DropTypeImpl dropType = new DropTypeImpl(plugin, cfg.getId());
+    public static DropTypeImpl fromConfig(ConfigurableItemSpawner cfg) {
+        DropTypeImpl dropType = new DropTypeImpl(cfg.getId());
         dropType.radius = cfg.getRadius();
         dropType.icon = Key.of(cfg.getIcon());
         dropType.soundEffect = cfg.getSpawnSound();
@@ -48,8 +46,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
         return dropType;
     }
 
-    public DropTypeImpl(DBedwars plugin, String key) {
-        this.plugin = plugin;
+    public DropTypeImpl(String key) {
         this.key = Key.of(key);
     }
 

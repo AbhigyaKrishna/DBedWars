@@ -11,6 +11,7 @@ import org.zibble.dbedwars.api.game.view.AttributeType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
 
 import java.util.*;
@@ -50,7 +51,7 @@ public class ConfigurationUtils {
     }
 
     public static String serializeSpawner(DropType drop, LocationXYZ location) {
-        return drop.getConfigId() + "#" + location.toString();
+        return drop.getKey().get() + "#" + location.toString();
     }
 
     public static String[][] parseGuiPattern(List<String> lines) {
@@ -61,11 +62,11 @@ public class ConfigurationUtils {
         return pattern;
     }
 
-    public static Map.Entry<DropType, LocationXYZ> parseSpawner(String s) {
+    public static Pair<DropType, LocationXYZ> parseSpawner(String s) {
         String[] str = s.split("#");
         for (DropType d : DBedwars.getInstance().getGameManager().getDropTypes()) {
-            if (d.getConfigId().equals(str[0]))
-                return new AbstractMap.SimpleEntry<>(d, LocationXYZ.valueOf(str[1]));
+            if (d.getKey().get().equals(str[0]))
+                return Pair.of(d, LocationXYZ.valueOf(str[1]));
         }
 
         return null;
@@ -118,6 +119,6 @@ public class ConfigurationUtils {
     }
 
     public static Hologram createHologram(ConfigurableHologram hologram) {
-
+        return null;
     }
 }

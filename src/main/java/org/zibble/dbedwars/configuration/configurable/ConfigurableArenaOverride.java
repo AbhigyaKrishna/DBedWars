@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
@@ -9,7 +8,8 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.MainConfiguration;
-import org.zibble.dbedwars.configuration.util.Loadable;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.game.arena.spawner.DropTypeImpl;
 import xyz.xenondevs.particle.ParticleEffect;
 
@@ -18,28 +18,20 @@ import java.util.List;
 
 public class ConfigurableArenaOverride implements Loadable, PropertySerializable {
 
-    private static final String SECTION_KEY = "override";
-
-    private final DBedwars plugin;
-
+    @ConfigPath("spawners")
     private SpawnerOverride spawnerOverride;
+
+    @ConfigPath("config")
     private ConfigOverride configOverride;
 
-    public ConfigurableArenaOverride(DBedwars plugin) {
-        this.plugin = plugin;
+    public ConfigurableArenaOverride() {
         this.spawnerOverride = new SpawnerOverride();
         this.configOverride = new ConfigOverride();
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        if (section.isConfigurationSection(SECTION_KEY)) {
-            ConfigurationSection s = section.getConfigurationSection(SECTION_KEY);
-            this.spawnerOverride.load(s);
-            this.configOverride.load(s);
-        }
-
-        return this;
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -64,8 +56,6 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
 
     public class SpawnerOverride implements Loadable {
 
-        private static final String SECTION_KEY = "spawners";
-
         private List<ConfigurableItemSpawner> spawners;
 
         protected SpawnerOverride() {
@@ -73,7 +63,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
+        public void load(ConfigurationSection section) {
             if (!section.isConfigurationSection(SECTION_KEY)) return this;
 
             for (String key : section.getConfigurationSection(SECTION_KEY).getKeys(false)) {
