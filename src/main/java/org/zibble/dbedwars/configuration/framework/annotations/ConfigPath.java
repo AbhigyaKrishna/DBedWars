@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ConfigPath {
 
-    String value();
+    String value() default "";
 
     ConfigType[] type() default {ConfigType.SAVEABLE, ConfigType.LOADABLE};
 

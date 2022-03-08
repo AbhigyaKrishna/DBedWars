@@ -114,7 +114,7 @@ public interface ConfigSaver<T> {
             if (Arrays.stream(path.type()).noneMatch(type -> type == ConfigPath.ConfigType.SAVEABLE))
                 continue;
 
-            String key = path.value();
+            String key = path.value().isEmpty() ? field.getField().getName() : path.value();
             Object value = field.get(savable);
             if (value == null)
                 continue;
