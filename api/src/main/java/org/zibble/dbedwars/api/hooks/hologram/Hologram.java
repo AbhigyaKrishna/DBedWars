@@ -42,7 +42,17 @@ public interface Hologram {
 
     boolean isVisible(Player player);
 
+    boolean isClickRegistered();
+
+    void setClickRegistered(boolean clickRegistered);
+
+    boolean isUpdateRegistered();
+
+    void setUpdateRegistered(boolean updateRegistered);
+
     Location getLocation();
 
     void teleport(Location location);
+
+    long getLastUpdate();
 }

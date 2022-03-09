@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
 public class HologramPacketListener extends PacketListenerAbstract {
 
     private final Cache<UUID, Integer> cooldown;
-    private final HologramFactoryImpl manager;
+    private final HologramManager manager;
 
 
-    protected HologramPacketListener(final HologramFactoryImpl manager) {
+    protected HologramPacketListener(final HologramManager manager) {
         this.manager = manager;
         this.cooldown = CacheBuilder.newBuilder().expireAfterWrite(20, TimeUnit.MILLISECONDS).build();
     }
@@ -34,11 +34,10 @@ public class HologramPacketListener extends PacketListenerAbstract {
             if (cooldown.asMap().containsKey(player.getUniqueId())
                     && cooldown.asMap().getOrDefault(player.getUniqueId(), -1)
                     == packet.getEntityId()) return;
-            for (HologramDataHolder dataHolder : this.manager.getHolograms().values()) {
-                if (!dataHolder.getHologram().getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
-                if (!dataHolder.isClickRegistered()) continue;
+            for (HologramImpl hologram : this.manager.getHolograms().values()) {
+                if (!hologram.isClickRegistered()) continue;
+                if (!hologram.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
                 Player clicker = (Player) event.getPlayer();
-                HologramImpl hologram = dataHolder.getHologram();
                 HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(clicker.getUniqueId(), 0));
                 boolean hologramMatch = false;
                 for (HologramLine<?> line : page.getLines()) {

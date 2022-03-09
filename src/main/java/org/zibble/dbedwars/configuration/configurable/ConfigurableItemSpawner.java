@@ -9,9 +9,8 @@ import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.HashMap;
@@ -24,40 +23,40 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
     private String key;
 
-    @LoadableEntry(key = "id")
+    @ConfigPath
     private String id;
 
-    @LoadableEntry(key = "icon")
+    @ConfigPath
     private String icon;
 
-    @LoadableEntry(key = "spawn-sound")
+    @ConfigPath
     private String spawnSound;
 
-    @LoadableEntry(key = "spawn-effect")
+    @ConfigPath
     private String spawnEffect;
 
-    @LoadableEntry(key = "radius")
+    @ConfigPath
     private int radius;
 
-    @LoadableEntry(key = "merge")
+    @ConfigPath
     private boolean merge;
 
-    @LoadableEntry(key = "split")
+    @ConfigPath
     private boolean split;
 
-    @LoadableEntry(key = "timed-upgrade")
+    @ConfigPath
     private boolean timedUpgrade;
 
-    @LoadableEntry(key = "team-spawner")
+    @ConfigPath
     private boolean teamSpawner;
 
-    @LoadableEntry(key = "enabled", subsection = "hologram")
+    @ConfigPath("hologram.enabled")
     private boolean hologramEnabled;
 
-    @LoadableEntry(key = "id", subsection = "hologram")
+    @ConfigPath("hologram.id")
     private String hologramId;
 
-    @LoadableCollectionEntry(subsection = "tiers")
+    @ConfigPath
     private Map<Integer, ConfigurableTiers> tiers;
 
     public ConfigurableItemSpawner(DBedwars plugin, String key) {
@@ -68,16 +67,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-//        ConfigurationSection tierSection = section.getConfigurationSection("tiers");
-//        if (tierSection != null) {
-//            for (String key : tierSection.getKeys(false)) {
-//                ConfigurableTiers tier = new ConfigurableTiers(key);
-//                tier.load(tierSection.getConfigurationSection(key));
-//                if (tier.isValid()) this.tiers.put(Integer.parseInt(key), tier);
-//            }
-//        }
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -151,16 +142,16 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
         private String key;
 
-        @LoadableEntry(key = "time")
+        @ConfigPath("time")
         private double seconds;
 
-        @LoadableEntry(key = "upgrade-effect")
+        @ConfigPath
         private String upgradeEffect;
 
-        @LoadableEntry(key = "upgrade-sound")
+        @ConfigPath
         private String upgradeSound;
 
-        @LoadableEntry(key = "message")
+        @ConfigPath
         private String message;
 
         private Map<String, ConfigurableDrop> actions;
@@ -172,7 +163,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
+        public void load(ConfigurationSection section) {
             ConfigurationSection actionSection = section.getConfigurationSection("action");
             if (actionSection != null) {
                 for (String key : actionSection.getKeys(false)) {
@@ -181,18 +172,16 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
                     if (action.isValid()) this.actions.put(key, action);
                 }
             }
-            return this.loadEntries(section);
+            this.loadEntries(section);
         }
 
         @Override
         public boolean isValid() {
             try {
                 Integer.parseInt(this.key);
-            } catch (NumberFormatException e) {
-                return false;
-            }
-
-            return true;
+                return true;
+            } catch (NumberFormatException ignored) {}
+            return false;
         }
 
         @Override
@@ -212,8 +201,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
             if (this.upgradeEffect != null) {
                 try {
                     return ParticleEffect.valueOf(this.upgradeEffect);
-                } catch (IllegalArgumentException ignored) {
-                }
+                } catch (IllegalArgumentException ignored) {}
             }
             return null;
         }
@@ -246,13 +234,13 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
             private String key;
 
-            @LoadableEntry(key = "material")
+            @ConfigPath
             private String material;
 
-            @LoadableEntry(key = "delay")
+            @ConfigPath
             private double delay;
 
-            @LoadableEntry(key = "limit")
+            @ConfigPath
             private int limit;
 
             protected ConfigurableDrop(String key) {
@@ -262,8 +250,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
             }
 
             @Override
-            public Loadable load(ConfigurationSection section) {
-                return this.loadEntries(section);
+            public void load(ConfigurationSection section) {
+                this.loadEntries(section);
             }
 
             @Override

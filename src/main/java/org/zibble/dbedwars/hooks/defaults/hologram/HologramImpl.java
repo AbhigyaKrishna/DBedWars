@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HologramImpl implements Hologram {
 
+    private final HologramManager manager;
+
     private final List<HologramPageImpl> hologramPages;
     private final Map<UUID, Integer> viewerPages;
     private final Set<UUID> viewers;
@@ -23,19 +25,29 @@ public class HologramImpl implements Hologram {
     private int displayRange = 48;
     private int updateRange = 48;
     private Duration updateInterval = Duration.ofSeconds(20);
-    private boolean inverted  = false;
 
-    public HologramImpl(Location location) {
+    private boolean inverted  = false;
+    private boolean hasChangedContentType = false;
+
+    private boolean clickRegistered;
+    private boolean updateRegistered;
+    private long lastUpdate;
+
+    public HologramImpl(HologramManager manager, Location location) {
+        this.manager = manager;
         this.hologramPages = Collections.synchronizedList(new ArrayList<>(1));
         this.viewerPages = new ConcurrentHashMap<>();
         this.clickActions = Collections.synchronizedSet(new HashSet<>());
         this.viewers = Collections.synchronizedSet(new HashSet<>());
         this.location = location;
+        this.clickRegistered = true;
+        this.updateRegistered = true;
+        this.lastUpdate = System.currentTimeMillis();
     }
 
     @Override
     public HologramPage addPage() {
-        HologramPageImpl hologramPage = new HologramPageImpl(this);
+        HologramPageImpl hologramPage = new HologramPageImpl(this.manager, this);
         this.hologramPages.add(hologramPage);
         return hologramPage;
     }
@@ -114,21 +126,41 @@ public class HologramImpl implements Hologram {
         return this.viewers.contains(player.getUniqueId());
     }
 
+    @Override
+    public boolean isClickRegistered() {
+        return clickRegistered;
+    }
+
+    @Override
+    public void setClickRegistered(boolean clickRegistered) {
+        this.clickRegistered = clickRegistered;
+    }
+
+    @Override
+    public boolean isUpdateRegistered() {
+        return updateRegistered;
+    }
+
+    @Override
+    public void setUpdateRegistered(boolean updateRegistered) {
+        this.updateRegistered = updateRegistered;
+    }
+
     public void show(Player... players) {
         for (Player player : players) {
-            HologramFactoryImpl.getInstance().respawnHologram(this, player);
+            this.manager.respawnHologram(this, player);
         }
     }
 
     public void updateContent(Player... players) {
         for (Player player : players) {
-            HologramFactoryImpl.getInstance().updateContent(this, player);
+            this.manager.updateContent(this, player);
         }
     }
 
     public void updateLocation(Player... players) {
         for (Player player : players) {
-            HologramFactoryImpl.getInstance().updateLocation(this, player);
+            this.manager.updateLocation(this, player);
         }
     }
 
@@ -136,7 +168,7 @@ public class HologramImpl implements Hologram {
         for (Player player : players) {
             this.viewerPages.remove(player.getUniqueId());
             this.viewers.remove(player.getUniqueId());
-            HologramFactoryImpl.getInstance().despawnHologram(this, player);
+            this.manager.despawnHologram(this, player);
         }
     }
 
@@ -165,10 +197,23 @@ public class HologramImpl implements Hologram {
     @Override
     public void teleport(Location location) {
         this.location = location;
-        for (UUID viewer : this.viewers) {
-            Player player = Bukkit.getPlayer(viewer);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().updateLocation(this, player);
-        }
+        this.manager.updateLocation(this);
+    }
+
+    @Override
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(long lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public boolean hasChangedContentType() {
+        return hasChangedContentType;
+    }
+
+    public void setHasChangedContentType(boolean hasChangedContentType) {
+        this.hasChangedContentType = hasChangedContentType;
     }
 }

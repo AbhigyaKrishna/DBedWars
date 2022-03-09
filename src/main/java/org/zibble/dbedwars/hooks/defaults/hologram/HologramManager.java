@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
@@ -17,19 +18,19 @@ import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.task.TaskQueueHandler;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class HologramFactoryImpl implements HologramFactory {
-
-    private static final HologramFactoryImpl INSTANCE = new HologramFactoryImpl();
+public class HologramManager implements HologramFactory {
 
     private final DBedwars plugin;
     private final Task thread;
-    private final Map<String, HologramDataHolder> holograms;
+    private final Map<String, HologramImpl> holograms;
 
-    public HologramFactoryImpl() {
+    public HologramManager() {
         this.plugin = DBedwars.getInstance();
         this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
-        this.holograms = Collections.synchronizedMap(new HashMap<>());
+        this.holograms = new ConcurrentHashMap<>();
+        HologramUtil.init(this);
         HologramPacketListener packetListener = new HologramPacketListener(this);
         PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
         packetEventsAPI.getEventManager().registerListener(packetListener);
@@ -73,77 +74,25 @@ public class HologramFactoryImpl implements HologramFactory {
         }
     }
 
-    public void spawnHologram(HologramImpl hologram) {
-        HologramDataHolder holder = null;
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                holder = value;
-                break;
-            }
-        }
-        if (holder == null) throw new IllegalArgumentException("Hologram not found! Try creating it first");
-        holder.setSpawned(true);
-    }
-
     @Override
-    public HologramImpl createHologram(Location location) {
-        HologramDataHolder holder = new HologramDataHolder(new HologramImpl(location), false);
-        this.holograms.put(UUID.randomUUID().toString(), holder);
-        return holder.getHologram();
-    }
-
-    public void registerHologramListener(HologramImpl hologram) {
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                value.setClickRegistered(true);
-                break;
-            }
-        }
-    }
-
-    public void registerHologramUpdates(HologramImpl hologram) {
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                value.setUpdateRegistered(true);
-                break;
-            }
-        }
-    }
-
-    public void unregisterHologramUpdates(HologramImpl hologram) {
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                value.setUpdateRegistered(false);
-                break;
-            }
-        }
-    }
-
-    public void unregisterHologramListener(HologramImpl hologram) {
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                value.setClickRegistered(false);
-                break;
-            }
-        }
+    public Hologram createHologram(Location location) {
+        HologramImpl hologram = new HologramImpl(this, location);
+        this.holograms.put(UUID.randomUUID().toString(), hologram);
+        return hologram;
     }
 
     public void updateHologram(HologramImpl hologram) {
-        HologramDataHolder holder = null;
-        for (HologramDataHolder value : this.holograms.values()) {
-            if (value.getHologram().equals(hologram)) {
-                holder = value;
-                break;
+        for (HologramImpl value : this.holograms.values()) {
+            if (!value.equals(hologram)) continue;
+            for (UUID uuid : hologram.getViewerPages().keySet()) {
+                Player player = this.plugin.getServer().getPlayer(uuid);
+                if (player == null) continue;
+                this.updateContent(hologram, player);
+                this.updateLocation(hologram, player);
+                hologram.setLastUpdate(System.currentTimeMillis());
             }
+            hologram.setHasChangedContentType(false);
         }
-        if (holder == null) throw new IllegalArgumentException("Hologram not found! Try creating it first");
-        for (UUID uuid : hologram.getViewerPages().keySet()) {
-            Player player = this.plugin.getServer().getPlayer(uuid);
-            if (player == null) continue;
-            this.updateContent(hologram, player);
-            this.updateLocation(hologram, player);
-        }
-        holder.setLastUpdateTime(System.currentTimeMillis());
     }
 
     public void despawnHologram(HologramImpl hologram, Player player) {
@@ -154,9 +103,27 @@ public class HologramFactoryImpl implements HologramFactory {
         }
     }
 
+    public void respawnHologram(HologramImpl hologram) {
+        for (UUID uuid : hologram.getViewerPages().keySet()) {
+            Player player = this.plugin.getServer().getPlayer(uuid);
+            if (player == null) continue;
+            this.despawnHologram(hologram, player);
+            this.spawnHologram(hologram, player);
+        }
+        hologram.setHasChangedContentType(false);
+    }
+
     public void respawnHologram(HologramImpl hologram, Player player) {
         this.despawnHologram(hologram, player);
         this.spawnHologram(hologram, player);
+    }
+
+    public void updateContent(HologramImpl hologram) {
+        for (UUID uuid : hologram.getViewerPages().keySet()) {
+            Player player = this.plugin.getServer().getPlayer(uuid);
+            if (player == null) continue;
+            this.updateContent(hologram, player);
+        }
     }
 
     public void updateContent(HologramImpl hologram, Player player) {
@@ -167,6 +134,14 @@ public class HologramFactoryImpl implements HologramFactory {
             if (lineImpl.getContent() instanceof Component) {
                 PacketUtils.updateFakeEntityCustomName(player, (Component) lineImpl.getContent(), lineImpl.getEntityIds()[0]);
             }
+        }
+    }
+
+    public void updateLocation(HologramImpl hologram) {
+        for (UUID uuid : hologram.getViewerPages().keySet()) {
+            Player player = this.plugin.getServer().getPlayer(uuid);
+            if (player == null) continue;
+            this.updateLocation(hologram, player);
         }
     }
 
@@ -186,10 +161,14 @@ public class HologramFactoryImpl implements HologramFactory {
             @Override
             public void compute() {
                 this.lastRun = System.currentTimeMillis();
-                for (HologramDataHolder value : HologramFactoryImpl.this.holograms.values()) {
-                    if (value.isUpdateRegistered() && System.currentTimeMillis() - value.getLastUpdateTime() >= value.getHologram().getUpdateInterval().toMillis())
-                        HologramFactoryImpl.this.updateHologram(value.getHologram());
-
+                for (HologramImpl value : HologramManager.this.holograms.values()) {
+                    if (!value.isUpdateRegistered()) continue;
+                    if (System.currentTimeMillis() - value.getLastUpdate() < value.getUpdateInterval().toMillis()) continue;
+                    if (value.hasChangedContentType()) {
+                        HologramManager.this.updateHologram(value);
+                    } else {
+                        HologramManager.this.updateContent(value);
+                    }
                 }
             }
 
@@ -219,12 +198,8 @@ public class HologramFactoryImpl implements HologramFactory {
         return returnMap;
     }
 
-    protected Map<String, HologramDataHolder> getHolograms() {
+    protected Map<String, HologramImpl> getHolograms() {
         return holograms;
-    }
-
-    public static HologramFactoryImpl getInstance() {
-        return INSTANCE;
     }
 
 }

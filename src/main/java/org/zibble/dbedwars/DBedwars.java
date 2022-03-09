@@ -22,8 +22,9 @@ import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
 import org.zibble.dbedwars.game.GameManager;
+import org.zibble.dbedwars.game.setup.SetupSessionManager;
 import org.zibble.dbedwars.handler.*;
-import org.zibble.dbedwars.hooks.defaults.hologram.HologramFactoryImpl;
+import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.messaging.Messaging;
@@ -50,9 +51,10 @@ public final class DBedwars extends PluginAdapter {
     private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
-    private HologramFactoryImpl hologramFactoryImpl;
+    private HologramManager hologramFactoryImpl;
     private HookManager hookManager;
     private MenuHandler menuHandler;
+    private SetupSessionManager setupSessionManager;
 
     private Messaging messaging;
     private TranslationRegistryImpl actionRegistry;
@@ -178,7 +180,8 @@ public final class DBedwars extends PluginAdapter {
         this.gameManager = new GameManager(this);
         this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
-        this.hologramFactoryImpl = new HologramFactoryImpl();
+        this.hologramFactoryImpl = new HologramManager();
+        this.setupSessionManager = new SetupSessionManager(this);
         this.menuHandler = new MenuHandler(this);
 
         this.threadHandler.submitAsync(
@@ -253,7 +256,7 @@ public final class DBedwars extends PluginAdapter {
         return this.database;
     }
 
-    public HologramFactoryImpl getHologramManager() {
+    public HologramManager getHologramManager() {
         return this.hologramFactoryImpl;
     }
 
@@ -313,6 +316,10 @@ public final class DBedwars extends PluginAdapter {
             default:
                 return null;
         }
+    }
+
+    public SetupSessionManager getSetupSessionManager() {
+        return setupSessionManager;
     }
 
     public ActionTranslationRegistry actionRegistry() {

@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
 import com.pepedevs.radium.particles.ParticleEffect;
+import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
@@ -17,7 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropType {
+public class DropTypeImpl implements DropType {
 
     private final Key<String> key;
 
@@ -28,7 +29,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
     private Hologram hologram;
     private boolean teamSpawner, merging, spliting;
 
-    private Map<Integer, org.zibble.dbedwars.api.game.spawner.DropType.Tier> tiers = new HashMap<>();
+    private Map<Integer, DropType.Tier> tiers = new HashMap<>();
 
     public static DropTypeImpl fromConfig(ConfigurableItemSpawner cfg) {
         DropTypeImpl dropType = new DropTypeImpl(cfg.getId());
@@ -131,7 +132,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
     }
 
     @Override
-    public org.zibble.dbedwars.api.game.spawner.DropType.Tier getTier(int level) {
+    public DropType.Tier getTier(int level) {
         return this.tiers.get(level);
     }
 
@@ -141,12 +142,12 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
     }
 
     @Override
-    public Collection<org.zibble.dbedwars.api.game.spawner.DropType.Tier> getTiers() {
+    public Collection<DropType.Tier> getTiers() {
         return this.tiers.values();
     }
 
     @Override
-    public org.zibble.dbedwars.api.game.spawner.DropType clone() {
+    public DropType clone() {
         try {
             return (DropTypeImpl) super.clone();
         } catch (CloneNotSupportedException e) {
@@ -159,7 +160,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
         return key;
     }
 
-    public static class Tier implements org.zibble.dbedwars.api.game.spawner.DropType.Tier {
+    public static class Tier implements DropType.Tier {
 
         @PropertyName("key")
         private final Key<Integer> key;
@@ -172,7 +173,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
         @PropertyName("upgrade-message")
         private Message upgradeMessage;
         @PropertyName("upgrade-item")
-        private Map<String, org.zibble.dbedwars.api.game.spawner.DropType.Drop> drops = new HashMap<>();
+        private Map<String, DropType.Drop> drops = new HashMap<>();
 
         public static Tier fromConfig(int key, ConfigurableItemSpawner.ConfigurableTiers cfg) {
             Tier tier = new Tier(key);
@@ -245,7 +246,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
         }
 
         @Override
-        public Collection<org.zibble.dbedwars.api.game.spawner.DropType.Drop> getDrops() {
+        public Collection<DropType.Drop> getDrops() {
             return new ArrayList<>(this.drops.values());
         }
 
@@ -285,7 +286,7 @@ public class DropTypeImpl implements org.zibble.dbedwars.api.game.spawner.DropTy
 
     }
 
-    public static class Drop implements org.zibble.dbedwars.api.game.spawner.DropType.Drop {
+    public static class Drop implements DropType.Drop {
 
         @PropertyName("key")
         private final Key<String> key;

@@ -4,8 +4,10 @@ import com.cryptomorin.xseries.XSound;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
@@ -40,7 +42,7 @@ public class SetupSession {
     private final Player player;
     private final PlayerMember playerMember;
 
-    public boolean isPreciseEnabled;
+    public boolean autoCorrect;
 
     private final List<CancellableWorkload> runningWorkloads;
 
@@ -84,20 +86,29 @@ public class SetupSession {
                 .open(this.player);
     }
 
-    public void promptCleanupWorldEntity() {
-        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_PROMPT.asMessage());
-    }
-
-    public void cleanupWorldEntities() {
-        for (Entity entity : this.world.getEntities()) {
-            if (!SetupUtil.isAllowedEntity(entity)) entity.remove();
-        }
-        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage());
+    public void promptDisableMobSpawning() {
+        this.playerMember.sendMessage(PluginLang.SETUP_DISABLE_MOB_SPAWNING_PROMPT.asMessage());
     }
 
     public void disableMobSpawning() {
         GameRuleType.MOB_SPAWNING.apply(this.world, false);
         this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_MOB_SPAWNING_DISABLED.asMessage());
+    }
+
+    public void promptCleanupWorldEntity() {
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_PROMPT.asMessage());
+    }
+
+    public int cleanupWorldEntities() {
+        int count = 0;
+        for (Entity entity : this.world.getEntities()) {
+            if (!SetupUtil.isAllowedEntity(entity)) {
+                entity.remove();
+                count++;
+            }
+        }
+        this.playerMember.sendMessage(ConfigLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage());
+        return count;
     }
 
     public void promptSetupWaitingLocation() {
@@ -110,12 +121,20 @@ public class SetupSession {
         locationSetMessages(this, location, Color.WHITE, PluginLang.SETUP_WAITING_LOCATION_SET.asMessage());
     }
 
-    public void setupLobbyCorner1(LocationXYZ location) {
-        this.dataHolder.setLobbyCorner1(location);
+    public void promptSetupSpectatorLocation() {
+
     }
 
-    public void setupLobbyCorner2(LocationXYZ location) {
-        this.dataHolder.setLobbyCorner2(location);
+    public void setupSpectatorLocation(Location location) {
+
+    }
+
+    public void setupLobbyCorner1(Block block) {
+        this.dataHolder.setLobbyCorner1(LocationXYZ.valueOf(block.getLocation()));
+    }
+
+    public void setupLobbyCorner2(Block block) {
+        this.dataHolder.setLobbyCorner2(LocationXYZ.valueOf(block.getLocation()));
     }
 
     public void promptSetupTeamsMessage() {
@@ -140,6 +159,10 @@ public class SetupSession {
         this.playerMember.sendMessage(message, true);
     }
 
+    public boolean isValidTeam(Color color) {
+        return this.dataHolder.getTeamData(color) != null;
+    }
+
     public void setupTeamSpawn(Color color, Location location) {
         this.dataHolder.getTeamData(color).setSpawnLocation(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
@@ -158,15 +181,14 @@ public class SetupSession {
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_UPGRADES);
     }
 
-    public void setupBedLocation(Color color, Location location) {
+    public void setupTeamBed(Color color, Location location) {
         this.dataHolder.getTeamData(color).setBed(LocationXYZ.valueOf(SetupUtil.precise(this, location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_BED);
     }
 
-    public void setupGenLocation(Color color, Location location) {
-        // TODO
-        this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolder.SpawnerDataHolder.of(null, LocationXYZ.valueOf(this.world.getSpawnLocation())));
+    public void setupTeamGen(Color color, Location location, DropType dropType) {
+        this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolder.SpawnerDataHolder.of(dropType, LocationXYZ.valueOf(location)));
         locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         locationSetMessages(this, color, PluginLang.SETUP_TEAM_GEN);
     }
@@ -182,14 +204,13 @@ public class SetupSession {
         this.cancel();
     }
 
-    public boolean isPreciseEnabled() {
-        return this.isPreciseEnabled;
+    public boolean isAutoCorrect() {
+        return this.autoCorrect;
     }
 
-    public void setPreciseEnabled(boolean preciseEnabled) {
-        isPreciseEnabled = preciseEnabled;
+    public void setAutoCorrect(boolean autoCorrect) {
+        this.autoCorrect = autoCorrect;
     }
-
 
     private static void locationSetTasks(SetupSession setupSession, Location location, Color color, Lang lang) {
         SetupUtil.createHologram(location, setupSession.player, lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())));
@@ -197,7 +218,7 @@ public class SetupSession {
         setupSession.runningWorkloads.add(workload);
     }
 
-    public static void locationSetMessages(SetupSession setupSession, Color color, Lang lang) {
+    private static void locationSetMessages(SetupSession setupSession, Color color, Lang lang) {
         setupSession.playerMember.sendMessage(lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())), false);
     }
 

@@ -46,7 +46,7 @@ public class Generators {
 
     public static CommandExecutor executor(CommandRegistryImpl registry, AbstractCommandNode node, Pair<String, String[]> permission) {
         return (sender, command, label, args) -> {
-            if (!sender.isOp() && !sender.hasPermission(permission.getKey())) {
+            if (!sender.hasPermission(permission.getKey())) {
                 //TODO SEND MESSAGE
                 return true;
             }

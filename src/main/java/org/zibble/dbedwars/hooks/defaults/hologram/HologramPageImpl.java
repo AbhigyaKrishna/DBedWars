@@ -14,13 +14,15 @@ import java.util.*;
 
 public class HologramPageImpl implements HologramPage {
 
-    private final HologramImpl parent;
+    private final HologramManager manager;
+    protected final HologramImpl parent;
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
     private double lineGap = 0.1;
 
-    public HologramPageImpl(HologramImpl parent) {
+    public HologramPageImpl(HologramManager manager, HologramImpl parent) {
+        this.manager = manager;
         this.parent = parent;
         this.lines = Collections.synchronizedList(new ArrayList<>());
         this.actions = Collections.synchronizedSet(new java.util.HashSet<>());
@@ -38,61 +40,46 @@ public class HologramPageImpl implements HologramPage {
 
     @Override
     public HologramLine.Text addNewTextLine(Component text) {
-        HologramLineImpl.Text line = new HologramLineImpl.Text(this, text);
+        HologramLineImpl.Text line = new HologramLineImpl.Text(this.manager, this, text);
         this.lines.add(line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Head addNewHeadLine(ItemStack itemStack) {
-        HologramLineImpl.Head line = new HologramLineImpl.Head(this, itemStack);
+        HologramLineImpl.Head line = new HologramLineImpl.Head(this.manager, this, itemStack);
         this.lines.add(line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.SmallHead addNewSmallHeadLine(ItemStack itemStack) {
-        HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this, itemStack);
+        HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this.manager, this, itemStack);
         this.lines.add(line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Icon addNewIconLine(ItemStack itemStack) {
-        HologramLineImpl.Icon line = new HologramLineImpl.Icon(this, itemStack);
+        HologramLineImpl.Icon line = new HologramLineImpl.Icon(this.manager, this, itemStack);
         this.lines.add(line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Entity addNewEntityLine(HologramEntityType entityType) {
-        HologramLineImpl.Entity line = new HologramLineImpl.Entity(this, entityType);
+        HologramLineImpl.Entity line = new HologramLineImpl.Entity(this.manager, this, entityType);
         this.lines.add(line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
@@ -102,67 +89,52 @@ public class HologramPageImpl implements HologramPage {
         for (UUID uuid : this.getParent().getViewerPages().keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
+            this.manager.respawnHologram((HologramImpl) this.getParent(), player);
         }
     }
 
     @Override
     public HologramLine.Text insertNewTextLine(int index, Component text) {
-        HologramLineImpl.Text line = new HologramLineImpl.Text(this, text);
+        HologramLineImpl.Text line = new HologramLineImpl.Text(this.manager, this, text);
         this.lines.add(index, line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Head insertNewHeadLine(int index, ItemStack itemStack) {
-        HologramLineImpl.Head line = new HologramLineImpl.Head(this, itemStack);
+        HologramLineImpl.Head line = new HologramLineImpl.Head(this.manager, this, itemStack);
         this.lines.add(index, line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.SmallHead insertNewSmallHeadLine(int index, ItemStack itemStack) {
-        HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this, itemStack);
+        HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this.manager, this, itemStack);
         this.lines.add(index, line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Icon insertNewIconLine(int index, ItemStack itemStack) {
-        HologramLineImpl.Icon line = new HologramLineImpl.Icon(this, itemStack);
+        HologramLineImpl.Icon line = new HologramLineImpl.Icon(this.manager, this, itemStack);
         this.lines.add(index, line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 
     @Override
     public HologramLine.Entity insertNewEntityLine(int index, HologramEntityType entityType) {
-        HologramLineImpl.Entity line = new HologramLineImpl.Entity(this, entityType);
+        HologramLineImpl.Entity line = new HologramLineImpl.Entity(this.manager, this, entityType);
         this.lines.add(index, line);
-        for (UUID uuid : this.parent.getViewerPages().keySet()) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            HologramFactoryImpl.getInstance().respawnHologram((HologramImpl) this.getParent(), player);
-        }
+        this.parent.setHasChangedContentType(true);
+        this.manager.respawnHologram(this.parent);
         return line;
     }
 

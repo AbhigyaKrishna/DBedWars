@@ -2,7 +2,7 @@ package org.zibble.dbedwars.api.commands.nodes;
 
 import org.bukkit.command.CommandSender;
 
-public abstract class GeneralCommandNode extends AbstractCommandNode {
+public abstract class CommandNode extends AbstractCommandNode {
 
     @Override
     public final void accept(CommandSender sender, String[] args) {

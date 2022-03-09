@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.utils.serializer;
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -40,7 +41,7 @@ public class ItemStackSerializer implements Serializer<ItemStack> {
                 .add("amount", object.getAmount())
                 .add("durability", object.getDurability());
 
-        if(!object.hasItemMeta())
+        if(object.getItemMeta() == null)
             return builder.getRawJson();
 
         final ItemMeta meta = object.getItemMeta();
@@ -50,16 +51,16 @@ public class ItemStackSerializer implements Serializer<ItemStack> {
         if(meta.hasDisplayName())
             metaJson.addProperty("display-name", meta.getDisplayName());
 
-        if(meta.hasLore()){
+        if(meta.getLore() != null){
             final JsonArray loreArray = new JsonArray();
-            meta.getLore().iterator().forEachRemaining(str -> loreArray.add(str));
+            meta.getLore().forEach(loreArray::add);
             metaJson.add("lore",loreArray);
         }
 
         if(meta.hasEnchants()){
             final JsonArray enchantArray = new JsonArray();
             meta.getEnchants().forEach((enchantment, level) -> {
-                enchantArray.add(enchantment.getName() +":"+ level);
+                enchantArray.add(XEnchantment.matchXEnchantment(enchantment).name() +":"+ level);
             });
             metaJson.add("enchants",enchantArray);
         }
@@ -275,10 +276,10 @@ public class ItemStackSerializer implements Serializer<ItemStack> {
                                 if (enchantString.contains(":")) {
                                     try {
                                         String[] splitEnchant = enchantString.split(":");
-                                        Enchantment enchantment = Enchantment.getByName(splitEnchant[0]);
+                                        XEnchantment enchantment = XEnchantment.matchXEnchantment(splitEnchant[0]).orElse(null);
                                         int level = Integer.parseInt(splitEnchant[1]);
                                         if (enchantment != null && level > 0) {
-                                            meta.addEnchant(enchantment, level, true);
+                                            meta.addEnchant(enchantment.getEnchant(), level, true);
                                         }
                                     } catch (NumberFormatException ignored) {
                                     }

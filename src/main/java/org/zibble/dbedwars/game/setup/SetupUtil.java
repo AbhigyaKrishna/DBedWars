@@ -28,7 +28,7 @@ public class SetupUtil {
     }
 
     public static Location precise(SetupSession setupSession, Location location) {
-        if (!setupSession.isPreciseEnabled) return location;
+        if (!setupSession.autoCorrect) return location;
         final Location[] returnVal = new Location[1];
         PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION, PreciseLocation.class, value -> {
             returnVal[0] = value.getPrecise(location);

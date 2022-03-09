@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class BukkitRegistryHandler {
 
     @ConstructorRef(clazz = PluginCommand.class, parameters = {String.class, Plugin.class})
-    private final ConstructorWrapper<PluginCommand> PLUGIN_COMMAND_CONSTRUCTOR = null;
+    private static final ConstructorWrapper<PluginCommand> PLUGIN_COMMAND_CONSTRUCTOR = null;
 
     private final DBedwars plugin;
     private final CommandRegistryImpl registry;

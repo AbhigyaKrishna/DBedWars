@@ -13,18 +13,19 @@ import java.util.regex.Pattern;
 
 public class HologramUtil {
 
+    private static HologramManager manager;
     private static final Matcher TEXT_MATCHER = Pattern.compile("\\[TEXT=(?<text>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher HEAD_MATCHER = Pattern.compile("\\[HEAD=(?<head>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher SMALL_HEAD_MATCHER = Pattern.compile("\\[SMALL_HEAD=(?<smallHead>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher ICON_MATCHER = Pattern.compile("\\[ICON=(?<icon>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
     private static final Matcher ENTITY_MATCHER = Pattern.compile("\\[ENTITY=(?<entity>\\d+)]", Pattern.CASE_INSENSITIVE).matcher("");
 
-    public static HologramLine<?> getHologram(final HologramPageImpl page, final String string) {
+    public static HologramLine<?> makeHologramLine(final HologramPageImpl page, final String string) {
 
         TEXT_MATCHER.reset(string);
         if (TEXT_MATCHER.matches()) {
             String text = TEXT_MATCHER.group("text");
-            return new HologramLineImpl.Text(page, ConfigLang.getTranslator().translate(text));
+            return new HologramLineImpl.Text(manager, page, ConfigLang.getTranslator().translate(text));
         }
 
         HEAD_MATCHER.reset(string);
@@ -32,7 +33,7 @@ public class HologramUtil {
             String head = HEAD_MATCHER.group("head");
             ItemStack itemStack = getItemStack(head);
             if (itemStack == null) return null;
-            return new HologramLineImpl.Head(page, itemStack);
+            return new HologramLineImpl.Head(manager, page, itemStack);
         }
 
         SMALL_HEAD_MATCHER.reset(string);
@@ -40,7 +41,7 @@ public class HologramUtil {
             String smallHead = SMALL_HEAD_MATCHER.group("smallHead");
             ItemStack itemStack = getItemStack(smallHead);
             if (itemStack == null) return null;
-            return new HologramLineImpl.SmallHead(page, itemStack);
+            return new HologramLineImpl.SmallHead(manager, page, itemStack);
         }
 
         ICON_MATCHER.reset(string);
@@ -48,7 +49,7 @@ public class HologramUtil {
             String icon = ICON_MATCHER.group("icon");
             ItemStack itemStack = getItemStack(icon);
             if (itemStack == null) return null;
-            return new HologramLineImpl.Icon(page, itemStack);
+            return new HologramLineImpl.Icon(manager, page, itemStack);
         }
 
         ENTITY_MATCHER.reset(string);
@@ -57,14 +58,14 @@ public class HologramUtil {
             //TODO REWORK GETTING ENTITY TYPE
             HologramEntityType mapped = EnumReflection.getEnumConstant(HologramEntityType.class, entity);
             if (mapped == null) return null;
-            return new HologramLineImpl.Entity(page, mapped);
+            return new HologramLineImpl.Entity(manager, page, mapped);
         }
 
         return null;
     }
 
-    //TODO AVENGER AK
     private static ItemStack getItemStack(final String item) {
+
         final String[] split = item.split(":");
 
         if(split.length < 1)
@@ -84,7 +85,7 @@ public class HologramUtil {
             final ItemStack skull = ItemStackUtils.getSkull(split[1]);
             skull.setAmount(amount);
             return skull;
-        }else {
+        } else {
             Material material = Material.getMaterial(split[0]);
             if(material == null)
                 return null;
@@ -98,6 +99,10 @@ public class HologramUtil {
 
             return new ItemStack(material,amount);
         }
+    }
+
+    protected static void init(HologramManager manager) {
+        HologramUtil.manager = manager;
     }
 
 
