@@ -1,15 +1,14 @@
 package org.zibble.dbedwars.configuration.configurable;
 
-import com.pepedevs.radium.database.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
+import org.zibble.dbedwars.database.DatabaseType;
 
 public class ConfigurableDatabase implements Loadable {
 
     @ConfigPath
-    private String database;
+    private DatabaseType database;
 
     @ConfigPath
     private ConfigurableMySQL mysql;
@@ -24,23 +23,18 @@ public class ConfigurableDatabase implements Loadable {
 
     @Override
     public boolean isValid() {
-        return ConfigurationUtils.matchEnum(this.database, DatabaseType.values()) != null;
+        return this.database != null;
     }
 
-    @Override
-    public boolean isInvalid() {
-        return false;
-    }
-
-    public String getDatabase() {
+    public DatabaseType getDatabase() {
         return database;
     }
 
-    public ConfigurableMySQL getMysql() {
+    public ConfigurableMySQL getMySQL() {
         return mysql;
     }
 
-    public ConfigurableMongoDB getMongodb() {
+    public ConfigurableMongoDB getMongoDB() {
         return mongodb;
     }
 
@@ -77,11 +71,6 @@ public class ConfigurableDatabase implements Loadable {
             return true;
         }
 
-        @Override
-        public boolean isInvalid() {
-            return false;
-        }
-
         public String getHost() {
             return host;
         }
@@ -110,18 +99,6 @@ public class ConfigurableDatabase implements Loadable {
             return ssl;
         }
 
-        @Override
-        public String toString() {
-            return "ConfigurableMySQL{" +
-                    "host='" + host + '\'' +
-                    ", port=" + port +
-                    ", databaseName='" + databaseName + '\'' +
-                    ", username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    ", reconnect=" + reconnect +
-                    ", ssl=" + ssl +
-                    '}';
-        }
     }
 
     public static class ConfigurableMongoDB implements Loadable {
@@ -151,11 +128,6 @@ public class ConfigurableDatabase implements Loadable {
             return true;
         }
 
-        @Override
-        public boolean isInvalid() {
-            return false;
-        }
-
         public String getHost() {
             return host;
         }
@@ -176,25 +148,6 @@ public class ConfigurableDatabase implements Loadable {
             return password;
         }
 
-        @Override
-        public String toString() {
-            return "ConfigurableMongoDB{" +
-                    "host='" + host + '\'' +
-                    ", port=" + port +
-                    ", databaseName='" + databaseName + '\'' +
-                    ", username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
-
     }
 
-    @Override
-    public String toString() {
-        return "ConfigurableDatabase{" +
-                "database='" + database + '\'' +
-                ", mySQL=" + mysql +
-                ", mongoDB=" + mongodb +
-                '}';
-    }
 }

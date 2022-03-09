@@ -19,3 +19,7 @@ mongodb:
   host: 'hostname'
   port: 27017
   database-name: 'dbedwars'
+
+store-match-history:
+  enabled: true
+  prune-time: 7d

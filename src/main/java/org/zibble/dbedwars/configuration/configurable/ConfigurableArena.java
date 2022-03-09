@@ -19,13 +19,13 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     @ConfigPath("name")
     private String identifier;
 
-    @ConfigPath("enabled")
+    @ConfigPath
     private boolean enabled;
 
     @ConfigPath("world-environment")
     private World.Environment environment;
 
-    @ConfigPath("icon")
+    @ConfigPath
     private String icon;
 
     @ConfigPath("lobby.location")
@@ -46,16 +46,16 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     @ConfigPath("minPlayersToStart")
     private int minPlayers;
 
-    @ConfigPath("customName")
+    @ConfigPath
     private String customName;
 
-    @ConfigPath("teams")
+    @ConfigPath
     private Map<String, ConfigurableTeam> teams;
 
-    @ConfigPath("spawners")
+    @ConfigPath
     private List<String> spawners;
 
-    @ConfigPath("override")
+    @ConfigPath
     private ConfigurableArenaOverride override;
 
     public ConfigurableArena() {
@@ -217,13 +217,13 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
 
     public static class ConfigurableTeam implements Configurable {
 
-        @ConfigPath("color")
+        @ConfigPath
         private Color color;
 
         @ConfigPath("bed")
         private String bedLocation;
 
-        @ConfigPath("spawn")
+        @ConfigPath
         private String spawn;
 
         @ConfigPath("shop")
@@ -232,7 +232,7 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
         @ConfigPath("upgrades")
         private String upgradesNpc;
 
-        @ConfigPath("spawners")
+        @ConfigPath
         public List<String> spawners;
 
         public ConfigurableTeam() {

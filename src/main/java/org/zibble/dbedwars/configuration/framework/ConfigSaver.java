@@ -8,6 +8,7 @@ import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.configuration.util.yaml.YamlUtils;
 import org.zibble.dbedwars.utils.reflection.DataType;
+import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 
@@ -164,7 +165,13 @@ public interface ConfigSaver<T> {
 
             MethodResolver resolver = new MethodResolver(annotation.getClass());
             SaveActionType saveAction = (SaveActionType) resolver.resolveWrapper("saveAction").invoke(annotation);
-            Object value = resolver.resolveWrapper("value").invoke(annotation);
+            Object value;
+
+            if (annotation instanceof Defaults.Variable) {
+                value = new FieldResolver(savable.getClass()).resolveWrapper(((Defaults.Variable) annotation).value()).get(savable);
+            } else {
+                value = resolver.resolveWrapper("value").invoke(annotation);
+            }
 
             for (ConfigSaver saver : SAVERS) {
                 if (saver.isAssignable(value.getClass())) {

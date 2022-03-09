@@ -8,6 +8,7 @@ import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 import org.zibble.dbedwars.utils.reflection.DataType;
 import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
+import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
@@ -155,7 +156,11 @@ public interface ConfigLoader<T> {
                 }
 
                 if (annotation != null) {
-                    value = new MethodResolver(annotation.getClass()).resolveWrapper("value").invoke(annotation);
+                    if (annotation instanceof Defaults.Variable) {
+                        value = new FieldResolver(loadable.getClass()).resolveWrapper(((Defaults.Variable) annotation).value()).get(loadable);
+                    } else {
+                        value = new MethodResolver(annotation.getClass()).resolveWrapper("value").invoke(annotation);
+                    }
                 }
             }
 

@@ -4,12 +4,11 @@ import com.google.common.collect.ImmutableSet;
 import org.zibble.dbedwars.configuration.framework.SaveActionType;
 
 import java.lang.annotation.*;
-import java.lang.reflect.Field;
 import java.util.Set;
 
 public class Defaults {
 
-    public static final Set<Class<? extends Annotation>> DEFAULT_TYPES = ImmutableSet.of(Character.class, String.class, Integer.class, Double.class, Boolean.class);
+    public static final Set<Class<? extends Annotation>> DEFAULT_TYPES = ImmutableSet.of(Character.class, Byte.class, Short.class, String.class, Integer.class, Long.class, Double.class, Boolean.class, Variable.class);
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
@@ -99,6 +98,15 @@ public class Defaults {
 
         SaveActionType saveAction() default SaveActionType.NOT_SET;
 
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface Variable {
+
+        java.lang.String value();
+
+        SaveActionType saveAction() default SaveActionType.NOT_SET;
     }
 
 }
