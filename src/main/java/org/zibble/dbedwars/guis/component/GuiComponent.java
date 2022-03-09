@@ -1,10 +1,12 @@
 package org.zibble.dbedwars.guis.component;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.menus.player.MenuPlayer;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.Menu;
+import org.zibble.inventoryframework.menu.nameable.NameableMenu;
 import org.zibble.inventoryframework.protocol.item.ItemStack;
 
 import java.util.function.BiConsumer;
@@ -22,6 +24,13 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     protected GuiComponent(T menu) {
         this.menu = menu;
+    }
+
+    public R title(Component title) {
+        if (this.menu instanceof NameableMenu) {
+            ((NameableMenu) this.menu).title(title);
+        }
+        return (R) this;
     }
 
     public R mask(String... masks) {
@@ -68,9 +77,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
     }
 
     public R open(Player player) {
-        if (this.player != null) {
-            menu.close(MenuPlayer.of(this.player));
-        }
+        this.close();
         menu.open(MenuPlayer.of(player));
         this.player = player;
         return (R) this;
@@ -100,6 +107,10 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     public T handle() {
         return this.menu;
+    }
+
+    public Player getViewer() {
+        return this.player;
     }
 
 }

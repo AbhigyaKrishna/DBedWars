@@ -14,10 +14,10 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven {
-                url 'https://repo.pepedevs.com/nexus/repository/maven-public/'
+            url 'https://repo.zibble.org/nexus/repository/maven-public/'
         }
         maven {
-            url 'https://repo.pepedevs.com/nexus/repository/maven-snapshots/'
+            url 'https://repo.zibble.org/nexus/repository/maven-snapshots/'
         }
         maven {
             url 'https://repo.pepedevs.com/nexus/repository/public-libs/'
@@ -131,13 +131,12 @@ dependencies {
     implementation project(':hooks:vanish-hook')
     implementation project(':hooks:vault-hook')
     implementation project(':hooks:viphide-hook')
-    implementation 'org.reflections:reflections:0.9.12'
+    implementation 'org.reflections:reflections:0.10.2'
     implementation 'de.tr7zw:item-nbt-api:2.8.0'
-    implementation 'redis.clients:jedis:3.7.1'
     implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
-    implementation 'com.github.Zibb-le:inventory-framework:-SNAPSHOT'
+    implementation 'org.zibble:inventory-framework:1.0-SNAPSHOT'
     implementation 'com.github.cryptomorin:XSeries:8.6.2'
     implementation 'xyz.xenondevs:particle:1.7'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
