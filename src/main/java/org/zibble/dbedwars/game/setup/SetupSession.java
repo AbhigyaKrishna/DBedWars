@@ -76,7 +76,7 @@ public class SetupSession {
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
                     this.playerMember.sendMessage(message, true);
                 })
-                .closeAction((menu, player) -> {
+                .onClose((menu, player) -> {
                     this.dataHolder.setCustomName(ConfigMessage.from(this.world.getName()));
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", this.world.getName()));
                     this.playerMember.sendMessage(ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage());
