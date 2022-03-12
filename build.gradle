@@ -49,8 +49,6 @@ allprojects {
         relocate 'redis.clients.util', 'org.zibble.dbedwars.libraries.jedis.util'
 
         relocate 'org.reflections', 'org.zibble.dbedwars.libraries.reflections'
-        relocate 'co.aikar.commands', 'org.zibble.dbedwars.libraries.acf'
-        relocate 'co.aikar.locales', 'org.zibble.dbedwars.libraries.locales'
         relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
         /*relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
         relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'*/
