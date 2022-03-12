@@ -2,6 +2,7 @@ package org.zibble.dbedwars.guis.component;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.menus.player.MenuPlayer;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
@@ -9,6 +10,8 @@ import org.zibble.inventoryframework.menu.Menu;
 import org.zibble.inventoryframework.menu.nameable.NameableMenu;
 import org.zibble.inventoryframework.protocol.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -16,7 +19,11 @@ import java.util.function.Supplier;
 public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     protected final T menu;
+    protected Message title;
     protected Player player;
+
+    private final List<BiConsumer<R, Player>> openActions = new ArrayList<>(1);
+    private final List<BiConsumer<R, Player>> closeActions = new ArrayList<>(1);
 
     public static <T extends Menu, R extends GuiComponent> GuiComponent<T, R> creator(T menu) {
         return new GuiComponent<>(menu);
@@ -24,6 +31,17 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     protected GuiComponent(T menu) {
         this.menu = menu;
+
+        this.menu.onOpen(p -> {
+            for (BiConsumer<R, Player> action : openActions) {
+                action.accept((R) this, (Player) p.handle());
+            }
+        });
+        this.menu.onClose(p -> {
+            for (BiConsumer<R, Player> action : this.closeActions) {
+                action.accept((R) this, (Player) p.handle());
+            }
+        });
     }
 
     public R title(Component title) {
@@ -33,13 +51,25 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
+    public R title(Supplier<Component> title) {
+        if (this.menu instanceof NameableMenu) {
+            ((NameableMenu) this.menu).title(title.get());
+        }
+        return (R) this;
+    }
+
+    public R title(Message title) {
+        this.title = title;
+        return (R) this;
+    }
+
     public R mask(String... masks) {
-        menu.mask(masks);
+        menu.setMask(masks);
         return (R) this;
     }
 
     public R mask(Supplier<String[]> masks) {
-        menu.mask(masks.get());
+        menu.setMask(masks.get());
         return (R) this;
     }
 
@@ -49,12 +79,12 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     public R item(char c, ItemStack item, ClickAction clickAction) {
         MenuItem<ItemStack> menuItem = MenuItem.of(item);
-        menuItem.clickAction(clickAction);
+        menuItem.setClickAction(clickAction);
         return this.item(c, menuItem);
     }
 
     public R item(char c, MenuItem<ItemStack> item) {
-        menu.item(c, item);
+        menu.setItem(c, item);
         return (R) this;
     }
 
@@ -66,18 +96,28 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return this.item(c, item.get(), clickAction);
     }
 
-    public R onOpen(BiConsumer<R, Player> onOpen) {
-        menu.onOpen(p -> onOpen.accept((R) this, (Player) p.handle()));
+    public R addOpenAction(BiConsumer<R, Player> onOpen) {
+        this.closeActions.add(onOpen);
         return (R) this;
     }
 
-    public R onClose(BiConsumer<R, Player> onClose) {
-        menu.onClose(p -> onClose.accept((R) this, (Player) p.handle()));
+    public List<BiConsumer<R, Player>> getOpenActions() {
+        return openActions;
+    }
+
+    public R addCloseAction(BiConsumer<R, Player> onClose) {
+        this.closeActions.add(onClose);
         return (R) this;
+    }
+
+    public List<BiConsumer<R, Player>> getCloseActions() {
+        return closeActions;
     }
 
     public R open(Player player) {
         this.close();
+        if (this.title != null)
+            this.title(this.title.asComponentWithPAPI(player)[0]);
         menu.open(MenuPlayer.of(player));
         this.player = player;
         return (R) this;

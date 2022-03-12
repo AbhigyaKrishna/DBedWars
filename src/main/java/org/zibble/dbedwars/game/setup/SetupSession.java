@@ -70,7 +70,7 @@ public class SetupSession {
         ArenaNameGui.creator()
                 .item(() -> {
                     ItemStack item = new ItemStack(Materials.PAPER);
-                    item.displayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0]);
+                    item.setDisplayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0]);
                     return item;
                 })
                 .outputClick((menu, s) -> {
@@ -78,7 +78,7 @@ public class SetupSession {
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
                     this.playerMember.sendMessage(message, true);
                 })
-                .onClose((menu, player) -> {
+                .addCloseAction((menu, player) -> {
                     this.dataHolder.setCustomName(ConfigMessage.from(this.world.getName()));
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", this.world.getName()));
                     this.playerMember.sendMessage(ConfigLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage());

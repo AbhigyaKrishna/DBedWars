@@ -9,9 +9,8 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.zibble.dbedwars.action.TranslationRegistryImpl;
+import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.api.DBedWarsAPI;
-import org.zibble.dbedwars.api.action.ActionTranslationRegistry;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.plugin.PluginAdapter;
@@ -29,7 +28,6 @@ import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.PluginFileUtils;
 import org.zibble.inventoryframework.InventoryFramework;
@@ -57,7 +55,7 @@ public final class DBedwars extends PluginAdapter {
     private SetupSessionManager setupSessionManager;
 
     private Messaging messaging;
-    private TranslationRegistryImpl actionRegistry;
+    private ScriptRegistryImpl scriptRegistry;
     private CommandRegistryImpl commandRegistry;
     private NMSAdaptor nmsAdaptor;
     private DatabaseBridge database;
@@ -83,8 +81,8 @@ public final class DBedwars extends PluginAdapter {
         this.hookManager.load();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
-        this.actionRegistry = new TranslationRegistryImpl();
-        this.actionRegistry.registerDefaults();
+        this.scriptRegistry = new ScriptRegistryImpl();
+        this.scriptRegistry.registerDefaults();
         this.commandRegistry = new CommandRegistryImpl(this);
         this.messaging = new Messaging(this);
         this.messaging.init(this.getServer().getConsoleSender());
@@ -274,26 +272,26 @@ public final class DBedwars extends PluginAdapter {
 
     private void initDatabase() {
         DatabaseType type;
-        if (this.getConfigHandler().getDatabase().isValid())
-            type = ConfigurationUtils.matchEnum(this.getConfigHandler().getDatabase().getDatabase(), DatabaseType.values());
+        if (this.getConfigHandler().getDatabase().getDatabase() != null)
+            type = this.getConfigHandler().getDatabase().getDatabase();
         else type = DatabaseType.SQLite;
 
 
 
         if (type == DatabaseType.MYSQL) {
-            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMysql());
+            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.MongoDB) {
             this.loadLibrary(ExternalLibrary.MONGO_DATABASE);
-            this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongodb());
+            this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongoDB());
         } else if (type == DatabaseType.H2) {
             this.loadLibrary(ExternalLibrary.H2_DATABASE);
             this.database = new H2DatabaseBridge();
         } else if (type == DatabaseType.HikariCP) {
             this.loadLibrary(ExternalLibrary.HIKARI_CP);
-            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMysql());
+            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.PostGreSQL) {
             this.loadLibrary(ExternalLibrary.POSTGRESQL_DATABASE);
-            this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMysql());
+            this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else {
             this.loadLibrary(ExternalLibrary.SQLITE_DATABASE);
             this.database = new SQLiteBridge();
@@ -322,8 +320,8 @@ public final class DBedwars extends PluginAdapter {
         return setupSessionManager;
     }
 
-    public ActionTranslationRegistry actionRegistry() {
-        return actionRegistry;
+    public ScriptRegistryImpl scriptRegistry() {
+        return scriptRegistry;
     }
 
     private boolean checkSWM(org.bukkit.plugin.Plugin plugin) {

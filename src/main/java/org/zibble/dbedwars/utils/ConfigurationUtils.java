@@ -3,6 +3,7 @@ package org.zibble.dbedwars.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.radium.utils.StringUtils;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
@@ -13,6 +14,8 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
+import org.zibble.dbedwars.utils.json.JSONBuilder;
+import org.zibble.dbedwars.utils.json.Json;
 
 import java.util.*;
 
@@ -118,7 +121,16 @@ public class ConfigurationUtils {
         return attributes;
     }
 
-    public static Hologram createHologram(ConfigurableHologram hologram) {
-        return null;
+    public static Json createJson(ConfigurationSection section) {
+        JSONBuilder builder = new JSONBuilder();
+        for (String key : section.getKeys(false)) {
+            if (section.isConfigurationSection(key)) {
+                builder.add(key, createJson(section.getConfigurationSection(key)).getHandle());
+            } else {
+                builder.add(key, section.get(key));
+            }
+        }
+
+        return builder.getRawJson();
     }
 }

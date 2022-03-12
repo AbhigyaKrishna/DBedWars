@@ -23,7 +23,7 @@ public class ArenaNameGui extends GuiComponent<AnvilMenu, ArenaNameGui> {
     private ArenaNameGui() {
         super(new AnvilMenu());
         ItemStack item = new ItemStack(Materials.PAPER);
-        item.displayName(Component.text("ARENA DISPLAY NAME"));
+        item.setDisplayName(Component.text("ARENA DISPLAY NAME"));
         this.mask("AB")
                 .item('A', item);
     }

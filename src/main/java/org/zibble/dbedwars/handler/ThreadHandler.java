@@ -10,6 +10,7 @@ import org.zibble.dbedwars.task.TaskQueueHandler;
 import org.zibble.dbedwars.task.implementations.UpdateTask;
 
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
 
 public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHandler {
 

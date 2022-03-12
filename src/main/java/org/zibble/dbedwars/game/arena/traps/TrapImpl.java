@@ -1,11 +1,8 @@
 package org.zibble.dbedwars.game.arena.traps;
 
-import org.bukkit.entity.Player;
-import org.zibble.dbedwars.action.ActionPreProcessor;
-import org.zibble.dbedwars.action.ActionUtil;
-import org.zibble.dbedwars.action.objects.ActionExecutor;
-import org.zibble.dbedwars.action.objects.ProcessedActionHolder;
-import org.zibble.dbedwars.api.action.ActionPlaceholder;
+import org.zibble.dbedwars.api.script.ScriptVariable;
+import org.zibble.dbedwars.script.action.ActionPreProcessor;
+import org.zibble.dbedwars.script.action.ActionProcessor;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
@@ -127,39 +124,37 @@ public class TrapImpl implements org.zibble.dbedwars.api.game.trap.Trap {
             for (ArenaPlayer target : targets) {
                 for (String executable : this.actions) {
                     for (ArenaPlayer actionTarget : this.getActionTarget(target)) {
-                        List<ActionPlaceholder<?, ?>> placeholders = new ArrayList<>();
-                        ActionPlaceholder<Void, ArenaPlayer> arenaPlayer = ActionUtil.getAsVoidPlaceholder(actionTarget);
-                        ActionPlaceholder<Void, Player> vanillaPlayer = ActionUtil.getAsVoidPlaceholder(actionTarget.getPlayer());
-                        placeholders.add(arenaPlayer);
-                        placeholders.add(vanillaPlayer);
-                        placeholders.addAll(Arrays.asList(this.getStandardPlaceholders(actionTarget)));
-                        ProcessedActionHolder holder = ActionPreProcessor.process(executable, placeholders.toArray(new ActionPlaceholder[0]));
-                        ActionExecutor.execute(holder);
+                        List<ScriptVariable<?>> variables = new ArrayList<>();
+                        variables.add(ScriptVariable.of("ARENA_PLAYER", actionTarget));
+                        variables.add(ScriptVariable.of("PLAYER", actionTarget.getPlayer()));
+                        variables.addAll(Arrays.asList(this.getStandardPlaceholders(actionTarget)));
+                        ActionProcessor holder = ActionPreProcessor.process(executable, variables.toArray(new ScriptVariable<?>[0]));
+                        holder.execute();
                     }
                 }
             }
         }
 
-        private ActionPlaceholder<String, PlaceholderEntry>[] getStandardPlaceholders(ArenaPlayer arenaPlayer) {
-            return new ActionPlaceholder[]{
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("player_name", arenaPlayer.getPlayer().getName())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_name", arenaPlayer.getTeam().getName())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_color", arenaPlayer.getTeam().getColor().toString())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_size", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("team_players_remaining", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("enemies_remaining", String.valueOf(arenaPlayer.getArena().getPlayers().size() - arenaPlayer.getTeam().getPlayers().size()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("x_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockX()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("y_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockY()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("z_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockZ()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("x_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getX()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("y_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getY()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("z_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getZ()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("pitch", String.valueOf(arenaPlayer.getPlayer().getLocation().getPitch()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("yaw", String.valueOf(arenaPlayer.getPlayer().getLocation().getYaw()))),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("world_name", arenaPlayer.getPlayer().getWorld().getName())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("world_environment", arenaPlayer.getPlayer().getWorld().getEnvironment().toString())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("arena_display_name", arenaPlayer.getArena().getSettings().getCustomName())),
-                    ActionUtil.getAsKeyedPlaceholder(PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getSettings().getName()))
+        private ScriptVariable<PlaceholderEntry>[] getStandardPlaceholders(ArenaPlayer arenaPlayer) {
+            return new ScriptVariable[]{
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("player_name", arenaPlayer.getPlayer().getName())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("team_name", arenaPlayer.getTeam().getName())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("team_color", arenaPlayer.getTeam().getColor().toString())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("team_size", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("team_players_remaining", String.valueOf(arenaPlayer.getTeam().getPlayers().size()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("enemies_remaining", String.valueOf(arenaPlayer.getArena().getPlayers().size() - arenaPlayer.getTeam().getPlayers().size()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("x_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockX()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("y_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockY()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("z_block_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getBlockZ()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("x_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getX()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("y_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getY()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("z_coordinate", String.valueOf(arenaPlayer.getPlayer().getLocation().getZ()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("pitch", String.valueOf(arenaPlayer.getPlayer().getLocation().getPitch()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("yaw", String.valueOf(arenaPlayer.getPlayer().getLocation().getYaw()))),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("world_name", arenaPlayer.getPlayer().getWorld().getName())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("world_environment", arenaPlayer.getPlayer().getWorld().getEnvironment().toString())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_display_name", arenaPlayer.getArena().getSettings().getCustomName())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getSettings().getName()))
             };
         }
     }

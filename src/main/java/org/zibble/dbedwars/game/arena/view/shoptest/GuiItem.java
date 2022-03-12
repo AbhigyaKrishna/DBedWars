@@ -43,7 +43,7 @@ public class GuiItem extends org.zibble.dbedwars.api.game.view.GuiItem {
             ShopPage page,
             ShopView view,
             Map<String, GuiItem> common,
-            ConfigurableShop.ConfigurablePage.BwGUIItem item,
+            ConfigurableShop.ConfigurablePage.ConfigurableItem item,
             ConfigurableShop.ConfigurablePage cfgPage) {
         if (this.isLoaded()) return;
 
@@ -133,7 +133,7 @@ public class GuiItem extends org.zibble.dbedwars.api.game.view.GuiItem {
                         } else {
                             guiItem = this.shopPage.getItems().getOrDefault(nextTier, null);
                             if (guiItem == null) {
-                                ConfigurableShop.ConfigurablePage.BwGUIItem next =
+                                ConfigurableShop.ConfigurablePage.ConfigurableItem next =
                                         cfgPage.getItems().get(nextTier);
                                 guiItem = new GuiItem(nextTier, view.getFormattedItem(next));
                                 ((GuiItem) guiItem)

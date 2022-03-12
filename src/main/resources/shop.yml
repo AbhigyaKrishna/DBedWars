@@ -1,7 +1,7 @@
 default-page: 'page-1'
 pages:
   page-1:
-    title: '&7Quick buy'
+    title: '<gray>Quick buy'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'A W W W W W W W W'
@@ -11,7 +11,7 @@ pages:
       - 'X X X X X X X X X'
     items:
       '1':
-        name: '&bQuick buy'
+        name: '<aqua>Quick buy'
         material: 'NETHER_STAR'
         amount: 1
         lore: [ ]
@@ -19,7 +19,7 @@ pages:
           type: ''
 
   page-2:
-    title: '&7Blocks'
+    title: '<gray>Blocks'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W A W W W W W W W'
@@ -29,67 +29,69 @@ pages:
       - 'X X X X X X X X X'
     items:
       '2':
-        material: 'STAINED_CLAY:%team%'
-        name: '&bBlocks'
+        material: 'STAINED_CLAY:<team>'
+        name: '<aqua>Blocks'
         lore: [ ]
         attribute:
           type: ''
 
       B:
-        material: 'WOOL:%team%' #%team%_WOOL
+        material: 'WOOL:<team>'
         amount: 16
-        name: '&aWool'
+        name: '<green>Wool'
         lore:
-          - '&7Cost: &f4 Iron'
+          - '<gray>Cost: <white>4 Iron'
           - ''
-          - '&7Great for bridging across'
-          - '&7islands. Turns into your team''s'
-          - '&7color.'
+          - '<gray>Great for bridging across'
+          - '<gray>islands. Turns into your team''s'
+          - '<gray>color.'
         attribute:
+          condition:
+            item: '4:IRON_INGOT'
           type: 'purchasable'
-          cost: '4:IRON_INGOT'
+          cost:
           item:
             '1':
-              material: 'WOOL:%team%'
+              material: 'WOOL:<team>'
               amount: 16
       C:
-        material: 'STAINED_CLAY:%team%'
+        material: 'STAINED_CLAY:<team>'
         amount: 16
-        name: '&aHardened Clay'
+        name: '<green>Hardened Clay'
         lore:
-          - '&7Cost: &f12 Iron'
+          - '<gray>Cost: <white>12 Iron'
           - ''
-          - '&7Basic block to defend your bed.'
+          - '<gray>Basic block to defend your bed.'
         attribute:
           type: 'purchasable'
           cost: '12:IRON_INGOT'
           item:
             '1':
-              material: 'STAINED_CLAY:%team%'
+              material: 'STAINED_CLAY:<team>'
               amount: 16
       D:
-        material: 'GLASS:%team%'
+        material: 'GLASS:<team>'
         amount: 4
-        name: '&aBlast-Proof Glass'
+        name: '<green>Blast-Proof Glass'
         lore:
-          - '&7Cost: &f12 Iron'
+          - '<gray>Cost: <white>12 Iron'
           - ''
-          - '&7Immune to explosions.'
+          - '<gray>Immune to explosions.'
         attribute:
           type: 'purchasable'
           cost: '12:IRON_INGOT'
           item:
             '1':
-              material: 'GLASS:%team%'
+              material: 'GLASS:<team>'
               amount: 4
       E:
         material: 'END_STONE'
         amount: 12
-        name: '&aEnd Stone'
+        name: '<green>End Stone'
         lore:
-          - '&7Cost: &f24 Iron'
+          - '<gray>Cost: <white>24 Iron'
           - ''
-          - '&7Solid block to defend your bed.'
+          - '<gray>Solid block to defend your bed.'
         attribute:
           type: 'purchasable'
           cost: '24:IRON_INGOT'
@@ -100,12 +102,12 @@ pages:
       F:
         material: 'LADDER'
         amount: 16
-        name: '&aLadder'
+        name: '<green>Ladder'
         lore:
-          - '&7Cost: &f4 Iron'
+          - '<gray>Cost: <white>4 Iron'
           - ''
-          - '&7Useful to save cats stuck in'
-          - '&7trees.'
+          - '<gray>Useful to save cats stuck in'
+          - '<gray>trees.'
         attribute:
           type: 'purchasable'
           cost: '4:IRON_INGOT'
@@ -116,15 +118,15 @@ pages:
       G:
         material: 'WOOD:0'
         amount: 16
-        name: '&aOak Wood Planks'
+        name: '<green>Oak Wood Planks'
         lore:
-          - '&7Cost: &64 Gold'
+          - '<gray>Cost: <gold>4 Gold'
           - ''
-          - '&7Good block to defend your bed.'
-          - '&7Strong against pickaxes.'
+          - '<gray>Good block to defend your bed.'
+          - '<gray>Strong against pickaxes.'
         attribute:
           type: 'purchasable'
-          cost: '4:GOLD_INGOT_INGOT'
+          cost: '4:GOLD_INGOT'
           item:
             '1':
               material: 'WOOD:0'
@@ -132,11 +134,11 @@ pages:
       H:
         material: 'OBSIDIAN'
         amount: 4
-        name: '&aObsidian'
+        name: '<green>Obsidian'
         lore:
-          - '&7Cost: &24 Emerald'
+          - '<gray>Cost: <dark_green>4 Emerald'
           - ''
-          - '&7Extreme protection for your bed.'
+          - '<gray>Extreme protection for your bed.'
         attribute:
           type: 'purchasable'
           cost: '4:EMERALD'
@@ -146,7 +148,7 @@ pages:
               amount: 4
 
   page-3:
-    title: '&7Melee'
+    title: '<gray>Melee'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W A W W W W W W'
@@ -157,7 +159,7 @@ pages:
     items:
       '3':
         material: 'GOLDEN_SWORD'
-        name: '&bMelee'
+        name: '<aqua>Melee'
         lore: [ ]
         attribute:
           type: ''
@@ -165,9 +167,9 @@ pages:
       B:
         material: 'STONE_SWORD'
         amount: 1
-        name: '&aStone Sword'
+        name: '<green>Stone Sword'
         lore:
-          - '&7Cost: &f10 Iron'
+          - '<gray>Cost: <white>10 Iron'
         attribute:
           type: 'purchasable'
           cost: '10:IRON_INGOT'
@@ -178,9 +180,9 @@ pages:
       C:
         material: 'IRON_SWORD'
         amount: 1
-        name: '&aIron Sword'
+        name: '<green>Iron Sword'
         lore:
-          - '&7Cost: &67 Gold'
+          - '<gray>Cost: <gold>7 Gold'
         attribute:
           type: 'purchasable'
           cost: '7:GOLD_INGOT'
@@ -191,9 +193,9 @@ pages:
       D:
         material: 'DIAMOND_SWORD'
         amount: 1
-        name: '&aDiamond Sword'
+        name: '<green>Diamond Sword'
         lore:
-          - '&7Cost: &24 Emerald'
+          - '<gray>Cost: <dark_green>4 Emerald'
         attribute:
           type: 'purchasable'
           cost: '4:EMERALD'
@@ -204,9 +206,9 @@ pages:
       E:
         material: 'STICK'
         amount: 1
-        name: '&aStick (Knockback I)'
+        name: '<green>Stick (Knockback I)'
         lore:
-          - '&7Cost: &65 Gold'
+          - '<gray>Cost: <gold>5 Gold'
         enchantment:
           - 'KNOCKBACK:1'
         attribute:
@@ -220,7 +222,7 @@ pages:
                 - 'KNOCKBACK:1'
 
   page-4:
-    title: '&7Armor'
+    title: '<gray>Armor'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W W A W W W W W'
@@ -231,7 +233,7 @@ pages:
     items:
       '4':
         material: 'CHAINMAIL_BOOTS'
-        name: '&bArmor'
+        name: '<aqua>Armor'
         lore: [ ]
         attribute:
           type: ''
@@ -239,13 +241,13 @@ pages:
       B:
         material: 'CHAINMAIL_BOOTS'
         amount: 1
-        name: '&aPermanent Chainmail Armor'
+        name: '<green>Permanent Chainmail Armor'
         lore:
-          - '&7Cost: &f40 Iron'
+          - '<gray>Cost: <white>40 Iron'
           - ''
-          - '&7Chainmail leggings and boots'
-          - '&7which you will always spawn'
-          - '&7with.'
+          - '<gray>Chainmail leggings and boots'
+          - '<gray>which you will always spawn'
+          - '<gray>with.'
         attribute:
           type: 'purchasable, permanent, upgradable, auto-equip'
           cost: '40:IRON_INGOT'
@@ -261,12 +263,12 @@ pages:
       C:
         material: 'IRON_BOOTS'
         amount: 1
-        name: '&aPermanent Iron Armor'
+        name: '<green>Permanent Iron Armor'
         lore:
-          - '&7Cost: &612 Gold'
+          - '<gray>Cost: <gold>12 Gold'
           - ''
-          - '&7Iron leggings and boots which'
-          - '&7you will always spawn with.'
+          - '<gray>Iron leggings and boots which'
+          - '<gray>you will always spawn with.'
         attribute:
           type: 'purchasable, permanent, upgradable, auto-equip'
           cost: '12:GOLD_INGOT'
@@ -282,12 +284,12 @@ pages:
       D:
         material: 'DIAMOND_BOOTS'
         amount: 1
-        name: '&aPermanent Diamond Armor'
+        name: '<green>Permanent Diamond Armor'
         lore:
-          - '&7Cost: &26 Emerald'
+          - '<gray>Cost: <dark_green>6 Emerald'
           - ''
-          - '&7Diamond leggings and boots which'
-          - '&7you will always spawn with.'
+          - '<gray>Diamond leggings and boots which'
+          - '<gray>you will always spawn with.'
         attribute:
           type: 'purchasable, permanent, auto-equip'
           cost: '6:EMERALD'
@@ -302,7 +304,7 @@ pages:
               auto-equip-slot: 36
 
   page-5:
-    title: '&7Tools'
+    title: '<gray>Tools'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W W W A W W W W'
@@ -313,7 +315,7 @@ pages:
     items:
       '5':
         material: 'STONE_PICKAXE'
-        name: '&bTools'
+        name: '<aqua>Tools'
         lore: [ ]
         attribute:
           type: ''
@@ -321,13 +323,13 @@ pages:
       B:
         material: 'SHEARS'
         amount: 1
-        name: '&aPermanent Shears'
+        name: '<green>Permanent Shears'
         lore:
-          - '&7Cost: &f20 Iron'
+          - '<gray>Cost: <white>20 Iron'
           - ''
-          - '&7Great to get rid of wool. You'
-          - '&7will always spawn with these'
-          - '&7shears.'
+          - '<gray>Great to get rid of wool. You'
+          - '<gray>will always spawn with these'
+          - '<gray>shears.'
         attribute:
           type: 'purchasable, permanent'
           cost: '20:IRON_INGOT'
@@ -338,16 +340,16 @@ pages:
       C:
         material: 'WOODEN_PICKAXE'
         amount: 1
-        name: '&aWooden Pickaxe (Efficiency I)'
+        name: '<green>Wooden Pickaxe (Efficiency I)'
         lore:
-          - '&7Cost: &f10 Iron'
-          - '&7Tier: &eI'
+          - '<gray>Cost: <white>10 Iron'
+          - '<gray>Tier: <yellow>I'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:1'
         attribute:
@@ -363,16 +365,16 @@ pages:
       C-2:
         material: 'IRON_PICKAXE'
         amount: 1
-        name: '&aIron Pickaxe (Efficiency II)'
+        name: '<green>Iron Pickaxe (Efficiency II)'
         lore:
-          - '&7Cost: &f10 Iron'
-          - '&7Tier: &eII'
+          - '<gray>Cost: <white>10 Iron'
+          - '<gray>Tier: <yellow>II'
           - ''
           - '&This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:2'
         attribute:
@@ -390,16 +392,16 @@ pages:
       C-3:
         material: 'GOLDEN_PICKAXE'
         amount: 1
-        name: '&aGold Pickaxe (Efficiency III, Sharpness II)'
+        name: '<green>Gold Pickaxe (Efficiency III, Sharpness II)'
         lore:
-          - '&7Cost: &63 Gold'
-          - '&7Tier: &eIII'
+          - '<gray>Cost: <gold>3 Gold'
+          - '<gray>Tier: <yellow>III'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:3'
           - 'SHARPNESS:2'
@@ -419,16 +421,16 @@ pages:
       C-4:
         material: 'DIAMOND_PICKAXE'
         amount: 1
-        name: '&aDiamond Pickaxe (Efficiency III)'
+        name: '<green>Diamond Pickaxe (Efficiency III)'
         lore:
-          - '&7Cost: &66 Gold'
-          - '&7Tier: &eIV'
+          - '<gray>Cost: <gold>6 Gold'
+          - '<gray>Tier: <yellow>IV'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:3'
         attribute:
@@ -446,16 +448,16 @@ pages:
       D:
         material: 'WOODEN_AXE'
         amount: 1
-        name: '&aWooden Axe (Efficiency I)'
+        name: '<green>Wooden Axe (Efficiency I)'
         lore:
-          - '&7Cost: &f10 Iron'
-          - '&7Tier: &eI'
+          - '<gray>Cost: <white>10 Iron'
+          - '<gray>Tier: <yellow>I'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:1'
         attribute:
@@ -471,16 +473,16 @@ pages:
       D-2:
         material: 'STONE_AXE'
         amount: 1
-        name: '&aStone Axe (Efficiency I)'
+        name: '<green>Stone Axe (Efficiency I)'
         lore:
-          - '&7Cost: &f10 Iron'
-          - '&7Tier: &eII'
+          - '<gray>Cost: <white>10 Iron'
+          - '<gray>Tier: <yellow>II'
           - ''
           - '&This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:1'
         attribute:
@@ -498,16 +500,16 @@ pages:
       D-3:
         material: 'IRON_AXE'
         amount: 1
-        name: '&aIron Axe (Efficiency II)'
+        name: '<green>Iron Axe (Efficiency II)'
         lore:
-          - '&7Cost: &63 Gold'
-          - '&7Tier: &eIII'
+          - '<gray>Cost: <gold>3 Gold'
+          - '<gray>Tier: <yellow>III'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:2'
         attribute:
@@ -525,16 +527,16 @@ pages:
       D-4:
         material: 'DIAMOND_AXE'
         amount: 1
-        name: '&aDiamond Axe (Efficiency III)'
+        name: '<green>Diamond Axe (Efficiency III)'
         lore:
-          - '&7Cost: &66 Gold'
-          - '&7Tier: &eIV'
+          - '<gray>Cost: <gold>6 Gold'
+          - '<gray>Tier: <yellow>IV'
           - ''
-          - '&7This is an upgradable item.'
-          - '&7It will lose 1 tier upon death!'
+          - '<gray>This is an upgradable item.'
+          - '<gray>It will lose 1 tier upon death!'
           - ''
-          - '&7You will permanently respawn'
-          - '&7with at least the lowest tier.'
+          - '<gray>You will permanently respawn'
+          - '<gray>with at least the lowest tier.'
         enchantment:
           - 'EFFICIENCY:3'
         attribute:
@@ -550,7 +552,7 @@ pages:
                 - 'EFFICIENCY:3'
 
   page-6:
-    title: '&7Ranged'
+    title: '<gray>Ranged'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W A W W W'
@@ -562,7 +564,7 @@ pages:
       '6':
         material: 'BOW'
         amount: 1
-        name: '&aRanged'
+        name: '<green>Ranged'
         lore: [ ]
         attribute:
           type: ''
@@ -570,9 +572,9 @@ pages:
       B:
         material: 'ARROW'
         amount: 8
-        name: '&aArrow'
+        name: '<green>Arrow'
         lore:
-          - '&7Cost: &62 Gold'
+          - '<gray>Cost: <gold>2 Gold'
         attribute:
           type: 'purchasable'
           cost: '2:GOLD_INGOT'
@@ -583,9 +585,9 @@ pages:
       C:
         material: 'BOW'
         amount: 1
-        name: '&aBow'
+        name: '<green>Bow'
         lore:
-          - '&7Cost: &612 Gold'
+          - '<gray>Cost: <gold>12 Gold'
         attribute:
           type: 'purchasable'
           cost: '12:GOLD_INGOT'
@@ -596,9 +598,9 @@ pages:
       D:
         material: 'BOW'
         amount: 1
-        name: '&aBow (Power I)'
+        name: '<green>Bow (Power I)'
         lore:
-          - '&7Cost: &624 Gold'
+          - '<gray>Cost: <gold>24 Gold'
         enchantment:
           - 'POWER:1'
         attribute:
@@ -613,9 +615,9 @@ pages:
       E:
         material: 'BOW'
         amount: 1
-        name: '&aBow (Power I, Punch I)'
+        name: '<green>Bow (Power I, Punch I)'
         lore:
-          - '&7Cost: &26 Emerald'
+          - '<gray>Cost: <dark_green>6 Emerald'
         enchantment:
           - 'POWER:1'
           - 'PUNCH:1'
@@ -631,7 +633,7 @@ pages:
                 - 'PUNCH:1'
 
   page-7:
-    title: '&7Potions'
+    title: '<gray>Potions'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W W A W W'
@@ -643,7 +645,7 @@ pages:
       '7':
         material: 'BREWING_STAND'
         amount: 1
-        name: '&aPotions'
+        name: '<green>Potions'
         lore: [ ]
         attribute:
           type: ''
@@ -651,45 +653,45 @@ pages:
       B:
         material: 'POTION'
         amount: 1
-        name: '&aSpeed II Potion (45 seconds)'
+        name: '<green>Speed II Potion (45 seconds)'
         lore:
-          - '&7Cost: &21 Emerald'
+          - '<gray>Cost: <dark_green>1 Emerald'
           - ''
-          - '&3Speed II (0:45)'
+          - '<dark_aqua>Speed II (0:45)'
         attribute:
           type: 'purchasable'
           cost: '1:EMERALD'
           item:
             '1':
               material: 'POTION'
-              name: '&aSpeed Potion'
+              name: '<green>Speed Potion'
               amount: 1
               potion: 'SPEED:2:45'
       C:
         material: 'POTION'
         amount: 1
-        name: '&aJump V Potion (45 seconds)'
+        name: '<green>Jump V Potion (45 seconds)'
         lore:
-          - '&7Cost: &21 Emerald'
+          - '<gray>Cost: <dark_green>1 Emerald'
           - ''
-          - '&3Jump Boost V (0:45)'
+          - '<dark_aqua>Jump Boost V (0:45)'
         attribute:
           type: 'purchasable'
           cost: '1:EMERALD'
           item:
             '1':
               material: 'POTION'
-              name: '&aJump V Potion'
+              name: '<green>Jump V Potion'
               amount: 1
               potion: 'JUMP:5:45'
       D:
         material: 'POTION'
         amount: 1
-        name: '&aInvisibility Potion (30 seconds)'
+        name: '<green>Invisibility Potion (30 seconds)'
         lore:
-          - '&7Cost: &22 Emerald'
+          - '<gray>Cost: <dark_green>2 Emerald'
           - ''
-          - '&3Complete Invisibility (0:30)'
+          - '<dark_aqua>Complete Invisibility (0:30)'
         attribute:
           type: 'purchasable'
           cost: '2:EMERALD'
@@ -700,7 +702,7 @@ pages:
               potion: 'INVISIBILITY:1:30'
 
   page-8:
-    title: '&7Utilities'
+    title: '<gray>Utilities'
     pattern:
       - '1 2 3 4 5 6 7 8 X'
       - 'W W W W W W W A W'
@@ -712,7 +714,7 @@ pages:
       '8':
         material: 'TNT'
         amount: 1
-        name: '&bUtilities'
+        name: '<aqua>Utilities'
         lore: [ ]
         attribute:
           type: ''
@@ -720,11 +722,11 @@ pages:
       B:
         material: 'GOLDEN_APPLE'
         amount: 1
-        name: '&aGolden Apple'
+        name: '<green>Golden Apple'
         lore:
-          - '&7Cost: &63 Gold'
+          - '<gray>Cost: <gold>3 Gold'
           - ''
-          - '&7Well-rounded healing.'
+          - '<gray>Well-rounded healing.'
         attribute:
           type: 'purchasable'
           cost: '3:GOLD_INGOT'
@@ -735,13 +737,13 @@ pages:
       C:
         material: 'SNOWBALL'
         amount: 1
-        name: '&aBedbug'
+        name: '<green>Bedbug'
         lore:
-          - '&7Cost: &f40 Iron'
+          - '<gray>Cost: <white>40 Iron'
           - ''
-          - '&7Spawns silverfish where the'
-          - '&7snowball lands to distract your'
-          - '&7enemies. Lasts 15 seconds.'
+          - '<gray>Spawns silverfish where the'
+          - '<gray>snowball lands to distract your'
+          - '<gray>enemies. Lasts 15 seconds.'
         attribute:
           type: 'purchasable'
           cost: '40:IRON_INGOT'
@@ -752,12 +754,12 @@ pages:
       D:
         material: 'WOLF_SPAWN_EGG'
         amount: 1
-        name: '&aDream Defender'
+        name: '<green>Dream Defender'
         lore:
-          - '&7Cost: &f120 Iron'
+          - '<gray>Cost: <white>120 Iron'
           - ''
-          - '&7Iron Golem to help defend your'
-          - '&7base. Lasts 4 minutes.'
+          - '<gray>Iron Golem to help defend your'
+          - '<gray>base. Lasts 4 minutes.'
         attribute:
           type: 'purchasable'
           cost: '120:IRON_INGOT'
@@ -768,13 +770,13 @@ pages:
       E:
         material: 'FIRE_CHARGE'
         amount: 1
-        name: '&aFireball'
+        name: '<green>Fireball'
         lore:
-          - '&7Cost: &f40 Iron'
+          - '<gray>Cost: <white>40 Iron'
           - ''
-          - '&7Right-click to launch! Great to'
-          - '&7knock back enemies walking on'
-          - '&7thin bridges.'
+          - '<gray>Right-click to launch! Great to'
+          - '<gray>knock back enemies walking on'
+          - '<gray>thin bridges.'
         attribute:
           type: 'purchasable'
           cost: '40:IRON_INGOT'
@@ -785,12 +787,12 @@ pages:
       F:
         material: 'TNT'
         amount: 1
-        name: '&aTNT'
+        name: '<green>TNT'
         lore:
-          - '&7Cost: &64 Gold'
+          - '<gray>Cost: <gold>4 Gold'
           - ''
-          - '&7Instantly ignites, appropriate'
-          - '&7to explode things!'
+          - '<gray>Instantly ignites, appropriate'
+          - '<gray>to explode things!'
         attribute:
           type: 'purchasable'
           cost: '4:GOLD_INGOT'
@@ -801,12 +803,12 @@ pages:
       G:
         material: 'ENDER_PEARL'
         amount: 1
-        name: '&aEnder Pearl'
+        name: '<green>Ender Pearl'
         lore:
-          - '&7Cost: &24 Emerald'
+          - '<gray>Cost: <dark_green>4 Emerald'
           - ''
-          - '&7The quickest way to invade enemy'
-          - '&7bases.'
+          - '<gray>The quickest way to invade enemy'
+          - '<gray>bases.'
         attribute:
           type: 'purchasable'
           cost: '4:EMERALD'
@@ -817,13 +819,13 @@ pages:
       H:
         material: 'WATER_BUCKET'
         amount: 1
-        name: '&aWater Bucket'
+        name: '<green>Water Bucket'
         lore:
-          - '&7Cost: &63 Gold'
+          - '<gray>Cost: <gold>3 Gold'
           - ''
-          - '&7Great to slow down approaching'
-          - '&7enemies. Can also protect'
-          - '&7against TNT.'
+          - '<gray>Great to slow down approaching'
+          - '<gray>enemies. Can also protect'
+          - '<gray>against TNT.'
         attribute:
           type: 'purchasable'
           cost: '3:GOLD_INGOT'
@@ -834,12 +836,12 @@ pages:
       I:
         material: 'EGG'
         amount: 1
-        name: '&aBridge Egg'
+        name: '<green>Bridge Egg'
         lore:
-          - '&7Cost: &22 Emerald'
+          - '<gray>Cost: <dark_green>2 Emerald'
           - ''
-          - '&7This egg creates a bridge in its'
-          - '&7trail after being thrown.'
+          - '<gray>This egg creates a bridge in its'
+          - '<gray>trail after being thrown.'
         attribute:
           type: 'purchasable'
           cost: '2:EMERALD'
@@ -850,12 +852,12 @@ pages:
       J:
         material: 'MILK_BUCKET'
         amount: 1
-        name: '&aMagic Milk'
+        name: '<green>Magic Milk'
         lore:
-          - '&7Cost: &64 Gold'
+          - '<gray>Cost: <gold>4 Gold'
           - ''
-          - '&7Avoid triggering traps for 30'
-          - '&7seconds after consuming'
+          - '<gray>Avoid triggering traps for 30'
+          - '<gray>seconds after consuming'
         attribute:
           type: 'purchasable'
           cost: '4:GOLD_INGOT'
@@ -866,11 +868,11 @@ pages:
       K:
         material: 'SPONGE'
         amount: 1
-        name: '&aSponge'
+        name: '<green>Sponge'
         lore:
-          - '&7Cost: &63 Gold'
+          - '<gray>Cost: <gold>3 Gold'
           - ''
-          - '&7Great for soaking up water.'
+          - '<gray>Great for soaking up water.'
         attribute:
           type: 'purchasable'
           cost: '3:GOLD_INGOT'
@@ -881,11 +883,11 @@ pages:
       L:
         material: 'TRAPPED_CHEST'
         amount: 1
-        name: '&aCompact Pop-up Tower'
+        name: '<green>Compact Pop-up Tower'
         lore:
-          - '&7Cost: &f24 Iron'
+          - '<gray>Cost: <white>24 Iron'
           - ''
-          - '&7Place a pop-up defence!'
+          - '<gray>Place a pop-up defence!'
         attribute:
           type: 'purchasable'
           cost: '24:IRON_INGOT'
@@ -909,9 +911,9 @@ common:
   '1':
     material: 'NETHER_STAR'
     amount: 1
-    name: '&aQuick buy'
+    name: '<green>Quick buy'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-1'
@@ -919,9 +921,9 @@ common:
   '2':
     material: 'STAINED_CLAY'
     amount: 1
-    name: '&aBlocks'
+    name: '<green>Blocks'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-2'
@@ -929,9 +931,9 @@ common:
   '3':
     material: 'GOLDEN_SWORD'
     amount: 1
-    name: '&aMelee'
+    name: '<green>Melee'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-3'
@@ -939,9 +941,9 @@ common:
   '4':
     material: 'CHAINMAIL_BOOTS'
     amount: 1
-    name: '&eArmor'
+    name: '<yellow>Armor'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-4'
@@ -949,9 +951,9 @@ common:
   '5':
     material: 'STONE_PICKAXE'
     amount: 1
-    name: '&aTools'
+    name: '<green>Tools'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-5'
@@ -959,9 +961,9 @@ common:
   '6':
     material: 'BOW'
     amount: 1
-    name: '&aRanged'
+    name: '<green>Ranged'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-6'
@@ -969,9 +971,9 @@ common:
   '7':
     material: 'BREWING_STAND'
     amount: 1
-    name: '&aPotions'
+    name: '<green>Potions'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-7'
@@ -979,9 +981,9 @@ common:
   '8':
     material: 'TNT'
     amount: 1
-    name: '&aUtility'
+    name: '<green>Utility'
     lore:
-      - '&eClick to view!'
+      - '<yellow>Click to view!'
     attribute:
       type: 'change-page'
       page: 'page-8'

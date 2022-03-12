@@ -18,7 +18,7 @@ public class ConfigurableShop implements Loadable {
     private Map<String, ConfigurablePage> pages;
 
     @ConfigPath("common")
-    private Map<String, ConfigurablePage.BwGUIItem> commonItems;
+    private Map<String, ConfigurablePage.ConfigurableItem> commonItems;
 
     public ConfigurableShop() {
         this.pages = new HashMap<>();
@@ -44,7 +44,7 @@ public class ConfigurableShop implements Loadable {
         return defaultPage;
     }
 
-    public Map<String, ConfigurablePage.BwGUIItem> getCommonItems() {
+    public Map<String, ConfigurablePage.ConfigurableItem> getCommonItems() {
         return commonItems;
     }
 
@@ -61,7 +61,7 @@ public class ConfigurableShop implements Loadable {
         private List<String> pattern;
 
         @ConfigPath
-        private Map<String, BwGUIItem> items;
+        private Map<String, ConfigurableItem> items;
 
         public ConfigurablePage() {
             this.pattern = new ArrayList<>();
@@ -83,7 +83,7 @@ public class ConfigurableShop implements Loadable {
             return !this.isValid();
         }
 
-        public Map<String, BwGUIItem> getItems() {
+        public Map<String, ConfigurableItem> getItems() {
             return items;
         }
 
@@ -95,7 +95,7 @@ public class ConfigurableShop implements Loadable {
             return title;
         }
 
-        public static class BwGUIItem implements Loadable {
+        public static class ConfigurableItem implements Loadable {
 
             @ConfigPath
             private String name;
@@ -115,7 +115,7 @@ public class ConfigurableShop implements Loadable {
             @ConfigPath
             private ConfigurableAttribute attribute;
 
-            public BwGUIItem() {
+            public ConfigurableItem() {
                 this.amount = 1;
                 this.lore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();

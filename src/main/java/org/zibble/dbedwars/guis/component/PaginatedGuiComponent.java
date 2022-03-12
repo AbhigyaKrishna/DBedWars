@@ -21,20 +21,20 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
     }
 
     public GuiComponent<T, ? extends GuiComponent> getPage(int page) {
-        return pages.get(page);
+        return this.pages.get(page);
     }
 
     public int getPageCount() {
-        return pages.size();
+        return this.pages.size();
     }
 
     public R setPage(int page, GuiComponent<T, ? extends GuiComponent> component) {
-        pages.set(page, component);
+        this.pages.set(page, component.addCloseAction((menu, p) -> this.close()));
         return (R) this;
     }
 
     public R addPage(GuiComponent<T, ? extends GuiComponent> component) {
-        pages.add(component);
+        pages.add(component.addCloseAction((menu, p) -> this.close()));
         return (R) this;
     }
 

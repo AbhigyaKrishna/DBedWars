@@ -63,7 +63,7 @@ public class ShopView implements org.zibble.dbedwars.api.game.view.ShopView {
         return this.shopPages;
     }
 
-    public BwItemStack getFormattedItem(ConfigurableShop.ConfigurablePage.BwGUIItem item) {
+    public BwItemStack getFormattedItem(ConfigurableShop.ConfigurablePage.ConfigurableItem item) {
         BwItemStack stack =
                 ConfigurationUtils.parseItem(this.player.getTeam().getColor(), item.getMaterial());
         ItemMetaBuilder builder =
