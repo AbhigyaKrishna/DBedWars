@@ -10,6 +10,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.PreciseLocation;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
@@ -48,8 +49,7 @@ public class SetupUtil {
     }
 
     public static Hologram createHologram(Location location, Player player, Message text) {
-        //TODO INITIALIZE HOLOGRAM WITH ADDING 2 in Y of location
-        Hologram hologram = null;
+        Hologram hologram = PLUGIN.getHologramManager().createHologram(location.clone().add(0, 2, 0));
         HologramPage page = hologram.addPage();
         for (Component component : text.asComponent()) {
             page.addNewTextLine(component);
