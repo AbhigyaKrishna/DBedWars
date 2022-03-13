@@ -2,7 +2,7 @@ package org.zibble.dbedwars.menus.actions;
 
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.exceptions.DuplicateActionDefinitionException;
-import org.zibble.dbedwars.api.menu.MenuActions;
+import org.zibble.dbedwars.api.menu.MenuAction;
 import org.zibble.dbedwars.handler.MenuHandler;
 import org.zibble.dbedwars.menus.actions.defaults.*;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegistry {
 
-    private static final HashMap<String, MenuActions> actionRegister;
+    private static final HashMap<String, MenuAction> actionRegister;
 
     static {
         actionRegister = new HashMap<>();
@@ -25,7 +25,7 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     }
 
     @Override
-    public void register(@NotNull MenuActions menuActions) throws DuplicateActionDefinitionException {
+    public void register(@NotNull MenuAction menuActions) throws DuplicateActionDefinitionException {
         if(actionRegister.containsKey(menuActions.tag()))
             throw new DuplicateActionDefinitionException("Tag for action ["+menuActions.tag()+" , "+menuActions.description()+"] is already definied!");
 
@@ -33,8 +33,8 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     }
 
     @Override
-    public void register(@NotNull MenuActions... menuActions) throws DuplicateActionDefinitionException {
-        for(MenuActions actions : menuActions){
+    public void register(@NotNull MenuAction... menuActions) throws DuplicateActionDefinitionException {
+        for(MenuAction actions : menuActions){
             this.register(actions);
         }
     }
@@ -45,7 +45,7 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     }
 
     @Override
-    public void unregister(@NotNull MenuActions actions){
+    public void unregister(@NotNull MenuAction actions){
         actionRegister.remove(actions.tag());
     }
 
@@ -55,12 +55,12 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
     }
 
     @Override
-    public boolean isRegistered(@NotNull MenuActions actions){
+    public boolean isRegistered(@NotNull MenuAction actions){
         return actionRegister.containsKey(actions.tag());
     }
 
     @Override
-    public Optional<MenuActions> getOptionalMenu(@NotNull String tag){
+    public Optional<MenuAction> getOptionalMenu(@NotNull String tag){
         return Optional.ofNullable(actionRegister.get(tag));
     }
 
@@ -78,7 +78,7 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
         }
     }
 
-    public static Optional<MenuActions> getIfPresent(@NotNull String tag){
+    public static Optional<MenuAction> getIfPresent(@NotNull String tag){
         return Optional.ofNullable(actionRegister.get(tag));
     }
 }

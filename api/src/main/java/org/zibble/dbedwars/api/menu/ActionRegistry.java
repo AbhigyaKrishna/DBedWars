@@ -7,18 +7,18 @@ import java.util.Optional;
 
 public interface ActionRegistry {
 
-    void register(@NotNull MenuActions menuActions) throws DuplicateActionDefinitionException;
+    void register(@NotNull MenuAction menuActions) throws DuplicateActionDefinitionException;
 
-    void register(@NotNull MenuActions... menuActions) throws DuplicateActionDefinitionException;
+    void register(@NotNull MenuAction... menuActions) throws DuplicateActionDefinitionException;
 
     void unregister(@NotNull String tag);
 
-    void unregister(@NotNull MenuActions actions);
+    void unregister(@NotNull MenuAction actions);
 
     boolean isRegistered(@NotNull String tag);
 
-    boolean isRegistered(@NotNull MenuActions actions);
+    boolean isRegistered(@NotNull MenuAction actions);
 
-    Optional<MenuActions> getOptionalMenu(@NotNull String tag);
+    Optional<MenuAction> getOptionalMenu(@NotNull String tag);
 
 }

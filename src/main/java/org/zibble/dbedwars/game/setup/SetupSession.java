@@ -27,8 +27,8 @@ import org.zibble.dbedwars.game.ArenaDataHolder;
 import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
-import org.zibble.inventoryframework.protocol.Materials;
-import org.zibble.inventoryframework.protocol.item.ItemStack;
+import org.zibble.inventoryframework.protocol.ItemMaterials;
+import org.zibble.inventoryframework.protocol.item.StackItem;
 
 import java.util.*;
 
@@ -38,6 +38,7 @@ public class SetupSession {
     private static final String TEAM_SETUP_SYMBOL = "[]";
 
     private static final Key<String> WAITING_LOCATION = Key.of("waiting_location");
+    private static final Key<String> SPECTATOR_LOCATION = Key.of("spectator_location");
 
     private final ArenaDataHolder dataHolder;
     private final World world;
@@ -82,7 +83,7 @@ public class SetupSession {
         Message message = PluginLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
         ArenaNameGui.creator()
                 .item(() -> {
-                    ItemStack item = new ItemStack(Materials.PAPER);
+                    StackItem item = new StackItem(ItemMaterials.PAPER);
                     item.setDisplayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0]);
                     return item;
                 })
@@ -115,10 +116,9 @@ public class SetupSession {
     public int cleanupWorldEntities() {
         int count = 0;
         for (Entity entity : this.world.getEntities()) {
-            if (!SetupUtil.isAllowedEntity(entity)) {
-                entity.remove();
-                count++;
-            }
+            if (SetupUtil.isAllowedEntity(entity)) continue;
+            entity.remove();
+            count++;
         }
         this.playerMember.sendMessage(PluginLang.SETUP_WORLD_CLEANUP_CLEANING.asMessage());
         return count;
@@ -130,27 +130,36 @@ public class SetupSession {
 
     public void setupWaitingLocation(Location location) {
         this.dataHolder.setWaitingLocation(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, Color.WHITE, PluginLang.HOLOGRAM_SETUP_WAITING_LOCATION_SET);
-        this.hologramTrackers.put(WAITING_LOCATION, pair.getKey()); // HIDE THE HOLOGRAM
+        Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, Color.WHITE, PluginLang.HOLOGRAM_SETUP_WAITING_LOCATION_SET);
+        Hologram old = this.hologramTrackers.put(WAITING_LOCATION, pair.getKey());
+        //DESPAWN OLD
         CancellableWorkload oldWorkload = this.particleTrackers.put(WAITING_LOCATION, pair.getValue());
         if (oldWorkload != null) oldWorkload.setCancelled(true);
-        locationSetMessages(this, location, Color.WHITE, PluginLang.SETUP_WAITING_LOCATION_SET);
+        this.locationSetMessages(location, Color.WHITE, PluginLang.SETUP_WAITING_LOCATION_SET);
     }
 
     public void promptSetupSpectatorLocation() {
-
+        this.playerMember.sendMessage(PluginLang.SETUP_SPECTATOR_LOCATION_PROMPT.asMessage());
     }
 
     public void setupSpectatorLocation(Location location) {
-
+        this.dataHolder.setSpectatorLocation(SetupUtil.preciseXYZYP(this, location));
+        Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, Color.WHITE, PluginLang.HOLOGRAM_SETUP_SPECTATOR);
+        Hologram old = this.hologramTrackers.put(SPECTATOR_LOCATION, pair.getKey());
+        //DESPAWN OLD
+        CancellableWorkload oldWorkload = this.particleTrackers.put(SPECTATOR_LOCATION, pair.getValue());
+        if (oldWorkload != null) oldWorkload.setCancelled(true);
+        this.locationSetMessages(location, Color.WHITE, PluginLang.MESSAGE_SETUP_SPECTATOR);
     }
 
     public void setupLobbyCorner1(Block block) {
         this.dataHolder.setLobbyCorner1(LocationXYZ.valueOf(block.getLocation()));
+        this.locationSetMessages(block.getLocation(), Color.WHITE, PluginLang.MESSAGE_SETUP_LOBBY_CORNER_1);
     }
 
     public void setupLobbyCorner2(Block block) {
         this.dataHolder.setLobbyCorner2(LocationXYZ.valueOf(block.getLocation()));
+        this.locationSetMessages(block.getLocation(), Color.WHITE, PluginLang.MESSAGE_SETUP_LOBBY_CORNER_2);
     }
 
     public void promptSetupTeamsMessage() {
@@ -174,41 +183,40 @@ public class SetupSession {
     }
 
     public void setupTeamSpawn(Color color, Location location) {
-        this.dataHolder.getTeamData(color).setSpawnLocation(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_SPAWN);
-        putHologram(this, InfoType.SPAWN, color, pair.getKey());
-        putParticle(this, InfoType.SPAWN, color, pair.getValue());
-    }
-
-    public void setupTeamShopNPC(Color color, Location location) {
-        this.dataHolder.getTeamData(color).setShopNPC(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_SHOP);
-        putHologram(this, InfoType.SHOP, color, pair.getKey());
-        putParticle(this, InfoType.SHOP, color, pair.getValue());
-        locationSetMessages(this, location, color, PluginLang.SETUP_TEAM_SHOP);
-    }
-
-    public void setupTeamUpgradesNPC(Color color, Location location) {
-        this.dataHolder.getTeamData(color).setUpgradesNPC(LocationXYZYP.valueOf(SetupUtil.precise(this, location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_UPGRADES);
-        putHologram(this, InfoType.UPGRADES, color, pair.getKey()); // HIDE THE HOLOGRAM
-        putParticle(this, InfoType.UPGRADES, color, pair.getValue());
-        locationSetMessages(this, location, color, PluginLang.SETUP_TEAM_UPGRADES);
+        this.dataHolder.getTeamData(color).setBed(LocationXYZ.valueOf(SetupUtil.precise(this, location)));
+        Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, color, PluginLang.HOLOGRAM_SETUP_TEAM_SPAWN);
+        TeamHologramTracker teamHologramTracker = this.teamHologramTrackers.get(color);
+        //DESPAWN ALL
+        teamHologramTracker.spawn = pair.getKey();
+        //SPAWN
+        TeamParticleTracker teamParticleTracker = this.teamParticleTrackers.get(color);
+        teamParticleTracker.spawn.setCancelled(true);
+        teamParticleTracker.spawn = pair.getValue();
+        this.locationSetMessages(location, color, PluginLang.MESSAGE_SETUP_TEAM_SPAWN);
     }
 
     public void setupTeamBed(Color color, Location location) {
         this.dataHolder.getTeamData(color).setBed(LocationXYZ.valueOf(SetupUtil.precise(this, location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
-        putHologram(this, InfoType.BED, color, pair.getKey()); // HIDE THE HOLOGRAM
-        putParticle(this, InfoType.BED, color, pair.getValue());
-        locationSetMessages(this, location, color, PluginLang.SETUP_TEAM_BED);
+        Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, color, PluginLang.HOLOGRAM_SETUP_TEAM_BED);
+        TeamHologramTracker teamHologramTracker = this.teamHologramTrackers.get(color);
+        //despawn old
+        teamHologramTracker.bed = pair.getKey();
+        //SPAWN
+        TeamParticleTracker teamParticleTracker = this.teamParticleTrackers.get(color);
+        teamParticleTracker.bed.setCancelled(true);
+        teamParticleTracker.bed = pair.getValue();
+        this.locationSetMessages(location, color, PluginLang.MESSAGE_SETUP_TEAM_BED);
+    }
+
+    public void setupTeamShop(Color color, Location location, ShopType shopType) {
+
     }
 
     public void setupTeamGen(Color color, Location location, DropType dropType) {
         this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolder.SpawnerDataHolder.of(dropType, LocationXYZ.valueOf(location)));
-        Pair<Hologram, CancellableWorkload> pair = locationSetTasks(this, location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
+        Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         //TODO
-        locationSetMessages(this, location, color, PluginLang.SETUP_TEAM_GEN);
+        this.locationSetMessages(location, color, PluginLang.MESSAGE_SETUP_TEAM_GEN);
     }
 
     public void cancel() {
@@ -227,97 +235,27 @@ public class SetupSession {
         this.autoCorrect = autoCorrect;
     }
 
-    private static Pair<Hologram, CancellableWorkload> locationSetTasks(SetupSession setupSession, Location location, Color color, Lang lang) {
-        return Pair.of(SetupUtil.createHologram(location, setupSession.player, lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode()))),
-                SetupUtil.createParticleSpawningTask(location, setupSession.player, color.asJavaColor()));
+    private Pair<Hologram, CancellableWorkload> locationSetTasks(Location location, Color color, Lang lang) {
+        return Pair.of(SetupUtil.createHologram(location, this.player, lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode()))),
+                SetupUtil.createParticleSpawningTask(location, this.player, color.asJavaColor()));
     }
 
-    private static void locationSetMessages(SetupSession setupSession, Location location, Color color, Lang lang) {
-        setupSession.playerMember.sendMessage(lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())), false);
-    }
-
-    private static void putHologram(SetupSession setupSession, InfoType type, Color color, Hologram hologram) {
-        TeamHologramTracker teamHologramTracker = setupSession.teamHologramTrackers.get(color);
-        switch (type) {
-            case SPAWN: {
-                Hologram old = teamHologramTracker.spawn;
-                //DESPAWN
-                teamHologramTracker.spawn = hologram;
-                break;
-            }
-            case SHOP: {
-                Hologram old = teamHologramTracker.shop;
-                //DESPAWN
-                teamHologramTracker.shop = hologram;
-                break;
-            }
-            case UPGRADES: {
-                Hologram old = teamHologramTracker.upgrades;
-                //DESPAWN
-                teamHologramTracker.upgrades = hologram;
-                break;
-            }
-            case BED: {
-                Hologram old = teamHologramTracker.bed;
-                //DESPAWN
-                teamHologramTracker.bed = hologram;
-                break;
-            }
-        }
-    }
-
-    private static void putParticle(SetupSession setupSession, InfoType type, Color color, CancellableWorkload workload) {
-        TeamParticleTracker teamParticleTracker = setupSession.teamParticleTrackers.get(color);
-        switch (type) {
-            case SPAWN: {
-                CancellableWorkload old = teamParticleTracker.spawn;
-                old.setCancelled(true);
-                teamParticleTracker.spawn = workload;
-                break;
-            }
-            case SHOP: {
-                CancellableWorkload old = teamParticleTracker.shop;
-                old.setCancelled(true);
-                teamParticleTracker.shop = workload;
-            }
-            case UPGRADES: {
-                CancellableWorkload old = teamParticleTracker.upgrades;
-                old.setCancelled(true);
-                teamParticleTracker.upgrades = workload;
-            }
-            case BED: {
-                CancellableWorkload old = teamParticleTracker.bed;
-                old.setCancelled(true);
-                teamParticleTracker.bed = workload;
-            }
-        }
-    }
-
-    private enum InfoType {
-        SPAWN,
-        SHOP,
-        UPGRADES,
-        BED
+    private void locationSetMessages(Location location, Color color, Lang lang) {
+        this.playerMember.sendMessage(lang.asMessage(PlaceholderEntry.symbol("team_color", color.getMiniCode())), false);
     }
 
     private static class TeamParticleTracker {
-
         private CancellableWorkload spawn;
-        private CancellableWorkload shop;
-        private CancellableWorkload upgrades;
         private CancellableWorkload bed;
         private final Set<CancellableWorkload> spawners = new HashSet<>();
-
+        private final Set<CancellableWorkload> shops = new HashSet<>();
     }
 
     private static class TeamHologramTracker {
-
         private Hologram spawn;
-        private Hologram shop;
-        private Hologram upgrades;
         private Hologram bed;
         private final Set<Hologram> spawners = new HashSet<>();
-
+        private final Set<Hologram> shops = new HashSet<>();
     }
 
 }

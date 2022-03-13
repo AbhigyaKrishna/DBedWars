@@ -3,10 +3,10 @@ package org.zibble.dbedwars.menus.actions.defaults;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.menu.MenuActions;
+import org.zibble.dbedwars.api.menu.MenuAction;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 
-public class PlayerCommandActionImpl implements MenuActions {
+public class PlayerCommandActionImpl implements MenuAction {
     @Override
     public String tag() {
         return "[PLAYER]";

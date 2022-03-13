@@ -3,13 +3,13 @@ package org.zibble.dbedwars.menus.actions.defaults;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.menu.MenuActions;
+import org.zibble.dbedwars.api.menu.MenuAction;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.Messaging;
 
-public class SendMessageActionImpl implements MenuActions {
+public class SendMessageActionImpl implements MenuAction {
 
     @Override
     public String tag() {

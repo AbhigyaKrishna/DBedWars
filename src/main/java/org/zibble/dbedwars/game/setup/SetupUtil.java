@@ -13,6 +13,8 @@ import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
@@ -36,6 +38,14 @@ public class SetupUtil {
             return true;
         });
         return returnVal[0];
+    }
+
+    public static LocationXYZ preciseXYZ(SetupSession setupSession, Location location) {
+        return LocationXYZ.valueOf(precise(setupSession, location));
+    }
+
+    public static LocationXYZYP preciseXYZYP(SetupSession setupSession, Location location) {
+        return LocationXYZYP.valueOf(precise(setupSession, location));
     }
 
     public static Color[] findTeams(SetupSession setupSession) {

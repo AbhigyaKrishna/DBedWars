@@ -2,9 +2,9 @@ package org.zibble.dbedwars.menus.actions.defaults;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.zibble.dbedwars.api.menu.MenuActions;
+import org.zibble.dbedwars.api.menu.MenuAction;
 
-public class CloseInventoryActionImpl implements MenuActions {
+public class CloseInventoryActionImpl implements MenuAction {
 
     @Override
     public String tag() {
