@@ -87,15 +87,12 @@ public class UpgradeItem {
                     if (constant == null) return super.getAction(statement);
                     for (XMaterial item : constant.getItems()) {
                         if (item.isSupported()) {
-                            return new Consumer<ArenaPlayer>() {
-                                @Override
-                                public void accept(ArenaPlayer player) {
-                                    ItemStack[] items =
-                                            player.getPlayer().getInventory().getContents();
-                                    for (ItemStack stack : items) {
-                                        if (stack.getType() == item.parseMaterial()) {
-                                            enchant.applyUnsafe(stack);
-                                        }
+                            return player -> {
+                                ItemStack[] items =
+                                        player.getPlayer().getInventory().getContents();
+                                for (ItemStack stack : items) {
+                                    if (stack.getType() == item.parseMaterial()) {
+                                        enchant.applyUnsafe(stack);
                                     }
                                 }
                             };
@@ -103,14 +100,11 @@ public class UpgradeItem {
                     }
                 } else {
                     if (material.isSupported()) {
-                        return new Consumer<ArenaPlayer>() {
-                            @Override
-                            public void accept(ArenaPlayer player) {
-                                ItemStack[] items = player.getPlayer().getInventory().getContents();
-                                for (ItemStack stack : items) {
-                                    if (stack.getType() == material.parseMaterial()) {
-                                        enchant.applyUnsafe(stack);
-                                    }
+                        return player -> {
+                            ItemStack[] items = player.getPlayer().getInventory().getContents();
+                            for (ItemStack stack : items) {
+                                if (stack.getType() == material.parseMaterial()) {
+                                    enchant.applyUnsafe(stack);
                                 }
                             }
                         };
@@ -133,10 +127,7 @@ public class UpgradeItem {
         ;
 
         public Consumer<ArenaPlayer> getAction(String statement) {
-            return new Consumer<ArenaPlayer>() {
-                @Override
-                public void accept(ArenaPlayer team) {}
-            };
+            return team -> {};
         }
     }
 

@@ -8,7 +8,7 @@ import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.Menu;
 import org.zibble.inventoryframework.menu.nameable.NameableMenu;
-import org.zibble.inventoryframework.protocol.item.ItemStack;
+import org.zibble.inventoryframework.protocol.item.StackItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     protected GuiComponent(T menu) {
         this.menu = menu;
-
         this.menu.onOpen(p -> {
             for (BiConsumer<R, Player> action : openActions) {
                 action.accept((R) this, (Player) p.handle());
@@ -73,26 +72,26 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
-    public R item(char c, ItemStack item) {
+    public R item(char c, StackItem item) {
         return this.item(c, MenuItem.of(item));
     }
 
-    public R item(char c, ItemStack item, ClickAction clickAction) {
-        MenuItem<ItemStack> menuItem = MenuItem.of(item);
+    public R item(char c, StackItem item, ClickAction clickAction) {
+        MenuItem<StackItem> menuItem = MenuItem.of(item);
         menuItem.setClickAction(clickAction);
         return this.item(c, menuItem);
     }
 
-    public R item(char c, MenuItem<ItemStack> item) {
+    public R item(char c, MenuItem<StackItem> item) {
         menu.setItem(c, item);
         return (R) this;
     }
 
-    public R item(char c, Supplier<ItemStack> item) {
+    public R item(char c, Supplier<StackItem> item) {
         return this.item(c, item.get());
     }
 
-    public R item(char c, Supplier<ItemStack> item, ClickAction clickAction) {
+    public R item(char c, Supplier<StackItem> item, ClickAction clickAction) {
         return this.item(c, item.get(), clickAction);
     }
 

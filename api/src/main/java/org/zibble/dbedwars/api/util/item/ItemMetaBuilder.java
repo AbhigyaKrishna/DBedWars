@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.util.item;
 
+import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -263,6 +264,20 @@ public final class ItemMetaBuilder {
     public ItemMetaBuilder withEnchantment(Enchantment enchantment, int level) {
         return withEnchantment(enchantment, level, true);
     }
+
+    /**
+     * Sets the enchantment in ItemMeta.
+     *
+     * <p>
+     *
+     * @param enchantment Enchantment
+     * @param level Level of enchantment
+     * @return This Object, for chaining
+     */
+    public ItemMetaBuilder withEnchantment(XEnchantment enchantment, int level) {
+        return withEnchantment(enchantment.getEnchant(), level, true);
+    }
+
 
     /**
      * Sets the enchantment in ItemMeta.

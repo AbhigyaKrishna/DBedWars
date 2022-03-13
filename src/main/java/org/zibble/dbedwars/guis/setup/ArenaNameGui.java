@@ -4,8 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.guis.component.GuiComponent;
 import org.zibble.inventoryframework.menu.inventory.AnvilMenu;
-import org.zibble.inventoryframework.protocol.Materials;
-import org.zibble.inventoryframework.protocol.item.ItemStack;
+import org.zibble.inventoryframework.protocol.ItemMaterials;
+import org.zibble.inventoryframework.protocol.item.StackItem;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -22,13 +22,13 @@ public class ArenaNameGui extends GuiComponent<AnvilMenu, ArenaNameGui> {
 
     private ArenaNameGui() {
         super(new AnvilMenu());
-        ItemStack item = new ItemStack(Materials.PAPER);
+        StackItem item = new StackItem(ItemMaterials.PAPER);
         item.setDisplayName(Component.text("ARENA DISPLAY NAME"));
         this.mask("AB")
                 .item('A', item);
     }
 
-    public ArenaNameGui item(Supplier<ItemStack> item) {
+    public ArenaNameGui item(Supplier<StackItem> item) {
         this.item('A', item);
         return this;
     }

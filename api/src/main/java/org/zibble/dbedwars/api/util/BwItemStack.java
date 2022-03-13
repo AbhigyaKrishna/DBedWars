@@ -37,10 +37,7 @@ public class BwItemStack implements Cloneable {
         int num =
                 Arrays.stream(items)
                         .filter(Objects::nonNull)
-                        .filter(
-                                i ->
-                                        i.getType() == item.getType()
-                                                && i.getDurability() == item.getDurability())
+                        .filter(i -> i.getType() == item.getType() && i.getDurability() == item.getDurability())
                         .filter(NBTUtils::hasPluginData)
                         .mapToInt(ItemStack::getAmount)
                         .sum();

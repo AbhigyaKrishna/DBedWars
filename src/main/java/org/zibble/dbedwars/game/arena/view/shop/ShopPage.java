@@ -65,7 +65,7 @@ public class ShopPage {
     }
 
     public void setMask(String... mask) {
-        if (mask.length > this.row)
+        if (mask.length != this.row)
             throw new IllegalArgumentException("Mask length must be equal to rows. " + mask.length);
         this.mask = mask;
     }
@@ -76,9 +76,8 @@ public class ShopPage {
                 .mask(this.mask);
         for (Map.Entry<Character, ShopItem> entry : this.items.entrySet()) {
             menu.item(entry.getKey(), entry.getValue().getGuiIcon(), (player, clickType) -> {
-                if (entry.getValue().canUse(this.player)) {
+                if (entry.getValue().canUse(this.player))
                     entry.getValue().use(this.player, clickType);
-                }
             });
         }
         return menu;

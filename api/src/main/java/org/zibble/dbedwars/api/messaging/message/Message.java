@@ -96,12 +96,12 @@ public abstract class Message implements Cloneable {
 
         @Override
         public Component[] asComponent() {
-            return new Component[0];
+            return new Component[]{Component.empty()};
         }
 
         @Override
         public Component[] asComponentWithPAPI(Player player) {
-            return new Component[0];
+            return new Component[]{Component.empty()};
         }
 
         @Override
