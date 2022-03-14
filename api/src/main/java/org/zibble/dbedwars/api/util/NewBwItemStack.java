@@ -11,6 +11,7 @@ import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
+import org.zibble.inventoryframework.protocol.item.StackItem;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -153,6 +154,10 @@ public class NewBwItemStack {
             builder.withEnchantment(entry.getKey(), entry.getValue());
         }
         return builder.toItemStack(this.amount);
+    }
+
+    public StackItem asStackItem() {
+        StackItem.builder()
     }
 
 }

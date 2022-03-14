@@ -173,26 +173,13 @@ public class ReflectionAnnotations {
     boolean isValid(VersionControl[] policies) {
         if (policies.length == 0) return true;
         for (VersionControl policy : policies) {
-            boolean valid = true;
-            if (policy.checkEqualRevision()) {
-                valid = valid && Version.SERVER_VERSION.equalsRevision(policy.value());
-            }
-            if (policy.checkEquals()) {
-                valid = valid && Version.SERVER_VERSION.equalsVersion(policy.value());
-            }
-            if (policy.checkNewer()) {
-                valid = valid && Version.SERVER_VERSION.isNewer(policy.value());
-            }
-            if (policy.checkNewerEqual()) {
-                valid = valid && Version.SERVER_VERSION.isNewerEquals(policy.value());
-            }
-            if (policy.checkOlder()) {
-                valid = valid && Version.SERVER_VERSION.isOlder(policy.value());
-            }
-            if (policy.checkOlderEqual()) {
-                valid = valid && Version.SERVER_VERSION.isOlderEquals(policy.value());
-            }
-            if (valid) return true;
+            if (policy.checkEqualRevision() && !Version.SERVER_VERSION.equalsRevision(policy.value())) continue;
+            if (policy.checkEquals() && !Version.SERVER_VERSION.equalsVersion(policy.value())) continue;
+            if (policy.checkNewer() && !Version.SERVER_VERSION.isNewer(policy.value())) continue;
+            if (policy.checkNewerEqual() && !Version.SERVER_VERSION.isNewerEquals(policy.value())) continue;
+            if (policy.checkOlder() && !Version.SERVER_VERSION.isOlder(policy.value())) continue;
+            if (policy.checkOlderEqual() && !Version.SERVER_VERSION.isOlderEquals(policy.value())) continue;
+            return true;
         }
         return false;
     }

@@ -9,15 +9,16 @@ import java.util.ArrayList;
 public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiComponent> {
 
     protected ArrayList<GuiComponent<T, ? extends GuiComponent>> pages;
-    protected Player player;
+    protected final Player player;
     protected int currentPage = 0;
 
-    protected PaginatedGuiComponent() {
-        this(4);
+    protected PaginatedGuiComponent(Player player) {
+        this(player, 4);
     }
 
-    protected PaginatedGuiComponent(int capacity) {
-        pages = new ArrayList<>(capacity);
+    protected PaginatedGuiComponent(Player player, int defaultPageCapacity) {
+        this.player = player;
+        pages = new ArrayList<>(defaultPageCapacity);
     }
 
     public GuiComponent<T, ? extends GuiComponent> getPage(int page) {
@@ -48,16 +49,15 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
         return (R) this;
     }
 
-    public R open(Player player, int page) {
+    public R open(int page) {
         this.close();
-        this.player = player;
         getPage(page).open(player);
         this.currentPage = page;
         return (R) this;
     }
 
-    public R open(Player player) {
-        return this.open(player, this.currentPage);
+    public R open() {
+        return this.open(this.currentPage);
     }
 
     public R nextPage() {
@@ -92,7 +92,6 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
         if (this.player != null) {
             this.getPage(this.currentPage).close();
             this.currentPage = 0;
-            this.player = null;
         }
         return (R) this;
     }

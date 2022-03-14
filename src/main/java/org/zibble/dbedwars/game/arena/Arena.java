@@ -95,8 +95,7 @@ public class Arena extends AbstractMessaging implements org.zibble.dbedwars.api.
     public Arena(DBedwars plugin, ConfigurableArena cfg) {
         this(plugin);
         this.cfgArena = cfg;
-        this.settings =
-                new ArenaSettingsImpl(this.plugin, this, cfg);
+        this.settings = new ArenaSettingsImpl(this.plugin, this, cfg);
         this.enabled = this.isConfigured() && cfg.isEnabled();
     }
 

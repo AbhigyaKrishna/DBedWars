@@ -109,6 +109,30 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
+    public R overrideSlot(int slot, MenuItem<StackItem> item) {
+        this.menu.overrideSlot(slot, item);
+        return (R) this;
+    }
+
+    public R overrideSlot(int slot, StackItem item, ClickAction clickAction) {
+        MenuItem<StackItem> menuItem = MenuItem.of(item);
+        menuItem.setClickAction(clickAction);
+        return this.overrideSlot(slot, menuItem);
+    }
+
+    public R overrideSlot(int slot, StackItem item) {
+        return this.overrideSlot(slot, MenuItem.of(item));
+    }
+
+    public R removeOverride(int slot) {
+        this.menu.removeOverride(slot);
+        return (R) this;
+    }
+
+    public boolean isOverridden(int slot) {
+        return this.menu.isOverridden(slot);
+    }
+
     public List<BiConsumer<R, Player>> getCloseActions() {
         return closeActions;
     }

@@ -11,8 +11,8 @@ public class ShopGui extends PaginatedGuiComponent<ChestMenu, ShopGui> {
 
     private static final Map<Player, ShopGui> OPEN_GUIS = new ConcurrentHashMap<>();
 
-    public static ShopGui creator() {
-        return new ShopGui();
+    public static ShopGui creator(Player player) {
+        return new ShopGui(player);
     }
 
     public static boolean isOpen(Player player) {
@@ -23,13 +23,13 @@ public class ShopGui extends PaginatedGuiComponent<ChestMenu, ShopGui> {
         return OPEN_GUIS.get(player);
     }
 
-    protected ShopGui() {
-        super(3);
+    protected ShopGui(Player player) {
+        super(player, 3);
     }
 
     @Override
-    public ShopGui open(Player player, int page) {
-        super.open(player, page);
+    public ShopGui open(int page) {
+        super.open(page);
         OPEN_GUIS.put(player, this);
         return this;
     }
