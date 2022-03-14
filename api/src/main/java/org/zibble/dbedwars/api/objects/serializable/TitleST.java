@@ -1,20 +1,42 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
+import org.zibble.dbedwars.api.messaging.AbstractMessaging;
+import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.Message;
 
-/*TODO REWORK*/
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TitleST {
 
-    private static final String SEPARATOR = ";";
+    private static final Pattern PATTERN = Pattern.compile("^(?<title>.+?(?=::|$))(?:::[+-]?(?<fadein>\\d*\\.?\\d*)::[+-]?(?<stay>\\d*\\.?\\d*)::[+-]?(?<fadeout>\\d*\\.?\\d*))?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MESSAGE_PATTERN = Pattern.compile("^(?<title>.+?(?=\\\\n|$))(?:\\\\n(?<subtitle>.*))?$", Pattern.CASE_INSENSITIVE);
 
-    private final Message title;
-    private final Message subTitle;
-    private final int fadeIn;
-    private final int stay;
-    private final int fadeOut;
+    public static final long DEFAULT_FADE_IN = 10L;
+    public static final long DEFAULT_STAY =  70L;
+    public static final long DEFAULT_FADE_OUT = 20L;
 
-    private TitleST(Message title, Message subTitle, int fadeIn, int stay, int fadeOut) {
+    private Message title;
+    private Message subTitle;
+    private long fadeIn;
+    private long stay;
+    private long fadeOut;
+
+    public static TitleST of(Message title) {
+        return of(title, null);
+    }
+
+    public static TitleST of(Message title, Message subtitle) {
+        return of(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
+    }
+
+    public static TitleST of(Message title, Message subTitle, long fadeIn, long stay, long fadeOut) {
+        return new TitleST(title, subTitle, fadeIn, stay, fadeOut);
+    }
+
+    private TitleST(Message title, Message subTitle, long fadeIn, long stay, long fadeOut) {
         this.title = title;
         this.subTitle = subTitle;
         this.fadeIn = fadeIn;
@@ -22,48 +44,84 @@ public class TitleST {
         this.fadeOut = fadeOut;
     }
 
-    public static TitleST of(Message title, Message subTitle, int fadeIn, int stay, int fadeOut) {
-        return new TitleST(title, subTitle, fadeIn, stay, fadeOut);
-    }
+    public static TitleST valueOf(String str) {
+        Matcher matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            String title = matcher.group("title");
+            String subTitle = null;
+            Matcher msgMatcher = MESSAGE_PATTERN.matcher(title);
+            if (msgMatcher.matches()) {
+                title = msgMatcher.group("title");
+                if (msgMatcher.groupCount() > 1) {
+                    subTitle = msgMatcher.group("subtitle");
+                }
+            }
 
-    public static TitleST of(String title) {
-        String[] split = title.split(SEPARATOR);
-        return new TitleST(
-                AdventureMessage.from(split[0]),
-                split.length > 1 ? AdventureMessage.from(split[1]) : null,
-                split.length > 2 ? Integer.parseInt(split[2]) : -1,
-                split.length > 3 ? Integer.parseInt(split[3]) : -1,
-                split.length > 4 ? Integer.parseInt(split[4]) : -1
-        );
+            if (matcher.groupCount() > 1) {
+                return TitleST.of(Messaging.get().asConfigMessage(title),
+                        Messaging.get().asConfigMessage(subTitle),
+                        (long) Double.parseDouble(matcher.group("fadein")),
+                        (long) Double.parseDouble(matcher.group("stay")),
+                        (long) Double.parseDouble(matcher.group("fadeout")));
+            } else {
+                return TitleST.of(Messaging.get().asConfigMessage(title), Messaging.get().asConfigMessage(subTitle));
+            }
+        }
+
+        return null;
     }
 
     @Override
     public String toString() {
-        return this.title.getMessage() +
-                SEPARATOR +
-                (this.subTitle == null ? "" : this.subTitle.getMessage()) +
-                SEPARATOR + (this.fadeIn == -1 ? "" : this.fadeIn) +
-                SEPARATOR + (this.stay == -1 ? "" : this.stay) +
-                SEPARATOR + (this.fadeOut == -1 ? "" : this.fadeOut);
+        return this.title.getMessage() + (this.subTitle == null ? "" : "\\n" + this.subTitle.getMessage()) + "::" + this.fadeIn + "::" + this.stay + "::" + this.fadeOut;
     }
 
     public Message getTitle() {
         return title;
     }
 
+    public void setTitle(Message title) {
+        this.title = title;
+    }
+
     public Message getSubTitle() {
         return subTitle;
     }
 
-    public int getFadeIn() {
+    public void setSubTitle(Message subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public long getFadeIn() {
         return fadeIn;
     }
 
-    public int getStay() {
+    public void setFadeIn(long fadeIn) {
+        this.fadeIn = fadeIn;
+    }
+
+    public long getStay() {
         return stay;
     }
 
-    public int getFadeOut() {
+    public void setStay(long stay) {
+        this.stay = stay;
+    }
+
+    public long getFadeOut() {
         return fadeOut;
     }
+
+    public void setFadeOut(long fadeOut) {
+        this.fadeOut = fadeOut;
+    }
+
+    public void send(AbstractMessaging member) {
+        if (this.subTitle == null) {
+            member.sendTitle(this.title, Title.Times.times(Ticks.duration(this.fadeIn), Ticks.duration(this.stay), Ticks.duration(this.fadeOut)));
+        } else {
+            member.sendTitle(this.title, this.subTitle, Title.Times.times(Ticks.duration(this.fadeIn), Ticks.duration(this.stay), Ticks.duration(this.fadeOut)));
+        }
+    }
+
 }

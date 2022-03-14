@@ -6,15 +6,24 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LocationXYZ implements Cloneable {
+
+    private static final Pattern PATTERN = Pattern.compile("^(?<x>[+-]?\\d*\\.?\\d*)::(?<y>[+-]?\\d*\\.?\\d*)::(?<z>[+-]?\\d*\\.?\\d*)$");
 
     private double x = 0.0D;
     private double y = 0.0D;
     private double z = 0.0D;
 
+    public static LocationXYZ of(double x, double y, double z) {
+        return new LocationXYZ(x, y, z);
+    }
+
     public LocationXYZ() {}
 
-    public LocationXYZ(double x, double y, double z) {
+    private LocationXYZ(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -28,21 +37,12 @@ public class LocationXYZ implements Cloneable {
         return new LocationXYZ(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    // Format: x, y, z
-    public static LocationXYZ valueOf(String s) {
-        String[] arr = s.split(",");
-        if (arr.length != 3) return null;
-
-        for (String i : arr) {
-            try {
-                Double.parseDouble(i.trim());
-            } catch (NumberFormatException e) {
-                return null;
-            }
+    public static LocationXYZ valueOf(String str) {
+        Matcher matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            return new LocationXYZ(Double.parseDouble(matcher.group("x")), Double.parseDouble(matcher.group("y")), Double.parseDouble(matcher.group("z")));
         }
-
-        return new LocationXYZ(
-                Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), Double.parseDouble(arr[2]));
+        return null;
     }
 
     public double getX() {
@@ -127,16 +127,11 @@ public class LocationXYZ implements Cloneable {
 
     @Override
     public String toString() {
-        return String.valueOf(this.x + ", " + this.y + ", " + this.z);
+        return this.x + "::" + this.y + "::" + this.z;
     }
 
     @Override
     public LocationXYZ clone() {
-        try {
-            LocationXYZ clone = (LocationXYZ) super.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new LocationXYZ(this.x, this.y, this.z);
     }
 }

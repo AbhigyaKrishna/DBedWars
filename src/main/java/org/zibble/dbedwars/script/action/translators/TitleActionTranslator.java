@@ -20,19 +20,13 @@ public class TitleActionTranslator implements ActionTranslator<AbstractMessaging
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);
             }
         }
-        TitleST titleST = TitleST.of(untranslated);
-        if (titleST.getSubTitle() == null) {
-            return new TitleAction(titleST.getTitle(), messaging);
-        } else if (titleST.getFadeIn() == -1 || titleST.getStay() == -1 || titleST.getFadeOut() == -1) {
-            return new TitleAction(titleST.getTitle(), titleST.getSubTitle(), messaging);
-        } else {
-            return new TitleAction(titleST.getTitle(), titleST.getSubTitle(), titleST.getFadeIn(), titleST.getStay(), titleST.getFadeOut(), messaging);
-        }
+        TitleST title = TitleST.valueOf(untranslated.trim());
+        return new TitleAction(title, messaging);
     }
 
     @Override
     public String deserialize(TitleAction action) {
-        return TitleST.of(action.getTitle(), action.getSubtitle(), (int) (action.getTimes().fadeIn().toMillis()/ 50), (int) (action.getTimes().stay().toMillis()/ 50), (int) (action.getTimes().fadeOut().toMillis()/ 50)).toString();
+        return action.getTitle().toString();
     }
 
     @Override

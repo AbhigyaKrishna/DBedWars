@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.Contract;
-import org.zibble.dbedwars.utils.reflection.general.EnumReflection;
 
 import java.util.Collection;
 import java.util.Collections;

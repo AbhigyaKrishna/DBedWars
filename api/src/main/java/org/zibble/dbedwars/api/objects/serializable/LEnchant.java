@@ -4,44 +4,48 @@ import com.cryptomorin.xseries.XEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LEnchant implements Cloneable {
+
+    private static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z0-9_\\-]+)(?:::(?<level>[+-]?\\d*\\.?\\d*|max))?$");
 
     private XEnchantment enchantment;
     private int level;
 
-    public LEnchant(Enchantment enchantment) {
-        this(XEnchantment.matchXEnchantment(enchantment));
+    public static LEnchant of(Enchantment enchantment) {
+        return of(XEnchantment.matchXEnchantment(enchantment));
     }
 
-    public LEnchant(XEnchantment enchantment) {
-        this(enchantment, 1);
+    public static LEnchant of(XEnchantment enchantment) {
+        return of(enchantment, 1);
     }
 
-    public LEnchant(Enchantment enchantment, int level) {
-        this(XEnchantment.matchXEnchantment(enchantment), level);
+    public static LEnchant of(Enchantment enchantment, int level) {
+        return of(XEnchantment.matchXEnchantment(enchantment), level);
     }
 
-    public LEnchant(XEnchantment enchantment, int level) {
+    public static LEnchant of(XEnchantment enchantment, int level) {
+        return new LEnchant(enchantment, level);
+    }
+
+    private LEnchant(XEnchantment enchantment, int level) {
         this.enchantment = enchantment;
         this.level = level;
     }
 
     public static LEnchant valueOf(String str) {
-        String[] s = str.split(":");
-        Optional<XEnchantment> opt = XEnchantment.matchXEnchantment(s[0]);
-        if (!opt.isPresent()) return null;
+        Matcher matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            XEnchantment enchantment = XEnchantment.matchXEnchantment(matcher.group("name")).orElse(null);
+            if (enchantment == null) return null;
 
-        int level = 1;
-        if (s.length == 2) {
-            try {
-                level = Integer.parseInt(s[1]);
-            } catch (NumberFormatException ignored) {
-            }
+            int level = matcher.groupCount() > 1 ? (int) Double.parseDouble(matcher.group("level")) : 1;
+
+            return new LEnchant(enchantment, level);
         }
-
-        return new LEnchant(opt.get(), level);
+        return null;
     }
 
     public XEnchantment getEnchantment() {
@@ -85,10 +89,6 @@ public class LEnchant implements Cloneable {
 
     @Override
     public LEnchant clone() {
-        try {
-            return (LEnchant) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new LEnchant(this.enchantment, this.level);
     }
 }

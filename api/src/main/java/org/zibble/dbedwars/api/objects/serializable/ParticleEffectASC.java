@@ -6,17 +6,16 @@ import xyz.xenondevs.particle.ParticleEffect;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 public class ParticleEffectASC {
+
+    static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z0-9_\\-]+?)(?:::[+-]?(?<amount>\\d*\\.?\\d*)(?:::[+-]?(?<speed>\\d*\\.?\\d*))?)?$");
 
     private ParticleEffect effect;
     private AtomicInteger amount;
     private AtomicDouble speed;
     private Color color;
-
-    public static ParticleEffectASC valueOf(String particle) {
-        return new ParticleEffectASC(particle);
-    }
 
     public ParticleEffectASC(ParticleEffect effect) {
         this.effect = effect;
@@ -82,6 +81,10 @@ public class ParticleEffectASC {
         setAmount(Integer.parseInt(split[1]));
         setSpeed((float) Double.parseDouble(split[2]));
         setColor(Color.getColor(split[3]));
+    }
+
+    public static ParticleEffectASC valueOf(String str) {
+
     }
 
     public ParticleEffect getEffect() {

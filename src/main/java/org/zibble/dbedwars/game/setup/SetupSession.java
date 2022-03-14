@@ -70,7 +70,7 @@ public class SetupSession {
 
     public void init() {
         this.player.teleport(world.getSpawnLocation());
-        new SoundVP(XSound.ENTITY_PLAYER_LEVELUP, 1, 1).play(this.player);
+        SoundVP.of(XSound.ENTITY_PLAYER_LEVELUP, 1, 1).play(this.player);
         this.player.setGameMode(GameMode.CREATIVE);
         this.player.setAllowFlight(true);
         this.player.setFlying(true);

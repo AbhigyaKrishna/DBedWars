@@ -31,9 +31,9 @@ public class PopupTowerBuildFeature extends org.zibble.dbedwars.api.feature.cust
         this.plugin.getThreadHandler().submitAsync(new PopupTowerWorkload(
                 XMaterial.matchXMaterial(cfgPopupTower.getMainBlock()).get(),
                 (cfgPopupTower.getSound() == null
-                        ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
+                        ? SoundVP.of(XSound.ENTITY_CHICKEN_EGG, 0, 0)
                         : cfgPopupTower.getSound().equals("")
-                        ? new SoundVP(XSound.ENTITY_CHICKEN_EGG, 0, 0)
+                        ? SoundVP.of(XSound.ENTITY_CHICKEN_EGG, 0, 0)
                         : SoundVP.valueOf(cfgPopupTower.getSound())),
                 new ParticleBuilder(ParticleEffect.CLOUD)
                         .setAmount(1)

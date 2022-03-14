@@ -6,7 +6,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LocationXYZYP {
+
+    private static final Pattern PATTERN = Pattern.compile("^(?<x>[+-]?\\d*\\.?\\d*)::(?<y>[+-]?\\d*\\.?\\d*)::(?<z>[+-]?\\d*\\.?\\d*)(?:::(?<yaw>[+-]?\\d*\\.?\\d*)(?:::(?<pitch>[+-]?\\d*\\.?\\d*))?)?$", Pattern.CASE_INSENSITIVE);
 
     private double x = 0.0D;
     private double y = 0.0D;
@@ -14,15 +19,17 @@ public class LocationXYZYP {
     private float yaw = 0.0F;
     private float pitch = 0.0F;
 
-    public LocationXYZYP() {}
-
-    public LocationXYZYP(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public static LocationXYZYP of(double x, double y, double z) {
+        return of(x, y, z, 0.0F, 0.0F);
     }
 
-    public LocationXYZYP(double x, double y, double z, float yaw, float pitch) {
+    public static LocationXYZYP of(double x, double y, double z, float yaw, float pitch) {
+        return new LocationXYZYP(x, y, z, yaw, pitch);
+    }
+
+    public LocationXYZYP() {}
+
+    private LocationXYZYP(double x, double y, double z, float yaw, float pitch) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -35,28 +42,26 @@ public class LocationXYZYP {
     }
 
     public static LocationXYZYP valueOf(Vector vector) {
-        return new LocationXYZYP(vector.getX(), vector.getY(), vector.getZ());
+        return LocationXYZYP.of(vector.getX(), vector.getY(), vector.getZ());
     }
 
     // Format: x, y, z, y, p
-    public static LocationXYZYP valueOf(String s) {
-        String[] arr = s.split(",");
-        if (arr.length < 5) return null;
+    public static LocationXYZYP valueOf(String str) {
+        Matcher matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            LocationXYZYP loc = LocationXYZYP.of(Double.parseDouble(matcher.group("x")),
+                    Double.parseDouble(matcher.group("y")),
+                    Double.parseDouble(matcher.group("z")));
 
-        for (String i : arr) {
-            try {
-                Double.parseDouble(i.trim());
-            } catch (NumberFormatException e) {
-                return null;
+            if (matcher.groupCount() > 3) {
+                loc.setYaw(Float.parseFloat(matcher.group("yaw")));
             }
+            if (matcher.groupCount() > 4) {
+                loc.setPitch(Float.parseFloat(matcher.group("pitch")));
+            }
+            return loc;
         }
-
-        return new LocationXYZYP(
-                Double.parseDouble(arr[0]),
-                Double.parseDouble(arr[1]),
-                Double.parseDouble(arr[2]),
-                Float.parseFloat(arr[3]),
-                Float.parseFloat(arr[4]));
+        return null;
     }
 
     public double getX() {
@@ -134,22 +139,16 @@ public class LocationXYZYP {
     }
 
     public LocationXYZ toLocationXYZ() {
-        return new LocationXYZ(this.x, this.y, this.z);
+        return LocationXYZ.of(this.x, this.y, this.z);
     }
 
     @Override
     public String toString() {
-        return String.valueOf(
-                this.x + ", " + this.y + ", " + this.z + ", " + this.yaw + ", " + this.pitch);
+        return this.x + "::" + this.y + "::" + this.z + "::" + this.yaw + "::" + this.pitch;
     }
 
     @Override
     public LocationXYZYP clone() {
-        try {
-            LocationXYZYP clone = (LocationXYZYP) super.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new LocationXYZYP(this.x, this.y, this.z, this.yaw, this.pitch);
     }
 }

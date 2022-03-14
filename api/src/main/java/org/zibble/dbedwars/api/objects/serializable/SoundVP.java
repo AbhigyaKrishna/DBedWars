@@ -5,49 +5,52 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SoundVP implements Cloneable {
 
-    private static final String SEPARATOR = ";";
+    static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z0-9_\\-]+?)(?:::[+-]?(?<volume>\\d*\\.?\\d*)(?:::[+-]?(?<pitch>\\d*\\.?\\d*))?)?$", Pattern.CASE_INSENSITIVE);
 
     private final XSound sound;
     private float volume;
     private float pitch;
 
-    public SoundVP(XSound sound) {
-        this(sound, 1.0F, 1.0F);
+    public static SoundVP of(Sound sound) {
+        return of(XSound.matchXSound(sound));
     }
 
-    public SoundVP(XSound sound, float volume, float pitch) {
+    public static SoundVP of(XSound sound) {
+        return of(sound, 1.0F, 1.0F);
+    }
+
+    public static SoundVP of(Sound sound, float volume, float pitch) {
+        return of(XSound.matchXSound(sound), volume, pitch);
+    }
+
+    public static SoundVP of(XSound sound, float volume, float pitch) {
+        return new SoundVP(sound, volume, pitch);
+    }
+
+    private SoundVP(XSound sound, float volume, float pitch) {
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
     }
 
     public static SoundVP valueOf(String str) {
-        String[] s = str.split(SEPARATOR);
-        XSound sound = XSound.matchXSound(s[0]).orElse(null);
-        if (sound == null) return null;
+        Matcher matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            XSound sound = XSound.matchXSound(matcher.group("name")).orElse(null);
+            if (sound == null) return null;
 
-        float volume = 1.0F;
-        float pitch = 1.0F;
+            float volume = matcher.groupCount() > 1 ? Float.parseFloat(matcher.group("volume")) : 1.0F;
+            float pitch = matcher.groupCount() > 2 ? Float.parseFloat(matcher.group("pitch")) : 1.0F;
 
-        if (s.length > 1) {
-            try {
-                volume = Float.parseFloat(s[1]);
-            } catch (NumberFormatException ignored) {}
+            return new SoundVP(sound, volume, pitch);
         }
 
-        if (s.length > 2) {
-            try {
-                pitch = Float.parseFloat(s[2]);
-            } catch (NumberFormatException ignored) {}
-        }
-
-        return new SoundVP(sound, volume, pitch);
-    }
-
-    public static SoundVP valueOf(Sound sound) {
-        return new SoundVP(XSound.matchXSound(sound));
+        return null;
     }
 
     public XSound getSound() {
@@ -82,15 +85,11 @@ public class SoundVP implements Cloneable {
 
     @Override
     public String toString() {
-        return this.sound.name() + SEPARATOR + this.volume + SEPARATOR + this.pitch;
+        return this.sound.name() + "::" + this.volume + "::" + this.pitch;
     }
 
     @Override
     protected SoundVP clone() {
-        try {
-            return (SoundVP) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new SoundVP(this.sound, this.volume, this.pitch);
     }
 }

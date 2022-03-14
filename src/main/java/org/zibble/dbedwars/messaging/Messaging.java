@@ -11,6 +11,7 @@ import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.PlayerPlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.messaging.member.ConsoleMember;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
@@ -71,6 +72,11 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
     @Override
     public Component translateAlternateColorCodes(String message) {
         return legacySerializer.deserialize(message);
+    }
+
+    @Override
+    public Message asConfigMessage(String message) {
+        return ConfigMessage.from(message);
     }
 
     @Override
