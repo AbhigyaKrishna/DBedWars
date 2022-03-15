@@ -58,6 +58,10 @@ public class SetupUtil {
         return PLUGIN.getThreadHandler().runTaskTimer(() -> builder.display(player), Duration.ofMilliseconds(50));
     }
 
+    public static CancellableWorkload createParticleSpawningTask(Location location, Player player, Color color) {
+        return createParticleSpawningTask(location, player, color.asJavaColor());
+    }
+
     public static Hologram createHologram(Location location, Player player, Message text) {
         Hologram hologram = PLUGIN.getHologramManager().createHologram(location.clone().add(0, 2, 0));
         HologramPage page = hologram.addPage();

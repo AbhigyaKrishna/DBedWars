@@ -3,6 +3,7 @@ package org.zibble.dbedwars.game.setup;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.spawner.DropType;
@@ -39,8 +40,8 @@ public class NewSetupSession {
     private final Map<Key<String>, CancellableWorkload> workloads;
     private final Map<Key<String>, Hologram> holograms;
 
-    private final Map<Location, Tracker<CancellableWorkload>> spawnerWorkloads;
-    private final Map<Location, Tracker<Hologram>> spawnerHolograms;
+    private final List<CancellableWorkload> spawnerWorkloads;
+    private final List<Hologram> spawnerHolograms;
 
     private final Map<Color, Tracker<CancellableWorkload>> teamWorkloads;
     private final Map<Color, Tracker<Hologram>> teamHolograms;
@@ -55,8 +56,8 @@ public class NewSetupSession {
 
         this.workloads = new HashMap<>();
         this.holograms = new HashMap<>();
-        this.spawnerWorkloads = new HashMap<>();
-        this.spawnerHolograms = new HashMap<>();
+        this.spawnerWorkloads = new ArrayList<>();
+        this.spawnerHolograms = new ArrayList<>();
         this.teamWorkloads = new HashMap<>();
         this.teamHolograms = new HashMap<>();
 
@@ -91,42 +92,78 @@ public class NewSetupSession {
     }
 
     public void promptSetupWaitingLocation() {
+
         this.playerMember.sendMessage();
         PROMPT_SOUND.play(this.player);
+
     }
 
     public void setupWaitingLocation() {
-        this.newArenaDataHolder.setWaitingLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, this.player.getLocation()));
+
+        Location location = this.player.getLocation();
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, Color.WHITE);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, );
+        CancellableWorkload old = this.workloads.put(WAITING_LOCATION, workload);
+        if (old != null) old.setCancelled(true);
+        Hologram oldHologram = this.holograms.put(WAITING_LOCATION, hologram);
+        if (oldHologram != null); //DESPAWN
+        this.newArenaDataHolder.setWaitingLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void promptSetupSpectatorLocation() {
+
         this.playerMember.sendMessage();
         PROMPT_SOUND.play(this.player);
+
     }
 
     public void setupSpectatorLocation() {
-        this.newArenaDataHolder.setSpectatorLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, this.player.getLocation()));
+
+        Location location = this.player.getLocation();
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, Color.WHITE);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, );
+        CancellableWorkload old = this.workloads.put(SPECTATOR_LOCATION, workload);
+        if (old != null) old.setCancelled(true);
+        Hologram oldHologram = this.holograms.put(SPECTATOR_LOCATION, hologram);
+        if (oldHologram != null); //DESPAWN
+        this.newArenaDataHolder.setSpectatorLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void promptSetupWaitingBoxCorners() {
+
         this.playerMember.sendMessage();
         PROMPT_SOUND.play(this.player);
+
     }
 
     public void setupWaitingBoxCorner1() {
-        this.newArenaDataHolder.setLobbyCorner1(SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation()));
+
+        Block block = this.player.getTargetBlockExact(5);
+        if (block == null) {
+            return;
+        }
+        this.newArenaDataHolder.setLobbyCorner1(SetupUtil.preciseXYZ(this.isPreciseEnabled, block.getLocation()));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void setupWaitingBoxCorner2() {
+
+        Block block = this.player.getTargetBlockExact(5);
+        if (block == null) {
+            return;
+        }
         this.newArenaDataHolder.setLobbyCorner2(SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation()));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void tryAutoDetectTeams() {
@@ -134,65 +171,131 @@ public class NewSetupSession {
     }
 
     public void promptAddTeams() {
+
         this.playerMember.sendMessage();
         PROMPT_SOUND.play(this.player);
+
     }
 
     public void addTeam(Color color) {
+
         this.newArenaDataHolder.addTeam(color);
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void removeTeam(Color color) {
+
         this.newArenaDataHolder.removeTeam(color);
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void setupTeamSpawn(Color color) {
-        this.newArenaDataHolder.getTeamData(color).setSpawnLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, this.player.getLocation()));
+
+        Location location = this.player.getLocation();
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, color);
+        CancellableWorkload old = this.teamWorkloads.get(color).spawn;
+        if (old != null) old.setCancelled(true);
+        this.teamWorkloads.get(color).spawn = workload;
+        Hologram oldHologram = this.teamHolograms.get(color).spawn;
+        if (oldHologram != null); //DESPAWN
+        this.teamHolograms.get(color).spawn = hologram;
+        this.newArenaDataHolder.getTeamData(color).setSpawnLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void setupTeamBed(Color color) {
-        this.newArenaDataHolder.getTeamData(color).setBed(SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation()));
+
+        Location location = this.player.getLocation();
+
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, color);
+
+        CancellableWorkload old = this.teamWorkloads.get(color).bed;
+        if (old != null) old.setCancelled(true);
+        this.teamWorkloads.get(color).bed = workload;
+
+        Hologram oldHologram = this.teamHolograms.get(color).bed;
+        if (oldHologram != null); //DESPAWN
+        this.teamHolograms.get(color).bed = hologram;
+
+        this.newArenaDataHolder.getTeamData(color).setBed(SetupUtil.preciseXYZ(this.isPreciseEnabled, location));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void addTeamSpawner(Color color, DropType dropType) {
-        this.newArenaDataHolder.getSpawners().add(NewArenaDataHolder.SpawnerDataHolder.of(dropType, SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation())));
+
+        Location location = this.player.getLocation();
+
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, color);
+        this.teamWorkloads.get(color).spawners.add(workload);
+        this.teamHolograms.get(color).spawners.add(hologram);
+
+        this.newArenaDataHolder.getSpawners().add(NewArenaDataHolder.SpawnerDataHolder.of(dropType, SetupUtil.preciseXYZ(this.isPreciseEnabled, location)));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void clearTeamSpawners(Color color) {
+
+        this.teamWorkloads.get(color).spawners.forEach(workload -> workload.setCancelled(true));
+        this.teamHolograms.get(color).spawners.forEach(hologram -> hologram.despawn());
+
         this.newArenaDataHolder.getSpawners().clear();
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void addTeamShop(Color color, ShopType shoptype) {
-        this.newArenaDataHolder.getTeamData(color).getShops().add(NewArenaDataHolder.ShopDataHolder.of(shoptype, SetupUtil.preciseXYZYP(this.isPreciseEnabled, this.player.getLocation())));
+
+        Location location = this.player.getLocation();
+
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, color);
+        this.teamWorkloads.get(color).shops.add(workload);
+        this.teamHolograms.get(color).shops.add(hologram);
+
+        this.newArenaDataHolder.getTeamData(color).getShops().add(NewArenaDataHolder.ShopDataHolder.of(shoptype, SetupUtil.preciseXYZYP(this.isPreciseEnabled, location)));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void clearTeamShops(Color color) {
+
+        this.teamWorkloads.get(color).shops.forEach(workload -> workload.setCancelled(true));
+        this.teamHolograms.get(color).shops.forEach(hologram -> hologram.despawn());
+
         this.newArenaDataHolder.getTeamData(color).getShops().clear();
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
+
     }
 
     public void addCommonSpawner(DropType dropType) {
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(this.player.getLocation(), this.player, Color.WHITE);
+        Hologram hologram = SetupUtil.createHologram(this.player.getLocation(), this.player, Color.WHITE);
+        this.spawnerWorkloads.add(workload);
+        this.spawnerHolograms.add(hologram);
         this.newArenaDataHolder.getSpawners().add(NewArenaDataHolder.SpawnerDataHolder.of(dropType, SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation())));
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
     }
 
     public void clearCommonSpawners() {
+        this.spawnerWorkloads.forEach(workload -> workload.setCancelled(true));
+        this.spawnerHolograms.forEach(hologram -> hologram.despawn());
         this.newArenaDataHolder.getSpawners().clear();
         this.playerMember.sendMessage();
         TASK_DONE_SOUND.play(this.player);
