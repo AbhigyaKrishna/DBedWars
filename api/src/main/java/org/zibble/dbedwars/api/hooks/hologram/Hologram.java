@@ -55,4 +55,6 @@ public interface Hologram {
     void teleport(Location location);
 
     long getLastUpdate();
+
+    void despawn();
 }
