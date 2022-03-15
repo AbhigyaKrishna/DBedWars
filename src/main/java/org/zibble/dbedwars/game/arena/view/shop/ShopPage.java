@@ -76,7 +76,7 @@ public class ShopPage {
                 .mask(this.mask);
         for (Map.Entry<Character, ShopItem> entry : this.items.entrySet()) {
             menu.item(entry.getKey(), entry.getValue().getGuiIcon(), (player, clickType) -> {
-                if (entry.getValue().canUse(this.player))
+                if (entry.getValue().canUse())
                     entry.getValue().use(this.player, clickType);
             });
         }

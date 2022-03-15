@@ -6,6 +6,7 @@ import org.zibble.dbedwars.api.commands.nodes.CommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
@@ -37,7 +38,7 @@ public class SetupTeamUpgrades extends CommandNode {
             return;
         }
 
-        Color color = ConfigurationUtils.matchEnum(args[0], Color.VALUES);
+        Color color = EnumUtil.matchEnum(args[0], Color.VALUES);
         if (color == null) {
             member.sendMessage(PluginLang.SETUP_SESSION_INVALID_COLOR.asMessage());
             return;

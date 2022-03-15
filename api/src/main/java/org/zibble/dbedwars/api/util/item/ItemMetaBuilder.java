@@ -43,9 +43,9 @@ public final class ItemMetaBuilder {
      *
      * @param stack ItemStack for getting ItemMeta
      */
-    public ItemMetaBuilder(ItemStack stack) {
+    public ItemMetaBuilder(ItemStack stack, ItemMeta meta) {
         this.material = stack.getType();
-        this.result = stack.getItemMeta();
+        this.result = meta == null ? stack.getItemMeta() : meta;
         if (this.result == null) {
             Bukkit.getItemFactory().getItemMeta(this.material);
         }
@@ -63,7 +63,22 @@ public final class ItemMetaBuilder {
      * @return {@link ItemMetaBuilder} instance
      */
     public static ItemMetaBuilder of(ItemStack stack) {
-        return new ItemMetaBuilder(stack);
+        return new ItemMetaBuilder(stack, null);
+    }
+
+    /**
+     * Returns the instance of {@link ItemMetaBuilder} for the given ItemStack.
+     *
+     * <p>
+     *
+     * @param stack ItemStack to get ItemMeta of
+     * @return {@link ItemMetaBuilder} instance
+     */
+    public static ItemMetaBuilder of(ItemStack stack, ItemMeta meta) {
+        if (!stack.getItemMeta().getClass().equals(meta.getClass())) {
+            throw new IllegalArgumentException("Invalid meta type");
+        }
+        return new ItemMetaBuilder(stack, meta);
     }
 
     /**
@@ -76,6 +91,18 @@ public final class ItemMetaBuilder {
      */
     public static ItemMetaBuilder of(XMaterial material) {
         return of(material.parseItem());
+    }
+
+    /**
+     * Returns the instance of {@link ItemMetaBuilder} for the given ItemStack.
+     *
+     * <p>
+     *
+     * @param material Material to get ItemMeta of
+     * @return {@link ItemMetaBuilder} instance
+     */
+    public static ItemMetaBuilder of(XMaterial material, ItemMeta meta) {
+        return of(material.parseItem(), meta);
     }
 
     /**
