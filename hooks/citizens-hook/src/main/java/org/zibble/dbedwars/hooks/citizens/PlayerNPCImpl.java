@@ -9,7 +9,7 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
-import org.zibble.dbedwars.api.util.Skin;
+import org.zibble.dbedwars.api.objects.profile.Skin;
 
 public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
 

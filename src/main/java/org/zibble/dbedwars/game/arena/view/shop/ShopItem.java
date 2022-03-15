@@ -8,6 +8,7 @@ import org.zibble.dbedwars.script.condition.ConditionProcessor;
 import org.zibble.inventoryframework.ClickType;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.protocol.item.StackItem;
+import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,8 +51,8 @@ public class ShopItem {
         }
     }
 
-    public MenuItem<StackItem> asMenuItem() {
-        MenuItem<StackItem> menuItem = MenuItem.of(new NewBwItemStack(this.item).asStackItem());
+    public MenuItem<SpigotItem> asMenuItem() {
+        MenuItem<SpigotItem> menuItem = MenuItem.of(new NewBwItemStack(this.item).asStackItem());
         menuItem.setClickAction((protocolPlayer, clickType) -> {
             if (this.canUse(protocolPlayer.getArenaPlayer())) {
                 this.use(protocolPlayer.getArenaPlayer(), clickType);

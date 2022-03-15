@@ -2,7 +2,6 @@ package org.zibble.dbedwars.hooks.defaults.npc;
 
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
-import com.github.retrooper.packetevents.protocol.entity.pose.EntityPose;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
@@ -19,13 +18,12 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
-import org.zibble.dbedwars.api.util.Skin;
+import org.zibble.dbedwars.api.objects.profile.Skin;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
 

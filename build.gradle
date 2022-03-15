@@ -34,6 +34,7 @@ allprojects {
 
     dependencies {
         compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.9-SNAPSHOT'
+        implementation 'org.zibble:if-spigot:1.1-SNAPSHOT'
     }
 
     build {

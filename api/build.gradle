@@ -7,6 +7,10 @@ repositories {
         name = 'CodeMC'
         url = 'https://repo.codemc.org/repository/maven-public/'
     }
+    maven {
+        name = 'jitpack'
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -15,6 +19,7 @@ dependencies {
     implementation 'de.tr7zw:nbt-injector:2.8.0'
 
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    compileOnly 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
 
     api 'com.github.cryptomorin:XSeries:8.6.2'
     api 'xyz.xenondevs:particle:1.7'

@@ -2,21 +2,23 @@ package org.zibble.dbedwars.api.util;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import io.github.retrooper.packetevents.util.SpigotDataHelper;
 import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
-import org.zibble.inventoryframework.protocol.item.StackItem;
+import org.zibble.inventoryframework.protocol.Item;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-public class NewBwItemStack {
+public class NewBwItemStack implements Item {
 
     private final XMaterial material;
     private int amount;
@@ -156,8 +158,9 @@ public class NewBwItemStack {
         return builder.toItemStack(this.amount);
     }
 
-    public StackItem asStackItem() {
-        StackItem.builder()
+    @Override
+    public com.github.retrooper.packetevents.protocol.item.@NotNull ItemStack asProtocol() {
+        return SpigotDataHelper.fromBukkitItemStack(this.asItemStack());
     }
 
 }

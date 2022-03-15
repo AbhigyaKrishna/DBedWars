@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.hooks.npc;
 
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.util.Skin;
+import org.zibble.dbedwars.api.objects.profile.Skin;
 
 import java.util.ArrayList;
 import java.util.List;

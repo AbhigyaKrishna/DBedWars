@@ -10,6 +10,10 @@ public class Property {
         return new Builder();
     }
 
+    public static Property fromSkin(Skin skin) {
+        return new Property("textures", skin.getValue(), skin.getSignature());
+    }
+
     public Property(String name, String value, String signature) {
         this.name = name;
         this.value = value;

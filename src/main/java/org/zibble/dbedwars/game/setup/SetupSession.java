@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.game.setup;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.Lang;
 import org.zibble.dbedwars.configuration.language.PluginLang;
@@ -27,8 +29,6 @@ import org.zibble.dbedwars.game.ArenaDataHolder;
 import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
-import org.zibble.inventoryframework.protocol.ItemMaterials;
-import org.zibble.inventoryframework.protocol.item.StackItem;
 
 import java.util.*;
 
@@ -82,11 +82,9 @@ public class SetupSession {
     public void promptArenaCustomNameSet() {
         Message message = PluginLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
         ArenaNameGui.creator()
-                .item(() -> {
-                    StackItem item = new StackItem(ItemMaterials.PAPER);
-                    item.setDisplayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0]);
-                    return item;
-                })
+                .item(() -> ItemMetaBuilder.of(XMaterial.PAPER)
+                        .displayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0])
+                        .toItemStack())
                 .outputClick((menu, s) -> {
                     this.dataHolder.setCustomName(ConfigMessage.from(s));
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));

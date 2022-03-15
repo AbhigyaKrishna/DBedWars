@@ -8,7 +8,8 @@ import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.Menu;
 import org.zibble.inventoryframework.menu.nameable.NameableMenu;
-import org.zibble.inventoryframework.protocol.item.StackItem;
+import org.zibble.inventoryframework.protocol.Item;
+import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,26 +73,26 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
-    public R item(char c, StackItem item) {
+    public R item(char c, Item item) {
         return this.item(c, MenuItem.of(item));
     }
 
-    public R item(char c, StackItem item, ClickAction clickAction) {
-        MenuItem<StackItem> menuItem = MenuItem.of(item);
+    public R item(char c, Item item, ClickAction clickAction) {
+        MenuItem<? extends Item> menuItem = MenuItem.of(item);
         menuItem.setClickAction(clickAction);
         return this.item(c, menuItem);
     }
 
-    public R item(char c, MenuItem<StackItem> item) {
+    public R item(char c, MenuItem<SpigotItem> item) {
         menu.setItem(c, item);
         return (R) this;
     }
 
-    public R item(char c, Supplier<StackItem> item) {
+    public R item(char c, Supplier<SpigotItem> item) {
         return this.item(c, item.get());
     }
 
-    public R item(char c, Supplier<StackItem> item, ClickAction clickAction) {
+    public R item(char c, Supplier<SpigotItem> item, ClickAction clickAction) {
         return this.item(c, item.get(), clickAction);
     }
 
@@ -109,18 +110,18 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
-    public R overrideSlot(int slot, MenuItem<StackItem> item) {
+    public R overrideSlot(int slot, MenuItem<SpigotItem> item) {
         this.menu.overrideSlot(slot, item);
         return (R) this;
     }
 
-    public R overrideSlot(int slot, StackItem item, ClickAction clickAction) {
-        MenuItem<StackItem> menuItem = MenuItem.of(item);
+    public R overrideSlot(int slot, SpigotItem item, ClickAction clickAction) {
+        MenuItem<SpigotItem> menuItem = MenuItem.of(item);
         menuItem.setClickAction(clickAction);
         return this.overrideSlot(slot, menuItem);
     }
 
-    public R overrideSlot(int slot, StackItem item) {
+    public R overrideSlot(int slot, SpigotItem item) {
         return this.overrideSlot(slot, MenuItem.of(item));
     }
 
