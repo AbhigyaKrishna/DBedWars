@@ -10,21 +10,36 @@ import java.util.function.BiPredicate;
 
 public class PlayerCondition<T> implements Condition<Player> {
 
-    private final BiPredicate<Player, T> predicate;
-    private final T value;
+    private BiPredicate<Player, T> predicate;
+    private T value;
+    private Player player;
 
-    public PlayerCondition(BiPredicate<Player, T> predicate, T value) {
+    public PlayerCondition(BiPredicate<Player, T> predicate, T value, Player player) {
         this.predicate = predicate;
         this.value = value;
     }
 
-    @Override
-    public boolean test(Player player) {
-        return predicate.test(player, value);
+    public T getValue() {
+        return this.value;
     }
 
-    public T getValue() {
-        return value;
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    @Override
+    public boolean test() {
+        return this.predicate.test(player, value);
+    }
+
+    @Override
+    public Player getAcceptor() {
+        return this.player;
+    }
+
+    @Override
+    public void setAcceptor(Player acceptor) {
+        this.player = acceptor;
     }
 
     public static class Type {

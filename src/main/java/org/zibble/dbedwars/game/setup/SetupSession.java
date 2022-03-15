@@ -29,6 +29,7 @@ import org.zibble.dbedwars.game.ArenaDataHolder;
 import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
+import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.*;
 
@@ -82,9 +83,11 @@ public class SetupSession {
     public void promptArenaCustomNameSet() {
         Message message = PluginLang.SETUP_ARENA_DISPLAY_NAME_SET.asMessage();
         ArenaNameGui.creator()
-                .item(() -> ItemMetaBuilder.of(XMaterial.PAPER)
-                        .displayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0])
-                        .toItemStack())
+                .item(() -> new SpigotItem(
+                        ItemMetaBuilder.of(XMaterial.PAPER)
+                                .displayName(ConfigMessage.from(this.world.getName()).asComponentWithPAPI(this.player)[0])
+                                .toItemStack()
+                ))
                 .outputClick((menu, s) -> {
                     this.dataHolder.setCustomName(ConfigMessage.from(s));
                     message.addPlaceholders(PlaceholderEntry.symbol("arena_custom_name", s));
@@ -243,17 +246,21 @@ public class SetupSession {
     }
 
     private static class TeamParticleTracker {
+
         private CancellableWorkload spawn;
         private CancellableWorkload bed;
         private final Set<CancellableWorkload> spawners = new HashSet<>();
         private final Set<CancellableWorkload> shops = new HashSet<>();
+
     }
 
     private static class TeamHologramTracker {
+
         private Hologram spawn;
         private Hologram bed;
         private final Set<Hologram> spawners = new HashSet<>();
         private final Set<Hologram> shops = new HashSet<>();
+
     }
 
 }

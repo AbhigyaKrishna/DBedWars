@@ -1,26 +1,24 @@
 package org.zibble.dbedwars.game.arena.view.shop;
 
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.script.condition.Condition;
 import org.zibble.dbedwars.api.util.NewBwItemStack;
 import org.zibble.dbedwars.script.action.ActionProcessor;
-import org.zibble.dbedwars.script.condition.ConditionProcessor;
 import org.zibble.inventoryframework.ClickType;
 import org.zibble.inventoryframework.MenuItem;
-import org.zibble.inventoryframework.protocol.item.StackItem;
-import org.zibble.inventoryframework.spigot.SpigotItem;
+import org.zibble.inventoryframework.protocol.Item;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ShopItem {
 
-    protected final ItemStack item;
+    protected final NewBwItemStack item;
     protected TierGroup tierGroup;
-    private final Set<ConditionProcessor<?>> useConditions;
+    private final Set<Condition<?>> useConditions;
     private final Set<ActionProcessor> actions;
 
-    public ShopItem(ItemStack item) {
+    public ShopItem(NewBwItemStack item) {
         this.item = item;
         this.useConditions = new HashSet<>();
         this.actions = new HashSet<>();
@@ -34,12 +32,8 @@ public class ShopItem {
         this.tierGroup = tierGroup;
     }
 
-    public StackItem getGuiIcon() {
-        return null;
-    }
-
     public boolean canUse(ArenaPlayer arenaPlayer) {
-        for (ConditionProcessor<?> useCondition : this.useConditions) {
+        for (Condition<?> useCondition : this.useConditions) {
             if (!useCondition.test()) return false;
         }
         return true;
@@ -51,12 +45,13 @@ public class ShopItem {
         }
     }
 
-    public MenuItem<SpigotItem> asMenuItem() {
-        MenuItem<SpigotItem> menuItem = MenuItem.of(new NewBwItemStack(this.item).asStackItem());
+    public MenuItem<? extends Item> asMenuItem() {
+        MenuItem<NewBwItemStack> menuItem = MenuItem.of(this.item);
         menuItem.setClickAction((protocolPlayer, clickType) -> {
             if (this.canUse(protocolPlayer.getArenaPlayer())) {
                 this.use(protocolPlayer.getArenaPlayer(), clickType);
             }
         });
+        return menuItem;
     }
 }

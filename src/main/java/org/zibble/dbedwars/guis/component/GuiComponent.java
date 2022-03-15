@@ -9,7 +9,6 @@ import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.Menu;
 import org.zibble.inventoryframework.menu.nameable.NameableMenu;
 import org.zibble.inventoryframework.protocol.Item;
-import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.ArrayList;
 import java.util.List;
