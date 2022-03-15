@@ -83,16 +83,16 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return this.item(c, menuItem);
     }
 
-    public R item(char c, MenuItem<SpigotItem> item) {
+    public R item(char c, MenuItem<? extends Item> item) {
         menu.setItem(c, item);
         return (R) this;
     }
 
-    public R item(char c, Supplier<SpigotItem> item) {
+    public R item(char c, Supplier<? extends Item> item) {
         return this.item(c, item.get());
     }
 
-    public R item(char c, Supplier<SpigotItem> item, ClickAction clickAction) {
+    public R item(char c, Supplier<? extends Item> item, ClickAction clickAction) {
         return this.item(c, item.get(), clickAction);
     }
 
@@ -110,18 +110,18 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
-    public R overrideSlot(int slot, MenuItem<SpigotItem> item) {
+    public R overrideSlot(int slot, MenuItem<? extends Item> item) {
         this.menu.overrideSlot(slot, item);
         return (R) this;
     }
 
-    public R overrideSlot(int slot, SpigotItem item, ClickAction clickAction) {
-        MenuItem<SpigotItem> menuItem = MenuItem.of(item);
+    public R overrideSlot(int slot, Item item, ClickAction clickAction) {
+        MenuItem<? extends Item> menuItem = MenuItem.of(item);
         menuItem.setClickAction(clickAction);
         return this.overrideSlot(slot, menuItem);
     }
 
-    public R overrideSlot(int slot, SpigotItem item) {
+    public R overrideSlot(int slot, Item item) {
         return this.overrideSlot(slot, MenuItem.of(item));
     }
 

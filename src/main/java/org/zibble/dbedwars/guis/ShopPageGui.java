@@ -5,7 +5,7 @@ import org.zibble.dbedwars.guis.component.GuiComponent;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
-import org.zibble.inventoryframework.spigot.SpigotItem;
+import org.zibble.inventoryframework.protocol.Item;
 
 import java.util.function.Supplier;
 
@@ -16,27 +16,27 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
     }
 
     @Override
-    public final ShopPageGui item(char c, SpigotItem item) {
+    public final ShopPageGui item(char c, Item item) {
         return super.item(c, item);
     }
 
     @Override
-    public final ShopPageGui item(char c, SpigotItem item, ClickAction clickAction) {
+    public final ShopPageGui item(char c, Item item, ClickAction clickAction) {
         return super.item(c, item, clickAction);
     }
 
     @Override
-    public final ShopPageGui item(char c, MenuItem<SpigotItem> item) {
+    public final ShopPageGui item(char c, MenuItem<? extends Item> item) {
         return super.item(c, item);
     }
 
     @Override
-    public final ShopPageGui item(char c, Supplier<SpigotItem> item) {
+    public final ShopPageGui item(char c, Supplier<? extends Item> item) {
         return super.item(c, item);
     }
 
     @Override
-    public final ShopPageGui item(char c, Supplier<SpigotItem> item, ClickAction clickAction) {
+    public final ShopPageGui item(char c, Supplier<? extends Item> item, ClickAction clickAction) {
         return super.item(c, item, clickAction);
     }
 
@@ -49,17 +49,17 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
     }
 
     @Override
-    public final ShopPageGui overrideSlot(int slot, SpigotItem item, ClickAction clickAction) {
+    public final ShopPageGui overrideSlot(int slot, Item item, ClickAction clickAction) {
         return super.overrideSlot(slot, item, clickAction);
     }
 
     @Override
-    public final ShopPageGui overrideSlot(int slot, SpigotItem item) {
+    public final ShopPageGui overrideSlot(int slot, Item item) {
         return super.overrideSlot(slot, item);
     }
 
     @Override
-    public final ShopPageGui overrideSlot(int slot, MenuItem<SpigotItem> item) {
+    public final ShopPageGui overrideSlot(int slot, MenuItem<? extends Item> item) {
         return super.overrideSlot(slot, item);
     }
 
