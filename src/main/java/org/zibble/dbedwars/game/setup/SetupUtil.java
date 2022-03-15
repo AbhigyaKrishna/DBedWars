@@ -30,8 +30,8 @@ public class SetupUtil {
         return entity instanceof Painting || entity instanceof ItemFrame;
     }
 
-    public static Location precise(SetupSession setupSession, Location location) {
-        if (!setupSession.autoCorrect) return location;
+    public static Location precise(boolean precise, Location location) {
+        if (!precise) return location;
         final Location[] returnVal = new Location[1];
         PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION, PreciseLocation.class, value -> {
             returnVal[0] = value.getPrecise(location);
@@ -40,12 +40,12 @@ public class SetupUtil {
         return returnVal[0];
     }
 
-    public static LocationXYZ preciseXYZ(SetupSession setupSession, Location location) {
-        return LocationXYZ.valueOf(precise(setupSession, location));
+    public static LocationXYZ preciseXYZ(boolean precise, Location location) {
+        return LocationXYZ.valueOf(precise(precise, location));
     }
 
-    public static LocationXYZYP preciseXYZYP(SetupSession setupSession, Location location) {
-        return LocationXYZYP.valueOf(precise(setupSession, location));
+    public static LocationXYZYP preciseXYZYP(boolean precise, Location location) {
+        return LocationXYZYP.valueOf(precise(precise, location));
     }
 
     public static Color[] findTeams(SetupSession setupSession) {

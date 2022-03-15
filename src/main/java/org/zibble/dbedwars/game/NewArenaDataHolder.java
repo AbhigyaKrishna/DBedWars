@@ -7,13 +7,15 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
-import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class ArenaDataHolder {
+public class NewArenaDataHolder {
 
     private Message customName;
     private int maxPlayersPerTeam;
@@ -28,36 +30,14 @@ public class ArenaDataHolder {
 
     private final Map<Color, TeamDataHolder> teams;
     private final Set<SpawnerDataHolder> spawners;
-    private final Set<ShopDataHolder> shops;
 
-    private ArenaDataHolder() {
+    private NewArenaDataHolder() {
         this.teams = new EnumMap<>(Color.class);
         this.spawners = new HashSet<>();
     }
 
-    public static ArenaDataHolder create() {
-        return new ArenaDataHolder();
-    }
-
-    public static ArenaDataHolder fromConfig(ConfigurableArena cfg) {
-        ArenaDataHolder data = new ArenaDataHolder();
-        data.customName = ConfigMessage.from(cfg.getCustomName());
-        data.maxPlayersPerTeam = cfg.getPlayerInTeam();
-        data.minPlayersToStart = cfg.getMinPlayers();
-        data.enabled = cfg.isEnabled();
-        data.environment = cfg.getEnvironment();
-        data.waitingLocation = LocationXYZYP.valueOf(cfg.getLobbyLoc());
-        data.spectatorLocation = LocationXYZYP.valueOf(cfg.getSpectatorLocation());
-        data.lobbyCorner1 = LocationXYZ.valueOf(cfg.getLobbyPosMax());
-        data.lobbyCorner2 = LocationXYZ.valueOf(cfg.getLobbyPosMin());
-        for (ConfigurableArena.ConfigurableTeam value : cfg.getTeams().values()) {
-            data.teams.put(value.getColor(), TeamDataHolder.fromConfig(value));
-        }
-
-        for (String spawner : cfg.getSpawners()) {
-            data.spawners.add(SpawnerDataHolder.fromConfig(spawner));
-        }
-        return data;
+    public static NewArenaDataHolder create() {
+        return new NewArenaDataHolder();
     }
 
     public Message getCustomName() {
@@ -132,15 +112,23 @@ public class ArenaDataHolder {
         this.lobbyCorner2 = lobbyCorner2;
     }
 
-    public TeamDataHolder getTeamData(Color color) {
+    public void addTeam(Color color) {
+        this.teams.put(color, new TeamDataHolder(color));
+    }
+
+    public void removeTeam(Color color) {
+        this.teams.remove(color);
+    }
+
+    public NewArenaDataHolder.TeamDataHolder getTeamData(Color color) {
         return teams.get(color);
     }
 
-    public Map<Color, TeamDataHolder> getTeamData() {
+    public Map<Color, NewArenaDataHolder.TeamDataHolder> getTeamData() {
         return this.teams;
     }
 
-    public Set<SpawnerDataHolder> getSpawners() {
+    public Set<NewArenaDataHolder.SpawnerDataHolder> getSpawners() {
         return spawners;
     }
 
@@ -148,25 +136,26 @@ public class ArenaDataHolder {
 
         private final Color color;
         private LocationXYZYP spawnLocation;
-        private LocationXYZYP shopNPC;
-        private LocationXYZYP upgradesNPC;
         private LocationXYZ bed;
 
-        private final Set<SpawnerDataHolder> spawners = new HashSet<>();
+        private final Set<ShopDataHolder> shops;
+        private final Set<NewArenaDataHolder.SpawnerDataHolder> spawners;
 
         public TeamDataHolder(Color color) {
             this.color = color;
+            this.shops = new HashSet<>();
+            this.spawners = new HashSet<>();
         }
 
-        public static TeamDataHolder fromConfig(ConfigurableArena.ConfigurableTeam cfg) {
-            TeamDataHolder data = new TeamDataHolder(cfg.getColor());
+        public static NewArenaDataHolder.TeamDataHolder fromConfig(ConfigurableArena.ConfigurableTeam cfg) {
+            NewArenaDataHolder.TeamDataHolder data = new NewArenaDataHolder.TeamDataHolder(cfg.getColor());
             data.spawnLocation = LocationXYZYP.valueOf(cfg.getSpawn());
             data.shopNPC = LocationXYZYP.valueOf(cfg.getShopNpc());
             data.upgradesNPC = LocationXYZYP.valueOf(cfg.getUpgradesNpc());
             data.bed = LocationXYZ.valueOf(cfg.getBedLocation());
 
             for (String spawner : cfg.getSpawners()) {
-                data.spawners.add(SpawnerDataHolder.fromConfig(spawner));
+                data.spawners.add(NewArenaDataHolder.SpawnerDataHolder.fromConfig(spawner));
             }
             return data;
         }
@@ -183,20 +172,8 @@ public class ArenaDataHolder {
             this.spawnLocation = spawnLocation;
         }
 
-        public LocationXYZYP getShopNPC() {
-            return shopNPC;
-        }
-
-        public void setShopNPC(LocationXYZYP shopNPC) {
-            this.shopNPC = shopNPC;
-        }
-
-        public LocationXYZYP getUpgradesNPC() {
-            return upgradesNPC;
-        }
-
-        public void setUpgradesNPC(LocationXYZYP upgradesNPC) {
-            this.upgradesNPC = upgradesNPC;
+        public Set<ShopDataHolder> getShops() {
+            return shops;
         }
 
         public LocationXYZ getBed() {
@@ -207,7 +184,7 @@ public class ArenaDataHolder {
             this.bed = bed;
         }
 
-        public Set<SpawnerDataHolder> getSpawners() {
+        public Set<NewArenaDataHolder.SpawnerDataHolder> getSpawners() {
             return spawners;
         }
 
@@ -218,20 +195,22 @@ public class ArenaDataHolder {
         private DropType dropType;
         private LocationXYZ location;
 
-        public static SpawnerDataHolder fromConfig(String cfg) {
-            SpawnerDataHolder data = new SpawnerDataHolder();
+        public static NewArenaDataHolder.SpawnerDataHolder fromConfig(String cfg) {
+            NewArenaDataHolder.SpawnerDataHolder data = new NewArenaDataHolder.SpawnerDataHolder();
             Pair<DropType, LocationXYZ> pair = ConfigurationUtils.parseSpawner(cfg);
             data.dropType = pair.getKey();
             data.location = pair.getValue();
             return data;
         }
 
-        public static SpawnerDataHolder of(DropType dropType, LocationXYZ location) {
-            SpawnerDataHolder data = new SpawnerDataHolder();
+        public static NewArenaDataHolder.SpawnerDataHolder of(DropType dropType, LocationXYZ location) {
+            NewArenaDataHolder.SpawnerDataHolder data = new NewArenaDataHolder.SpawnerDataHolder();
             data.dropType = dropType;
             data.location = location;
             return data;
         }
+
+        private SpawnerDataHolder() {}
 
         public DropType getDropType() {
             return dropType;
@@ -250,4 +229,30 @@ public class ArenaDataHolder {
         }
 
     }
+
+    public static class ShopDataHolder {
+
+        private ShopType shopType;
+        private LocationXYZYP location;
+
+        public static NewArenaDataHolder.ShopDataHolder of(ShopType shopType, LocationXYZYP location) {
+            NewArenaDataHolder.ShopDataHolder data = new NewArenaDataHolder.ShopDataHolder();
+            data.shopType = shopType;
+            data.location = location;
+            return data;
+        }
+
+        private ShopDataHolder() {}
+
+        public ShopType getShopType() {
+            return shopType;
+        }
+
+        public LocationXYZYP getLocation() {
+            return location;
+        }
+
+    }
+
+
 }
