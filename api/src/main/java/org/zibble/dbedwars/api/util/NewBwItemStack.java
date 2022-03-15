@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -21,9 +22,12 @@ import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewBwItemStack {
 
+    private static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
     private static final String[] BYPASS_CLASS = {
             "CraftMetaBlockState",
             "CraftMetaItem",
@@ -40,6 +44,19 @@ public class NewBwItemStack {
     private final Map<XEnchantment, Integer> enchantments;
 
     private ItemMeta meta;
+
+    public static NewBwItemStack valueOf(String str) {
+        Matcher matcher = PATTERN.matcher(str);
+        if (!matcher.matches()) return null;
+        Optional<XMaterial> material = XMaterial.matchXMaterial(matcher.group("type"));
+        if (!material.isPresent() || !material.get().isSupported()) return null;
+        int amount = !NumberUtils.isDigits(matcher.group("amount")) ? 1 : Integer.parseInt(matcher.group("amount"));
+        NewBwItemStack itemStack = new NewBwItemStack(material.get(), amount);
+        if (NumberUtils.isDigits(matcher.group("data"))) {
+            itemStack.setDurability(Short.parseShort(matcher.group("data")));
+        }
+        return itemStack;
+    }
 
     public static NewBwItemStack fromJson(Json json) {
         Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(json.get("type").getAsString());
@@ -247,8 +264,8 @@ public class NewBwItemStack {
             this.lore = message;
         } else {
             Component[] components = new Component[message.size() + this.lore.size()];
-            System.arraycopy(this.lore.asUnparsedComponent(), 0, components, 0, this.lore.size());
-            System.arraycopy(message.asUnparsedComponent(), 0, components, this.lore.size(), message.size());
+            System.arraycopy(this.lore.asRawComponent(), 0, components, 0, this.lore.size());
+            System.arraycopy(message.asRawComponent(), 0, components, this.lore.size(), message.size());
             AdventureMessage msg = AdventureMessage.from(components);
             msg.addPlaceholders(this.lore.getPlaceholders());
             this.lore = msg;
@@ -260,8 +277,8 @@ public class NewBwItemStack {
             this.lore = message;
         } else {
             Component[] components = new Component[message.size() + this.lore.size()];
-            System.arraycopy(message.asUnparsedComponent(), 0, components, 0, message.size());
-            System.arraycopy(this.lore.asUnparsedComponent(), 0, components, message.size(), this.lore.size());
+            System.arraycopy(message.asRawComponent(), 0, components, 0, message.size());
+            System.arraycopy(this.lore.asRawComponent(), 0, components, message.size(), this.lore.size());
             AdventureMessage msg = AdventureMessage.from(components);
             msg.addPlaceholders(this.lore.getPlaceholders());
             this.lore = msg;

@@ -85,7 +85,7 @@ public abstract class Message implements Cloneable {
         this.placeholders.clear();
     }
 
-    public abstract Component[] asUnparsedComponent();
+    public abstract Component[] asRawComponent();
 
     public abstract Component[] asComponent();
 
@@ -101,7 +101,7 @@ public abstract class Message implements Cloneable {
         }
 
         @Override
-        public Component[] asUnparsedComponent() {
+        public Component[] asRawComponent() {
             return this.asComponent();
         }
 

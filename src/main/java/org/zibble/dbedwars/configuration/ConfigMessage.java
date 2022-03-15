@@ -34,7 +34,7 @@ public class ConfigMessage extends Message {
     }
 
     @Override
-    public Component[] asUnparsedComponent() {
+    public Component[] asRawComponent() {
         Component[] components = new Component[this.message.size()];
         for (int i = 0; i < this.message.size(); i++) {
             components[i] = ConfigLang.getTranslator().translate(this.message.get(i));

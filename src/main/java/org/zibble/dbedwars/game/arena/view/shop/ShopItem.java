@@ -7,6 +7,7 @@ import org.zibble.dbedwars.script.action.ActionProcessor;
 import org.zibble.inventoryframework.ClickType;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.protocol.Item;
+import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class ShopItem {
     }
 
     public MenuItem<? extends Item> asMenuItem() {
-        MenuItem<NewBwItemStack> menuItem = MenuItem.of(this.item);
+        MenuItem<SpigotItem> menuItem = MenuItem.of(new SpigotItem(this.item.asItemStack()));
         menuItem.setClickAction((protocolPlayer, clickType) -> {
             if (this.canUse(protocolPlayer.getArenaPlayer())) {
                 this.use(protocolPlayer.getArenaPlayer(), clickType);
