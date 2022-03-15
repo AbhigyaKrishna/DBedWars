@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.util.Loadable;
@@ -116,7 +117,7 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         public NamedProperties toProperties() {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
-                    .add("animation-end", ConfigurationUtils.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
+                    .add("animation-end", EnumUtil.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
                     .add("text", text)
                     .add("frames", frames)
                     .build();
@@ -199,7 +200,7 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         public NamedProperties toProperties() {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
-                    .add("animation-end", ConfigurationUtils.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
+                    .add("animation-end", EnumUtil.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
                     .add("text", text)
                     .add("degreeRotatedPerCycle", degreeRotatedPerCycle)
                     .add("verticalBobbingPerCycle", verticalDisplacement)

@@ -6,6 +6,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableUpgrade;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 import org.zibble.dbedwars.utils.ItemConstant;
@@ -83,7 +84,7 @@ public class UpgradeItem {
                 XMaterial material = XMaterial.matchXMaterial(split[1].trim()).orElse(null);
                 if (material == null) {
                     ItemConstant constant =
-                            ConfigurationUtils.matchEnum(split[1].trim(), ItemConstant.values());
+                            EnumUtil.matchEnum(split[1].trim(), ItemConstant.values());
                     if (constant == null) return super.getAction(statement);
                     for (XMaterial item : constant.getItems()) {
                         if (item.isSupported()) {
@@ -168,7 +169,7 @@ public class UpgradeItem {
                     .forEach(
                             a ->
                                     this.actions.put(
-                                            ConfigurationUtils.matchEnum(
+                                            EnumUtil.matchEnum(
                                                     a.getTarget(), Target.values()),
                                             new TierAction(a)));
         }
@@ -222,7 +223,7 @@ public class UpgradeItem {
                 this.tier = UpgradeTier.this;
                 this.action = action;
                 this.target =
-                        ConfigurationUtils.matchEnum(this.action.getTarget(), Target.values());
+                        EnumUtil.matchEnum(this.action.getTarget(), Target.values());
                 this.goals = Collections.synchronizedList(new ArrayList<>());
             }
 

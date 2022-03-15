@@ -3,6 +3,7 @@ package org.zibble.dbedwars.configuration.framework;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import org.bukkit.configuration.ConfigurationSection;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
@@ -33,7 +34,7 @@ public interface ConfigLoader<T> {
     ConfigLoader<String> STRING_LOADER = declare(String.class, (field, value) -> (String) value);
     ConfigLoader<UUID> UUID_LOADER = declare(UUID.class, (field, value) -> UUID.fromString((String) value));
     ConfigLoader<ConfigurationSection> CONFIGURATION_LOADER = declare(ConfigurationSection.class, (field, value) -> (ConfigurationSection) value);
-    ConfigLoader<Enum> ENUM_LOADER = declare(Enum.class, (field, value) -> ConfigurationUtils.matchEnum((String) value, ((Class<Enum>) field.getType()).getEnumConstants()));
+    ConfigLoader<Enum> ENUM_LOADER = declare(Enum.class, (field, value) -> EnumUtil.matchEnum((String) value, ((Class<Enum>) field.getType()).getEnumConstants()));
     ConfigLoader<Loadable> LOADABLE_LOADER = declare(Loadable.class, (field, value) -> {
         Loadable loadable = new ClassWrapper<>((Class<Loadable>) field.getType()).newInstance();
         loadable.load((ConfigurationSection) value);

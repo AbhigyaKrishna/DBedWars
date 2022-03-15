@@ -9,7 +9,7 @@ import java.util.*;
 public abstract class Message implements Cloneable {
 
     protected List<String> message;
-    protected List<Placeholder> placeholders;
+    protected transient List<Placeholder> placeholders;
 
     public static Message empty() {
         return new EmptyMessage();
@@ -65,6 +65,10 @@ public abstract class Message implements Cloneable {
         return new ArrayList<>(this.message);
     }
 
+    public Placeholder[] getPlaceholders() {
+        return placeholders.toArray(new Placeholder[0]);
+    }
+
     public void addPlaceholders(Placeholder... placeholders) {
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
@@ -81,6 +85,8 @@ public abstract class Message implements Cloneable {
         this.placeholders.clear();
     }
 
+    public abstract Component[] asUnparsedComponent();
+
     public abstract Component[] asComponent();
 
     public abstract Component[] asComponentWithPAPI(Player player);
@@ -92,6 +98,11 @@ public abstract class Message implements Cloneable {
 
         protected EmptyMessage() {
             super("");
+        }
+
+        @Override
+        public Component[] asUnparsedComponent() {
+            return this.asComponent();
         }
 
         @Override

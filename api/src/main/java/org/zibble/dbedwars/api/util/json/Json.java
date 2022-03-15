@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.utils.json;
+package org.zibble.dbedwars.api.util.json;
 
 import com.google.gson.*;
 import com.google.gson.internal.Streams;
@@ -47,6 +47,10 @@ public final class Json {
         this.handle = handle;
         this.root = this;
         this.options = new JsonOptions();
+    }
+
+    public static Json of(JsonObject json) {
+        return new Json(json);
     }
 
     /**

@@ -32,7 +32,7 @@ public class ShopItem {
         this.tierGroup = tierGroup;
     }
 
-    public boolean canUse(ArenaPlayer arenaPlayer) {
+    public boolean canUse() {
         for (Condition<?> useCondition : this.useConditions) {
             if (!useCondition.test()) return false;
         }

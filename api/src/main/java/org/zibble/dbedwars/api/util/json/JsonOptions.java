@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.utils.json;
+package org.zibble.dbedwars.api.util.json;
 
 /** Represents options for Json. */
 public class JsonOptions {

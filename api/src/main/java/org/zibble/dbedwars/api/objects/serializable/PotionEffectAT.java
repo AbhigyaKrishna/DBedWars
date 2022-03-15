@@ -96,22 +96,16 @@ public class PotionEffectAT {
         this.particleOff = particle;
     }
 
-    public void applyTo(LivingEntity entity) {
+    public PotionEffect asBukkit() {
         if (Version.SERVER_VERSION.isOlderEquals(Version.v1_8_R3)) {
-            PotionEffect effect =
-                    new PotionEffect(
-                            this.potion.getPotionEffectType(), this.duration, this.amplifier - 1);
-            effect.apply(entity);
+            return new PotionEffect(this.potion.getPotionEffectType(), this.duration, this.amplifier - 1);
         } else {
-            PotionEffect effect =
-                    new PotionEffect(
-                            this.potion.getPotionEffectType(),
-                            this.duration,
-                            this.amplifier - 1,
-                            true,
-                            this.particleOff);
-            effect.apply(entity);
+            return new PotionEffect(this.potion.getPotionEffectType(), this.duration, this.amplifier - 1, true, this.particleOff);
         }
+    }
+
+    public void applyTo(LivingEntity entity) {
+        this.asBukkit().apply(entity);
     }
 
     @Override

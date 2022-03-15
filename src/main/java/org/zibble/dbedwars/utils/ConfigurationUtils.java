@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.pepedevs.radium.holograms.object.Hologram;
 import com.pepedevs.radium.utils.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -12,24 +11,14 @@ import org.zibble.dbedwars.api.game.view.AttributeType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.Pair;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
-import org.zibble.dbedwars.utils.json.JSONBuilder;
-import org.zibble.dbedwars.utils.json.Json;
+import org.zibble.dbedwars.api.util.json.JSONBuilder;
+import org.zibble.dbedwars.api.util.json.Json;
 
 import java.util.*;
 
 public class ConfigurationUtils {
-
-    public static <T extends Enum<T>> T matchEnum(String s, T[] values) {
-        for (T value : values) {
-            if (value.name().equalsIgnoreCase(s)
-                    || value.name().replace("_", "-").equalsIgnoreCase(s)
-                    || value.name().replace("_", "").equalsIgnoreCase(s)) return value;
-        }
-
-        return null;
-    }
 
     public static BwItemStack parseItem(String str) {
         String[] s = str.split(":");
@@ -115,7 +104,7 @@ public class ConfigurationUtils {
     public static Set<AttributeType> getAttributeTypes(String s) {
         Set<AttributeType> attributes = new HashSet<>();
         for (String str : s.split(",")) {
-            AttributeType type = ConfigurationUtils.matchEnum(str, AttributeType.VALUES);
+            AttributeType type = EnumUtil.matchEnum(str, AttributeType.VALUES);
             if (type != null) attributes.add(type);
         }
         return attributes;
@@ -131,6 +120,6 @@ public class ConfigurationUtils {
             }
         }
 
-        return builder.getRawJson();
+        return builder.toJson();
     }
 }

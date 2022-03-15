@@ -34,6 +34,15 @@ public class ConfigMessage extends Message {
     }
 
     @Override
+    public Component[] asUnparsedComponent() {
+        Component[] components = new Component[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            components[i] = ConfigLang.getTranslator().translate(this.message.get(i));
+        }
+        return components;
+    }
+
+    @Override
     public Component[] asComponent() {
         Placeholder[] entries = this.placeholders.toArray(new Placeholder[0]);
         Component[] components = new Component[this.message.size()];

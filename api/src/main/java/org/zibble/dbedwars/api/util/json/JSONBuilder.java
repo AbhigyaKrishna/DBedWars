@@ -1,10 +1,9 @@
-package org.zibble.dbedwars.utils.json;
+package org.zibble.dbedwars.api.util.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import org.jetbrains.annotations.NotNull;
 
 public class JSONBuilder implements Cloneable {
 
@@ -18,35 +17,68 @@ public class JSONBuilder implements Cloneable {
         this.json = json;
     }
 
+    public JSONBuilder(JsonObject json) {
+        this.json = Json.of(json);
+    }
+
     public JSONBuilder add(String key, Object value) {
+        if (json.has(key))
+            throw new IllegalArgumentException("field" + key + "is already present");
 
-        if (json.has(key)) throw new IllegalArgumentException("field" + key + "is already present");
-
-        return adder(key, value);
+        if (value instanceof String) {
+            json.addProperty(key, (String) value);
+        } else if (value instanceof Number) {
+            json.addProperty(key, (Number) value);
+        } else if (value instanceof Boolean) {
+            json.addProperty(key, (Boolean) value);
+        } else if (value instanceof Character) {
+            json.addProperty(key, (Character) value);
+        } else if (value instanceof JsonElement) {
+            json.add(key, (JsonElement) value);
+        } else {
+            json.addProperty(key, value.toString());
+        }
+        return this;
     }
 
     public JSONBuilder addIfNotExists(String key, Object value) {
-        if (json.has(key)) return this;
+        if (json.has(key))
+            return this;
 
-        return adder(key, value);
+        return this.add(key, value);
     }
 
-    public JSONBuilder edit(String key, Object value, Class<?> clazz) {
-
+    public JSONBuilder set(String key, Object value, Class<?> clazz) {
         if (!json.has(key))
             throw new IllegalArgumentException("No field found with" + key + "found");
 
-        return editor(key, value, clazz);
+        if (clazz.equals(String.class)) {
+            json.remove(key);
+            json.addProperty(key, (String) value);
+        } else if (clazz.equals(Number.class)) {
+            json.remove(key);
+            json.addProperty(key, (Number) value);
+        } else if (clazz.equals(Boolean.class)) {
+            json.remove(key);
+            json.addProperty(key, (Boolean) value);
+        } else if (clazz.equals(Character.class)) {
+            json.remove(key);
+            json.addProperty(key, (Character) value);
+        } else if (clazz.equals(JsonElement.class)) {
+            json.remove(key);
+            json.add(key, (JsonElement) value);
+        }
+
+        return this;
     }
 
-    public JSONBuilder editIfExists(String key, Object value, Class<?> clazz) {
+    public JSONBuilder setIfExists(String key, Object value, Class<?> clazz) {
         if (!json.has(key)) return this;
 
-        return editor(key, value, clazz);
+        return this.set(key, value, clazz);
     }
 
     public JSONBuilder addNewList(String key, JsonObject... objects) {
-
         if (json.has(key)) throw new IllegalArgumentException("field" + key + "already exists");
 
         JsonArray array = new JsonArray();
@@ -58,7 +90,6 @@ public class JSONBuilder implements Cloneable {
     }
 
     public JSONBuilder addNewListIfNotExists(String key, JsonObject... objects) {
-
         if (json.has(key)) return this;
 
         JsonArray array = new JsonArray();
@@ -281,89 +312,30 @@ public class JSONBuilder implements Cloneable {
         return this;
     }
 
-    public JSONBuilder remove(String key, Class<?> clazz) {
-        if (!json.has(key)) throw new IllegalArgumentException("No field found with" + key + "key");
+    public JSONBuilder remove(String key) {
+        if (!json.has(key))
+            throw new IllegalArgumentException("No field found with" + key + "key");
 
-        return remover(key, clazz);
+        json.remove(key);
+        return this;
     }
 
-    public JSONBuilder removeIfExists(String key, Class<?> clazz) {
+    public JSONBuilder removeIfExists(String key) {
         if (!json.has(key)) return this;
 
-        return remover(key, clazz);
-    }
-
-    @NotNull
-    private JSONBuilder remover(String key, Class<?> clazz) {
-        if (clazz.equals(String.class)) {
-            json.remove(key);
-        } else if (clazz.equals(Number.class)) {
-            json.remove(key);
-        } else if (clazz.equals(Boolean.class)) {
-            json.remove(key);
-        } else if (clazz.equals(Character.class)) {
-            json.remove(key);
-        } else if (clazz.equals(JsonElement.class)) {
-            json.remove(key);
-        }
-
-        return this;
-    }
-
-    @NotNull
-    private JSONBuilder editor(String key, Object value, Class<?> clazz) {
-        if (clazz.equals(String.class)) {
-            json.remove(key);
-            json.addProperty(key, (String) value);
-        } else if (clazz.equals(Number.class)) {
-            json.remove(key);
-            json.addProperty(key, (Number) value);
-        } else if (clazz.equals(Boolean.class)) {
-            json.remove(key);
-            json.addProperty(key, (Boolean) value);
-        } else if (clazz.equals(Character.class)) {
-            json.remove(key);
-            json.addProperty(key, (Character) value);
-        } else if (clazz.equals(JsonElement.class)) {
-            json.remove(key);
-            json.add(key, (JsonElement) value);
-        }
-
-        return this;
-    }
-
-    @NotNull
-    private JSONBuilder adder(String key, Object value) {
-        if (value instanceof String) {
-            json.addProperty(key, (String) value);
-        } else if (value instanceof Number) {
-            json.addProperty(key, (Number) value);
-        } else if (value instanceof Boolean) {
-            json.addProperty(key, (Boolean) value);
-        } else if (value instanceof Character) {
-            json.addProperty(key, (Character) value);
-        } else if (value instanceof JsonElement) {
-            json.add(key, (JsonElement) value);
-        } else {
-            json.addProperty(key, value.toString());
-        }
-        return this;
+        return this.remove(key);
     }
 
     public String toString() {
-        return json.toString();
+        return this.json.toString();
     }
 
-    public Json getRawJson() {
+    public Json toJson() {
         return json;
     }
 
     @Override
     public JSONBuilder clone() {
-        try {
-            return (JSONBuilder) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new JSONBuilder(this.json);
     }
 }
