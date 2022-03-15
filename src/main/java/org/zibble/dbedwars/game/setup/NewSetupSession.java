@@ -14,6 +14,7 @@ import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.NewArenaDataHolder;
 
 import java.util.ArrayList;
@@ -65,18 +66,18 @@ public class NewSetupSession {
     }
 
     public void promptDisableMobSpawning() {
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.DISABLE_MOB_SPAWNING_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
     }
 
     public void disableMobSpawning() {
         this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.DISABLE_MOB_SPAWNING_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
     public void promptEntityCleanup() {
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
     }
 
@@ -87,13 +88,13 @@ public class NewSetupSession {
             entity.remove();
             count++;
         }
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
     public void promptSetupWaitingLocation() {
 
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
 
     }
@@ -108,14 +109,14 @@ public class NewSetupSession {
         Hologram oldHologram = this.holograms.put(WAITING_LOCATION, hologram);
         if (oldHologram != null); //DESPAWN
         this.newArenaDataHolder.setWaitingLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
 
     public void promptSetupSpectatorLocation() {
 
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_SPECTATOR_LOCATION_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
 
     }
@@ -130,14 +131,14 @@ public class NewSetupSession {
         Hologram oldHologram = this.holograms.put(SPECTATOR_LOCATION, hologram);
         if (oldHologram != null); //DESPAWN
         this.newArenaDataHolder.setSpectatorLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_SPECTATOR_LOCATION_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
 
     public void promptSetupWaitingBoxCorners() {
 
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_CORNERS_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
 
     }
@@ -149,7 +150,7 @@ public class NewSetupSession {
             return;
         }
         this.newArenaDataHolder.setLobbyCorner1(SetupUtil.preciseXYZ(this.isPreciseEnabled, block.getLocation()));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_CORNERS_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -161,7 +162,7 @@ public class NewSetupSession {
             return;
         }
         this.newArenaDataHolder.setLobbyCorner2(SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation()));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_CORNERS_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -172,7 +173,7 @@ public class NewSetupSession {
 
     public void promptAddTeams() {
 
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.ADD_TEAMS_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
 
     }
@@ -180,7 +181,7 @@ public class NewSetupSession {
     public void addTeam(Color color) {
 
         this.newArenaDataHolder.addTeam(color);
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.ADD_TEAM_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -188,7 +189,7 @@ public class NewSetupSession {
     public void removeTeam(Color color) {
 
         this.newArenaDataHolder.removeTeam(color);
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.REMOVE_TEAM_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -197,7 +198,7 @@ public class NewSetupSession {
 
         Location location = this.player.getLocation();
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
-        Hologram hologram = SetupUtil.createHologram(location, this.player, color);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, );
         CancellableWorkload old = this.teamWorkloads.get(color).spawn;
         if (old != null) old.setCancelled(true);
         this.teamWorkloads.get(color).spawn = workload;
@@ -205,7 +206,7 @@ public class NewSetupSession {
         if (oldHologram != null); //DESPAWN
         this.teamHolograms.get(color).spawn = hologram;
         this.newArenaDataHolder.getTeamData(color).setSpawnLocation(SetupUtil.preciseXYZYP(this.isPreciseEnabled, location));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SPAWN_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -226,7 +227,7 @@ public class NewSetupSession {
         this.teamHolograms.get(color).bed = hologram;
 
         this.newArenaDataHolder.getTeamData(color).setBed(SetupUtil.preciseXYZ(this.isPreciseEnabled, location));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_BED_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -241,7 +242,7 @@ public class NewSetupSession {
         this.teamHolograms.get(color).spawners.add(hologram);
 
         this.newArenaDataHolder.getSpawners().add(NewArenaDataHolder.SpawnerDataHolder.of(dropType, SetupUtil.preciseXYZ(this.isPreciseEnabled, location)));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SPAWNER_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -252,7 +253,7 @@ public class NewSetupSession {
         this.teamHolograms.get(color).spawners.forEach(hologram -> hologram.despawn());
 
         this.newArenaDataHolder.getSpawners().clear();
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SPAWNER_CLEAR.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -267,7 +268,7 @@ public class NewSetupSession {
         this.teamHolograms.get(color).shops.add(hologram);
 
         this.newArenaDataHolder.getTeamData(color).getShops().add(NewArenaDataHolder.ShopDataHolder.of(shoptype, SetupUtil.preciseXYZYP(this.isPreciseEnabled, location)));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SHOP_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -278,7 +279,7 @@ public class NewSetupSession {
         this.teamHolograms.get(color).shops.forEach(hologram -> hologram.despawn());
 
         this.newArenaDataHolder.getTeamData(color).getShops().clear();
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SHOP_CLEAR.asMessage());
         TASK_DONE_SOUND.play(this.player);
 
     }
@@ -289,7 +290,7 @@ public class NewSetupSession {
         this.spawnerWorkloads.add(workload);
         this.spawnerHolograms.add(hologram);
         this.newArenaDataHolder.getSpawners().add(NewArenaDataHolder.SpawnerDataHolder.of(dropType, SetupUtil.preciseXYZ(this.isPreciseEnabled, this.player.getLocation())));
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_COMMON_SPAWNER_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
@@ -297,7 +298,7 @@ public class NewSetupSession {
         this.spawnerWorkloads.forEach(workload -> workload.setCancelled(true));
         this.spawnerHolograms.forEach(hologram -> hologram.despawn());
         this.newArenaDataHolder.getSpawners().clear();
-        this.playerMember.sendMessage();
+        this.playerMember.sendMessage(PluginLang.SETUP_COMMON_SPAWNER_CLEAR.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
