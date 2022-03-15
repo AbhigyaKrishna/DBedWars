@@ -2,16 +2,50 @@ package org.zibble.dbedwars.api.script.condition;
 
 import org.zibble.dbedwars.api.script.Translated;
 
-import java.util.function.Predicate;
-
-public interface Condition<T> extends Predicate<T>, Translated {
+public interface Condition<T> extends Translated {
 
     static <T> Condition<T> alwaysTrue() {
-        return __ -> true;
+        return new Condition<T>() {
+            @Override
+            public boolean test() {
+                return true;
+            }
+
+            @Override
+            public T getAcceptor() {
+                return null;
+            }
+
+            @Override
+            public void setAcceptor(T acceptor) {
+
+            }
+        };
     }
 
     static <T> Condition<T> alwaysFalse() {
-        return __ -> false;
+        return new Condition<T>() {
+            @Override
+            public boolean test() {
+                return false;
+            }
+
+            @Override
+            public T getAcceptor() {
+                return null;
+            }
+
+            @Override
+            public void setAcceptor(T acceptor) {
+
+            }
+        };
     }
+
+    boolean test();
+
+    T getAcceptor();
+
+    void setAcceptor(T acceptor);
 
 }

@@ -3,11 +3,11 @@ package org.zibble.dbedwars.guis.setup;
 import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.guis.component.GuiComponent;
 import org.zibble.inventoryframework.menu.inventory.AnvilMenu;
 import org.zibble.inventoryframework.protocol.Item;
+import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -26,17 +26,12 @@ public class ArenaNameGui extends GuiComponent<AnvilMenu, ArenaNameGui> {
         super(new AnvilMenu());
 
         this.mask("AB")
-                .item(() -> ItemMetaBuilder.of(XMaterial.PAPER)
+                .item(() -> new SpigotItem(ItemMetaBuilder.of(XMaterial.PAPER)
                         .displayName(Component.text("ARENA DISPLAY NAME"))
-                        .toItemStack());
+                        .toItemStack()));
     }
 
     public ArenaNameGui item(Supplier<? extends Item> item) {
-        this.item('A', item);
-        return this;
-    }
-
-    public ArenaNameGui item(Supplier<ItemStack> item) {
         this.item('A', item);
         return this;
     }
