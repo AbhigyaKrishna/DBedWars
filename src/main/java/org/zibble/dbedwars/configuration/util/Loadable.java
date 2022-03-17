@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.api.util.Validable;
 import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
 import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
-import org.zibble.dbedwars.utils.reflection.DataType;
+import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 
 import java.lang.reflect.Constructor;

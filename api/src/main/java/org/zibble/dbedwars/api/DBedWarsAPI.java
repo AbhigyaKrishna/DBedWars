@@ -1,9 +1,8 @@
 package org.zibble.dbedwars.api;
 
-import com.pepedevs.radium.holograms.HologramManager;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
-import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
+import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.version.Version;
 
@@ -36,6 +35,8 @@ public abstract class DBedWarsAPI {
     public abstract MenuHandler getMenuHandler();
 
     public abstract HologramFactory getHologramFactory();
+
+    public abstract NMSAdaptor getNMS();
 
     public abstract Version getVersion();
 

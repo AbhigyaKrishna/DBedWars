@@ -1,9 +1,9 @@
 package org.zibble.dbedwars;
 
-import com.pepedevs.radium.holograms.HologramManager;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
+import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.version.Version;
 
 public final class APIImpl extends DBedWarsAPI {
@@ -57,6 +57,11 @@ public final class APIImpl extends DBedWarsAPI {
     @Override
     public HologramFactory getHologramFactory() {
         return this.plugin.getHologramManager();
+    }
+
+    @Override
+    public NMSAdaptor getNMS() {
+        return this.plugin.getNMSAdaptor();
     }
 
     @Override

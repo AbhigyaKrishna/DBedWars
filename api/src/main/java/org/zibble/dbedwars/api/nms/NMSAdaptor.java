@@ -7,8 +7,10 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
+import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
+import org.zibble.dbedwars.api.util.nbt.NBT;
 
 public interface NMSAdaptor {
 
@@ -30,8 +32,10 @@ public interface NMSAdaptor {
 
     IBedBug getAsBedwarsBedBug(Silverfish bedBug, Team spawningTeam);
 
-    void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data);
-
     PlayerGameProfile getProfile(Player player);
+
+    NBTItem getNBTItem(ItemStack item);
+
+    NBTItem.INbt getNBT(NBT nbt);
 
 }

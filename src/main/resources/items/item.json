@@ -1,0 +1,9 @@
+{
+  "iron": {
+    "type": "iron_ingot",
+    "amount": 1,
+    "nbt": {
+      "plugin": "DBedwars"
+    }
+  }
+}

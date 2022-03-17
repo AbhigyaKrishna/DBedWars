@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.nms.v1_8_R3;
 
 import com.mojang.authlib.GameProfile;
+import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,15 +16,14 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
-import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.nms.IBedBug;
-import org.zibble.dbedwars.api.nms.IGolem;
-import org.zibble.dbedwars.api.nms.IVillager;
-import org.zibble.dbedwars.api.nms.NMSAdaptor;
+import org.zibble.dbedwars.api.nms.*;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
-import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
+import org.zibble.dbedwars.api.util.nbt.NBT;
+import org.zibble.dbedwars.api.util.nbt.NBTCompound;
+import org.zibble.dbedwars.api.util.nbt.NBTType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -123,32 +123,6 @@ public class NMSUtils implements NMSAdaptor {
     }
 
     @Override
-    public void sendTeamPacket(Team team, String displayName, String prefix, String suffix, int mode, int data) {
-        PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam();
-        List<String> names = new ArrayList<>();
-        for (ArenaPlayer player : team.getPlayers()) {
-            names.add(player.getName());
-        }
-        try {
-            FieldReflection.setValue(packet, "a", team.getName());
-            FieldReflection.setValue(packet, "b", displayName);
-            FieldReflection.setValue(packet, "c", prefix);
-            FieldReflection.setValue(packet, "d", suffix);
-            FieldReflection.setValue(packet, "e", "always");
-            FieldReflection.setValue(packet, "f", EnumChatFormat.valueOf(team.getColor().getChatColor().name()).b());
-            FieldReflection.setValue(packet, "g", names);
-            FieldReflection.setValue(packet, "h", mode);
-            FieldReflection.setValue(packet, "i", data);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        for (ArenaPlayer player : team.getArena().getPlayers()) {
-            ((CraftPlayer) player.getPlayer()).getHandle().playerConnection.sendPacket(packet);
-        }
-    }
-
-    @Override
     public PlayerGameProfile getProfile(Player player) {
         GameProfile gameProfile = ((CraftPlayer) player).getHandle().getProfile();
         List<Property> properties = new ArrayList<>();
@@ -164,6 +138,20 @@ public class NMSUtils implements NMSAdaptor {
                 .name(gameProfile.getName())
                 .properties(properties)
                 .build();
+    }
+
+    @Override
+    public NBTItem getNBTItem(ItemStack item) {
+        return new NBTItemImpl(item);
+    }
+
+    @Override
+    public NBTItem.INbt getNBT(NBT nbt) {
+        if (nbt.getType() == NBTType.COMPOUND) {
+            return new NBTItemImpl.NbtTagCompoundImpl((NBTCompound) nbt);
+        } else {
+            return new NBTItemImpl.NbtImpl(nbt);
+        }
     }
 
 }
