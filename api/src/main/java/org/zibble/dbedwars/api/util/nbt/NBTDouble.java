@@ -17,7 +17,7 @@ public class NBTDouble extends NBTNumber {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.DOUBLE;
     }
 

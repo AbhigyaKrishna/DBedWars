@@ -14,7 +14,7 @@ public abstract class NBT implements Cloneable {
         this.read(input);
     }
 
-    public abstract NBTType getType();
+    public abstract NBTType<?> getType();
 
     @Override
     public abstract boolean equals(Object other);
@@ -46,34 +46,33 @@ public abstract class NBT implements Cloneable {
         return input.readUTF();
     }
 
-    protected NBT readTag(DataInput input, NBTType type) throws IOException {
-        switch (type) {
-            case END:
-                return NBTEnd.INSTANCE;
-            case BYTE:
-                return new NBTByte(input);
-            case SHORT:
-                return new NBTShort(input);
-            case INT:
-                return new NBTInt(input);
-            case LONG:
-                return new NBTLong(input);
-            case FLOAT:
-                return new NBTFloat(input);
-            case DOUBLE:
-                return new NBTDouble(input);
-            case BYTE_ARRAY:
-                return new NBTByteArray(input);
-            case STRING:
-                return new NBTString(input);
-            case LIST:
-                return new NBTList<>(input);
-            case COMPOUND:
-                return new NBTCompound(input);
-            case INT_ARRAY:
-                return new NBTIntArray(input);
-            case LONG_ARRAY:
-                return new NBTLongArray(input);
+    protected <T extends NBT> T readTag(DataInput input, NBTType<T> type) throws IOException {
+        if (type.equals(NBTType.END)) {
+            return (T) NBTEnd.INSTANCE;
+        } else if (type.equals(NBTType.BYTE)) {
+            return (T) new NBTByte(input);
+        } else if (type.equals(NBTType.SHORT)) {
+            return (T) new NBTShort(input);
+        } else if (type.equals(NBTType.INT)) {
+            return (T) new NBTInt(input);
+        } else if (type.equals(NBTType.LONG)) {
+            return (T) new NBTLong(input);
+        } else if (type.equals(NBTType.FLOAT)) {
+            return (T) new NBTFloat(input);
+        } else if (type.equals(NBTType.DOUBLE)) {
+            return (T) new NBTDouble(input);
+        } else if (type.equals(NBTType.BYTE_ARRAY)) {
+            return (T) new NBTByteArray(input);
+        } else if (type.equals(NBTType.STRING)) {
+            return (T) new NBTString(input);
+        } else if (type.equals(NBTType.LIST)) {
+            return (T) new NBTList(input);
+        } else if (type.equals(NBTType.COMPOUND)) {
+            return (T) new NBTCompound(input);
+        } else if (type.equals(NBTType.INT_ARRAY)) {
+            return (T) new NBTIntArray(input);
+        } else if (type.equals(NBTType.LONG_ARRAY)) {
+            return (T) new NBTLongArray(input);
         }
         throw new IOException(MessageFormat.format("Unknown nbt type {0}", type));
     }

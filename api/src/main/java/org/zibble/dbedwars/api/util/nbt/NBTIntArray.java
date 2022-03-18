@@ -18,7 +18,7 @@ public class NBTIntArray extends NBT {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.INT_ARRAY;
     }
 

@@ -1,10 +1,11 @@
-package org.zibble.dbedwars.api.util.nbt;
+package org.zibble.dbedwars.api.util.nbt.serializer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.zibble.dbedwars.api.util.DataType;
+import org.zibble.dbedwars.api.util.nbt.*;
 
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class JsonNbtSerializer {
 
     static NBT deserializeArray(JsonArray array) {
         if (array.size() == 0) return null;
-        NBTType type = null;
+        NBTType<?> type = NBTType.LIST;
         JsonElement first = array.get(0);
         if (first.isJsonPrimitive()) {
             if (first.getAsJsonPrimitive().isNumber()) {
@@ -58,33 +59,44 @@ public class JsonNbtSerializer {
                     type = NBTType.INT_ARRAY;
                 } else if (DataType.BYTE.isInstance(first.getAsJsonPrimitive().getAsNumber())) {
                     type = NBTType.BYTE_ARRAY;
+                } else if (DataType.SHORT.isInstance(first.getAsJsonPrimitive().getAsNumber())) {
+                    type = NBTType.SHORT;
+                } else if (DataType.LONG.isInstance(first.getAsJsonPrimitive().getAsNumber())) {
+                    type = NBTType.LONG;
+                } else if (DataType.FLOAT.isInstance(first.getAsJsonPrimitive().getAsNumber())) {
+                    type = NBTType.FLOAT;
+                } else if (DataType.DOUBLE.isInstance(first.getAsJsonPrimitive().getAsNumber())) {
+                    type = NBTType.DOUBLE;
                 }
+            } else if (first.getAsJsonPrimitive().isBoolean()) {
+                type = NBTType.BYTE;
+            } else if (first.getAsJsonPrimitive().isString()) {
+                type = NBTType.STRING;
             }
+        } else if (first.isJsonObject()) {
+            type = NBTType.COMPOUND;
+        } else if (first.isJsonArray()) {
+            type = NBTType.LIST;
         }
 
-        switch (type) {
-            case INT_ARRAY: {
-                int[] ints = new int[array.size()];
-                for (int i = 0; i < array.size(); i++) {
-                    ints[i] = array.get(i).getAsInt();
-                }
-                return new NBTIntArray(ints);
+        if (NBTType.INT_ARRAY.equals(type)) {
+            int[] ints = new int[array.size()];
+            for (int i = 0; i < array.size(); i++) {
+                ints[i] = array.get(i).getAsInt();
             }
-            case BYTE_ARRAY: {
-                byte[] bytes = new byte[array.size()];
-                for (int i = 0; i < array.size(); i++) {
-                    bytes[i] = array.get(i).getAsByte();
-                }
-                return new NBTByteArray(bytes);
+            return new NBTIntArray(ints);
+        } else if (NBTType.BYTE_ARRAY.equals(type)) {
+            byte[] bytes = new byte[array.size()];
+            for (int i = 0; i < array.size(); i++) {
+                bytes[i] = array.get(i).getAsByte();
             }
-            default: {
-                NBTList<NBT> list = new NBTList<>(type);
-                for (JsonElement element : array) {
-                    list.addTag(deserialize(element));
-                }
-                return list;
-            }
+            return new NBTByteArray(bytes);
         }
+        NBTList list = new NBTList(type);
+        for (JsonElement element : array) {
+            list.addTag(deserialize(element));
+        }
+        return list;
     }
 
 }

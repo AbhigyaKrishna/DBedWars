@@ -32,6 +32,11 @@ public class NBTItemImpl implements NBTItem {
     }
 
     @Override
+    public ItemStack getItem() {
+        return CraftItemStack.asBukkitCopy(this.item);
+    }
+
+    @Override
     public void applyNbt(String key, NBT nbt) {
         this.tag.setTag(key, nbt);
     }

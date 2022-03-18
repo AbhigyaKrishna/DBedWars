@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.nms;
 
+import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.util.nbt.NBT;
 import org.zibble.dbedwars.api.util.nbt.NBTCompound;
 import org.zibble.dbedwars.api.util.nbt.NBTList;
@@ -8,6 +9,8 @@ import org.zibble.dbedwars.api.util.nbt.NBTType;
 import java.util.Map;
 
 public interface NBTItem {
+
+    ItemStack getItem();
 
     void applyNbt(String key, NBT nbt);
 

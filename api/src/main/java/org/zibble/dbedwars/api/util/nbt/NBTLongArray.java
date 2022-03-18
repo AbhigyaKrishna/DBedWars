@@ -18,7 +18,7 @@ public class NBTLongArray extends NBT {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.LONG_ARRAY;
     }
 

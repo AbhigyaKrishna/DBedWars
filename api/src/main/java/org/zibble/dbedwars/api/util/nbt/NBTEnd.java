@@ -12,7 +12,7 @@ public class NBTEnd extends NBT {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.END;
     }
 

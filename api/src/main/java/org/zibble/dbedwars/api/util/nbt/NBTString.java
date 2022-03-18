@@ -18,7 +18,7 @@ public class NBTString extends NBT {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.STRING;
     }
 

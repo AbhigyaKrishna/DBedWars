@@ -11,14 +11,14 @@ import java.util.Objects;
 
 public class NBTList<T extends NBT> extends NBT {
 
-    private NBTType type;
+    private NBTType<T> type;
     protected final List<T> tags = new ArrayList<>();
 
-    public NBTList(NBTType type) {
+    public NBTList(NBTType<T> type) {
         this.type = type;
     }
 
-    public NBTList(NBTType type, List<T> tags) {
+    public NBTList(NBTType<T> type, List<T> tags) {
         this.type = type;
         this.tags.addAll(tags);
     }
@@ -36,11 +36,11 @@ public class NBTList<T extends NBT> extends NBT {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.LIST;
     }
 
-    public NBTType getTagsType() {
+    public NBTType<T> getTagsType() {
         return type;
     }
 
@@ -99,13 +99,13 @@ public class NBTList<T extends NBT> extends NBT {
 
     @Override
     public void read(DataInput input) throws IOException {
-        NBTType type = this.readTagType(input);
+        NBTType<T> type = this.readTagType(input);
         int size = input.readInt();
         if ((type == NBTType.END) && (size > 0)) {
             throw new IllegalStateException("Missing nbt list values tag type");
         }
         for (int i = 0; i < size; i++) {
-            this.addTag((T) this.readTag(input, type));
+            this.addTag(this.readTag(input, type));
         }
     }
 

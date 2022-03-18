@@ -17,7 +17,7 @@ public class NBTFloat extends NBTNumber {
     }
 
     @Override
-    public NBTType getType() {
+    public NBTType<?> getType() {
         return NBTType.FLOAT;
     }
 

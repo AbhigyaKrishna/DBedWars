@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.enchantments.Enchantment;
@@ -17,12 +16,14 @@ import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.nms.NBTItem;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.api.util.nbt.*;
+import org.zibble.dbedwars.api.util.nbt.serializer.JsonNbtSerializer;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -43,7 +44,7 @@ public class NewBwItemStack {
     private Message displayName;
     private Message lore;
 
-    private int durability;
+    private int data;
     private final Map<XEnchantment, Integer> enchantments;
     private Map<String, NBT> nbt;
 
@@ -57,7 +58,7 @@ public class NewBwItemStack {
         int amount = !NumberUtils.isDigits(matcher.group("amount")) ? 1 : Integer.parseInt(matcher.group("amount"));
         NewBwItemStack itemStack = new NewBwItemStack(material.get(), amount);
         if (NumberUtils.isDigits(matcher.group("data"))) {
-            itemStack.setDurability(Short.parseShort(matcher.group("data")));
+            itemStack.setData(Short.parseShort(matcher.group("data")));
         }
         return itemStack;
     }
@@ -69,7 +70,7 @@ public class NewBwItemStack {
         }
         NewBwItemStack item = new NewBwItemStack(optmaterial.get());
         item.setAmount(json.has("amount") ? json.get("amount").getAsInt() : 1);
-        item.setDurability(json.has("data") ? json.get("data").getAsShort() : 0);
+        item.setData(json.has("data") ? json.get("data").getAsShort() : 0);
 
         if (json.has("display-name")) {
             item.setDisplayName(Messaging.get().asConfigMessage(json.get("display-name").getAsString()));
@@ -207,7 +208,7 @@ public class NewBwItemStack {
         this.material = material;
         this.amount = amount;
         this.enchantments = new EnumMap<>(XEnchantment.class);
-        this.durability = -1;
+        this.data = -1;
         this.nbt = new HashMap<>();
     }
 
@@ -215,7 +216,7 @@ public class NewBwItemStack {
         this.material = XMaterial.matchXMaterial(itemStack);
         this.amount = itemStack.getAmount();
         this.meta = itemStack.getItemMeta().clone();
-        this.durability = itemStack.getDurability();
+        this.data = itemStack.getDurability();
         this.enchantments = new EnumMap<>(XEnchantment.class);
         if (this.meta == null) return;
         if (this.meta.hasDisplayName()) this.displayName = LegacyMessage.from(this.meta.getDisplayName());
@@ -297,12 +298,12 @@ public class NewBwItemStack {
         }
     }
 
-    public int getDurability() {
-        return durability;
+    public int getData() {
+        return data;
     }
 
-    public void setDurability(int durability) {
-        this.durability = durability;
+    public void setData(int data) {
+        this.data = data;
     }
 
     public Map<XEnchantment, Integer> getEnchantments() {
@@ -333,8 +334,8 @@ public class NewBwItemStack {
         this.nbt.put(key, value);
     }
 
-    public NBT getNbt(String key) {
-        return this.nbt.get(key);
+    public <T extends NBT> T getNbt(String key, NBTType<T> type) {
+        return (T) this.nbt.get(key);
     }
 
     public void removeNbt(String key) {
@@ -358,9 +359,16 @@ public class NewBwItemStack {
                 .displayName(this.displayName.asComponentWithPAPI(player)[0])
                 .lore(this.lore.asComponentWithPAPI(player));
         for (Map.Entry<XEnchantment, Integer> entry : this.enchantments.entrySet()) {
+            if (!entry.getKey().isSupported()) continue;
             builder.withEnchantment(entry.getKey(), entry.getValue());
         }
-        return builder.toItemStack(this.amount);
+        ItemStack item = builder.toItemStack(this.amount);
+        if (this.data > 0) {
+            item.setDurability((short) this.data);
+        }
+        NBTItem nbtItem = DBedWarsAPI.getApi().getNMS().getNBTItem(item);
+        nbtItem.applyTags(this.nbt);
+        return nbtItem.getItem();
     }
 
     public ItemStack asItemStack() {
@@ -368,9 +376,16 @@ public class NewBwItemStack {
                 .displayName(this.displayName.asComponent()[0])
                 .lore(this.lore.asComponent());
         for (Map.Entry<XEnchantment, Integer> entry : this.enchantments.entrySet()) {
+            if (!entry.getKey().isSupported()) continue;
             builder.withEnchantment(entry.getKey(), entry.getValue());
         }
-        return builder.toItemStack(this.amount);
+        ItemStack item = builder.toItemStack(this.amount);
+        if (this.data > 0) {
+            item.setDurability((short) this.data);
+        }
+        NBTItem nbtItem = DBedWarsAPI.getApi().getNMS().getNBTItem(item);
+        nbtItem.applyTags(this.nbt);
+        return nbtItem.getItem();
     }
 
 }
