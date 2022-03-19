@@ -349,6 +349,10 @@ public final class Json {
         return new Json(getAsJsonObject(memberName), this);
     }
 
+    public Json copy() {
+        return new Json(GSON.fromJson(this.handle.toString(), JsonObject.class));
+    }
+
     /**
      * Saves the Json to a file.
      *

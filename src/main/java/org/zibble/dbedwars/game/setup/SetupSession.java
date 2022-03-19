@@ -26,6 +26,7 @@ import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.Lang;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolder;
+import org.zibble.dbedwars.game.arena.view.shop.ShopType;
 import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;

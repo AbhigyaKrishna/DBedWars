@@ -23,7 +23,8 @@ import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
-import org.zibble.dbedwars.api.util.nbt.*;
+import org.zibble.dbedwars.api.util.nbt.NBT;
+import org.zibble.dbedwars.api.util.nbt.NBTType;
 import org.zibble.dbedwars.api.util.nbt.serializer.JsonNbtSerializer;
 
 import java.util.*;
@@ -32,8 +33,8 @@ import java.util.regex.Pattern;
 
 public class NewBwItemStack {
 
-    private static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
-    private static final Pattern JSON_MATCHER = Pattern.compile("^json::(?<item>.+?\\..+?)(?:::(?<amount>\\d*))?$");
+    public static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
+    public static final Pattern JSON_MATCHER = Pattern.compile("^json::(?<item>.+?\\..+?)(?:::(?<amount>\\d*))?$");
     private static final String[] BYPASS_CLASS = {
             "CraftMetaBlockState",
             "CraftMetaItem",

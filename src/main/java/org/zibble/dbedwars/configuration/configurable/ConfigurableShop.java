@@ -12,6 +12,9 @@ import java.util.Map;
 public class ConfigurableShop implements Loadable {
 
     @ConfigPath
+    private String name;
+
+    @ConfigPath
     private String defaultPage;
 
     @ConfigPath
@@ -35,9 +38,8 @@ public class ConfigurableShop implements Loadable {
         return !this.pages.isEmpty();
     }
 
-    @Override
-    public boolean isInvalid() {
-        return !this.isValid();
+    public String getName() {
+        return name;
     }
 
     public String getDefaultPage() {
@@ -76,11 +78,6 @@ public class ConfigurableShop implements Loadable {
         @Override
         public boolean isValid() {
             return this.title != null && !this.pattern.isEmpty();
-        }
-
-        @Override
-        public boolean isInvalid() {
-            return !this.isValid();
         }
 
         public Map<String, ConfigurableItem> getItems() {

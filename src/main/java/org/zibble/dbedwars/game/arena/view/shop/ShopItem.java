@@ -1,9 +1,12 @@
 package org.zibble.dbedwars.game.arena.view.shop;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.script.condition.Condition;
 import org.zibble.dbedwars.api.util.NewBwItemStack;
+import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.script.action.ActionProcessor;
+import org.zibble.dbedwars.script.condition.ConditionPreProcessor;
 import org.zibble.inventoryframework.ClickType;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.protocol.Item;
@@ -25,6 +28,20 @@ public class ShopItem {
         this.item = item;
         this.useConditions = new HashSet<>();
         this.actions = new HashSet<>();
+    }
+
+    ShopItem(ArenaPlayer player, ShopType.Item item, Placeholder... placeholders) {
+        this.player = player;
+        this.item = item.getItemFunction().apply(placeholders);
+        this.useConditions = new HashSet<>();
+        // TODO variables
+        for (String useCondition : item.getUseConditions()) {
+            this.useConditions.add(ConditionPreProcessor.process(useCondition));
+        }
+        this.actions = new HashSet<>();
+        for (String action : item.getActions()) {
+            this.actions.add(ActionPreProcessor.process(action));
+        }
     }
 
     public TierGroup getTierGroup() {

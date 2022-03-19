@@ -17,6 +17,7 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.NewArenaDataHolder;
+import org.zibble.dbedwars.game.arena.view.shop.ShopType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

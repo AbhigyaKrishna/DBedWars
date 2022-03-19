@@ -28,7 +28,7 @@ public class ArenaDataHolder {
 
     private final Map<Color, TeamDataHolder> teams;
     private final Set<SpawnerDataHolder> spawners;
-    private final Set<ShopDataHolder> shops;
+    private final Set<NewArenaDataHolder.ShopDataHolder> shops;
 
     private ArenaDataHolder() {
         this.teams = new EnumMap<>(Color.class);
