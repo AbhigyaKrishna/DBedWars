@@ -2,6 +2,8 @@ package org.zibble.dbedwars.game.arena.view.shop;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.serializable.LEnchant;
+import org.zibble.dbedwars.api.util.NewBwItemStack;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 import org.zibble.dbedwars.guis.ShopPageGui;
@@ -26,8 +28,22 @@ public class ShopPage {
         }
         page.setMask(mask);
         for (Map.Entry<String, ConfigurableShop.ConfigurablePage.ConfigurableItem> entry : config.getItems().entrySet()) {
-
+            NewBwItemStack item = NewBwItemStack.valueOf(entry.getValue().getMaterial());
+            if (item == null) continue;
+            if (entry.getValue().getName() != null)
+                item.setDisplayName(ConfigMessage.from(entry.getValue().getName()));
+            if (entry.getValue().getLore() != null)
+                item.setLore(ConfigMessage.from(entry.getValue().getLore().toArray(new String[0])));
+            if (entry.getValue().getEnchantment() != null || !entry.getValue().getEnchantment().isEmpty())
+                for (String s : entry.getValue().getEnchantment()) {
+                    LEnchant enchant = LEnchant.valueOf(s);
+                    if (enchant == null) continue;
+                    item.addEnchantment(enchant);
+                }
+            page.addItem(entry.getKey().charAt(0), new ShopItem(player, item));
         }
+
+        return page;
     }
 
     public ShopPage(ArenaPlayer player, int row, Message title) {
@@ -70,15 +86,16 @@ public class ShopPage {
         this.mask = mask;
     }
 
+    public void addItem(char key, ShopItem item) {
+        items.put(key, item);
+    }
+
     public ShopPageGui getGuiComponent() {
         ShopPageGui menu = new ShopPageGui(this.row)
                 .title(this.title)
                 .mask(this.mask);
         for (Map.Entry<Character, ShopItem> entry : this.items.entrySet()) {
-            menu.item(entry.getKey(), entry.getValue().getGuiIcon(), (player, clickType) -> {
-                if (entry.getValue().canUse())
-                    entry.getValue().use(this.player, clickType);
-            });
+            menu.item(entry.getKey(), entry.getValue().asMenuItem());
         }
         return menu;
     }

@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.game.arena.view.shop;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 import org.zibble.dbedwars.guis.ShopGui;
@@ -38,6 +39,12 @@ public class ShopView {
 
     public void setDefaultPage(ShopPage defaultPage) {
         this.defaultPage = defaultPage;
+    }
+
+    public ShopPage createPage(String key, int row, Message title) {
+        ShopPage page = new ShopPage(this.player, row, title);
+        this.pages.put(Key.of(key), page);
+        return page;
     }
 
     public void addPage(String key, ShopPage page) {

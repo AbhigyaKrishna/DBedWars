@@ -14,12 +14,14 @@ import java.util.Set;
 
 public class ShopItem {
 
+    protected final ArenaPlayer player;
     protected final NewBwItemStack item;
     protected TierGroup tierGroup;
     private final Set<Condition<?>> useConditions;
     private final Set<ActionProcessor> actions;
 
-    public ShopItem(NewBwItemStack item) {
+    public ShopItem(ArenaPlayer player, NewBwItemStack item) {
+        this.player = player;
         this.item = item;
         this.useConditions = new HashSet<>();
         this.actions = new HashSet<>();
@@ -49,8 +51,8 @@ public class ShopItem {
     public MenuItem<? extends Item> asMenuItem() {
         MenuItem<SpigotItem> menuItem = MenuItem.of(new SpigotItem(this.item.asItemStack()));
         menuItem.setClickAction((protocolPlayer, clickType) -> {
-            if (this.canUse(protocolPlayer.getArenaPlayer())) {
-                this.use(protocolPlayer.getArenaPlayer(), clickType);
+            if (this.canUse()) {
+                this.use(this.player, clickType);
             }
         });
         return menuItem;

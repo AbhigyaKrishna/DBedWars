@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
 import com.cryptomorin.xseries.XEnchantment;
+import com.google.common.base.Objects;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -80,6 +81,19 @@ public class LEnchant implements Cloneable {
 
         item.addUnsafeEnchantment(this.enchantment.getEnchant(), this.level);
         return true;
+    }
+
+    @Override
+    public boolean equals(Object value) {
+        if (this == value) return true;
+        if (!(value instanceof LEnchant)) return false;
+        LEnchant lEnchant = (LEnchant) value;
+        return level == lEnchant.level && enchantment == lEnchant.enchantment;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(enchantment, level);
     }
 
     @Override

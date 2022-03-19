@@ -2,8 +2,10 @@ package org.zibble.dbedwars.api;
 
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
+import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
+import org.zibble.dbedwars.api.util.NewBwItemStack;
 import org.zibble.dbedwars.api.version.Version;
 
 public abstract class DBedWarsAPI {
@@ -37,6 +39,8 @@ public abstract class DBedWarsAPI {
     public abstract HologramFactory getHologramFactory();
 
     public abstract NMSAdaptor getNMS();
+
+    public abstract NewBwItemStack getConfiguredItem(String key, Placeholder... placeholders);
 
     public abstract Version getVersion();
 

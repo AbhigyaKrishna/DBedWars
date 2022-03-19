@@ -166,7 +166,7 @@ public class NBTItemImpl implements NBTItem {
         }
 
         @Override
-        public NBTType getType() {
+        public NBTType<?> getType() {
             return NBTType.fromId(this.nbt.getTypeId());
         }
 
@@ -205,6 +205,11 @@ public class NBTItemImpl implements NBTItem {
         public NbtTagCompoundImpl(NBTCompound nbt) {
             super(nbt);
             this.tag = (NBTTagCompound) super.getHandle();
+        }
+
+        @Override
+        public NBTType<?> getType() {
+            return NBTType.COMPOUND;
         }
 
         @Override
@@ -299,6 +304,11 @@ public class NBTItemImpl implements NBTItem {
         @Override
         public void setCompound(String key, NBTCompound value) {
             this.tag.set(key, (NBTBase) new NbtImpl(value).getHandle());
+        }
+
+        @Override
+        public NBTCompound asNBT() {
+            return (NBTCompound) super.asNBT();
         }
 
     }

@@ -52,7 +52,7 @@ public interface NBTItem {
 
         Object getHandle();
 
-        NBTType getType();
+        NBTType<?> getType();
 
         NBT asNBT();
 

@@ -16,6 +16,7 @@ public class PluginFiles {
     public static final File LANGUAGES = new File(PLUGIN_DATA_FOLDER, "languages");
     public static final File CACHE = new File(PLUGIN_DATA_FOLDER, ".cache");
     public static final File LIBRARIES_CACHE = new File(CACHE, ".libraries");
+    public static final File ITEMS = new File(PLUGIN_DATA_FOLDER, "items");
 
     /* Hook Files */
     public static final File MULTIVERSE_CORE_HOOK = new File(HOOKS, "Multiverse-Core-Hook.yml");
@@ -47,7 +48,8 @@ public class PluginFiles {
                 ARENA_DATA_SETTINGS,
                 HOOKS, LANGUAGES,
                 CACHE,
-                LIBRARIES_CACHE
+                LIBRARIES_CACHE,
+                ITEMS
         };
     }
 

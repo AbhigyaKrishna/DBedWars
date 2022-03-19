@@ -107,16 +107,12 @@ public class ConfigurableShop implements Loadable {
             private String material;
 
             @ConfigPath
-            private int amount;
-
-            @ConfigPath
             private List<String> enchantment;
 
             @ConfigPath
             private ConfigurableAttribute attribute;
 
             public ConfigurableItem() {
-                this.amount = 1;
                 this.lore = new ArrayList<>();
                 this.attribute = new ConfigurableAttribute();
                 this.enchantment = new ArrayList<>();
@@ -145,10 +141,6 @@ public class ConfigurableShop implements Loadable {
                 return name;
             }
 
-            public int getAmount() {
-                return amount;
-            }
-
             public String getMaterial() {
                 return material;
             }
@@ -167,7 +159,6 @@ public class ConfigurableShop implements Loadable {
                         "itemName='" + name + '\'' +
                         ", itemLore=" + lore +
                         ", material='" + material + '\'' +
-                        ", amount=" + amount +
                         ", enchant=" + enchantment +
                         ", attribute=" + attribute +
                         '}';

@@ -185,6 +185,7 @@ public final class DBedwars extends PluginAdapter {
         this.threadHandler.submitAsync(
                 () -> {
                     this.configHandler.loadConfigurations();
+                    this.configHandler.loadItems();
 
                     this.guiHandler.loadMenus();
                     this.guiHandler.loadAnvilMenus();

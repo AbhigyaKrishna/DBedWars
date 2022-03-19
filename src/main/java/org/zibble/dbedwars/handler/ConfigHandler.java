@@ -1,8 +1,11 @@
 package org.zibble.dbedwars.handler;
 
+import com.google.gson.JsonElement;
+import com.google.gson.stream.MalformedJsonException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
@@ -10,7 +13,9 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class ConfigHandler {
@@ -23,6 +28,7 @@ public class ConfigHandler {
     private final Set<ConfigurableArena> arenas;
     private final Set<ConfigurableTrap> traps;
     private final Set<ConfigurableScoreboard> scoreboards;
+    private final Map<String, Json> jsonItem;
     private MainConfiguration mainConfiguration;
     private ConfigurableDatabase database;
     private ConfigurableShop shop;
@@ -36,6 +42,7 @@ public class ConfigHandler {
         this.arenas = new HashSet<>();
         this.traps = new HashSet<>();
         this.scoreboards = new HashSet<>();
+        this.jsonItem = new HashMap<>();
     }
 
     public void initFiles() {
@@ -106,6 +113,21 @@ public class ConfigHandler {
         this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
     }
 
+    public void loadItems() {
+        for (File file : PluginFiles.ITEMS.listFiles()) {
+            if (file.getName().endsWith(".json")) {
+                try {
+                    Json json = Json.load(file);
+                    for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+                        this.jsonItem.put(entry.getKey(), Json.of(entry.getValue().getAsJsonObject()));
+                    }
+                } catch (MalformedJsonException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void loadArena() {
         File folder = PluginFiles.ARENA_DATA_SETTINGS;
         for (File file : folder.listFiles()) {
@@ -160,6 +182,10 @@ public class ConfigHandler {
 
     public Set<ConfigurableTrap> getTraps() {
         return this.traps;
+    }
+
+    public Map<String, Json> getJsonItem() {
+        return jsonItem;
     }
 
     public Set<ConfigurableScoreboard> getScoreboards() {

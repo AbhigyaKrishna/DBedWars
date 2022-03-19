@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.messaging.Messaging;
+import org.zibble.dbedwars.api.messaging.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -32,6 +33,7 @@ import java.util.regex.Pattern;
 public class NewBwItemStack {
 
     private static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
+    private static final Pattern JSON_MATCHER = Pattern.compile("^json::(?<item>.+?\\..+?)(?:::(?<amount>\\d*))?$");
     private static final String[] BYPASS_CLASS = {
             "CraftMetaBlockState",
             "CraftMetaItem",
@@ -45,25 +47,41 @@ public class NewBwItemStack {
     private Message lore;
 
     private int data;
-    private final Map<XEnchantment, Integer> enchantments;
+    private final Set<LEnchant> enchantments;
     private Map<String, NBT> nbt;
 
     private ItemMeta meta;
 
-    public static NewBwItemStack valueOf(String str) {
-        Matcher matcher = PATTERN.matcher(str);
-        if (!matcher.matches()) return null;
-        Optional<XMaterial> material = XMaterial.matchXMaterial(matcher.group("type"));
-        if (!material.isPresent() || !material.get().isSupported()) return null;
-        int amount = !NumberUtils.isDigits(matcher.group("amount")) ? 1 : Integer.parseInt(matcher.group("amount"));
-        NewBwItemStack itemStack = new NewBwItemStack(material.get(), amount);
-        if (NumberUtils.isDigits(matcher.group("data"))) {
-            itemStack.setData(Short.parseShort(matcher.group("data")));
+    public static NewBwItemStack valueOf(String str, Placeholder... placeholders) {
+        Matcher matcher = JSON_MATCHER.matcher(str);
+        if (matcher.matches()) {
+            String item = matcher.group("item");
+            int amount = NumberUtils.toInt(matcher.group("amount"), 1);
+
+            NewBwItemStack configuredItem = DBedWarsAPI.getApi().getConfiguredItem(item, placeholders);
+            if (configuredItem != null) {
+                configuredItem.setAmount(amount);
+            }
+            return configuredItem;
         }
-        return itemStack;
+
+        matcher = PATTERN.matcher(str);
+        if (matcher.matches()) {
+            Optional<XMaterial> material = XMaterial.matchXMaterial(matcher.group("type"));
+            if (!material.isPresent() || !material.get().isSupported()) return null;
+            int amount = !NumberUtils.isDigits(matcher.group("amount")) ? 1 : Integer.parseInt(matcher.group("amount"));
+            NewBwItemStack itemStack = new NewBwItemStack(material.get(), amount);
+            if (NumberUtils.isDigits(matcher.group("data"))) {
+                itemStack.setData(Short.parseShort(matcher.group("data")));
+            }
+            return itemStack;
+        }
+
+        return null;
     }
 
-    public static NewBwItemStack fromJson(Json json) {
+    public static NewBwItemStack fromJson(Json json, Placeholder... placeholders) {
+        // TODO parse placeholders
         Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(json.get("type").getAsString());
         if (!optmaterial.isPresent()) {
             throw new IllegalArgumentException("Invalid material type: " + json.get("type").getAsString());
@@ -90,7 +108,7 @@ public class NewBwItemStack {
             for (JsonElement element : array) {
                 LEnchant enchant = LEnchant.valueOf(element.getAsString());
                 if (enchant != null) {
-                    item.addEnchantment(enchant.getEnchantment(), enchant.getLevel());
+                    item.addEnchantment(enchant);
                 }
             }
         }
@@ -205,25 +223,33 @@ public class NewBwItemStack {
     }
 
     public NewBwItemStack(XMaterial material, int amount) {
+        if (!material.isSupported()) {
+            throw new IllegalArgumentException("Material " + material.name() + " is not supported");
+        }
         this.material = material;
         this.amount = amount;
-        this.enchantments = new EnumMap<>(XEnchantment.class);
+        this.enchantments = new HashSet<>();
         this.data = -1;
+        this.meta = material.parseItem().getItemMeta();
         this.nbt = new HashMap<>();
     }
 
-    public NewBwItemStack(ItemStack itemStack) {
+    public NewBwItemStack(ItemStack item) {
+        this(item, item.getAmount());
+    }
+
+    public NewBwItemStack(ItemStack itemStack, int amount) {
         this.material = XMaterial.matchXMaterial(itemStack);
-        this.amount = itemStack.getAmount();
-        this.meta = itemStack.getItemMeta().clone();
+        this.amount = amount;
+        this.meta = itemStack.getItemMeta();
         this.data = itemStack.getDurability();
-        this.enchantments = new EnumMap<>(XEnchantment.class);
+        this.enchantments = new HashSet<>();
         if (this.meta == null) return;
         if (this.meta.hasDisplayName()) this.displayName = LegacyMessage.from(this.meta.getDisplayName());
         if (this.meta.hasLore()) this.lore = LegacyMessage.from(this.meta.getLore().toArray(new String[0]));
         if (this.meta.hasEnchants()) {
             for (Map.Entry<Enchantment, Integer> entry : this.meta.getEnchants().entrySet()) {
-                this.enchantments.put(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue());
+                this.enchantments.add(LEnchant.of(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue()));
                 this.meta.removeEnchant(entry.getKey());
             }
         }
@@ -306,28 +332,34 @@ public class NewBwItemStack {
         this.data = data;
     }
 
-    public Map<XEnchantment, Integer> getEnchantments() {
-        return enchantments;
+    public Set<LEnchant> getEnchantments() {
+        return this.enchantments;
     }
 
     public boolean hasEnchant(XEnchantment enchantment) {
-        return enchantments.containsKey(enchantment);
+        for (LEnchant enchant : this.enchantments) {
+            if (enchant.getEnchantment().equals(enchantment)) return true;
+        }
+        return false;
     }
 
-    public void addEnchantment(XEnchantment enchantment, int level) {
-        enchantments.put(enchantment, level);
+    public void addEnchantment(LEnchant enchantment) {
+        this.enchantments.add(enchantment);
     }
 
     public void removeEnchantment(XEnchantment enchantment) {
-        enchantments.remove(enchantment);
+        this.enchantments.removeIf(enchant -> enchant.getEnchantment().equals(enchantment));
     }
 
     public void removeAllEnchantments() {
-        enchantments.clear();
+        this.enchantments.clear();
     }
 
     public int getEnchantLevel(XEnchantment enchantment) {
-        return enchantments.getOrDefault(enchantment, 0);
+        for (LEnchant enchant : this.enchantments) {
+            if (enchant.getEnchantment().equals(enchantment)) return enchant.getLevel();
+        }
+        return 0;
     }
 
     public void addNbt(String key, NBT value) {
@@ -358,9 +390,9 @@ public class NewBwItemStack {
         ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta)
                 .displayName(this.displayName.asComponentWithPAPI(player)[0])
                 .lore(this.lore.asComponentWithPAPI(player));
-        for (Map.Entry<XEnchantment, Integer> entry : this.enchantments.entrySet()) {
-            if (!entry.getKey().isSupported()) continue;
-            builder.withEnchantment(entry.getKey(), entry.getValue());
+        for (LEnchant enchant : this.enchantments) {
+            if (!enchant.getEnchantment().isSupported()) continue;
+            builder.withEnchantment(enchant.getEnchantment(), enchant.getLevel());
         }
         ItemStack item = builder.toItemStack(this.amount);
         if (this.data > 0) {
@@ -375,9 +407,9 @@ public class NewBwItemStack {
         ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta)
                 .displayName(this.displayName.asComponent()[0])
                 .lore(this.lore.asComponent());
-        for (Map.Entry<XEnchantment, Integer> entry : this.enchantments.entrySet()) {
-            if (!entry.getKey().isSupported()) continue;
-            builder.withEnchantment(entry.getKey(), entry.getValue());
+        for (LEnchant enchant : this.enchantments) {
+            if (!enchant.getEnchantment().isSupported()) continue;
+            builder.withEnchantment(enchant.getEnchantment(), enchant.getLevel());
         }
         ItemStack item = builder.toItemStack(this.amount);
         if (this.data > 0) {
