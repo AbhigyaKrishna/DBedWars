@@ -7,18 +7,18 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.util.MathUtil;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
-import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.util.ClickAction;
-import org.zibble.dbedwars.hooks.defaults.hologram.HologramImpl;
+import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,7 +27,6 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
     protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
 
-    //TODO INIT
     private final Hologram hologram;
     private final String ID;
     private final NPCData npcData;
@@ -36,8 +35,10 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     private final UUID uuid;
     private Location location;
 
-    protected Set<ClickAction> clickActions = Collections.synchronizedSet(new HashSet<>());
-    protected Set<UUID> shown = Collections.synchronizedSet(new HashSet<>());
+    protected final Set<ClickAction> clickActions;
+    protected final Set<UUID> shown;
+    protected final Set<UUID> outOfRenderDistance;
+    protected final NPCTracker npcTracker;
 
     public BedwarsNPCImpl(String ID, Location location, NPCData npcData, Component name) {
         this.ID = ID;
@@ -45,12 +46,15 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
-        //TODO
-        /*this.hologram = new HologramImpl(this.location.clone().add(0, 1, 0));*/
+        this.hologram = DBedWarsAPI.getApi().getHologramFactory().createHologram(this.location.clone().add(0, 2, 0));
         this.hologram.setInverted(true);
         this.hologram.addPage().addNewTextLine(name);
+        this.clickActions = Collections.synchronizedSet(new HashSet<>());
+        this.shown = Collections.synchronizedSet(new HashSet<>());
+        this.outOfRenderDistance = Collections.synchronizedSet(new HashSet<>());
+        this.npcTracker = new NPCTracker(this);
+        this.npcTracker.start();
     }
-
 
     @Override
     public Hologram getNameHologram() {
@@ -97,6 +101,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
                     BedwarsNPCImpl.this.changeLocationPacket(player);
                 } else {
                     BedwarsNPCImpl.this.shown.remove(uuid);
+                    BedwarsNPCImpl.this.outOfRenderDistance.remove(uuid);
                 }
             }
             return BedwarsNPCImpl.this;
@@ -118,7 +123,10 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
             for (UUID uuid : BedwarsNPCImpl.this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) BedwarsNPCImpl.this.changeDirectionPacket(player, yawByte, pitchByte);
-                else BedwarsNPCImpl.this.shown.remove(uuid);
+                else {
+                    BedwarsNPCImpl.this.shown.remove(uuid);
+                    BedwarsNPCImpl.this.outOfRenderDistance.remove(uuid);
+                }
             }
             return BedwarsNPCImpl.this;
         });
@@ -146,6 +154,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
                 }
             }
             BedwarsNPCImpl.this.shown.clear();
+            BedwarsNPCImpl.this.outOfRenderDistance.clear();
             return BedwarsNPCImpl.this;
         });
     }
@@ -163,6 +172,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
 
             BedwarsNPCImpl.this.destroyPacket(player);
             BedwarsNPCImpl.this.shown.remove(player.getUniqueId());
+            BedwarsNPCImpl.this.outOfRenderDistance.remove(player.getUniqueId());
             return BedwarsNPCImpl.this;
         });
     }
@@ -196,7 +206,10 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     }
 
     public ActionFuture<BedwarsNPC> addInShownList(Player player) {
-        return null;
+        return ActionFuture.supplyAsync(() -> {
+            BedwarsNPCImpl.this.shown.add(player.getUniqueId());
+            return BedwarsNPCImpl.this;
+        });
     }
 
     @Override

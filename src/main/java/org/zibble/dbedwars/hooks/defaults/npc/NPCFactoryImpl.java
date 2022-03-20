@@ -3,8 +3,11 @@ package org.zibble.dbedwars.hooks.defaults.npc;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.HandlerList;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
@@ -16,11 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NPCFactoryImpl implements NPCFactory {
 
     private final Map<String, BedwarsNPCImpl> npcs = new ConcurrentHashMap<>();
-    private PacketListenerAbstract listener;
+    private NPCListener listener;
 
     @Override
     public void init() {
-        PacketEvents.getAPI().getEventManager().registerListener(listener = new NPCPacketListener(this));
+        PacketEvents.getAPI().getEventManager().registerListener(listener = new NPCListener(this));
+        Bukkit.getPluginManager().registerEvents(this.listener, DBedwars.getInstance());
     }
 
     @Override
@@ -48,6 +52,7 @@ public class NPCFactoryImpl implements NPCFactory {
         }
         this.npcs.clear();
         PacketEvents.getAPI().getEventManager().unregisterListener(this.listener);
+        HandlerList.unregisterAll(this.listener);
     }
 
 }
