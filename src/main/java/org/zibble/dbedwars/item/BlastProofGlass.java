@@ -4,12 +4,14 @@ import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
@@ -21,31 +23,24 @@ public class BlastProofGlass extends BedWarsActionItem {
 
     private final DBedwars plugin;
 
-    private static final Predicate<Material> GLASS_PREDICATE = new Predicate<Material>() {
-        @Override
-        public boolean test(Material material) {
-            return !material.name().contains("GLASS");
-        }
-    };
-    private static final Predicate<Material> GLASS_OR_ENDSTONE_PREDICATE = new Predicate<Material>() {
-        @Override
-        public boolean test(Material material) {
-            return GLASS_PREDICATE.test(material) || XMaterial.END_STONE.parseMaterial().equals(material);
-        }
-    };
+    private static final Predicate<Material> GLASS_PREDICATE = material -> !material.name().contains("GLASS");
+    private static final Predicate<Material> GLASS_OR_ENDSTONE_PREDICATE = material -> GLASS_PREDICATE.test(material) || XMaterial.END_STONE.parseMaterial().equals(material);
 
     public BlastProofGlass(DBedwars plugin) {
-
-        //TODO COLOR BASED ON TEAMS
-
-        super(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getName(),
-                plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getLore(),
-                XMaterial.GLASS.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getName()),
+                ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getBlastProofGlass().getLore()),
+                XMaterial.GLASS);
         this.plugin = plugin;
     }
 
+    @Override
+    public void give(Player player) {
+        // TODO Get ArenaPlayer then set type
+        super.give(player);
+    }
+
     public void onPlace(BlockPlaceEvent event) {
-        plugin.getNMSAdaptor().setBlockResistance(event.getBlock(), Float.MAX_VALUE / 5);
+        this.plugin.getNMSAdaptor().setBlockResistance(event.getBlock(), Float.MAX_VALUE / 5);
     }
 
     public void onTNTExplode(EntityExplodeEvent event) {
@@ -201,17 +196,13 @@ public class BlastProofGlass extends BedWarsActionItem {
     private List<Material> getMaterials(List<Block> blocks) {
         List<Material> materials = new ArrayList<>();
 
-        blocks.removeIf(
-                block ->
-                        !(block.getType().name().contains("GLASS")
-                                || XMaterial.matchXMaterial(block.getType())
-                                        == XMaterial.END_STONE));
-        blocks.forEach(
-                block -> {
-                    if (!materials.contains(block.getType())) {
-                        materials.add(block.getType());
-                    }
-                });
+        blocks.removeIf(block -> !(block.getType().name().contains("GLASS")
+                || XMaterial.matchXMaterial(block.getType()) == XMaterial.END_STONE));
+        blocks.forEach(block -> {
+            if (!materials.contains(block.getType())) {
+                materials.add(block.getType());
+            }
+        });
 
         return materials;
     }

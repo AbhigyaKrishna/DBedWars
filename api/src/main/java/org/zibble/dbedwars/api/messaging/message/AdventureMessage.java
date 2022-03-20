@@ -23,6 +23,10 @@ public class AdventureMessage extends Message {
         return new AdventureMessage(message, placeholders);
     }
 
+    public static AdventureMessage from(Collection<String> message, Placeholder... placeholders) {
+        return new AdventureMessage(message, placeholders);
+    }
+
     public static AdventureMessage from(Component component, Placeholder... placeholders) {
         return new AdventureMessage(Messaging.get().serializeMini(component), placeholders);
     }

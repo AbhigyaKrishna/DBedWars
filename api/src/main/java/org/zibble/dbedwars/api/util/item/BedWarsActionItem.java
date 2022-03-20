@@ -1,38 +1,51 @@
 package org.zibble.dbedwars.api.util.item;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Keyed;
-import org.zibble.dbedwars.api.util.NBTUtils;
 
 import java.util.Collection;
 
 public abstract class BedWarsActionItem extends ActionItemBase implements Keyed<String> {
 
-    public BedWarsActionItem(String display_name, Collection<String> lore, Material material) {
-        super(display_name, lore, material);
+    public BedWarsActionItem(String display_name, Collection<String> lore, XMaterial material) {
+        this(display_name, lore, material, EventPriority.NORMAL);
     }
 
-    public BedWarsActionItem(Component display_name, Collection<Component> lore, Material material) {
-        super(display_name, lore, material);
+    public BedWarsActionItem(Component display_name, Collection<Component> lore, XMaterial material) {
+        super(display_name, lore, material, EventPriority.NORMAL);
+    }
+
+    public BedWarsActionItem(Message display_name, Message lore, XMaterial material) {
+        super(display_name, lore, material, EventPriority.NORMAL);
+    }
+
+    public BedWarsActionItem(String display_name, Collection<String> lore, XMaterial material, EventPriority priority) {
+        super(display_name, lore, material, priority);
+    }
+
+    public BedWarsActionItem(Component display_name, Collection<Component> lore, XMaterial material, EventPriority priority) {
+        super(display_name, lore, material, priority);
+    }
+
+    public BedWarsActionItem(Message display_name, Message lore, XMaterial material, EventPriority priority) {
+        super(display_name, lore, material, priority);
     }
 
     @Override
-    public ItemStack toItemStack() {
-        return this.toBwItemStack().toItemStack();
-    }
-
-    public BwItemStack toBwItemStack() {
-        return new BwItemStack(super.toItemStack());
+    public ItemStack asItemStack() {
+        return this.asBwItemStack().asItemStack();
     }
 
     @Override
     public boolean isThis(ItemStack item) {
-        return super.isThis(item) && NBTUtils.hasPluginData(item);
+        return this.asBwItemStack().isSimilar(new BwItemStack(item));
     }
 
     @Override

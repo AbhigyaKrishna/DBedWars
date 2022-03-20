@@ -18,11 +18,10 @@ import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.Util;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class DreamDefenderSpawnEgg extends BedWarsActionItem {
@@ -33,13 +32,10 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
 
     public DreamDefenderSpawnEgg(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler()
-                        .getCustomItems()
-                        .getDreamDefender()
-                        .getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore()),
-                XMaterial.WOLF_SPAWN_EGG.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getDreamDefender().getName()),
+                plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore() == null ? null
+                        : ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getDreamDefender().getLore()),
+                XMaterial.WOLF_SPAWN_EGG);
         this.plugin = plugin;
         cfgGolem = plugin.getConfigHandler().getCustomItems().getDreamDefender();
     }

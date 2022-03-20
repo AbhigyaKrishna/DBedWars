@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.item;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,10 +14,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TNTItem extends BedWarsActionItem {
@@ -27,11 +26,10 @@ public class TNTItem extends BedWarsActionItem {
     private final ConfigurableCustomItems.ConfigurableKnockBack cfgKB;
 
     public TNTItem(DBedwars plugin) {
-        super(
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTnt().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getTnt().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getTnt().getLore()),
-                Material.TNT);
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getTnt().getName()),
+                plugin.getConfigHandler().getCustomItems().getTnt().getLore() == null ? null
+                        : ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getTnt().getLore()),
+                XMaterial.TNT);
         this.cfgTNT = plugin.getConfigHandler().getCustomItems().getTnt();
         this.cfgKB = cfgTNT.getKnockback();
     }

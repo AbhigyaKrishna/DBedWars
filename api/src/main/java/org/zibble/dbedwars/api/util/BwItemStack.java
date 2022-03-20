@@ -41,7 +41,7 @@ public class BwItemStack implements Cloneable {
             "GlowMetaItem"
     };
 
-    private final XMaterial material;
+    private XMaterial material;
     private int amount;
 
     private Message displayName;
@@ -246,7 +246,7 @@ public class BwItemStack implements Cloneable {
         this.enchantments = new HashSet<>();
         if (this.meta == null) return;
         if (this.meta.hasDisplayName()) this.displayName = LegacyMessage.from(this.meta.getDisplayName());
-        if (this.meta.hasLore()) this.lore = LegacyMessage.from(this.meta.getLore().toArray(new String[0]));
+        if (this.meta.hasLore()) this.lore = LegacyMessage.from(this.meta.getLore());
         if (this.meta.hasEnchants()) {
             for (Map.Entry<Enchantment, Integer> entry : this.meta.getEnchants().entrySet()) {
                 this.enchantments.add(LEnchant.of(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue()));
@@ -261,6 +261,10 @@ public class BwItemStack implements Cloneable {
 
     public XMaterial getType() {
         return material;
+    }
+
+    public void setType(XMaterial material) {
+        this.material = material;
     }
 
     public int getAmount() {

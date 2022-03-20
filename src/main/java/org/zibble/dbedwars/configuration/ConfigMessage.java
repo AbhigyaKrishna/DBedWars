@@ -21,6 +21,10 @@ public class ConfigMessage extends Message {
         return new ConfigMessage(message, placeholders);
     }
 
+    public static ConfigMessage from(Collection<String> message, Placeholder... placeholders) {
+        return new ConfigMessage(message, placeholders);
+    }
+
     protected ConfigMessage(String message, Placeholder... placeholders) {
         super(message, placeholders);
     }

@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 
 public class TimeUtil {
 
-    private static final Matcher YEARS = Pattern.compile("(?<years>\\d+([y]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher MONTHS = Pattern.compile("(?<months>\\d+(mo))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher WEEKS = Pattern.compile("(?<weeks>\\d+([w]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher DAYS = Pattern.compile("(?<days>\\d+([d]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher HOURS = Pattern.compile("(?<hours>\\d+([h]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher MINUTES = Pattern.compile("(?<minutes>\\d+(m[^o,s]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher SECONDS = Pattern.compile("(?<seconds>\\d+([s]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher TICKS = Pattern.compile("(?<ticks>\\d+([t]))", Pattern.CASE_INSENSITIVE).matcher("");
-    private static final Matcher MILLISECONDS = Pattern.compile("(?<milliseconds>\\d+(ms))", Pattern.CASE_INSENSITIVE).matcher("");
+    private static final Pattern YEARS = Pattern.compile("(?<years>\\d+([y]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MONTHS = Pattern.compile("(?<months>\\d+(mo))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern WEEKS = Pattern.compile("(?<weeks>\\d+([w]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DAYS = Pattern.compile("(?<days>\\d+([d]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern HOURS = Pattern.compile("(?<hours>\\d+([h]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MINUTES = Pattern.compile("(?<minutes>\\d+(m[^o,s]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SECONDS = Pattern.compile("(?<seconds>\\d+([s]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TICKS = Pattern.compile("(?<ticks>\\d+([t]))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MILLISECONDS = Pattern.compile("(?<milliseconds>\\d+(ms))", Pattern.CASE_INSENSITIVE);
 
     public static Duration parse(String time) {
         long years = 0;
@@ -28,49 +28,49 @@ public class TimeUtil {
         long ticks = 0;
         long millis = 0;
 
-        YEARS.reset(time);
-        if (YEARS.find()) {
-            years = Integer.parseInt(YEARS.group("years").replace("y", ""));
+        Matcher matcher = YEARS.matcher(time);
+        if (matcher.find()) {
+            years = Integer.parseInt(matcher.group("years").replace("y", ""));
         }
 
-        MONTHS.reset(time);
-        if (MONTHS.find()) {
-            months = Integer.parseInt(MONTHS.group("months").replace("m", ""));
+        matcher = MONTHS.matcher(time);
+        if (matcher.find()) {
+            months = Integer.parseInt(matcher.group("months").replace("m", ""));
         }
 
-        WEEKS.reset(time);
-        if (WEEKS.find()) {
-            weeks = Integer.parseInt(WEEKS.group("weeks").replace("w", ""));
+        matcher = WEEKS.matcher(time);
+        if (matcher.find()) {
+            weeks = Integer.parseInt(matcher.group("weeks").replace("w", ""));
         }
 
-        DAYS.reset(time);
-        if (DAYS.find()) {
-            days = Integer.parseInt(DAYS.group("days").replace("d", ""));
+        matcher = DAYS.matcher(time);
+        if (matcher.find()) {
+            days = Integer.parseInt(matcher.group("days").replace("d", ""));
         }
 
-        HOURS.reset(time);
-        if (HOURS.find()) {
-            hours = Integer.parseInt(HOURS.group("hours").replace("h", ""));
+        matcher = HOURS.matcher(time);
+        if (matcher.find()) {
+            hours = Integer.parseInt(matcher.group("hours").replace("h", ""));
         }
 
-        MINUTES.reset(time);
-        if (MINUTES.find()) {
-            minutes = Integer.parseInt(MINUTES.group("minutes").replace("m", ""));
+        matcher = MINUTES.matcher(time);
+        if (matcher.find()) {
+            minutes = Integer.parseInt(matcher.group("minutes").replace("m", ""));
         }
 
-        SECONDS.reset(time);
-        if (SECONDS.find()) {
-            seconds = Integer.parseInt(SECONDS.group("seconds").replace("s", ""));
+        matcher = SECONDS.matcher(time);
+        if (matcher.find()) {
+            seconds = Integer.parseInt(matcher.group("seconds").replace("s", ""));
         }
 
-        TICKS.reset(time);
-        if (TICKS.find()) {
-            ticks = Integer.parseInt(TICKS.group("ticks").replace("t", ""));
+        matcher = TICKS.matcher(time);
+        if (matcher.find()) {
+            ticks = Integer.parseInt(matcher.group("ticks").replace("t", ""));
         }
 
-        MILLISECONDS.reset(time);
-        if (MILLISECONDS.find()) {
-            millis = Integer.parseInt(MILLISECONDS.group("milliseconds").replace("ms", ""));
+        matcher = MILLISECONDS.matcher(time);
+        if (matcher.find()) {
+            millis = Integer.parseInt(matcher.group("milliseconds").replace("ms", ""));
         }
         return Duration.ofMilliseconds(years * 31536000000L + months * 2628000000L + weeks * 604800000L + days * 86400000L + hours * 3600000L + minutes * 60000L + seconds * 1000L + ticks * 50L + millis);
     }

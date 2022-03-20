@@ -341,7 +341,7 @@ public class GameListener extends PluginHandler {
                         ((DBedwars) this.getPlugin())
                                 .getCustomItemHandler()
                                 .getItem("WATER_BUCKET")
-                                .toItemStack())) {
+                                .asItemStack())) {
             ((WaterBucket)
                             ((DBedwars) this.getPlugin())
                                     .getCustomItemHandler()

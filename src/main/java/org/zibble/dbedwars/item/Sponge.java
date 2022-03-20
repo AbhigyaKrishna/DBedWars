@@ -15,10 +15,9 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class Sponge extends BedWarsActionItem {
@@ -29,10 +28,10 @@ public class Sponge extends BedWarsActionItem {
             new FixedMetadataValue(DBedwars.getInstance(), true);
 
     public Sponge(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
-                XMaterial.SPONGE.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getSponge().getName()),
+                plugin.getConfigHandler().getCustomItems().getSponge().getLore() == null ? null
+                        : ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getSponge().getLore()),
+                XMaterial.SPONGE);
         this.plugin = plugin;
         this.cfgSponge = plugin.getConfigHandler().getCustomItems().getSponge();
     }

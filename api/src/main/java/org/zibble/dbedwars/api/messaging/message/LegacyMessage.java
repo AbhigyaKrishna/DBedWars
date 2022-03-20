@@ -23,6 +23,10 @@ public class LegacyMessage extends Message {
         return new LegacyMessage(message, placeholders);
     }
 
+    public static LegacyMessage from(Collection<String> message, Placeholder... placeholders) {
+        return new LegacyMessage(message, placeholders);
+    }
+
     protected LegacyMessage(String message, Placeholder... placeholders) {
         super(message, placeholders);
     }
