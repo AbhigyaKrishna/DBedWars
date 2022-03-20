@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class NewBwItemStack {
+public class NewBwItemStack implements Cloneable {
 
     public static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
     public static final Pattern JSON_MATCHER = Pattern.compile("^json::(?<item>.+?\\..+?)(?:::(?<amount>\\d*))?$");
@@ -82,7 +82,6 @@ public class NewBwItemStack {
     }
 
     public static NewBwItemStack fromJson(Json json, Placeholder... placeholders) {
-        // TODO parse placeholders
         Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(json.get("type").getAsString());
         if (!optmaterial.isPresent()) {
             throw new IllegalArgumentException("Invalid material type: " + json.get("type").getAsString());
@@ -421,4 +420,34 @@ public class NewBwItemStack {
         return nbtItem.getItem();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NewBwItemStack that = (NewBwItemStack) o;
+        return amount == that.amount && this.isSimilar(that);
+    }
+
+    public boolean isSimilar(NewBwItemStack item) {
+        if (this == item) return true;
+        return data == item.data
+                && material == item.material
+                && ((item.displayName == null && this.displayName == null) || displayName.equals(item.displayName))
+                && ((item.lore == null && this.lore == null) || lore.equals(item.lore))
+                && enchantments.equals(item.enchantments)
+                && nbt.equals(item.nbt)
+                && meta.equals(item.meta);
+    }
+
+    @Override
+    protected NewBwItemStack clone() {
+        NewBwItemStack returnVal = new NewBwItemStack(this.material, this.amount);
+        returnVal.displayName = this.displayName.clone();
+        returnVal.lore = this.lore.clone();
+        returnVal.meta = this.meta.clone();
+        returnVal.data = this.data;
+        this.nbt.forEach((key, value) -> returnVal.nbt.put(key, value.clone()));
+        this.enchantments.forEach(enchant -> returnVal.enchantments.add(enchant.clone()));
+        return returnVal;
+    }
 }
