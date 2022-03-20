@@ -8,6 +8,7 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
+import org.zibble.dbedwars.game.arena.view.shop.ShopType;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.EnumMap;
@@ -235,8 +236,8 @@ public class NewArenaDataHolder {
         private ShopType shopType;
         private LocationXYZYP location;
 
-        public static NewArenaDataHolder.ShopDataHolder of(ShopType shopType, LocationXYZYP location) {
-            NewArenaDataHolder.ShopDataHolder data = new NewArenaDataHolder.ShopDataHolder();
+        public static ShopDataHolder of(ShopType shopType, LocationXYZYP location) {
+            ShopDataHolder data = new ShopDataHolder();
             data.shopType = shopType;
             data.location = location;
             return data;

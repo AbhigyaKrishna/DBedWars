@@ -45,15 +45,11 @@ pages:
           - '<gray>Great for bridging across'
           - '<gray>islands. Turns into your team''s'
           - '<gray>color.'
-        attribute:
-          condition:
-            item: '4:IRON_INGOT'
-          type: 'purchasable'
-          cost:
-          item:
-            '1':
-              material: 'WOOL:<team>'
-              amount: 16
+        condition:
+          - '[PLAYER] has_item{4:IRON_INGOT}'
+        action:
+          - '[PLAYER] remove_item{4:IRON_INGOT}'
+          - '[PLAYER] give_item{16:WOOL:<team>}'
       C:
         material: 'STAINED_CLAY:<team>'
         amount: 16

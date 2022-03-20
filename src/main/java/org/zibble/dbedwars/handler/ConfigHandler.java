@@ -1,8 +1,11 @@
 package org.zibble.dbedwars.handler;
 
+import com.google.gson.JsonElement;
+import com.google.gson.stream.MalformedJsonException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
@@ -10,7 +13,9 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class ConfigHandler {
@@ -23,6 +28,8 @@ public class ConfigHandler {
     private final Set<ConfigurableArena> arenas;
     private final Set<ConfigurableTrap> traps;
     private final Set<ConfigurableScoreboard> scoreboards;
+    private final Map<String, Json> jsonItem;
+    private final Set<ConfigurableShop> shops;
     private MainConfiguration mainConfiguration;
     private ConfigurableDatabase database;
     private ConfigurableShop shop;
@@ -36,10 +43,12 @@ public class ConfigHandler {
         this.arenas = new HashSet<>();
         this.traps = new HashSet<>();
         this.scoreboards = new HashSet<>();
+        this.jsonItem = new HashMap<>();
+        this.shops = new HashSet<>();
     }
 
     public void initFiles() {
-        boolean shouldDownloadAll = !PluginFiles.LIBRARIES_CACHE.isDirectory();
+        boolean shouldDownloadAll = !PluginFiles.Folder.LIBRARIES_CACHE.isDirectory();
 
         for (File folder : PluginFiles.getDirectories()) {
             if (!folder.isDirectory())
@@ -53,13 +62,13 @@ public class ConfigHandler {
         }
 
         for (File languageFile : PluginFiles.getLanguageFiles()) {
-            this.plugin.saveResource("languages/" + languageFile.getName(), PluginFiles.LANGUAGES, false);
+            this.plugin.saveResource("languages/" + languageFile.getName(), PluginFiles.Folder.LANGUAGES, false);
         }
 
         for (File file : PluginFiles.getFiles()) {
             String path = "";
             File parent = file.getParentFile();
-            while (!parent.getName().equals(PluginFiles.PLUGIN_DATA_FOLDER.getName())) {
+            while (!parent.getName().equals(PluginFiles.Folder.PLUGIN_DATA_FOLDER.getName())) {
                 path = parent.getName() + "/" + path;
                 parent = parent.getParentFile();
             }
@@ -76,7 +85,7 @@ public class ConfigHandler {
     public void initLanguage() {
         ConfigLang.init(this.mainConfiguration.getLangSection());
         boolean loaded = false;
-        for (File languageFile : PluginFiles.LANGUAGES.listFiles()) {
+        for (File languageFile : PluginFiles.Folder.LANGUAGES.listFiles()) {
             if (languageFile.getName().replace(".yml", "").equals(this.mainConfiguration.getLangSection().getServerLanguage())) {
                 loaded = true;
                 ConfigLang.load(languageFile);
@@ -106,8 +115,23 @@ public class ConfigHandler {
         this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
     }
 
+    public void loadItems() {
+        for (File file : PluginFiles.Folder.ITEMS.listFiles()) {
+            if (file.getName().endsWith(".json")) {
+                try {
+                    Json json = Json.load(file);
+                    for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+                        this.jsonItem.put(entry.getKey(), Json.of(entry.getValue().getAsJsonObject()));
+                    }
+                } catch (MalformedJsonException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void loadArena() {
-        File folder = PluginFiles.ARENA_DATA_SETTINGS;
+        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
         for (File file : folder.listFiles()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             ConfigurableArena cfg = new ConfigurableArena();
@@ -146,6 +170,16 @@ public class ConfigHandler {
         }
     }
 
+    private void loadShops() {
+        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
+        for (File file : folder.listFiles()) {
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            ConfigurableShop cfg = new ConfigurableShop();
+            cfg.load(config);
+            this.shops.add(cfg);
+        }
+    }
+
     public MainConfiguration getMainConfiguration() {
         return this.mainConfiguration;
     }
@@ -160,6 +194,14 @@ public class ConfigHandler {
 
     public Set<ConfigurableTrap> getTraps() {
         return this.traps;
+    }
+
+    public Map<String, Json> getJsonItem() {
+        return jsonItem;
+    }
+
+    public Set<ConfigurableShop> getShops() {
+        return shops;
     }
 
     public Set<ConfigurableScoreboard> getScoreboards() {

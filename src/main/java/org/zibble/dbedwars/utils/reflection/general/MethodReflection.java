@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.general;
 
-import org.zibble.dbedwars.utils.reflection.DataType;
+import org.zibble.dbedwars.api.util.DataType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

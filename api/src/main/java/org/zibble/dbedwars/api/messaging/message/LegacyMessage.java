@@ -36,7 +36,7 @@ public class LegacyMessage extends Message {
     }
 
     @Override
-    public Component[] asUnparsedComponent() {
+    public Component[] asRawComponent() {
         Component[] components = new Component[this.message.size()];
         for (int i = 0; i < this.message.size(); i++) {
             components[i] = Messaging.get().translateAlternateColorCodes(this.message.get(i));

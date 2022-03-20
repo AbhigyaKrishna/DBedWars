@@ -12,7 +12,7 @@ public interface ScriptTranslationRegistry {
 
     TranslationRegistry<? extends ActionTranslator<?, ? extends Action<?>>> actionRegistry();
 
-    TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition>> conditionRegistry();
+    TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition<?>>> conditionRegistry();
 
     interface TranslationRegistry<T extends Translator<? extends Translated>> {
 

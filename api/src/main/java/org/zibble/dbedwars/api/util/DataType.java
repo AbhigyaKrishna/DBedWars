@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.utils.reflection;
+package org.zibble.dbedwars.api.util;
 
 import java.util.HashMap;
 import java.util.Map;

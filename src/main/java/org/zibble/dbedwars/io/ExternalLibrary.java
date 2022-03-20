@@ -56,7 +56,7 @@ public abstract class ExternalLibrary {
 
     public ExternalLibrary(String url, String fileName, String name) {
         this.url = url;
-        this.file = new File(PluginFiles.LIBRARIES_CACHE, fileName);
+        this.file = new File(PluginFiles.Folder.LIBRARIES_CACHE, fileName);
         this.name = name;
     }
 

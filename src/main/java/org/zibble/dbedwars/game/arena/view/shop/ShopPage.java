@@ -2,8 +2,6 @@ package org.zibble.dbedwars.game.arena.view.shop;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.configuration.ConfigMessage;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 import org.zibble.dbedwars.guis.ShopPageGui;
 
 import java.util.Arrays;
@@ -18,17 +16,31 @@ public class ShopPage {
     private String[] mask;
     private Map<Character, ShopItem> items;
 
-    public static ShopPage fromConfig(ArenaPlayer player, ConfigurableShop.ConfigurablePage config) {
-        ShopPage page = new ShopPage(player, config.getPattern().size(), ConfigMessage.from(config.getTitle()));
-        String[] mask = new String[config.getPattern().size()];
-        for (int i = 0; i < config.getPattern().size(); i++) {
-            mask[i] = config.getPattern().get(i).replace(" ", "");
-        }
-        page.setMask(mask);
-        for (Map.Entry<String, ConfigurableShop.ConfigurablePage.ConfigurableItem> entry : config.getItems().entrySet()) {
-
-        }
-    }
+//    public static ShopPage fromConfig(ArenaPlayer player, ConfigurableShop.ConfigurablePage config) {
+//        ShopPage page = new ShopPage(player, config.getPattern().size(), ConfigMessage.from(config.getTitle()));
+//        String[] mask = new String[config.getPattern().size()];
+//        for (int i = 0; i < config.getPattern().size(); i++) {
+//            mask[i] = config.getPattern().get(i).replace(" ", "");
+//        }
+//        page.setMask(mask);
+//        for (Map.Entry<String, ConfigurableShop.ConfigurablePage.ConfigurableItem> entry : config.getItems().entrySet()) {
+//            NewBwItemStack item = NewBwItemStack.valueOf(entry.getValue().getMaterial());
+//            if (item == null) continue;
+//            if (entry.getValue().getName() != null)
+//                item.setDisplayName(ConfigMessage.from(entry.getValue().getName()));
+//            if (entry.getValue().getLore() != null)
+//                item.setLore(ConfigMessage.from(entry.getValue().getLore().toArray(new String[0])));
+//            if (entry.getValue().getEnchantment() != null || !entry.getValue().getEnchantment().isEmpty())
+//                for (String s : entry.getValue().getEnchantment()) {
+//                    LEnchant enchant = LEnchant.valueOf(s);
+//                    if (enchant == null) continue;
+//                    item.addEnchantment(enchant);
+//                }
+//            page.addItem(entry.getKey().charAt(0), new ShopItem(player, item));
+//        }
+//
+//        return page;
+//    }
 
     public ShopPage(ArenaPlayer player, int row, Message title) {
         this.player = player;
@@ -36,6 +48,17 @@ public class ShopPage {
         this.title = title;
         this.mask = new String[row];
         this.items = new HashMap<>();
+    }
+
+    ShopPage(ArenaPlayer player, ShopType.Page page) {
+        this.player = player;
+        this.row = page.getRow();
+        this.title = page.getTitle();
+        this.mask = new String[this.row];
+        this.items = new HashMap<>();
+        for (Map.Entry<Character, ShopType.Item> entry : page.getItems().entrySet()) {
+            this.items.put(entry.getKey(), new ShopItem(this.player, entry.getValue()));
+        }
     }
 
     public int getRow() {
@@ -70,15 +93,16 @@ public class ShopPage {
         this.mask = mask;
     }
 
+    public void addItem(char key, ShopItem item) {
+        items.put(key, item);
+    }
+
     public ShopPageGui getGuiComponent() {
         ShopPageGui menu = new ShopPageGui(this.row)
                 .title(this.title)
                 .mask(this.mask);
         for (Map.Entry<Character, ShopItem> entry : this.items.entrySet()) {
-            menu.item(entry.getKey(), entry.getValue().getGuiIcon(), (player, clickType) -> {
-                if (entry.getValue().canUse())
-                    entry.getValue().use(this.player, clickType);
-            });
+            menu.item(entry.getKey(), entry.getValue().asMenuItem());
         }
         return menu;
     }

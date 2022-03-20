@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.resolver.wrapper;
 
-import org.zibble.dbedwars.utils.reflection.DataType;
+import org.zibble.dbedwars.api.util.DataType;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;

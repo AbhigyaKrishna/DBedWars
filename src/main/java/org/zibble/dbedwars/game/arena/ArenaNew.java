@@ -23,6 +23,7 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.KickReason;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.game.NewArenaDataHolder;
 import org.zibble.dbedwars.game.TeamAssigner;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.listeners.ArenaListener;
@@ -44,6 +45,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
     private final DBedwars plugin;
 
     private final String name;
+    private final NewArenaDataHolder dataHolder;
     private String worldFileName;
     private final ArenaSettingsImpl settings;
     private ArenaStatus status;
@@ -59,13 +61,14 @@ public class ArenaNew extends AbstractMessaging implements Arena {
     private List<ArenaSpectator> spectators;
     private Map<ArenaPlayer, KickReason> removed;
 
-    public ArenaNew(DBedwars plugin, String name) {
-        this(plugin, name, new ArenaSettingsImpl());
+    public ArenaNew(DBedwars plugin, String name, NewArenaDataHolder dataHolder) {
+        this(plugin, name, dataHolder, new ArenaSettingsImpl());
     }
 
-    public ArenaNew(DBedwars plugin, String name, ArenaSettingsImpl settings) {
+    public ArenaNew(DBedwars plugin, String name, NewArenaDataHolder dataHolder, ArenaSettingsImpl settings) {
         this.plugin = plugin;
         this.name = name;
+        this.dataHolder = dataHolder;
         this.settings = settings;
         this.status = ArenaStatus.STOPPED;
         this.teams = new HashSet<>();

@@ -12,6 +12,9 @@ import java.util.Map;
 public class ConfigurableShop implements Loadable {
 
     @ConfigPath
+    private String name;
+
+    @ConfigPath
     private String defaultPage;
 
     @ConfigPath
@@ -35,9 +38,8 @@ public class ConfigurableShop implements Loadable {
         return !this.pages.isEmpty();
     }
 
-    @Override
-    public boolean isInvalid() {
-        return !this.isValid();
+    public String getName() {
+        return name;
     }
 
     public String getDefaultPage() {
@@ -78,11 +80,6 @@ public class ConfigurableShop implements Loadable {
             return this.title != null && !this.pattern.isEmpty();
         }
 
-        @Override
-        public boolean isInvalid() {
-            return !this.isValid();
-        }
-
         public Map<String, ConfigurableItem> getItems() {
             return items;
         }
@@ -107,19 +104,19 @@ public class ConfigurableShop implements Loadable {
             private String material;
 
             @ConfigPath
-            private int amount;
-
-            @ConfigPath
             private List<String> enchantment;
 
             @ConfigPath
-            private ConfigurableAttribute attribute;
+            private List<String> conditions;
+
+            @ConfigPath
+            private List<String> actions;
 
             public ConfigurableItem() {
-                this.amount = 1;
                 this.lore = new ArrayList<>();
-                this.attribute = new ConfigurableAttribute();
                 this.enchantment = new ArrayList<>();
+                this.conditions = new ArrayList<>();
+                this.actions = new ArrayList<>();
             }
 
             @Override
@@ -145,10 +142,6 @@ public class ConfigurableShop implements Loadable {
                 return name;
             }
 
-            public int getAmount() {
-                return amount;
-            }
-
             public String getMaterial() {
                 return material;
             }
@@ -157,31 +150,14 @@ public class ConfigurableShop implements Loadable {
                 return enchantment;
             }
 
-            public ConfigurableAttribute getAttribute() {
-                return attribute;
+            public List<String> getConditions() {
+                return conditions;
             }
 
-            @Override
-            public String toString() {
-                return "BwGUIItem{" +
-                        "itemName='" + name + '\'' +
-                        ", itemLore=" + lore +
-                        ", material='" + material + '\'' +
-                        ", amount=" + amount +
-                        ", enchant=" + enchantment +
-                        ", attribute=" + attribute +
-                        '}';
+            public List<String> getActions() {
+                return actions;
             }
 
-        }
-
-        @Override
-        public String toString() {
-            return "ConfigurablePage{" +
-                    "guiTitle='" + title + '\'' +
-                    ", pattern=" + pattern +
-                    ", items=" + items +
-                    '}';
         }
     }
 

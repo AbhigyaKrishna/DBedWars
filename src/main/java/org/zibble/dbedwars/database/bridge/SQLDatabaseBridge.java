@@ -12,6 +12,7 @@ import org.zibble.dbedwars.database.sql.SQLDatabase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -274,8 +275,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
                                 .deleteCharAt(builder.length() - 1)
                                 .append(" WHERE `uuid` = '")
                                 .append(uuid.toString())
-                                .append("'")
-                                .append(";")
+                                .append("';")
                                 .toString();
                     }
                 };
