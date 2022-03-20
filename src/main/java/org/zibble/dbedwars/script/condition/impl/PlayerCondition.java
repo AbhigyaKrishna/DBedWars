@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 import org.zibble.dbedwars.api.script.condition.Condition;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.function.BiPredicate;
 
@@ -47,7 +47,7 @@ public class PlayerCondition<T> implements Condition<Player> {
         public static final BiPredicate<Player, ItemStack[]> HAS_ITEM = (player, value) -> {
             boolean bool = true;
             for (ItemStack itemStack : value) {
-                bool = bool && BwItemStack.playerHas(player, itemStack);
+                bool = bool && Util.playerHasItem(player, itemStack);
             }
             return bool;
         };

@@ -20,7 +20,7 @@ import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -55,7 +55,7 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
         //TODO USELESS SPECTATOR CHECK
         Location spawn = playerInteractEvent.getClickedBlock().getLocation().add(0, 2, 0);
         IronGolem ironGolem = spawn.getWorld().spawn(spawn, IronGolem.class);
-        Utils.useItem(player);
+        Util.useItem(player);
         ironGolem.setMetadata("isDBedwarsGolem", DREAM_DEFENDER_SPAWN_EGG_META);
         this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE, DreamDefenderChaseFeature.class, new Acceptor<DreamDefenderChaseFeature>() {
             @Override

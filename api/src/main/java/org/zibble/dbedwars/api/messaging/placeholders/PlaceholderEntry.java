@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.messaging;
+package org.zibble.dbedwars.api.messaging.placeholders;
 
 import org.zibble.dbedwars.api.util.Key;
 
@@ -30,12 +30,7 @@ public interface PlaceholderEntry extends Placeholder {
 
             @Override
             public Supplier<String> getPlaceholder() {
-                return new Supplier<String>() {
-                    @Override
-                    public String get() {
-                        return replacement;
-                    }
-                };
+                return () -> replacement;
             }
 
         };
@@ -48,9 +43,6 @@ public interface PlaceholderEntry extends Placeholder {
     static PlaceholderEntry symbol(String placeholder, Supplier<String> replacement) {
         return of("<".concat(placeholder).concat(">"), replacement);
     }
-
-    @Override
-    Key<String> getKey();
 
     Supplier<String> getPlaceholder();
 

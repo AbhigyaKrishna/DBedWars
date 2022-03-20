@@ -22,7 +22,7 @@ import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class FireballItem extends BedWarsActionItem {
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (cfgFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
             playerInteractEvent.setCancelled(true);
-            Utils.useItem(player);
+            Util.useItem(player);
             Fireball fireball = player.launchProjectile(Fireball.class);
             fireball.setMetadata("isDBedwarsFireball", FIREBALL_META);
             this.plugin.getFeatureManager().runFeature(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE, FireballLaunchFeature.class, new Acceptor<FireballLaunchFeature>() {

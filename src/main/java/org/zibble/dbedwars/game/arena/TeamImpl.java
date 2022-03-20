@@ -268,7 +268,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
     }
 
     @Override
-    public Collection<MessagingMember> getMembers() {
+    protected Collection<MessagingMember> getMembers() {
         return new ArrayList<>(this.players);
     }
 

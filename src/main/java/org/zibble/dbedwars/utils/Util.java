@@ -27,7 +27,6 @@ import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
 import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
-import org.zibble.dbedwars.utils.reflection.accessor.FieldAccessor;
 import org.zibble.dbedwars.utils.reflection.bukkit.BukkitReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
@@ -35,22 +34,24 @@ import org.zibble.dbedwars.utils.reflection.resolver.ResolverQuery;
 import org.zibble.dbedwars.utils.reflection.resolver.minecraft.CraftClassResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.minecraft.NMSClassResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
-public class Utils {
+public class Util {
 
-    private static final FieldAccessor fieldFireballDirX;
-    private static final FieldAccessor fieldFireballDirY;
-    private static final FieldAccessor fieldFireballDirZ;
 
-    private static final MethodWrapper CRAFT_ITEM_STACK_AS_NMS_COPY;
-    private static final MethodWrapper NMS_ITEM_STACK_GET_ITEM;
-    private static final MethodWrapper NMS_ITEM_C;
-    private static final MethodWrapper CRAFT_ITEM_STACK_AS_BUKKIT_COPY;
+    private static final FieldWrapper fieldFireballDirX;
+    private static final FieldWrapper fieldFireballDirY;
+    private static final FieldWrapper fieldFireballDirZ;
+
+    private static final MethodWrapper<?> CRAFT_ITEM_STACK_AS_NMS_COPY;
+    private static final MethodWrapper<?> NMS_ITEM_STACK_GET_ITEM;
+    private static final MethodWrapper<?> NMS_ITEM_C;
+    private static final MethodWrapper<?> CRAFT_ITEM_STACK_AS_BUKKIT_COPY;
 
     public static boolean isUnMergeable(ItemStack item) {
         return NBTUtils.hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
@@ -65,38 +66,29 @@ public class Utils {
     }
 
     public static void setSpawnInventory(Player player, Team team) {
-        BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET.parseMaterial());
-        BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
-        BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS.parseMaterial());
-        BwItemStack boots = new BwItemStack(XMaterial.LEATHER_BOOTS.parseMaterial());
+        BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET);
+        BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE);
+        BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS);
+        BwItemStack boots = new BwItemStack(XMaterial.LEATHER_BOOTS);
 
         // Helmet
-        LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
-        helmetMeta.setColor(team.getColor().getColor());
-        helmet.setItemMeta(helmetMeta);
+        ((LeatherArmorMeta) helmet.getMeta()).setColor(team.getColor().getColor());
 
         // ChestPlate
-        LeatherArmorMeta chestPlateMeta = (LeatherArmorMeta) chestPlate.getItemMeta();
-        chestPlateMeta.setColor(team.getColor().getColor());
-        chestPlate.setItemMeta(chestPlateMeta);
+        ((LeatherArmorMeta) chestPlate.getMeta()).setColor(team.getColor().getColor());
 
         // Leggings
-        LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
-        leggingsMeta.setColor(team.getColor().getColor());
-        leggings.setItemMeta(leggingsMeta);
+        ((LeatherArmorMeta) leggings.getMeta()).setColor(team.getColor().getColor());
 
         // Boots
-        LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
-        bootsMeta.setColor(team.getColor().getColor());
-        boots.setItemMeta(bootsMeta);
+        ((LeatherArmorMeta) boots.getMeta()).setColor(team.getColor().getColor());
 
-        player.getInventory().setHelmet(helmet.toItemStack());
-        player.getInventory().setChestplate(chestPlate.toItemStack());
-        player.getInventory().setLeggings(leggings.toItemStack());
-        player.getInventory().setBoots(boots.toItemStack());
+        player.getInventory().setHelmet(helmet.asItemStack(player));
+        player.getInventory().setChestplate(chestPlate.asItemStack(player));
+        player.getInventory().setLeggings(leggings.asItemStack(player));
+        player.getInventory().setBoots(boots.asItemStack(player));
 
-        player.getInventory()
-                .setItem(0, new BwItemStack(XMaterial.WOODEN_SWORD.parseItem()).toItemStack());
+        player.getInventory().setItem(0, new BwItemStack(XMaterial.WOODEN_SWORD).asItemStack(player));
     }
 
     public static Block findBed(Location location, byte x, byte y, byte z) {
@@ -104,7 +96,7 @@ public class Utils {
         Location corner2 = location.clone().subtract(x, y, z);
         Set<Block> blocks = LocationUtils.getBlocksBetween(corner, corner2);
 
-        return blocks.stream().filter(Utils::isBed).findFirst().orElse(null);
+        return blocks.stream().filter(Util::isBed).findFirst().orElse(null);
     }
 
     public static boolean isBed(Block block) {
@@ -201,7 +193,7 @@ public class Utils {
         if (constrain.test(loc))
             return loc;
         else
-            return Utils.getRandomPointAround(centre, range, constrain);
+            return Util.getRandomPointAround(centre, range, constrain);
     }
 
     public static boolean hasMetaData(Entity entity, String key, Object value) {
@@ -224,6 +216,48 @@ public class Utils {
         return new UserProfile(profile.getUuid(), profile.getName(), properties);
     }
 
+    public static boolean playerHasItem(Player player, ItemStack item) {
+        ItemStack[] items = player.getInventory().getContents();
+        int num = Arrays.stream(items)
+                        .filter(Objects::nonNull)
+                        .filter(i -> i.getType() == item.getType() && i.getDurability() == item.getDurability())
+                        .filter(NBTUtils::hasPluginData)
+                        .mapToInt(ItemStack::getAmount)
+                        .sum();
+        return num >= item.getAmount();
+    }
+
+    public static void removeItem(Player player, ItemStack item) {
+        ItemStack[] items = player.getInventory().getContents();
+        int amount = item.getAmount();
+        for (byte b = 0; b < items.length; b++) {
+            ItemStack itemStack = items[b];
+            if (itemStack != null
+                    && itemStack.getType() == item.getType()
+                    && itemStack.getDurability() == item.getDurability()
+                    && NBTUtils.hasPluginData(itemStack)) {
+                if (itemStack.getAmount() <= amount) {
+                    amount -= itemStack.getAmount();
+                    items[b] = null;
+                } else {
+                    itemStack.setAmount(itemStack.getAmount() - amount);
+                    amount = 0;
+                }
+                if (amount <= 0) break;
+            }
+        }
+        player.getInventory().setContents(items);
+    }
+
+    public static int getMissing(Player player, Material material, int amount) {
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack != null
+                    && itemStack.getType() == material
+                    && NBTUtils.hasPluginData(itemStack)) amount -= itemStack.getAmount();
+        }
+        return amount;
+    }
+
     static {
         NMSClassResolver NMS_CLASS_RESOLVER = new NMSClassResolver();
         CraftClassResolver CRAFT_CLASS_RESOLVER = new CraftClassResolver();
@@ -238,8 +272,8 @@ public class Utils {
         NMS_ITEM_C = new MethodResolver(NMS_ITEM.getClazz()).resolveWrapper(ResolverQuery.builder().with("c", int.class).build());
         CRAFT_ITEM_STACK_AS_BUKKIT_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asBukkitCopy", NMS_ITEM_STACK.getClazz()).build());
 
-        fieldFireballDirX = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirX", "b");
-        fieldFireballDirY = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirY", "c");
-        fieldFireballDirZ = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveAccessor("dirZ", "d");
+        fieldFireballDirX = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirX", "b");
+        fieldFireballDirY = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirY", "c");
+        fieldFireballDirZ = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirZ", "d");
     }
 }

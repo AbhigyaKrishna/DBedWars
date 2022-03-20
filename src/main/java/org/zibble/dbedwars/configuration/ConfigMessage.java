@@ -3,7 +3,7 @@ package org.zibble.dbedwars.configuration;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 

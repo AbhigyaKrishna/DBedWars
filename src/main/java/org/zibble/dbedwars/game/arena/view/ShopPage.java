@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.game.arena.view.shop;
+package org.zibble.dbedwars.game.arena.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -50,13 +50,13 @@ public class ShopPage {
         this.items = new HashMap<>();
     }
 
-    ShopPage(ArenaPlayer player, ShopType.Page page) {
+    ShopPage(ArenaPlayer player, ShopTypeImpl.PageImpl page) {
         this.player = player;
         this.row = page.getRow();
         this.title = page.getTitle();
         this.mask = new String[this.row];
         this.items = new HashMap<>();
-        for (Map.Entry<Character, ShopType.Item> entry : page.getItems().entrySet()) {
+        for (Map.Entry<Character, ShopTypeImpl.Item> entry : page.getItems().entrySet()) {
             this.items.put(entry.getKey(), new ShopItem(this.player, entry.getValue()));
         }
     }

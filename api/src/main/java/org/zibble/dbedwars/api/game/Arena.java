@@ -20,9 +20,13 @@ import java.util.Set;
 
 public interface Arena extends AbstractMessaging {
 
+    String getName();
+
     ArenaSettings getSettings();
 
     World getWorld();
+
+    ArenaDataHolder getDataHolder();
 
     ArenaStatus getStatus();
 

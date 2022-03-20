@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -25,8 +25,8 @@ import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.Lang;
 import org.zibble.dbedwars.configuration.language.PluginLang;
-import org.zibble.dbedwars.game.ArenaDataHolder;
-import org.zibble.dbedwars.game.arena.view.shop.ShopType;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
+import org.zibble.dbedwars.game.arena.view.ShopTypeImpl;
 import org.zibble.dbedwars.guis.setup.ArenaNameGui;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
@@ -42,7 +42,7 @@ public class SetupSession {
     private static final Key<String> WAITING_LOCATION = Key.of("waiting_location");
     private static final Key<String> SPECTATOR_LOCATION = Key.of("spectator_location");
 
-    private final ArenaDataHolder dataHolder;
+    private final ArenaDataHolderImpl dataHolder;
     private final World world;
 
     private final Player player;
@@ -56,7 +56,7 @@ public class SetupSession {
     private final EnumMap<Color, TeamParticleTracker> teamParticleTrackers;
     private final EnumMap<Color, TeamHologramTracker> teamHologramTrackers;
 
-    protected SetupSession(World world, Player player, ArenaDataHolder dataHolder) {
+    protected SetupSession(World world, Player player, ArenaDataHolderImpl dataHolder) {
         this.player = player;
         this.world = world;
         this.playerMember = MESSAGING.getMessagingMember(player);
@@ -210,12 +210,12 @@ public class SetupSession {
         this.locationSetMessages(location, color, PluginLang.MESSAGE_SETUP_TEAM_BED);
     }
 
-    public void setupTeamShop(Color color, Location location, ShopType shopType) {
+    public void setupTeamShop(Color color, Location location, ShopTypeImpl shopType) {
 
     }
 
     public void setupTeamGen(Color color, Location location, DropType dropType) {
-        this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolder.SpawnerDataHolder.of(dropType, LocationXYZ.valueOf(location)));
+        this.dataHolder.getTeamData(color).getSpawners().add(ArenaDataHolderImpl.SpawnerDataHolderImpl.of(dropType, LocationXYZ.valueOf(location)));
         Pair<Hologram, CancellableWorkload> pair = this.locationSetTasks(location, color, PluginLang.HOLOGRAM_SETUP_TEAM_GEN);
         //TODO
         this.locationSetMessages(location, color, PluginLang.MESSAGE_SETUP_TEAM_GEN);

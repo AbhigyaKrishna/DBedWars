@@ -8,7 +8,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
-import io.github.retrooper.packetevents.utils.SpigotDataHelper;
+import io.github.retrooper.packetevents.util.SpigotDataHelper;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class VanishImpl implements VanishHook, Listener {
 
     @Override
     public void vanish(@NotNull Player player) {
-        UserProfile profile = Utils.asProtocolProfile(DBedwars.getInstance().getNMSAdaptor().getProfile(player));
+        UserProfile profile = Util.asProtocolProfile(DBedwars.getInstance().getNMSAdaptor().getProfile(player));
         WrapperPlayServerPlayerInfo.PlayerData data = new WrapperPlayServerPlayerInfo.PlayerData(
                 Component.text(player.getName()), // TODO: Name
                 profile,
@@ -80,7 +80,7 @@ public class VanishImpl implements VanishHook, Listener {
     }
 
     public void vanishWithDeathAnimation(@NotNull Player player) {
-        UserProfile profile = Utils.asProtocolProfile(DBedwars.getInstance().getNMSAdaptor().getProfile(player));
+        UserProfile profile = Util.asProtocolProfile(DBedwars.getInstance().getNMSAdaptor().getProfile(player));
         WrapperPlayServerPlayerInfo.PlayerData data = new WrapperPlayServerPlayerInfo.PlayerData(
                 Component.text(player.getName()), // TODO: Name
                 profile,

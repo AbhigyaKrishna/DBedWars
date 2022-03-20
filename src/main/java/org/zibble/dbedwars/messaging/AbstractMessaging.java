@@ -246,6 +246,10 @@ public abstract class AbstractMessaging implements org.zibble.dbedwars.api.messa
         }
     }
 
-    public abstract Collection<MessagingMember> getMembers();
+    public Collection<MessagingMember> getMessagingMembers() {
+        return this.getMembers();
+    }
+
+    protected abstract Collection<MessagingMember> getMembers();
 
 }

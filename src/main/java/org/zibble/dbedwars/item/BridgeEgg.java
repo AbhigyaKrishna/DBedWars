@@ -17,6 +17,7 @@ import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class BridgeEgg extends BedWarsActionItem {
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         //TODO USELESS SPECTATOR CHECK :P
         event.setCancelled(true);
-        BwItemStack.removeItem(player, this.toItemStack());
+        Util.removeItem(player, this.toItemStack());
         Egg egg = player.launchProjectile(Egg.class);
         egg.setMetadata("isDBedwarsEgg", BRIDGE_EGG_META);
         this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE, BridgeEggBuildFeature.class, new Acceptor<BridgeEggBuildFeature>() {

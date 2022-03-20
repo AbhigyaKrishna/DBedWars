@@ -27,7 +27,7 @@ import org.zibble.dbedwars.cache.InventoryBackup;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -166,7 +166,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     public void spawn(Location location) {
         SchedulerUtils.runTask(() -> {
             this.getPlayer().setGameMode(GameMode.SURVIVAL);
-            Utils.setSpawnInventory(this.getPlayer(), this.team);
+            Util.setSpawnInventory(this.getPlayer(), this.team);
             if (this.inventoryBackup != null) {
                 this.inventoryBackup.applyPermanents(this.getPlayer());
             }

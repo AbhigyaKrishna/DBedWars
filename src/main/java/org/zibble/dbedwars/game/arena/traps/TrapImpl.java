@@ -5,7 +5,7 @@ import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.script.action.ActionProcessor;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.util.Key;
 
 import java.util.*;
@@ -153,8 +153,8 @@ public class TrapImpl implements org.zibble.dbedwars.api.game.trap.Trap {
                     ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("yaw", String.valueOf(arenaPlayer.getPlayer().getLocation().getYaw()))),
                     ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("world_name", arenaPlayer.getPlayer().getWorld().getName())),
                     ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("world_environment", arenaPlayer.getPlayer().getWorld().getEnvironment().toString())),
-                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_display_name", arenaPlayer.getArena().getSettings().getCustomName())),
-                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getSettings().getName()))
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_display_name", arenaPlayer.getArena().getDataHolder().getCustomName().getMessage())),
+                    ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getName()))
             };
         }
     }

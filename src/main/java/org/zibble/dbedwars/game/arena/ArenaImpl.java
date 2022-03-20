@@ -9,12 +9,10 @@ import org.zibble.dbedwars.api.events.ArenaStartEvent;
 import org.zibble.dbedwars.api.events.BedDestroyEvent;
 import org.zibble.dbedwars.api.events.PlayerJoinArenaLobbyEvent;
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.*;
-import org.zibble.dbedwars.api.game.settings.ArenaSettings;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
@@ -23,13 +21,13 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.KickReason;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.game.NewArenaDataHolder;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.TeamAssigner;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.gamerule.GameRuleDisableDaylightCycle;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
 
@@ -38,14 +36,14 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public class ArenaNew extends AbstractMessaging implements Arena {
+public class ArenaImpl extends AbstractMessaging implements Arena {
 
     private static final String WORlD_NAME_FORMAT = "bw_arena_%s";
 
     private final DBedwars plugin;
 
     private final String name;
-    private final NewArenaDataHolder dataHolder;
+    private final ArenaDataHolderImpl dataHolder;
     private String worldFileName;
     private final ArenaSettingsImpl settings;
     private ArenaStatus status;
@@ -61,11 +59,11 @@ public class ArenaNew extends AbstractMessaging implements Arena {
     private List<ArenaSpectator> spectators;
     private Map<ArenaPlayer, KickReason> removed;
 
-    public ArenaNew(DBedwars plugin, String name, NewArenaDataHolder dataHolder) {
+    public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder) {
         this(plugin, name, dataHolder, new ArenaSettingsImpl());
     }
 
-    public ArenaNew(DBedwars plugin, String name, NewArenaDataHolder dataHolder, ArenaSettingsImpl settings) {
+    public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder, ArenaSettingsImpl settings) {
         this.plugin = plugin;
         this.name = name;
         this.dataHolder = dataHolder;
@@ -80,18 +78,24 @@ public class ArenaNew extends AbstractMessaging implements Arena {
         this.gameHandler = new GameListener(this.plugin, this);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public ArenaSettings getSettings() {
+    public ArenaSettingsImpl getSettings() {
         return this.settings;
     }
 
     @Override
     public World getWorld() {
         return this.world;
+    }
+
+    @Override
+    public ArenaDataHolderImpl getDataHolder() {
+        return dataHolder;
     }
 
     @Override
@@ -109,7 +113,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
         return this.plugin.getHookManager().getWorldAdaptor().loadWorldFromSave(
                 worldFileName,
                 String.format(WORlD_NAME_FORMAT, this.getName()),
-                this.getSettings().getWorldEnv());
+                this.getDataHolder().getEnvironment());
     }
 
     @Override
@@ -227,7 +231,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
         PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
                 PlaceholderEntry.symbol("player_name", player.getName()),
                 PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
-                PlaceholderEntry.symbol("max_players", String.valueOf(this.getSettings().getMaxPlayer()))
+                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam()))
         };
 
         Message message = ConfigLang.ARENA_JOIN_MESSAGE.asMessage();
@@ -236,7 +240,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
         PlayerJoinArenaLobbyEvent event = new PlayerJoinArenaLobbyEvent(
                 player.getPlayer(),
                 this,
-                this.settings.getLobby().toBukkit(this.world),
+                this.getDataHolder().getWaitingLocation().toBukkit(this.world),
                 message);
 
         event.call();
@@ -250,7 +254,7 @@ public class ArenaNew extends AbstractMessaging implements Arena {
 
         event.getArena().sendMessage(event.getJoinMessage());
 
-        if (event.getArena().getPlayers().size() >= event.getArena().getSettings().getMinPlayers()
+        if (event.getArena().getPlayers().size() >= event.getArena().getDataHolder().getMinPlayersToStart()
                 && event.getArena().getStatus() != ArenaStatus.STARTING) {
             this.plugin.getGameManager().startArenaSequence(event.getArena());
         }
@@ -344,11 +348,11 @@ public class ArenaNew extends AbstractMessaging implements Arena {
         if (affected.isBedBroken()) return;
 
         Block bed = affected.getBedLocation().toBukkit(this.world).getBlock();
-        if (!Utils.isBed(bed)) return;
+        if (!Util.isBed(bed)) return;
 
         final PlaceholderEntry[] bedBrokenPlaceholders = new PlaceholderEntry[]{
-                PlaceholderEntry.symbol("defend_team_color", Utils.getConfigCode(affected.getColor())),
-                PlaceholderEntry.symbol("attack_team_color", Utils.getConfigCode(player.getTeam().getColor())),
+                PlaceholderEntry.symbol("defend_team_color", Util.getConfigCode(affected.getColor())),
+                PlaceholderEntry.symbol("attack_team_color", Util.getConfigCode(player.getTeam().getColor())),
                 PlaceholderEntry.symbol("defend_team_name", affected.getName()),
                 PlaceholderEntry.symbol("attack_team_name", player.getTeam().getName()),
                 PlaceholderEntry.symbol("attack_name", player.getName())

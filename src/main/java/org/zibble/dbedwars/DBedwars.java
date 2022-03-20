@@ -46,7 +46,6 @@ public final class DBedwars extends PluginAdapter {
 
     private FeatureManager featureManager;
     private ConfigHandler configHandler;
-    private GuiHandler guiHandler;
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
     private HologramManager hologramFactoryImpl;
@@ -176,7 +175,6 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpHandlers() {
         this.gameManager = new GameManager(this);
-        this.guiHandler = new GuiHandler(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.hologramFactoryImpl = new HologramManager();
         this.setupSessionManager = new SetupSessionManager(this);
@@ -186,9 +184,6 @@ public final class DBedwars extends PluginAdapter {
                 () -> {
                     this.configHandler.loadConfigurations();
                     this.configHandler.loadItems();
-
-                    this.guiHandler.loadMenus();
-                    this.guiHandler.loadAnvilMenus();
 
                     this.registerCustomItems();
                     this.initDatabase();
@@ -233,10 +228,6 @@ public final class DBedwars extends PluginAdapter {
 
     public CustomItemHandler getCustomItemHandler() {
         return this.customItemHandler;
-    }
-
-    public GuiHandler getGuiHandler() {
-        return this.guiHandler;
     }
 
     public ThreadHandler getThreadHandler() {

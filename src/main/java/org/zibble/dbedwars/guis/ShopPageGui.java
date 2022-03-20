@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.guis;
 
-import org.zibble.dbedwars.game.arena.view.shop.ShopItem;
+import org.zibble.dbedwars.game.arena.view.ShopItem;
 import org.zibble.dbedwars.guis.component.GuiComponent;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;

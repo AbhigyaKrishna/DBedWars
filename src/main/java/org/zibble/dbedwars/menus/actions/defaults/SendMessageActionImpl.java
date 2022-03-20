@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.menu.MenuAction;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.Messaging;

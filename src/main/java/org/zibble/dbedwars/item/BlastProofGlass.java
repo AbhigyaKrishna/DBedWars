@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,8 +53,8 @@ public class BlastProofGlass extends BedWarsActionItem {
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
             if (block.getType() != Material.AIR) {
-                if (Utils.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)
-                        && Utils.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)) {
+                if (Util.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)
+                        && Util.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_PREDICATE)) {
                     blockIterator.remove();
                 }
             }
@@ -69,8 +69,8 @@ public class BlastProofGlass extends BedWarsActionItem {
                 blockIterator.remove();
             }
             if (block.getType() != Material.AIR && XMaterial.matchXMaterial(block.getType()) != XMaterial.END_STONE) {
-                if (Utils.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)
-                        && Utils.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)) {
+                if (Util.anyMatch(getBlockPathX(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)
+                        && Util.anyMatch(getBlockPathY(event.getEntity().getLocation().getBlock().getLocation(), block.getLocation()), GLASS_OR_ENDSTONE_PREDICATE)) {
                     blockIterator.remove();
                 }
             }

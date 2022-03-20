@@ -31,7 +31,7 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.plugin.PluginHandler;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.item.*;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public class GameListener extends PluginHandler {
     public void handleItemMerge(ItemMergeEvent event) {
         if (!event.getEntity().getWorld().equals(this.arena.getWorld())) return;
 
-        if (Utils.hasMetaData(event.getEntity(), "merge", false)) {
+        if (Util.hasMetaData(event.getEntity(), "merge", false)) {
             event.setCancelled(true);
         }
     }
@@ -77,7 +77,6 @@ public class GameListener extends PluginHandler {
         if (event.getBlock().hasMetadata("placed")) {
             // This should not happen but anyways
             if (!player.getArena()
-                    .getSettings()
                     .getName()
                     .equals(event.getBlock().getMetadata("placed").get(0).value())) {
                 event.setCancelled(true);
@@ -86,7 +85,7 @@ public class GameListener extends PluginHandler {
             if (event.getBlock().getType() == XMaterial.SPONGE.parseMaterial())
                 ((Sponge) ((DBedwars) this.getPlugin()).getCustomItemHandler().getItem("SPONGE"))
                         .onSpongeBreak(event);
-        } else if (Utils.isBed(event.getBlock())) {
+        } else if (Util.isBed(event.getBlock())) {
             event.setCancelled(true);
 
             Optional<Team> oTeam =
@@ -142,7 +141,7 @@ public class GameListener extends PluginHandler {
 
         Block block = event.getBlock();
         block.setMetadata(
-                "placed", new FixedMetadataValue(this.plugin, this.arena.getSettings().getName()));
+                "placed", new FixedMetadataValue(this.plugin, this.arena.getName()));
         // TODO ADDITIONAL CHECK FOR TNT
         if (block.getType() == XMaterial.TNT.parseMaterial()
                 && ((DBedwars) this.getPlugin())
@@ -289,7 +288,7 @@ public class GameListener extends PluginHandler {
             return;
         }
 
-        if (Utils.hasMetaData(event.getItem(), "split", true)) {
+        if (Util.hasMetaData(event.getItem(), "split", true)) {
             Optional<Spawner> spawner = this.arena.getSpawner(LocationXYZ.valueOf(event.getItem().getLocation()), 1);
             spawner.ifPresent(new Consumer<Spawner>() {
                 @Override

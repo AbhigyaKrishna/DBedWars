@@ -6,7 +6,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class WaterBucket extends BedWarsActionItem {
     }
 
     public void onWaterBucketUse(PlayerBucketEmptyEvent event) {
-        if (removeOnUse) Utils.useItem(event.getPlayer());
+        if (removeOnUse) Util.useItem(event.getPlayer());
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 public class FireballLaunchFeature extends org.zibble.dbedwars.api.feature.custom.FireballLaunchFeature {
 
@@ -25,7 +25,7 @@ public class FireballLaunchFeature extends org.zibble.dbedwars.api.feature.custo
     public void launch(Fireball fireball, ArenaPlayer launcher) {
         ConfigurableCustomItems.ConfigurableFireball cfgFireball = this.plugin.getConfigHandler().getCustomItems().getFireball();
         fireball.setVelocity(fireball.getVelocity().multiply(cfgFireball.getSpeedMultiplier()));
-        if (cfgFireball.isFixDirectionEnabled()) Utils.setDirection(fireball, launcher.getPlayer().getEyeLocation().getDirection());
+        if (cfgFireball.isFixDirectionEnabled()) Util.setDirection(fireball, launcher.getPlayer().getEyeLocation().getDirection());
         fireball.setYield(cfgFireball.getExplosionYield());
         for (String s : cfgFireball.getThrowEffects()) {
             if (s == null || s.trim().equals("")) return;

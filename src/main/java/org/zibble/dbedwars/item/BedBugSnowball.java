@@ -20,6 +20,7 @@ import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class BedBugSnowball extends BedWarsActionItem {
         Snowball bedBugBall = player.launchProjectile(Snowball.class);
         bedBugBall.setMetadata("isDBedWarsBedBugBall", BED_BUG_BALL_META);
         bedBugBall.setMetadata("thrower", new FixedMetadataValue(plugin, arenaPlayer.getName()));
-        BwItemStack.removeItem(player, this.toItemStack());
+        Util.removeItem(player, this.toItemStack());
     }
 
     public void onLand(ProjectileHitEvent event) {

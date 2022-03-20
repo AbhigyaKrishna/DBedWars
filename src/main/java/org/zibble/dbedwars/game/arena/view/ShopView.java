@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.game.arena.view.shop;
+package org.zibble.dbedwars.game.arena.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -11,7 +11,7 @@ import java.util.Map;
 public class ShopView {
 
     private final ArenaPlayer player;
-    private final ShopType type;
+    private final ShopTypeImpl type;
     private ShopPage defaultPage;
     private final Map<Key<String>, ShopPage> pages;
 
@@ -24,11 +24,11 @@ public class ShopView {
 //        return view;
 //    }
 
-    public ShopView(ArenaPlayer player, ShopType type) {
+    public ShopView(ArenaPlayer player, ShopTypeImpl type) {
         this.player = player;
         this.type = type;
         this.pages = new LinkedHashMap<>();
-        for (Map.Entry<Key<String>, ShopType.Page> entry : this.type.getPages().entrySet()) {
+        for (Map.Entry<Key<String>, ShopTypeImpl.PageImpl> entry : this.type.getPages().entrySet()) {
             this.createPage(entry.getKey(), entry.getValue());
         }
         this.defaultPage = this.pages.get(type.getDefaultPage().getKey());
@@ -52,7 +52,7 @@ public class ShopView {
         return page;
     }
 
-    ShopPage createPage(Key<String> key, ShopType.Page pg) {
+    ShopPage createPage(Key<String> key, ShopTypeImpl.PageImpl pg) {
         ShopPage page = new ShopPage(this.player, pg);
         this.pages.put(key, page);
         return page;

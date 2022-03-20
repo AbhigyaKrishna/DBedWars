@@ -2,7 +2,7 @@ package org.zibble.dbedwars.configuration.translator;
 
 import net.kyori.adventure.text.Component;
 import org.zibble.dbedwars.api.adventure.AdventureUtils;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 

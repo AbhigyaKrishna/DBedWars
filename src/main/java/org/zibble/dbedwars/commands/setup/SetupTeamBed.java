@@ -5,14 +5,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.commands.nodes.CommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 public class SetupTeamBed extends CommandNode {
 
