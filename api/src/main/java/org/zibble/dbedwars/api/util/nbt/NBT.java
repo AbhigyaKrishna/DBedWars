@@ -7,7 +7,7 @@ import java.text.MessageFormat;
 
 public abstract class NBT implements Cloneable {
 
-    public NBT() {
+    protected NBT() {
     }
 
     public NBT(DataInput input) throws IOException {
@@ -33,9 +33,9 @@ public abstract class NBT implements Cloneable {
 
     public abstract NBT clone();
 
-    protected NBTType readTagType(DataInput input) throws IOException {
+    protected NBTType<?> readTagType(DataInput input) throws IOException {
         int id = input.readByte();
-        NBTType type = NBTType.fromId(id);
+        NBTType<?> type = NBTType.fromId(id);
         if (type == null) {
             throw new IOException(MessageFormat.format("Unknown nbt type id {0}", id));
         }

@@ -27,6 +27,7 @@ public class NBTItemImpl implements NBTItem {
         this.tag = new NbtTagCompoundImpl(this.item.getTag());
     }
 
+    @Override
     public INbtCompound getRootTag() {
         return this.tag;
     }

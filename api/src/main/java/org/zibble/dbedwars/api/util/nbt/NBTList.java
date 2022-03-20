@@ -99,7 +99,7 @@ public class NBTList<T extends NBT> extends NBT {
 
     @Override
     public void read(DataInput input) throws IOException {
-        NBTType<T> type = this.readTagType(input);
+        NBTType<T> type = (NBTType<T>) this.readTagType(input);
         int size = input.readInt();
         if ((type == NBTType.END) && (size > 0)) {
             throw new IllegalStateException("Missing nbt list values tag type");

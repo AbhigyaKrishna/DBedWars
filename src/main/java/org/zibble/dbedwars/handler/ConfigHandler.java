@@ -29,6 +29,7 @@ public class ConfigHandler {
     private final Set<ConfigurableTrap> traps;
     private final Set<ConfigurableScoreboard> scoreboards;
     private final Map<String, Json> jsonItem;
+    private final Set<ConfigurableShop> shops;
     private MainConfiguration mainConfiguration;
     private ConfigurableDatabase database;
     private ConfigurableShop shop;
@@ -43,10 +44,11 @@ public class ConfigHandler {
         this.traps = new HashSet<>();
         this.scoreboards = new HashSet<>();
         this.jsonItem = new HashMap<>();
+        this.shops = new HashSet<>();
     }
 
     public void initFiles() {
-        boolean shouldDownloadAll = !PluginFiles.LIBRARIES_CACHE.isDirectory();
+        boolean shouldDownloadAll = !PluginFiles.Folder.LIBRARIES_CACHE.isDirectory();
 
         for (File folder : PluginFiles.getDirectories()) {
             if (!folder.isDirectory())
@@ -60,13 +62,13 @@ public class ConfigHandler {
         }
 
         for (File languageFile : PluginFiles.getLanguageFiles()) {
-            this.plugin.saveResource("languages/" + languageFile.getName(), PluginFiles.LANGUAGES, false);
+            this.plugin.saveResource("languages/" + languageFile.getName(), PluginFiles.Folder.LANGUAGES, false);
         }
 
         for (File file : PluginFiles.getFiles()) {
             String path = "";
             File parent = file.getParentFile();
-            while (!parent.getName().equals(PluginFiles.PLUGIN_DATA_FOLDER.getName())) {
+            while (!parent.getName().equals(PluginFiles.Folder.PLUGIN_DATA_FOLDER.getName())) {
                 path = parent.getName() + "/" + path;
                 parent = parent.getParentFile();
             }
@@ -83,7 +85,7 @@ public class ConfigHandler {
     public void initLanguage() {
         ConfigLang.init(this.mainConfiguration.getLangSection());
         boolean loaded = false;
-        for (File languageFile : PluginFiles.LANGUAGES.listFiles()) {
+        for (File languageFile : PluginFiles.Folder.LANGUAGES.listFiles()) {
             if (languageFile.getName().replace(".yml", "").equals(this.mainConfiguration.getLangSection().getServerLanguage())) {
                 loaded = true;
                 ConfigLang.load(languageFile);
@@ -114,7 +116,7 @@ public class ConfigHandler {
     }
 
     public void loadItems() {
-        for (File file : PluginFiles.ITEMS.listFiles()) {
+        for (File file : PluginFiles.Folder.ITEMS.listFiles()) {
             if (file.getName().endsWith(".json")) {
                 try {
                     Json json = Json.load(file);
@@ -129,7 +131,7 @@ public class ConfigHandler {
     }
 
     private void loadArena() {
-        File folder = PluginFiles.ARENA_DATA_SETTINGS;
+        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
         for (File file : folder.listFiles()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             ConfigurableArena cfg = new ConfigurableArena();
@@ -168,6 +170,16 @@ public class ConfigHandler {
         }
     }
 
+    private void loadShops() {
+        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
+        for (File file : folder.listFiles()) {
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            ConfigurableShop cfg = new ConfigurableShop();
+            cfg.load(config);
+            this.shops.add(cfg);
+        }
+    }
+
     public MainConfiguration getMainConfiguration() {
         return this.mainConfiguration;
     }
@@ -186,6 +198,10 @@ public class ConfigHandler {
 
     public Map<String, Json> getJsonItem() {
         return jsonItem;
+    }
+
+    public Set<ConfigurableShop> getShops() {
+        return shops;
     }
 
     public Set<ConfigurableScoreboard> getScoreboards() {

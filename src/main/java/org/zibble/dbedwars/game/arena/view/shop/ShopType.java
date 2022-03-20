@@ -14,6 +14,7 @@ import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -132,19 +133,23 @@ public class ShopType implements Keyed<String> {
                 }
                 item = new Item(itemStack);
             }
+            item.useConditions.addAll(config.getConditions());
+            item.actions.addAll(config.getActions());
             return item;
         }
 
         public Item(Json item) {
-            this.item = (placeholders) -> NewBwItemStack.fromJson(item, placeholders);
+            this((placeholders) -> NewBwItemStack.fromJson(item, placeholders));
         }
 
         public Item(NewBwItemStack item) {
-            this.item = (placeholders) -> item;
+            this((placeholders) -> item);
         }
 
         public Item(Function<Placeholder[], NewBwItemStack> item) {
             this.item = item;
+            this.useConditions = new HashSet<>();
+            this.actions = new HashSet<>();
         }
 
         public Function<Placeholder[], NewBwItemStack> getItemFunction() {

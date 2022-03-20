@@ -107,12 +107,16 @@ public class ConfigurableShop implements Loadable {
             private List<String> enchantment;
 
             @ConfigPath
-            private ConfigurableAttribute attribute;
+            private List<String> conditions;
+
+            @ConfigPath
+            private List<String> actions;
 
             public ConfigurableItem() {
                 this.lore = new ArrayList<>();
-                this.attribute = new ConfigurableAttribute();
                 this.enchantment = new ArrayList<>();
+                this.conditions = new ArrayList<>();
+                this.actions = new ArrayList<>();
             }
 
             @Override
@@ -146,30 +150,14 @@ public class ConfigurableShop implements Loadable {
                 return enchantment;
             }
 
-            public ConfigurableAttribute getAttribute() {
-                return attribute;
+            public List<String> getConditions() {
+                return conditions;
             }
 
-            @Override
-            public String toString() {
-                return "BwGUIItem{" +
-                        "itemName='" + name + '\'' +
-                        ", itemLore=" + lore +
-                        ", material='" + material + '\'' +
-                        ", enchant=" + enchantment +
-                        ", attribute=" + attribute +
-                        '}';
+            public List<String> getActions() {
+                return actions;
             }
 
-        }
-
-        @Override
-        public String toString() {
-            return "ConfigurablePage{" +
-                    "guiTitle='" + title + '\'' +
-                    ", pattern=" + pattern +
-                    ", items=" + items +
-                    '}';
         }
     }
 

@@ -10,6 +10,8 @@ import java.util.Map;
 
 public interface NBTItem {
 
+    INbtCompound getRootTag();
+
     ItemStack getItem();
 
     void applyNbt(String key, NBT nbt);
