@@ -2,7 +2,7 @@ package org.zibble.dbedwars.api.messaging.message;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 
 import java.util.*;
 

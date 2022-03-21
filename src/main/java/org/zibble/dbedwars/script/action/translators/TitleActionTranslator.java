@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.script.action.translators;
 
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.serializable.TitleST;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;

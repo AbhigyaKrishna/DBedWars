@@ -14,14 +14,12 @@ import org.zibble.dbedwars.api.feature.custom.BedBugChaseFeature;
 import org.zibble.dbedwars.api.feature.custom.BedBugDisplayNameUpdateFeature;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.utils.Util;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class BedBugSnowball extends BedWarsActionItem {
@@ -30,11 +28,10 @@ public class BedBugSnowball extends BedWarsActionItem {
     private final DBedwars plugin;
 
     public BedBugSnowball(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBedBug().getName()),
-                ConfigLang.getTranslator().translate(
-                        plugin.getConfigHandler().getCustomItems().getBedBug().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getBedBug().getLore()),
-                XMaterial.SNOWBALL.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getBedBug().getName()),
+                plugin.getConfigHandler().getCustomItems().getBedBug().getLore() == null ? null :
+                        ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getBedBug().getLore()),
+                XMaterial.SNOWBALL);
         this.plugin = plugin;
     }
 
@@ -51,7 +48,7 @@ public class BedBugSnowball extends BedWarsActionItem {
         Snowball bedBugBall = player.launchProjectile(Snowball.class);
         bedBugBall.setMetadata("isDBedWarsBedBugBall", BED_BUG_BALL_META);
         bedBugBall.setMetadata("thrower", new FixedMetadataValue(plugin, arenaPlayer.getName()));
-        BwItemStack.removeItem(player, this.toItemStack());
+        Util.removeItem(player, this.asItemStack());
     }
 
     public void onLand(ProjectileHitEvent event) {
@@ -67,19 +64,13 @@ public class BedBugSnowball extends BedWarsActionItem {
         }
         if (thrower == null) return;
         final ArenaPlayer finalThrower = thrower;
-        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BED_BUG_CHASE_FEATURE, BedBugChaseFeature.class, new Acceptor<BedBugChaseFeature>() {
-            @Override
-            public boolean accept(BedBugChaseFeature feature) {
-                feature.startChase(bedBug, finalThrower);
-                return true;
-            }
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BED_BUG_CHASE_FEATURE, BedBugChaseFeature.class, feature -> {
+            feature.startChase(bedBug, finalThrower);
+            return true;
         });
-        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BED_BUG_DISPLAY_NAME_UPDATE_FEATURE, BedBugDisplayNameUpdateFeature.class, new Acceptor<BedBugDisplayNameUpdateFeature>() {
-            @Override
-            public boolean accept(BedBugDisplayNameUpdateFeature feature) {
-                feature.start(bedBug, finalThrower);
-                return true;
-            }
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BED_BUG_DISPLAY_NAME_UPDATE_FEATURE, BedBugDisplayNameUpdateFeature.class, feature -> {
+            feature.start(bedBug, finalThrower);
+            return true;
         });
     }
 

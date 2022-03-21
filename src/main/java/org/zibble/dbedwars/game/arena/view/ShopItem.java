@@ -1,9 +1,9 @@
-package org.zibble.dbedwars.game.arena.view.shop;
+package org.zibble.dbedwars.game.arena.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.script.condition.Condition;
-import org.zibble.dbedwars.api.util.NewBwItemStack;
+import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.script.action.ActionProcessor;
 import org.zibble.dbedwars.script.condition.ConditionPreProcessor;
@@ -18,19 +18,19 @@ import java.util.Set;
 public class ShopItem {
 
     protected final ArenaPlayer player;
-    protected final NewBwItemStack item;
+    protected final BwItemStack item;
     protected TierGroup tierGroup;
     private final Set<Condition<?>> useConditions;
     private final Set<ActionProcessor> actions;
 
-    public ShopItem(ArenaPlayer player, NewBwItemStack item) {
+    public ShopItem(ArenaPlayer player, BwItemStack item) {
         this.player = player;
         this.item = item;
         this.useConditions = new HashSet<>();
         this.actions = new HashSet<>();
     }
 
-    ShopItem(ArenaPlayer player, ShopType.Item item, Placeholder... placeholders) {
+    ShopItem(ArenaPlayer player, ShopTypeImpl.Item item, Placeholder... placeholders) {
         this.player = player;
         this.item = item.getItemFunction().apply(placeholders);
         this.useConditions = new HashSet<>();

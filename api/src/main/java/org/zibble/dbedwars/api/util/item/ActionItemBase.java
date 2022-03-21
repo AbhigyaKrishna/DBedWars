@@ -1,23 +1,21 @@
 package org.zibble.dbedwars.api.util.item;
 
-import com.google.common.base.Objects;
-import com.pepedevs.radium.utils.itemstack.ItemStackUtils;
+import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.inventory.ItemStack;
-import org.zibble.dbedwars.api.adventure.AdventureUtils;
+import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.BwItemStack;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /** Abstract class to be used for creating Action Items. */
 public abstract class ActionItemBase implements ActionItem {
 
-    protected final Component display_name;
-    protected final List<Component> lore;
-    protected final Material material;
+    protected final Message display_name;
+    protected final Message lore;
+    protected final XMaterial material;
     protected final EventPriority priority;
 
     /**
@@ -30,9 +28,9 @@ public abstract class ActionItemBase implements ActionItem {
      * @param material Material of the Action Item
      * @param priority {@link EventPriority} of the Action Item
      */
-    public ActionItemBase(Component display_name, Collection<Component> lore, Material material, EventPriority priority) {
+    public ActionItemBase(Message display_name, Message lore, XMaterial material, EventPriority priority) {
         this.display_name = display_name;
-        this.lore = new ArrayList<>(lore);
+        this.lore = lore;
         this.material = material;
         this.priority = priority;
     }
@@ -47,9 +45,9 @@ public abstract class ActionItemBase implements ActionItem {
      * @param material Material of the Action Item
      * @param priority {@link EventPriority} of the Action Item
      */
-    public ActionItemBase(String display_name, Collection<String> lore, Material material, EventPriority priority) {
-        this.display_name = AdventureUtils.fromLegacyText(display_name);
-        this.lore = AdventureUtils.fromLegacyText(lore);
+    public ActionItemBase(String display_name, Collection<String> lore, XMaterial material, EventPriority priority) {
+        this.display_name = AdventureMessage.from(display_name);
+        this.lore = AdventureMessage.from(lore);
         this.material = material;
         this.priority = priority;
     }
@@ -63,35 +61,22 @@ public abstract class ActionItemBase implements ActionItem {
      * @param lore Lore of the Action Item
      * @param material Material of the Action Item
      */
-    public ActionItemBase(Component display_name, Collection<Component> lore, Material material) {
-        this(display_name, lore, material, EventPriority.NORMAL);
-    }
-
-    /**
-     * Constructs the Action Item.
-     *
-     * <p>
-     *
-     * @param display_name Display name of the Action Item
-     * @param lore Lore of the Action Item
-     * @param material Material of the Action Item
-     */
-    public ActionItemBase(String display_name, Collection<String> lore, Material material) {
-        this(display_name, lore, material, EventPriority.NORMAL);
+    public ActionItemBase(Component display_name, Collection<Component> lore, XMaterial material, EventPriority priority) {
+        this(AdventureMessage.from(display_name), AdventureMessage.from(lore.toArray(new Component[0])), material, priority);
     }
 
     @Override
-    public Component getDisplayName() {
+    public Message getDisplayName() {
         return display_name;
     }
 
     @Override
-    public List<Component> getLore() {
+    public Message getLore() {
         return lore;
     }
 
     @Override
-    public Material getMaterial() {
+    public XMaterial getMaterial() {
         return material;
     }
 
@@ -100,22 +85,15 @@ public abstract class ActionItemBase implements ActionItem {
         return priority;
     }
 
-    @Override
-    public ItemStack toItemStack() {
-        return new ItemMetaBuilder(getMaterial())
-                .displayName(getDisplayName())
-                .lore(getLore())
-                .toItemStack();
+    public BwItemStack asBwItemStack() {
+        BwItemStack item = new BwItemStack(this.getMaterial());
+        item.setDisplayName(this.getDisplayName());
+        item.setLore(this.getLore());
+        return item;
     }
 
-    @Override
-    public boolean isThis(ItemStack item) {
-        if (item != null) {
-            return item.getType() == getMaterial()
-                    && Objects.equal(ItemStackUtils.extractName(item), this.getDisplayName())
-                    && Objects.equal(ItemStackUtils.extractLore(item), this.getLore());
-        } else {
-            return false;
-        }
+    public void give(Player player) {
+        player.getInventory().addItem(this.asBwItemStack().asItemStack(player));
     }
+
 }

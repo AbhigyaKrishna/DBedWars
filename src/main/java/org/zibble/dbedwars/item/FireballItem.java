@@ -20,9 +20,10 @@ import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,10 @@ public class FireballItem extends BedWarsActionItem {
     // TODO DAMAGE SETTINGS TO BE ADDED
 
     public FireballItem(DBedwars plugin) {
-        super(
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
-                XMaterial.FIRE_CHARGE.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getFireball().getName()),
+                plugin.getConfigHandler().getCustomItems().getFireball().getLore() == null ? null
+                        : ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getFireball().getLore()),
+                XMaterial.FIRE_CHARGE);
         this.plugin = plugin;
     }
 
@@ -55,7 +55,7 @@ public class FireballItem extends BedWarsActionItem {
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (cfgFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
             playerInteractEvent.setCancelled(true);
-            Utils.useItem(player);
+            Util.useItem(player);
             Fireball fireball = player.launchProjectile(Fireball.class);
             fireball.setMetadata("isDBedwarsFireball", FIREBALL_META);
             this.plugin.getFeatureManager().runFeature(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE, FireballLaunchFeature.class, new Acceptor<FireballLaunchFeature>() {

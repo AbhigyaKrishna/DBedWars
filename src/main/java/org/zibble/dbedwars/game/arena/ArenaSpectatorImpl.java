@@ -29,7 +29,7 @@ public class ArenaSpectatorImpl extends PlayerMember implements ArenaSpectator {
         this.arena = arena;
         if (teleportSpawn) {
             // Teleport to spawn
-            this.teleport(this.arena.getSettings().getSpectatorLocation());
+            this.teleport(this.arena.getDataHolder().getSpectatorLocation());
         }
     }
 

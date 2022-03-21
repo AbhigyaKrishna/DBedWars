@@ -11,11 +11,10 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.features.PopupTowerBuildFeature;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class PopupTowerChestItem extends BedWarsActionItem {
@@ -24,10 +23,10 @@ public class PopupTowerChestItem extends BedWarsActionItem {
     private final ConfigurableCustomItems.ConfigurablePopupTower cfgPopupTower;
 
     public PopupTowerChestItem(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()),
-                XMaterial.TRAPPED_CHEST.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getPopupTower().getName()),
+                plugin.getConfigHandler().getCustomItems().getPopupTower().getLore() == null ? null
+                        : ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getPopupTower().getLore()),
+                XMaterial.TRAPPED_CHEST);
         this.plugin = plugin;
         this.cfgPopupTower = plugin.getConfigHandler().getCustomItems().getPopupTower();
     }

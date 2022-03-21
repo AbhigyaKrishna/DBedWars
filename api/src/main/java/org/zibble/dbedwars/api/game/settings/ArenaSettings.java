@@ -1,88 +1,12 @@
 package org.zibble.dbedwars.api.game.settings;
 
-import com.google.common.collect.Multimap;
-import org.bukkit.World;
-import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.spawner.DropType;
-import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
-import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.Color;
-
-import java.util.Collection;
-import java.util.Set;
 
 public interface ArenaSettings {
-
-    String getName();
-
-    void setName(String name);
-
-    String getCustomName();
-
-    void setCustomName(String customName);
-
-    boolean hasCustomName();
-
-    World.Environment getWorldEnv();
-
-    void setWorldEnv(World.Environment worldEnv);
-
-    LocationXYZYP getLobby();
-
-    void setLobby(LocationXYZYP lobby);
-
-    boolean hasLobby();
-
-    LocationXYZYP getSpectatorLocation();
-
-    void setSpectatorLocation(LocationXYZYP spectatorLocation);
-
-    LocationXYZ getLobbyPosMax();
-
-    void setLobbyPosMax(LocationXYZ location);
-
-    LocationXYZ getLobbyPosMin();
-
-    void setLobbyPosMin(LocationXYZ location);
 
     BwItemStack getIcon();
 
     void setIcon(BwItemStack icon);
-
-    int getTeamPlayers();
-
-    void setTeamPlayers(int teamPlayers);
-
-    int getMinPlayers();
-
-    void setMinPlayers(int minPlayers);
-
-    int getMaxPlayer();
-
-    Multimap<DropType, LocationXYZ> getDrops();
-
-    void addDrop(DropType dropType, LocationXYZ location);
-
-    void removeDrop(LocationXYZ location);
-
-    void removeDrop(DropType dropType, LocationXYZ location);
-
-    Collection<LocationXYZ> getDropLocation(DropType dropType);
-
-    Set<Team> getAvailableTeams();
-
-    void enableTeam(Color teamColor);
-
-    void enableTeam(Team team);
-
-    boolean isEnabled(Color teamColor);
-
-    Team getTeam(Color teamColor);
-
-    void disableTeam(Color teamColor);
-
-    void disableTeam(Team team);
 
     int getStartTimer();
 

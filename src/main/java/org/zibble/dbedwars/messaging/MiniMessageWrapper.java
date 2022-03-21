@@ -1,8 +1,6 @@
 package org.zibble.dbedwars.messaging;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.transformation.TransformationRegistry;
-import net.kyori.adventure.text.minimessage.transformation.TransformationType;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 
 public class MiniMessageWrapper {

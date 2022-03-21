@@ -39,7 +39,7 @@ public enum ItemConstant {
             XMaterial.NETHERITE_HOE),
 
     TOOLS(
-            Utils.mergeArray(
+            Util.mergeArray(
                     AXE.getItems(),
                     PICKAXE.getItems(),
                     SHOVEL.getItems(),
@@ -83,7 +83,7 @@ public enum ItemConstant {
             XMaterial.NETHERITE_BOOTS),
 
     ARMOR(
-            Utils.mergeArray(
+            Util.mergeArray(
                     LEATHER_ARMOR.getItems(),
                     CHAINMAIL_ARMOR.getItems(),
                     IRON_ARMOR.getItems(),

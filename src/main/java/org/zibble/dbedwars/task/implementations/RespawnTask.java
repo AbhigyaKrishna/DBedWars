@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
@@ -53,7 +53,7 @@ public class RespawnTask extends CancellableWorkload implements Listener {
         this.time.decrementAndGet();
         this.player.sendTitle(message);
         if (time.get() == 0) {
-            ((ArenaPlayerImpl) this.player).setRespawning(false);
+            this.player.setRespawning(false);
             this.plugin.getThreadHandler().submitSync(() -> this.player.setSpectator(false));
             this.plugin
                     .getThreadHandler()

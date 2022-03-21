@@ -1,11 +1,12 @@
 package org.zibble.dbedwars.api.util.item;
 
+import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.api.messaging.message.Message;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ActionItem {
      *
      * @return Display name of the Action Item
      */
-    Component getDisplayName();
+    Message getDisplayName();
 
     /**
      * Gets the lore of the Action Item.
@@ -27,7 +28,7 @@ public interface ActionItem {
      *
      * @return Lore of the Action Item
      */
-    List<Component> getLore();
+    Message getLore();
 
     /**
      * Gets the material of the Action Item.
@@ -36,7 +37,7 @@ public interface ActionItem {
      *
      * @return Material of the Action Item
      */
-    Material getMaterial();
+    XMaterial getMaterial();
 
     /**
      * Gets the {@link EventPriority} for the Action Item.
@@ -54,7 +55,7 @@ public interface ActionItem {
      *
      * @return ItemStack of the Action Item
      */
-    ItemStack toItemStack();
+    ItemStack asItemStack();
 
     /**
      * Checks if the provided ItemStack is of this Action Item.

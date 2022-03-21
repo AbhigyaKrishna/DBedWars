@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.game.arena.view.shop;
+package org.zibble.dbedwars.game.arena.view;
 
 import java.util.TreeMap;
 

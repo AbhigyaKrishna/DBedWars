@@ -7,10 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.game.spawner.ResourceItem;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 
-public class ResourceItem implements org.zibble.dbedwars.api.game.spawner.ResourceItem {
+public class ResourceItemImpl implements ResourceItem {
 
     private final BwItemStack item;
     private boolean mergeable = true;
@@ -22,7 +23,7 @@ public class ResourceItem implements org.zibble.dbedwars.api.game.spawner.Resour
         return new Builder();
     }
 
-    public ResourceItem(BwItemStack item) {
+    public ResourceItemImpl(BwItemStack item) {
         this.item = item;
     }
 
@@ -38,16 +39,13 @@ public class ResourceItem implements org.zibble.dbedwars.api.game.spawner.Resour
         }
 
         if (!Bukkit.isPrimaryThread()) {
-            SchedulerUtils.runTask(new Runnable() {
-                @Override
-                public void run() {
-                    ResourceItem.this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
-                    ResourceItem.this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
-                    ResourceItem.this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
-                }
+            SchedulerUtils.runTask(() -> {
+                this.itemEntity = location.getWorld().dropItem(location, item.asItemStack());
+                this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
+                this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
             });
         } else {
-            this.itemEntity = location.getWorld().dropItem(location, item.toItemStack());
+            this.itemEntity = location.getWorld().dropItem(location, item.asItemStack());
             this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
             this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
         }
@@ -89,7 +87,7 @@ public class ResourceItem implements org.zibble.dbedwars.api.game.spawner.Resour
         this.splittable = splittable;
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<ResourceItem> {
+    public static class Builder implements org.zibble.dbedwars.api.util.Builder<ResourceItemImpl> {
 
         private BwItemStack item;
         private boolean mergeable = true;
@@ -119,8 +117,8 @@ public class ResourceItem implements org.zibble.dbedwars.api.game.spawner.Resour
         }
 
         @Override
-        public ResourceItem build() {
-            ResourceItem resourceItem = new ResourceItem(item);
+        public ResourceItemImpl build() {
+            ResourceItemImpl resourceItem = new ResourceItemImpl(item);
             resourceItem.setMergeable(mergeable);
             resourceItem.setSplittable(splittable);
             return resourceItem;

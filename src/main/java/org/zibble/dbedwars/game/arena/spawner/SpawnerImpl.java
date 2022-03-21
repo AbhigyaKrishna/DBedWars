@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -82,7 +83,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
                     for (Entity entity : this.location.getWorld().getNearbyEntities(this.location, this.getDropType().getSpawnRadius(), this.getDropType().getSpawnRadius(), this.getDropType().getSpawnRadius())) {
                         if (!(entity instanceof Item)) continue;
                         Item item = (Item) entity;
-                        if (!item.getItemStack().getType().equals(entry.getKey().getItem().getType())) continue;
+                        if (XMaterial.matchXMaterial(item.getItemStack()) != entry.getKey().getItem().getType()) continue;
                         if (!NBTUtils.hasPluginData(item.getItemStack())) continue;
                         count += item.getItemStack().getAmount();
                     }
@@ -95,7 +96,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
 
     @Override
     public void spawn(DropType.Drop drop) {
-        ResourceItem item = org.zibble.dbedwars.game.arena.spawner.ResourceItem.builder()
+        ResourceItem item = ResourceItemImpl.builder()
                 .item(drop.getItem())
                 .mergeable(this.getDropType().isMerging())
                 .splittable(this.getDropType().isSplitable())

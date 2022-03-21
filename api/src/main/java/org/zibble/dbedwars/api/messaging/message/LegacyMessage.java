@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.messaging.message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +20,10 @@ public class LegacyMessage extends Message {
     }
 
     public static LegacyMessage from(String[] message, Placeholder... placeholders) {
+        return new LegacyMessage(message, placeholders);
+    }
+
+    public static LegacyMessage from(Collection<String> message, Placeholder... placeholders) {
         return new LegacyMessage(message, placeholders);
     }
 

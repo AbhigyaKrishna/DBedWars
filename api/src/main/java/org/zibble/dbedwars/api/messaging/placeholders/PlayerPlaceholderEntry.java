@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.messaging;
+package org.zibble.dbedwars.api.messaging.placeholders;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.util.Key;

@@ -3,9 +3,9 @@ package org.zibble.dbedwars;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
-import org.zibble.dbedwars.api.util.NewBwItemStack;
+import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.version.Version;
 
 public final class APIImpl extends DBedWarsAPI {
@@ -37,11 +37,6 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public GuiHandler getGuiHandler() {
-        return this.plugin.getGuiHandler();
-    }
-
-    @Override
     public ThreadHandler getThreadHandler() {
         return this.plugin.getThreadHandler();
     }
@@ -67,8 +62,8 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public NewBwItemStack getConfiguredItem(String key, Placeholder... placeholders) {
-        return NewBwItemStack.fromJson(this.plugin.getConfigHandler().getJsonItem().get(key), placeholders);
+    public BwItemStack getConfiguredItem(String key, Placeholder... placeholders) {
+        return BwItemStack.fromJson(this.plugin.getConfigHandler().getJsonItem().get(key), placeholders);
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.zibble.dbedwars.task.implementations;
 import com.google.common.primitives.Shorts;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaStatus;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.task.Workload;
@@ -52,7 +52,7 @@ public class ArenaStartTask implements Workload {
         this.sendTrigger();
         this.countdown.decrementAndGet();
 
-        if (this.arena.getPlayers().size() == this.arena.getSettings().getMaxPlayer()
+        if (this.arena.getPlayers().size() == this.arena.getDataHolder().getMaxPlayersPerTeam()
                 && this.countdown.get() > 5) {
             // TODO: change message and add configuration
             this.arena.sendMessage(
@@ -63,7 +63,7 @@ public class ArenaStartTask implements Workload {
 
     @Override
     public boolean reSchedule() {
-        if (this.arena.getPlayers().size() < this.arena.getSettings().getMinPlayers()) {
+        if (this.arena.getPlayers().size() < this.arena.getDataHolder().getMinPlayersToStart()) {
             // TODO: change message
             this.arena.sendMessage(AdventureMessage.from("<red>Not enough players to start!"));
             this.arena.setStatus(ArenaStatus.WAITING);

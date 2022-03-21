@@ -21,7 +21,7 @@ import java.util.zip.ZipOutputStream;
 public class PluginFileUtils {
 
     @MethodRef(clazz = URLClassLoader.class, value = "addURL(java.net.URL)")
-    public static final MethodWrapper ADD_URL_METHOD = null;
+    public static final MethodWrapper<Void> ADD_URL_METHOD = null;
 
     static {
         ReflectionAnnotations.INSTANCE.load(PluginFileUtils.class);

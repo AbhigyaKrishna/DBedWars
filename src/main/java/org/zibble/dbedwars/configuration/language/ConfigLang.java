@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.configuration.language;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.zibble.dbedwars.api.messaging.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.configuration.ConfigMessage;

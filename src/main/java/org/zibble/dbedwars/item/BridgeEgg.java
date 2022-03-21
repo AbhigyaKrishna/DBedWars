@@ -12,13 +12,12 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.EventUtils;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.utils.Util;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class BridgeEgg extends BedWarsActionItem {
@@ -28,10 +27,10 @@ public class BridgeEgg extends BedWarsActionItem {
     private final DBedwars plugin;
 
     public BridgeEgg(DBedwars plugin) {
-        super(ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
-                ConfigLang.getTranslator().translate(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? new ArrayList<>()
-                        : plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore()),
-                XMaterial.EGG.parseMaterial());
+        super(ConfigMessage.from(plugin.getConfigHandler().getCustomItems().getBridgeEgg().getName()),
+                plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore() == null ? null
+                        : ConfigMessage.from((plugin.getConfigHandler().getCustomItems().getBridgeEgg().getLore())),
+                XMaterial.EGG);
         this.plugin = plugin;
     }
 
@@ -48,7 +47,7 @@ public class BridgeEgg extends BedWarsActionItem {
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         //TODO USELESS SPECTATOR CHECK :P
         event.setCancelled(true);
-        BwItemStack.removeItem(player, this.toItemStack());
+        Util.removeItem(player, this.asItemStack());
         Egg egg = player.launchProjectile(Egg.class);
         egg.setMetadata("isDBedwarsEgg", BRIDGE_EGG_META);
         this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE, BridgeEggBuildFeature.class, new Acceptor<BridgeEggBuildFeature>() {

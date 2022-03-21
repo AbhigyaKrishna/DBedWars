@@ -10,18 +10,23 @@ import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.framework.Configurable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 
 import java.util.List;
 import java.util.Map;
 
 public class ConfigurableArena implements Configurable, PropertySerializable {
 
+    private static final World.Environment DEF_ENVIRONMENT = World.Environment.NORMAL;
+
     @ConfigPath("name")
     private String identifier;
 
+    @Defaults.Boolean(false)
     @ConfigPath
     private boolean enabled;
 
+    @Defaults.Variable("DEF_ENVIRONMENT")
     @ConfigPath("world-environment")
     private World.Environment environment;
 

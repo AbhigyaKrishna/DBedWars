@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.member.ConsoleMember;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 
 public abstract class Messaging {
 

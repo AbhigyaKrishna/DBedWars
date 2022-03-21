@@ -6,6 +6,7 @@ import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.game.spawner.DropType;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
+import org.zibble.dbedwars.game.arena.ArenaImpl;
 import org.zibble.dbedwars.task.implementations.ArenaStartTask;
 
 import java.util.*;
@@ -37,7 +38,7 @@ public class GameManager implements org.zibble.dbedwars.api.handler.GameManager 
 
     @Override
     public Arena createArena(String name) {
-        Arena a = new org.zibble.dbedwars.game.arena.Arena(this.plugin);
+        Arena a = new ArenaImpl(this.plugin);
         this.arenas.put(name, a);
         a.getSettings().setName(name);
         return a;

@@ -11,7 +11,7 @@ import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.api.util.Duration;
-import org.zibble.dbedwars.utils.Utils;
+import org.zibble.dbedwars.utils.Util;
 
 import java.util.Collections;
 import java.util.function.Predicate;
@@ -44,7 +44,7 @@ public class ArenaEndFireworkFeature extends org.zibble.dbedwars.api.feature.cus
                     for (ArenaPlayer player : arena.getPlayers()) {
                         if (player.isFinalKilled())
                             continue;
-                        Location loc = Utils.getRandomPointAround(player.getPlayer().getLocation(), 30, new Predicate<Location>() {
+                        Location loc = Util.getRandomPointAround(player.getPlayer().getLocation(), 30, new Predicate<Location>() {
                             @Override
                             public boolean test(Location location) {
                                 return location.getY() > player.getPlayer().getLocation().getY() + 10;

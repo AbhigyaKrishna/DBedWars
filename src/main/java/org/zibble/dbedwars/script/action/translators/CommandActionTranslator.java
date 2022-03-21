@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.script.action.translators;
 
 import org.bukkit.command.CommandSender;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.Key;
