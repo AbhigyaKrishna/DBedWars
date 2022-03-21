@@ -10,7 +10,6 @@ import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 public class SetupTeamShop extends CommandNode {
 
@@ -49,6 +48,6 @@ public class SetupTeamShop extends CommandNode {
             return;
         }
 
-        setupSession.setupTeamShopNPC(color, player.getLocation());
+        setupSession.addTeamShop(color, );
     }
 }

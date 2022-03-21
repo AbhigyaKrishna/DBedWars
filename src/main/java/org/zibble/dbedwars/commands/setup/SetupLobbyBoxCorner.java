@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.commands.setup;
 
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.commands.nodes.CommandNode;
@@ -33,21 +32,11 @@ public class SetupLobbyBoxCorner extends CommandNode {
 
         switch (args[0]) {
             case "1": {
-                Block block = player.getTargetBlockExact(5);
-                if (block == null) {
-                    member.sendMessage(PluginLang.SETUP_SESSION_NOT_LOOKING_AT_BLOCK.asMessage());
-                    return;
-                }
-                setupSession.setupLobbyCorner1(block);
+                setupSession.setupWaitingBoxCorner1();
                 break;
             }
             case "2": {
-                Block block = player.getTargetBlockExact(5);
-                if (block == null) {
-                    member.sendMessage(PluginLang.SETUP_SESSION_NOT_LOOKING_AT_BLOCK.asMessage());
-                    return;
-                }
-                setupSession.setupLobbyCorner2(block);
+                setupSession.setupWaitingBoxCorner2();
                 break;
             }
             default: {

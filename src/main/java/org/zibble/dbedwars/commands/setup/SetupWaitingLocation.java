@@ -29,6 +29,6 @@ public class SetupWaitingLocation extends CommandNode {
             member.sendMessage(PluginLang.NOT_IN_SETUP_SESSION.asMessage());
             return;
         }
-        setupSession.setupWaitingLocation(player.getLocation());
+        setupSession.setupWaitingLocation();
     }
 }

@@ -12,7 +12,6 @@ import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 public class SetupTeamGen extends CommandNode {
 
@@ -56,7 +55,7 @@ public class SetupTeamGen extends CommandNode {
         for (ConfigurableItemSpawner dropType : this.plugin.getConfigHandler().getDropTypes()) {
             if (dropType.getId().equalsIgnoreCase(args[0])) {
                 //TODO AVENGER AK
-                setupSession.setupTeamGen(color, player.getLocation(), dropType);
+                setupSession.addTeamSpawner(color, dropType);
                 return;
             }
         }

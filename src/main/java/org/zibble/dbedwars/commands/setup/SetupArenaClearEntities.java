@@ -6,7 +6,6 @@ import org.zibble.dbedwars.api.commands.annotations.PlayerOnly;
 import org.zibble.dbedwars.api.commands.annotations.SubCommandNode;
 import org.zibble.dbedwars.api.commands.nodes.CommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
@@ -34,8 +33,7 @@ public class SetupArenaClearEntities extends CommandNode {
             member.sendMessage(PluginLang.NOT_IN_SETUP_SESSION.asMessage());
             return;
         }
-
-        int count = setupSession.cleanupWorldEntities();
+        setupSession.entityCleanup();
     }
 
 

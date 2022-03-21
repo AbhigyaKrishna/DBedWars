@@ -29,6 +29,6 @@ public class SetupSpectatorLocation extends CommandNode {
             member.sendMessage(PluginLang.NOT_IN_SETUP_SESSION.asMessage());
             return;
         }
-        setupSession.setupSpectatorLocation(player.getLocation());
+        setupSession.setupSpectatorLocation();
     }
 }

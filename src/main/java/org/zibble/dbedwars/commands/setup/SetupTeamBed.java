@@ -1,18 +1,15 @@
 package org.zibble.dbedwars.commands.setup;
 
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.commands.nodes.CommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 public class SetupTeamBed extends CommandNode {
 
@@ -51,13 +48,7 @@ public class SetupTeamBed extends CommandNode {
             return;
         }
 
-        Block block = player.getTargetBlockExact(5);
-        if (block == null) {
-            member.sendMessage(PluginLang.SETUP_SESSION_NOT_LOOKING_AT_BLOCK.asMessage());
-            return;
-        }
-
-        setupSession.setupTeamBed(color, block.getLocation());
+        setupSession.setupTeamBed(color);
     }
 
 }

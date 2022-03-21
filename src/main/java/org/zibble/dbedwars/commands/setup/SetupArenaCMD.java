@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.commands.annotations.PlayerOnly;
 import org.zibble.dbedwars.api.commands.nodes.CommandNode;
 
 @Permission(value = "dbedwars.setup")
-@PlayerOnly(consoleTry = "@ConfigLang{}")
+@PlayerOnly(consoleTry = "")
 public class SetupArenaCMD extends CommandNode {
 
     public SetupArenaCMD() {
