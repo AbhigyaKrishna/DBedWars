@@ -13,19 +13,20 @@ import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
+import org.zibble.dbedwars.utils.gamerule.GameRuleType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class SetupSession {
 
     private static final Messaging MESSAGING = Messaging.get();
@@ -74,7 +75,7 @@ public class SetupSession {
     }
 
     public void disableMobSpawning() {
-        this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
+        GameRuleType.MOB_SPAWNING.apply(this.world, false);
         this.playerMember.sendMessage(PluginLang.DISABLE_MOB_SPAWNING_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
@@ -91,7 +92,7 @@ public class SetupSession {
             entity.remove();
             count++;
         }
-        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_DONE.asMessage());
+        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_DONE.asMessage(PlaceholderEntry.of("count", String.valueOf(count))));
         TASK_DONE_SOUND.play(this.player);
     }
 

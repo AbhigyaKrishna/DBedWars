@@ -3,8 +3,7 @@ package org.zibble.dbedwars.configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.exceptions.IllegalConfigException;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +24,10 @@ public class MainConfiguration implements Loadable {
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
+    public void load(ConfigurationSection section) {
         this.arenaSection.load(section.getConfigurationSection("arena"));
         this.trapSection.load(section.getConfigurationSection("traps"));
         this.langSection.load(section.getConfigurationSection("lang"));
-        return this;
     }
 
     @Override

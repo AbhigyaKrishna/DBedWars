@@ -16,6 +16,9 @@ public class ConfigurableDatabase implements Loadable {
     @ConfigPath
     private ConfigurableMongoDB mongodb;
 
+    @ConfigPath("store-match-history")
+    private MatchHistory matchHistory;
+
     @Override
     public void load(ConfigurationSection section) {
         this.loadEntries(section);
@@ -36,6 +39,10 @@ public class ConfigurableDatabase implements Loadable {
 
     public ConfigurableMongoDB getMongoDB() {
         return mongodb;
+    }
+
+    public MatchHistory getMatchHistory() {
+        return matchHistory;
     }
 
     public static class ConfigurableMySQL implements Loadable {
@@ -146,6 +153,26 @@ public class ConfigurableDatabase implements Loadable {
 
         public String getPassword() {
             return password;
+        }
+
+    }
+
+    public static class MatchHistory implements Loadable {
+
+        @ConfigPath
+        private boolean enabled;
+
+        @ConfigPath
+        private String pruneTime;
+
+        @Override
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
         }
 
     }

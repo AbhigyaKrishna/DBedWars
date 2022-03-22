@@ -1,5 +1,7 @@
 package org.zibble.dbedwars.database.bridge;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.io.IOUtils;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -12,7 +14,6 @@ import org.zibble.dbedwars.database.sql.SQLDatabase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import java.util.function.Consumer;
 
 public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
+    private Cache<String, String> sqlCache = CacheBuilder.newBuilder().maximumSize(10).build();
     private final SQLDatabase database;
     private boolean initialized;
 
@@ -36,7 +38,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
         try {
             this.database.connect();
-            this.querySQLFile("sql/stats_database_init.sql", this.database::executeAsync);
+            this.querySQLFile("stats_database_init", this.database::executeAsync);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,9 +105,13 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
     }
 
     protected void querySQLFile(String fileName, Consumer<String> consumer) throws IOException {
-        InputStream sql = DBedwars.getInstance().getResource(fileName);
-        String s = IOUtils.toString(sql, StandardCharsets.UTF_8);
-        sql.close();
+        String s;
+        if ((s = this.sqlCache.getIfPresent(fileName)) == null) {
+            try (InputStream sql = DBedwars.getInstance().getResource("sql/" + fileName + ".sql")) {
+                s = IOUtils.toString(sql, StandardCharsets.UTF_8);
+                this.sqlCache.put(fileName, s);
+            }
+        }
         consumer.accept(s);
     }
 

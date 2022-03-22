@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.TriFunction;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
-import org.zibble.dbedwars.configuration.util.yaml.YamlUtils;
+import org.zibble.dbedwars.configuration.util.YamlUtils;
 import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
