@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.guis;
 
 import org.zibble.dbedwars.game.arena.view.ShopItem;
+import org.zibble.dbedwars.game.arena.view.ShopView;
 import org.zibble.dbedwars.guis.component.GuiComponent;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
@@ -40,12 +41,12 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
         return super.item(c, item, clickAction);
     }
 
-    public ShopPageGui shopItem(char c, ShopItem item) {
-        return super.item(c, item.asMenuItem());
+    public ShopPageGui shopItem(char c, ShopItem item, ShopView shopView) {
+        return super.item(c, item.asMenuItem(shopView));
     }
 
-    public ShopPageGui shopItem(char c, Supplier<ShopItem> item) {
-        return this.shopItem(c, item.get());
+    public ShopPageGui shopItem(char c, Supplier<ShopItem> item, ShopView shopView) {
+        return this.shopItem(c, item.get(), shopView);
     }
 
     @Override
@@ -63,8 +64,8 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
         return super.overrideSlot(slot, item);
     }
 
-    public final ShopPageGui overrideSlot(int slot, ShopItem item) {
-        return super.overrideSlot(slot, item.asMenuItem());
+    public final ShopPageGui overrideSlot(int slot, ShopItem item, ShopView shopView) {
+        return super.overrideSlot(slot, item.asMenuItem(shopView));
     }
 
 

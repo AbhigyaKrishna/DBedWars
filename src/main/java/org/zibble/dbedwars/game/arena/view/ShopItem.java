@@ -19,7 +19,7 @@ public class ShopItem {
 
     protected final ArenaPlayer player;
     protected final BwItemStack item;
-    protected ItemTierGroup tierGroup;
+    private ItemTierGroup tierGroup;
     private final Set<Condition<?>> useConditions;
     private final Set<ActionProcessor> actions;
 
@@ -65,11 +65,12 @@ public class ShopItem {
         }
     }
 
-    public MenuItem<? extends Item> asMenuItem() {
+    public MenuItem<? extends Item> asMenuItem(ShopView shopView) {
         MenuItem<SpigotItem> menuItem = MenuItem.of(new SpigotItem(this.item.asItemStack()));
         menuItem.setClickAction((protocolPlayer, clickType) -> {
             if (this.canUse()) {
                 this.use(this.player, clickType);
+                if (this.tierGroup != null) shopView.getDataTracker().addTier(this.tierGroup);
             }
         });
         return menuItem;

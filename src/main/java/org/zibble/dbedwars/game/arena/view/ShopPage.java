@@ -16,32 +16,6 @@ public class ShopPage {
     private String[] mask;
     private Map<Character, ShopItem> items;
 
-//    public static ShopPage fromConfig(ArenaPlayer player, ConfigurableShop.ConfigurablePage config) {
-//        ShopPage page = new ShopPage(player, config.getPattern().size(), ConfigMessage.from(config.getTitle()));
-//        String[] mask = new String[config.getPattern().size()];
-//        for (int i = 0; i < config.getPattern().size(); i++) {
-//            mask[i] = config.getPattern().get(i).replace(" ", "");
-//        }
-//        page.setMask(mask);
-//        for (Map.Entry<String, ConfigurableShop.ConfigurablePage.ConfigurableItem> entry : config.getItems().entrySet()) {
-//            NewBwItemStack item = NewBwItemStack.valueOf(entry.getValue().getMaterial());
-//            if (item == null) continue;
-//            if (entry.getValue().getName() != null)
-//                item.setDisplayName(ConfigMessage.from(entry.getValue().getName()));
-//            if (entry.getValue().getLore() != null)
-//                item.setLore(ConfigMessage.from(entry.getValue().getLore().toArray(new String[0])));
-//            if (entry.getValue().getEnchantment() != null || !entry.getValue().getEnchantment().isEmpty())
-//                for (String s : entry.getValue().getEnchantment()) {
-//                    LEnchant enchant = LEnchant.valueOf(s);
-//                    if (enchant == null) continue;
-//                    item.addEnchantment(enchant);
-//                }
-//            page.addItem(entry.getKey().charAt(0), new ShopItem(player, item));
-//        }
-//
-//        return page;
-//    }
-
     public ShopPage(ArenaPlayer player, int row, Message title) {
         this.player = player;
         this.row = row;
@@ -97,12 +71,18 @@ public class ShopPage {
         items.put(key, item);
     }
 
-    public ShopPageGui getGuiComponent() {
+    public ShopPageGui getGuiComponent(ShopView shopView) {
         ShopPageGui menu = new ShopPageGui(this.row)
                 .title(this.title)
                 .mask(this.mask);
         for (Map.Entry<Character, ShopItem> entry : this.items.entrySet()) {
-            menu.item(entry.getKey(), entry.getValue().asMenuItem());
+            ItemTierGroup group = entry.getValue().getTierGroup();
+            if (group == null) menu.item(entry.getKey(), entry.getValue().asMenuItem(shopView));
+            else {
+                int tier = shopView.getDataTracker().getCurrentTierOrDefault(group, -1);
+                if (tier == -1) continue; //SHOULD NOT HAPPEN
+                menu.item(entry.getKey(), group.getItem(tier).asMenuItem(shopView));
+            }
         }
         return menu;
     }

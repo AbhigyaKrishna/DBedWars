@@ -112,6 +112,9 @@ public class ConfigurableShop implements Loadable {
             @ConfigPath
             private List<String> actions;
 
+            @ConfigPath
+            private String tierGroup;
+
             public ConfigurableItem() {
                 this.lore = new ArrayList<>();
                 this.enchantment = new ArrayList<>();
@@ -158,6 +161,9 @@ public class ConfigurableShop implements Loadable {
                 return actions;
             }
 
+            public String getTierGroup() {
+                return tierGroup;
+            }
         }
     }
 
