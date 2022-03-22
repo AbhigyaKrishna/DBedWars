@@ -19,8 +19,8 @@ public class ItemTierGroup {
         return tiers.get(tier);
     }
 
-    public Integer[] getAllTiers() {
-        return this.tiers.keySet().toArray(new Integer[0]);
+    public int getTierCount() {
+        return this.tiers.size();
     }
 
 }
