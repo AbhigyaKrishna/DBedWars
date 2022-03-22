@@ -19,7 +19,7 @@ public class ShopItem {
 
     protected final ArenaPlayer player;
     protected final BwItemStack item;
-    protected TierGroup tierGroup;
+    protected ItemTierGroup tierGroup;
     private final Set<Condition<?>> useConditions;
     private final Set<ActionProcessor> actions;
 
@@ -30,7 +30,7 @@ public class ShopItem {
         this.actions = new HashSet<>();
     }
 
-    ShopItem(ArenaPlayer player, ShopTypeImpl.Item item, Placeholder... placeholders) {
+    ShopItem(ArenaPlayer player, ShopInfoImpl.ItemInfoImpl item, Placeholder... placeholders) {
         this.player = player;
         this.item = item.getItemFunction().apply(placeholders);
         this.useConditions = new HashSet<>();
@@ -44,11 +44,11 @@ public class ShopItem {
         }
     }
 
-    public TierGroup getTierGroup() {
+    public ItemTierGroup getTierGroup() {
         return this.tierGroup;
     }
 
-    public void setTierGroup(TierGroup tierGroup) {
+    public void setTierGroup(ItemTierGroup tierGroup) {
         this.tierGroup = tierGroup;
     }
 

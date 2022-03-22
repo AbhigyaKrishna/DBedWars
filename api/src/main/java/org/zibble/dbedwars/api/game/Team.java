@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.game;
 
 import com.google.common.collect.Multimap;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
@@ -26,9 +26,9 @@ public interface Team extends AbstractMessaging {
 
     void setSpawn(LocationXYZYP location);
 
-    void addSpawner(DropType dropType, LocationXYZ location);
+    void addSpawner(DropInfo dropType, LocationXYZ location);
 
-    Multimap<DropType, LocationXYZ> getSpawners();
+    Multimap<DropInfo, LocationXYZ> getSpawners();
 
     LocationXYZYP getShopNpc();
 

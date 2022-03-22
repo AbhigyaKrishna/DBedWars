@@ -13,7 +13,7 @@ import org.zibble.dbedwars.api.events.TrapTriggerEvent;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
@@ -34,7 +34,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
     private LocationXYZYP spawn;
     private LocationXYZYP shopNpcLocation;
     private LocationXYZYP upgradesNpcLocation;
-    private Multimap<DropType, LocationXYZ> spawners;
+    private Multimap<DropInfo, LocationXYZ> spawners;
 
     private Arena arena;
     private boolean bedBroken;
@@ -84,12 +84,12 @@ public class TeamImpl extends AbstractMessaging implements Team {
     }
 
     @Override
-    public void addSpawner(DropType dropType, LocationXYZ location) {
+    public void addSpawner(DropInfo dropType, LocationXYZ location) {
         this.spawners.put(dropType, location);
     }
 
     @Override
-    public Multimap<DropType, LocationXYZ> getSpawners() {
+    public Multimap<DropInfo, LocationXYZ> getSpawners() {
         return this.spawners;
     }
 

@@ -2,12 +2,12 @@ package org.zibble.dbedwars.game.arena.view;
 
 import java.util.TreeMap;
 
-public class TierGroup {
+public class ItemTierGroup {
 
     private final TreeMap<Integer, ShopItem> tiers;
     private int tier = 0;
 
-    public TierGroup() {
+    public ItemTierGroup() {
         this.tiers = new TreeMap<>(Integer::compare);
     }
 

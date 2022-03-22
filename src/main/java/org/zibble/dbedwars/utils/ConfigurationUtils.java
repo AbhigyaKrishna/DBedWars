@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.view.AttributeType;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.BwItemStack;
@@ -42,7 +42,7 @@ public class ConfigurationUtils {
         return str;
     }
 
-    public static String serializeSpawner(DropType drop, LocationXYZ location) {
+    public static String serializeSpawner(DropInfo drop, LocationXYZ location) {
         return drop.getKey().get() + "#" + location.toString();
     }
 
@@ -54,9 +54,9 @@ public class ConfigurationUtils {
         return pattern;
     }
 
-    public static Pair<DropType, LocationXYZ> parseSpawner(String s) {
+    public static Pair<DropInfo, LocationXYZ> parseSpawner(String s) {
         String[] str = s.split("#");
-        for (DropType d : DBedwars.getInstance().getGameManager().getDropTypes()) {
+        for (DropInfo d : DBedwars.getInstance().getGameManager().getDropTypes()) {
             if (d.getKey().get().equals(str[0]))
                 return Pair.of(d, LocationXYZ.valueOf(str[1]));
         }

@@ -2,7 +2,7 @@ package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
@@ -10,7 +10,7 @@ import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
-import org.zibble.dbedwars.game.arena.spawner.DropTypeImpl;
+import org.zibble.dbedwars.game.arena.spawner.DropInfoImpl;
 import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.ArrayList;
@@ -93,14 +93,14 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                 if (s.getId() == null) continue;
                 SoundVP sound = s.getSpawnSound();
                 ParticleEffect effect = s.getSpawnEffect();
-                for (DropType d : arena.getSettings().getDrops().asMap().keySet()) {
+                for (DropInfo d : arena.getSettings().getDrops().asMap().keySet()) {
                     if (!d.getId().equals(s.getId())) continue;
                     if (sound != null) d.setSpawnSound(sound);
                     if (effect != null) d.setSpawnEffect(effect);
                     s.getTiers().forEach((i, ct) -> {
                         boolean bTier = false;
                         if (d.hasTier(i)) {
-                            DropType.Tier t = d.getTier(i);
+                            DropInfo.Tier t = d.getTier(i);
                             double delay = ct.getSeconds();
                             SoundVP upgradeSound = ct.getUpgradeSound();
                             ParticleEffect upgradeEffect = ct.getUpgradeEffect();
@@ -112,7 +112,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                             if (message != null) t.setUpgradeMessage(message);
                             ct.getActions().forEach((str, cDrop) -> {
                                 boolean bDrop = false;
-                                for (DropType.Drop drop : t.getDropMap().values()) {
+                                for (DropInfo.Drop drop : t.getDropMap().values()) {
                                     if (drop.getKey().equals(cDrop.getKey())) {
                                         if (cDrop.getDelay() != -1) drop.setDelay(cDrop.getDelay());
                                         if (cDrop.getLimit() != -1) drop.setMaxSpawn(cDrop.getLimit());
@@ -122,7 +122,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                                     }
                                 }
                                 if (!bDrop && cDrop.isValid()) {
-                                    t.getDropMap().put(str, new DropTypeImpl.Drop(cDrop));
+                                    t.getDropMap().put(str, new DropInfoImpl.Drop(cDrop));
                                 }
                             });
 
@@ -130,7 +130,7 @@ public class ConfigurableArenaOverride implements Loadable, PropertySerializable
                         }
                         if (!bTier) {
                             if (ct.isValid()) {
-                                d.getTiers().put(i, new DropTypeImpl.Tier(ct));
+                                d.getTiers().put(i, new DropInfoImpl.Tier(ct));
                             }
                         }
                     });

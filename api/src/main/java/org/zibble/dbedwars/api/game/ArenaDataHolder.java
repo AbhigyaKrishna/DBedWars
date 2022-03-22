@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.api.game;
 
 import org.bukkit.World;
-import org.zibble.dbedwars.api.game.spawner.DropType;
-import org.zibble.dbedwars.api.game.view.ShopType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
+import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
@@ -75,9 +75,9 @@ public interface ArenaDataHolder {
 
     interface SpawnerDataHolder {
 
-        DropType getDropType();
+        DropInfo getDropType();
 
-        void setDropType(DropType dropType);
+        void setDropType(DropInfo dropType);
 
         LocationXYZ getLocation();
 
@@ -87,7 +87,7 @@ public interface ArenaDataHolder {
 
     interface ShopDataHolder {
 
-        ShopType getShopType();
+        ShopInfo getShopType();
 
         LocationXYZYP getLocation();
 

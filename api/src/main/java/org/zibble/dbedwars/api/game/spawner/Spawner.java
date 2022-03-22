@@ -10,13 +10,13 @@ import org.zibble.dbedwars.api.util.Tickable;
 import java.time.Instant;
 import java.util.Optional;
 
-public interface Spawner extends Tickable, Keyed<DropType> {
+public interface Spawner extends Tickable, Keyed<DropInfo> {
 
-    void spawn(DropType.Drop drop);
+    void spawn(DropInfo.Drop drop);
 
     boolean upgrade(int level);
 
-    DropType getDropType();
+    DropInfo getDropType();
 
     Instant getStartTime();
 
@@ -26,11 +26,11 @@ public interface Spawner extends Tickable, Keyed<DropType> {
 
     Arena getArena();
 
-    Optional<Team> getTeam();
+    Optional<Team> getOptionalTeam();
 
     BoundingBox getBoundingBox();
 
-    DropType.Tier getTier();
+    DropInfo.Tier getTier();
 
     Instant getLastUpgrade();
 

@@ -4,7 +4,7 @@ import com.pepedevs.radium.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 
 public class SpawnerUpgradeEvent extends CustomEventCancellable {
@@ -12,17 +12,17 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final Arena arena;
-    private final DropType dropType;
+    private final DropInfo dropType;
     private final Spawner spawner;
-    private final DropType.Tier currentTier;
-    private DropType.Tier nextTier;
+    private final DropInfo.Tier currentTier;
+    private DropInfo.Tier nextTier;
 
     public SpawnerUpgradeEvent(
             Arena arena,
-            DropType dropType,
+            DropInfo dropType,
             Spawner spawner,
-            DropType.Tier currentTier,
-            DropType.Tier nextTier) {
+            DropInfo.Tier currentTier,
+            DropInfo.Tier nextTier) {
         this.arena = arena;
         this.dropType = dropType;
         this.spawner = spawner;
@@ -38,7 +38,7 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
         return arena;
     }
 
-    public DropType getDropType() {
+    public DropInfo getDropType() {
         return dropType;
     }
 
@@ -46,15 +46,15 @@ public class SpawnerUpgradeEvent extends CustomEventCancellable {
         return spawner;
     }
 
-    public DropType.Tier getCurrentTier() {
+    public DropInfo.Tier getCurrentTier() {
         return currentTier;
     }
 
-    public DropType.Tier getNextTier() {
+    public DropInfo.Tier getNextTier() {
         return nextTier;
     }
 
-    public void setNextTier(DropType.Tier nextTier) {
+    public void setNextTier(DropInfo.Tier nextTier) {
         this.nextTier = nextTier;
     }
 

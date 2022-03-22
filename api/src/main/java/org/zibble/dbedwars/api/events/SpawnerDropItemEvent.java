@@ -4,7 +4,7 @@ import com.pepedevs.radium.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.ResourceItem;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 
@@ -13,15 +13,15 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final Arena arena;
-    private final DropType dropType;
+    private final DropInfo dropType;
     private final Spawner spawner;
-    private final DropType.Drop drop;
+    private final DropInfo.Drop drop;
     private ResourceItem resourceItem;
 
     public SpawnerDropItemEvent(
             Arena arena,
-            DropType dropType,
-            DropType.Drop drop,
+            DropInfo dropType,
+            DropInfo.Drop drop,
             ResourceItem resourceItem,
             Spawner spawner) {
         this.arena = arena;
@@ -39,11 +39,11 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
         return arena;
     }
 
-    public DropType getDropType() {
+    public DropInfo getDropType() {
         return dropType;
     }
 
-    public DropType.Drop getDrop() {
+    public DropInfo.Drop getDrop() {
         return drop;
     }
 

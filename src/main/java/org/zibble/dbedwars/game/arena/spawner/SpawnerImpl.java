@@ -9,8 +9,9 @@ import org.zibble.dbedwars.api.events.SpawnerDropItemEvent;
 import org.zibble.dbedwars.api.events.SpawnerUpgradeEvent;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.ResourceItem;
+import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.util.Initializable;
 import org.zibble.dbedwars.api.util.Key;
@@ -22,27 +23,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner, Initializable {
+public class SpawnerImpl implements Spawner, Initializable {
 
     private final DBedwars plugin;
-    private final Key<DropType> key;
+    private final Key<DropInfo> key;
     private final Arena arena;
-    private final Optional<Team> team;
+    private final Optional<Team> optionalTeam;
     private Location location;
     private BoundingBox box;
 
-    private DropType.Tier currentTier;
+    private DropInfo.Tier currentTier;
 
     private boolean initialized;
     private Instant start;
     private Instant lastUpgrade;
-    private final Map<DropType.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
+    private final Map<DropInfo.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
 
-    public SpawnerImpl(DBedwars plugin, DropType dropType, Arena arena, Optional<Team> team) {
+    public SpawnerImpl(DBedwars plugin, DropInfo dropType, Arena arena, Optional<Team> optionalTeam) {
         this.plugin = plugin;
         this.key = Key.of(dropType);
         this.arena = arena;
-        this.team = team;
+        this.optionalTeam = optionalTeam;
     }
 
     public void init(Location location, int defaultLevel) {
@@ -64,7 +65,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
         this.initialized = true;
         this.start = Instant.now();
         this.lastUpgrade = this.start;
-        for (DropType.Drop drop : this.currentTier.getDrops()) {
+        for (DropInfo.Drop drop : this.currentTier.getDrops()) {
             this.dropTime.put(drop, this.start);
         }
     }
@@ -75,7 +76,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
             return;
         }
 
-        for (Map.Entry<DropType.Drop, Instant> entry : this.dropTime.entrySet()) {
+        for (Map.Entry<DropInfo.Drop, Instant> entry : this.dropTime.entrySet()) {
             if (entry.getValue().plusMillis((long) entry.getKey().getDelay() * 1000).isBefore(Instant.now())) {
                 entry.setValue(Instant.now());
                 if (entry.getKey().getMaxSpawn() != -1) {
@@ -95,7 +96,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
     }
 
     @Override
-    public void spawn(DropType.Drop drop) {
+    public void spawn(DropInfo.Drop drop) {
         ResourceItem item = ResourceItemImpl.builder()
                 .item(drop.getItem())
                 .mergeable(this.getDropType().isMerging())
@@ -120,7 +121,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
 
     @Override
     public boolean upgrade(int level) {
-        DropType.Tier nextTier = this.getDropType().getTier(level);
+        DropInfo.Tier nextTier = this.getDropType().getTier(level);
         SpawnerUpgradeEvent event = new SpawnerUpgradeEvent(this.arena, this.getDropType(), this, this.currentTier, nextTier);
         event.call();
 
@@ -128,10 +129,10 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
 
         this.lastUpgrade = Instant.now();
 
-        Map<DropType.Drop, Instant> time = new HashMap<>(this.dropTime);
+        Map<DropInfo.Drop, Instant> time = new HashMap<>(this.dropTime);
         this.dropTime.clear();
 
-        for (DropType.Drop drop : event.getNextTier().getDrops()) {
+        for (DropInfo.Drop drop : event.getNextTier().getDrops()) {
             if (time.containsKey(drop)) continue;
             time.put(drop, Instant.now());
         }
@@ -147,7 +148,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
         return true;
     }
 
-    public DropType getDropType() {
+    public DropInfo getDropType() {
         return key.get();
     }
 
@@ -172,8 +173,8 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
     }
 
     @Override
-    public Optional<Team> getTeam() {
-        return this.team;
+    public Optional<Team> getOptionalTeam() {
+        return this.optionalTeam;
     }
 
     @Override
@@ -182,7 +183,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
     }
 
     @Override
-    public DropType.Tier getTier() {
+    public DropInfo.Tier getTier() {
         return this.currentTier;
     }
 
@@ -197,7 +198,7 @@ public class SpawnerImpl implements org.zibble.dbedwars.api.game.spawner.Spawner
     }
 
     @Override
-    public Key<DropType> getKey() {
+    public Key<DropInfo> getKey() {
         return key;
     }
 

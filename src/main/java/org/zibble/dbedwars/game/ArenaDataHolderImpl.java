@@ -2,8 +2,8 @@ package org.zibble.dbedwars.game;
 
 import org.bukkit.World;
 import org.zibble.dbedwars.api.game.ArenaDataHolder;
-import org.zibble.dbedwars.api.game.spawner.DropType;
-import org.zibble.dbedwars.api.game.view.ShopType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
+import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
@@ -217,18 +217,18 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     public static class SpawnerDataHolderImpl implements ArenaDataHolder.SpawnerDataHolder {
 
-        private DropType dropType;
+        private DropInfo dropType;
         private LocationXYZ location;
 
         public static SpawnerDataHolderImpl fromConfig(String cfg) {
             SpawnerDataHolderImpl data = new SpawnerDataHolderImpl();
-            Pair<DropType, LocationXYZ> pair = ConfigurationUtils.parseSpawner(cfg);
+            Pair<DropInfo, LocationXYZ> pair = ConfigurationUtils.parseSpawner(cfg);
             data.dropType = pair.getKey();
             data.location = pair.getValue();
             return data;
         }
 
-        public static SpawnerDataHolderImpl of(DropType dropType, LocationXYZ location) {
+        public static SpawnerDataHolderImpl of(DropInfo dropType, LocationXYZ location) {
             SpawnerDataHolderImpl data = new SpawnerDataHolderImpl();
             data.dropType = dropType;
             data.location = location;
@@ -238,12 +238,12 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private SpawnerDataHolderImpl() {}
 
         @Override
-        public DropType getDropType() {
+        public DropInfo getDropType() {
             return dropType;
         }
 
         @Override
-        public void setDropType(DropType dropType) {
+        public void setDropType(DropInfo dropType) {
             this.dropType = dropType;
         }
 
@@ -261,10 +261,10 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     public static class ShopDataHolderImpl implements ArenaDataHolder.ShopDataHolder {
 
-        private ShopType shopType;
+        private ShopInfo shopType;
         private LocationXYZYP location;
 
-        public static ShopDataHolderImpl of(ShopType shopType, LocationXYZYP location) {
+        public static ShopDataHolderImpl of(ShopInfo shopType, LocationXYZYP location) {
             ShopDataHolderImpl data = new ShopDataHolderImpl();
             data.shopType = shopType;
             data.location = location;
@@ -274,7 +274,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private ShopDataHolderImpl() {}
 
         @Override
-        public ShopType getShopType() {
+        public ShopInfo getShopType() {
             return shopType;
         }
 

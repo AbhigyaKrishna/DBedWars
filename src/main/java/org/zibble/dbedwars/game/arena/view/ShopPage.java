@@ -50,13 +50,13 @@ public class ShopPage {
         this.items = new HashMap<>();
     }
 
-    ShopPage(ArenaPlayer player, ShopTypeImpl.PageImpl page) {
+    ShopPage(ArenaPlayer player, ShopInfoImpl.PageInfoImpl page) {
         this.player = player;
         this.row = page.getRow();
         this.title = page.getTitle();
         this.mask = new String[this.row];
         this.items = new HashMap<>();
-        for (Map.Entry<Character, ShopTypeImpl.Item> entry : page.getItems().entrySet()) {
+        for (Map.Entry<Character, ShopInfoImpl.ItemInfoImpl> entry : page.getItems().entrySet()) {
             this.items.put(entry.getKey(), new ShopItem(this.player, entry.getValue()));
         }
     }

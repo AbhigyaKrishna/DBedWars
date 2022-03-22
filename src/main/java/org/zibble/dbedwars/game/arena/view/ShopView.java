@@ -11,7 +11,7 @@ import java.util.Map;
 public class ShopView {
 
     private final ArenaPlayer player;
-    private final ShopTypeImpl type;
+    private final ShopInfoImpl type;
     private ShopPage defaultPage;
     private final Map<Key<String>, ShopPage> pages;
 
@@ -24,11 +24,11 @@ public class ShopView {
 //        return view;
 //    }
 
-    public ShopView(ArenaPlayer player, ShopTypeImpl type) {
+    public ShopView(ArenaPlayer player, ShopInfoImpl type) {
         this.player = player;
         this.type = type;
         this.pages = new LinkedHashMap<>();
-        for (Map.Entry<Key<String>, ShopTypeImpl.PageImpl> entry : this.type.getPages().entrySet()) {
+        for (Map.Entry<Key<String>, ShopInfoImpl.PageInfoImpl> entry : this.type.getPages().entrySet()) {
             this.createPage(entry.getKey(), entry.getValue());
         }
         this.defaultPage = this.pages.get(type.getDefaultPage().getKey());
@@ -52,7 +52,7 @@ public class ShopView {
         return page;
     }
 
-    ShopPage createPage(Key<String> key, ShopTypeImpl.PageImpl pg) {
+    ShopPage createPage(Key<String> key, ShopInfoImpl.PageInfoImpl pg) {
         ShopPage page = new ShopPage(this.player, pg);
         this.pages.put(key, page);
         return page;

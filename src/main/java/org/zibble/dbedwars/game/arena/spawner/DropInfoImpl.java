@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
 import com.pepedevs.radium.particles.ParticleEffect;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DropTypeImpl implements DropType {
+public class DropInfoImpl implements DropInfo {
 
     private final Key<String> key;
 
@@ -29,10 +29,10 @@ public class DropTypeImpl implements DropType {
     private Hologram hologram;
     private boolean teamSpawner, merging, spliting;
 
-    private Map<Integer, DropType.Tier> tiers = new HashMap<>();
+    private Map<Integer, DropInfo.Tier> tiers = new HashMap<>();
 
-    public static DropTypeImpl fromConfig(ConfigurableItemSpawner cfg) {
-        DropTypeImpl dropType = new DropTypeImpl(cfg.getId());
+    public static DropInfoImpl fromConfig(ConfigurableItemSpawner cfg) {
+        DropInfoImpl dropType = new DropInfoImpl(cfg.getId());
         dropType.radius = cfg.getRadius();
         dropType.icon = Key.of(cfg.getIcon());
         dropType.soundEffect = cfg.getSpawnSound();
@@ -47,7 +47,7 @@ public class DropTypeImpl implements DropType {
         return dropType;
     }
 
-    public DropTypeImpl(String key) {
+    public DropInfoImpl(String key) {
         this.key = Key.of(key);
     }
 
@@ -132,7 +132,7 @@ public class DropTypeImpl implements DropType {
     }
 
     @Override
-    public DropType.Tier getTier(int level) {
+    public DropInfo.Tier getTier(int level) {
         return this.tiers.get(level);
     }
 
@@ -142,14 +142,14 @@ public class DropTypeImpl implements DropType {
     }
 
     @Override
-    public Collection<DropType.Tier> getTiers() {
+    public Collection<DropInfo.Tier> getTiers() {
         return this.tiers.values();
     }
 
     @Override
-    public DropType clone() {
+    public DropInfo clone() {
         try {
-            return (DropTypeImpl) super.clone();
+            return (DropInfoImpl) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
@@ -160,7 +160,7 @@ public class DropTypeImpl implements DropType {
         return key;
     }
 
-    public static class Tier implements DropType.Tier {
+    public static class Tier implements DropInfo.Tier {
 
         @PropertyName("key")
         private final Key<Integer> key;
@@ -173,7 +173,7 @@ public class DropTypeImpl implements DropType {
         @PropertyName("upgrade-message")
         private Message upgradeMessage;
         @PropertyName("upgrade-item")
-        private Map<String, DropType.Drop> drops = new HashMap<>();
+        private Map<String, DropInfo.Drop> drops = new HashMap<>();
 
         public static Tier fromConfig(int key, ConfigurableItemSpawner.ConfigurableTiers cfg) {
             Tier tier = new Tier(key);
@@ -246,7 +246,7 @@ public class DropTypeImpl implements DropType {
         }
 
         @Override
-        public Collection<DropType.Drop> getDrops() {
+        public Collection<DropInfo.Drop> getDrops() {
             return new ArrayList<>(this.drops.values());
         }
 
@@ -286,7 +286,7 @@ public class DropTypeImpl implements DropType {
 
     }
 
-    public static class Drop implements DropType.Drop {
+    public static class Drop implements DropInfo.Drop {
 
         @PropertyName("key")
         private final Key<String> key;

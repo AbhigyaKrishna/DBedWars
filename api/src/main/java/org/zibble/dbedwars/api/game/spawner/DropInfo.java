@@ -12,7 +12,7 @@ import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 
 import java.util.Collection;
 
-public interface DropType extends Cloneable, Keyed<String> {
+public interface DropInfo extends Cloneable, Keyed<String> {
 
     Key<BwItemStack> getIcon();
 
@@ -52,7 +52,7 @@ public interface DropType extends Cloneable, Keyed<String> {
 
     Collection<Tier> getTiers();
 
-    DropType clone();
+    DropInfo clone();
 
     String toString();
 

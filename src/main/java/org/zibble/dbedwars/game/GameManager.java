@@ -3,7 +3,7 @@ package org.zibble.dbedwars.game;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaStatus;
-import org.zibble.dbedwars.api.game.spawner.DropType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import org.zibble.dbedwars.game.arena.ArenaImpl;
@@ -15,7 +15,7 @@ public class GameManager implements org.zibble.dbedwars.api.handler.GameManager 
 
     private final DBedwars plugin;
 
-    private final Set<DropType> dropTypes;
+    private final Set<DropInfo> dropTypes;
     private final Map<String, Arena> arenas;
 
     public GameManager(DBedwars plugin) {
@@ -57,7 +57,7 @@ public class GameManager implements org.zibble.dbedwars.api.handler.GameManager 
                 new ArenaStartTask(arena, (short) this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer()));
     }
 
-    public Set<DropType> getDropTypes() {
+    public Set<DropInfo> getDropTypes() {
         return Collections.unmodifiableSet(this.dropTypes);
     }
 

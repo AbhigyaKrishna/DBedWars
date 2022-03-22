@@ -8,8 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.ArenaDataHolder;
-import org.zibble.dbedwars.api.game.spawner.DropType;
-import org.zibble.dbedwars.api.game.view.ShopType;
+import org.zibble.dbedwars.api.game.spawner.DropInfo;
+import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
@@ -217,7 +217,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addTeamSpawner(Color color, DropType dropType) {
+    public void addTeamSpawner(Color color, DropInfo dropType) {
         Location location = this.player.getLocation();
 
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
@@ -245,7 +245,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addTeamShop(Color color, ShopType shoptype) {
+    public void addTeamShop(Color color, ShopInfo shoptype) {
         Location location = this.player.getLocation();
 
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
@@ -272,7 +272,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addCommonSpawner(DropType dropType) {
+    public void addCommonSpawner(DropInfo dropType) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(this.player.getLocation(), this.player, Color.WHITE);
         Hologram hologram = SetupUtil.createHologram(this.player.getLocation(), this.player, PluginLang.SETUP_COMMON_SPAWNER_HOLOGRAM.asMessage());
         this.spawnerWorkloads.add(workload);
