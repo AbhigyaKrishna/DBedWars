@@ -55,9 +55,19 @@ public class CreateTable implements ISQL {
                 .execute());
     }
 
+    public ISQL.Stage<Integer> createQuickBuyTable() {
+        return Stage.of(() -> this.context.createTableIfNotExists(DSL.name(Table.QUICK_BUY))
+                .column(Table.QuickBuy.UUID)
+                .column(Table.QuickBuy.NAME)
+                .column(Table.QuickBuy.DATA)
+                .primaryKey(Table.QuickBuy.UUID)
+                .execute());
+    }
+
     static class Table {
         public static final String PLAYER_STATS = "dbedwars_player_stats";
         public static final String ARENA = "dbedwars_arena_%s";
+        public static final String QUICK_BUY = "dbedwars_quick_buy";
 
         static class PlayerStats {
             
@@ -87,6 +97,12 @@ public class CreateTable implements ISQL {
             public static final Field<?> ITEM_PICKUP = DSL.field(DSL.name("ITEM_PICKUP"), SQLDataType.JSON.notNull());
             public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.notNull());
             public static final Field<?> BEDS_BROKEN = DSL.field(DSL.name("BEDS_BROKEN"), SQLDataType.JSON.notNull());
+        }
+
+        static class QuickBuy {
+            public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.notNull());
+            public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).notNull());
+            public static final Field<?> DATA = DSL.field(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.notNull());
         }
     }
 

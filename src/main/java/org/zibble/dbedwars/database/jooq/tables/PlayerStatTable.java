@@ -41,7 +41,7 @@ public class PlayerStatTable extends TableImpl<PlayerStatRecord> {
     public final TableField<PlayerStatRecord, PersistentStat<Long>> PLAYED = createField(DSL.name("PLAYED"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("played", JsonElement::getAsLong));
 
     public PlayerStatTable() {
-        super(DSL.name("player_stats"));
+        super(DSL.name("dbedwars_player_stats"));
     }
 
     @Override

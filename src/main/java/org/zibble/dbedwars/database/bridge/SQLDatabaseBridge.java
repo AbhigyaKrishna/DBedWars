@@ -1,33 +1,38 @@
 package org.zibble.dbedwars.database.bridge;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import org.apache.commons.io.IOUtils;
-import org.zibble.dbedwars.DBedwars;
+import org.jooq.SQLDialect;
 import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.data.PlayerDataCache;
+import org.zibble.dbedwars.database.data.PlayerStats;
+import org.zibble.dbedwars.database.data.QuickBuy;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
 import org.zibble.dbedwars.database.data.table.DataTable;
+import org.zibble.dbedwars.database.jooq.JooqContext;
+import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
+import org.zibble.dbedwars.database.jooq.records.QuickBuyRecord;
+import org.zibble.dbedwars.database.jooq.sql.CreateTable;
+import org.zibble.dbedwars.database.jooq.tables.PlayerStatTable;
+import org.zibble.dbedwars.database.jooq.tables.QuickBuyTable;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 
+@SuppressWarnings("unchecked")
 public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
-    private Cache<String, String> sqlCache = CacheBuilder.newBuilder().maximumSize(10).build();
     private final SQLDatabase database;
     private boolean initialized;
+    private final JooqContext context;
 
     public SQLDatabaseBridge(SQLDatabase database) {
         this.database = database;
+        this.context = new JooqContext(this.getDialect(this.database.getDatabaseType()));
     }
 
     @Override
@@ -38,7 +43,9 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
         try {
             this.database.connect();
-            this.querySQLFile("stats_database_init", this.database::executeAsync);
+            CreateTable createTable = new CreateTable(this.context.createContext(this.database.getConnection()));
+            createTable.createStatsTable().executeAsync();
+            createTable.createQuickBuyTable().executeAsync();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,42 +64,102 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     @Override
     public <T extends PlayerDataCache> ActionFuture<T> requestPlayerData(DataTable<T> dataTable, UUID uuid) {
-        String sql = "SELECT * FROM `" + dataTable.database() + "` WHERE `uuid` = '" + uuid.toString() + "'";
-        return this.database.queryAsync(sql, resultSet -> {
-            if (resultSet.next()) {
-                SQLDataReader reader = new SQLDataReader(resultSet);
-                T data = dataTable.newInstance();
-                try {
-                    data.load(reader);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return data;
-            }
-            return null;
-        });
+        switch (dataTable.database()) {
+            case "player_stats":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        return (T) this.context.createContext(this.database.getConnection())
+                                .fetchOne(PlayerStatTable.PLAYER_STAT, PlayerStatTable.PLAYER_STAT.UUID.eq(uuid))
+                                .toDataCache();
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+            case "quick_buy":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        return (T) this.context.createContext(this.database.getConnection())
+                                .fetchOne(QuickBuyTable.QUICK_BUY, QuickBuyTable.QUICK_BUY.UUID.eq(uuid))
+                                .toDataCache();
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+        }
+
+        return ActionFuture.completedFuture(null);
     }
 
     @Override
     public <T extends PlayerDataCache> ActionFuture<Boolean> insertNewPlayerData(DataTable<T> dataTable, T dataCache) {
-        SQLDataWriter writer = new SQLDataWriter(SQLDataWriter.WriteOperation.insert(dataTable.database(), null));
-        try {
-            dataCache.save(writer);
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (dataTable.database()) {
+            case "player_stats":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        return this.context.createContext(this.database.getConnection())
+                                .insertInto(PlayerStatTable.PLAYER_STAT)
+                                .set(PlayerStatRecord.newRecord(dataCache.getUuid(), dataCache.getName()))
+                                .onDuplicateKeyIgnore()
+                                .execute() > 0;
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+            case "quick_buy":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        return this.context.createContext(this.database.getConnection())
+                                .insertInto(QuickBuyTable.QUICK_BUY)
+                                .set(QuickBuyRecord.newRecord(dataCache.getUuid(), dataCache.getName()))
+                                .onDuplicateKeyIgnore()
+                                .execute() > 0;
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
         }
-        return this.database.updateAsync(writer.getData().complete()).thenApply(i -> i > 0);
+
+        return ActionFuture.completedFuture(null);
     }
 
     @Override
     public <T extends PlayerDataCache> ActionFuture<Boolean> updatePlayerData(DataTable<T> dataTable, T dataCache) {
-        SQLDataWriter writer = new SQLDataWriter(SQLDataWriter.WriteOperation.update(dataTable.database(), dataCache.getUuid(), (key, value) -> key.equals("uuid")));
-        try {
-            dataCache.save(writer);
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (dataTable.database()) {
+            case "player_stats":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        PlayerStats stats = (PlayerStats) dataCache;
+                        return this.context.createContext(this.database.getConnection())
+                                .update(PlayerStatTable.PLAYER_STAT)
+                                .set(PlayerStatRecord.fromDataCache(stats))
+                                .where(PlayerStatTable.PLAYER_STAT.UUID.eq(stats.getUuid()))
+                                .execute() > 0;
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+            case "quick_buy":
+                return ActionFuture.supplyAsync(() -> {
+                    try {
+                        QuickBuy quickBuy = (QuickBuy) dataCache;
+                        return this.context.createContext(this.database.getConnection())
+                                .update(QuickBuyTable.QUICK_BUY)
+                                .set(QuickBuyRecord.fromDataCache(quickBuy))
+                                .where(QuickBuyTable.QUICK_BUY.UUID.eq(quickBuy.getUuid()))
+                                .execute() > 0;
+                    } catch (SQLException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
         }
-        return this.database.updateAsync(writer.getData().complete()).thenApply(i -> i > 0);
+
+        return ActionFuture.completedFuture(null);
     }
 
     @Override
@@ -102,17 +169,6 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     public SQLDatabase getDatabase() {
         return this.database;
-    }
-
-    protected void querySQLFile(String fileName, Consumer<String> consumer) throws IOException {
-        String s;
-        if ((s = this.sqlCache.getIfPresent(fileName)) == null) {
-            try (InputStream sql = DBedwars.getInstance().getResource("sql/" + fileName + ".sql")) {
-                s = IOUtils.toString(sql, StandardCharsets.UTF_8);
-                this.sqlCache.put(fileName, s);
-            }
-        }
-        consumer.accept(s);
     }
 
     protected static class SQLDataReader extends DataReader<ResultSet> {
@@ -293,6 +349,19 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
         }
 
+    }
+
+    private SQLDialect getDialect(DatabaseType type) {
+        switch (type) {
+            case H2:
+                return SQLDialect.H2;
+            case SQLite:
+                return SQLDialect.SQLITE;
+            case PostGreSQL:
+                return SQLDialect.POSTGRES;
+            default:
+                return SQLDialect.MYSQL;
+        }
     }
 
 }

@@ -15,6 +15,13 @@ public class PlayerStats implements PlayerDataCache {
     private double coins;
     private int winstreak;
     private double points;
+    private PersistentStat<Integer> kills;
+    private PersistentStat<Integer> final_kills;
+    private PersistentStat<Integer> deaths;
+    private PersistentStat<Integer> bed_broken;
+    private PersistentStat<Integer> bed_lost;
+    private PersistentStat<Integer> wins;
+    private PersistentStat<Long> played;
 
     public PlayerStats() {
     }
@@ -80,6 +87,62 @@ public class PlayerStats implements PlayerDataCache {
 
     public void setPoints(double points) {
         this.points = points;
+    }
+
+    public PersistentStat<Integer> getKills() {
+        return kills;
+    }
+
+    public void setKills(PersistentStat<Integer> kills) {
+        this.kills = kills;
+    }
+
+    public PersistentStat<Integer> getFinalKills() {
+        return final_kills;
+    }
+
+    public void setFinalKills(PersistentStat<Integer> final_kills) {
+        this.final_kills = final_kills;
+    }
+
+    public PersistentStat<Integer> getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(PersistentStat<Integer> deaths) {
+        this.deaths = deaths;
+    }
+
+    public PersistentStat<Integer> getBedBroken() {
+        return bed_broken;
+    }
+
+    public void setBedBroken(PersistentStat<Integer> bed_broken) {
+        this.bed_broken = bed_broken;
+    }
+
+    public PersistentStat<Integer> getBedLost() {
+        return bed_lost;
+    }
+
+    public void setBedLost(PersistentStat<Integer> bed_lost) {
+        this.bed_lost = bed_lost;
+    }
+
+    public PersistentStat<Integer> getWins() {
+        return wins;
+    }
+
+    public void setWins(PersistentStat<Integer> wins) {
+        this.wins = wins;
+    }
+
+    public PersistentStat<Long> getPlayed() {
+        return played;
+    }
+
+    public void setPlayed(PersistentStat<Long> played) {
+        this.played = played;
     }
 
     @Override

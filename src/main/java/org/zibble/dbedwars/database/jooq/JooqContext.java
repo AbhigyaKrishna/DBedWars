@@ -34,4 +34,8 @@ public class JooqContext {
                                                 .withOutput(REPLACEMENT)))));
     }
 
+    public SQLDialect getDialect() {
+        return dialect;
+    }
+
 }
