@@ -155,6 +155,10 @@ public class Duration {
         return new Duration(days, TimeUnit.DAYS);
     }
 
+    public static Duration fromJava(java.time.Duration duration) {
+        return new Duration(duration.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
     /**
      * Returns the original duration.
      *

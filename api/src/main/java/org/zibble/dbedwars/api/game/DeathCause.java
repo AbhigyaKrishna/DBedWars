@@ -17,4 +17,6 @@ public enum DeathCause {
     UNKNOWN,
     ;
 
+    public static final DeathCause[] VALUES = values();
+
 }

@@ -10,11 +10,11 @@ import org.zibble.dbedwars.database.jooq.tables.PlayerStatTable;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-public class CreateTable implements ISQL {
+public class CreateTableSQL implements ISQL {
 
     private final DSLContext context;
 
-    public CreateTable(DSLContext context) {
+    public CreateTableSQL(DSLContext context) {
         this.context = context;
     }
 
@@ -43,9 +43,10 @@ public class CreateTable implements ISQL {
                 .execute());
     }
 
-    public ISQL.Stage<Integer> createArenaTable(String arenaName) {
-        return Stage.of(() -> this.context.createTableIfNotExists(DSL.name(String.format(Table.ARENA, arenaName)))
+    public ISQL.Stage<Integer> createArenaTable() {
+        return Stage.of(() -> this.context.createTableIfNotExists(DSL.name(Table.ARENA))
                 .column(Table.Arena.ID)
+                .column(Table.Arena.GAME_ID)
                 .column(Table.Arena.TEAMS)
                 .column(Table.Arena.WINNER)
                 .column(Table.Arena.TIMESTAMP)
@@ -64,9 +65,9 @@ public class CreateTable implements ISQL {
                 .execute());
     }
 
-    static class Table {
+    private static class Table {
         public static final String PLAYER_STATS = "dbedwars_player_stats";
-        public static final String ARENA = "dbedwars_arena_%s";
+        public static final String ARENA = "dbedwars_arena_history";
         public static final String QUICK_BUY = "dbedwars_quick_buy";
 
         static class PlayerStats {
@@ -89,11 +90,12 @@ public class CreateTable implements ISQL {
         }
 
         static class Arena {
-            public static final Field<?> ID = DSL.field(DSL.name("ID"), SQLDataType.VARCHAR(36).notNull());
+            public static final Field<?> ID = DSL.field(DSL.name("ID"), SQLDataType.VARCHAR(20).notNull());
+            public static final Field<?> GAME_ID = DSL.field(DSL.name("GAME_ID"), SQLDataType.VARCHAR(50).notNull());
             public static final Field<?> TEAMS = DSL.field(DSL.name("TEAMS"), SQLDataType.JSON.notNull());
-            public static final Field<?> WINNER = DSL.field(DSL.name("WINNER"), SQLDataType.VARCHAR(36).notNull());
-            public static final Field<?> RUNTIME = DSL.field(DSL.name("RUNTIME"), SQLDataType.TIME.notNull());
-            public static final Field<?> TIMESTAMP = DSL.field(DSL.name("TIMESTAMP"), SQLDataType.TIMESTAMP.notNull().defaultValue(Timestamp.from(Instant.now())));
+            public static final Field<?> WINNER = DSL.field(DSL.name("WINNER"), SQLDataType.TINYINT.notNull());
+            public static final Field<?> RUNTIME = DSL.field(DSL.name("RUNTIME"), SQLDataType.INTERVAL.notNull());
+            public static final Field<?> TIMESTAMP = DSL.field(DSL.name("TIMESTAMP"), SQLDataType.INSTANT.notNull().defaultValue(Instant.now()));
             public static final Field<?> ITEM_PICKUP = DSL.field(DSL.name("ITEM_PICKUP"), SQLDataType.JSON.notNull());
             public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.notNull());
             public static final Field<?> BEDS_BROKEN = DSL.field(DSL.name("BEDS_BROKEN"), SQLDataType.JSON.notNull());

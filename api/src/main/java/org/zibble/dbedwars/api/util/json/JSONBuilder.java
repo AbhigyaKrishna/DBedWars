@@ -35,6 +35,8 @@ public class JSONBuilder implements Cloneable {
             json.addProperty(key, (Character) value);
         } else if (value instanceof JsonElement) {
             json.add(key, (JsonElement) value);
+        } else if (value instanceof Json) {
+            json.add(key, ((Json) value).getHandle());
         } else {
             json.addProperty(key, value.toString());
         }

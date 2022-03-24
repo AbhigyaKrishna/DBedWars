@@ -1,5 +1,7 @@
 package org.zibble.dbedwars.database.data;
 
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
@@ -8,6 +10,7 @@ import java.util.UUID;
 
 public class PlayerStats implements PlayerDataCache {
 
+    @BsonId
     private UUID uuid;
     private String name;
     private int level;
@@ -23,6 +26,7 @@ public class PlayerStats implements PlayerDataCache {
     private PersistentStat<Integer> wins;
     private PersistentStat<Long> played;
 
+    @BsonCreator
     public PlayerStats() {
     }
 
@@ -154,42 +158,70 @@ public class PlayerStats implements PlayerDataCache {
         this.coins = reader.readDouble("coins");
         this.winstreak = reader.readInt("winstreak");
         this.points = reader.readDouble("points");
+        this.kills = reader.readPersistentStat("kills", Integer.class);
+        this.final_kills = reader.readPersistentStat("final_kills", Integer.class);
+        this.deaths = reader.readPersistentStat("deaths", Integer.class);
+        this.bed_broken = reader.readPersistentStat("bed_broken", Integer.class);
+        this.bed_lost = reader.readPersistentStat("bed_lost", Integer.class);
+        this.wins = reader.readPersistentStat("wins", Integer.class);
+        this.played = reader.readPersistentStat("played", Long.class);
     }
 
     @Override
     public void save(DataWriter<?> writer) throws Exception {
-        writer.writeUUID("uuid", uuid);
-        writer.writeString("name", name);
-        writer.writeInt("level", level);
-        writer.writeDouble("level_progress", level_progress);
-        writer.writeDouble("coins", coins);
-        writer.writeInt("winstreak", winstreak);
-        writer.writeDouble("points", points);
+        writer.writeUUID("uuid", this.uuid);
+        writer.writeString("name", this.name);
+        writer.writeInt("level", this.level);
+        writer.writeDouble("level_progress", this.level_progress);
+        writer.writeDouble("coins", this.coins);
+        writer.writeInt("winstreak", this.winstreak);
+        writer.writeDouble("points", this.points);
+        writer.writePersistentStat("kills", this.kills);
+        writer.writePersistentStat("final_kills", this.final_kills);
+        writer.writePersistentStat("deaths", this.deaths);
+        writer.writePersistentStat("bed_broken", this.bed_broken);
+        writer.writePersistentStat("bed_lost", this.bed_lost);
+        writer.writePersistentStat("wins", this.wins);
+        writer.writePersistentStat("played", this.played);
     }
 
     @Override
     public PlayerStats copy() {
         PlayerStats stats = new PlayerStats();
-        stats.uuid = uuid;
-        stats.name = name;
-        stats.level = level;
-        stats.level_progress = level_progress;
-        stats.coins = coins;
-        stats.winstreak = winstreak;
-        stats.points = points;
+        stats.uuid = this.uuid;
+        stats.name = this.name;
+        stats.level = this.level;
+        stats.level_progress = this.level_progress;
+        stats.coins = this.coins;
+        stats.winstreak = this.winstreak;
+        stats.points = this.points;
+        stats.kills = this.kills.copy();
+        stats.final_kills = this.final_kills.copy();
+        stats.deaths = this.deaths.copy();
+        stats.bed_broken = this.bed_broken.copy();
+        stats.bed_lost = this.bed_lost.copy();
+        stats.wins = this.wins.copy();
+        stats.played = this.played.copy();
         return stats;
     }
 
     @Override
     public NamedProperties toProperties() {
         return NamedProperties.builder()
-                .add("uuid", uuid.toString())
-                .add("name", name)
-                .add("level", level)
-                .add("level_progress", level_progress)
-                .add("coins", coins)
-                .add("winstreak", winstreak)
-                .add("points", points)
+                .add("uuid", this.uuid)
+                .add("name", this.name)
+                .add("level", this.level)
+                .add("level_progress", this.level_progress)
+                .add("coins", this.coins)
+                .add("winstreak", this.winstreak)
+                .add("points", this.points)
+                .add("kills", this.kills.toProperties())
+                .add("final_kills", this.final_kills.toProperties())
+                .add("deaths", this.deaths.toProperties())
+                .add("bed_broken", this.bed_broken.toProperties())
+                .add("bed_lost", this.bed_lost.toProperties())
+                .add("wins", this.wins.toProperties())
+                .add("played", this.played.toProperties())
                 .build();
     }
 

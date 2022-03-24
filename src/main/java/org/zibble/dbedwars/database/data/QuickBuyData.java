@@ -38,6 +38,10 @@ public class QuickBuyData {
         this.slots.put(i, value);
     }
 
+    public TreeMap<Integer, String> getSlots() {
+        return slots;
+    }
+
     public Json toJson() {
         Json json = Json.getNew();
         for (Map.Entry<Integer, String> entry : this.slots.entrySet()) {

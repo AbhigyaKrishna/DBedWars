@@ -22,7 +22,7 @@ public class MongoDB extends Database {
 
     private final String ip;
     private final int port;
-    private final MongoClientOptions options;
+    private MongoClientOptions options;
     private final String dbname;
     private final String userName;
     private final String password;
@@ -44,6 +44,10 @@ public class MongoDB extends Database {
         this.options = options;
         this.userName = username;
         this.password = password;
+    }
+
+    public void setOptions(MongoClientOptions options) {
+        this.options = options;
     }
 
     @Override

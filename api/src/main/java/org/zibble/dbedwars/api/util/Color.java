@@ -99,7 +99,7 @@ public enum Color {
             "LIGHT_GRAY",
             WoolColor.LIGHT_GRAY,
             StainedGlassColor.LIGHT_GRAY,
-            DyeColor.SILVER),
+            DyeColor.LIGHT_GRAY),
     CYAN((byte) 9,
             org.bukkit.Color.fromRGB(21, 137, 145),
             ChatColor.DARK_AQUA,

@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.database.jooq.records;
 
-import org.jooq.JSON;
 import org.jooq.impl.UpdatableRecordImpl;
 import org.zibble.dbedwars.database.data.PersistentStat;
 import org.zibble.dbedwars.database.data.PlayerStats;
