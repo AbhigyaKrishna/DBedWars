@@ -12,11 +12,12 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.*;
 
-public abstract class BedwarsNPCImpl implements BedwarsNPC {
+public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     //TODO INIT
     private final CitizensHook hook;
@@ -27,7 +28,7 @@ public abstract class BedwarsNPCImpl implements BedwarsNPC {
     private NPC citizensNPC;
     private final Set<ClickAction> clickActions;
 
-    public BedwarsNPCImpl(Location location, NPCData npcData, Component name) {
+    public BedWarsNPCImpl(Location location, NPCData npcData) {
         this.hook = CitizensHook.get();
         this.location = location;
         this.npcData = npcData;

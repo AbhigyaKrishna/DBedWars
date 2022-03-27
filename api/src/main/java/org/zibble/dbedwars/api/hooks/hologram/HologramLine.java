@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.api.messaging.message.Message;
 
 public interface HologramLine<C> {
     
@@ -13,7 +13,7 @@ public interface HologramLine<C> {
 
     float getHeight();
 
-    interface Text extends HologramLine<Component> {}
+    interface Text extends HologramLine<Message> {}
 
     interface Head extends HologramLine<ItemStack> {}
 
