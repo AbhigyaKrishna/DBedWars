@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,6 +7,7 @@ import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.*;
@@ -39,7 +39,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Text addNewTextLine(Component text) {
+    public HologramLine.Text addNewTextLine(Message text) {
         HologramLineImpl.Text line = new HologramLineImpl.Text(this.manager, this, text);
         this.lines.add(line);
         this.parent.setHasChangedContentType(true);
@@ -94,7 +94,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Text insertNewTextLine(int index, Component text) {
+    public HologramLine.Text insertNewTextLine(int index, Message text) {
         HologramLineImpl.Text line = new HologramLineImpl.Text(this.manager, this, text);
         this.lines.add(index, line);
         this.parent.setHasChangedContentType(true);

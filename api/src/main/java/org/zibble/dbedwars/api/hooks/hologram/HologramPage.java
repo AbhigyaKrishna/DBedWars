@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.ClickAction;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface HologramPage {
 
     List<HologramLine<?>> getLines();
 
-    HologramLine.Text addNewTextLine(Component text);
+    HologramLine.Text addNewTextLine(Message text);
 
     HologramLine.Head addNewHeadLine(ItemStack itemStack);
 
@@ -25,7 +25,7 @@ public interface HologramPage {
 
     void removeLine(int index);
 
-    HologramLine.Text insertNewTextLine(int index, Component text);
+    HologramLine.Text insertNewTextLine(int index, Message text);
 
     HologramLine.Head insertNewHeadLine(int index, ItemStack itemStack);
 

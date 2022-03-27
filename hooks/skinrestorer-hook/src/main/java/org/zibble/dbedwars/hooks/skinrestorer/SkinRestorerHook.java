@@ -2,18 +2,25 @@ package org.zibble.dbedwars.hooks.skinrestorer;
 
 import net.skinsrestorer.api.bukkit.events.SkinApplyBukkitEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.zibble.dbedwars.api.DBedWarsAPI;
+import org.zibble.dbedwars.api.hooks.Hook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 
-public class SkinRestorerHook extends PluginDependence implements Listener {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
-    private Class<? extends VanishHook> internalVanishHook;
+public class SkinRestorerHook extends PluginDependence implements Listener, Hook {
+
+    private final Collection<UUID> blacklisted = new ArrayList<>();
 
     public SkinRestorerHook() {
         super("SkinsRestorer");
@@ -22,15 +29,18 @@ public class SkinRestorerHook extends PluginDependence implements Listener {
     @Override
     public Boolean apply(Plugin plugin) {
         if (plugin != null) {
-            try {
-                internalVanishHook = Class.forName("org.zibble.dbedwars.hooks.defaults.VanishHook").asSubclass(VanishHook.class);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
             Bukkit.getServer().getPluginManager().registerEvents(this, DBedWarsAPI.getApi().getPlugin());
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into SkinsRestorer!"));
         }
         return true;
+    }
+
+    public void addBlacklisted(UUID uuid) {
+        this.blacklisted.add(uuid);
+    }
+
+    public void removeBlacklisted(UUID uuid) {
+        this.blacklisted.remove(uuid);
     }
 
     @EventHandler
@@ -38,10 +48,14 @@ public class SkinRestorerHook extends PluginDependence implements Listener {
         if (event.isCancelled())
             return;
 
-        if (DBedWarsAPI.getApi().getHookManager().getVanishHook().isVanished(event.getWho())
-                && DBedWarsAPI.getApi().getHookManager().getVanishHook().getClass().equals(internalVanishHook)) {
-            DBedWarsAPI.getApi().getHookManager().getVanishHook().vanish(event.getWho());
+        if (this.blacklisted.contains(event.getWho().getUniqueId())) {
+            event.setCancelled(true);
         }
+    }
+
+    @Override
+    public void disable() {
+        HandlerList.unregisterAll(this);
     }
 
 }

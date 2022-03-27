@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
-import org.zibble.dbedwars.api.hooks.npc.SkinData;
 import org.zibble.dbedwars.api.objects.profile.Skin;
 
 import java.util.ArrayList;
@@ -25,14 +24,14 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
+public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
 
-    private final SkinData skinData;
+    private final SkinDataImpl skinData;
     private final UserProfile userProfile;
     private final WrapperPlayServerPlayerInfo.PlayerData info;
 
-    public PlayerNPCImpl(String ID, Location location, NPCData npcData, SkinData skinData, Component name) {
-        super(ID, location, npcData, name);
+    public PlayerNPCImpl(String ID, Location location, NPCData npcData, SkinDataImpl skinData) {
+        super(ID, location, npcData);
         this.skinData = skinData;
         this.userProfile = new UserProfile(this.getUUID(), "");
         this.info = new WrapperPlayServerPlayerInfo.PlayerData(
@@ -46,41 +45,50 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
     @Override
     public ActionFuture<PlayerNPC> setSkin(Skin skin) {
         return ActionFuture.supplyAsync(() -> {
-            PlayerNPCImpl.this.userProfile.getTextureProperties().clear();
-            PlayerNPCImpl.this.userProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
-            return PlayerNPCImpl.this;
+            this.userProfile.getTextureProperties().clear();
+            this.userProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
+            return this;
+        });
+    }
+
+    @Override
+    public ActionFuture<PlayerNPC> setSkin(ActionFuture<Skin> skin) {
+        return skin.thenApply(s -> {
+            this.userProfile.getTextureProperties().clear();
+            this.userProfile.getTextureProperties().add(new TextureProperty("textures", s.getValue(), s.getSignature()));
+            return this;
         });
     }
 
     @Override
     public ActionFuture<PlayerNPC> hideNameTag() {
         return ActionFuture.supplyAsync(() -> {
-            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + PlayerNPCImpl.this.getUUID().toString().substring(0, 8),
+            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.getUUID().toString().substring(0, 8),
                     WrapperPlayServerTeams.TeamMode.REMOVE,
                     Optional.empty(),
-                    PlayerNPCImpl.this.userProfile.getName());
-            for (UUID uuid : PlayerNPCImpl.this.shown) {
+                    this.userProfile.getName());
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return PlayerNPCImpl.this;
+            return this;
         });
     }
 
     @Override
     public ActionFuture<PlayerNPC> showNameTag() {
         return ActionFuture.supplyAsync(() -> {
-            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + PlayerNPCImpl.this.getUUID().toString().substring(0, 8),
+            WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.getUUID().toString().substring(0, 8),
                     WrapperPlayServerTeams.TeamMode.CREATE,
                     Optional.empty(),
-                    PlayerNPCImpl.this.userProfile.getName());
-            for (UUID uuid : PlayerNPCImpl.this.shown) {
+                    this.userProfile.getName());
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return PlayerNPCImpl.this;
+            return this;
         });
     }
 
@@ -89,14 +97,14 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(() -> {
             WrapperPlayServerPlayerInfo infoAddPacket = new WrapperPlayServerPlayerInfo(
                     WrapperPlayServerPlayerInfo.Action.ADD_PLAYER,
-                    PlayerNPCImpl.this.info
+                    this.info
             );
-            for (UUID uuid : PlayerNPCImpl.this.shown) {
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoAddPacket);
             }
-            return PlayerNPCImpl.this;
+            return this;
         });
     }
 
@@ -105,26 +113,26 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
         return ActionFuture.supplyAsync(() -> {
             WrapperPlayServerPlayerInfo infoRemovePlayer = new WrapperPlayServerPlayerInfo(
                     WrapperPlayServerPlayerInfo.Action.REMOVE_PLAYER,
-                    PlayerNPCImpl.this.info
+                    this.info
             );
-            for (UUID uuid : PlayerNPCImpl.this.shown) {
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, infoRemovePlayer);
             }
-            return PlayerNPCImpl.this;
+            return this;
         });
     }
 
     @Override
-    public SkinData getSkinData() {
+    public SkinDataImpl getSkinData() {
         return this.skinData;
     }
 
     @Override
     public ActionFuture<PlayerNPC> updateSkinData() {
         return ActionFuture.supplyAsync(() -> {
-            EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildSkinDataByte(PlayerNPCImpl.this.skinData));
+            EntityData entityData = new EntityData(10, EntityDataTypes.BYTE, ByteUtil.buildSkinDataByte(this.skinData));
             switch (Version.SERVER_VERSION) {
                 case v1_8_R1:
                 case v1_8_R2:
@@ -159,13 +167,13 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
                     entityData.setIndex(17);
                 }
             }
-            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(PlayerNPCImpl.this.getEntityID(), Collections.singletonList(entityData));
-            for (UUID uuid : PlayerNPCImpl.this.shown) {
+            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.getEntityID(), Collections.singletonList(entityData));
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return PlayerNPCImpl.this;
+            return this;
         });
     }
 

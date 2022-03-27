@@ -2,18 +2,18 @@ package org.zibble.dbedwars.hooks.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.messaging.message.Message;
 
-public class EntityNPCImpl extends BedwarsNPCImpl implements EntityNPC {
+public class EntityNPCImpl extends BedWarsNPCImpl implements EntityNPC {
 
     private final EntityType type;
 
-    public EntityNPCImpl(Location location, EntityType type, NPCData npcData, Component name) {
-        super(location, npcData, name);
+    public EntityNPCImpl(Location location, EntityType type, NPCData npcData) {
+        super(location, npcData);
         this.type = type;
     }
 

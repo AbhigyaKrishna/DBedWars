@@ -13,9 +13,9 @@ public class NPCTracker {
 
     private static final DBedwars PLUGIN = DBedwars.getInstance();
 
-    private final BedwarsNPCImpl npc;
+    private final BedWarsNPCImpl npc;
 
-    public NPCTracker(BedwarsNPCImpl npc) {
+    public NPCTracker(BedWarsNPCImpl npc) {
         this.npc = npc;
     }
 

@@ -7,7 +7,6 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,7 +36,7 @@ public class NPCListener extends PacketListenerAbstract implements Listener {
             WrapperPlayClientInteractEntity packet = new WrapperPlayClientInteractEntity(event);
             if (COOLDOWN.asMap().containsKey(player.getUniqueId())
                     && COOLDOWN.asMap().getOrDefault(player.getUniqueId(), -1) == packet.getEntityId()) return;
-            for (BedwarsNPCImpl npc : factory.getNpcs().values()) {
+            for (BedWarsNPCImpl npc : factory.getNpcs().values()) {
                 if (npc.getEntityID() == packet.getEntityId()) {
                     if (!npc.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
                     for (ClickAction clickAction : npc.getClickActions()) {
@@ -63,7 +62,7 @@ public class NPCListener extends PacketListenerAbstract implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
-        for (BedwarsNPCImpl value : this.factory.getNpcs().values()) {
+        for (BedWarsNPCImpl value : this.factory.getNpcs().values()) {
             value.npcTracker.onMove(event);
         }
     }

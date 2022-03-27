@@ -13,6 +13,7 @@ import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.task.TaskQueueHandler;
@@ -44,7 +45,7 @@ public class HologramManager implements HologramFactory {
         for (Map.Entry<HologramLineImpl<?>, Location> entry : map.entrySet()) {
             if (entry.getKey().getContent() instanceof HologramLine.Text) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.updateFakeEntityCustomName(player, (Component) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                PacketUtils.updateFakeEntityCustomName(player, ((Message) entry.getKey().getContent()).asComponentWithPAPI(player)[0], entry.getKey().getEntityIds()[0]);
                 continue;
             }
             if (entry.getKey().getContent() instanceof HologramLine.Head) {

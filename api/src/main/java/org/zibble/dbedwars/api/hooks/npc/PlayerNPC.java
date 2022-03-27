@@ -6,9 +6,11 @@ import org.zibble.dbedwars.api.objects.profile.Skin;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PlayerNPC extends BedwarsNPC{
+public interface PlayerNPC extends BedwarsNPC {
 
     ActionFuture<PlayerNPC> setSkin(Skin skin);
+
+    ActionFuture<PlayerNPC> setSkin(ActionFuture<Skin> skin);
 
     ActionFuture<PlayerNPC> hideNameTag();
 

@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
 import com.pepedevs.radium.utils.itemstack.ItemStackUtils;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.reflection.general.EnumReflection;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,7 @@ public class HologramUtil {
         TEXT_MATCHER.reset(string);
         if (TEXT_MATCHER.matches()) {
             String text = TEXT_MATCHER.group("text");
-            return new HologramLineImpl.Text(manager, page, ConfigLang.getTranslator().translate(text));
+            return new HologramLineImpl.Text(manager, page, ConfigMessage.from(text));
         }
 
         HEAD_MATCHER.reset(string);

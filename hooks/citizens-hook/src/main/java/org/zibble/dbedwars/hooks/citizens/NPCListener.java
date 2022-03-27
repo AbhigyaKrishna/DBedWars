@@ -17,7 +17,7 @@ public class NPCListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void handleNpcClick(NPCLeftClickEvent event) {
-        for (BedwarsNPCImpl npc : hook.getNpcs()) {
+        for (BedWarsNPCImpl npc : hook.getNpcs()) {
             if (event.getNPC().equals(npc.getCitizensNPC())) {
                 ClickType type = event.getClicker().isSneaking() ? ClickType.SHIFT_LEFT_CLICK : ClickType.LEFT_CLICK;
                 for (ClickAction clickAction : npc.getClickActions()) {
@@ -29,7 +29,7 @@ public class NPCListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void handleNpcClick(NPCRightClickEvent event) {
-        for (BedwarsNPCImpl npc : hook.getNpcs()) {
+        for (BedWarsNPCImpl npc : hook.getNpcs()) {
             if (event.getNPC().equals(npc.getCitizensNPC())) {
                 ClickType type = event.getClicker().isSneaking() ? ClickType.SHIFT_RIGHT_CLICK : ClickType.RIGHT_CLICK;
                 for (ClickAction clickAction : npc.getClickActions()) {

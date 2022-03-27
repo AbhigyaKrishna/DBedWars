@@ -2,7 +2,6 @@ package org.zibble.dbedwars.hooks.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -11,12 +10,12 @@ import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
 import org.zibble.dbedwars.api.objects.profile.Skin;
 
-public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
+public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
 
     private final SkinData skinData;
 
-    public PlayerNPCImpl(Location location, NPCData npcData, SkinData skinData, Component name) {
-        super(location, npcData, name);
+    public PlayerNPCImpl(Location location, NPCData npcData, SkinData skinData) {
+        super(location, npcData);
         this.skinData = skinData;
     }
 
@@ -24,6 +23,11 @@ public class PlayerNPCImpl extends BedwarsNPCImpl implements PlayerNPC {
     public ActionFuture<PlayerNPC> setSkin(Skin skin) {
         this.getCitizensNPC().getOrAddTrait(CitizensAPI.getTraitFactory().getTrait("skintrait").getClass());
 
+        return null;
+    }
+
+    @Override
+    public ActionFuture<PlayerNPC> setSkin(ActionFuture<Skin> skin) {
         return null;
     }
 
