@@ -41,13 +41,13 @@ public class ShopView {
     }
 
     public ShopPage createPage(String key, int row, Message title) {
-        ShopPage page = new ShopPage(this.player, row, title);
+        ShopPage page = new ShopPage(this.player, Key.of(key), row, title);
         this.pages.put(Key.of(key), page);
         return page;
     }
 
     ShopPage createPage(Key<String> key, ShopInfoImpl.PageInfoImpl pg) {
-        ShopPage page = new ShopPage(this.player, pg);
+        ShopPage page = new ShopPage(this.player, key, pg);
         this.pages.put(key, page);
         return page;
     }
@@ -59,7 +59,7 @@ public class ShopView {
     public ShopGui getGui() {
         ShopGui gui = ShopGui.creator(this.player.getPlayer());
         for (Map.Entry<Key<String>, ShopPage> entry : this.pages.entrySet()) {
-            gui.addPage(entry.getValue().getGuiComponent(this));
+            gui.addPage(entry.getKey(), entry.getValue().getGuiComponent(this));
         }
         return gui;
     }

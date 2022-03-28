@@ -8,14 +8,13 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.SpawnerDropItemEvent;
 import org.zibble.dbedwars.api.events.SpawnerUpgradeEvent;
 import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
-import org.zibble.dbedwars.api.game.spawner.ResourceItem;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.util.Initializable;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.NBTUtils;
+import org.zibble.dbedwars.game.arena.TeamImpl;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -28,7 +27,7 @@ public class SpawnerImpl implements Spawner, Initializable {
     private final DBedwars plugin;
     private final Key<DropInfo> key;
     private final Arena arena;
-    private final Optional<Team> optionalTeam;
+    private final Optional<TeamImpl> optionalTeam;
     private Location location;
     private BoundingBox box;
 
@@ -39,11 +38,11 @@ public class SpawnerImpl implements Spawner, Initializable {
     private Instant lastUpgrade;
     private final Map<DropInfo.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
 
-    public SpawnerImpl(DBedwars plugin, DropInfo dropType, Arena arena, Optional<Team> optionalTeam) {
+    public SpawnerImpl(DBedwars plugin, DropInfo dropType, Arena arena, TeamImpl team) {
         this.plugin = plugin;
         this.key = Key.of(dropType);
         this.arena = arena;
-        this.optionalTeam = optionalTeam;
+        this.optionalTeam = Optional.ofNullable(team);
     }
 
     public void init(Location location, int defaultLevel) {
@@ -59,7 +58,7 @@ public class SpawnerImpl implements Spawner, Initializable {
         this.currentTier = this.getDropType().getTier(defaultLevel);
 
         if (this.getDropType().getHologram() != null) {
-            // Do hologram stuff
+            // TODO Do hologram stuff
         }
 
         this.initialized = true;
@@ -97,7 +96,7 @@ public class SpawnerImpl implements Spawner, Initializable {
 
     @Override
     public void spawn(DropInfo.Drop drop) {
-        ResourceItem item = ResourceItemImpl.builder()
+        ResourceItemImpl item = ResourceItemImpl.builder()
                 .item(drop.getItem())
                 .mergeable(this.getDropType().isMerging())
                 .splittable(this.getDropType().isSplitable())
@@ -173,7 +172,7 @@ public class SpawnerImpl implements Spawner, Initializable {
     }
 
     @Override
-    public Optional<Team> getOptionalTeam() {
+    public Optional<TeamImpl> getTeam() {
         return this.optionalTeam;
     }
 

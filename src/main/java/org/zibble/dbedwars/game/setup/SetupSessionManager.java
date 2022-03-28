@@ -3,7 +3,7 @@ package org.zibble.dbedwars.game.setup;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.game.NewArenaDataHolder;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class SetupSessionManager {
         this.onGoingSessions = new ConcurrentHashMap<>(0);
     }
 
-    public void startSetupSession(World world, Player player, NewArenaDataHolder dataHolder) {
+    public void startSetupSession(World world, Player player, ArenaDataHolderImpl dataHolder) {
         SetupSession setupSession = new SetupSession(world, player, dataHolder);
         this.onGoingSessions.put(player.getUniqueId(), setupSession);
     }

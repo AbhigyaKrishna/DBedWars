@@ -14,26 +14,26 @@ team-spawner:
 
   tiers:
     '1':
-      action:
+      resources:
         iron:
-          material: IRON_INGOT:0
+          material: 'json::resources.iron'
           delay: 2
           limit: 32
         gold:
-          material: GOLD_INGOT:0
+          material: 'json::resources.gold'
           delay: 8
           limit: 8
     '2':
       upgrade-effect: HEART
       upgrade-sound: VILLAGER_HURT
       message: '-all Spawner upgrade to level 2'
-      action:
+      resources:
         iron:
-          material: IRON_INGOT:0
+          material: 'json::resources.iron'
           delay: 1
           limit: 32
         gold:
-          material: GOLD_INGOT:0
+          material: 'json::resources.gold'
           delay: 4
           limit: 12
 
@@ -53,26 +53,26 @@ diamond-spawner:
 
   tiers:
     '1':
-      action:
+      resources:
         diamond:
-          material: DIAMOND:0
+          material: 'json::resources.diamond'
           delay: 30
           limit: 10
     '2':
       upgrade-effect: EXPLOSION
       upgrade-sound: LEVEL_UP
       message: '-all &bDiamond spawners are now tier II'
-      action:
+      resources:
         diamond:
-          material: DIAMOND:0
+          material: 'json::resources.diamond'
           delay: 15
           limit: 20
     '3':
       upgrade-effect: EXPLOSION
       upgrade-sound: LEVEL_UP
       message: '-all &bDiamond spawners are now tier III'
-      action:
+      resources:
         diamond:
-          material: DIAMOND:0
+          material: 'json::resources.diamond'
           delay: 10
           limit: 32

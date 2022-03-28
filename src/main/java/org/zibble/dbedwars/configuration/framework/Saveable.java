@@ -2,7 +2,7 @@ package org.zibble.dbedwars.configuration.framework;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-public interface Savable {
+public interface Saveable {
 
     int save(ConfigurationSection section);
 

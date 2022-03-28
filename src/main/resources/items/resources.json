@@ -1,0 +1,14 @@
+{
+  "iron": {
+    "display-name": "<green>Iron",
+    "amount": "1"
+  },
+  "gold": {
+    "display-name": "<yellow>Gold",
+    "amount": "1"
+  },
+  "diamond": {
+    "display-name": "<aqua>Diamond",
+    "amount": "1"
+  }
+}

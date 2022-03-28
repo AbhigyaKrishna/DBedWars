@@ -17,6 +17,7 @@ public class ArenaSpectatorImpl extends PlayerMember implements ArenaSpectator {
     protected final UUID uuid;
     protected final String name;
     protected final Arena arena;
+    protected final VanishPlayer vanishPlayer;
 
     public ArenaSpectatorImpl(Player player, Arena arena) {
         this(player, arena, false);
@@ -27,6 +28,7 @@ public class ArenaSpectatorImpl extends PlayerMember implements ArenaSpectator {
         this.uuid = player.getUniqueId();
         this.name = player.getName();
         this.arena = arena;
+        this.vanishPlayer = new VanishPlayer(player);
         if (teleportSpawn) {
             // Teleport to spawn
             this.teleport(this.arena.getDataHolder().getSpectatorLocation());
@@ -76,6 +78,20 @@ public class ArenaSpectatorImpl extends PlayerMember implements ArenaSpectator {
     @Override
     public GameMode getGameMode() {
         return this.getPlayer().getGameMode();
+    }
+
+    public VanishPlayer getVanishPlayer() {
+        return vanishPlayer;
+    }
+
+    @Override
+    public void hide() {
+        this.vanishPlayer.vanish();
+    }
+
+    @Override
+    public void show() {
+        this.vanishPlayer.unVanish();
     }
 
 }

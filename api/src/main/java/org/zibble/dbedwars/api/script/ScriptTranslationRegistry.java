@@ -10,9 +10,17 @@ import java.util.Collection;
 
 public interface ScriptTranslationRegistry {
 
-    TranslationRegistry<? extends ActionTranslator<?, ? extends Action<?>>> actionRegistry();
+    default TranslationRegistry<? extends ActionTranslator<?, ? extends Action<?>>> actionRegistry() {
+        return actionRegistry(Key.of("global"));
+    }
 
-    TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition<?>>> conditionRegistry();
+    TranslationRegistry<? extends ActionTranslator<?, ? extends Action<?>>> actionRegistry(Key<String> key);
+
+    default TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition<?>>> conditionRegistry() {
+        return conditionRegistry(Key.of("global"));
+    }
+
+    TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition<?>>> conditionRegistry(Key<String> key);
 
     interface TranslationRegistry<T extends Translator<? extends Translated>> {
 

@@ -4,6 +4,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.exceptions.IllegalConfigException;
 import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +14,25 @@ public class MainConfiguration implements Loadable {
 
     private final DBedwars plugin;
 
-    private final ArenaSection arenaSection;
-    private final TrapSection trapSection;
-    private final LangSection langSection;
+    @ConfigPath("arena")
+    private ArenaSection arenaSection;
+
+    @ConfigPath("respawn-items")
+    private RespawnItemsSection respawnItemsSection;
+
+    @ConfigPath("traps")
+    private TrapSection trapSection;
+
+    @ConfigPath("lang")
+    private LangSection langSection;
 
     public MainConfiguration(DBedwars plugin) {
         this.plugin = plugin;
-        this.arenaSection = new ArenaSection();
-        this.trapSection = new TrapSection();
-        this.langSection = new LangSection();
     }
 
     @Override
     public void load(ConfigurationSection section) {
-        this.arenaSection.load(section.getConfigurationSection("arena"));
-        this.trapSection.load(section.getConfigurationSection("traps"));
-        this.langSection.load(section.getConfigurationSection("lang"));
+        this.loadEntries(section);
     }
 
     @Override
@@ -44,6 +49,10 @@ public class MainConfiguration implements Loadable {
         return this.arenaSection;
     }
 
+    public RespawnItemsSection getRespawnItemsSection() {
+        return respawnItemsSection;
+    }
+
     public TrapSection getTrapSection() {
         return this.trapSection;
     }
@@ -54,56 +63,56 @@ public class MainConfiguration implements Loadable {
 
     public static class ArenaSection implements Loadable {
 
-        @LoadableEntry(key = "start-timer")
+        @Defaults.Integer(-1)
+        @ConfigPath("start-timer")
         private int startTimer;
 
-        @LoadableEntry(key = "respawn-delay")
+        @Defaults.Integer(-1)
+        @ConfigPath("respawn-delay")
         private int respawnTime;
 
-        @LoadableEntry(key = "island-radius")
+        @Defaults.Integer(-1)
+        @ConfigPath("island-radius")
         private int islandRadius;
 
-        @LoadableEntry(key = "min-y-axis")
+        @Defaults.Integer(Integer.MIN_VALUE)
+        @ConfigPath("min-y-axis")
         private int minYAxis;
 
-        @LoadableEntry(key = "player-hit-tag-length")
+        @Defaults.Integer(-1)
+        @ConfigPath("player-hit-tag-length")
         private int playerHitTagLength;
 
-        @LoadableEntry(key = "game-end-delay")
+        @Defaults.Integer(-1)
+        @ConfigPath("game-end-delay")
         private int gameEndDelay;
 
-        @LoadableEntry(key = "points.bed-destroy")
+        @Defaults.Integer(Integer.MIN_VALUE)
+        @ConfigPath("points.bed-destroy")
         private int bedDestroyPoint;
 
-        @LoadableEntry(key = "points.kill")
+        @Defaults.Integer(0)
+        @ConfigPath("points.kill")
         private int killPoint;
 
-        @LoadableEntry(key = "points.final-kill")
+        @Defaults.Integer(0)
+        @ConfigPath("points.final-kill")
         private int finalKillPoint;
 
-        @LoadableEntry(key = "points.death")
+        @Defaults.Integer(0)
+        @ConfigPath("points.death")
         private int deathPoint;
 
-        @LoadableEntry(key = "disable-hunger")
+        @Defaults.Boolean(true)
+        @ConfigPath("disable-hunger")
         private boolean disableHunger;
 
         public ArenaSection() {
-            this.startTimer = -1;
-            this.respawnTime = -1;
-            this.islandRadius = -1;
-            this.minYAxis = Integer.MIN_VALUE;
-            this.playerHitTagLength = -1;
-            this.gameEndDelay = -1;
-            this.bedDestroyPoint = Integer.MIN_VALUE;
-            this.killPoint = Integer.MIN_VALUE;
-            this.finalKillPoint = Integer.MIN_VALUE;
-            this.deathPoint = Integer.MIN_VALUE;
-            this.disableHunger = true;
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -125,18 +134,6 @@ public class MainConfiguration implements Loadable {
             else if (this.gameEndDelay <= -1)
                 throw new IllegalConfigException(
                         "arena.game-end-delay", "lower than 0", "config.yml");
-            else if (this.bedDestroyPoint == Integer.MIN_VALUE)
-                throw new IllegalConfigException(
-                        "arena.points.bed-destroy", "Integer#MIN_VALUE", "config.yml");
-            else if (this.killPoint == Integer.MIN_VALUE)
-                throw new IllegalConfigException(
-                        "arena.points.kill", "Integer#MIN_VALUE", "config.yml");
-            else if (this.finalKillPoint == Integer.MIN_VALUE)
-                throw new IllegalConfigException(
-                        "arena.points.final-kill", "Integer#MIN_VALUE", "config.yml");
-            else if (this.deathPoint == Integer.MIN_VALUE)
-                throw new IllegalConfigException(
-                        "arena.points.death", "Integer#MIN_VALUE", "config.yml");
             return true;
         }
 
@@ -188,34 +185,66 @@ public class MainConfiguration implements Loadable {
         public boolean isDisableHunger() {
             return disableHunger;
         }
+    }
+
+    public static class RespawnItemsSection implements Loadable {
+
+        @ConfigPath
+        private List<String> inventory;
+
+        @ConfigPath
+        private String helmet;
+
+        @ConfigPath
+        private String chestplate;
+
+        @ConfigPath
+        private String leggings;
+
+        @ConfigPath
+        private String boots;
 
         @Override
-        public String toString() {
-            return "ArenaSection{" +
-                    "startTimer=" + startTimer +
-                    ", respawnTime=" + respawnTime +
-                    ", islandRadius=" + islandRadius +
-                    ", minYAxis=" + minYAxis +
-                    ", playerHitTagLength=" + playerHitTagLength +
-                    ", gameEndDelay=" + gameEndDelay +
-                    ", bedDestroyPoint=" + bedDestroyPoint +
-                    ", killPoint=" + killPoint +
-                    ", finalKillPoint=" + finalKillPoint +
-                    ", deathPoint=" + deathPoint +
-                    ", disableHunger=" + disableHunger +
-                    '}';
+        public boolean isValid() {
+            return true;
         }
+
+        @Override
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
+        }
+
+        public List<String> getInventory() {
+            return inventory;
+        }
+
+        public String getHelmet() {
+            return helmet;
+        }
+
+        public String getChestplate() {
+            return chestplate;
+        }
+
+        public String getLeggings() {
+            return leggings;
+        }
+
+        public String getBoots() {
+            return boots;
+        }
+
     }
 
     public static class TrapSection implements Loadable {
 
-        @LoadableEntry(key = "trap-queue.enabled")
+        @ConfigPath("trap-queue.enabled")
         private boolean trapQueueEnabled;
 
-        @LoadableEntry(key = "trap-queue.queue-limit")
+        @ConfigPath("trap-queue.queue-limit")
         private int trapQueueLimit;
 
-        @LoadableEntry(key = "trap-queue.queued-trap-cost")
+        @ConfigPath("trap-queue.queued-trap-cost")
         private List<String> queueCost;
 
         public TrapSection() {
@@ -223,8 +252,8 @@ public class MainConfiguration implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -248,23 +277,16 @@ public class MainConfiguration implements Loadable {
         public List<String> getQueueCost() {
             return this.queueCost;
         }
-
-        @Override
-        public String toString() {
-            return "TrapSection{" +
-                    "trapQueueEnabled=" + trapQueueEnabled +
-                    ", trapQueueLimit=" + trapQueueLimit +
-                    ", queueCost=" + queueCost +
-                    '}';
-        }
     }
 
     public static class LangSection implements Loadable {
 
-        @LoadableEntry(key = "parse-type")
+        @Defaults.String("modern")
+        @ConfigPath("parse-type")
         private String parseType;
 
-        @LoadableEntry(key = "server-language")
+        @Defaults.String("en_US")
+        @ConfigPath("server-language")
         private String serverLanguage;
 
         private final LegacySettingsSection legacySettings;
@@ -276,14 +298,13 @@ public class MainConfiguration implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
+        public void load(ConfigurationSection section) {
             this.loadEntries(section);
             if (this.parseType.equalsIgnoreCase("legacy")) {
                 this.legacySettings.load(section.getConfigurationSection("legacy-settings"));
             } else {
                 this.modernSettings.load(section.getConfigurationSection("modern-settings"));
             }
-            return this;
         }
 
         @Override
@@ -309,41 +330,33 @@ public class MainConfiguration implements Loadable {
 
         public static class LegacySettingsSection implements Loadable {
 
-            @LoadableEntry(key = "translation-char")
-            private String translationChar;
+            @Defaults.Character('&')
+            @ConfigPath("translation-char")
+            private char translationChar;
 
             private char character;
 
             @Override
-            public Loadable load(ConfigurationSection section) {
+            public void load(ConfigurationSection section) {
                 this.loadEntries(section);
-                this.character = this.translationChar.charAt(0);
-                return this;
             }
 
             @Override
             public boolean isValid() {
-                return !this.translationChar.isEmpty();
+                return true;
             }
 
             public char getTranslationChar() {
                 return this.character;
             }
-
-            @Override
-            public String toString() {
-                return "LegacySettingsSection{" +
-                        "translationChar='" + translationChar + '\'' +
-                        ", character=" + character +
-                        '}';
-            }
         }
 
         public static class ModernSettingsSection implements Loadable {
 
+            @ConfigPath("enabled-transformations")
             private final TransformationsSection transformations;
 
-            @LoadableEntry(key = "discord-type-formatting")
+            @ConfigPath("discord-type-formatting")
             private boolean discordFlavour;
 
             public ModernSettingsSection() {
@@ -351,9 +364,9 @@ public class MainConfiguration implements Loadable {
             }
 
             @Override
-            public Loadable load(ConfigurationSection section) {
+            public void load(ConfigurationSection section) {
                 this.transformations.load(section.getConfigurationSection("enabled-transformations"));
-                return this.loadEntries(section);
+                this.loadEntries(section);
             }
 
             @Override
@@ -371,49 +384,44 @@ public class MainConfiguration implements Loadable {
 
             public static class TransformationsSection implements Loadable {
 
-                @LoadableEntry(key = "click-event")
+                @ConfigPath("click-event")
                 private boolean clickEvent;
 
-                @LoadableEntry(key = "color")
+                @ConfigPath("color")
                 private boolean color;
 
-                @LoadableEntry(key = "decoration")
+                @ConfigPath("decoration")
                 private boolean decoration;
 
-                @LoadableEntry(key = "font")
+                @ConfigPath("font")
                 private boolean font;
 
-                @LoadableEntry(key = "gradient")
+                @ConfigPath("gradient")
                 private boolean gradient;
 
-                @LoadableEntry(key = "hover-event")
+                @ConfigPath("hover-event")
                 private boolean hoverEvent;
 
-                @LoadableEntry(key = "insertion")
+                @ConfigPath("insertion")
                 private boolean insertion;
 
-                @LoadableEntry(key = "keybind")
+                @ConfigPath("keybind")
                 private boolean keybind;
 
-                @LoadableEntry(key = "rainbow")
+                @ConfigPath("rainbow")
                 private boolean rainbow;
 
-                @LoadableEntry(key = "translatable")
+                @ConfigPath("translatable")
                 private boolean translatable;
 
                 @Override
-                public Loadable load(ConfigurationSection section) {
-                    return this.loadEntries(section);
+                public void load(ConfigurationSection section) {
+                    this.loadEntries(section);
                 }
 
                 @Override
                 public boolean isValid() {
-                    return false;
-                }
-
-                @Override
-                public boolean isInvalid() {
-                    return false;
+                    return true;
                 }
 
                 public boolean isClickEvent() {
@@ -456,50 +464,10 @@ public class MainConfiguration implements Loadable {
                     return translatable;
                 }
 
-                @Override
-                public String toString() {
-                    return "TransformationsSection{" +
-                            "clickEvent=" + clickEvent +
-                            ", color=" + color +
-                            ", decoration=" + decoration +
-                            ", font=" + font +
-                            ", gradient=" + gradient +
-                            ", hoverEvent=" + hoverEvent +
-                            ", insertion=" + insertion +
-                            ", keybind=" + keybind +
-                            ", rainbow=" + rainbow +
-                            ", translatable=" + translatable +
-                            '}';
-                }
             }
 
-            @Override
-            public String toString() {
-                return "ModernSettingsSection{" +
-                        "transformations=" + transformations +
-                        ", discordFlavour=" + discordFlavour +
-                        '}';
-            }
         }
 
-        @Override
-        public String toString() {
-            return "LangSection{" +
-                    "parseType='" + parseType + '\'' +
-                    ", serverLanguage='" + serverLanguage + '\'' +
-                    ", legacySettings=" + legacySettings +
-                    ", modernSettings=" + modernSettings +
-                    '}';
-        }
     }
 
-    @Override
-    public String toString() {
-        return "MainConfiguration{" +
-                "plugin=" + plugin +
-                ", arenaSection=" + arenaSection +
-                ", trapSection=" + trapSection +
-                ", langSection=" + langSection +
-                '}';
-    }
 }

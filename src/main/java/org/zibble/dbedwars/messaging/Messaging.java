@@ -74,6 +74,10 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
         return legacySerializer.deserialize(message);
     }
 
+    public LegacyComponentSerializer getLegacySerializer() {
+        return legacySerializer;
+    }
+
     @Override
     public Message asConfigMessage(String message) {
         return ConfigMessage.from(message);

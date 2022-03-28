@@ -13,6 +13,10 @@ import java.util.Collection;
 
 public class ConfigMessage extends Message {
 
+    public static ConfigMessage empty() {
+        return new ConfigMessage("");
+    }
+
     public static ConfigMessage from(String message, Placeholder... placeholders) {
         return new ConfigMessage(message, placeholders);
     }
@@ -31,6 +35,15 @@ public class ConfigMessage extends Message {
 
     protected ConfigMessage(Collection<String> message, Placeholder... placeholders) {
         super(message, placeholders);
+    }
+
+    @Override
+    public ConfigMessage[] splitToLineMessage() {
+        ConfigMessage[] messages = new ConfigMessage[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            messages[i] = new ConfigMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
+        }
+        return messages;
     }
 
     protected ConfigMessage(String[] message, Placeholder... placeholders) {

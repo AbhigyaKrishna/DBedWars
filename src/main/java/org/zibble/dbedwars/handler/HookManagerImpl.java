@@ -1,10 +1,11 @@
 package org.zibble.dbedwars.handler;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.handler.HookManager;
+import org.zibble.dbedwars.api.hooks.Hook;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
+import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
@@ -15,9 +16,9 @@ import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
 import org.zibble.dbedwars.hooks.betternick.BetterNickHook;
 import org.zibble.dbedwars.hooks.citizens.CitizensHook;
 import org.zibble.dbedwars.hooks.cmi.CMIHook;
+import org.zibble.dbedwars.hooks.defaults.npc.NPCFactoryImpl;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
-import org.zibble.dbedwars.hooks.defaults.vanish.VanishImpl;
 import org.zibble.dbedwars.hooks.defaults.world.WorldAdaptorImpl;
 import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
 import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
@@ -35,10 +36,10 @@ import org.zibble.dbedwars.hooks.tab.TabHook;
 import org.zibble.dbedwars.hooks.vault.VaultHook;
 import org.zibble.dbedwars.hooks.viphide.VIPHideHook;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 
-public class HookManager implements org.zibble.dbedwars.api.handler.HookManager {
+public class HookManagerImpl implements HookManager {
 
     private final DBedwars plugin;
     private PluginDependence[] dependencies;
@@ -46,10 +47,12 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     private WorldAdaptor worldAdaptor;
     private ScoreboardHook scoreboardHook;
     private PlaceholderHook placeholderHook;
-    private VanishHook vanishHook;
-    private List<NickNameHook> nickNameHooks;
+    private NPCFactory npcFactory;
+    private MultiOptionalHookImpl<VanishHook> vanishHook;
+    private MultiOptionalHookImpl<NickNameHook> nickNameHooks;
+    private SkinRestorerHook skinRestorerHook;
 
-    public HookManager(DBedwars plugin) {
+    public HookManagerImpl(DBedwars plugin) {
         this.plugin = plugin;
         this.dependencies = new PluginDependence[]{
                 new AutoNickerHook(),
@@ -81,20 +84,22 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
             this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
 
         this.scoreboardHook = new ScoreboardHookImpl();
-        this.vanishHook = new VanishImpl();
+        this.skinRestorerHook = SkinRestorerHook.get();
 
         if (PlaceholderAPIHook.get().isEnabled())
             this.placeholderHook = new PlaceholderAPIHook();
         else
             this.placeholderHook = new PlaceholderHookImpl();
 
-        this.nickNameHooks = new ArrayList<>();
+        this.npcFactory = new NPCFactoryImpl();
+
+        this.vanishHook = new MultiOptionalHookImpl<>();
+        this.nickNameHooks = new MultiOptionalHookImpl<>();
+
         if (AutoNickerHook.get().isEnabled())
             nickNameHooks.add(AutoNickerHook.get());
         if (BetterNickHook.get().isEnabled())
             nickNameHooks.add(BetterNickHook.get());
-        if (CMIHook.get().isEnabled())
-            nickNameHooks.add(((CMIHook) CMIHook.get()).getCmiNick());
         if (EazyNickHook.get().isEnabled())
             nickNameHooks.add(EazyNickHook.get());
         if (NameTagEditHook.get().isEnabled())
@@ -106,12 +111,23 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
         if (VIPHideHook.get().isEnabled())
             nickNameHooks.add(VIPHideHook.get());
 
+        if (PremiumVanishHook.get().isEnabled())
+            vanishHook.add(PremiumVanishHook.get());
+        if (SuperVanishHook.get().isEnabled())
+            vanishHook.add(SuperVanishHook.get());
+
+        if (CMIHook.get().isEnabled()) {
+            CMIHook hook = CMIHook.get();
+            nickNameHooks.add(hook.getCmiNick());
+            vanishHook.add(hook.getCmiVanish());
+        }
+
         this.worldAdaptor.init();
         this.scoreboardHook.init();
         this.placeholderHook.init();
+        this.npcFactory.init();
         this.vanishHook.init();
-        for (NickNameHook nickNameHook : this.nickNameHooks)
-            nickNameHook.init();
+        this.nickNameHooks.init();
     }
 
     @Override
@@ -143,32 +159,10 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
     }
 
     @Override
-    public VanishHook getVanishHook() {
+    public MultiOptionalHook<VanishHook> getVanishHook() {
         return vanishHook;
     }
 
-    @Override
-    public void setVanishHook(VanishHook vanishHook) {
-        synchronized (this) {
-            this.vanishHook.disable();
-        }
-        this.vanishHook = vanishHook;
-        this.vanishHook.init();
-    }
-
-    @Override
-    public List<NickNameHook> getNickNameHooks() {
-        return this.nickNameHooks;
-    }
-
-    @Override
-    public boolean isNicked(Player player) {
-        for (NickNameHook nickNameHook : this.nickNameHooks) {
-            if (nickNameHook.isPlayerNicked(player))
-                return true;
-        }
-        return false;
-    }
 
     @Override
     public PlaceholderHook getPlaceholderHook() {
@@ -184,8 +178,63 @@ public class HookManager implements org.zibble.dbedwars.api.handler.HookManager 
         this.placeholderHook.init();
     }
 
+    @Override
+    public NPCFactory getNpcFactory() {
+        return npcFactory;
+    }
+
+    @Override
+    public void setNpcFactory(NPCFactory npcFactory) {
+        this.npcFactory = npcFactory;
+    }
+
+    @Override
+    public MultiOptionalHook<NickNameHook> getNickNameHooks() {
+        return this.nickNameHooks;
+    }
+
+    public SkinRestorerHook getSkinRestorerHook() {
+        return skinRestorerHook;
+    }
+
     public PluginDependence[] getDependencies() {
         return this.dependencies;
+    }
+
+    public static class MultiOptionalHookImpl<T extends Hook> implements MultiOptionalHook<T> {
+
+        private final Collection<T> hooks;
+
+        public MultiOptionalHookImpl() {
+            this.hooks = Collections.synchronizedSet(new HashSet<>());
+        }
+
+        @Override
+        public <R, F> F perform(Function<T, R> testFunction, Function<Collection<R>, F> multiResultMapper, F defaultValue) {
+            if (this.hooks.isEmpty())
+                return defaultValue;
+            Collection<R> results = new ArrayList<>();
+            for (T hook : this.hooks) {
+                results.add(testFunction.apply(hook));
+            }
+            return multiResultMapper.apply(results);
+        }
+
+        @Override
+        public void add(T hook) {
+            this.hooks.add(hook);
+        }
+
+        @Override
+        public void remove(T hook) {
+            this.hooks.remove(hook);
+        }
+
+        public void init() {
+            for (T hook : this.hooks) {
+                hook.init();
+            }
+        }
     }
 
 }

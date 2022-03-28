@@ -11,37 +11,37 @@ public class IntegerCount extends Count<Integer> {
     }
 
     @Override
-    public void increment() {
+    public synchronized void increment() {
         this.value++;
     }
 
     @Override
-    public void decrement() {
+    public synchronized void decrement() {
         this.value--;
     }
 
     @Override
-    public void reset() {
+    public synchronized void reset() {
         this.value = 0;
     }
 
     @Override
-    public void add(Integer delta) {
+    public synchronized void add(Integer delta) {
         this.value += delta;
     }
 
     @Override
-    public void subtract(Integer delta) {
+    public synchronized void subtract(Integer delta) {
         this.value -= delta;
     }
 
     @Override
-    public void multiply(Integer delta) {
+    public synchronized void multiply(Integer delta) {
         this.value *= delta;
     }
 
     @Override
-    public void divide(Integer delta) {
+    public synchronized void divide(Integer delta) {
         this.value /= delta;
     }
 

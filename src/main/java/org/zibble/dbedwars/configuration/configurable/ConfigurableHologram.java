@@ -1,13 +1,12 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.task.implementations.HologramRotateTask;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +14,10 @@ import java.util.Map;
 
 public class ConfigurableHologram implements Loadable, PropertySerializable {
 
-    private Map<String, HologramConfig> configs = new HashMap<>();
+    private final Map<String, HologramConfig> configs = new HashMap<>();
 
     @Override
-    public Loadable load(ConfigurationSection section) {
+    public void load(ConfigurationSection section) {
         for (String key : section.getKeys(false)) {
             ConfigurationSection config = section.getConfigurationSection(key);
             if (config.getString("mode").equalsIgnoreCase("baby")) {
@@ -31,7 +30,6 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
                 configs.put(key, hologram);
             }
         }
-        return this;
     }
 
     @Override
@@ -41,13 +39,6 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
 
     public Map<String, HologramConfig> getConfigs() {
         return configs;
-    }
-
-    @Override
-    public String toString() {
-        return "ConfigurableHologram{" +
-                "configs=" + configs +
-                '}';
     }
 
     @Override
@@ -69,21 +60,18 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
 
     public static class ConfigurableAdvancedHologram implements HologramConfig {
 
-        @LoadableEntry(key = "animation-cycle-end-control")
-        private String animationEndTask;
+        @ConfigPath("animation-cycle-end-control")
+        private HologramRotateTask.TaskEndAction animationEndTask;
 
-        @LoadableEntry(key = "text")
+        @ConfigPath
         private String text;
 
-        @LoadableEntry(key = "keyframes")
+        @ConfigPath("keyframes")
         private List<String> frames;
-
-        public ConfigurableAdvancedHologram() {
-        }
-
+        
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -95,7 +83,7 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return HologramConfigMode.ADVANCED;
         }
 
-        public String getAnimationEndTask() {
+        public HologramRotateTask.TaskEndAction getAnimationEndTask() {
             return animationEndTask;
         }
 
@@ -104,20 +92,10 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         }
 
         @Override
-        public String toString() {
-            return "ConfigurableAdvancedHologram{" +
-                    "mode=" + this.getMode() +
-                    ", animationEndTask='" + animationEndTask + '\'' +
-                    ", text='" + text + '\'' +
-                    ", frames=" + frames +
-                    '}';
-        }
-
-        @Override
         public NamedProperties toProperties() {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
-                    .add("animation-end", EnumUtil.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
+                    .add("animation-end", animationEndTask)
                     .add("text", text)
                     .add("frames", frames)
                     .build();
@@ -127,34 +105,31 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
 
     public static class ConfigurableBabyHologram implements HologramConfig {
 
-        @LoadableEntry(key = "animation-cycle-end-control")
-        private String animationEndTask;
+        @ConfigPath("animation-cycle-end-control")
+        private HologramRotateTask.TaskEndAction animationEndTask;
 
-        @LoadableEntry(key = "text")
+        @ConfigPath
         private String text;
 
-        @LoadableEntry(key = "degree-rotated-per-cycle", subsection = "rotation")
+        @Defaults.Double(540)
+        @ConfigPath("rotation.degree-rotated-per-cycle")
         private double degreeRotatedPerCycle;
 
-        @LoadableEntry(key = "vertical-bobbing-per-cycle", subsection = "rotation")
+        @Defaults.Double(0.5)
+        @ConfigPath("rotation.vertical-bobbing-per-cycle")
         private double verticalDisplacement;
 
-        @LoadableEntry(key = "ticks-per-animation-cycle", subsection = "rotation")
+        @Defaults.Integer(60)
+        @ConfigPath("rotation.ticks-per-animation-cycle")
         private int ticksPerAnimationCycle;
 
-        @LoadableEntry(key = "ease-in-out", subsection = "rotation")
+        @Defaults.Boolean(true)
+        @ConfigPath("rotation.ease-in-out")
         private boolean slowAtEndEnabled;
 
-        protected ConfigurableBabyHologram() {
-            degreeRotatedPerCycle = 540;
-            verticalDisplacement = 0.5;
-            ticksPerAnimationCycle = 60;
-            slowAtEndEnabled = true;
-        }
-
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override
@@ -165,6 +140,10 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         @Override
         public HologramConfigMode getMode() {
             return HologramConfigMode.BABY;
+        }
+
+        public HologramRotateTask.TaskEndAction getAnimationEndTask() {
+            return animationEndTask;
         }
 
         public boolean isSlowAtEndEnabled() {
@@ -184,23 +163,10 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         }
 
         @Override
-        public String toString() {
-            return "ConfigurableBabyHologram{" +
-                    "mode=" + this.getMode() +
-                    ", animationEndTask='" + animationEndTask + '\'' +
-                    ", text='" + text + '\'' +
-                    ", degreeRotatedPerCycle=" + degreeRotatedPerCycle +
-                    ", verticalDisplacement=" + verticalDisplacement +
-                    ", ticksPerAnimationCycle=" + ticksPerAnimationCycle +
-                    ", slowAtEndEnabled=" + slowAtEndEnabled +
-                    '}';
-        }
-
-        @Override
         public NamedProperties toProperties() {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
-                    .add("animation-end", EnumUtil.matchEnum(animationEndTask, HologramRotateTask.TaskEndAction.values()))
+                    .add("animation-end", animationEndTask)
                     .add("text", text)
                     .add("degreeRotatedPerCycle", degreeRotatedPerCycle)
                     .add("verticalBobbingPerCycle", verticalDisplacement)

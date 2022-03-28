@@ -35,6 +35,15 @@ public class LegacyMessage extends Message {
         super(message, placeholders);
     }
 
+    @Override
+    public Message[] splitToLineMessage() {
+        LegacyMessage[] messages = new LegacyMessage[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            messages[i] = new LegacyMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
+        }
+        return messages;
+    }
+
     protected LegacyMessage(String[] message, Placeholder... placeholders) {
         super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }

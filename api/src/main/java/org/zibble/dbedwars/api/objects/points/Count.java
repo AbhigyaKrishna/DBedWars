@@ -12,7 +12,7 @@ public abstract class Count<T extends Number> extends Number {
         return value;
     }
 
-    public void set(T value) {
+    public synchronized void set(T value) {
         this.value = value;
     }
 
@@ -30,40 +30,40 @@ public abstract class Count<T extends Number> extends Number {
 
     public abstract void divide(T delta);
 
-    public T incrementAndGet() {
+    public synchronized T incrementAndGet() {
         this.increment();
         return this.get();
     }
 
-    public T getAndIncrement() {
+    public synchronized T getAndIncrement() {
         T oldValue = this.get();
         this.increment();
         return oldValue;
     }
 
-    public T decrementAndGet() {
+    public synchronized T decrementAndGet() {
         this.decrement();
         return this.get();
     }
 
-    public T getAndDecrement() {
+    public synchronized T getAndDecrement() {
         T oldValue = this.get();
         this.decrement();
         return oldValue;
     }
 
-    public T addAndGet(T delta) {
+    public synchronized T addAndGet(T delta) {
         this.add(delta);
         return this.get();
     }
 
-    public T getAndAdd(T delta) {
+    public synchronized T getAndAdd(T delta) {
         T oldValue = this.get();
         this.add(delta);
         return oldValue;
     }
 
-    public T getAndSet(T newValue) {
+    public synchronized T getAndSet(T newValue) {
         T oldValue = this.get();
         this.set(newValue);
         return oldValue;

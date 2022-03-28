@@ -1,39 +1,34 @@
 package org.zibble.dbedwars.game;
 
-import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.game.Team;
-
-import java.util.LinkedList;
-import java.util.List;
+import org.zibble.dbedwars.api.util.RandomList;
+import org.zibble.dbedwars.game.arena.ArenaImpl;
+import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
+import org.zibble.dbedwars.game.arena.TeamImpl;
 
 public class TeamAssigner {
 
-    private final Arena arena;
+    private final ArenaImpl arena;
 
-    public TeamAssigner(Arena arena) {
+    public TeamAssigner(ArenaImpl arena) {
         this.arena = arena;
     }
 
     public void assign() {
-        byte teamNumber = (byte) this.arena.getSettings().getAvailableTeams().size();
+        int teamNumber = this.arena.getTeams().size();
         int playerNumber = this.arena.getPlayers().size();
 
-        int min = Math.min(playerNumber / teamNumber, this.arena.getSettings().getTeamPlayers());
-        min = min == 0 ? 1 : min;
+        int min = Math.min(playerNumber / teamNumber, this.arena.getDataHolder().getMaxPlayersPerTeam());
+        int finalMin = min == 0 ? 1 : min;
 
-        byte i = 0;
-        for (ArenaPlayer player : this.arena.getPlayers()) {
-            if (player.getTeam() != null) continue;
-
-            List<Team> teams = new LinkedList<>(this.arena.getSettings().getAvailableTeams());
-            Team team = teams.get(i);
-            if (team.getArena() == null) team.init(this.arena);
-            if (team.getPlayers().size() >= min) {
-                i++;
-                team = teams.get(i);
-                team.init(this.arena);
+        RandomList<TeamImpl> teams = new RandomList<>(this.arena.getTeams());
+        for (ArenaPlayerImpl player : this.arena.getPlayers()) {
+            if (player.getTeam() != null) {
+                TeamImpl team = player.getTeam();
+                team.addPlayer(player);
+                continue;
             }
+
+            TeamImpl team = teams.randomValue(t -> t.getPlayers().size() < finalMin);
             team.addPlayer(player);
         }
     }

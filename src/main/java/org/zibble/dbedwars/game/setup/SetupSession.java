@@ -1,13 +1,11 @@
 package org.zibble.dbedwars.game.setup;
 
 import com.cryptomorin.xseries.XSound;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.game.ArenaDataHolder;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
@@ -20,6 +18,7 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
+import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class SetupSession {
     private final World world;
     private final Player player;
     private final PlayerMember playerMember;
-    private final ArenaDataHolder arenaDataHolder;
+    private final ArenaDataHolderImpl arenaDataHolder;
 
     private final Map<Key<String>, CancellableWorkload> workloads;
     private final Map<Key<String>, Hologram> holograms;
@@ -53,7 +52,7 @@ public class SetupSession {
 
     private boolean isPreciseEnabled;
 
-    public SetupSession(World world, Player player, ArenaDataHolder arenaDataHolder) {
+    public SetupSession(World world, Player player, ArenaDataHolderImpl arenaDataHolder) {
         this.world = world;
         this.player = player;
         this.playerMember = MESSAGING.getMessagingMember(player);
@@ -246,7 +245,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addTeamShop(Color color, ShopInfo shoptype) {
+    public void addTeamShop(Color color, ShopInfoImpl shoptype) {
         Location location = this.player.getLocation();
 
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);

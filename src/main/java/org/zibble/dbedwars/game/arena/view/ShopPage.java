@@ -2,30 +2,35 @@ package org.zibble.dbedwars.game.arena.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.Keyed;
 import org.zibble.dbedwars.guis.ShopPageGui;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShopPage {
+public class ShopPage implements Keyed<String> {
 
     private final ArenaPlayer player;
+    private final Key<String> key;
     private int row;
     private Message title;
     private String[] mask;
     private Map<Character, ShopItem> items;
 
-    public ShopPage(ArenaPlayer player, int row, Message title) {
+    public ShopPage(ArenaPlayer player, Key<String> key, int row, Message title) {
         this.player = player;
+        this.key = key;
         this.row = row;
         this.title = title;
         this.mask = new String[row];
         this.items = new HashMap<>();
     }
 
-    ShopPage(ArenaPlayer player, ShopInfoImpl.PageInfoImpl page) {
+    ShopPage(ArenaPlayer player, Key<String> key, ShopInfoImpl.PageInfoImpl page) {
         this.player = player;
+        this.key = key;
         this.row = page.getRow();
         this.title = page.getTitle();
         this.mask = new String[this.row];
@@ -85,6 +90,11 @@ public class ShopPage {
             }
         }
         return menu;
+    }
+
+    @Override
+    public Key<String> getKey() {
+        return this.key;
     }
 
 }

@@ -50,7 +50,7 @@ public class StructureBuilderTask implements Workload {
 
             if (!entry.getKey().isEmpty()) continue;
 
-            arena.setBlock(entry.getKey(), entry.getValue().parseMaterial());
+            arena.setBlock(entry.getKey(), entry.getValue());
 
             if (isDirectional) {
                 XBlock.setDirection(entry.getKey(), face);

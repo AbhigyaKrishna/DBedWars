@@ -41,7 +41,7 @@ public interface ConfigSaver<T> {
             saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
     ConfigSaver<Enum> ENUM_SAVER = declare(Enum.class, (pair, section, saveFunction) ->
             saveFunction.apply(pair.getKey(), pair.getValue().name(), section) ? 1 : 0);
-    ConfigSaver<Savable> SAVEABLE_SAVER = declare(Savable.class, (pair, section, saveFunction) -> {
+    ConfigSaver<Saveable> SAVEABLE_SAVER = declare(Saveable.class, (pair, section, saveFunction) -> {
         ConfigurationSection child = YamlUtils.createNotExisting(section, pair.getKey());
         return pair.getValue().save(child);
     });
@@ -102,9 +102,9 @@ public interface ConfigSaver<T> {
         return saver;
     }
 
-    static int save(Savable savable, ConfigurationSection section) {
+    static int save(Saveable saveable, ConfigurationSection section) {
         Stack<Field> fields = new Stack<>();
-        fields.addAll(Arrays.asList(savable.getClass().getDeclaredFields()));
+        fields.addAll(Arrays.asList(saveable.getClass().getDeclaredFields()));
         fields.removeIf(field -> !field.isAnnotationPresent(ConfigPath.class));
         int count = 0;
         while (!fields.isEmpty()) {
@@ -116,7 +116,7 @@ public interface ConfigSaver<T> {
                 continue;
 
             String key = path.value().isEmpty() ? field.getField().getName().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase() : path.value();
-            Object value = field.get(savable);
+            Object value = field.get(saveable);
             if (value == null)
                 continue;
 
@@ -143,9 +143,9 @@ public interface ConfigSaver<T> {
         return count;
     }
 
-    static int saveDefaults(Savable savable, ConfigurationSection section) {
+    static int saveDefaults(Saveable saveable, ConfigurationSection section) {
         Stack<Field> fields = new Stack<>();
-        fields.addAll(Arrays.asList(savable.getClass().getDeclaredFields()));
+        fields.addAll(Arrays.asList(saveable.getClass().getDeclaredFields()));
 
         fields.removeIf(field -> !field.isAnnotationPresent(ConfigPath.class) || Defaults.DEFAULT_TYPES.stream().noneMatch(field::isAnnotationPresent));
         int count = 0;
@@ -168,7 +168,7 @@ public interface ConfigSaver<T> {
             Object value;
 
             if (annotation instanceof Defaults.Variable) {
-                value = new FieldResolver(savable.getClass()).resolveWrapper(((Defaults.Variable) annotation).value()).get(savable);
+                value = new FieldResolver(saveable.getClass()).resolveWrapper(((Defaults.Variable) annotation).value()).get(saveable);
             } else {
                 value = resolver.resolveWrapper("value").invoke(annotation);
             }

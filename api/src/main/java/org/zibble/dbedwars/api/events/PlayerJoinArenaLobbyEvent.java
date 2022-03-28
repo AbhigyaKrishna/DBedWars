@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import org.zibble.dbedwars.api.events.player.CustomPlayerEventCancellable;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.messaging.message.Message;
 

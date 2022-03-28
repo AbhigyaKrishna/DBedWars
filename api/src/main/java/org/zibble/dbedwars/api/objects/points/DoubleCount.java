@@ -11,37 +11,37 @@ public class DoubleCount extends Count<Double> {
     }
 
     @Override
-    public void increment() {
+    public synchronized void increment() {
         this.value++;
     }
 
     @Override
-    public void decrement() {
+    public synchronized void decrement() {
         this.value--;
     }
 
     @Override
-    public void reset() {
+    public synchronized void reset() {
         this.value = 0.0D;
     }
 
     @Override
-    public void add(Double delta) {
+    public synchronized void add(Double delta) {
         this.value += delta;
     }
 
     @Override
-    public void subtract(Double delta) {
+    public synchronized void subtract(Double delta) {
         this.value -= delta;
     }
 
     @Override
-    public void multiply(Double delta) {
+    public synchronized void multiply(Double delta) {
         this.value *= delta;
     }
 
     @Override
-    public void divide(Double delta) {
+    public synchronized void divide(Double delta) {
         this.value /= delta;
     }
 

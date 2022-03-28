@@ -9,6 +9,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zibble.dbedwars.listeners.VanishListener;
 import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
@@ -20,7 +21,7 @@ import org.zibble.dbedwars.commands.framework.CommandRegistryImpl;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
-import org.zibble.dbedwars.game.GameManager;
+import org.zibble.dbedwars.game.GameManagerImpl;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
 import org.zibble.dbedwars.handler.*;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
@@ -39,7 +40,7 @@ import java.util.logging.Level;
 public final class DBedwars extends PluginAdapter {
 
     private Version serverVersion;
-    private GameManager gameManager;
+    private GameManagerImpl gameManager;
     private Listener[] listeners;
 
     private String mainWorld;
@@ -49,7 +50,7 @@ public final class DBedwars extends PluginAdapter {
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
     private HologramManager hologramFactoryImpl;
-    private HookManager hookManager;
+    private HookManagerImpl hookManager;
     private MenuHandler menuHandler;
     private SetupSessionManager setupSessionManager;
 
@@ -76,7 +77,7 @@ public final class DBedwars extends PluginAdapter {
         this.threadHandler = new ThreadHandler(this);
         this.threadHandler.runThreads(4);
         this.nmsAdaptor = this.registerNMSAdaptor();
-        this.hookManager = new HookManager(this);
+        this.hookManager = new HookManagerImpl(this);
         this.hookManager.load();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
@@ -174,7 +175,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
-        this.gameManager = new GameManager(this);
+        this.gameManager = new GameManagerImpl(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.hologramFactoryImpl = new HologramManager();
         this.setupSessionManager = new SetupSessionManager(this);
@@ -203,7 +204,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpListeners() {
-        this.listeners = new Listener[0];
+        this.listeners = new Listener[]{new VanishListener()};
         for (Listener listener : this.listeners) {
             this.getServer().getPluginManager().registerEvents(listener, this);
         }
@@ -218,7 +219,7 @@ public final class DBedwars extends PluginAdapter {
         return this.getDescription().getVersion();
     }
 
-    public GameManager getGameManager() {
+    public GameManagerImpl getGameManager() {
         return gameManager;
     }
 
@@ -254,7 +255,7 @@ public final class DBedwars extends PluginAdapter {
         return featureManager;
     }
 
-    public HookManager getHookManager() {
+    public HookManagerImpl getHookManager() {
         return hookManager;
     }
 

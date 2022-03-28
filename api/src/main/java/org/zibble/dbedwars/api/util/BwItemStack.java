@@ -54,14 +54,18 @@ public class BwItemStack implements Cloneable {
     private ItemMeta meta;
 
     public static BwItemStack valueOf(String str, Placeholder... placeholders) {
+        Messaging messaging = Messaging.get();
         Matcher matcher = JSON_MATCHER.matcher(str);
         if (matcher.matches()) {
-            String item = matcher.group("item");
-            int amount = NumberUtils.toInt(matcher.group("amount"), 1);
+            String item = messaging.setPlaceholders(matcher.group("item"), placeholders);
 
             BwItemStack configuredItem = DBedWarsAPI.getApi().getConfiguredItem(item, placeholders);
-            if (configuredItem != null) {
-                configuredItem.setAmount(amount);
+            String amt = matcher.group("amount");
+            if (configuredItem != null && amt != null) {
+                int num = NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders));
+                if (num > 0) {
+                    configuredItem.setAmount(num);
+                }
             }
             return configuredItem;
         }
@@ -70,10 +74,14 @@ public class BwItemStack implements Cloneable {
         if (matcher.matches()) {
             Optional<XMaterial> material = XMaterial.matchXMaterial(matcher.group("type"));
             if (!material.isPresent() || !material.get().isSupported()) return null;
-            int amount = !NumberUtils.isDigits(matcher.group("amount")) ? 1 : Integer.parseInt(matcher.group("amount"));
-            BwItemStack itemStack = new BwItemStack(material.get(), amount);
-            if (NumberUtils.isDigits(matcher.group("data"))) {
-                itemStack.setData(Short.parseShort(matcher.group("data")));
+            BwItemStack itemStack = new BwItemStack(material.get());
+            String amt = matcher.group("amount");
+            if (amt != null) {
+                itemStack.setAmount(NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders), 1));
+            }
+            String data = matcher.group("data");
+            if (data != null) {
+                itemStack.setData(NumberUtils.toShort(messaging.setPlaceholders(data, placeholders), (short) 0));
             }
             return itemStack;
         }
@@ -82,16 +90,23 @@ public class BwItemStack implements Cloneable {
     }
 
     public static BwItemStack fromJson(Json json, Placeholder... placeholders) {
-        Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(json.get("type").getAsString());
+        Messaging messaging = Messaging.get();
+        Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(messaging.setPlaceholders(json.get("type").getAsString(), placeholders));
         if (!optmaterial.isPresent()) {
             throw new IllegalArgumentException("Invalid material type: " + json.get("type").getAsString());
         }
         BwItemStack item = new BwItemStack(optmaterial.get());
-        item.setAmount(json.has("amount") ? json.get("amount").getAsInt() : 1);
-        item.setData(json.has("data") ? json.get("data").getAsShort() : 0);
+        if (json.has("amount")) {
+            item.setAmount(NumberUtils.toInt(messaging.setPlaceholders(json.get("amount").getAsString(), placeholders), 1));
+        }
+        if (json.has("data")) {
+            item.setData(NumberUtils.toInt(messaging.setPlaceholders(json.get("data").getAsString(), placeholders), 0));
+        }
 
         if (json.has("display-name")) {
-            item.setDisplayName(Messaging.get().asConfigMessage(json.get("display-name").getAsString()));
+            Message message = Messaging.get().asConfigMessage(json.get("display-name").getAsString());
+            message.addPlaceholders(placeholders);
+            item.setDisplayName(message);
         }
         if (json.has("lore")) {
             JsonArray array = json.get("lore").getAsJsonArray();
@@ -101,12 +116,13 @@ public class BwItemStack implements Cloneable {
                 lines[i] = array.get(i).getAsString();
             }
             lore.setMessage(lines);
+            lore.addPlaceholders(placeholders);
             item.appendLore(lore);
         }
         if (json.has("enchantments")) {
             JsonArray array = json.get("enchantments").getAsJsonArray();
             for (JsonElement element : array) {
-                LEnchant enchant = LEnchant.valueOf(element.getAsString());
+                LEnchant enchant = LEnchant.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
                 if (enchant != null) {
                     item.addEnchantment(enchant);
                 }
@@ -115,7 +131,7 @@ public class BwItemStack implements Cloneable {
         if (json.has("flags")) {
             JsonArray array = json.getAsJsonArray("flags");
             for (JsonElement element : array) {
-                ItemFlag flag = EnumUtil.matchEnum(element.getAsString(), ItemFlag.values());
+                ItemFlag flag = EnumUtil.matchEnum(messaging.setPlaceholders(element.getAsString(), placeholders), ItemFlag.values());
                 if (flag != null) {
                     item.getMeta().addItemFlags(flag);
                 }
@@ -140,37 +156,36 @@ public class BwItemStack implements Cloneable {
 
         if (item.getMeta() instanceof SkullMeta) {
             if (metaJson.has("owner")) {
-                ((SkullMeta) item.getMeta()).setOwner(metaJson.get("owner").getAsString());
+                ((SkullMeta) item.getMeta()).setOwner(messaging.setPlaceholders(metaJson.get("owner").getAsString(), placeholders));
             }
-        } else if (item.getMeta() instanceof EnchantmentStorageMeta) {
-            if (metaJson.has("stored-enchants")) {
-                EnchantmentStorageMeta storage = (EnchantmentStorageMeta) item.getMeta();
-                JsonArray array = metaJson.getAsJsonArray("stored-enchants");
-                for (JsonElement element : array) {
-                    LEnchant enchant = LEnchant.valueOf(element.getAsString());
-                    if (enchant != null && enchant.getEnchantment().isSupported()) {
-                        storage.addStoredEnchant(enchant.getEnchantment().getEnchant(), enchant.getLevel(), true);
-                    }
+        } else if (item.getMeta() instanceof EnchantmentStorageMeta && metaJson.has("stored-enchants")) {
+            EnchantmentStorageMeta storage = (EnchantmentStorageMeta) item.getMeta();
+            JsonArray array = metaJson.getAsJsonArray("stored-enchants");
+            for (JsonElement element : array) {
+                LEnchant enchant = LEnchant.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                if (enchant != null && enchant.getEnchantment().isSupported()) {
+                    storage.addStoredEnchant(enchant.getEnchantment().getEnchant(), enchant.getLevel(), true);
                 }
             }
         } else if (item.getMeta() instanceof LeatherArmorMeta) {
             if (metaJson.has("color")) {
-                ((LeatherArmorMeta) item.getMeta()).setColor(org.bukkit.Color.fromRGB(Integer.parseInt(metaJson.get("color").getAsString(), 16)));
+                ((LeatherArmorMeta) item.getMeta()).setColor(org.bukkit.Color.fromRGB(Integer.parseInt(
+                        messaging.setPlaceholders(metaJson.get("color").getAsString(), placeholders), 16)));
             }
         } else if (item.getMeta() instanceof BookMeta) {
             BookMeta bookmeta = (BookMeta) item.getMeta();
 
             if (metaJson.has("title")) {
-                bookmeta.setTitle(metaJson.get("title").getAsString());
+                bookmeta.setTitle(messaging.setPlaceholders(metaJson.get("title").getAsString(), placeholders));
             }
             if (metaJson.has("author")) {
-                bookmeta.setAuthor(metaJson.get("author").getAsString());
+                bookmeta.setAuthor(messaging.setPlaceholders(metaJson.get("author").getAsString(), placeholders));
             }
             if (metaJson.has("pages")) {
                 JsonArray array = metaJson.getAsJsonArray("pages");
                 List<String> pages = new ArrayList<>(array.size());
                 for (JsonElement element : array) {
-                    pages.add(element.getAsString());
+                    pages.add(messaging.setPlaceholders(element.getAsString(), placeholders));
                 }
                 bookmeta.setPages(pages);
             }
@@ -180,7 +195,7 @@ public class BwItemStack implements Cloneable {
             if (metaJson.has("potion-effects")) {
                 JsonArray array = metaJson.getAsJsonArray("potion-effects");
                 for (JsonElement element : array) {
-                    PotionEffectAT effect = PotionEffectAT.valueOf(element.getAsString());
+                    PotionEffectAT effect = PotionEffectAT.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
                     if (effect != null) {
                         potionmeta.addCustomEffect(effect.asBukkit(), true);
                     }
@@ -191,7 +206,7 @@ public class BwItemStack implements Cloneable {
             if (metaJson.has("firework-effect")) {
                 JsonArray array = metaJson.getAsJsonArray("firework-effect");
                 for (JsonElement element : array) {
-                    FireworkEffectC effect = FireworkEffectC.valueOf(element.getAsString());
+                    FireworkEffectC effect = FireworkEffectC.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
                     if (effect != null) {
                         fireworkmeta.setEffect(effect.getEffect());
                     }
@@ -201,13 +216,13 @@ public class BwItemStack implements Cloneable {
             FireworkMeta fireworkMeta = (FireworkMeta) item.getMeta();
 
             if (metaJson.has("power")) {
-                fireworkMeta.setPower(metaJson.get("power").getAsInt());
+                fireworkMeta.setPower(NumberUtils.toInt(messaging.setPlaceholders(metaJson.get("power").getAsString(), placeholders)));
             }
 
             if (metaJson.has("firework-effect")) {
                 JsonArray array = metaJson.getAsJsonArray("firework-effect");
                 for (JsonElement element : array) {
-                    FireworkEffectC effect = FireworkEffectC.valueOf(element.getAsString());
+                    FireworkEffectC effect = FireworkEffectC.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
                     if (effect != null) {
                         fireworkMeta.addEffect(effect.getEffect());
                     }

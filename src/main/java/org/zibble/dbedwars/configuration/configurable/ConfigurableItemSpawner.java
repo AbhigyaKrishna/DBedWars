@@ -94,8 +94,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
     public BwItemStack getIcon() {
         return this.icon != null
-                ? ConfigurationUtils.parseItem(this.icon)
-                : new BwItemStack(XMaterial.IRON_INGOT.parseItem());
+                ? BwItemStack.valueOf(this.icon)
+                : new BwItemStack(XMaterial.STONE.parseItem());
     }
 
     public SoundVP getSpawnSound() {

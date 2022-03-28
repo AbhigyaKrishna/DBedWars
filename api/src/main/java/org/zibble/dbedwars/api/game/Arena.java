@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.game;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -7,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.settings.ArenaSettings;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
+import org.zibble.dbedwars.api.game.statistics.BedBrokenStatistics;
+import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
@@ -21,6 +24,8 @@ import java.util.Set;
 public interface Arena extends AbstractMessaging {
 
     String getName();
+
+    String getGameId();
 
     ArenaSettings getSettings();
 
@@ -38,9 +43,9 @@ public interface Arena extends AbstractMessaging {
 
     Team getTeam(Color color);
 
-    Set<Team> getTeams();
+    Set<? extends Team> getTeams();
 
-    List<ArenaSpectator> getSpectators();
+    List<? extends ArenaSpectator> getSpectators();
 
     void addSpawner(Spawner spawner);
 
@@ -52,45 +57,57 @@ public interface Arena extends AbstractMessaging {
 
     boolean isCurrentlyRegenerating();
 
-    boolean start();
+    boolean isSleeping();
+
+    boolean isRunning();
+
+    boolean start(boolean force);
 
     boolean end();
 
-    void joinGame(Player player);
+    boolean joinGame(Player player);
 
-    void joinGame(ArenaPlayer player);
+    boolean joinGame(Player player, Color team);
 
-    void joinGame(Player player, Team team);
+    boolean rejoinGame(Player player);
 
-    void joinGame(ArenaPlayer player, Team team);
+    boolean spectateGame(Player player);
 
-    boolean kickPlayer(ArenaPlayer player);
+    default boolean kickPlayer(Player player) {
+        return this.kickPlayer(player, KickReason.UNKNOWN);
+    }
 
-    boolean kickPlayer(ArenaPlayer player, KickReason reason);
+    boolean kickPlayer(Player player, KickReason reason);
 
-    void kickAllPlayers();
+    default void kickAllPlayers() {
+        this.kickAllPlayers(KickReason.UNKNOWN);
+    }
 
     void kickAllPlayers(KickReason reason);
 
-    Block setBlock(LocationXYZ location, Material material);
+    void removeSpectator(Player spectator);
 
-    Block setBlock(Block block, Material material);
+    Block setBlock(LocationXYZ location, XMaterial material);
+
+    Block setBlock(Block block, XMaterial material);
 
     Instant getGameStartTime();
 
     Duration getRunningTime();
 
-    boolean isSleeping();
+    Set<? extends Team> getRemainingTeams();
 
-    Set<Team> getRemainingTeams();
+    Set<? extends ArenaPlayer> getPlayers();
 
-    Set<ArenaPlayer> getPlayers();
-
-    Optional<ArenaPlayer> getAsArenaPlayer(Player player);
+    Optional<? extends ArenaPlayer> getAsArenaPlayer(Player player);
 
     boolean isArenaPlayer(Player player);
 
     void destroyBed(ArenaPlayer player, Team affected);
+
+    DeathStatistics getDeathStatistics();
+
+    BedBrokenStatistics getBedBrokenStatistics();
 
     boolean stop();
 

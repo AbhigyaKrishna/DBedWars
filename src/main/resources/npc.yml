@@ -1,0 +1,20 @@
+shop-npc:
+  name:
+   - '<yellow>Shop'
+   - ''
+  type: 'player'
+  texture:
+    owner: ''
+    value: ''
+    signature: ''
+    mineskin: ''
+  shop: 'shop'
+  actions: []
+
+upgrades-npc:
+  name:
+   - '<yellow>Upgrades'
+   - ''
+  type: 'player'
+  shop: 'upgrades'
+  commands: []

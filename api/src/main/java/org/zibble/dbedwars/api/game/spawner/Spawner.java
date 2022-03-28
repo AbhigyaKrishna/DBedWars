@@ -26,7 +26,7 @@ public interface Spawner extends Tickable, Keyed<DropInfo> {
 
     Arena getArena();
 
-    Optional<Team> getOptionalTeam();
+    Optional<? extends Team> getTeam();
 
     BoundingBox getBoundingBox();
 

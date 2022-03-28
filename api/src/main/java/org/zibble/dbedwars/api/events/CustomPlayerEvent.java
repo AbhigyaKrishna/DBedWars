@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.events.player;
+package org.zibble.dbedwars.api.events;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.events.CustomEvent;

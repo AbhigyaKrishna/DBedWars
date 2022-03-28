@@ -16,27 +16,31 @@ import java.util.Map;
 
 public class ScriptRegistryImpl implements ScriptTranslationRegistry {
 
-    private final ActionRegistry actionRegistry;
-    private final ConditionRegistry conditionRegistry;
+    private final Map<Key<String>, ActionRegistry> actionRegistry;
+    private final Map<Key<String>, ConditionRegistry> conditionRegistry;
 
     public ScriptRegistryImpl() {
-        actionRegistry = new ActionRegistry();
-        conditionRegistry = new ConditionRegistry();
+        actionRegistry = new HashMap<>();
+        conditionRegistry = new HashMap<>();
     }
 
     public void registerDefaults() {
-        this.actionRegistry.registerDefaults();
-        this.conditionRegistry.registerDefaults();
+        ActionRegistry actionRegistry = new ActionRegistry();
+        actionRegistry.registerDefaults();
+        this.actionRegistry.put(Key.of("global"), actionRegistry);
+        ConditionRegistry conditionRegistry = new ConditionRegistry();
+        conditionRegistry.registerDefaults();
+        this.conditionRegistry.put(Key.of("global"), conditionRegistry);
     }
 
     @Override
-    public TranslationRegistry<? extends ActionTranslator<?, ? extends Action>> actionRegistry() {
-        return this.actionRegistry;
+    public ActionRegistry actionRegistry(Key<String> key) {
+        return this.actionRegistry.get(key);
     }
 
     @Override
-    public TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition>> conditionRegistry() {
-        return this.conditionRegistry;
+    public ConditionRegistry conditionRegistry(Key<String> key) {
+        return this.conditionRegistry.get(key);
     }
 
     public static class ActionRegistry implements TranslationRegistry<ActionTranslator<?, ? extends Action>> {
@@ -113,7 +117,7 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
 
     }
 
-    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<?, ? extends Condition>> {
+    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<?, ? extends Condition<?>>> {
 
         private final Map<Key<String>, ConditionTranslator<?, ? extends Condition>> registeredConditions;
 
@@ -126,12 +130,12 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public void registerTranslation(ConditionTranslator<?, ? extends Condition> translator) {
+        public void registerTranslation(ConditionTranslator<?, ? extends Condition<?>> translator) {
             this.registeredConditions.put(translator.getKey(), translator);
         }
 
         @Override
-        public Collection<ConditionTranslator<?, ? extends Condition>> getRegisteredTranslations() {
+        public Collection<ConditionTranslator<?, ? extends Condition<?>>> getRegisteredTranslations() {
             return Collections.unmodifiableCollection(this.registeredConditions.values());
         }
 

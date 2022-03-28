@@ -2,9 +2,10 @@ package org.zibble.dbedwars.api.game;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.game.view.ShopView;
+import org.zibble.dbedwars.api.game.statistics.ResourceStatistics;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.objects.points.Points;
+import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Key;
 
 import java.time.Instant;
@@ -16,7 +17,7 @@ public interface ArenaPlayer extends ArenaSpectator {
 
     Team getTeam();
 
-    void setTeam(Team team);
+    void setTeam(Color team);
 
     Points getPoints();
 
@@ -48,9 +49,9 @@ public interface ArenaPlayer extends ArenaSpectator {
 
     void setRespawning(boolean flag);
 
-    ShopView getShopView();
-
     String toString();
+
+    ResourceStatistics getResourceStatistics();
 
     class PlayerPoints {
 

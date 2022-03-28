@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.game.setup;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
@@ -64,8 +63,8 @@ public class SetupUtil {
     public static Hologram createHologram(Location location, Player player, Message text) {
         Hologram hologram = PLUGIN.getHologramManager().createHologram(location.clone().add(0, 2, 0));
         HologramPage page = hologram.addPage();
-        for (Component component : text.asComponent()) {
-            page.addNewTextLine(component);
+        for (Message message : text.splitToLineMessage()) {
+            page.addNewTextLine(message);
         }
         hologram.changeViewerPage(player.getUniqueId(), 0);
         return hologram;

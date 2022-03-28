@@ -1,20 +1,24 @@
 package org.zibble.dbedwars.task.implementations;
 
 import com.cryptomorin.xseries.XBlock;
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 
 public class BridgeEggWorkloadTask implements Workload {
+
+    private static final SoundVP EGG_POP = SoundVP.of(XSound.ENTITY_CHICKEN_EGG);
 
     private final DBedwars plugin;
     private final Egg egg;
@@ -88,13 +92,10 @@ public class BridgeEggWorkloadTask implements Workload {
 
     private void placeBlock(Block block, DyeColor dyeColor) {
         if (block.getType() == Material.AIR) {
-            plugin.getThreadHandler().submitSync(new Runnable() {
-                @Override
-                public void run() {
-                    BridgeEggWorkloadTask.this.arenaPlayer.getArena().setBlock(block, Material.WOOL);
-                    block.getWorld().playSound(block.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                    XBlock.setColor(block, dyeColor);
-                }
+            plugin.getThreadHandler().submitSync(() -> {
+                this.arenaPlayer.getArena().setBlock(block, XMaterial.WHITE_WOOL);
+                EGG_POP.play(block.getLocation());
+                XBlock.setColor(block, dyeColor);
             });
         }
     }

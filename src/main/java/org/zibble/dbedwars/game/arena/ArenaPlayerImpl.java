@@ -13,38 +13,44 @@ import org.zibble.dbedwars.api.feature.custom.DeathAnimationFeature;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
-import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.view.ShopView;
+import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.points.IntegerCount;
 import org.zibble.dbedwars.api.objects.points.Points;
-import org.zibble.dbedwars.api.util.Duration;
-import org.zibble.dbedwars.api.util.Pair;
-import org.zibble.dbedwars.api.util.SchedulerUtils;
-import org.zibble.dbedwars.cache.InventoryBackup;
+import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.cache.InventoryData;
+import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.api.game.statistics.ResourceStatistics;
+import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
+import org.zibble.dbedwars.game.arena.view.ShopView;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
 import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
 
     private final DBedwars plugin;
 
-    private Team team;
+    private Color team;
     private Scoreboard scoreboard;
     private final Points points;
     private boolean finalKilled;
     private boolean respawning;
     private Pair<ArenaPlayer, Instant> lastHit;
-    private InventoryBackup inventoryBackup;
+    private InventoryData inventoryBackup;
+    private Map<Key<String>, ShopView> shops;
+    private final InventoryData respawnItems;
+    private final ResourceStatistics resourceStatistics;
 
     public ArenaPlayerImpl(DBedwars plugin, Player player, Arena arena) {
         super(player, arena);
@@ -54,15 +60,18 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         this.points.registerCount(PlayerPoints.DEATH, new IntegerCount());
         this.points.registerCount(PlayerPoints.BEDS, new IntegerCount());
         this.points.registerCount(PlayerPoints.FINAL_KILLS, new IntegerCount());
+        this.shops = new HashMap<>(2);
+        this.respawnItems = new InventoryData();
+        this.resourceStatistics = new ResourceStatistics(this);
     }
 
     @Override
-    public Team getTeam() {
-        return this.team;
+    public TeamImpl getTeam() {
+        return (TeamImpl) this.arena.getTeam(this.team);
     }
 
     @Override
-    public void setTeam(Team team) {
+    public void setTeam(Color team) {
         this.team = team;
     }
 
@@ -84,56 +93,58 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     @Override
     public void kill(DeathCause reason) {
         PlayerKillEvent event;
-        if (this.team.isBedBroken()) {
-            // Get message from config
-            event = new PlayerFinalKillEvent(this, this.getLastHitTagged(), this.arena, reason, ConfigLang.FINAL_KILL_MESSAGE.asMessage());
+        ArenaPlayer killer = this.getLastHitTagged();
+        Message deathMessage = Util.getDeathMessage(reason, killer == null? null : killer.getPlayer());
+        if (this.getTeam().isBedBroken()) {
+            deathMessage.concatLine(0, Util.convertMessage(ConfigLang.FINAL_KILL.asMessage(),
+                    deathMessage instanceof ConfigMessage ? ConfigMessage.empty() : AdventureMessage.empty()).getMessage());
+            event = new PlayerFinalKillEvent(this, killer, this.arena, reason, deathMessage);
             event.call();
             if (event.isCancelled()) return;
 
-            event.getVictim().getPoints().getCount(PlayerPoints.DEATH).increment();
-            if (event.getAttacker() != null) event.getAttacker().getPoints().getCount(PlayerPoints.FINAL_KILLS).increment();
+            if (event.getAttacker() != null)
+                event.getAttacker().getPoints().getCount(PlayerPoints.FINAL_KILLS).increment();
 
-            this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DEATH_ANIMATION_FEATURE, DeathAnimationFeature.class, feature -> {
-                List<Player> players = new ArrayList<>();
-                for (ArenaPlayer arenaPlayer : this.arena.getPlayers()) {
-                    if (arenaPlayer.getUUID().equals(event.getVictim().getUUID())) continue;
-                    players.add(arenaPlayer.getPlayer());
-                }
-                feature.play(event.getVictim().getPlayer(), players);
-                return true;
-            });
-
-            event.getVictim().getPlayer().getInventory().clear();
             event.getVictim().setFinalKilled(true);
-            event.getVictim().getArena().sendMessage(event.getKillMessage());
-
-            // TODO: Make spectator
-
-            boolean bool = true;
-            for (ArenaPlayer arenaPlayer : event.getVictim().getTeam().getPlayers()) {
-                bool = bool && arenaPlayer.isFinalKilled();
-            }
-            if (bool) {
-                TeamEliminateEvent e = new TeamEliminateEvent(this.arena, event.getVictim().getTeam());
-                e.call();
-                e.getTeam().setEliminated(true);
-                if (this.arena.getRemainingTeams().size() <= 1) {
-                    this.arena.end();
-                }
-            }
         } else {
-            event = new PlayerKillEvent(this, this.getLastHitTagged(), this.arena, reason, AdventureMessage.from(this.getTeam().getColor().getMiniCode() + this.getPlayer().getName() + " <gray>died."));
+            event = new PlayerKillEvent(this, killer, this.arena, reason, deathMessage);
             event.call();
 
             if (event.isCancelled()) return;
 
-            event.getVictim().getPoints().getCount(PlayerPoints.DEATH).increment();
             if (event.getAttacker() != null) event.getAttacker().getPoints().getCount(PlayerPoints.KILLS).increment();
-            this.inventoryBackup = InventoryBackup.createBackup(this.getPlayer());
-            // TODO: Make spectator
+            this.inventoryBackup = InventoryData.create(this.getPlayer());
             event.getVictim().getPlayer().getInventory().clear();
-            this.respawning = true;
-            this.plugin.getThreadHandler().submitAsync(new RespawnTask(this.plugin, event.getVictim()));
+        }
+
+        event.getVictim().getPoints().getCount(PlayerPoints.DEATH).increment();
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DEATH_ANIMATION_FEATURE, DeathAnimationFeature.class, feature -> {
+            List<Player> players = new ArrayList<>();
+            for (ArenaPlayer arenaPlayer : this.arena.getPlayers()) {
+                if (arenaPlayer.getUUID().equals(event.getVictim().getUUID())) continue;
+                players.add(arenaPlayer.getPlayer());
+            }
+            feature.play(event.getVictim(), players);
+            return true;
+        });
+        this.hide();
+        event.getVictim().getArena().sendMessage(event.getKillMessage());
+
+        event.getVictim().getPlayer().getInventory().clear();
+        this.arena.getDeathStatistics().put(this, killer, reason);
+
+        if (this.isFinalKilled()) {
+            for (ArenaPlayer arenaPlayer : event.getVictim().getTeam().getPlayers()) {
+                if (!arenaPlayer.isFinalKilled()) {
+                    return;
+                }
+            }
+            TeamEliminateEvent e = new TeamEliminateEvent(this.arena, event.getVictim().getTeam());
+            e.call();
+            e.getTeam().setEliminated(true);
+            if (this.arena.getRemainingTeams().size() <= 1) {
+                this.arena.end();
+            }
         }
     }
 
@@ -162,14 +173,15 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         return Bukkit.getPlayer(this.getUUID());
     }
 
+    public ShopView getShop(String key) {
+        return this.shops.get(Key.of(key));
+    }
+
     @Override
     public void spawn(Location location) {
         SchedulerUtils.runTask(() -> {
             this.getPlayer().setGameMode(GameMode.SURVIVAL);
-            Util.setSpawnInventory(this.getPlayer(), this.team);
-            if (this.inventoryBackup != null) {
-                this.inventoryBackup.applyPermanents(this.getPlayer());
-            }
+            this.respawnItems.applyInventory(this.getPlayer());
             this.getPlayer().teleport(location);
             this.getPlayer().setHealth(20);
         });
@@ -196,21 +208,58 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     }
 
     @Override
-    public ShopView getShopView() {
-        return null;
+    public ResourceStatistics getResourceStatistics() {
+        return resourceStatistics;
+    }
+
+    protected void complete() {
+        // TODO: 28-03-2022 More placeholders
+        Placeholder[] placeholders = new Placeholder[]{
+                PlaceholderEntry.symbol("<player_name>", this.getPlayer().getName()),
+                PlaceholderEntry.symbol("<player_team_name>", this.getTeam().getName()),
+                PlaceholderEntry.symbol("<player_team_color>", String.valueOf(this.getTeam().getColor().getColor().asRGB())),
+        };
+        MainConfiguration.RespawnItemsSection respawnItemsSection = DBedwars.getInstance().getConfigHandler().getMainConfiguration().getRespawnItemsSection();
+        for (String s : respawnItemsSection.getInventory()) {
+            this.respawnItems.addItem(BwItemStack.valueOf(s, placeholders));
+        }
+
+        if (respawnItemsSection.getHelmet() != null) {
+            this.respawnItems.setHelmet(BwItemStack.valueOf(respawnItemsSection.getHelmet(), placeholders));
+        }
+        if (respawnItemsSection.getChestplate() != null) {
+            this.respawnItems.setChestPlate(BwItemStack.valueOf(respawnItemsSection.getChestplate(), placeholders));
+        }
+        if (respawnItemsSection.getLeggings() != null) {
+            this.respawnItems.setLeggings(BwItemStack.valueOf(respawnItemsSection.getLeggings(), placeholders));
+        }
+        if (respawnItemsSection.getBoots() != null) {
+            this.respawnItems.setBoots(BwItemStack.valueOf(respawnItemsSection.getBoots(), placeholders));
+        }
+
+    }
+
+    public InventoryData getRespawnItems() {
+        return respawnItems;
     }
 
     public void initScoreboard(ConfigurableScoreboard cfg) {
         // TODO: add placeholders
-        List<Message> lines = new ArrayList<>();
-        for (String s : cfg.getContent()) {
-            lines.add(ConfigLang.getTranslator().asMessage(s));
-        }
         this.scoreboard = this.plugin.getHookManager().getScoreboardHook().createDynamicScoreboard(
                 this.getPlayer(),
-                ConfigLang.getTranslator().asMessage(cfg.getTitle()),
-                lines,
+                ConfigMessage.from(cfg.getTitle()),
+                Arrays.asList(ConfigMessage.from(cfg.getContent()).splitToLineMessage()),
                 Duration.ofMilliseconds(cfg.getUpdateTick() * 50L));
+    }
+
+    public void addShop(ShopInfoImpl cfg) {
+        this.shops.put(cfg.getKey(), new ShopView(this, cfg));
+    }
+
+    public void startRespawn() {
+        this.respawning = true;
+        this.hide();
+        this.plugin.getThreadHandler().submitAsync(new RespawnTask(this.plugin, this));
     }
 
 }

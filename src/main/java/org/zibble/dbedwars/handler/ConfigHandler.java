@@ -13,10 +13,7 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConfigHandler {
 
@@ -29,11 +26,10 @@ public class ConfigHandler {
     private final Set<ConfigurableTrap> traps;
     private final Set<ConfigurableScoreboard> scoreboards;
     private final Map<String, Json> jsonItem;
-    private final Set<ConfigurableShop> shops;
+    private final Map<String, ConfigurableShop> shops;
+    private final List<ConfigurableNpc> npc;
     private MainConfiguration mainConfiguration;
     private ConfigurableDatabase database;
-    private ConfigurableShop shop;
-    private ConfigurableUpgrade upgrade;
     private ConfigurableCustomItems customItems;
     private ConfigurableHologram holograms;
 
@@ -44,7 +40,8 @@ public class ConfigHandler {
         this.traps = new HashSet<>();
         this.scoreboards = new HashSet<>();
         this.jsonItem = new HashMap<>();
-        this.shops = new HashSet<>();
+        this.shops = new HashMap<>();
+        this.npc = new ArrayList<>();
     }
 
     public void initFiles() {
@@ -104,11 +101,6 @@ public class ConfigHandler {
         this.loadScoreBoards();
         this.database = new ConfigurableDatabase();
         this.database.load(YamlConfiguration.loadConfiguration(PluginFiles.DATABASE));
-        this.shop = new ConfigurableShop();
-        this.shop.load(YamlConfiguration.loadConfiguration(PluginFiles.SHOP));
-        this.upgrade = new ConfigurableUpgrade();
-        this.upgrade.load(YamlConfiguration.loadConfiguration(PluginFiles.UPGRADES));
-        this.plugin.getGameManager().load();
         this.customItems = new ConfigurableCustomItems();
         this.customItems.load(YamlConfiguration.loadConfiguration(PluginFiles.CUSTOM_ITEMS));
         this.holograms = new ConfigurableHologram();
@@ -171,12 +163,20 @@ public class ConfigHandler {
     }
 
     private void loadShops() {
-        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
+        File folder = PluginFiles.Folder.SHOPS;
         for (File file : folder.listFiles()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             ConfigurableShop cfg = new ConfigurableShop();
             cfg.load(config);
-            this.shops.add(cfg);
+            this.shops.put(file.getName().replace(".yml", "").replace(".yaml", ""), cfg);
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(PluginFiles.NPC);
+        for (String key : config.getKeys(false)) {
+            if (!config.isConfigurationSection(key)) continue;
+            ConfigurableNpc npc = new ConfigurableNpc();
+            npc.load(config.getConfigurationSection(key));
+            this.npc.add(npc);
         }
     }
 
@@ -200,7 +200,7 @@ public class ConfigHandler {
         return jsonItem;
     }
 
-    public Set<ConfigurableShop> getShops() {
+    public Map<String, ConfigurableShop> getShops() {
         return shops;
     }
 
@@ -212,12 +212,8 @@ public class ConfigHandler {
         return this.database;
     }
 
-    public ConfigurableShop getShop() {
-        return this.shop;
-    }
-
-    public ConfigurableUpgrade getUpgrade() {
-        return this.upgrade;
+    public List<ConfigurableNpc> getNpc() {
+        return npc;
     }
 
     public ConfigurableCustomItems getCustomItems() {

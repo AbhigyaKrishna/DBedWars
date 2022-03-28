@@ -3,16 +3,19 @@ package org.zibble.dbedwars.game;
 import org.bukkit.World;
 import org.zibble.dbedwars.api.game.ArenaDataHolder;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
-import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
+import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class ArenaDataHolderImpl implements ArenaDataHolder {
 
@@ -28,7 +31,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     private LocationXYZ lobbyCorner2;
 
     private final Map<Color, TeamDataHolderImpl> teams;
-    private final Set<SpawnerDataHolder> spawners;
+    private final Set<SpawnerDataHolderImpl> spawners;
 
     private ArenaDataHolderImpl() {
         this.teams = new EnumMap<>(Color.class);
@@ -148,8 +151,13 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     }
 
     @Override
-    public Set<SpawnerDataHolder> getSpawners() {
+    public Set<SpawnerDataHolderImpl> getSpawners() {
         return spawners;
+    }
+
+    @Override
+    public int getMaxPlayers() {
+        return this.maxPlayersPerTeam * this.teams.size();
     }
 
     public static class TeamDataHolderImpl implements ArenaDataHolder.TeamDataHolder {
@@ -158,7 +166,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private LocationXYZYP spawnLocation;
         private LocationXYZ bed;
 
-        private final Set<ShopDataHolder> shops;
+        private final Set<ShopDataHolderImpl> shops;
         private final Set<SpawnerDataHolderImpl> spawners;
 
         public TeamDataHolderImpl(Color color) {
@@ -194,7 +202,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         }
 
         @Override
-        public Set<ShopDataHolder> getShops() {
+        public Set<ShopDataHolderImpl> getShops() {
             return shops;
         }
 
@@ -261,10 +269,10 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     public static class ShopDataHolderImpl implements ArenaDataHolder.ShopDataHolder {
 
-        private ShopInfo shopType;
+        private ShopInfoImpl shopType;
         private LocationXYZYP location;
 
-        public static ShopDataHolderImpl of(ShopInfo shopType, LocationXYZYP location) {
+        public static ShopDataHolderImpl of(ShopInfoImpl shopType, LocationXYZYP location) {
             ShopDataHolderImpl data = new ShopDataHolderImpl();
             data.shopType = shopType;
             data.location = location;
@@ -274,7 +282,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private ShopDataHolderImpl() {}
 
         @Override
-        public ShopInfo getShopType() {
+        public ShopInfoImpl getShopType() {
             return shopType;
         }
 

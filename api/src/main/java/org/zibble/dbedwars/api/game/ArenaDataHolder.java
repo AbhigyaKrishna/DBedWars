@@ -53,7 +53,9 @@ public interface ArenaDataHolder {
 
     Map<Color, ? extends TeamDataHolder> getTeamData();
 
-    Set<SpawnerDataHolder> getSpawners();
+    Set<? extends SpawnerDataHolder> getSpawners();
+
+    int getMaxPlayers();
 
     interface TeamDataHolder {
 
@@ -63,7 +65,7 @@ public interface ArenaDataHolder {
 
         void setSpawnLocation(LocationXYZYP spawnLocation);
 
-        Set<ShopDataHolder> getShops();
+        Set<? extends ShopDataHolder> getShops();
 
         LocationXYZ getBed();
 

@@ -3,8 +3,10 @@ package org.zibble.dbedwars.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.pepedevs.radium.adventure.MiniMessageUtils;
 import com.pepedevs.radium.utils.math.LocationUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,15 +20,21 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.NBTUtils;
+import org.zibble.dbedwars.api.util.RandomList;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
 import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
+import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.reflection.bukkit.BukkitReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
@@ -63,32 +71,6 @@ public class Util {
         Object item = NMS_ITEM_STACK_GET_ITEM.invoke(nmsItemStack);
         NMS_ITEM_C.invoke(item, stackSize);
         return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, nmsItemStack);
-    }
-
-    public static void setSpawnInventory(Player player, Team team) {
-        BwItemStack helmet = new BwItemStack(XMaterial.LEATHER_HELMET);
-        BwItemStack chestPlate = new BwItemStack(XMaterial.LEATHER_CHESTPLATE);
-        BwItemStack leggings = new BwItemStack(XMaterial.LEATHER_LEGGINGS);
-        BwItemStack boots = new BwItemStack(XMaterial.LEATHER_BOOTS);
-
-        // Helmet
-        ((LeatherArmorMeta) helmet.getMeta()).setColor(team.getColor().getColor());
-
-        // ChestPlate
-        ((LeatherArmorMeta) chestPlate.getMeta()).setColor(team.getColor().getColor());
-
-        // Leggings
-        ((LeatherArmorMeta) leggings.getMeta()).setColor(team.getColor().getColor());
-
-        // Boots
-        ((LeatherArmorMeta) boots.getMeta()).setColor(team.getColor().getColor());
-
-        player.getInventory().setHelmet(helmet.asItemStack(player));
-        player.getInventory().setChestplate(chestPlate.asItemStack(player));
-        player.getInventory().setLeggings(leggings.asItemStack(player));
-        player.getInventory().setBoots(boots.asItemStack(player));
-
-        player.getInventory().setItem(0, new BwItemStack(XMaterial.WOODEN_SWORD).asItemStack(player));
     }
 
     public static Block findBed(Location location, byte x, byte y, byte z) {
@@ -181,10 +163,37 @@ public class Util {
     public static String getConfigCode(Color color) {
         if (ConfigLang.getTranslator() instanceof MiniMessageTranslator) {
             return color.getMiniCode();
-        }else if (ConfigLang.getTranslator() instanceof LegacyTranslator) {
+        } else if (ConfigLang.getTranslator() instanceof LegacyTranslator) {
             return "" + ((LegacyTranslator) ConfigLang.getTranslator()).getCHAR() + color.getChatColor().getChar();
         }
         return null;
+    }
+
+    public static String getChatColor(Message message, Color color) {
+        if (message instanceof ConfigMessage) {
+            return getConfigCode(color);
+        } else if (message instanceof LegacyMessage) {
+            return new String(new char[]{'&', color.getChatColor().getChar()});
+        } else {
+            return color.getMiniCode();
+        }
+    }
+
+    public static <T extends Message> T convertMessage(Message message, T newMessage) {
+        if (newMessage instanceof ConfigMessage) {
+            newMessage.setMessage(ConfigLang.getTranslator().untranslate(message.asComponent()));
+        } else if (newMessage instanceof LegacyMessage) {
+            String[] msg = new String[message.size()];
+            Component[] components = message.asComponent();
+            for (int i = 0; i < message.size(); i++) {
+                msg[i] = Messaging.getInstance().getLegacySerializer().serialize(components[i]);
+            }
+            newMessage.setMessage(msg);
+        } else {
+            newMessage.setMessage(MiniMessageUtils.untranslate(message.asComponent()));
+        }
+        newMessage.addPlaceholders(message.getPlaceholders());
+        return newMessage;
     }
 
     public static Location getRandomPointAround(final Location centre, final int range, final Predicate<Location> constrain) {
@@ -256,6 +265,38 @@ public class Util {
                     && NBTUtils.hasPluginData(itemStack)) amount -= itemStack.getAmount();
         }
         return amount;
+    }
+
+    public static Message getDeathMessage(DeathCause cause, Player player) {
+        switch (cause) {
+            case ATTACK:
+                return ConfigLang.DEATH_MESSAGE_PLAYER_ATTACK.asMessage();
+            case FALL:
+                return player != null ? ConfigLang.DEATH_MESSAGE_FALL_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_FALL_NO_PLAYER.asMessage();
+            case VELOCITY:
+                return player != null ? ConfigLang.DEATH_MESSAGE_VELOCITY_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_VELOCITY_NO_PLAYER.asMessage();
+            case EXPLOSION:
+                return player != null ? ConfigLang.DEATH_MESSAGE_EXPLOSION_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_EXPLOSION_NO_PLAYER.asMessage();
+            case SUFFOCATION:
+                return player != null ? ConfigLang.DEATH_MESSAGE_SUFFOCATION_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_SUFFOCATION_NO_PLAYER.asMessage();
+            case DROWN:
+                return player != null ? ConfigLang.DEATH_MESSAGE_DROWN_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_DROWN_NO_PLAYER.asMessage();
+            case BURNING:
+                return player != null ? ConfigLang.DEATH_MESSAGE_BURNING_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_BURNING_NO_PLAYER.asMessage();
+            case MAGIC:
+                return player != null ? ConfigLang.DEATH_MESSAGE_MAGIC_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_MAGIC_NO_PLAYER.asMessage();
+            case VOID:
+                return player != null ? ConfigLang.DEATH_MESSAGE_VOID_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_VOID_NO_PLAYER.asMessage();
+            case SUICIDE:
+                return ConfigLang.DEATH_MESSAGE_SUICIDE.asMessage();
+            case ENTITY_CRAMMED:
+                return player != null ? ConfigLang.DEATH_MESSAGE_CRAMMING_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_CRAMMING_NO_PLAYER.asMessage();
+            case CRUSHED:
+                return player != null ? ConfigLang.DEATH_MESSAGE_CRUSHED_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_CRUSHED_NO_PLAYER.asMessage();
+            case UNKNOWN:
+            default:
+                return ConfigLang.DEATH_MESSAGE_UNKNOWN_REASON.asMessage();
+        }
     }
 
     static {

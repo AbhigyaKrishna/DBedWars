@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.listeners;
 
-import com.pepedevs.radium.utils.PluginHandler;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
+import org.zibble.dbedwars.api.plugin.PluginHandler;
 
 public class ArenaListener extends PluginHandler {
 
@@ -65,11 +65,6 @@ public class ArenaListener extends PluginHandler {
 
     @Override
     protected boolean isAllowMultipleInstances() {
-        return true;
-    }
-
-    @Override
-    protected boolean isSingleInstanceForAllPlugin() {
         return true;
     }
 

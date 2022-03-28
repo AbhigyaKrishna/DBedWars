@@ -2,27 +2,27 @@ package org.zibble.dbedwars.game.arena;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.PlayerJoinTeamEvent;
 import org.zibble.dbedwars.api.events.PlayerLeaveTeamEvent;
-import org.zibble.dbedwars.api.events.TrapTriggerEvent;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
-import org.zibble.dbedwars.api.game.spawner.DropInfo;
+import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.game.trap.Trap;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.game.arena.traps.TrapEnum;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
+import org.zibble.dbedwars.utils.ConfigurationUtils;
 
 import java.util.*;
 
@@ -30,24 +30,24 @@ public class TeamImpl extends AbstractMessaging implements Team {
 
     private final DBedwars plugin;
     private final Color color;
+    private final Arena arena;
     private LocationXYZ bedLocation;
     private LocationXYZYP spawn;
-    private LocationXYZYP shopNpcLocation;
-    private LocationXYZYP upgradesNpcLocation;
-    private Multimap<DropInfo, LocationXYZ> spawners;
 
-    private Arena arena;
     private boolean bedBroken;
     private boolean eliminated;
     private Set<ArenaPlayer> players;
     private BoundingBox islandArea;
 
+    private Set<BedwarsNPC> npcs;
     private List<Trap> trapQueue;
 
-    public TeamImpl(DBedwars plugin, Color color) {
+    public TeamImpl(DBedwars plugin, Color color, Arena arena) {
         this.plugin = plugin;
         this.color = color;
-        this.spawners = ArrayListMultimap.create();
+        this.arena = arena;
+        this.players = new HashSet<>();
+        this.npcs = new HashSet<>();
         if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled())
             this.trapQueue = new ArrayList<>(this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().getTrapQueueLimit());
         else this.trapQueue = new ArrayList<>();
@@ -83,41 +83,12 @@ public class TeamImpl extends AbstractMessaging implements Team {
         this.spawn = location;
     }
 
-    @Override
-    public void addSpawner(DropInfo dropType, LocationXYZ location) {
-        this.spawners.put(dropType, location);
-    }
-
-    @Override
-    public Multimap<DropInfo, LocationXYZ> getSpawners() {
-        return this.spawners;
-    }
-
-    @Override
-    public LocationXYZYP getShopNpc() {
-        return this.shopNpcLocation;
-    }
-
-    @Override
-    public void setShopNpc(LocationXYZYP location) {
-        this.shopNpcLocation = location;
-    }
-
-    @Override
-    public LocationXYZYP getUpgradesNpc() {
-        return this.upgradesNpcLocation;
-    }
-
-    @Override
-    public void setUpgradesNpc(LocationXYZYP location) {
-        this.upgradesNpcLocation = location;
-    }
-
-    public void init(Arena arena) {
-        this.arena = arena;
-        this.players = new HashSet<>();
+    public void init(ArenaDataHolderImpl.TeamDataHolderImpl teamData) {
         this.bedBroken = false;
         this.eliminated = false;
+        this.setSpawn(teamData.getSpawnLocation());
+        this.setBedLocation(teamData.getBed());
+
         this.islandArea = new BoundingBox(
                         this.spawn.getX() - this.arena.getSettings().getIslandRadius(),
                         this.spawn.getY() - 50,
@@ -125,30 +96,6 @@ public class TeamImpl extends AbstractMessaging implements Team {
                         this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
                         this.spawn.getY() + 50,
                         this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
-
-        List<String> names = new ArrayList<>();
-        for (ArenaPlayer player : this.getPlayers()) {
-            names.add(player.getName());
-        }
-        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                Component.text(this.getColor().getName(), this.getColor().getColorComponent()),
-                null,
-                null,
-                WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
-                WrapperPlayServerTeams.CollisionRule.ALWAYS,
-                this.getColor().getColorComponent(),
-                WrapperPlayServerTeams.OptionData.NONE
-        );
-        WrapperPlayServerTeams teams = new WrapperPlayServerTeams(this.getName(), WrapperPlayServerTeams.TeamMode.CREATE,
-                Optional.of(info), names);
-        for (ArenaPlayer player : this.arena.getPlayers()) {
-            TextComponent nameComponent = Component.text("[", this.getColor().getColorComponent())
-                    .append(ConfigLang.valueOf("COLOR_" + this.getColor().getName()).asMessage().asComponentWithPAPI(player.getPlayer())[0]
-                            .color(this.getColor().getColorComponent()))
-                    .append(Component.text("] ", this.getColor().getColorComponent()));
-            info.setPrefix(nameComponent);
-            PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
-        }
     }
 
     @Override
@@ -163,14 +110,13 @@ public class TeamImpl extends AbstractMessaging implements Team {
 
         if (event.isCancelled()) return;
 
-        player.setTeam(this);
+        player.setTeam(this.getColor());
         this.players.add(player);
     }
 
     @Override
     public void removePlayer(ArenaPlayer player) {
-        PlayerLeaveTeamEvent event =
-                new PlayerLeaveTeamEvent(player.getPlayer(), player, this.arena, this);
+        PlayerLeaveTeamEvent event = new PlayerLeaveTeamEvent(player.getPlayer(), player, this.arena, this);
         event.call();
 
         if (event.isCancelled()) return;
@@ -182,6 +128,19 @@ public class TeamImpl extends AbstractMessaging implements Team {
     @Override
     public Set<ArenaPlayer> getPlayers() {
         return Collections.unmodifiableSet(this.players);
+    }
+
+    @Override
+    public Set<Spawner> getSpawners() {
+        Set<Spawner> spawners = new HashSet<>();
+        for (Spawner spawner : this.arena.getSpawners()) {
+            spawner.getTeam().ifPresent(team -> {
+                if (team.getColor() == this.getColor()) {
+                    spawners.add(spawner);
+                }
+            });
+        }
+        return spawners;
     }
 
     @Override
@@ -222,48 +181,63 @@ public class TeamImpl extends AbstractMessaging implements Team {
         return this.trapQueue;
     }
 
-    public void triggerTrap(TrapEnum.TriggerType trigger, ArenaPlayer target) {
-        if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled()) {
-            for (Trap trap : new LinkedList<>(this.trapQueue)) {
-                if (trap.getTriggerType() == trigger) {
-                    TrapTriggerEvent event = new TrapTriggerEvent(trap, target, this);
-                    event.call();
-
-                    if (event.isCancelled()) return;
-
-                    event.getTrap().trigger(event.getTarget(), event.getTeam());
-                    this.trapQueue.remove(event.getTrap());
-                    break;
-                }
-            }
-        } else {
-            for (Trap trap : new LinkedList<>(this.trapQueue)) {
-                if (trap.getTriggerType() == trigger) {
-                    TrapTriggerEvent event = new TrapTriggerEvent(trap, target, this);
-                    event.call();
-
-                    if (event.isCancelled()) return;
-
-                    event.getTrap().trigger(event.getTarget(), event.getTeam());
-                    this.trapQueue.remove(event.getTrap());
-                }
-            }
+    public void complete(ArenaDataHolderImpl.TeamDataHolderImpl teamData) {
+        this.sendTeamPacket();
+        for (ArenaDataHolderImpl.ShopDataHolderImpl shop : teamData.getShops()) {
+            this.initShop(shop);
+        }
+        for (ArenaPlayer player : this.players) {
+            ((ArenaPlayerImpl) player).complete();
         }
     }
 
-    public void initNpc() {
+    private void sendTeamPacket() {
+        List<String> names = new ArrayList<>();
+        for (ArenaPlayer player : this.getPlayers()) {
+            names.add(player.getName());
+        }
+        WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+                Component.text(this.getColor().getName(), this.getColor().getColorComponent()),
+                null,
+                null,
+                WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
+                WrapperPlayServerTeams.CollisionRule.ALWAYS,
+                this.getColor().getColorComponent(),
+                WrapperPlayServerTeams.OptionData.NONE
+        );
+        WrapperPlayServerTeams teams = new WrapperPlayServerTeams(this.getName(), WrapperPlayServerTeams.TeamMode.CREATE,
+                Optional.of(info), names);
+        for (ArenaPlayer player : this.arena.getPlayers()) {
+            TextComponent nameComponent = Component.text("[", this.getColor().getColorComponent())
+                    .append(ConfigLang.valueOf("COLOR_" + this.getColor().getName()).asMessage().asComponentWithPAPI(player.getPlayer())[0]
+                            .color(this.getColor().getColorComponent()))
+                    .append(Component.text("] ", this.getColor().getColorComponent()));
+            info.setPrefix(nameComponent);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player.getPlayer(), teams);
+        }
+    }
 
+    private void initShop(ArenaDataHolderImpl.ShopDataHolderImpl shopData) {
+        for (ArenaPlayer player : this.players) {
+            ((ArenaPlayerImpl) player).addShop(shopData.getShopType());
+        }
+
+        ConfigurableNpc cfg = null;
+        for (ConfigurableNpc npc : this.plugin.getConfigHandler().getNpc()) {
+            if (shopData.getShopType().getKey().get().equals(npc.getShop())) {
+                cfg = npc;
+                break;
+            }
+        }
+        
+        if (cfg == null) return;
+
+        BedwarsNPC npc = ConfigurationUtils.createNpc(shopData.getLocation().toBukkit(this.arena.getWorld()), cfg);
+        npc.spawn();
+        this.npcs.add(npc);
     }
 
     public void clearCache() {
-        this.spawners.clear();
-        this.arena = null;
-        this.players = null;
-        this.islandArea = null;
-        //        this.plugin.getNpcHandler().removeNPC(this.shopNpc.getEntityId());
-        //        this.shopNpc = null;
-        //        this.plugin.getNpcHandler().removeNPC(this.upgradesNpc.getEntityId());
-        //        this.upgradesNpc = null;
         this.trapQueue.clear();
     }
 
@@ -272,22 +246,4 @@ public class TeamImpl extends AbstractMessaging implements Team {
         return new ArrayList<>(this.players);
     }
 
-    @Override
-    public String toString() {
-        return "Team{" +
-                "plugin=" + plugin +
-                ", color=" + color +
-                ", bedLocation=" + bedLocation +
-                ", spawn=" + spawn +
-                ", shopNpcLocation=" + shopNpcLocation +
-                ", upgradesNpcLocation=" + upgradesNpcLocation +
-                ", spawners=" + spawners +
-                ", arena=" + arena +
-                ", bedBroken=" + bedBroken +
-                ", eliminated=" + eliminated +
-                ", players=" + players +
-                ", islandArea=" + islandArea +
-                ", trapQueue=" + trapQueue +
-                '}';
-    }
 }

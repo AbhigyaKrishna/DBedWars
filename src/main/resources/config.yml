@@ -22,6 +22,15 @@ arena:
 
   disable-hunger: true
 
+# Respawning
+respawn-items:
+  inventory:
+    - 'wooden_sword'
+  helmet: 'json::armor.helmet'
+  chestplate: 'json::armor.chestplate'
+  leggings: 'json::armor.leggings'
+  boots: 'json::armor.boots'
+
 # Traps
 
 traps:

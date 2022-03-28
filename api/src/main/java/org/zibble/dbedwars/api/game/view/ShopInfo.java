@@ -8,7 +8,6 @@ import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.Keyed;
 
 import java.util.Map;
-import java.util.function.Function;
 
 public interface ShopInfo extends Keyed<String> {
 

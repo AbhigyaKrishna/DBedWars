@@ -2,6 +2,8 @@ package org.zibble.dbedwars.features;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 
 import java.util.Collection;
 
@@ -14,8 +16,8 @@ public class DeathAnimationFeature extends org.zibble.dbedwars.api.feature.custo
     }
 
     @Override
-    public void play(Player player, Collection<Player> viewers) {
-        this.plugin.getNMSAdaptor().sendDeathAnimation(player, viewers);
+    public void play(ArenaPlayer player, Collection<Player> viewers) {
+        ((ArenaPlayerImpl) player).getVanishPlayer().vanishWithDeathAnimation(viewers.toArray(new Player[0]));
     }
 
     @Override

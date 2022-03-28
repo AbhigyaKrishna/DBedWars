@@ -9,7 +9,7 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import java.util.Collection;
 import java.util.List;
 
-public class LegacyTranslator implements ConfigTranslator{
+public class LegacyTranslator implements ConfigTranslator {
 
     private final char CHAR;
 

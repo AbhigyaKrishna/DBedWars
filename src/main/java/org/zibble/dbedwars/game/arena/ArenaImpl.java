@@ -1,20 +1,25 @@
 package org.zibble.dbedwars.game.arena;
 
-import org.bukkit.Material;
+import com.cryptomorin.xseries.XBlock;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.events.ArenaStartEvent;
-import org.zibble.dbedwars.api.events.BedDestroyEvent;
-import org.zibble.dbedwars.api.events.PlayerJoinArenaLobbyEvent;
+import org.zibble.dbedwars.api.events.*;
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.game.*;
+import org.zibble.dbedwars.api.game.Arena;
+import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.game.ArenaStatus;
+import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
-import org.zibble.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
-import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
+import org.zibble.dbedwars.api.game.statistics.BedBrokenStatistics;
+import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
@@ -24,6 +29,7 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.TeamAssigner;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
+import org.zibble.dbedwars.game.arena.spawner.SpawnerImpl;
 import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
@@ -33,8 +39,6 @@ import org.zibble.dbedwars.utils.gamerule.GameRuleType;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 public class ArenaImpl extends AbstractMessaging implements Arena {
 
@@ -50,14 +54,15 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
     private World world;
     private Instant startTime;
-    private UpdatingScoreboard scoreboard;
-    private ArenaListener arenaHandler;
-    private GameListener gameHandler;
-    private List<Spawner> spawners;
-    private Set<Team> teams;
-    private Set<ArenaPlayer> players;
-    private List<ArenaSpectator> spectators;
-    private Map<ArenaPlayer, KickReason> removed;
+    private final ArenaListener arenaHandler;
+    private final GameListener gameHandler;
+    private final List<Spawner> spawners;
+    private final Set<TeamImpl> teams;
+    private final Set<ArenaPlayerImpl> players;
+    private final List<ArenaSpectatorImpl> spectators;
+    private final Map<ArenaPlayerImpl, KickReason> removed;
+    private final DeathStatistics deathStatistics;
+    private final BedBrokenStatistics bedBrokenStatistics;
 
     public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder) {
         this(plugin, name, dataHolder, new ArenaSettingsImpl());
@@ -76,11 +81,18 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.removed = new HashMap<>(0);
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);
+        this.deathStatistics = new DeathStatistics(this);
+        this.bedBrokenStatistics = new BedBrokenStatistics(this);
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getGameId() {
+        return this.world.getName();
     }
 
     @Override
@@ -134,8 +146,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
-    public Team getTeam(Color color) {
-        for (Team team : teams) {
+    public TeamImpl getTeam(Color color) {
+        for (TeamImpl team : teams) {
             if (team.getColor().equals(color)) {
                 return team;
             }
@@ -144,12 +156,12 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
-    public Set<Team> getTeams() {
+    public Set<TeamImpl> getTeams() {
         return Collections.unmodifiableSet(this.teams);
     }
 
     @Override
-    public List<ArenaSpectator> getSpectators() {
+    public List<ArenaSpectatorImpl> getSpectators() {
         return Collections.unmodifiableList(this.spectators);
     }
 
@@ -196,12 +208,29 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
-    public boolean start() {
+    public boolean isSleeping() {
+        return this.status == ArenaStatus.SLEEPING;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return this.status == ArenaStatus.RUNNING;
+    }
+
+    @Override
+    public boolean start(boolean force) {
+        if (!force && this.players.size() < this.getDataHolder().getMinPlayersToStart()) {
+            return false;
+        }
+
+        for (Map.Entry<Color, ArenaDataHolderImpl.TeamDataHolderImpl> entry : this.getDataHolder().getTeamData().entrySet()) {
+            TeamImpl team = new TeamImpl(this.plugin, entry.getKey(), this);
+            team.init(entry.getValue());
+            this.teams.add(team);
+        }
+
         TeamAssigner ta = new TeamAssigner(this);
         ta.assign();
-        for (ArenaPlayer player : this.players) {
-            this.teams.add(player.getTeam());
-        }
 
         ArenaStartEvent event = new ArenaStartEvent(this);
         event.call();
@@ -211,93 +240,200 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.gameHandler.register();
         this.arenaHandler.unregister();
 
+        for (ArenaPlayerImpl player : this.players) {
+            player.initScoreboard(null); // FIXME: 26-03-2022 
+        }
 
-        return false;
+        this.teams.removeIf(team -> {
+            boolean empty = team.getPlayers().isEmpty();
+            team.clearCache();
+            return empty;
+        });
+
+        for (TeamImpl team : this.teams) {
+            ArenaDataHolderImpl.TeamDataHolderImpl teamData = this.getDataHolder().getTeamData().get(team.getColor());
+            for (ArenaDataHolderImpl.SpawnerDataHolderImpl spawnerData : teamData.getSpawners()) {
+                SpawnerImpl spawner = new SpawnerImpl(this.plugin, spawnerData.getDropType(), this, team);
+                spawner.init(spawnerData.getLocation().toBukkit(this.world), 1);
+                this.spawners.add(spawner);
+            }
+            team.complete(teamData);
+        }
+
+        this.startTime = Instant.now();
+
+        return true;
     }
 
     @Override
     public boolean end() {
-        return false;
+        if (!this.checkState(ArenaStatus.RUNNING)) {
+            return false;
+        }
+
+        List<ArenaPlayerImpl> list = new ArrayList<>(this.players);
+        list.removeIf(ArenaPlayerImpl::isFinalKilled);
+
+        ArenaEndEvent event = new ArenaEndEvent(this, list);
+        event.call();
+
+        if (event.isCancelled()) return false;
+
+        this.status = ArenaStatus.ENDING;
+        return true;
     }
 
     @Override
-    public void joinGame(Player player) {
-        ArenaPlayer aPlayer = new ArenaPlayerImpl(this.plugin, player, this);
-        this.joinGame(aPlayer);
-    }
+    public boolean joinGame(Player player) {
+        if (!this.checkState(ArenaStatus.IDLING, ArenaStatus.WAITING, ArenaStatus.SLEEPING, ArenaStatus.STARTING))
+            throw new IllegalStateException("Cannot join arena in state " + this.status);
 
-    @Override
-    public void joinGame(ArenaPlayer player) {
-        PlaceholderEntry[] joinLeavePlaceholders = new PlaceholderEntry[]{
-                PlaceholderEntry.symbol("player_name", player.getName()),
-                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
-                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam()))
-        };
+        for (ArenaPlayerImpl arenaPlayer : this.players) {
+            if (arenaPlayer.getUUID().equals(player.getUniqueId())) {
+                return false;
+            }
+        }
 
         Message message = ConfigLang.ARENA_JOIN_MESSAGE.asMessage();
-        message.addPlaceholders(joinLeavePlaceholders);
+        message.addPlaceholders(this.getJoinPlaceholders(player));
 
-        PlayerJoinArenaLobbyEvent event = new PlayerJoinArenaLobbyEvent(
-                player.getPlayer(),
-                this,
-                this.getDataHolder().getWaitingLocation().toBukkit(this.world),
-                message);
+        PlayerJoinArenaLobbyEvent event = new PlayerJoinArenaLobbyEvent(player, this, this.getDataHolder().getWaitingLocation().toBukkit(this.world), message);
 
         event.call();
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) return false;
 
-        this.players.add(player);
-        player.teleport(event.getLocation());
+        if (this.players.size() >= this.getDataHolder().getMaxPlayers()) {
+            return false;
+        }
 
-        if (event.getArena().getStatus() == ArenaStatus.IDLING)
-            event.getArena().setStatus(ArenaStatus.WAITING);
+        ArenaPlayerImpl arenaPlayer = new ArenaPlayerImpl(this.plugin, player, this);
+        this.players.add(arenaPlayer);
+        arenaPlayer.teleport(event.getLocation());
 
-        event.getArena().sendMessage(event.getJoinMessage());
+        this.sendMessage(event.getJoinMessage());
+
+        if (this.getStatus() == ArenaStatus.IDLING)
+            this.setStatus(ArenaStatus.WAITING);
 
         if (event.getArena().getPlayers().size() >= event.getArena().getDataHolder().getMinPlayersToStart()
                 && event.getArena().getStatus() != ArenaStatus.STARTING) {
             this.plugin.getGameManager().startArenaSequence(event.getArena());
         }
+
+        return true;
     }
 
     @Override
-    public void joinGame(Player player, Team team) {
-
-    }
-
-    @Override
-    public void joinGame(ArenaPlayer player, Team team) {
-
-    }
-
-    @Override
-    public boolean kickPlayer(ArenaPlayer player) {
+    public boolean joinGame(Player player, Color team) {
+        if (this.joinGame(player)) {
+            this.getAsArenaPlayer(player).get().setTeam(team);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public boolean kickPlayer(ArenaPlayer player, KickReason reason) {
-        return false;
+    public boolean rejoinGame(Player player) {
+        if (!this.checkState(ArenaStatus.RUNNING))
+            throw new IllegalStateException("Cannot join arena in state " + this.status);
+
+        for (ArenaPlayerImpl arenaPlayer : this.players) {
+            if (arenaPlayer.getUUID().equals(player.getUniqueId())) {
+                return false;
+            }
+        }
+
+        ArenaPlayerImpl p = null;
+        for (ArenaPlayerImpl arenaPlayer : this.removed.keySet()) {
+            if (arenaPlayer.getUUID().equals(player.getUniqueId())) {
+                p = arenaPlayer;
+                break;
+            }
+        }
+        if (p == null)
+            return false;
+
+        this.removed.remove(p);
+
+        Message message = ConfigLang.REJOIN_BROADCAST_MESSAGE.asMessage();
+        message.addPlaceholders(this.getJoinPlaceholders(player));
+
+        PlayerRejoinArenaEvent event = new PlayerRejoinArenaEvent(player, this, this.getDataHolder().getSpectatorLocation().toBukkit(this.world), message);
+
+        event.call();
+        if (event.isCancelled()) return false;
+
+        p.teleport(event.getLocation());
+        p.startRespawn();
+
+        this.sendMessage(event.getJoinMessage());
+
+        return true;
     }
 
     @Override
-    public void kickAllPlayers() {
+    public boolean spectateGame(Player player) {
+        if (!this.checkState(ArenaStatus.RUNNING))
+            throw new IllegalStateException("Cannot join arena in state " + this.status);
 
+        for (ArenaPlayerImpl arenaPlayer : this.players) {
+            if (arenaPlayer.getUUID().equals(player.getUniqueId())) {
+                return false;
+            }
+        }
+
+        for (ArenaSpectatorImpl spectator : this.spectators) {
+            if (spectator.getUUID().equals(player.getUniqueId())) {
+                return false;
+            }
+        }
+
+        PlayerSpectateArenaEvent event = new PlayerSpectateArenaEvent(player, this, this.getDataHolder().getSpectatorLocation().toBukkit(this.world));
+
+        event.call();
+        if (event.isCancelled()) return false;
+
+        ArenaSpectatorImpl arenaSpectator = new ArenaSpectatorImpl(player, this, true);
+        this.spectators.add(arenaSpectator);
+
+        return true;
+    }
+
+    @Override
+    public boolean kickPlayer(Player player, KickReason reason) {
+        if (!this.isArenaPlayer(player)) return false;
+        ArenaPlayerImpl arenaPlayer = this.getAsArenaPlayer(player).get();
+        this.players.remove(arenaPlayer);
+        this.removed.put(arenaPlayer, reason);
+
+        // TODO: 27-03-2022 event and msg
+        return true;
     }
 
     @Override
     public void kickAllPlayers(KickReason reason) {
+        for (ArenaPlayerImpl player : this.players) {
+            this.players.remove(player);
+            this.removed.put(player, reason);
+        }
+    }
+
+    @Override
+    public void removeSpectator(Player spectator) {
 
     }
 
     @Override
-    public Block setBlock(LocationXYZ location, Material material) {
-        return null;
+    public Block setBlock(LocationXYZ location, XMaterial material) {
+        return this.setBlock(this.world.getBlockAt(location.toBukkit(this.world)), material);
     }
 
     @Override
-    public Block setBlock(Block block, Material material) {
-        return null;
+    public Block setBlock(Block block, XMaterial material) {
+        if (!material.isSupported()) return block;
+        XBlock.setType(block, material);
+        block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.getName()));
+        return block;
     }
 
     @Override
@@ -307,30 +443,25 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
     @Override
     public Duration getRunningTime() {
-        return Duration.of(TimeUnit.MILLISECONDS, Instant.now().toEpochMilli() - this.startTime.toEpochMilli());
+        return Duration.ofMilliseconds(Instant.now().toEpochMilli() - this.startTime.toEpochMilli());
     }
 
     @Override
-    public boolean isSleeping() {
-        return this.status == ArenaStatus.SLEEPING;
-    }
-
-    @Override
-    public Set<Team> getRemainingTeams() {
-        Set<Team> remainingTeams = new HashSet<>(this.teams);
-        remainingTeams.removeIf(Team::isEliminated);
+    public Set<TeamImpl> getRemainingTeams() {
+        Set<TeamImpl> remainingTeams = new HashSet<>(this.teams);
+        remainingTeams.removeIf(TeamImpl::isEliminated);
         return remainingTeams;
     }
 
     @Override
-    public Set<ArenaPlayer> getPlayers() {
+    public Set<ArenaPlayerImpl> getPlayers() {
         return Collections.unmodifiableSet(this.players);
     }
 
     @Override
-    public Optional<ArenaPlayer> getAsArenaPlayer(Player player) {
-        for (ArenaPlayer arenaPlayer : this.players) {
-            if (arenaPlayer.getPlayer().equals(player)) return Optional.of(arenaPlayer);
+    public Optional<ArenaPlayerImpl> getAsArenaPlayer(Player player) {
+        for (ArenaPlayerImpl arenaPlayer : this.players) {
+            if (arenaPlayer.getUUID().equals(player.getUniqueId())) return Optional.of(arenaPlayer);
         }
         return Optional.empty();
     }
@@ -370,14 +501,20 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         bed.breakNaturally();
         event.getAffectedTeam().setBedBroken(true);
         event.getDestroyer().getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS).increment();
+        this.bedBrokenStatistics.add(event.getDestroyer(), event.getAffectedTeam());
         // TODO: Add more effect
-        this.sendMessage(event.getBedBrokenMessages(), new Predicate<MessagingMember>() {
-            @Override
-            public boolean test(MessagingMember member) {
-                return ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam());
-            }
-        });
+        this.sendMessage(event.getBedBrokenMessages(), member -> ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam()));
         event.getAffectedTeam().sendMessage(event.getBedBrokenMessages());
+    }
+
+    @Override
+    public DeathStatistics getDeathStatistics() {
+        return this.deathStatistics;
+    }
+
+    @Override
+    public BedBrokenStatistics getBedBrokenStatistics() {
+        return this.bedBrokenStatistics;
     }
 
     @Override
@@ -386,11 +523,27 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
-    public Collection<MessagingMember> getMembers() {
+    protected Collection<MessagingMember> getMembers() {
         Collection<MessagingMember> members = new ArrayList<>();
         members.addAll(this.players);
         members.addAll(this.spectators);
         return members;
+    }
+
+    boolean checkState(ArenaStatus... whitelisted) {
+        for (ArenaStatus arenaStatus : whitelisted) {
+            if (this.status == arenaStatus)
+                return true;
+        }
+        return false;
+    }
+
+    Placeholder[] getJoinPlaceholders(Player player) {
+        return new PlaceholderEntry[]{
+                PlaceholderEntry.symbol("player_name", player.getName()),
+                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam()))
+        };
     }
 
 }

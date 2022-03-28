@@ -35,10 +35,9 @@ public class PluginFiles {
     public static final File ITEM_SPAWNERS = new File(Folder.PLUGIN_DATA_FOLDER, "itemspawner.yml");
     public static final File TRAPS = new File(Folder.PLUGIN_DATA_FOLDER, "traps.yml");
     public static final File CUSTOM_ITEMS = new File(Folder.PLUGIN_DATA_FOLDER, "custom-items.yml");
-    public static final File SHOP = new File(Folder.PLUGIN_DATA_FOLDER, "shop.yml");
-    public static final File UPGRADES = new File(Folder.PLUGIN_DATA_FOLDER, "upgrades.yml");
     public static final File HOLOGRAM = new File(Folder.PLUGIN_DATA_FOLDER, "hologram.yml");
     public static final File SCOREBOARD = new File(Folder.PLUGIN_DATA_FOLDER, "scoreboard.yml");
+    public static final File NPC = new File(Folder.PLUGIN_DATA_FOLDER, "npc.yml");
 
     /* Database */
     public static final File DATABASE = new File(Folder.PLUGIN_DATA_FOLDER, "database.yml");
@@ -77,11 +76,10 @@ public class PluginFiles {
             CONFIG,
             ITEM_SPAWNERS,
             TRAPS,
-            SHOP,
-            UPGRADES,
             CUSTOM_ITEMS,
             HOLOGRAM,
             SCOREBOARD,
+            NPC,
             DATABASE
         };
     }

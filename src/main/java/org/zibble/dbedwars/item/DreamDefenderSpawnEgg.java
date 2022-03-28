@@ -26,8 +26,7 @@ import java.util.Optional;
 
 public class DreamDefenderSpawnEgg extends BedWarsActionItem {
 
-    public static final FixedMetadataValue DREAM_DEFENDER_SPAWN_EGG_META =
-            new FixedMetadataValue(DBedwars.getInstance(), true);
+    public static final FixedMetadataValue DREAM_DEFENDER_SPAWN_EGG_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableDreamDefender cfgGolem;
 
@@ -45,7 +44,7 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
         if (playerInteractEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
         if (arena == null) return;
-        Optional<ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         //TODO USELESS SPECTATOR CHECK

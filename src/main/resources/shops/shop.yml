@@ -1,3 +1,4 @@
+name: 'shop'
 default-page: 'page-1'
 pages:
   page-1:

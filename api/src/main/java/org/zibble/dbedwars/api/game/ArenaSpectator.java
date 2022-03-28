@@ -29,4 +29,8 @@ public interface ArenaSpectator extends PlayerMember {
 
     GameMode getGameMode();
 
+    void hide();
+
+    void show();
+
 }

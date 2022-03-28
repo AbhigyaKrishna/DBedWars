@@ -1,46 +1,39 @@
 package org.zibble.dbedwars.utils;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.pepedevs.radium.utils.StringUtils;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
-import org.zibble.dbedwars.api.game.view.AttributeType;
+import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.objects.profile.Property;
+import org.zibble.dbedwars.api.objects.profile.Skin;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.json.JSONBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
+import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
+import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
+import org.zibble.dbedwars.game.arena.view.ShopView;
+import org.zibble.dbedwars.io.GameProfileFetcher;
+import org.zibble.dbedwars.io.MineSkinAPI;
+import org.zibble.dbedwars.io.UUIDFetcher;
+import org.zibble.dbedwars.io.UUIDTypeAdaptor;
+import org.zibble.dbedwars.script.action.ActionPreProcessor;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 
 public class ConfigurationUtils {
-
-    public static BwItemStack parseItem(String str) {
-        String[] s = str.split(":");
-        BwItemStack item = new BwItemStack(XMaterial.matchXMaterial(s[0]).get().parseMaterial());
-        if (s.length == 2) {
-            try {
-                item.setData(Short.parseShort(s[1]));
-            } catch (NumberFormatException ignored) {
-            }
-        }
-
-        return item;
-    }
-
-    public static String parseMessage(String str) {
-        return StringUtils.translateAlternateColorCodes(str);
-        // TODO: Parse Placeholders
-    }
-
-    public static String parsePlaceholder(String str, Player player) {
-        return str;
-    }
 
     public static String serializeSpawner(DropInfo drop, LocationXYZ location) {
         return drop.getKey().get() + "#" + location.toString();
@@ -72,44 +65,6 @@ public class ConfigurationUtils {
         return BwItemStack.valueOf(s);
     }
 
-    public static Set<ItemStack> parseCost(String s) {
-        Set<ItemStack> items = new HashSet<>();
-        String[] split = s.split(",");
-        for (String str : split) {
-            if (!str.contains(":")) continue;
-
-            String[] t = str.split(":");
-            int num;
-            try {
-                num = Integer.parseInt(t[0]);
-            } catch (NumberFormatException e) {
-                DBedwars.getInstance()
-                        .getLogger()
-                        .warning("Cost `" + s + "` is not in right format! Skipping it!");
-                continue;
-            }
-            Optional<XMaterial> xm =
-                    XMaterial.matchXMaterial(t.length > 2 ? t[1] + ":" + t[2] : t[1]);
-            xm.ifPresent(
-                    xMaterial -> {
-                        ItemStack i = xMaterial.parseItem();
-                        i.setAmount(num);
-                        items.add(i);
-                    });
-        }
-
-        return items;
-    }
-
-    public static Set<AttributeType> getAttributeTypes(String s) {
-        Set<AttributeType> attributes = new HashSet<>();
-        for (String str : s.split(",")) {
-            AttributeType type = EnumUtil.matchEnum(str, AttributeType.VALUES);
-            if (type != null) attributes.add(type);
-        }
-        return attributes;
-    }
-
     public static Json createJson(ConfigurationSection section) {
         JSONBuilder builder = new JSONBuilder();
         for (String key : section.getKeys(false)) {
@@ -121,5 +76,91 @@ public class ConfigurationUtils {
         }
 
         return builder.toJson();
+    }
+
+    public static BedwarsNPC createNpc(Location location, ConfigurableNpc config) {
+        BedwarsNPC npc;
+        if (config.getType().equalsIgnoreCase("player")) {
+            npc = DBedwars.getInstance().getHookManager().getNpcFactory().createPlayerNPC(location);
+            if (config.getTexture() != null) {
+                ConfigurableNpc.ConfigurableTexture texture = config.getTexture();
+                ActionFuture<Skin> skin = null;
+                if (texture.getOwner() != null) {
+                    if (texture.getOwner().length() == 32) {
+                        skin = ActionFuture.supplyAsync(() -> {
+                            Skin s = null;
+                            for (Property property : GameProfileFetcher.getInstance().fetch(UUIDTypeAdaptor.fromString(texture.getOwner())).getProperties()) {
+                                if (property.getName().equals("textures")) {
+                                    s = Skin.from(property.getValue(), property.getSignature());
+                                    break;
+                                }
+                            }
+                            return s;
+                        });
+                    } else if (texture.getOwner().length() == 36) {
+                        skin = ActionFuture.supplyAsync(() -> {
+                            Skin s = null;
+                            for (Property property : GameProfileFetcher.getInstance().fetch(UUID.fromString(texture.getOwner())).getProperties()) {
+                                if (property.getName().equals("textures")) {
+                                    s = Skin.from(property.getValue(), property.getSignature());
+                                    break;
+                                }
+                            }
+                            return s;
+                        });
+                    } else {
+                        skin = ActionFuture.supplyAsync(() -> {
+                            Skin s = null;
+                            for (Property property : GameProfileFetcher.getInstance().fetch(UUIDFetcher.getInstance().getUUID(texture.getOwner())).getProperties()) {
+                                if (property.getName().equals("textures")) {
+                                    s = Skin.from(property.getValue(), property.getSignature());
+                                    break;
+                                }
+                            }
+                            return s;
+                        });
+                    }
+                } else if (texture.getValue() != null) {
+                    skin = ActionFuture.supplyAsync(() -> Skin.from(texture.getValue(), texture.getSignature()));
+                } else if (texture.getMineskin() != null) {
+                    skin = ActionFuture.supplyAsync(() -> MineSkinAPI.getInstance().getSkin(texture.getMineskin()));
+                }
+
+                if (skin != null) {
+                    ((PlayerNPC) npc).setSkin(skin.thenApply(s -> s == null ? Skin.empty() : s));
+                }
+            }
+        } else {
+            EntityType type = EnumUtil.matchEnum(config.getType(), EntityType.values());
+            if (type == null) {
+                throw new IllegalArgumentException("No match for npc type " + config.getType() + " found!");
+            }
+            npc = DBedwars.getInstance().getHookManager().getNpcFactory().createEntityNPC(location, type);
+        }
+
+        HologramPage page = npc.getNameHologram().getHologramPages().get(0);
+        for (ConfigMessage message : ConfigMessage.from(config.getName()).splitToLineMessage()) {
+            page.addNewTextLine(message);
+        }
+
+        if (config.getShop() != null) {
+            npc.addClickAction((player, clickType) -> DBedwars.getInstance().getGameManager().getArenaPlayer(player).ifPresent(arenaPlayer -> {
+                ShopView shop = ((ArenaPlayerImpl) arenaPlayer).getShop(config.getShop());
+                if (shop != null) {
+                    shop.getGui().open(shop.getDefaultPage().getKey());
+                }
+            }));
+        }
+
+        if (config.getActions() != null && !config.getActions().isEmpty()) {
+            npc.addClickAction((player, clickType) -> {
+                for (String action : config.getActions()) {
+                    ActionPreProcessor.process(action, ScriptVariable.of("player", player),
+                            ScriptVariable.of("clicktype", clickType)).execute();
+                }
+            });
+        }
+
+        return npc;
     }
 }

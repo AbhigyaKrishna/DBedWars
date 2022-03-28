@@ -70,7 +70,6 @@ public enum ConfigLang implements Lang {
     CANNOT_BREAK_OWN_BED("gameplay.ingame.cannot-break-own-bed","<red>You cannot destroy your own bed!"),
     CANNOT_BREAK_MAP_BLOCKS("gameplay.ingame.cannot-break-map-blocks","<red>You cannot break blocks which are not placed by players!"),
     /* Game - Postgame*/
-    FINAL_KILL_MESSAGE("gameplay.postgame.final-kill", "<victim_team_color><player_name> <gray>died. <aqua><bold>FINAL KILL!"),
     GAME_END_MESSAGE("gameplay.postgame.game-end-message","<team_color><player_name> <green>has won the game"),
     GAME_END_BROADCAST("gameplay.postgame.game-end-top-stats-broadcast",
             "<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
@@ -83,38 +82,27 @@ public enum ConfigLang implements Lang {
                     ,"<yellow>                          <bold>3rd Killer<gray> - <third_killer_name> - <third_killer_kill>"
                     ,"<green><bold>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
     ),
-    GAME_START_COUNTDOWN("game-start-count-down",
-            "[TITLE][DELAY = 0s]<yellow>❺",
-            "[MESSAGE][DELAY = 0s]<yellow>The game starts in <gold><countdown> <yellow>seconds!",
-            "[SOUND][DELAY = 0s]block.note_block.bell",
-            "[TITLE][DELAY = 1s]<yellow>❹",
-            "[MESSAGE][DELAY = 1s]<yellow>The game starts in <gold><countdown> <yellow>seconds!",
-            "[SOUND][DELAY = 1s]block.note_block.bell",
-            "[TITLE][DELAY = 2s]<red>❸",
-            "[MESSAGE][DELAY = 2s]<red>The game starts in <gold><countdown> <red>seconds!",
-            "[SOUND][DELAY = 2s]block.note_block.bell",
-            "[TITLE][DELAY = 3s]<red>❷",
-            "[MESSAGE][DELAY = 3s]<red>The game starts in <gold><countdown> <red>seconds!",
-            "[SOUND][DELAY = 3s]block.note_block.bell",
-            "[TITLE][DELAY = 4s]<red>❶",
-            "[MESSAGE][DELAY = 4s]<red>The game starts in <gold><countdown> <red>seconds!",
-            "[SOUND][DELAY = 4s]block.note_block.bell"
-    ),
+
+    FINAL_KILL("final-kill", "<aqua><bold>FINAL KILL"),
 
     /*
     Death messages
      */
     DEATH_MESSAGE_PLAYER_ATTACK("death-messages.player-attack","<victim_color><victim_player> <white>was terrible in pvp compared to <attacker_color><attacker_player><white>."),
-    DEATH_MESSAGE_UNKNOWN_REASON("death-messages.unknown-reason","<victim_color><victim_player> <white>died somehow but i guess we will never know how."),
-    //Fall-death
+    DEATH_MESSAGE_UNKNOWN_REASON("death-messages.unknown","<victim_color><victim_player> <white>died somehow but i guess we will never know how."),
+    DEATH_MESSAGE_SUICIDE("death-messages.suicide", "<victim_color><victim_player> <white>was pressurised by the society so he killed himself."),
+    //Fall Death
     DEATH_MESSAGE_FALL_BY_PLAYER("death-messages.fall-death.by-player","<victim_color><victim_player> <white>was thrown into the sky by<attacker_color><attacker_player><white>and died."),
     DEATH_MESSAGE_FALL_NO_PLAYER("death-messages.fall-death.no-player","<victim_color><victim_player> <white>tried to fly like a bird but died of fall damage finally<white>."),
-    //Velocity-death
+    //Velocity Death
     DEATH_MESSAGE_VELOCITY_BY_PLAYER("death-messages.velocity-death.by-player","<victim_color><victim_player> <white>tried to become flash but could not handle the speed and smashed into a wall"),
     DEATH_MESSAGE_VELOCITY_NO_PLAYER("death-messages.velocity-death.no-player","<victim_color><victim_player> <white>was given enormous power of speed by<attacker_color><attacker_player><white>but couldn't handle it and died."),
     //Explosion Death
     DEATH_MESSAGE_EXPLOSION_BY_PLAYER("death-messages.explosion-death.by-player","<victim_color><victim_player> <white> exploded into million pieces by <attacker_color><attacker_player><white>but couldn't handle it and died."),
     DEATH_MESSAGE_EXPLOSION_NO_PLAYER("death-messages.explosion-death.no-player","<victim_color><victim_player> <white> exploded into million pieces."),
+    //Suffocation Death
+    DEATH_MESSAGE_SUFFOCATION_BY_PLAYER("death-messages.suffocation-death.by-player", "<victim_color><victim_player> <white>was suffocated as there was no oxygen left due to pollution caused by <attacker_color><attacker_player><white>."),
+    DEATH_MESSAGE_SUFFOCATION_NO_PLAYER("death-messages.suffocation-death.no-player", "<victim_color><victim_player> <white>was suffocated as there was no oxygen left due to pollution."),
     //Drown Death
     DEATH_MESSAGE_DROWN_BY_PLAYER("death-messages.drown-death.by-player","<victim_color><victim_player> <white>died because of <attacker_color><attacker_player><white> using up all the oxygen"),
     DEATH_MESSAGE_DROWN_NO_PLAYER("death-messages.drown-death.no-player","<victim_color><victim_player> <white>died by drowning himself cause he thought he can breath underwater like a fish"),

@@ -29,12 +29,7 @@ public abstract class Message implements Cloneable {
     }
 
     public String getMessage() {
-        StringBuilder messageBuilder = new StringBuilder();
-        for (int i = 0; i < this.message.size() - 1; i++) {
-            messageBuilder.append(this.message.get(i)).append("\n");
-        }
-        messageBuilder.append(this.message.get(this.message.size() - 1));
-        return messageBuilder.toString();
+        return String.join("\n", this.message);
     }
 
     public int size() {
@@ -43,6 +38,10 @@ public abstract class Message implements Cloneable {
 
     public List<String> getRawMessage() {
         return this.message;
+    }
+
+    public void concatLine(int index, String line) {
+        this.message.set(index, this.message.get(index) + line);
     }
 
     public void setMessage(String... message) {
@@ -70,7 +69,11 @@ public abstract class Message implements Cloneable {
     }
 
     public void addPlaceholders(Placeholder... placeholders) {
-        this.placeholders.addAll(Arrays.asList(placeholders));
+        this.addPlaceholders(Arrays.asList(placeholders));
+    }
+
+    public void addPlaceholders(Collection<Placeholder> placeholders) {
+        this.placeholders.addAll(placeholders);
     }
 
     public void removePlaceholder(int index) {
@@ -85,6 +88,8 @@ public abstract class Message implements Cloneable {
         this.placeholders.clear();
     }
 
+    public abstract Message[] splitToLineMessage();
+
     public abstract Component[] asRawComponent();
 
     public abstract Component[] asComponent();
@@ -98,6 +103,11 @@ public abstract class Message implements Cloneable {
 
         protected EmptyMessage() {
             super("");
+        }
+
+        @Override
+        public Message[] splitToLineMessage() {
+            return new Message[]{new EmptyMessage()};
         }
 
         @Override

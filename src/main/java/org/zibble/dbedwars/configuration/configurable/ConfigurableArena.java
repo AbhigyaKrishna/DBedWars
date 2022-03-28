@@ -55,6 +55,9 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     private String customName;
 
     @ConfigPath
+    private String scoreboard;
+
+    @ConfigPath
     private Map<String, ConfigurableTeam> teams;
 
     @ConfigPath
@@ -64,9 +67,6 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     private ConfigurableArenaOverride override;
 
     public ConfigurableArena() {
-    }
-
-    public ConfigurableArena(Arena arena) {
     }
 
     @Override
@@ -171,6 +171,14 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
 
     public void setCustomName(String customName) {
         this.customName = customName;
+    }
+
+    public String getScoreboard() {
+        return scoreboard;
+    }
+
+    public void setScoreboard(String scoreboard) {
+        this.scoreboard = scoreboard;
     }
 
     public Map<String, ConfigurableTeam> getTeams() {

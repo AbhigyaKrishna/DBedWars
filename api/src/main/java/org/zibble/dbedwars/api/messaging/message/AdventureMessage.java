@@ -47,6 +47,15 @@ public class AdventureMessage extends Message {
         super(message, placeholders);
     }
 
+    @Override
+    public AdventureMessage[] splitToLineMessage() {
+        AdventureMessage[] messages = new AdventureMessage[this.message.size()];
+        for (int i = 0; i < this.message.size(); i++) {
+            messages[i] = new AdventureMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
+        }
+        return messages;
+    }
+
     protected AdventureMessage(String[] message, Placeholder... placeholders) {
         super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }

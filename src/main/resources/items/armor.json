@@ -1,0 +1,30 @@
+{
+  "helmet": {
+    "type": "leather_helmet",
+    "amount": 1,
+    "item-meta": {
+      "color": "<player_team_color>"
+    }
+  },
+  "chestplate": {
+    "type": "leather_chestplate",
+    "amount": 1,
+    "item-meta": {
+      "color": "<player_team_color>"
+    }
+  },
+  "leggings": {
+    "type": "leather_leggings",
+    "amount": 1,
+    "item-meta": {
+      "color": "<player_team_color>"
+    }
+  },
+  "boots": {
+    "type": "leather_boots",
+    "amount": 1,
+    "item-meta": {
+      "color": "<player_team_color>"
+    }
+  }
+}

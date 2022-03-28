@@ -8,7 +8,7 @@ public class PlayerGameProfile {
 
     private UUID uuid;
     private String name;
-    private List<Property> textureProperties = new ArrayList<>();
+    private final List<Property> textureProperties = new ArrayList<>();
 
     public static Builder builder() {
         return new Builder();

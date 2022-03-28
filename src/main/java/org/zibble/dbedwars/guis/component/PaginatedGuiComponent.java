@@ -3,56 +3,53 @@ package org.zibble.dbedwars.guis.component;
 import org.bukkit.entity.Player;
 import org.zibble.inventoryframework.menu.Menu;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiComponent> {
+public class PaginatedGuiComponent<K, T extends Menu, R extends PaginatedGuiComponent> {
 
-    protected ArrayList<GuiComponent<T, ? extends GuiComponent>> pages;
+    protected TreeMap<K, GuiComponent<T, ? extends GuiComponent>> pages;
     protected final Player player;
-    protected int currentPage = 0;
+    protected K currentPage;
 
     protected PaginatedGuiComponent(Player player) {
-        this(player, 4);
+        this(player, null);
     }
 
-    protected PaginatedGuiComponent(Player player, int defaultPageCapacity) {
+    protected PaginatedGuiComponent(Player player, Comparator<? super K> comparator) {
         this.player = player;
-        pages = new ArrayList<>(defaultPageCapacity);
+        this.pages = new TreeMap<>(comparator);
     }
 
-    public GuiComponent<T, ? extends GuiComponent> getPage(int page) {
-        return this.pages.get(page);
+    public GuiComponent<T, ? extends GuiComponent> getPage(K key) {
+        return this.pages.get(key);
     }
 
     public int getPageCount() {
         return this.pages.size();
     }
 
-    public R setPage(int page, GuiComponent<T, ? extends GuiComponent> component) {
-        this.pages.set(page, component.addCloseAction((menu, p) -> this.close()));
-        return (R) this;
-    }
-
-    public R addPage(GuiComponent<T, ? extends GuiComponent> component) {
-        pages.add(component.addCloseAction((menu, p) -> this.close()));
+    public R addPage(K key, GuiComponent<T, ? extends GuiComponent> component) {
+        this.pages.put(key, component.addCloseAction((menu, p) -> this.close()));
         return (R) this;
     }
 
     public R removePage(int page) {
-        pages.remove(page);
+        this.pages.remove(page);
         return (R) this;
     }
 
     public R clearPages() {
-        pages.clear();
+        this.pages.clear();
         return (R) this;
     }
 
-    public R open(int page) {
+    public R open(K key) {
         this.close();
-        getPage(page).open(player);
-        this.currentPage = page;
+        this.getPage(key).open(player);
+        this.currentPage = key;
         return (R) this;
     }
 
@@ -62,9 +59,10 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
 
     public R nextPage() {
         if (this.player != null) {
-            if (this.currentPage < this.getPageCount() - 1) {
+            Map.Entry<K, GuiComponent<T, ? extends GuiComponent>> entry = this.pages.higherEntry(this.currentPage);
+            if (entry != null) {
                 this.getPage(this.currentPage).close();
-                this.getPage(++this.currentPage).open(this.player);
+                this.getPage(entry.getKey()).open(this.player);
             }
         }
         return (R) this;
@@ -72,18 +70,19 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
 
     public R previousPage() {
         if (this.player != null) {
-            if (this.currentPage > 0) {
+            Map.Entry<K, GuiComponent<T, ? extends GuiComponent>> entry = this.pages.lowerEntry(this.currentPage);
+            if (entry != null) {
                 this.getPage(this.currentPage).close();
-                this.getPage(--this.currentPage).open(this.player);
+                this.getPage(entry.getKey()).open(this.player);
             }
         }
         return (R) this;
     }
 
-    public R page(int page) {
+    public R page(K key) {
         if (this.player != null) {
             this.getPage(this.currentPage).close();
-            this.getPage(page).open(this.player);
+            this.getPage(key).open(this.player);
         }
         return (R) this;
     }
@@ -91,7 +90,7 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
     public R close() {
         if (this.player != null) {
             this.getPage(this.currentPage).close();
-            this.currentPage = 0;
+            this.currentPage = this.pages.firstKey();
         }
         return (R) this;
     }
@@ -111,7 +110,7 @@ public class PaginatedGuiComponent<T extends Menu, R extends PaginatedGuiCompone
     }
 
     public Player getViewer() {
-        return player;
+        return this.player;
     }
 
 }

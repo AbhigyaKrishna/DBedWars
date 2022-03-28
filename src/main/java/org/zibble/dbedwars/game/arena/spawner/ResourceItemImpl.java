@@ -40,15 +40,18 @@ public class ResourceItemImpl implements ResourceItem {
 
         if (!Bukkit.isPrimaryThread()) {
             SchedulerUtils.runTask(() -> {
-                this.itemEntity = location.getWorld().dropItem(location, item.asItemStack());
-                this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
-                this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
+                this.dropItem(location);
             });
         } else {
-            this.itemEntity = location.getWorld().dropItem(location, item.asItemStack());
-            this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
-            this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
+            this.dropItem(location);
         }
+    }
+
+    private void dropItem(Location location) {
+        this.itemEntity = location.getWorld().dropItem(location, item.asItemStack());
+        this.itemEntity.setMetadata("resource", new FixedMetadataValue(DBedwars.getInstance(), this));
+        this.itemEntity.setMetadata("merge", new FixedMetadataValue(DBedwars.getInstance(), mergeable));
+        this.itemEntity.setMetadata("split", new FixedMetadataValue(DBedwars.getInstance(), splittable));
     }
 
     @Override
