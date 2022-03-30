@@ -5,8 +5,8 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
-import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.commands.framework.command.BukkitCommand;
+import org.zibble.dbedwars.commands.framework.command.CommandHolder;
 import org.zibble.dbedwars.utils.reflection.annotation.ConstructorRef;
 import org.zibble.dbedwars.utils.reflection.annotation.ReflectionAnnotations;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
@@ -20,25 +20,22 @@ public class BukkitRegistryHandler {
     private static final ConstructorWrapper<PluginCommand> PLUGIN_COMMAND_CONSTRUCTOR = null;
 
     private final DBedwars plugin;
-    private final CommandRegistryImpl registry;
 
     private final CommandMap commandMap;
 
-    public BukkitRegistryHandler(CommandRegistryImpl registry, DBedwars plugin) {
+    public BukkitRegistryHandler(DBedwars plugin) {
         this.plugin = plugin;
-        this.registry = registry;
         ReflectionAnnotations.INSTANCE.load(BukkitRegistryHandler.class, this);
         this.commandMap = new FieldResolver(Bukkit.getPluginManager().getClass()).resolveWrapper("commandMap").get(Bukkit.getPluginManager());
     }
 
-    public void registerCommand(String name, String[] aliases, AbstractCommandNode commandNode) {
-        PluginCommand command = PLUGIN_COMMAND_CONSTRUCTOR.newInstance(name, this.plugin);
-        command.setAliases(Arrays.asList(aliases));
-        Pair<String, String[]> pair = this.registry.getPermissions().get(commandNode);
-        if (pair == null) command.setExecutor(Generators.executor(this.registry, commandNode));
-        else command.setExecutor(Generators.executor(this.registry, commandNode, pair));
-        command.setTabCompleter(Generators.completer(this.registry, commandNode));
-        this.commandMap.register(name, command);
+    public void registerCommand(CommandHolder holder) {
+        PluginCommand command = PLUGIN_COMMAND_CONSTRUCTOR.newInstance(holder.name(), this.plugin);
+        command.setAliases(Arrays.asList(holder.aliases()));
+        BukkitCommand bukkitCommand = new BukkitCommand(holder);
+        command.setExecutor(bukkitCommand);
+        command.setTabCompleter(bukkitCommand);
+        this.commandMap.register(holder.name(), command);
     }
 
 }

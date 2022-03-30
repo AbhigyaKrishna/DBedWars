@@ -5,7 +5,6 @@ public enum DatabaseType {
     H2,
     PostGreSQL,
     MYSQL,
-    HikariCP,
     MongoDB,
 
     // Oh boy whoever made this support will get a raise

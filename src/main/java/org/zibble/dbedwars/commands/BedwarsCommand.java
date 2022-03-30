@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.setup.BaseTeamDetection;
@@ -34,13 +33,10 @@ public class BedwarsCommand extends BaseCommand {
         }
 
         Arena arena = this.plugin.getGameManager().getArena(arenaName);
-        this.plugin.getThreadHandler().submitAsync(new Workload() {
-            @Override
-            public void compute() {
-                if (arena.getWorld() == null)
-                    arena.load();
-                BedwarsCommand.this.plugin.getThreadHandler().submitSync(() -> arena.joinGame(player));
-            }
+        this.plugin.getThreadHandler().submitAsync(() -> {
+            if (arena.getWorld() == null)
+                arena.load();
+            BedwarsCommand.this.plugin.getThreadHandler().submitSync(() -> arena.joinGame(player));
         });
     }
 

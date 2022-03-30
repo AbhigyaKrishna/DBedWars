@@ -1,10 +1,11 @@
 package org.zibble.dbedwars.database.sql;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.database.Database;
 import org.zibble.dbedwars.database.DatabaseType;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,36 +13,54 @@ import java.sql.SQLException;
 
 public abstract class SQLDatabase extends Database {
 
-    public SQLDatabase(DatabaseType type) {
+    protected final HikariConfig config;
+    protected HikariDataSource dataSource;
+
+    protected Connection connection;
+
+    public SQLDatabase(DatabaseType type, HikariConfig config) {
         super(type);
+        this.config = config;
     }
 
-    public abstract Connection getConnection() throws IOException, IllegalStateException, SQLException;
+    @Override
+    public boolean isConnected() {
+        try {
+            return this.connection != null && !this.connection.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 
-    public abstract int getLostConnections();
+    public Connection getConnection() throws IllegalStateException, SQLException {
+        return this.connection = this.isConnected() ? this.connection : this.dataSource.getConnection();
+    }
+
+    @Override
+    public void disconnect() throws SQLException {
+        if (!isConnected()) {
+            throw new IllegalStateException("Not connected!");
+        }
+
+        this.connection.close();
+        this.connection = null;
+        this.dataSource.close();
+    }
 
     public boolean execute(String query) throws SQLException {
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(query);
-            boolean b = statement.execute();
-            statement.close();
-            return b;
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (PreparedStatement statement = this.getConnection().prepareStatement(query)) {
+            return statement.execute();
         }
-        return false;
     }
 
     public boolean execute(PreparedStatement statement) throws SQLException {
-        final boolean result = statement.execute();
-        if (!statement.isClosed()) statement.close();
-        return result;
+        return statement.execute();
     }
 
     public ActionFuture<Boolean> executeAsync(String query) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                return execute(query);
+                return this.execute(query);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -53,9 +72,7 @@ public abstract class SQLDatabase extends Database {
     public ActionFuture<Boolean> executeAsync(PreparedStatement statement) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                final boolean result = statement.execute();
-                if (!statement.isClosed()) statement.close();
-                return result;
+                return this.execute(statement);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -65,25 +82,15 @@ public abstract class SQLDatabase extends Database {
     }
 
     public ResultSet query(String query) throws SQLException {
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(query);
+        try (PreparedStatement statement = this.getConnection().prepareStatement(query)) {
             return statement.executeQuery();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
     public <R> R query(String query, SQLFunction<ResultSet, R> function) throws SQLException {
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(query);
+        try (PreparedStatement statement = this.getConnection().prepareStatement(query)) {
             return function.apply(statement.executeQuery());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
     public ResultSet query(PreparedStatement statement) throws SQLException {
@@ -95,28 +102,21 @@ public abstract class SQLDatabase extends Database {
     }
 
     public void query(String query, SQLConsumer<ResultSet> consumer) throws SQLException {
-        ResultSet resultSet = this.query(query);
-
-        consumer.accept(resultSet);
-
-        if (!resultSet.isClosed()) resultSet.close();
-        if (!resultSet.getStatement().isClosed()) resultSet.getStatement().close();
+        try (ResultSet resultSet = this.query(query)) {
+            consumer.accept(resultSet);
+        }
     }
 
-    public void query(PreparedStatement statement, SQLConsumer<ResultSet> consumer)
-            throws SQLException {
-        ResultSet resultSet = this.query(statement);
-
-        consumer.accept(resultSet);
-
-        if (!resultSet.isClosed()) resultSet.close();
-        if (!resultSet.getStatement().isClosed()) resultSet.getStatement().close();
+    public void query(PreparedStatement statement, SQLConsumer<ResultSet> consumer) throws SQLException {
+        try (ResultSet resultSet = this.query(statement)) {
+            consumer.accept(resultSet);
+        }
     }
 
     public ActionFuture<ResultSet> queryAsync(String query) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                return SQLDatabase.this.query(query);
+                return this.query(query);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -127,7 +127,7 @@ public abstract class SQLDatabase extends Database {
     public <R> ActionFuture<R> queryAsync(String query, SQLFunction<ResultSet, R> function) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                return SQLDatabase.this.query(query, function);
+                return this.query(query, function);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -138,7 +138,7 @@ public abstract class SQLDatabase extends Database {
     public ActionFuture<ResultSet> queryAsync(PreparedStatement statement) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                return SQLDatabase.this.query(statement);
+                return this.query(statement);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -149,7 +149,7 @@ public abstract class SQLDatabase extends Database {
     public <R> ActionFuture<R> queryAsync(PreparedStatement statement, SQLFunction<ResultSet, R> function) {
         return ActionFuture.supplyAsync(() -> {
             try {
-                return SQLDatabase.this.query(statement, function);
+                return this.query(statement, function);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -160,7 +160,7 @@ public abstract class SQLDatabase extends Database {
     public void queryAsync(String query, SQLConsumer<ResultSet> consumer) {
         ActionFuture.runAsync(() -> {
             try {
-                SQLDatabase.this.query(query, consumer);
+                this.query(query, consumer);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -170,7 +170,7 @@ public abstract class SQLDatabase extends Database {
     public void queryAsync(PreparedStatement statement, SQLConsumer<ResultSet> consumer) {
         ActionFuture.runAsync(() -> {
             try {
-                SQLDatabase.this.query(statement, consumer);
+                this.query(statement, consumer);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -178,31 +178,20 @@ public abstract class SQLDatabase extends Database {
     }
 
     public int update(String update) throws SQLException {
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(update);
-            int result = statement.executeUpdate();
-
-            statement.close();
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (PreparedStatement statement = this.getConnection().prepareStatement(update)) {
+            return statement.executeUpdate();
         }
-
-        return 0;
     }
 
     public int update(PreparedStatement statement) throws SQLException {
-        int result = statement.executeUpdate();
-
-        statement.close();
-        return result;
+        return statement.executeUpdate();
     }
 
     public ActionFuture<Integer> updateAsync(String update) {
         return ActionFuture.supplyAsync(() -> {
             int results = 0;
             try {
-                results = SQLDatabase.this.update(update);
+                results = this.update(update);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -214,7 +203,7 @@ public abstract class SQLDatabase extends Database {
         return ActionFuture.supplyAsync(() -> {
             int results = 0;
             try {
-                results = SQLDatabase.this.update(statement);
+                results = this.update(statement);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -33,6 +33,7 @@ import org.zibble.dbedwars.game.arena.spawner.SpawnerImpl;
 import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
+import org.zibble.dbedwars.utils.DatabaseUtils;
 import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.gamerule.GameRuleDisableDaylightCycle;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
@@ -61,8 +62,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     private final Set<ArenaPlayerImpl> players;
     private final List<ArenaSpectatorImpl> spectators;
     private final Map<ArenaPlayerImpl, KickReason> removed;
-    private final DeathStatistics deathStatistics;
-    private final BedBrokenStatistics bedBrokenStatistics;
+    private DeathStatistics deathStatistics;
+    private BedBrokenStatistics bedBrokenStatistics;
 
     public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder) {
         this(plugin, name, dataHolder, new ArenaSettingsImpl());
@@ -81,8 +82,6 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.removed = new HashMap<>(0);
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);
-        this.deathStatistics = new DeathStatistics(this);
-        this.bedBrokenStatistics = new BedBrokenStatistics(this);
     }
 
     @Override
@@ -240,9 +239,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.gameHandler.register();
         this.arenaHandler.unregister();
 
-        for (ArenaPlayerImpl player : this.players) {
-            player.initScoreboard(null); // FIXME: 26-03-2022 
-        }
+        this.deathStatistics = new DeathStatistics(this);
+        this.bedBrokenStatistics = new BedBrokenStatistics(this);
 
         this.teams.removeIf(team -> {
             boolean empty = team.getPlayers().isEmpty();
@@ -271,15 +269,17 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
             return false;
         }
 
-        List<ArenaPlayerImpl> list = new ArrayList<>(this.players);
-        list.removeIf(ArenaPlayerImpl::isFinalKilled);
+        List<TeamImpl> list = new ArrayList<>(this.teams);
+        list.removeIf(TeamImpl::isEliminated);
 
-        ArenaEndEvent event = new ArenaEndEvent(this, list);
+        ArenaEndEvent event = new ArenaEndEvent(this, list.get(0));
         event.call();
 
         if (event.isCancelled()) return false;
 
         this.status = ArenaStatus.ENDING;
+
+        this.plugin.getDatabaseBridge().insertArenaHistory(DatabaseUtils.createHistory(this, event.getWinner().getColor()));
         return true;
     }
 
@@ -488,10 +488,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
                 PlaceholderEntry.symbol("attack_team_name", player.getTeam().getName()),
                 PlaceholderEntry.symbol("attack_name", player.getName())
         };
-        Message bedBrokenOthers = ConfigLang.BED_BROKEN_OTHERS.asMessage();
-        bedBrokenOthers.addPlaceholders(bedBrokenPlaceholders);
-        Message bedBrokenSelf = ConfigLang.BED_BROKEN_SELF.asMessage();
-        bedBrokenSelf.addPlaceholders(bedBrokenPlaceholders);
+        Message bedBrokenOthers = ConfigLang.BED_BROKEN_OTHERS.asMessage(bedBrokenPlaceholders);
+        Message bedBrokenSelf = ConfigLang.BED_BROKEN_SELF.asMessage(bedBrokenPlaceholders);
         BedDestroyEvent event = new BedDestroyEvent(player, affected, bed, this, bedBrokenOthers, bedBrokenSelf);
         event.call();
 

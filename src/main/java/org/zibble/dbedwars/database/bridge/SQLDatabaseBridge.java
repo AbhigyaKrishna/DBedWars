@@ -1,13 +1,18 @@
 package org.zibble.dbedwars.database.bridge;
 
+import com.zaxxer.hikari.HikariConfig;
 import org.jooq.SQLDialect;
 import org.zibble.dbedwars.api.future.ActionFuture;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.database.DatabaseType;
+import org.zibble.dbedwars.database.data.ArenaHistory;
 import org.zibble.dbedwars.database.data.PlayerDataCache;
 import org.zibble.dbedwars.database.data.PlayerStats;
 import org.zibble.dbedwars.database.data.QuickBuy;
 import org.zibble.dbedwars.database.data.table.DataTable;
+import org.zibble.dbedwars.database.hikaricp.HikariConfigBuilder;
 import org.zibble.dbedwars.database.jooq.JooqContext;
+import org.zibble.dbedwars.database.jooq.records.ArenaHistoryRecord;
 import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
 import org.zibble.dbedwars.database.jooq.records.QuickBuyRecord;
 import org.zibble.dbedwars.database.jooq.sql.CreateTableSQL;
@@ -17,9 +22,10 @@ import org.zibble.dbedwars.database.jooq.tables.PlayerStatTable;
 import org.zibble.dbedwars.database.jooq.tables.QuickBuyTable;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
 public abstract class SQLDatabaseBridge implements DatabaseBridge {
@@ -71,7 +77,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
                 case "quick_buy":
                     return (ActionFuture<T>) fetchData.fetchQuickBuy(uuid).executeAsync();
             }
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -88,11 +94,11 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
                 case "quick_buy":
                     return insertData.insertNewQuickBuy(dataCache.getUuid(), dataCache.getName()).executeAsync();
             }
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return ActionFuture.completedFuture(null);
+        return ActionFuture.completedFuture(false);
     }
 
     @Override
@@ -107,7 +113,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
                                 .set(PlayerStatRecord.fromDataCache(stats))
                                 .where(PlayerStatTable.PLAYER_STAT.UUID.eq(stats.getUuid()))
                                 .execute() > 0;
-                    } catch (SQLException | IOException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
                     return null;
@@ -121,7 +127,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
                                 .set(QuickBuyRecord.fromDataCache(quickBuy))
                                 .where(QuickBuyTable.QUICK_BUY.UUID.eq(quickBuy.getUuid()))
                                 .execute() > 0;
-                    } catch (SQLException | IOException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
                     return null;
@@ -132,12 +138,44 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
     }
 
     @Override
+    public ActionFuture<Boolean> insertArenaHistory(ArenaHistory history) {
+        try {
+            InsertDataSQL insertData = new InsertDataSQL(this.context.createContext(this.database.getConnection()));
+            return insertData.insertNewArenaHistory(ArenaHistoryRecord.from(history)).executeAsync();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ActionFuture.completedFuture(false);
+    }
+
+    @Override
+    public Collection<ArenaHistory> getArenaHistory(String arenaId) {
+        return null;
+    }
+
+    @Override
     public boolean isInitialized() {
         return this.initialized;
     }
 
     public SQLDatabase getDatabase() {
         return this.database;
+    }
+
+    protected static HikariConfig createHikariConfig() {
+        return new HikariConfigBuilder()
+                .addProperty("cachePrepStmts", "true")
+                .addProperty("prepStmtCacheSize", "250")
+                .addProperty("prepStmtCacheSqlLimit", "2048")
+                .addProperty("useServerPrepStmts", "true")
+                .addProperty("useLocalSessionState", "true")
+                .addProperty("rewriteBatchedStatements", "true")
+                .addProperty("cacheResultSetMetadata", "true")
+                .addProperty("cacheServerConfiguration", "true")
+                .addProperty("elideSetAutoCommits", "true")
+                .addProperty("maintainTimeStats", "false")
+                .addProperty("keepaliveTime", "30000ms")
+                .build();
     }
 
     private SQLDialect getDialect(DatabaseType type) {

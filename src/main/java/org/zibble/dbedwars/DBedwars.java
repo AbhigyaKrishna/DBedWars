@@ -1,16 +1,14 @@
 package org.zibble.dbedwars;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.pepedevs.radium.utils.ServerPropertiesUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.zibble.dbedwars.listeners.VanishListener;
-import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
@@ -27,13 +25,17 @@ import org.zibble.dbedwars.handler.*;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
+import org.zibble.dbedwars.listeners.VanishListener;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
+import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.PluginFileUtils;
+import org.zibble.dbedwars.utils.gamerule.GameRuleHandler;
 import org.zibble.inventoryframework.InventoryFramework;
 
 import java.io.File;
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -93,12 +95,14 @@ public final class DBedwars extends PluginAdapter {
 
         this.getServer()
                 .getServicesManager()
-                .register(DBedWarsAPI.class, new APIImpl(this), this, ServicePriority.Normal);
+                .register(DBedWarsAPI.class, new APIImpl(this), this, ServicePriority.Highest);
 
-        this.mainWorld = ServerPropertiesUtils.getStringProperty("level-name", "world");
+        Properties properties = new Properties();
 
-        boolean spawnNpc = ServerPropertiesUtils.getBooleanProperty("spawn-npcs", false);
-        int spawnProt = ServerPropertiesUtils.getIntProperty("spawn-protection", -1);
+        this.mainWorld = properties.getProperty("level-name", "world");
+
+        boolean spawnNpc = Boolean.parseBoolean(properties.getProperty("spawn-npcs", "false"));
+        int spawnProt = NumberUtils.toInt(properties.getProperty("spawn-protection", "-1"), -1);
         return true;
     }
 
@@ -109,58 +113,9 @@ public final class DBedwars extends PluginAdapter {
         PacketEvents.getAPI().terminate();
     }
 
-    /**
-     * <ul>
-     *   <li>PluginDependence[0] = MultiVerseCore
-     *   <li>PluginDependence[1] = SlimeWorldManager
-     * </ul>
-     */
     @Override
     public PluginDependence[] getDependences() {
-        return new PluginDependence[] {
-            new PluginDependence("MultiVerse-Core") {
-
-                private final File file = PluginFiles.MULTIVERSE_CORE_HOOK;
-
-                @Override
-                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                    if (plugin != null) {
-                        DBedwars.this
-                                .getLogger()
-                                .info("MultiVerse-Core found, enabling MultiVerse-Core support.");
-                        DBedwars.this.saveResource(
-                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                        PluginFileUtils.set(this.file, "enabled", true);
-                    } else {
-                        if (this.file.exists()) {
-                            PluginFileUtils.set(this.file, "enabled", false);
-                        }
-                    }
-                    return true;
-                }
-            },
-            new PluginDependence("SlimeWorldManager") {
-
-                private final File file = PluginFiles.SLIME_WORLD_MANAGER_HOOK;
-
-                @Override
-                public Boolean apply(org.bukkit.plugin.Plugin plugin) {
-                    if (plugin != null && DBedwars.this.checkSWM(plugin)) {
-                        DBedwars.this
-                                .getLogger()
-                                .info("SlimeWorldManager found, enabling SlimeWorldManager support.");
-                        DBedwars.this.saveResource(
-                                "hooks/" + this.file.getName(), this.file.getParentFile(), false);
-                        PluginFileUtils.set(this.file, "enabled", true);
-                    } else {
-                        if (this.file.exists()) {
-                            PluginFileUtils.set(this.file, "enabled", false);
-                        }
-                    }
-                    return true;
-                }
-            }
-        };
+        return this.hookManager.getDependencies();
     }
 
     @Override
@@ -181,14 +136,13 @@ public final class DBedwars extends PluginAdapter {
         this.setupSessionManager = new SetupSessionManager(this);
         this.menuHandler = new MenuHandler(this);
 
-        this.threadHandler.submitAsync(
-                () -> {
-                    this.configHandler.loadConfigurations();
-                    this.configHandler.loadItems();
+        this.threadHandler.submitAsync(() -> {
+            this.configHandler.loadConfigurations();
+            this.configHandler.loadItems();
 
-                    this.registerCustomItems();
-                    this.initDatabase();
-                });
+            this.registerCustomItems();
+            this.initDatabase();
+        });
 
         return true;
     }
@@ -204,7 +158,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpListeners() {
-        this.listeners = new Listener[]{new VanishListener()};
+        this.listeners = new Listener[]{new VanishListener(), new GameRuleHandler(this)};
         for (Listener listener : this.listeners) {
             this.getServer().getPluginManager().registerEvents(listener, this);
         }
@@ -270,7 +224,6 @@ public final class DBedwars extends PluginAdapter {
         else type = DatabaseType.SQLite;
 
 
-
         if (type == DatabaseType.MYSQL) {
             this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.MongoDB) {
@@ -279,9 +232,6 @@ public final class DBedwars extends PluginAdapter {
         } else if (type == DatabaseType.H2) {
             this.loadLibrary(ExternalLibrary.H2_DATABASE);
             this.database = new H2DatabaseBridge();
-        } else if (type == DatabaseType.HikariCP) {
-            this.loadLibrary(ExternalLibrary.HIKARI_CP);
-            this.database = new HikariCPBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.PostGreSQL) {
             this.loadLibrary(ExternalLibrary.POSTGRESQL_DATABASE);
             this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMySQL());
@@ -366,4 +316,5 @@ public final class DBedwars extends PluginAdapter {
             }
         };
     }
+
 }

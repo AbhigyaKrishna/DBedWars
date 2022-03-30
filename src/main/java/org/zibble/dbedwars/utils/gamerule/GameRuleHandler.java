@@ -17,7 +17,6 @@ public class GameRuleHandler extends PluginHandler {
 
     public GameRuleHandler(DBedwars plugin) {
         super(plugin);
-        register();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

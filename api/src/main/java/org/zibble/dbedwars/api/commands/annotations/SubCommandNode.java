@@ -13,4 +13,6 @@ public @interface SubCommandNode {
 
     String value();
 
+    String[] aliases() default {};
+
 }

@@ -1,84 +1,17 @@
-package org.zibble.dbedwars.database.sql.hikaricp;
+package org.zibble.dbedwars.database.hikaricp;
 
 import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.configLang.StringUtils;
-import org.apache.commons.configLang.Validate;
+import org.zibble.dbedwars.api.util.Builder;
 
 import java.util.Properties;
 
 /** Class for creating Hikari client. */
-public class HikariClientBuilder {
+public class HikariConfigBuilder implements Builder<HikariConfig> {
 
-    private static final String URL_FORMAT =
-            "jdbc:mysql://"
-                    + "%s" // host
-                    + ":"
-                    + "%d" // port
-                    + "/"
-                    + "%s" // database
-                    + "?autoReconnect="
-                    + "%s" // auto reconnect
-                    + "&"
-                    + "useSSL="
-                    + "%s" // use ssl
-            ;
+    private final HikariConfig config;
 
-    private final String host;
-    private final int port;
-    private final String database;
-    private final String username;
-    private final String password;
-    private final boolean reconnect;
-    private final boolean ssl;
-
-    private HikariConfig config;
-
-    /**
-     * Constructs the Hikari Client Builder.
-     *
-     * <p>
-     *
-     * @param host Hostname
-     * @param username Username
-     * @param password Password
-     * @param reconnect <strong>{@code true}</strong> to auto reconnect
-     */
-    public HikariClientBuilder(String host, int port, String database, String username, String password, boolean reconnect, boolean ssl) {
+    public HikariConfigBuilder() {
         this.config = new HikariConfig();
-
-        Validate.isTrue(!StringUtils.isEmpty(host), "The host cannot be null or empty!");
-        Validate.isTrue(!StringUtils.isEmpty(database), "The database cannot be null or empty!");
-        Validate.notNull(username, "Username cannot be null!");
-        Validate.notNull(password, "Password cannot be null!");
-
-        this.host = host;
-        this.port = port;
-        this.database = database;
-        this.username = username;
-        this.password = password;
-        this.reconnect = reconnect;
-        this.ssl = ssl;
-
-        this.config.setJdbcUrl(String.format(URL_FORMAT, this.host, this.port, this.database, this.reconnect, this.ssl));
-        this.config.setUsername(this.username);
-        this.config.setPassword(this.password);
-    }
-
-    /**
-     * Constructs the Hikari Client Builder.
-     *
-     * <p>
-     *
-     * @param host Host name
-     * @param port Port number
-     * @param database Database name
-     * @param username User name
-     * @param password User password
-     * @param reconnect <strong>{@code true}</strong> to auto reconnect
-     */
-    public HikariClientBuilder(String host, int port, String database, String username, String password, boolean reconnect) {
-        this(host, port, database, username, password, reconnect, true);
     }
 
     /**
@@ -91,7 +24,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#addDataSourceProperty(String, Object)
      */
-    public HikariClientBuilder addProperty(String key, String value) {
+    public HikariConfigBuilder addProperty(String key, String value) {
         this.config.addDataSourceProperty(key, value);
         return this;
     }
@@ -106,7 +39,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setDataSourceClassName(String)
      */
-    public HikariClientBuilder setDataSourceClassName(String className) {
+    public HikariConfigBuilder setDataSourceClassName(String className) {
         this.config.setDataSourceClassName(className);
         return this;
     }
@@ -119,7 +52,7 @@ public class HikariClientBuilder {
      * @param property {@link Properties} to set to the driver
      * @return This Object, for chaining
      */
-    public HikariClientBuilder setProperty(Properties property) {
+    public HikariConfigBuilder setProperty(Properties property) {
         this.config.setDataSourceProperties(property);
         return this;
     }
@@ -133,7 +66,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setAutoCommit(boolean)
      */
-    public HikariClientBuilder setAutoCommit(boolean value) {
+    public HikariConfigBuilder setAutoCommit(boolean value) {
         this.config.setAutoCommit(value);
         return this;
     }
@@ -148,7 +81,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setConnectionTimeout(long)
      */
-    public HikariClientBuilder setConnectionTimeout(long timeout) {
+    public HikariConfigBuilder setConnectionTimeout(long timeout) {
         this.config.setConnectionTimeout(timeout);
         return this;
     }
@@ -163,7 +96,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setIdleTimeout(long)
      */
-    public HikariClientBuilder setIdleTimeout(long timeout) {
+    public HikariConfigBuilder setIdleTimeout(long timeout) {
         this.config.setIdleTimeout(timeout);
         return this;
     }
@@ -177,7 +110,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setKeepaliveTime(long)
      */
-    public HikariClientBuilder setKeepAliveTime(long time) {
+    public HikariConfigBuilder setKeepAliveTime(long time) {
         this.config.setKeepaliveTime(time);
         return this;
     }
@@ -191,7 +124,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setMaxLifetime(long)
      */
-    public HikariClientBuilder setMaxLifeTime(long time) {
+    public HikariConfigBuilder setMaxLifeTime(long time) {
         this.config.setMaxLifetime(time);
         return this;
     }
@@ -205,7 +138,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setConnectionTestQuery(String)
      */
-    public HikariClientBuilder setConnectionTestQuery(String query) {
+    public HikariConfigBuilder setConnectionTestQuery(String query) {
         this.config.setConnectionTestQuery(query);
         return this;
     }
@@ -219,7 +152,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setMinimumIdle(int)
      */
-    public HikariClientBuilder setMinimumIdle(int minIdle) {
+    public HikariConfigBuilder setMinimumIdle(int minIdle) {
         this.config.setMinimumIdle(minIdle);
         return this;
     }
@@ -234,7 +167,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setMaximumPoolSize(int)
      */
-    public HikariClientBuilder setMaximumPoolSize(int size) {
+    public HikariConfigBuilder setMaximumPoolSize(int size) {
         this.config.setMaximumPoolSize(size);
         return this;
     }
@@ -248,7 +181,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setMetricRegistry(Object)
      */
-    public HikariClientBuilder setMetricRegistry(Object registry) {
+    public HikariConfigBuilder setMetricRegistry(Object registry) {
         this.config.setMetricRegistry(registry);
         return this;
     }
@@ -262,7 +195,7 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setHealthCheckRegistry(Object)
      */
-    public HikariClientBuilder setHealthCheckRegistry(Object registry) {
+    public HikariConfigBuilder setHealthCheckRegistry(Object registry) {
         this.config.setHealthCheckRegistry(registry);
         return this;
     }
@@ -276,54 +209,13 @@ public class HikariClientBuilder {
      * @return This Object, for chaining
      * @see HikariConfig#setPoolName(String)
      */
-    public HikariClientBuilder setPoolName(String name) {
+    public HikariConfigBuilder setPoolName(String name) {
         this.config.setPoolName(name);
         return this;
     }
 
-    /**
-     * Build the HikariCP client.
-     *
-     * <p>
-     *
-     * @return {@link HikariCP}
-     */
-    public HikariCP build() {
-        return new HikariCP(config, new HikariDataSource(config), reconnect);
+    public HikariConfig build() {
+        return this.config;
     }
 
-    /**
-     * Gets the {@link HikariConfig}.
-     *
-     * <p>
-     *
-     * @return {@link HikariConfig}
-     */
-    public HikariConfig getConfig() {
-        return config;
-    }
-
-    /**
-     * Sets the {@link HikariConfig}.
-     *
-     * <p>
-     *
-     * @param config The {@link HikariConfig} to set
-     * @return This Object, for chaining
-     */
-    public HikariClientBuilder setConfig(HikariConfig config) {
-        this.config = config;
-        return this;
-    }
-
-    /**
-     * Checks if its auto re-connectable.
-     *
-     * <p>
-     *
-     * @return <strong>{@code true}</strong> if auto reconnect is enabled, else false
-     */
-    public boolean isReconnect() {
-        return reconnect;
-    }
 }

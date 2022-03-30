@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ public class ConfigurableScoreboard implements Loadable {
 
     private final String key;
 
-    @LoadableEntry(key = "title")
+    @ConfigPath("title")
     private String title;
 
-    @LoadableEntry(key = "content")
+    @ConfigPath("content")
     private List<String> content;
 
-    @LoadableEntry(key = "update-tick")
+    @ConfigPath("update-tick")
     private int updateTick;
 
     public ConfigurableScoreboard(String key) {
@@ -25,18 +25,13 @@ public class ConfigurableScoreboard implements Loadable {
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
     public boolean isValid() {
         return this.title != null;
-    }
-
-    @Override
-    public boolean isInvalid() {
-        return !this.isValid();
     }
 
     public String getKey() {
@@ -55,13 +50,4 @@ public class ConfigurableScoreboard implements Loadable {
         return this.updateTick;
     }
 
-    @Override
-    public String toString() {
-        return "ConfigurableScoreboard{" +
-                "key='" + key + '\'' +
-                ", title='" + title + '\'' +
-                ", content=" + content +
-                ", updateTick=" + updateTick +
-                '}';
-    }
 }

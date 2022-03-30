@@ -10,7 +10,7 @@ public abstract class AbstractCommandNode {
     public abstract void accept(CommandSender sender, String[] args);
 
     public String[] hint(Player player) {
-        return null;
+        return new String[0];
     }
 
 }

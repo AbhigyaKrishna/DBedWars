@@ -63,10 +63,7 @@ public class ConfigurableDatabase implements Loadable {
         private String password;
 
         @ConfigPath
-        private boolean reconnect;
-
-        @ConfigPath
-        private boolean ssl;
+        private String params;
 
         @Override
         public void load(ConfigurationSection section) {
@@ -98,12 +95,8 @@ public class ConfigurableDatabase implements Loadable {
             return password;
         }
 
-        public boolean isReconnect() {
-            return reconnect;
-        }
-
-        public boolean isSsl() {
-            return ssl;
+        public String getParams() {
+            return params == null ? "" : params;
         }
 
     }

@@ -7,7 +7,6 @@ import com.mongodb.client.model.Filters;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.ClassModel;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -18,6 +17,7 @@ import org.zibble.dbedwars.database.data.table.DataTable;
 import org.zibble.dbedwars.database.mongo.MongoDB;
 import org.zibble.dbedwars.database.mongo.codec.QuickBuyDataCodec;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -82,6 +82,16 @@ public class MongoDBBridge implements DatabaseBridge {
             collection.replaceOne(Filters.eq("uuid", dataCache.getUuid()), dataCache);
             return true;
         });
+    }
+
+    @Override
+    public ActionFuture<Boolean> insertArenaHistory(ArenaHistory history) {
+        return null;
+    }
+
+    @Override
+    public Collection<ArenaHistory> getArenaHistory(String arenaId) {
+        return null;
     }
 
     @Override

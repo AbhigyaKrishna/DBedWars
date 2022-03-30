@@ -12,8 +12,7 @@ mysql:
   database-name: 'dbedwars'
   username: 'admin'
   password: '123'
-  reconnect: true
-  ssl: false
+  params: '?useUnicode=true&characterEncoding=utf8'
 
 mongodb:
   host: 'hostname'
