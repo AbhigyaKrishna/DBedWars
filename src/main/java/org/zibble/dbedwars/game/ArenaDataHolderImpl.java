@@ -8,6 +8,7 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.utils.ConfigurationUtils;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 public class ArenaDataHolderImpl implements ArenaDataHolder {
 
+    private final String id;
     private Message customName;
     private int maxPlayersPerTeam;
     private int minPlayersToStart;
@@ -33,13 +35,43 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     private final Map<Color, TeamDataHolderImpl> teams;
     private final Set<SpawnerDataHolderImpl> spawners;
 
-    private ArenaDataHolderImpl() {
+    public static ArenaDataHolderImpl fromConfig(ConfigurableArena config) {
+        ArenaDataHolderImpl holder = new ArenaDataHolderImpl(config.getIdentifier());
+        holder.setCustomName(ConfigMessage.from(config.getCustomName()));
+        holder.setMaxPlayersPerTeam(config.getPlayerInTeam());
+        holder.setMinPlayersToStart(config.getMinPlayers());
+        holder.setEnabled(config.isEnabled());
+        holder.setEnvironment(config.getEnvironment());
+        holder.setWaitingLocation(LocationXYZYP.valueOf(config.getLobbyLocation()));
+        holder.setSpectatorLocation(LocationXYZYP.valueOf(config.getSpectatorLocation()));
+        holder.setLobbyCorner1(LocationXYZ.valueOf(config.getLobbyPosMax()));
+        holder.setLobbyCorner2(LocationXYZ.valueOf(config.getLobbyPosMin()));
+
+        for (Map.Entry<String, ConfigurableArena.ConfigurableTeam> entry : config.getTeams().entrySet()) {
+            TeamDataHolderImpl team = TeamDataHolderImpl.fromConfig(entry.getValue());
+            holder.getTeamData().put(team.getColor(), team);
+        }
+
+        for (String spawner : config.getSpawners()) {
+            holder.getSpawners().add(SpawnerDataHolderImpl.fromConfig(spawner));
+        }
+
+        return holder;
+    }
+
+    private ArenaDataHolderImpl(String id) {
+        this.id = id;
         this.teams = new EnumMap<>(Color.class);
         this.spawners = new HashSet<>();
     }
 
-    public static ArenaDataHolderImpl create() {
-        return new ArenaDataHolderImpl();
+    public static ArenaDataHolderImpl create(String id) {
+        return new ArenaDataHolderImpl(id);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override

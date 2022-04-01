@@ -137,11 +137,6 @@ public class MainConfiguration implements Loadable {
             return true;
         }
 
-        @Override
-        public boolean isInvalid() {
-            return !this.isValid();
-        }
-
         public int getStartTimer() {
             return startTimer;
         }

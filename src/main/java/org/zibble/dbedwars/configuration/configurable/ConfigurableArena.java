@@ -2,7 +2,6 @@ package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
@@ -117,11 +116,11 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
         this.icon = icon;
     }
 
-    public String getLobbyLoc() {
+    public String getLobbyLocation() {
         return lobbyLoc;
     }
 
-    public void setLobbyLoc(String lobbyLoc) {
+    public void setLobbyLocation(String lobbyLoc) {
         this.lobbyLoc = lobbyLoc;
     }
 

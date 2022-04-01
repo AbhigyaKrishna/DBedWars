@@ -9,18 +9,18 @@ import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.objects.profile.Skin;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.script.ScriptVariable;
-import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.EnumUtil;
-import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.api.util.*;
 import org.zibble.dbedwars.api.util.json.JSONBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 import org.zibble.dbedwars.game.arena.view.ShopView;
 import org.zibble.dbedwars.io.GameProfileFetcher;
@@ -29,6 +29,7 @@ import org.zibble.dbedwars.io.UUIDFetcher;
 import org.zibble.dbedwars.io.UUIDTypeAdaptor;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -162,5 +163,13 @@ public class ConfigurationUtils {
         }
 
         return npc;
+    }
+
+    public ScoreboardData createScoreboard(ConfigurableScoreboard config) {
+        List<Message> lines = new ArrayList<>(config.getContent().size());
+        for (List<String> list : config.getContent()) {
+            lines.add(ConfigMessage.from(list));
+        }
+        return DBedwars.getInstance().getHookManager().getScoreboardHook().createScoreboardData(ScoreboardData.Type.DYNAMIC, ConfigMessage.from(config.getTitle()), lines, Duration.ofTicks(config.getUpdateTick()));
     }
 }

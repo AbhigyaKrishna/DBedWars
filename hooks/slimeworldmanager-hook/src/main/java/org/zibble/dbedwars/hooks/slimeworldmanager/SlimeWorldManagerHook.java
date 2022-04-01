@@ -58,66 +58,59 @@ public class SlimeWorldManagerHook extends PluginDependence implements WorldAdap
 
     @Override
     public ActionFuture<World> createWorld(String worldName, World.Environment environment) {
-        return ActionFuture.supplyAsync(new Supplier<World>() {
-            @Override
-            public World get() {
-                SlimePropertyMap spm = new SlimePropertyMap();
-                spm.setString(SlimeProperties.WORLD_TYPE, "flat");
-                spm.setInt(SlimeProperties.SPAWN_X, 0);
-                spm.setInt(SlimeProperties.SPAWN_Y, 0);
-                spm.setInt(SlimeProperties.SPAWN_Z, 0);
-                spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, SlimeWorldManagerHook.this.getAllowAnimals(worldName));
-                spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, SlimeWorldManagerHook.this.getAllowMonsters(worldName));
-                spm.setString(SlimeProperties.DIFFICULTY, SlimeWorldManagerHook.this.getDifficulty(worldName).name().toLowerCase(Locale.ROOT));
-                spm.setString(SlimeProperties.ENVIRONMENT, SlimeWorldManagerHook.this.getEnvironment(worldName).name().toLowerCase(Locale.ROOT));
-                spm.setBoolean(SlimeProperties.PVP, true);
+        return ActionFuture.supplyAsync(() -> {
+            SlimePropertyMap spm = new SlimePropertyMap();
+            spm.setString(SlimeProperties.WORLD_TYPE, "flat");
+            spm.setInt(SlimeProperties.SPAWN_X, 0);
+            spm.setInt(SlimeProperties.SPAWN_Y, 0);
+            spm.setInt(SlimeProperties.SPAWN_Z, 0);
+            spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, this.getAllowAnimals(worldName));
+            spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, this.getAllowMonsters(worldName));
+            spm.setString(SlimeProperties.DIFFICULTY, this.getDifficulty(worldName).name().toLowerCase(Locale.ROOT));
+            spm.setString(SlimeProperties.ENVIRONMENT, this.getEnvironment(worldName).name().toLowerCase(Locale.ROOT));
+            spm.setBoolean(SlimeProperties.PVP, true);
 
-                try {
-                    SlimeWorld sw = slimePlugin.createEmptyWorld(loader, worldName, false, spm);
-                    SlimeWorldManagerHook.this.slimePlugin.generateWorld(sw);
-                } catch (WorldAlreadyExistsException | IOException e) {
-                    e.printStackTrace();
-                }
-
-                return Bukkit.getWorld(worldName);
+            try {
+                SlimeWorld sw = slimePlugin.createEmptyWorld(loader, worldName, false, spm);
+                this.slimePlugin.generateWorld(sw);
+            } catch (WorldAlreadyExistsException | IOException e) {
+                e.printStackTrace();
             }
+
+            return Bukkit.getWorld(worldName);
         });
     }
 
     @Override
-    public ActionFuture<World> loadWorldFromFolder(String worldName) {
-        return ActionFuture.supplyAsync(new Supplier<World>() {
-            @Override
-            public World get() {
-                if (!SlimeWorldManagerHook.this.saveWorld(worldName, worldName)) {
-                    return null;
-                }
-
-                SlimePropertyMap spm = new SlimePropertyMap();
-                spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, SlimeWorldManagerHook.this.getAllowMonsters(worldName));
-                spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, SlimeWorldManagerHook.this.getAllowMonsters(worldName));
-                spm.setString(SlimeProperties.DIFFICULTY, SlimeWorldManagerHook.this.getDifficulty(worldName).name().toLowerCase(Locale.ROOT));
-                spm.setBoolean(SlimeProperties.PVP, true);
-
-                return SlimeWorldManagerHook.this.loadWorld(worldName, spm);
+    public ActionFuture<World> loadWorldFromFolder(String worldName, World.Environment environment) {
+        return ActionFuture.supplyAsync(() -> {
+            if (!this.saveWorld(worldName, worldName)) {
+                return null;
             }
+
+            SlimePropertyMap spm = new SlimePropertyMap();
+            spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, this.getAllowMonsters(worldName));
+            spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, this.getAllowMonsters(worldName));
+            spm.setString(SlimeProperties.DIFFICULTY, this.getDifficulty(worldName).name().toLowerCase(Locale.ROOT));
+            spm.setString(SlimeProperties.ENVIRONMENT, environment.name().toLowerCase(Locale.ROOT));
+            spm.setBoolean(SlimeProperties.PVP, true);
+
+            return this.loadWorld(worldName, spm);
         });
     }
 
     @Override
-    public ActionFuture<World> loadWorldFromSave(String fileName) {
-        return ActionFuture.supplyAsync(new Supplier<World>() {
-            @Override
-            public World get() {
-                SlimePropertyMap spm = new SlimePropertyMap();
-                spm.setString(SlimeProperties.WORLD_TYPE, "flat");
-                spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, SlimeWorldManagerHook.this.getAllowAnimals(fileName));
-                spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, SlimeWorldManagerHook.this.getAllowMonsters(fileName));
-                spm.setString(SlimeProperties.DIFFICULTY, SlimeWorldManagerHook.this.getDifficulty(fileName).name().toLowerCase(Locale.ROOT));
-                spm.setBoolean(SlimeProperties.PVP, true);
+    public ActionFuture<World> loadWorldFromSave(String fileName, String worldName, World.Environment environment) {
+        return ActionFuture.supplyAsync(() -> {
+            SlimePropertyMap spm = new SlimePropertyMap();
+            spm.setString(SlimeProperties.WORLD_TYPE, "flat");
+            spm.setBoolean(SlimeProperties.ALLOW_ANIMALS, this.getAllowAnimals(fileName));
+            spm.setBoolean(SlimeProperties.ALLOW_MONSTERS, this.getAllowMonsters(fileName));
+            spm.setString(SlimeProperties.DIFFICULTY, this.getDifficulty(fileName).name().toLowerCase(Locale.ROOT));
+            spm.setString(SlimeProperties.ENVIRONMENT, environment.name().toLowerCase(Locale.ROOT));
+            spm.setBoolean(SlimeProperties.PVP, true);
 
-                return SlimeWorldManagerHook.this.loadWorld(fileName, spm);
-            }
+            return this.loadWorld(fileName, spm);
         });
     }
 

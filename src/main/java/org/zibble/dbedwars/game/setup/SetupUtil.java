@@ -20,6 +20,8 @@ import org.zibble.dbedwars.api.util.Duration;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class SetupUtil {
 
     private static final DBedwars PLUGIN = DBedwars.getInstance();
@@ -28,22 +30,21 @@ public class SetupUtil {
         return entity instanceof Painting || entity instanceof ItemFrame;
     }
 
-    public static Location precise(boolean precise, Location location) {
-        if (!precise) return location;
-        final Location[] returnVal = new Location[1];
+    public static Location precise(Location location) {
+        AtomicReference<Location> loc = new AtomicReference<>(location);
         PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION, PreciseLocation.class, value -> {
-            returnVal[0] = value.getPrecise(location);
+            loc.set(value.getPrecise(location));
             return true;
         });
-        return returnVal[0];
+        return loc.get();
     }
 
-    public static LocationXYZ preciseXYZ(boolean precise, Location location) {
-        return LocationXYZ.valueOf(precise(precise, location));
+    public static LocationXYZ preciseXYZ(Location location) {
+        return LocationXYZ.valueOf(precise(location));
     }
 
-    public static LocationXYZYP preciseXYZYP(boolean precise, Location location) {
-        return LocationXYZYP.valueOf(precise(precise, location));
+    public static LocationXYZYP preciseXYZYP(Location location) {
+        return LocationXYZYP.valueOf(precise(location));
     }
 
     public static Color[] findTeams(SetupSession setupSession) {

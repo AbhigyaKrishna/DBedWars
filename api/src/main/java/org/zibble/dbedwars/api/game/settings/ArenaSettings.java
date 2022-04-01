@@ -1,12 +1,8 @@
 package org.zibble.dbedwars.api.game.settings;
 
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 
-public interface ArenaSettings {
-
-    BwItemStack getIcon();
-
-    void setIcon(BwItemStack icon);
+public interface ArenaSettings extends PropertySerializable, Cloneable {
 
     int getStartTimer();
 
@@ -51,5 +47,7 @@ public interface ArenaSettings {
     int getDeathPoint();
 
     void setDeathPoint(int deathPoint);
+
+    ArenaSettings clone();
 
 }

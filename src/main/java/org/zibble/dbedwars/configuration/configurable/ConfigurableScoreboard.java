@@ -3,30 +3,45 @@ package org.zibble.dbedwars.configuration.configurable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ConfigurableScoreboard implements Loadable {
 
     private final String key;
 
-    @ConfigPath("title")
-    private String title;
+    private List<String> title;
 
-    @ConfigPath("content")
-    private List<String> content;
+    private List<List<String>> content;
 
+    @Defaults.Integer(5)
     @ConfigPath("update-tick")
     private int updateTick;
 
     public ConfigurableScoreboard(String key) {
         this.key = key;
-        this.updateTick = 5;
     }
 
     @Override
     public void load(ConfigurationSection section) {
         this.loadEntries(section);
+        if (section.isList("title")) {
+            this.title = section.getStringList("title");
+        } else {
+            this.title = Collections.singletonList(section.getString("title"));
+        }
+        if (section.isList("content")) {
+            for (String s : section.getStringList("content")) {
+                this.content.add(Collections.singletonList(s));
+            }
+        } else if (section.isConfigurationSection("content")) {
+            ConfigurationSection content = section.getConfigurationSection("content");
+            for (String s : content.getKeys(false)) {
+                this.content.add(content.getStringList(s));
+            }
+        }
     }
 
     @Override
@@ -38,11 +53,11 @@ public class ConfigurableScoreboard implements Loadable {
         return key;
     }
 
-    public String getTitle() {
+    public List<String> getTitle() {
         return this.title;
     }
 
-    public List<String> getContent() {
+    public List<List<String>> getContent() {
         return this.content;
     }
 

@@ -1,12 +1,9 @@
 package org.zibble.dbedwars.game.arena.settings;
 
 import org.zibble.dbedwars.api.game.settings.ArenaSettings;
-import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 
 public class ArenaSettingsImpl implements ArenaSettings {
-
-    private BwItemStack icon;
 
     /* Overridable settings */
     private int startTimer;
@@ -37,16 +34,6 @@ public class ArenaSettingsImpl implements ArenaSettings {
         this.killPoint = properties.getValue("killPoint");
         this.finalKillPoint = properties.getValue("finalKillPoint");
         this.deathPoint = properties.getValue("deathPoint");
-    }
-
-    @Override
-    public BwItemStack getIcon() {
-        return icon;
-    }
-
-    @Override
-    public void setIcon(BwItemStack icon) {
-        this.icon = icon;
     }
 
     @Override
@@ -157,6 +144,28 @@ public class ArenaSettingsImpl implements ArenaSettings {
     @Override
     public void setDeathPoint(int deathPoint) {
         this.deathPoint = deathPoint;
+    }
+
+    @Override
+    public ArenaSettingsImpl clone() {
+        return new ArenaSettingsImpl(this.toProperties());
+    }
+
+    @Override
+    public NamedProperties toProperties() {
+        return NamedProperties.builder()
+                .add("startTimer", startTimer)
+                .add("respawnTime", respawnTime)
+                .add("islandRadius", islandRadius)
+                .add("minYAxis", minYAxis)
+                .add("playerHitTagLength", playerHitTagLength)
+                .add("gameEndDelay", gameEndDelay)
+                .add("disableHunger", disableHunger)
+                .add("bedDestroyPoint", bedDestroyPoint)
+                .add("killPoint", killPoint)
+                .add("finalKillPoint", finalKillPoint)
+                .add("deathPoint", deathPoint)
+                .build();
     }
 
 }

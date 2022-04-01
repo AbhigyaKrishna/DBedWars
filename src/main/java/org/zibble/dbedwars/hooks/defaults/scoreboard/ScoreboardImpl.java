@@ -35,7 +35,6 @@ public class ScoreboardImpl implements Scoreboard {
     protected List<Message> elements;
     protected Message oldTitle;
     protected List<Message> oldElements;
-    protected final Key<String> keyName;
     protected boolean shown;
 
     public ScoreboardImpl(Player player, Message title) {
@@ -47,7 +46,6 @@ public class ScoreboardImpl implements Scoreboard {
         this.oldTitle = this.title;
         this.elements = new CopyOnWriteArrayList<>();
         this.oldElements = new CopyOnWriteArrayList<>();
-        this.keyName = Key.of(this.id);
     }
 
     @Override
@@ -283,6 +281,6 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public Key<String> getKey() {
-        return this.keyName;
+        return Key.of(this.id);
     }
 }

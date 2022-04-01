@@ -43,11 +43,9 @@ import java.util.*;
 
 public class ArenaImpl extends AbstractMessaging implements Arena {
 
-    private static final String WORlD_NAME_FORMAT = "bw_arena_%s";
-
     private final DBedwars plugin;
 
-    private final String name;
+    private final String gameId;
     private final ArenaDataHolderImpl dataHolder;
     private String worldFileName;
     private final ArenaSettingsImpl settings;
@@ -65,16 +63,16 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     private DeathStatistics deathStatistics;
     private BedBrokenStatistics bedBrokenStatistics;
 
-    public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder) {
-        this(plugin, name, dataHolder, new ArenaSettingsImpl());
+    public ArenaImpl(DBedwars plugin, String gameId, ArenaDataHolderImpl dataHolder) {
+        this(plugin, gameId, dataHolder, new ArenaSettingsImpl());
     }
 
-    public ArenaImpl(DBedwars plugin, String name, ArenaDataHolderImpl dataHolder, ArenaSettingsImpl settings) {
+    public ArenaImpl(DBedwars plugin, String gameId, ArenaDataHolderImpl dataHolder, ArenaSettingsImpl settings) {
         this.plugin = plugin;
-        this.name = name;
+        this.gameId = gameId;
         this.dataHolder = dataHolder;
         this.settings = settings;
-        this.status = ArenaStatus.STOPPED;
+        this.status = ArenaStatus.IDLING;
         this.teams = new HashSet<>();
         this.players = new HashSet<>();
         this.spawners = new ArrayList<>();
@@ -86,12 +84,12 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
     @Override
     public String getName() {
-        return name;
+        return this.getDataHolder().getId();
     }
 
     @Override
     public String getGameId() {
-        return this.world.getName();
+        return this.gameId;
     }
 
     @Override
@@ -123,7 +121,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     public ActionFuture<World> loadWorld() {
         return this.plugin.getHookManager().getWorldAdaptor().loadWorldFromSave(
                 worldFileName,
-                String.format(WORlD_NAME_FORMAT, this.getName()),
+                this.gameId,
                 this.getDataHolder().getEnvironment());
     }
 

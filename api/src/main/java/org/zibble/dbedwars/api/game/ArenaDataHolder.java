@@ -13,6 +13,8 @@ import java.util.Set;
 
 public interface ArenaDataHolder {
 
+    String getId();
+
     Message getCustomName();
 
     void setCustomName(Message customName);

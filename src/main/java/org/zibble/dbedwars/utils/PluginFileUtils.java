@@ -23,6 +23,9 @@ public class PluginFileUtils {
     @MethodRef(clazz = URLClassLoader.class, value = "addURL(java.net.URL)")
     public static final MethodWrapper<Void> ADD_URL_METHOD = null;
 
+    public static final String LEVEL_DATA_FILE_NAME = "level.dat";
+    public static final String REGION_FOLDER_NAME = "region";
+
     static {
         ReflectionAnnotations.INSTANCE.load(PluginFileUtils.class);
     }
@@ -197,6 +200,17 @@ public class PluginFileUtils {
             ADD_URL_METHOD.invoke(DBedwars.class.getClassLoader(), file.toURI().toURL());
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean checkWorldFolder(File world_folder) {
+        if (world_folder.isDirectory() && world_folder.exists()) {
+            File dat = new File(world_folder, LEVEL_DATA_FILE_NAME);
+            File region = new File(world_folder, REGION_FOLDER_NAME);
+
+            return dat.exists() && region.exists();
+        } else {
+            return false;
         }
     }
 

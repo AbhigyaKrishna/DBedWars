@@ -19,9 +19,10 @@ public class SetupSessionManager {
         this.onGoingSessions = new ConcurrentHashMap<>(0);
     }
 
-    public void startSetupSession(World world, Player player, ArenaDataHolderImpl dataHolder) {
+    public SetupSession startSetupSession(World world, Player player, ArenaDataHolderImpl dataHolder) {
         SetupSession setupSession = new SetupSession(world, player, dataHolder);
         this.onGoingSessions.put(player.getUniqueId(), setupSession);
+        return setupSession;
     }
 
     public boolean isInSetupSession(Player player) {

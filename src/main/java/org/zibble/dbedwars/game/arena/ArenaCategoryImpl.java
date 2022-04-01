@@ -1,12 +1,17 @@
 package org.zibble.dbedwars.game.arena;
 
 import org.zibble.dbedwars.api.game.Arena;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.BwItemStack;
 
 public class ArenaCategoryImpl {
 
     private final String name;
-    private final Message displayName;
+    private Message displayName;
+    private String description;
+    private BwItemStack icon;
+    private ScoreboardData scoreboardData;
 
     public ArenaCategoryImpl(String name, Message displayName) {
         this.name = name;
@@ -19,6 +24,34 @@ public class ArenaCategoryImpl {
 
     public Message getDisplayName() {
         return displayName;
+    }
+
+    public void setDisplayName(Message displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BwItemStack getIcon() {
+        return icon;
+    }
+
+    public void setIcon(BwItemStack icon) {
+        this.icon = icon;
+    }
+
+    public ScoreboardData getScoreboardData() {
+        return scoreboardData;
+    }
+
+    public void setScoreboardData(ScoreboardData scoreboardData) {
+        this.scoreboardData = scoreboardData;
     }
 
     public Arena[] getArenas() {

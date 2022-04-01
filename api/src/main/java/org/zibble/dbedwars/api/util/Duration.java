@@ -108,6 +108,18 @@ public class Duration {
     }
 
     /**
+     * Returns a new {@link Duration} that has been created using ticks.
+     *
+     * <p>
+     *
+     * @param ticks The ticks
+     * @return {@link Duration} in milliseconds
+     */
+    public static Duration ofTicks(long ticks) {
+        return ofMilliseconds(ticks * 50L);
+    }
+
+    /**
      * Returns a new {@link Duration} that has been created using milliseconds.
      *
      * <p>

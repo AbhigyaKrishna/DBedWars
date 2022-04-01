@@ -16,7 +16,6 @@ import org.zibble.dbedwars.api.plugin.PluginAdapter;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.commands.framework.CommandRegistryImpl;
-import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
 import org.zibble.dbedwars.game.GameManagerImpl;
@@ -30,11 +29,9 @@ import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
 import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.utils.Debugger;
-import org.zibble.dbedwars.utils.PluginFileUtils;
 import org.zibble.dbedwars.utils.gamerule.GameRuleHandler;
 import org.zibble.inventoryframework.InventoryFramework;
 
-import java.io.File;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -149,10 +146,8 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpCommands() {
-        this.commandRegistry.registerInBukkit();
-        /*PaperCommandManager manager = new PaperCommandManager(this);
-        manager.enableUnstableAPI("help");
-        manager.registerCommand(new BedwarsCommand(this));*/
+        this.commandRegistry = new CommandRegistryImpl(this);
+        this.commandRegistry.registerPackage("org.zibble.dbedwars.commands");
         return true;
     }
 

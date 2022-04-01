@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 
 public class PreciseLocation extends org.zibble.dbedwars.api.feature.custom.PreciseLocation {
+
     @Override
     public FeaturePriority getPriority() {
         return FeaturePriority.NORMAL;
@@ -12,11 +13,11 @@ public class PreciseLocation extends org.zibble.dbedwars.api.feature.custom.Prec
     @Override
     public Location getPrecise(Location location) {
         Location precise = location.clone();
-        location.setX(getNearestCoord(location.getX()));
-        location.setY(getNearestCoord(location.getY()));
-        location.setZ(getNearestCoord(location.getZ()));
-        location.setYaw(getNearestYP(location.getYaw()));
-        location.setPitch(getNearestYP(location.getPitch()));
+        location.setX(this.getNearestCoord(location.getX()));
+        location.setY(this.getNearestCoord(location.getY()));
+        location.setZ(this.getNearestCoord(location.getZ()));
+        location.setYaw(this.getNearestYP(location.getYaw()));
+        location.setPitch(this.getNearestYP(location.getPitch()));
         return precise;
     }
 
@@ -25,11 +26,11 @@ public class PreciseLocation extends org.zibble.dbedwars.api.feature.custom.Prec
         return true;
     }
 
-    private static long getNearestCoord(double a) {
+    private long getNearestCoord(double a) {
         return Math.round(a);
     }
 
-    private static long getNearestYP(double a) {
+    private long getNearestYP(double a) {
         double yp = a % 360;
         if (yp >= 22.5 && yp < 67.5) {
             return 45;
