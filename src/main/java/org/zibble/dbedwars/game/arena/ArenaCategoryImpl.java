@@ -12,6 +12,8 @@ public class ArenaCategoryImpl {
     private String description;
     private BwItemStack icon;
     private ScoreboardData scoreboardData;
+    private int maxPlayersInTeam;
+    private int minPlayersToStart;
 
     public ArenaCategoryImpl(String name, Message displayName) {
         this.name = name;
@@ -52,6 +54,22 @@ public class ArenaCategoryImpl {
 
     public void setScoreboardData(ScoreboardData scoreboardData) {
         this.scoreboardData = scoreboardData;
+    }
+
+    public int getMaxPlayersInTeam() {
+        return maxPlayersInTeam;
+    }
+
+    public void setMaxPlayersInTeam(int maxPlayersInTeam) {
+        this.maxPlayersInTeam = maxPlayersInTeam;
+    }
+
+    public int getMinPlayersToStart() {
+        return minPlayersToStart;
+    }
+
+    public void setMinPlayersToStart(int minPlayersToStart) {
+        this.minPlayersToStart = minPlayersToStart;
     }
 
     public Arena[] getArenas() {

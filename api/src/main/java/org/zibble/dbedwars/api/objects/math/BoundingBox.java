@@ -1,8 +1,12 @@
 package org.zibble.dbedwars.api.objects.math;
 
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Encapsulates an axis aligned bounding box represented by a minimum and a maximum Vector.
@@ -468,6 +472,18 @@ public class BoundingBox implements Cloneable {
                 && this.maximum.getX() >= other.maximum.getX()
                 && this.maximum.getY() >= other.maximum.getY()
                 && this.maximum.getZ() >= other.maximum.getZ();
+    }
+
+    public Set<Block> getBlocks(World world) {
+        Set<Block> blocks = new HashSet<>();
+        for (int x = this.minimum.getBlockX(); x <= this.maximum.getBlockX(); x++) {
+            for (int y = this.minimum.getBlockY(); y <= this.maximum.getBlockY(); y++) {
+                for (int z = this.minimum.getBlockZ(); z <= this.maximum.getBlockZ(); z++) {
+                    blocks.add(world.getBlockAt(x, y, z));
+                }
+            }
+        }
+        return blocks;
     }
 
     public boolean isValid() {

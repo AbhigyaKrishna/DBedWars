@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
@@ -39,13 +40,9 @@ public interface ArenaDataHolder {
 
     void setSpectatorLocation(LocationXYZYP spectatorLocation);
 
-    LocationXYZ getLobbyCorner1();
+    BoundingBox getLobbyArea();
 
-    void setLobbyCorner1(LocationXYZ lobbyCorner1);
-
-    LocationXYZ getLobbyCorner2();
-
-    void setLobbyCorner2(LocationXYZ lobbyCorner2);
+    void setLobbyArea(BoundingBox lobbyArea);
 
     void addTeam(Color color);
 

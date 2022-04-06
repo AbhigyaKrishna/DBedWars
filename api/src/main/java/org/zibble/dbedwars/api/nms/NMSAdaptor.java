@@ -38,4 +38,8 @@ public interface NMSAdaptor {
 
     NBTItem.INbt getNBT(NBT nbt);
 
+    com.github.retrooper.packetevents.protocol.item.ItemStack asPacketItem(ItemStack item);
+
+    ItemStack fromPacketItem(com.github.retrooper.packetevents.protocol.item.ItemStack item);
+
 }

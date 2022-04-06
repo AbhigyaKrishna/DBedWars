@@ -20,17 +20,18 @@ public abstract class SetupSessionCommand extends CommandNode {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         PlayerMember member = messaging.getMessagingMember(player);
 
         SetupSession setupSession = this.manager.getSetupSessionOf(player);
         if (setupSession == null) {
             member.sendMessage(PluginLang.NOT_IN_SETUP_SESSION.asMessage());
-            return;
+            return false;
         }
 
         this.execute(member, player, setupSession, args);
+        return true;
     }
 
     protected abstract void execute(PlayerMember member, Player player, SetupSession setupSession, String[] args);

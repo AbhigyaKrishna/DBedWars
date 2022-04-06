@@ -3,14 +3,18 @@ package org.zibble.dbedwars.game.setup;
 import com.cryptomorin.xseries.XSound;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
+import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
@@ -67,6 +71,11 @@ public class SetupSession {
         this.isPreciseEnabled = true;
     }
 
+    public void promptWholeList() {
+        this.playerMember.sendMessage(SetupUtil.createPromptMessage(this));
+        PROMPT_SOUND.play(this.player);
+    }
+
     public void promptDisableMobSpawning() {
         this.playerMember.sendMessage(PluginLang.DISABLE_MOB_SPAWNING_PROMPT.asMessage());
         PROMPT_SOUND.play(this.player);
@@ -99,8 +108,13 @@ public class SetupSession {
         PROMPT_SOUND.play(this.player);
     }
 
-    public void setupWaitingLocation() {
-        Location location = this.player.getLocation();
+    public void setCustomName(Message name) {
+        this.arenaDataHolder.setCustomName(name);
+        TASK_DONE_SOUND.play(this.player);
+        this.playerMember.sendMessage(PluginLang.SETUP_COMMON_SPAWNER_DONE.asMessage(PlaceholderEntry.symbol("name", AdventureMessage.from(name.asComponent()).getMessage())));
+    }
+
+    public void setupWaitingLocation(Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, Color.WHITE);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_WAITING_LOCATION_HOLOGRAM.asMessage());
         CancellableWorkload old = this.workloads.put(WAITING_LOCATION, workload);
@@ -117,8 +131,7 @@ public class SetupSession {
         PROMPT_SOUND.play(this.player);
     }
 
-    public void setupSpectatorLocation() {
-        Location location = this.player.getLocation();
+    public void setupSpectatorLocation(Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, Color.WHITE);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_SPECTATOR_LOCATION_HOLOGRAM.asMessage());
         CancellableWorkload old = this.workloads.put(SPECTATOR_LOCATION, workload);
@@ -135,28 +148,27 @@ public class SetupSession {
         PROMPT_SOUND.play(this.player);
     }
 
-    public void setupWaitingBoxCorner1() {
-        Block block = this.player.getTargetBlockExact(5);
-        if (block == null) {
-            return;
-        }
-        this.arenaDataHolder.setLobbyCorner1(SetupUtil.preciseXYZ(block.getLocation()));
+    public void setupWaitingBoxCorner1(Location location) {
+        DBedwars.getInstance().getHookManager().getAreaSelectionHook().setFirstLocation(this.player, LocationXYZ.valueOf(location));
         this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_CORNERS_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void setupWaitingBoxCorner2() {
-        Block block = this.player.getTargetBlockExact(5);
-        if (block == null) {
-            return;
-        }
-        this.arenaDataHolder.setLobbyCorner2(SetupUtil.preciseXYZ(this.player.getLocation()));
+    public void setupWaitingBoxCorner2(Location location) {
+        DBedwars.getInstance().getHookManager().getAreaSelectionHook().setSecondLocation(this.player, LocationXYZ.valueOf(location));
         this.playerMember.sendMessage(PluginLang.SETUP_WAITING_LOCATION_CORNERS_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void tryAutoDetectTeams() {
-
+    public void setupWaitingBoxArea() {
+        BoundingBox selection = DBedwars.getInstance().getHookManager().getAreaSelectionHook().getSelection(this.player);
+        if (selection != null) {
+            this.arenaDataHolder.setLobbyArea(selection);
+            this.playerMember.sendMessage(PluginLang.SETUP_WAITING_AREA_DONE.asMessage());
+            TASK_DONE_SOUND.play(this.player);
+        } else {
+            this.playerMember.sendMessage(PluginLang.SETUP_SESSION_NO_SELECTION_FOUND.asMessage());
+        }
     }
 
     public void promptAddTeams() {
@@ -182,8 +194,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void setupTeamSpawn(Color color) {
-        Location location = this.player.getLocation();
+    public void setupTeamSpawn(Color color, Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_TEAM_SPAWN_HOLOGRAM.asMessage());
         CancellableWorkload old = this.teamWorkloads.get(color).spawn;
@@ -197,9 +208,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void setupTeamBed(Color color) {
-        Location location = this.player.getLocation();
-
+    public void setupTeamBed(Color color, Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_TEAM_BED_HOLOGRAM.asMessage());
 
@@ -216,9 +225,7 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addTeamSpawner(Color color, DropInfo dropType) {
-        Location location = this.player.getLocation();
-
+    public void addTeamSpawner(Color color, DropInfo dropType, Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_TEAM_SPAWNER_HOLOGRAM.asMessage());
         this.teamWorkloads.get(color).spawners.add(workload);
@@ -244,15 +251,13 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addTeamShop(Color color, ShopInfoImpl shoptype) {
-        Location location = this.player.getLocation();
-
+    public void addTeamShop(Color color, ShopInfoImpl shopType, Location location) {
         CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, color);
         Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_TEAM_SHOP_HOLOGRAM.asMessage());
         this.teamWorkloads.get(color).shops.add(workload);
         this.teamHolograms.get(color).shops.add(hologram);
 
-        this.arenaDataHolder.getTeamData(color).getShops().add(ArenaDataHolderImpl.ShopDataHolderImpl.of(shoptype, SetupUtil.preciseXYZYP(location)));
+        this.arenaDataHolder.getTeamData(color).getShops().add(ArenaDataHolderImpl.ShopDataHolderImpl.of(shopType, SetupUtil.preciseXYZYP(location)));
         this.playerMember.sendMessage(PluginLang.SETUP_TEAM_SHOP_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
@@ -271,12 +276,12 @@ public class SetupSession {
         TASK_DONE_SOUND.play(this.player);
     }
 
-    public void addCommonSpawner(DropInfo dropType) {
-        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(this.player.getLocation(), this.player, Color.WHITE);
-        Hologram hologram = SetupUtil.createHologram(this.player.getLocation(), this.player, PluginLang.SETUP_COMMON_SPAWNER_HOLOGRAM.asMessage());
+    public void addCommonSpawner(DropInfo dropType, Location location) {
+        CancellableWorkload workload = SetupUtil.createParticleSpawningTask(location, this.player, Color.WHITE);
+        Hologram hologram = SetupUtil.createHologram(location, this.player, PluginLang.SETUP_COMMON_SPAWNER_HOLOGRAM.asMessage());
         this.spawnerWorkloads.add(workload);
         this.spawnerHolograms.add(hologram);
-        this.arenaDataHolder.getSpawners().add(ArenaDataHolderImpl.SpawnerDataHolderImpl.of(dropType, SetupUtil.preciseXYZ(this.player.getLocation())));
+        this.arenaDataHolder.getSpawners().add(ArenaDataHolderImpl.SpawnerDataHolderImpl.of(dropType, SetupUtil.preciseXYZ(location)));
         this.playerMember.sendMessage(PluginLang.SETUP_COMMON_SPAWNER_DONE.asMessage());
         TASK_DONE_SOUND.play(this.player);
     }
@@ -311,11 +316,45 @@ public class SetupSession {
         isPreciseEnabled = preciseEnabled;
     }
 
-    private static class TeamTracker<T> {
+    public ArenaDataHolderImpl getArenaDataHolder() {
+        return arenaDataHolder;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public PlayerMember getPlayerMember() {
+        return playerMember;
+    }
+
+    public Map<Color, TeamTracker<Hologram>> getTeamHolograms() {
+        return teamHolograms;
+    }
+
+    protected static class TeamTracker<T> {
+
         private T bed;
         private T spawn;
         private final List<T> spawners = new ArrayList<>();
         private final List<T> shops = new ArrayList<>();
+
+        public T getBed() {
+            return bed;
+        }
+
+        public T getSpawn() {
+            return spawn;
+        }
+
+        public List<T> getSpawners() {
+            return spawners;
+        }
+
+        public List<T> getShops() {
+            return shops;
+        }
+
     }
 
 }

@@ -2,10 +2,16 @@ package org.zibble.dbedwars.commands.framework.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.commands.annotations.Permission;
+import org.zibble.dbedwars.api.commands.annotations.PlayerOnly;
 import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
+import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.configuration.language.PluginLang;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,19 +20,17 @@ public class CommandHolder {
 
     private final String name;
     private final String[] aliases;
-    private final String permission;
+    private final Permission permission;
     private final AbstractCommandNode executor;
-    private final boolean playerOnly;
-    private final String consoleTry;
+    private final PlayerOnly playerOnly;
     private final Set<CommandHolder> subCommands = new HashSet<>();
 
-    public CommandHolder(String name, String[] aliases, String permission, boolean playerOnly, String consoleTry, AbstractCommandNode executor) {
+    public CommandHolder(String name, String[] aliases, Permission permission, PlayerOnly playerOnly, AbstractCommandNode executor) {
         this.name = name;
         this.aliases = aliases;
         this.permission = permission;
         this.executor = executor;
         this.playerOnly = playerOnly;
-        this.consoleTry = consoleTry;
     }
 
     public boolean matches(String name) {
@@ -41,7 +45,7 @@ public class CommandHolder {
         return this.aliases;
     }
 
-    public String permission() {
+    public Permission permission() {
         return this.permission;
     }
 
@@ -49,31 +53,34 @@ public class CommandHolder {
         return this.executor;
     }
 
-    public boolean isPlayerOnly() {
+    public PlayerOnly isPlayerOnly() {
         return this.playerOnly;
     }
 
-    public String consoleTry() {
-        return this.consoleTry;
-    }
-
     void execute(CommandSender sender, String[] args) {
-        if (this.playerOnly && !(sender instanceof Player)) {
-            Messaging.get().getConsole().sendMessage(AdventureMessage.from(this.consoleTry));
+        if (this.playerOnly != null && !(sender instanceof Player)) {
+            Message message = this.playerOnly.consoleTry().length > 0 ? AdventureMessage.from(this.playerOnly.consoleTry()) : PluginLang.DEFAULT_CONSOLE_TRY.asMessage();
+            Messaging.get().getConsole().sendMessage(message);
             return;
         }
 
-        if (this.permission != null && !sender.hasPermission(this.permission)) {
+        if (this.permission != null && !(sender.hasPermission(this.permission.value()) || (this.permission.forOp() && sender.isOp()))) {
+            Message noPerm = this.permission.noPerm().length > 0 ? AdventureMessage.from(this.permission.noPerm()) : ConfigLang.NO_PERMISSION.asMessage();
             if (sender instanceof Player) {
-                Messaging.get().getMessagingMember((Player) sender).sendMessage(ConfigLang.NO_PERMISSION.asMessage());
+                Messaging.get().getMessagingMember((Player) sender).sendMessage(noPerm);
             } else {
-                Messaging.get().getConsole().sendMessage(ConfigLang.NO_PERMISSION.asMessage());
+                Messaging.get().getConsole().sendMessage(noPerm);
             }
             return;
         }
 
+        boolean shouldExecuteSub = true;
         if (this.executor != null) {
-            this.executor.accept(sender, args);
+            shouldExecuteSub = this.executor.accept(sender, args);
+        }
+
+        if (!shouldExecuteSub) {
+            return;
         }
 
         if (args.length > 0) {

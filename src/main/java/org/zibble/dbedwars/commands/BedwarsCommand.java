@@ -11,8 +11,8 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.setup.BaseTeamDetection;
-import org.zibble.dbedwars.setup.GenDetection;
+import org.zibble.dbedwars.game.setup.detection.BaseTeamDetection;
+import org.zibble.dbedwars.game.setup.detection.GenDetection;
 
 import java.util.Optional;
 

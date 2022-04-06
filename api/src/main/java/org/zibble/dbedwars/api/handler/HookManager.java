@@ -5,6 +5,7 @@ import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import org.zibble.dbedwars.api.hooks.selection.AreaSelectionHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 
@@ -30,6 +31,10 @@ public interface HookManager {
     NPCFactory getNpcFactory();
 
     void setNpcFactory(NPCFactory npcFactory);
+
+    AreaSelectionHook getAreaSelectionHook();
+
+    void setAreaSelectionHook(AreaSelectionHook areaSelectionHook);
 
     MultiOptionalHook<NickNameHook> getNickNameHooks();
 

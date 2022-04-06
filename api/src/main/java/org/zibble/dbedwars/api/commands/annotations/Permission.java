@@ -13,4 +13,6 @@ public @interface Permission {
 
     String[] noPerm() default {};
 
+    boolean forOp() default true;
+
 }

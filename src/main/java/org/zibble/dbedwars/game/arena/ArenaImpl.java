@@ -47,7 +47,6 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
     private final String gameId;
     private final ArenaDataHolderImpl dataHolder;
-    private String worldFileName;
     private final ArenaSettingsImpl settings;
     private ArenaStatus status;
 
@@ -120,7 +119,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     @Override
     public ActionFuture<World> loadWorld() {
         return this.plugin.getHookManager().getWorldAdaptor().loadWorldFromSave(
-                worldFileName,
+                this.getDataHolder().getWorldFileName(),
                 this.gameId,
                 this.getDataHolder().getEnvironment());
     }

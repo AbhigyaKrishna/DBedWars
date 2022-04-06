@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 public abstract class CommandNode extends AbstractCommandNode {
 
     @Override
-    public final void accept(CommandSender sender, String[] args) {
-        this.execute(sender, args);
+    public final boolean accept(CommandSender sender, String[] args) {
+        return this.execute(sender, args);
     }
 
-    public abstract void execute(CommandSender sender, String[] args);
+    public abstract boolean execute(CommandSender sender, String[] args);
 
 }

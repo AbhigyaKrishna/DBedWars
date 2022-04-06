@@ -28,7 +28,7 @@ public class GameManagerImpl implements GameManager {
 
     private final DBedwars plugin;
 
-    private final Location lobbySpawn;
+    private Location lobbySpawn;
     private final Set<ArenaDataHolderImpl> arenaDataHolders;
     private final Set<DropInfo> dropTypes;
     private final Set<ShopInfoImpl> shops;
@@ -111,6 +111,10 @@ public class GameManagerImpl implements GameManager {
 
     public Location getLobbySpawn() {
         return lobbySpawn;
+    }
+
+    public void setLobbySpawn(Location lobbySpawn) {
+        this.lobbySpawn = lobbySpawn;
     }
 
     public Optional<? extends ArenaPlayer> getArenaPlayer(Player player) {

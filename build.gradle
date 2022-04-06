@@ -20,7 +20,7 @@ allprojects {
             url 'https://repo.zibble.org/nexus/repository/maven-snapshots/'
         }
         maven {
-            url 'https://repo.pepedevs.com/nexus/repository/public-libs/'
+            url 'https://repo.zibble.org/nexus/repository/public-libs/'
         }
         maven {
             name = 'spigot-snapshots'
@@ -30,11 +30,16 @@ allprojects {
             name = 'sonatype'
             url = 'https://oss.sonatype.org/content/groups/public/'
         }
+        maven {
+            name = 'jitpack'
+            url = "https://jitpack.io"
+        }
     }
 
     dependencies {
         compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.9-SNAPSHOT'
         implementation 'org.zibble:if-spigot:1.1-SNAPSHOT'
+        compileOnly 'com.github.retrooper.packetevents:api:2.0-SNAPSHOT'
     }
 
     build {
@@ -98,10 +103,6 @@ repositories {
     maven {
         name = 'spigot-public'
         url = "https://hub.spigotmc.org/nexus/content/groups/public/"
-    }
-    maven {
-        name = 'jitpack'
-        url = "https://jitpack.io"
     }
     maven {
         name = 'glaremasters'

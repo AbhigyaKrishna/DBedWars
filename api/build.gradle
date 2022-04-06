@@ -20,7 +20,7 @@ dependencies {
 
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 
-    api 'com.github.cryptomorin:XSeries:8.6.2'
+    api 'com.github.cryptomorin:XSeries:8.7.0'
     api 'xyz.xenondevs:particle:1.7'
     api 'org.zibble:inventory-framework:1.1-SNAPSHOT'
 }

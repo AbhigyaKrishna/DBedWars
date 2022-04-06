@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.pepedevs.radium.adventure.MiniMessageUtils;
-import com.pepedevs.radium.utils.math.LocationUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
@@ -15,21 +14,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
-import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
-import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.NBTUtils;
-import org.zibble.dbedwars.api.util.RandomList;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
@@ -51,7 +46,6 @@ import java.util.function.Predicate;
 
 public class Util {
 
-
     private static final FieldWrapper fieldFireballDirX;
     private static final FieldWrapper fieldFireballDirY;
     private static final FieldWrapper fieldFireballDirZ;
@@ -71,14 +65,6 @@ public class Util {
         Object item = NMS_ITEM_STACK_GET_ITEM.invoke(nmsItemStack);
         NMS_ITEM_C.invoke(item, stackSize);
         return (ItemStack) CRAFT_ITEM_STACK_AS_BUKKIT_COPY.invoke(null, nmsItemStack);
-    }
-
-    public static Block findBed(Location location, byte x, byte y, byte z) {
-        Location corner = location.clone().add(x, y, z);
-        Location corner2 = location.clone().subtract(x, y, z);
-        Set<Block> blocks = LocationUtils.getBlocksBetween(corner, corner2);
-
-        return blocks.stream().filter(Util::isBed).findFirst().orElse(null);
     }
 
     public static boolean isBed(Block block) {

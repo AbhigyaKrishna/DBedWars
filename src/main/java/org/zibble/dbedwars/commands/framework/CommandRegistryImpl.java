@@ -15,7 +15,10 @@ import org.zibble.dbedwars.commands.framework.command.CommandHolder;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CommandRegistryImpl implements CommandRegistry {
 
@@ -33,8 +36,8 @@ public class CommandRegistryImpl implements CommandRegistry {
                 .build();
     }
 
-    public void registerBaseNode(String name, String[] aliases, String permission, boolean playerOnly, String consoleTry, AbstractCommandNode node) {
-        CommandHolder commandHolder = new CommandHolder(name, aliases, permission, playerOnly, consoleTry, node);
+    public void registerBaseNode(String name, String[] aliases, Permission permission, PlayerOnly playerOnly, AbstractCommandNode node) {
+        CommandHolder commandHolder = new CommandHolder(name, aliases, permission, playerOnly, node);
         this.baseCommands.add(commandHolder);
         this.bukkitRegistryHandler.registerCommand(commandHolder);
     }
@@ -115,8 +118,7 @@ public class CommandRegistryImpl implements CommandRegistry {
         ParentCommandNode parent = clazz.getAnnotation(ParentCommandNode.class);
         Permission permission = clazz.getAnnotation(Permission.class);
         PlayerOnly playerOnly = clazz.getAnnotation(PlayerOnly.class);
-        this.registerBaseNode(parent.value(), parent.aliases(), permission == null ? null : permission.value(),
-                playerOnly != null, playerOnly == null ? null : playerOnly.consoleTry(), node);
+        this.registerBaseNode(parent.value(), parent.aliases(), permission, playerOnly, node);
     }
 
     private void registerSubNode(AbstractCommandNode node) {
@@ -127,8 +129,7 @@ public class CommandRegistryImpl implements CommandRegistry {
             throw new IllegalArgumentException("Invalid path at for node: " + subCommandNode.parent());
         Permission permission = clazz.getAnnotation(Permission.class);
         PlayerOnly playerOnly = clazz.getAnnotation(PlayerOnly.class);
-        CommandHolder sub = new CommandHolder(subCommandNode.value(), subCommandNode.aliases(), permission == null ? null : permission.value(),
-                playerOnly != null, playerOnly == null ? null : playerOnly.consoleTry(), node);
+        CommandHolder sub = new CommandHolder(subCommandNode.value(), subCommandNode.aliases(), permission, playerOnly, node);
         currentParent.addSubCommand(sub);
     }
 

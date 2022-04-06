@@ -12,15 +12,16 @@ import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
+import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.utils.PluginFileUtils;
 
 import java.io.File;
 
-@SubCommandNode(parent = "bw", value = "setup")
+@PlayerOnly
 @Permission(value = "dbedwars.setup")
-@PlayerOnly(consoleTry = "<red>You need to be a player to run this command!")
+@SubCommandNode(parent = "bw", value = "setuparena")
 public class SetupArenaCMD extends CommandNode {
 
     private final DBedwars plugin;
@@ -32,22 +33,34 @@ public class SetupArenaCMD extends CommandNode {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         PlayerMember member = messaging.getMessagingMember(player);
 
+        if (this.plugin.getGameManager().getLobbySpawn() == null) {
+            member.sendMessage(AdventureMessage.from("<red>You need to set the lobby spawn first!"));
+            member.sendMessage(AdventureMessage.from("<red>Use <yellow><click:run_command:'/bw setlobby'><hover:show_text:'<green>Click!'>/bw setlobby</hover></click> <red>to set the lobby spawn!"));
+            return false;
+        }
+
+        if (this.plugin.getSetupSessionManager().isInSetupSession((Player) sender)) {
+            member.sendMessage(PluginLang.ALREADY_IN_SETUP_SESSION.asMessage());
+            return false;
+        }
+
         if (args.length < 1) {
             member.sendMessage(AdventureMessage.from("<red>You need to specify a world name!"));
-            return;
+            return false;
         }
 
         String identifier = args[0];
         if (!PluginFileUtils.checkWorldFolder(new File(identifier))) {
             member.sendMessage(AdventureMessage.from("<red>The world you specified does not exist!"));
-            return;
+            return false;
         }
 
         this.plugin.getHookManager().getWorldAdaptor().loadWorldFromFolder(identifier, World.Environment.NORMAL).thenAccept(world -> {
+            world.setKeepSpawnInMemory(true);
             SchedulerUtils.runTask(() -> player.teleport(world.getSpawnLocation()));
             ArenaDataHolderImpl dataHolder = this.plugin.getGameManager().getDataHolder(identifier);
             if (dataHolder == null) {
@@ -55,8 +68,10 @@ public class SetupArenaCMD extends CommandNode {
                 this.plugin.getGameManager().getArenaDataHolders().add(dataHolder);
             }
             SetupSession setupSession = this.plugin.getSetupSessionManager().startSetupSession(world, player, dataHolder);
-            // TODO: 31-03-2022 prompt
+            setupSession.promptWholeList();
         });
+
+        return true;
     }
 
 }

@@ -1,7 +1,5 @@
 package org.zibble.dbedwars.commands.setup;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.commands.annotations.Permission;
 import org.zibble.dbedwars.api.commands.annotations.PlayerOnly;
@@ -13,17 +11,13 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.setup.SetupSession;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
-import org.zibble.dbedwars.game.setup.SetupUtil;
-import org.zibble.dbedwars.game.setup.detection.BedDetection;
-
-import java.util.Optional;
 
 @PlayerOnly
 @Permission("dbedwars.setup")
-@SubCommandNode(parent = "bw.setup", value = "setbed")
-public class SetupTeamBed extends SetupSessionOptionalTeamCommand {
+@SubCommandNode(parent = "bw.setup", value = "removeteam")
+public class SetupRemoveTeam extends SetupSessionTeamCommand {
 
-    public SetupTeamBed(SetupSessionManager manager, Messaging messaging) {
+    public SetupRemoveTeam(SetupSessionManager manager, Messaging messaging) {
         super(manager, messaging);
     }
 
@@ -34,22 +28,12 @@ public class SetupTeamBed extends SetupSessionOptionalTeamCommand {
 
     @Override
     protected Message invalidArgs(PlayerMember member, Player player, SetupSession setupSession, String[] args) {
-        return PluginLang.SETUP_SESSION_TEAM_BED_USAGE.asMessage();
-    }
-
-    @Override
-    protected Color findTeam(Player player, SetupSession session, Location location) {
-        return SetupUtil.getNearestTeamViaHologram(location, session, 30);
+        return PluginLang.SETUP_SESSION_REMOVE_TEAM_USAGE.asMessage();
     }
 
     @Override
     protected void execute(PlayerMember member, Player player, SetupSession setupSession, Color color, String[] args) {
-        Optional<Block> bed = BedDetection.detect(player.getLocation(), 5);
-        if (bed.isPresent()) {
-            setupSession.setupTeamBed(color, bed.get().getLocation());
-        } else {
-            member.sendMessage(PluginLang.SETUP_SESSION_TEAM_BED_NOT_FOUND.asMessage());
-        }
+        setupSession.removeTeam(color);
     }
 
 }

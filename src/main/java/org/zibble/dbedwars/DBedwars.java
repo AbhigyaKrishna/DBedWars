@@ -90,9 +90,7 @@ public final class DBedwars extends PluginAdapter {
         PacketEvents.getAPI().init();
         InventoryFramework.init(r -> this.threadHandler.submitAsync(r::run));
 
-        this.getServer()
-                .getServicesManager()
-                .register(DBedWarsAPI.class, new APIImpl(this), this, ServicePriority.Highest);
+        this.getServer().getServicesManager().register(DBedWarsAPI.class, new APIImpl(this), this, ServicePriority.Highest);
 
         Properties properties = new Properties();
 
@@ -130,7 +128,7 @@ public final class DBedwars extends PluginAdapter {
         this.gameManager = new GameManagerImpl(this);
         this.customItemHandler = new CustomItemHandler(this);
         this.hologramFactoryImpl = new HologramManager();
-        this.setupSessionManager = new SetupSessionManager(this);
+        this.setupSessionManager = new SetupSessionManager();
         this.menuHandler = new MenuHandler(this);
 
         this.threadHandler.submitAsync(() -> {

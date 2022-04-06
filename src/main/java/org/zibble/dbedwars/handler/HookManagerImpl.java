@@ -8,6 +8,7 @@ import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardHook;
+import org.zibble.dbedwars.api.hooks.selection.AreaSelectionHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
@@ -19,6 +20,7 @@ import org.zibble.dbedwars.hooks.cmi.CMIHook;
 import org.zibble.dbedwars.hooks.defaults.npc.NPCFactoryImpl;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
+import org.zibble.dbedwars.hooks.defaults.selection.AreaSelectionHookImpl;
 import org.zibble.dbedwars.hooks.defaults.world.WorldAdaptorImpl;
 import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
 import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
@@ -48,6 +50,7 @@ public class HookManagerImpl implements HookManager {
     private ScoreboardHook scoreboardHook;
     private PlaceholderHook placeholderHook;
     private NPCFactory npcFactory;
+    private AreaSelectionHook areaSelectionHook;
     private MultiOptionalHookImpl<VanishHook> vanishHook;
     private MultiOptionalHookImpl<NickNameHook> nickNameHooks;
     private SkinRestorerHook skinRestorerHook;
@@ -92,6 +95,7 @@ public class HookManagerImpl implements HookManager {
             this.placeholderHook = new PlaceholderHookImpl();
 
         this.npcFactory = new NPCFactoryImpl();
+        this.areaSelectionHook = new AreaSelectionHookImpl();
 
         this.vanishHook = new MultiOptionalHookImpl<>();
         this.nickNameHooks = new MultiOptionalHookImpl<>();
@@ -126,6 +130,7 @@ public class HookManagerImpl implements HookManager {
         this.scoreboardHook.init();
         this.placeholderHook.init();
         this.npcFactory.init();
+        this.areaSelectionHook.init();
         this.vanishHook.init();
         this.nickNameHooks.init();
     }
@@ -186,6 +191,16 @@ public class HookManagerImpl implements HookManager {
     @Override
     public void setNpcFactory(NPCFactory npcFactory) {
         this.npcFactory = npcFactory;
+    }
+
+    @Override
+    public AreaSelectionHook getAreaSelectionHook() {
+        return areaSelectionHook;
+    }
+
+    @Override
+    public void setAreaSelectionHook(AreaSelectionHook areaSelectionHook) {
+        this.areaSelectionHook = areaSelectionHook;
     }
 
     @Override

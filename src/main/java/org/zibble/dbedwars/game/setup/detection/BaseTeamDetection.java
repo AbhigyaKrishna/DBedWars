@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.setup;
+package org.zibble.dbedwars.game.setup.detection;
 
 import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;

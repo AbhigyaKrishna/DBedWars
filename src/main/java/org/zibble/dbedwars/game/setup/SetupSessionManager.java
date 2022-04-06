@@ -2,7 +2,6 @@ package org.zibble.dbedwars.game.setup;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 
 import java.util.Map;
@@ -12,10 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SetupSessionManager {
 
     private final Map<UUID, SetupSession> onGoingSessions;
-    private final DBedwars plugin;
 
-    public SetupSessionManager(DBedwars plugin) {
-        this.plugin = plugin;
+    public SetupSessionManager() {
         this.onGoingSessions = new ConcurrentHashMap<>(0);
     }
 

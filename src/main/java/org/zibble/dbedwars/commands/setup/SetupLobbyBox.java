@@ -11,16 +11,25 @@ import org.zibble.dbedwars.game.setup.SetupSessionManager;
 
 @PlayerOnly
 @Permission("dbedwars.setup")
-@SubCommandNode(parent = "bw.setup", value = "disable_mobs")
-public class SetupArenaDisableMobSpawning extends SetupSessionCommand {
+@SubCommandNode(parent = "bw.setup", value = "lobbyarea")
+public class SetupLobbyBox extends SetupSessionCommand {
 
-    public SetupArenaDisableMobSpawning(SetupSessionManager manager, Messaging messaging) {
+    public SetupLobbyBox(SetupSessionManager manager, Messaging messaging) {
         super(manager, messaging);
     }
 
     @Override
     protected void execute(PlayerMember member, Player player, SetupSession setupSession, String[] args) {
-        setupSession.disableMobSpawning();
+        switch (args[0]) {
+            case "1":
+                setupSession.setupWaitingBoxCorner1(player.getLocation());
+                break;
+            case "2":
+                setupSession.setupWaitingBoxCorner2(player.getLocation());
+                break;
+            default:
+                setupSession.setupWaitingBoxArea();
+        }
     }
 
 }

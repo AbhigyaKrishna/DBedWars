@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.zibble.dbedwars.api.game.ArenaDataHolder;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
@@ -21,6 +22,7 @@ import java.util.Set;
 public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     private final String id;
+    private String worldFileName;
     private Message customName;
     private int maxPlayersPerTeam;
     private int minPlayersToStart;
@@ -29,8 +31,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     private LocationXYZYP waitingLocation;
     private LocationXYZYP spectatorLocation;
-    private LocationXYZ lobbyCorner1;
-    private LocationXYZ lobbyCorner2;
+    private BoundingBox lobbyArea;
 
     private final Map<Color, TeamDataHolderImpl> teams;
     private final Set<SpawnerDataHolderImpl> spawners;
@@ -44,8 +45,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         holder.setEnvironment(config.getEnvironment());
         holder.setWaitingLocation(LocationXYZYP.valueOf(config.getLobbyLocation()));
         holder.setSpectatorLocation(LocationXYZYP.valueOf(config.getSpectatorLocation()));
-        holder.setLobbyCorner1(LocationXYZ.valueOf(config.getLobbyPosMax()));
-        holder.setLobbyCorner2(LocationXYZ.valueOf(config.getLobbyPosMin()));
+        holder.setLobbyArea(new BoundingBox(LocationXYZ.valueOf(config.getLobbyPosMax()).toVector(), LocationXYZ.valueOf(config.getLobbyPosMin()).toVector()));
 
         for (Map.Entry<String, ConfigurableArena.ConfigurableTeam> entry : config.getTeams().entrySet()) {
             TeamDataHolderImpl team = TeamDataHolderImpl.fromConfig(entry.getValue());
@@ -72,6 +72,14 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     @Override
     public String getId() {
         return id;
+    }
+
+    public String getWorldFileName() {
+        return this.worldFileName;
+    }
+
+    public void setWorldFileName(String worldFileName) {
+        this.worldFileName = worldFileName;
     }
 
     @Override
@@ -143,23 +151,13 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     }
 
     @Override
-    public LocationXYZ getLobbyCorner1() {
-        return lobbyCorner1;
+    public BoundingBox getLobbyArea() {
+        return lobbyArea;
     }
 
     @Override
-    public void setLobbyCorner1(LocationXYZ lobbyCorner1) {
-        this.lobbyCorner1 = lobbyCorner1;
-    }
-
-    @Override
-    public LocationXYZ getLobbyCorner2() {
-        return lobbyCorner2;
-    }
-
-    @Override
-    public void setLobbyCorner2(LocationXYZ lobbyCorner2) {
-        this.lobbyCorner2 = lobbyCorner2;
+    public void setLobbyArea(BoundingBox lobbyArea) {
+        this.lobbyArea = lobbyArea;
     }
 
     @Override
