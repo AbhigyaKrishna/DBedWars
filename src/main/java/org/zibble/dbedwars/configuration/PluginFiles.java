@@ -10,15 +10,21 @@ public class PluginFiles {
 
         public static final File PLUGIN_DATA_FOLDER = DBedwars.getInstance().getDataFolder();
         public static final File ARENA = new File(PLUGIN_DATA_FOLDER, "arena");
-        public static final File ARENA_DATA = new File(ARENA, "data");
-        public static final File ARENA_DATA_ARENACACHE = new File(ARENA_DATA, "arenacache");
-        public static final File ARENA_DATA_SETTINGS = new File(ARENA_DATA, "settings");
+        public static final File DATA = new File(ARENA, "data");
+        public static final File ARENA_DATA_ARENACACHE = new File(DATA, "arenacache");
+        public static final File ARENA_DATA_SETTINGS = new File(DATA, "settings");
         public static final File HOOKS = new File(PLUGIN_DATA_FOLDER, "hooks");
         public static final File LANGUAGES = new File(PLUGIN_DATA_FOLDER, "languages");
         public static final File CACHE = new File(PLUGIN_DATA_FOLDER, ".cache");
         public static final File LIBRARIES_CACHE = new File(CACHE, ".libraries");
         public static final File ITEMS = new File(PLUGIN_DATA_FOLDER, "items");
         public static final File SHOPS = new File(PLUGIN_DATA_FOLDER, "shops");
+
+    }
+
+    public static class Data {
+
+        public static final File LOBBY_SPAWN = new File(Folder.DATA, "lobbyspawnlocation.yml");
 
     }
 
@@ -46,7 +52,7 @@ public class PluginFiles {
         return new File[]{
                 Folder.PLUGIN_DATA_FOLDER,
                 Folder.ARENA,
-                Folder.ARENA_DATA,
+                Folder.DATA,
                 Folder.ARENA_DATA_ARENACACHE,
                 Folder.ARENA_DATA_SETTINGS,
                 Folder.HOOKS,

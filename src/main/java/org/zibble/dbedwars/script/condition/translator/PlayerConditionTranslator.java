@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.script.ScriptVariable;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.condition.impl.PlayerCondition;
 
 public class PlayerConditionTranslator extends IConditionTranslator<Player, PlayerCondition<?>> {
@@ -40,7 +40,7 @@ public class PlayerConditionTranslator extends IConditionTranslator<Player, Play
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of("PLAYER");
     }
 

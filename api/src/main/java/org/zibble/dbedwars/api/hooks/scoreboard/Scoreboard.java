@@ -2,13 +2,13 @@ package org.zibble.dbedwars.api.hooks.scoreboard;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public interface Scoreboard extends Keyed<String> {
+public interface Scoreboard extends Keyed {
 
     void setTitle(Message title);
 

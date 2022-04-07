@@ -21,6 +21,7 @@ arena:
     death: -1
 
   disable-hunger: true
+  game-lobby-scoreboard: 'game-lobby'
 
 # Respawning
 respawn-items:

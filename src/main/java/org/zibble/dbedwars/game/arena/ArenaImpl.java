@@ -2,8 +2,10 @@ package org.zibble.dbedwars.game.arena;
 
 import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
@@ -16,10 +18,12 @@ import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.game.statistics.BedBrokenStatistics;
 import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.member.MessagingMember;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
+import org.zibble.dbedwars.api.messaging.placeholders.PlayerPlaceholderEntry;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
@@ -33,11 +37,14 @@ import org.zibble.dbedwars.game.arena.spawner.SpawnerImpl;
 import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
+import org.zibble.dbedwars.task.implementations.ArenaStartTask;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 import org.zibble.dbedwars.utils.DatabaseUtils;
 import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.gamerule.GameRuleDisableDaylightCycle;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 
@@ -49,6 +56,9 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     private final ArenaDataHolderImpl dataHolder;
     private final ArenaSettingsImpl settings;
     private ArenaStatus status;
+    private ArenaStartTask startTask;
+    private ScoreboardData gameLobbyScoreboard;
+    private ScoreboardData gameScoreboard;
 
     private World world;
     private Instant startTime;
@@ -79,6 +89,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.removed = new HashMap<>(0);
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);
+        this.gameLobbyScoreboard = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getGameLobbyScoreboard() == null ? null :
+                this.plugin.getGameManager().getScoreboardData().get(this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getGameLobbyScoreboard());
     }
 
     @Override
@@ -214,6 +226,23 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
+    public void scheduleStart(int countdown) {
+        this.setStatus(ArenaStatus.STARTING);
+        this.startTask = new ArenaStartTask(this, countdown);
+        this.plugin.getThreadHandler().submitAsync(this.startTask);
+    }
+
+    @Override
+    public boolean interruptStart() {
+        if (this.getStatus() != ArenaStatus.STARTING) return false;
+        if (this.startTask == null) return false;
+        this.startTask.setCancelled(true);
+        this.startTask = null;
+        this.setStatus(ArenaStatus.WAITING);
+        return true;
+    }
+
+    @Override
     public boolean start(boolean force) {
         if (!force && this.players.size() < this.getDataHolder().getMinPlayersToStart()) {
             return false;
@@ -255,7 +284,12 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
             team.complete(teamData);
         }
 
+        for (ArenaPlayerImpl player : this.players) {
+            player.showScoreboard(this.gameScoreboard, this.getRunningScoreboardPlaceholders());
+        }
+
         this.startTime = Instant.now();
+        this.startTask = null;
 
         return true;
     }
@@ -292,7 +326,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         }
 
         Message message = ConfigLang.ARENA_JOIN_MESSAGE.asMessage();
-        message.addPlaceholders(this.getJoinPlaceholders(player));
+        message.addPlaceholders(this.getPlaceholders(player));
 
         PlayerJoinArenaLobbyEvent event = new PlayerJoinArenaLobbyEvent(player, this, this.getDataHolder().getWaitingLocation().toBukkit(this.world), message);
 
@@ -306,6 +340,9 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         ArenaPlayerImpl arenaPlayer = new ArenaPlayerImpl(this.plugin, player, this);
         this.players.add(arenaPlayer);
         arenaPlayer.teleport(event.getLocation());
+        if (this.gameLobbyScoreboard != null) {
+            arenaPlayer.showScoreboard(this.gameLobbyScoreboard, this.getWaitingScoreboardPlaceholders());
+        }
 
         this.sendMessage(event.getJoinMessage());
 
@@ -314,7 +351,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
         if (event.getArena().getPlayers().size() >= event.getArena().getDataHolder().getMinPlayersToStart()
                 && event.getArena().getStatus() != ArenaStatus.STARTING) {
-            this.plugin.getGameManager().startArenaSequence(event.getArena());
+            this.scheduleStart(this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer());
         }
 
         return true;
@@ -353,7 +390,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.removed.remove(p);
 
         Message message = ConfigLang.REJOIN_BROADCAST_MESSAGE.asMessage();
-        message.addPlaceholders(this.getJoinPlaceholders(player));
+        message.addPlaceholders(this.getPlaceholders(player));
 
         PlayerRejoinArenaEvent event = new PlayerRejoinArenaEvent(player, this, this.getDataHolder().getSpectatorLocation().toBukkit(this.world), message);
 
@@ -479,8 +516,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         if (!Util.isBed(bed)) return;
 
         final PlaceholderEntry[] bedBrokenPlaceholders = new PlaceholderEntry[]{
-                PlaceholderEntry.symbol("defend_team_color", Util.getConfigCode(affected.getColor())),
-                PlaceholderEntry.symbol("attack_team_color", Util.getConfigCode(player.getTeam().getColor())),
+                PlaceholderEntry.symbol("defend_team_color", ConfigurationUtil.getConfigCode(affected.getColor())),
+                PlaceholderEntry.symbol("attack_team_color", ConfigurationUtil.getConfigCode(player.getTeam().getColor())),
                 PlaceholderEntry.symbol("defend_team_name", affected.getName()),
                 PlaceholderEntry.symbol("attack_team_name", player.getTeam().getName()),
                 PlaceholderEntry.symbol("attack_name", player.getName())
@@ -500,6 +537,36 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         // TODO: Add more effect
         this.sendMessage(event.getBedBrokenMessages(), member -> ((ArenaPlayer) member).getTeam().equals(event.getAffectedTeam()));
         event.getAffectedTeam().sendMessage(event.getBedBrokenMessages());
+    }
+
+    @Override
+    public ScoreboardData getGameLobbyScoreboard() {
+        return gameLobbyScoreboard;
+    }
+
+    @Override
+    public void setGameLobbyScoreboard(ScoreboardData gameLobbyScoreboard, boolean update) {
+        this.gameLobbyScoreboard = gameLobbyScoreboard;
+        if (update && this.checkState(ArenaStatus.WAITING, ArenaStatus.STARTING)) {
+            for (ArenaPlayerImpl player : this.players) {
+                player.showScoreboard(this.gameLobbyScoreboard, this.getPlaceholders(player.getPlayer()));
+            }
+        }
+    }
+
+    @Override
+    public ScoreboardData getGameScoreboard() {
+        return gameScoreboard;
+    }
+
+    @Override
+    public void setGameScoreboard(ScoreboardData gameScoreboard, boolean update) {
+        this.gameScoreboard = gameScoreboard;
+        if (update && this.checkState(ArenaStatus.RUNNING)) {
+            for (ArenaPlayerImpl player : this.players) {
+                player.showScoreboard(this.gameScoreboard, this.getPlaceholders(player.getPlayer()));
+            }
+        }
     }
 
     @Override
@@ -533,12 +600,67 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         return false;
     }
 
-    Placeholder[] getJoinPlaceholders(Player player) {
-        return new PlaceholderEntry[]{
+    final Placeholder[] getPlaceholders(Player player) {
+        // TODO: 06-04-2022 category placeholder
+        return new Placeholder[]{
                 PlaceholderEntry.symbol("player_name", player.getName()),
                 PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
-                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam()))
+                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
+                PlaceholderEntry.symbol("arena_name", this.getName()),
+                PlaceholderEntry.symbol("game_id", this.getGameId()),
+                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
         };
+    }
+
+    final Placeholder[] getWaitingScoreboardPlaceholders() {
+        List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
+                PlayerPlaceholderEntry.symbol("player_name", HumanEntity::getName),
+                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
+                PlaceholderEntry.symbol("arena_name", this.getName()),
+                PlaceholderEntry.symbol("game_id", this.getGameId()),
+                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
+                PlaceholderEntry.symbol("start_countdown", () -> this.startTask == null ? "" : "in " + this.startTask.getCountdown().get()),
+                PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date()))
+        ));
+        for (Color value : Color.VALUES) {
+            placeholders.add(PlaceholderEntry.symbol("color" + value.name().toLowerCase(), value.getName()));
+        }
+
+        return placeholders.toArray(new Placeholder[0]);
+    }
+
+    final Placeholder[] getRunningScoreboardPlaceholders() {
+        List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
+                PlayerPlaceholderEntry.symbol("player_name", HumanEntity::getName),
+                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
+                PlaceholderEntry.symbol("arena_name", this.getName()),
+                PlaceholderEntry.symbol("game_id", this.getGameId()),
+                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
+                PlayerPlaceholderEntry.symbol("current_player_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.KILLS)) : "N/A"),
+                PlayerPlaceholderEntry.symbol("current_player_final_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.FINAL_KILLS)) : "N/A"),
+                PlayerPlaceholderEntry.symbol("current_player_beds", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS)) : "N/A"),
+                PlayerPlaceholderEntry.symbol("current_player_deaths", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.DEATH)) : "N/A")
+        ));
+        for (TeamImpl team : this.teams) {
+            placeholders.add(PlaceholderEntry.symbol("team_" + team.getName().toLowerCase() + "_existence", () -> {
+                if (team.isEliminated()) {
+                    return ConfigurationUtil.getConfigCode(Color.RED) + "✘";
+                } else if (team.isBedBroken()) {
+                    return ConfigurationUtil.getConfigCode(Color.RED) + team.getPlayers().size();
+                } else {
+                    return ConfigurationUtil.getConfigCode(Color.GREEN) + "✔";
+                }
+            }));
+        }
+        for (Color value : Color.VALUES) {
+            placeholders.add(PlaceholderEntry.symbol("color" + value.name().toLowerCase(), value.getName()));
+        }
+
+        return placeholders.toArray(new Placeholder[0]);
     }
 
 }

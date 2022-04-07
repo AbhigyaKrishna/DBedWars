@@ -2,6 +2,7 @@ package org.zibble.dbedwars.handler;
 
 import com.google.gson.JsonElement;
 import com.google.gson.stream.MalformedJsonException;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
@@ -13,6 +14,7 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class ConfigHandler {
@@ -32,6 +34,7 @@ public class ConfigHandler {
     private ConfigurableDatabase database;
     private ConfigurableCustomItems customItems;
     private ConfigurableHologram holograms;
+    private ConfigurableLocation lobbyLocation;
 
     public ConfigHandler(DBedwars plugin) {
         this.plugin = plugin;
@@ -105,6 +108,11 @@ public class ConfigHandler {
         this.customItems.load(YamlConfiguration.loadConfiguration(PluginFiles.CUSTOM_ITEMS));
         this.holograms = new ConfigurableHologram();
         this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
+
+        if (PluginFiles.Data.LOBBY_SPAWN.exists()) {
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN);
+            this.lobbyLocation = ConfigurableLocation.of(configuration);
+        }
     }
 
     public void loadItems() {
@@ -180,6 +188,19 @@ public class ConfigHandler {
         }
     }
 
+    public void saveLobbyLocation(Location location) {
+        ConfigurableLocation cfg = new ConfigurableLocation(location);
+        if (!PluginFiles.Data.LOBBY_SPAWN.exists()) {
+            try {
+                PluginFiles.Data.LOBBY_SPAWN.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        cfg.save(YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN));
+        this.lobbyLocation = cfg;
+    }
+
     public MainConfiguration getMainConfiguration() {
         return this.mainConfiguration;
     }
@@ -222,6 +243,10 @@ public class ConfigHandler {
 
     public ConfigurableHologram getHolograms() {
         return holograms;
+    }
+
+    public ConfigurableLocation getLobbyLocation() {
+        return lobbyLocation;
     }
 
 }

@@ -10,6 +10,7 @@ import org.zibble.dbedwars.api.game.settings.ArenaSettings;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.game.statistics.BedBrokenStatistics;
 import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
@@ -61,6 +62,10 @@ public interface Arena extends AbstractMessaging {
 
     boolean isRunning();
 
+    void scheduleStart(int countdown);
+
+    boolean interruptStart();
+
     boolean start(boolean force);
 
     boolean end();
@@ -104,6 +109,14 @@ public interface Arena extends AbstractMessaging {
     boolean isArenaPlayer(Player player);
 
     void destroyBed(ArenaPlayer player, Team affected);
+
+    ScoreboardData getGameLobbyScoreboard();
+
+    void setGameLobbyScoreboard(ScoreboardData gameLobbyScoreboard, boolean update);
+
+    ScoreboardData getGameScoreboard();
+
+    void setGameScoreboard(ScoreboardData gameScoreboard, boolean update);
 
     DeathStatistics getDeathStatistics();
 

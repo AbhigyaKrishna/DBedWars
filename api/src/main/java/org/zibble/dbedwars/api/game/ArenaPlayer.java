@@ -4,9 +4,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.game.statistics.ResourceStatistics;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.objects.points.Points;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -23,7 +25,7 @@ public interface ArenaPlayer extends ArenaSpectator {
 
     Scoreboard getScoreboard();
 
-    void setScoreboard(Scoreboard scoreboard);
+    void showScoreboard(ScoreboardData data, Placeholder... placeholders);
 
     void kill(DeathCause reason);
 
@@ -55,10 +57,10 @@ public interface ArenaPlayer extends ArenaSpectator {
 
     class PlayerPoints {
 
-        public static final Key<String> KILLS = Key.of("kills");
-        public static final Key<String> DEATH = Key.of("death");
-        public static final Key<String> BEDS = Key.of("beds");
-        public static final Key<String> FINAL_KILLS = Key.of("final_kills");
+        public static final Key KILLS = Key.of("kills");
+        public static final Key DEATH = Key.of("death");
+        public static final Key BEDS = Key.of("beds");
+        public static final Key FINAL_KILLS = Key.of("final_kills");
 
     }
 

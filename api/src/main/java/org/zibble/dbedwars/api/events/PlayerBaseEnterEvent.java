@@ -1,12 +1,11 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.CustomEvent;
 import org.bukkit.event.HandlerList;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
 
-public class PlayerBaseEnterEvent extends CustomEvent {
+public class PlayerBaseEnterEvent extends CustomEventCancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 

@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.World;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.ServicePriority;
@@ -32,6 +33,7 @@ import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.gamerule.GameRuleHandler;
 import org.zibble.inventoryframework.InventoryFramework;
 
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
@@ -106,6 +108,7 @@ public final class DBedwars extends PluginAdapter {
         super.onDisable();
         this.threadHandler.destroy();
         PacketEvents.getAPI().terminate();
+        Arrays.stream(this.listeners).forEach(HandlerList::unregisterAll);
     }
 
     @Override
@@ -125,7 +128,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpHandlers() {
-        this.gameManager = new GameManagerImpl(this);
+        this.gameManager = new GameManagerImpl(this, this.configHandler.getLobbyLocation());
         this.customItemHandler = new CustomItemHandler(this);
         this.hologramFactoryImpl = new HologramManager();
         this.setupSessionManager = new SetupSessionManager();

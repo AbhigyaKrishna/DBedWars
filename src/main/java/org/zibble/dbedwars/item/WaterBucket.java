@@ -3,12 +3,14 @@ package org.zibble.dbedwars.item;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
 
 public class WaterBucket extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("WATER_BUCKET");
 
     private final boolean removeOnUse;
 
@@ -26,8 +28,8 @@ public class WaterBucket extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("WATER_BUCKET");
+    public Key getKey() {
+        return KEY;
     }
 
 }

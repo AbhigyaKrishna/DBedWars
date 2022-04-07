@@ -16,7 +16,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
@@ -25,6 +25,8 @@ import org.zibble.dbedwars.utils.Util;
 import java.util.Optional;
 
 public class DreamDefenderSpawnEgg extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("DREAM_DEFENDER");
 
     public static final FixedMetadataValue DREAM_DEFENDER_SPAWN_EGG_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
@@ -42,22 +44,16 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
     @Override
     public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         if (playerInteractEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
-        if (arena == null) return;
-        Optional<? extends ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = this.plugin.getGameManager().getArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
-        //TODO USELESS SPECTATOR CHECK
         Location spawn = playerInteractEvent.getClickedBlock().getLocation().add(0, 2, 0);
         IronGolem ironGolem = spawn.getWorld().spawn(spawn, IronGolem.class);
         Util.useItem(player);
         ironGolem.setMetadata("isDBedwarsGolem", DREAM_DEFENDER_SPAWN_EGG_META);
-        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE, DreamDefenderChaseFeature.class, new Acceptor<DreamDefenderChaseFeature>() {
-            @Override
-            public boolean accept(DreamDefenderChaseFeature dreamDefenderChaseFeature) {
-                dreamDefenderChaseFeature.startChasing(ironGolem, arenaPlayer);
-                return true;
-            }
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE, DreamDefenderChaseFeature.class, dreamDefenderChaseFeature -> {
+            dreamDefenderChaseFeature.startChasing(ironGolem, arenaPlayer);
+            return true;
         });
 
         for (String effect : cfgGolem.getPotionEffects()) {
@@ -65,12 +61,9 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
             PotionEffectAT effectAT = PotionEffectAT.valueOf(effect);
             if (effectAT != null) effectAT.applyTo(ironGolem);
         }
-        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE, DreamDefenderDisplayNameUpdateFeature.class, new Acceptor<DreamDefenderDisplayNameUpdateFeature>() {
-            @Override
-            public boolean accept(DreamDefenderDisplayNameUpdateFeature feature) {
-                feature.start(ironGolem, arenaPlayer);
-                return true;
-            }
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE, DreamDefenderDisplayNameUpdateFeature.class, feature -> {
+            feature.start(ironGolem, arenaPlayer);
+            return true;
         });
     }
 
@@ -79,8 +72,8 @@ public class DreamDefenderSpawnEgg extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("DREAM_DEFENDER");
+    public Key getKey() {
+        return KEY;
     }
 
 }

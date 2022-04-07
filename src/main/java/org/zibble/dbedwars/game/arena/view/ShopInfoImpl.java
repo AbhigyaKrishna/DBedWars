@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
 import org.zibble.dbedwars.api.util.ArrayFunction;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
@@ -18,9 +18,9 @@ import java.util.regex.Matcher;
 
 public class ShopInfoImpl implements ShopInfo {
 
-    private final Key<String> key;
+    private final Key key;
     private PageInfoImpl defaultPage;
-    private Map<Key<String>, PageInfoImpl> pages = new HashMap<>();
+    private Map<Key, PageInfoImpl> pages = new HashMap<>();
 
     public static ShopInfoImpl fromConfig(ConfigurableShop config) {
         ShopInfoImpl shopType = new ShopInfoImpl(config.getName());
@@ -36,7 +36,7 @@ public class ShopInfoImpl implements ShopInfo {
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return this.key;
     }
 
@@ -46,7 +46,7 @@ public class ShopInfoImpl implements ShopInfo {
     }
 
     @Override
-    public Map<Key<String>, PageInfoImpl> getPages() {
+    public Map<Key, PageInfoImpl> getPages() {
         return pages;
     }
 
@@ -79,7 +79,7 @@ public class ShopInfoImpl implements ShopInfo {
         }
 
         @Override
-        public Key<String> getKey() {
+        public Key getKey() {
             return Key.of(this.key);
         }
 

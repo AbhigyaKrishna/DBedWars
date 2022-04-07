@@ -12,7 +12,7 @@ import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.util.Initializable;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.game.arena.TeamImpl;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class SpawnerImpl implements Spawner, Initializable {
 
     private final DBedwars plugin;
-    private final Key<DropInfo> key;
+    private final Key key;
     private final Arena arena;
     private final Optional<TeamImpl> optionalTeam;
     private Location location;
@@ -197,7 +197,7 @@ public class SpawnerImpl implements Spawner, Initializable {
     }
 
     @Override
-    public Key<DropInfo> getKey() {
+    public Key getKey() {
         return key;
     }
 

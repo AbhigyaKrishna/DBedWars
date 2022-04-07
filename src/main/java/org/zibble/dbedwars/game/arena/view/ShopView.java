@@ -2,7 +2,7 @@ package org.zibble.dbedwars.game.arena.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.guis.ShopGui;
 
 import java.util.HashMap;
@@ -14,14 +14,14 @@ public class ShopView {
     private final ArenaPlayer player;
     private final ShopInfoImpl type;
     private ShopPage defaultPage;
-    private final Map<Key<String>, ShopPage> pages;
+    private final Map<Key, ShopPage> pages;
     private final DataTracker dataTracker;
 
     public ShopView(ArenaPlayer player, ShopInfoImpl type) {
         this.player = player;
         this.type = type;
         this.pages = new LinkedHashMap<>();
-        for (Map.Entry<Key<String>, ShopInfoImpl.PageInfoImpl> entry : this.type.getPages().entrySet()) {
+        for (Map.Entry<Key, ShopInfoImpl.PageInfoImpl> entry : this.type.getPages().entrySet()) {
             this.createPage(entry.getKey(), entry.getValue());
         }
         this.defaultPage = this.pages.get(type.getDefaultPage().getKey());
@@ -46,7 +46,7 @@ public class ShopView {
         return page;
     }
 
-    ShopPage createPage(Key<String> key, ShopInfoImpl.PageInfoImpl pg) {
+    ShopPage createPage(Key key, ShopInfoImpl.PageInfoImpl pg) {
         ShopPage page = new ShopPage(this.player, key, pg);
         this.pages.put(key, page);
         return page;
@@ -58,7 +58,7 @@ public class ShopView {
 
     public ShopGui getGui() {
         ShopGui gui = ShopGui.creator(this.player.getPlayer());
-        for (Map.Entry<Key<String>, ShopPage> entry : this.pages.entrySet()) {
+        for (Map.Entry<Key, ShopPage> entry : this.pages.entrySet()) {
             gui.addPage(entry.getKey(), entry.getValue().getGuiComponent(this));
         }
         return gui;

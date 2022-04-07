@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.api.script;
 
-import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-public interface ScriptVariable<T> extends Keyed<String> {
+public interface ScriptVariable<T> extends Keyed {
 
     static ScriptVariable<Object> nullValue() {
         return new ScriptVariable<Object>() {
@@ -23,7 +23,7 @@ public interface ScriptVariable<T> extends Keyed<String> {
             }
 
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of("null");
             }
         };
@@ -50,7 +50,7 @@ public interface ScriptVariable<T> extends Keyed<String> {
             }
 
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(key);
             }
         };
@@ -74,7 +74,7 @@ public interface ScriptVariable<T> extends Keyed<String> {
             }
 
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(key);
             }
         };

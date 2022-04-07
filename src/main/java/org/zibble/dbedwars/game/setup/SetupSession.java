@@ -18,7 +18,7 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
@@ -33,8 +33,8 @@ public class SetupSession {
 
     private static final Messaging MESSAGING = Messaging.get();
     
-    private static final Key<String> WAITING_LOCATION = Key.of("waiting_loc");
-    private static final Key<String> SPECTATOR_LOCATION = Key.of("spectator_loc");
+    private static final Key WAITING_LOCATION = Key.of("waiting_loc");
+    private static final Key SPECTATOR_LOCATION = Key.of("spectator_loc");
 
     private static final SoundVP PROMPT_SOUND = SoundVP.of(XSound.BLOCK_NOTE_BLOCK_BASEDRUM);
     private static final SoundVP TASK_DONE_SOUND = SoundVP.of(XSound.BLOCK_NETHER_BRICKS_BREAK);
@@ -44,8 +44,8 @@ public class SetupSession {
     private final PlayerMember playerMember;
     private final ArenaDataHolderImpl arenaDataHolder;
 
-    private final Map<Key<String>, CancellableWorkload> workloads;
-    private final Map<Key<String>, Hologram> holograms;
+    private final Map<Key, CancellableWorkload> workloads;
+    private final Map<Key, Hologram> holograms;
 
     private final List<CancellableWorkload> spawnerWorkloads;
     private final List<Hologram> spawnerHolograms;

@@ -15,6 +15,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.statistics.ResourceStatistics;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
@@ -22,10 +23,10 @@ import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.points.IntegerCount;
 import org.zibble.dbedwars.api.objects.points.Points;
 import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.cache.InventoryData;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.MainConfiguration;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.game.arena.view.ShopView;
@@ -47,7 +48,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     private boolean respawning;
     private Pair<ArenaPlayer, Instant> lastHit;
     private InventoryData inventoryBackup;
-    private Map<Key<String>, ShopView> shops;
+    private Map<Key, ShopView> shops;
     private final InventoryData respawnItems;
     private final ResourceStatistics resourceStatistics;
 
@@ -85,8 +86,17 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     }
 
     @Override
-    public void setScoreboard(Scoreboard scoreboard) {
-        this.scoreboard = scoreboard;
+    public void showScoreboard(ScoreboardData data, Placeholder... placeholders) {
+        if (data == null) {
+            this.plugin.getHookManager().getScoreboardHook().removeScoreboard(this.getPlayer());
+            this.scoreboard = null;
+            return;
+        }
+        if (this.scoreboard != null) {
+            this.plugin.getHookManager().getScoreboardHook().removeScoreboard(this.getPlayer());
+            this.scoreboard = null;
+        }
+        this.scoreboard = data.show(this.getPlayer(), placeholders);
     }
 
     @Override
@@ -214,9 +224,9 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     protected void complete() {
         // TODO: 28-03-2022 More placeholders
         Placeholder[] placeholders = new Placeholder[]{
-                PlaceholderEntry.symbol("<player_name>", this.getPlayer().getName()),
-                PlaceholderEntry.symbol("<player_team_name>", this.getTeam().getName()),
-                PlaceholderEntry.symbol("<player_team_color>", String.valueOf(this.getTeam().getColor().getColor().asRGB())),
+                PlaceholderEntry.symbol("player_name", this.getPlayer().getName()),
+                PlaceholderEntry.symbol("player_team_name", this.getTeam().getName()),
+                PlaceholderEntry.symbol("player_team_color", String.valueOf(this.getTeam().getColor().getColor().asRGB())),
         };
         MainConfiguration.RespawnItemsSection respawnItemsSection = DBedwars.getInstance().getConfigHandler().getMainConfiguration().getRespawnItemsSection();
         for (String s : respawnItemsSection.getInventory()) {
@@ -240,15 +250,6 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
 
     public InventoryData getRespawnItems() {
         return respawnItems;
-    }
-
-    public void initScoreboard(ConfigurableScoreboard cfg) {
-        // TODO: add placeholders
-        this.scoreboard = this.plugin.getHookManager().getScoreboardHook().createDynamicScoreboard(
-                this.getPlayer(),
-                ConfigMessage.from(cfg.getTitle()),
-                Arrays.asList(ConfigMessage.from(cfg.getContent()).splitToLineMessage()),
-                Duration.ofMilliseconds(cfg.getUpdateTick() * 50L));
     }
 
     public void addShop(ShopInfoImpl cfg) {

@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.util.properies;
 
 import org.jetbrains.annotations.NotNull;
-import org.zibble.dbedwars.api.util.NamedKey;
+import org.zibble.dbedwars.api.util.key.NamedKey;
 
 import java.util.*;
 import java.util.function.Function;
@@ -12,7 +12,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
     private final Set<NamedKey<?>> properties = Collections.synchronizedSet(new TreeSet<>(Comparator.comparing(new Function<NamedKey<?>, String>() {
         @Override
         public String apply(NamedKey<?> key) {
-            return key.getIdentifier();
+            return key.getValue();
         }
     })));
 
@@ -49,7 +49,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> NamedKey<T> getProperty(String name) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getIdentifier().equals(name)) {
+            if (property.getValue().equals(name)) {
                 return (NamedKey<T>) property;
             }
         }
@@ -58,7 +58,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> NamedKey<T> getProperty(String name, T defaultValue) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getIdentifier().equals(name)) {
+            if (property.getValue().equals(name)) {
                 return (NamedKey<T>) property;
             }
         }
@@ -67,7 +67,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> T getValue(String name) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getIdentifier().equals(name)) {
+            if (property.getValue().equals(name)) {
                 return (T) property.get();
             }
         }
@@ -76,7 +76,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> T getValue(String name, T defaultValue) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getIdentifier().equals(name)) {
+            if (property.getValue().equals(name)) {
                 return (T) property.get();
             }
         }
@@ -115,7 +115,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public boolean contains(String key) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getIdentifier().equals(key)) {
+            if (property.getValue().equals(key)) {
                 return true;
             }
         }

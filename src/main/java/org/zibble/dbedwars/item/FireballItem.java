@@ -18,18 +18,18 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.EventUtils;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
-import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class FireballItem extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("FIREBALL");
 
     public static final FixedMetadataValue FIREBALL_META =
             new FixedMetadataValue(DBedwars.getInstance(), DBedwars.getInstance().getName());
@@ -48,9 +48,7 @@ public class FireballItem extends BedWarsActionItem {
     @Override
     public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         ConfigurableCustomItems.ConfigurableFireball cfgFireball = this.plugin.getConfigHandler().getCustomItems().getFireball();;
-        Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
-        if (arena == null) return;
-        Optional<ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = this.plugin.getGameManager().getArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         if (EventUtils.isRightClick(playerInteractEvent.getAction()) || (cfgFireball.isLeftClickThrowEnabled() && EventUtils.isClickingBlock(playerInteractEvent.getAction()))) {
@@ -58,12 +56,9 @@ public class FireballItem extends BedWarsActionItem {
             Util.useItem(player);
             Fireball fireball = player.launchProjectile(Fireball.class);
             fireball.setMetadata("isDBedwarsFireball", FIREBALL_META);
-            this.plugin.getFeatureManager().runFeature(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE, FireballLaunchFeature.class, new Acceptor<FireballLaunchFeature>() {
-                @Override
-                public boolean accept(FireballLaunchFeature feature) {
-                    feature.launch(fireball, arenaPlayer);
-                    return true;
-                }
+            this.plugin.getFeatureManager().runFeature(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE, FireballLaunchFeature.class, feature -> {
+                feature.launch(fireball, arenaPlayer);
+                return true;
             });
         }
     }
@@ -99,8 +94,8 @@ public class FireballItem extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("FIREBALL");
+    public Key getKey() {
+        return KEY;
     }
 
 }

@@ -11,7 +11,7 @@ import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -270,7 +270,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
             }
 
             public BwItemStack getMaterial() {
-                return ConfigurationUtils.parseItem(this.material);
+                return ConfigurationUtil.parseItem(this.material);
             }
 
             public double getDelay() {
@@ -295,7 +295,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
             public NamedProperties toProperties() {
                 return NamedProperties.builder()
                         .add("key", key)
-                        .add("material", ConfigurationUtils.parseItem(this.material))
+                        .add("material", ConfigurationUtil.parseItem(this.material))
                         .add("delay", delay)
                         .add("limit", limit)
                         .build();

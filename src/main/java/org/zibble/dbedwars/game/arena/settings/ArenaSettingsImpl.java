@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.game.arena.settings;
 
 import org.zibble.dbedwars.api.game.settings.ArenaSettings;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 
 public class ArenaSettingsImpl implements ArenaSettings {
@@ -19,6 +20,10 @@ public class ArenaSettingsImpl implements ArenaSettings {
     private int finalKillPoint;
     private int deathPoint;
 
+    private Duration trapTriggerDelay;
+    private boolean trapQueueEnabled;
+    private int trapQueueSize;
+
     public ArenaSettingsImpl() {
     }
 
@@ -34,6 +39,9 @@ public class ArenaSettingsImpl implements ArenaSettings {
         this.killPoint = properties.getValue("killPoint");
         this.finalKillPoint = properties.getValue("finalKillPoint");
         this.deathPoint = properties.getValue("deathPoint");
+        this.trapTriggerDelay = properties.getValue("trapTriggerDelay");
+        this.trapQueueEnabled = properties.getValue("trapQueueEnabled", false);
+        this.trapQueueSize = properties.getValue("trapQueueSize");
     }
 
     @Override
@@ -147,6 +155,36 @@ public class ArenaSettingsImpl implements ArenaSettings {
     }
 
     @Override
+    public Duration getTrapTriggerDelay() {
+        return trapTriggerDelay;
+    }
+
+    @Override
+    public void setTrapTriggerDelay(Duration trapTriggerDelay) {
+        this.trapTriggerDelay = trapTriggerDelay;
+    }
+
+    @Override
+    public boolean isTrapQueueEnabled() {
+        return trapQueueEnabled;
+    }
+
+    @Override
+    public void setTrapQueueEnabled(boolean trapQueueEnabled) {
+        this.trapQueueEnabled = trapQueueEnabled;
+    }
+
+    @Override
+    public int getTrapQueueSize() {
+        return trapQueueSize;
+    }
+
+    @Override
+    public void setTrapQueueSize(int trapQueueSize) {
+        this.trapQueueSize = trapQueueSize;
+    }
+
+    @Override
     public ArenaSettingsImpl clone() {
         return new ArenaSettingsImpl(this.toProperties());
     }
@@ -165,6 +203,9 @@ public class ArenaSettingsImpl implements ArenaSettings {
                 .add("killPoint", killPoint)
                 .add("finalKillPoint", finalKillPoint)
                 .add("deathPoint", deathPoint)
+                .add("trapTriggerDelay", trapTriggerDelay)
+                .add("trapQueueEnabled", trapQueueEnabled)
+                .add("trapQueueSize", trapQueueSize)
                 .build();
     }
 

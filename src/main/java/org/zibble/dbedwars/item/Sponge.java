@@ -10,17 +10,18 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.SpongePlaceFeature;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 
 import java.util.Optional;
 
 public class Sponge extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("SPONGE");
 
     private final DBedwars plugin;
     private final ConfigurableCustomItems.ConfigurableSponge cfgSponge;
@@ -43,9 +44,7 @@ public class Sponge extends BedWarsActionItem {
     public void onSpongePlace(BlockPlaceEvent event) {
         event.getBlock().setMetadata("isBedwarsSponge", SPONGE_META);
         Player player = event.getPlayer();
-        Arena arena = this.plugin.getGameManager().getArena(player.getWorld().getName());
-        if (arena == null) return;
-        Optional<ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = this.plugin.getGameManager().getArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         this.plugin.getFeatureManager().runFeature(BedWarsFeatures.SPONGE_PLACE_FEATURE, SpongePlaceFeature.class, new Acceptor<SpongePlaceFeature>() {
@@ -68,8 +67,8 @@ public class Sponge extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("SPONGE");
+    public Key getKey() {
+        return KEY;
     }
 
 }

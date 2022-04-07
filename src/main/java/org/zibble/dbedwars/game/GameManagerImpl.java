@@ -7,18 +7,20 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.handler.GameManager;
+import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 import org.zibble.dbedwars.game.arena.ArenaImpl;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.game.arena.spawner.DropInfoImpl;
+import org.zibble.dbedwars.game.arena.traps.TargetRegistryImpl;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.handler.ConfigHandler;
-import org.zibble.dbedwars.task.implementations.ArenaStartTask;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
 import java.util.*;
 
@@ -33,7 +35,9 @@ public class GameManagerImpl implements GameManager {
     private final Set<DropInfo> dropTypes;
     private final Set<ShopInfoImpl> shops;
     private final Multimap<String, Arena> arenas;
+    private final Map<String, ScoreboardData> scoreboardData;
     private ArenaSettingsImpl defaultSettings;
+    private TargetRegistryImpl targetRegistry;
 
     public GameManagerImpl(DBedwars plugin, Location lobbySpawn) {
         this.plugin = plugin;
@@ -42,6 +46,8 @@ public class GameManagerImpl implements GameManager {
         this.dropTypes = new HashSet<>();
         this.arenas = ArrayListMultimap.create();
         this.shops = new HashSet<>();
+        this.scoreboardData = new HashMap<>();
+        this.targetRegistry = new TargetRegistryImpl();
     }
 
     public void load() {
@@ -58,6 +64,10 @@ public class GameManagerImpl implements GameManager {
             this.shops.add(ShopInfoImpl.fromConfig(entry.getValue()));
         }
 
+        for (ConfigurableScoreboard scoreboard : configHandler.getScoreboards()) {
+            this.scoreboardData.put(scoreboard.getKey(), ConfigurationUtil.createScoreboard(scoreboard));
+        }
+
         this.defaultSettings = new ArenaSettingsImpl();
         this.defaultSettings.setStartTimer(configHandler.getMainConfiguration().getArenaSection().getStartTimer());
         this.defaultSettings.setRespawnTime(configHandler.getMainConfiguration().getArenaSection().getRespawnTime());
@@ -70,6 +80,8 @@ public class GameManagerImpl implements GameManager {
         this.defaultSettings.setKillPoint(configHandler.getMainConfiguration().getArenaSection().getKillPoint());
         this.defaultSettings.setFinalKillPoint(configHandler.getMainConfiguration().getArenaSection().getFinalKillPoint());
         this.defaultSettings.setDeathPoint(configHandler.getMainConfiguration().getArenaSection().getDeathPoint());
+
+        this.targetRegistry.registerDefaults();
     }
 
     public Arena createArena(String name) {
@@ -80,14 +92,6 @@ public class GameManagerImpl implements GameManager {
         ArenaImpl arena = new ArenaImpl(this.plugin, gameId, holder, this.defaultSettings.clone());
         this.arenas.put(name, arena);
         return arena;
-    }
-
-    public void startArenaSequence(Arena arena) {
-        if (arena.getPlayers().size() < arena.getSettings().getMinPlayers()) return;
-
-        arena.setStatus(ArenaStatus.STARTING);
-        this.plugin.getThreadHandler().submitAsync(
-                new ArenaStartTask(arena, (short) this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getStartTimer()));
     }
 
     public Set<DropInfo> getDropTypes() {
@@ -123,6 +127,14 @@ public class GameManagerImpl implements GameManager {
             if (arenaPlayer.isPresent()) return arenaPlayer;
         }
         return Optional.empty();
+    }
+
+    public Map<String, ScoreboardData> getScoreboardData() {
+        return scoreboardData;
+    }
+
+    public TargetRegistryImpl getTargetRegistry() {
+        return targetRegistry;
     }
 
 }

@@ -1,36 +1,24 @@
 package org.zibble.dbedwars.task.implementations;
 
-import com.google.common.primitives.Shorts;
+import com.google.common.primitives.Ints;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaStatus;
-import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.task.Workload;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
+import org.zibble.dbedwars.api.task.CancellableWorkload;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
-public class ArenaStartTask implements Workload {
+public class ArenaStartTask extends CancellableWorkload {
 
-    private static final short[] TRIGGERS =
-            new short[] {1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
+    private static final int[] TRIGGERS = new int[] {1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
 
     // TODO Message config
     private final Message TITLE_MESSAGE = AdventureMessage.from("<yellow><countdown>",
-            PlaceholderEntry.symbol("countdown", new Supplier<String>() {
-                @Override
-                public String get() {
-                    return String.valueOf(ArenaStartTask.this.countdown.get());
-                }
-            }));
+            PlaceholderEntry.symbol("countdown", () -> String.valueOf(ArenaStartTask.this.countdown.get())));
     private final Message TRIGGER_MESSAGE = AdventureMessage.from("<grey>Match starting in <red><countdown> <grey>seconds.",
-            PlaceholderEntry.symbol("countdown", new Supplier<String>() {
-                @Override
-                public String get() {
-                    return String.valueOf(ArenaStartTask.this.countdown.get());
-                }
-            }));
+            PlaceholderEntry.symbol("countdown", () -> String.valueOf(ArenaStartTask.this.countdown.get())));
 
     private final Arena arena;
     private final AtomicInteger countdown;
@@ -38,13 +26,15 @@ public class ArenaStartTask implements Workload {
 
     private long lastExecute;
 
-    public ArenaStartTask(Arena arena, short countdown) {
+    public ArenaStartTask(Arena arena, int countdown) {
         this.arena = arena;
         this.countdown = new AtomicInteger(countdown);
     }
 
     @Override
     public void compute() {
+        if (this.isCancelled()) return;
+
         this.lastExecute = System.currentTimeMillis();
 
         this.arena.setStatus(ArenaStatus.STARTING);
@@ -55,14 +45,16 @@ public class ArenaStartTask implements Workload {
         if (this.arena.getPlayers().size() == this.arena.getDataHolder().getMaxPlayersPerTeam()
                 && this.countdown.get() > 5) {
             // TODO: change message and add configuration
-            this.arena.sendMessage(
-                    AdventureMessage.from("<green>Maximum players reached. Shortening timer"));
+            this.arena.sendMessage(AdventureMessage.from("<green>Maximum players reached. Shortening timer"));
             this.countdown.set(5);
         }
     }
 
     @Override
     public boolean reSchedule() {
+        if (!super.reSchedule()) {
+            return false;
+        }
         if (this.arena.getPlayers().size() < this.arena.getDataHolder().getMinPlayersToStart()) {
             // TODO: change message
             this.arena.sendMessage(AdventureMessage.from("<red>Not enough players to start!"));
@@ -72,7 +64,7 @@ public class ArenaStartTask implements Workload {
         if (this.countdown.get() == 0) {
             // TODO: trigger match start
             if (!started) {
-                this.arena.start();
+                this.arena.start(true);
                 started = true;
             }
             return false;
@@ -86,11 +78,14 @@ public class ArenaStartTask implements Workload {
         return System.currentTimeMillis() - this.lastExecute >= 1000;
     }
 
+    public AtomicInteger getCountdown() {
+        return countdown;
+    }
+
     private void sendTrigger() {
-        if (Shorts.contains(TRIGGERS, this.countdown.shortValue())) {
+        if (Ints.contains(TRIGGERS, this.countdown.shortValue())) {
             this.arena.sendTitle(TITLE_MESSAGE);
             this.arena.sendMessage(TRIGGER_MESSAGE);
         }
-        // TODO: update scoreboard
     }
 }

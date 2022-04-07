@@ -21,9 +21,13 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
+import org.zibble.dbedwars.game.arena.traps.TrapImpl;
+import org.zibble.dbedwars.game.arena.traps.TrapQueue;
+import org.zibble.dbedwars.game.arena.traps.TriggerType;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
+import java.time.Instant;
 import java.util.*;
 
 public class TeamImpl extends AbstractMessaging implements Team {
@@ -40,7 +44,8 @@ public class TeamImpl extends AbstractMessaging implements Team {
     private BoundingBox islandArea;
 
     private Set<BedwarsNPC> npcs;
-    private List<Trap> trapQueue;
+    private TrapQueue trapQueue;
+    private Instant lastTrapTriggered;
 
     public TeamImpl(DBedwars plugin, Color color, Arena arena) {
         this.plugin = plugin;
@@ -48,9 +53,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
         this.arena = arena;
         this.players = new HashSet<>();
         this.npcs = new HashSet<>();
-        if (this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().isTrapQueueEnabled())
-            this.trapQueue = new ArrayList<>(this.plugin.getConfigHandler().getMainConfiguration().getTrapSection().getTrapQueueLimit());
-        else this.trapQueue = new ArrayList<>();
+        this.trapQueue = new TrapQueue(this);
     }
 
     @Override
@@ -144,6 +147,21 @@ public class TeamImpl extends AbstractMessaging implements Team {
     }
 
     @Override
+    public List<Trap> getTraps() {
+        return this.trapQueue;
+    }
+
+    @Override
+    public Instant getLastTrapTriggered() {
+        return lastTrapTriggered;
+    }
+
+    @Override
+    public void setLastTrapTriggered(Instant lastTrapTriggered) {
+        this.lastTrapTriggered = lastTrapTriggered;
+    }
+
+    @Override
     public boolean isBedBroken() {
         return this.bedBroken;
     }
@@ -232,9 +250,26 @@ public class TeamImpl extends AbstractMessaging implements Team {
         
         if (cfg == null) return;
 
-        BedwarsNPC npc = ConfigurationUtils.createNpc(shopData.getLocation().toBukkit(this.arena.getWorld()), cfg);
+        BedwarsNPC npc = ConfigurationUtil.createNpc(shopData.getLocation().toBukkit(this.arena.getWorld()), cfg);
         npc.spawn();
         this.npcs.add(npc);
+    }
+
+    public void triggerTrap(TriggerType type, ArenaPlayer trigger) {
+        Collection<Trap> toRemove = new ArrayList<>();
+        for (Trap trap : this.trapQueue) {
+            if (trap instanceof TrapImpl) {
+                TrapImpl trapImpl = (TrapImpl) trap;
+                if (trapImpl.getTriggerType() == type) {
+                    if (trapImpl.trigger(trigger)) {
+                        toRemove.add(trap);
+                        this.lastTrapTriggered = Instant.now();
+                        if (this.arena.getSettings().isTrapQueueEnabled()) break;
+                    }
+                }
+            }
+        }
+        this.trapQueue.removeAll(toRemove);
     }
 
     public void clearCache() {

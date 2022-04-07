@@ -5,6 +5,7 @@ import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.utils.TimeUtil;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,6 +26,14 @@ public class ActionPreProcessor {
         if (!matcher.matches()) throw new IllegalArgumentException("Invalid action format");
         String actionName = matcher.group("action");
         ActionTranslator<?, ? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry().getTranslator(actionName);
+        return new ActionProcessor(translator.serialize(matcher.group("arguments"), variables), shouldExecute(input), delay(input), getRepeats(input));
+    }
+
+    public static ActionProcessor process(Key registry, String input, ScriptVariable<?>... variables) {
+        Matcher matcher = ACTION_PATTERN.matcher(input);
+        if (!matcher.matches()) throw new IllegalArgumentException("Invalid action format");
+        String actionName = matcher.group("action");
+        ActionTranslator<?, ? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry(registry).getTranslator(actionName);
         return new ActionProcessor(translator.serialize(matcher.group("arguments"), variables), shouldExecute(input), delay(input), getRepeats(input));
     }
 

@@ -17,7 +17,6 @@ import org.zibble.dbedwars.api.version.Version;
 
 import java.util.*;
 
-
 public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingScoreboard {
 
     private int titleCursor;

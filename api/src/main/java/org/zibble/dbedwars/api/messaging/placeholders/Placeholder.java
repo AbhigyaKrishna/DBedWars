@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.messaging.placeholders;
 
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-public interface Placeholder extends Keyed<String> {
+public interface Placeholder extends Keyed {
 
 }

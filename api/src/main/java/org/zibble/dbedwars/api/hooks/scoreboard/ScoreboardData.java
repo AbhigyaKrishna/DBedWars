@@ -2,11 +2,13 @@ package org.zibble.dbedwars.api.hooks.scoreboard;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardData {
+public class ScoreboardData implements Cloneable {
 
     private final ScoreboardHook hook;
     private final Type type;
@@ -49,14 +51,27 @@ public class ScoreboardData {
         this.updateInterval = updateInterval;
     }
 
-    public Scoreboard show(Player player) {
+    public Scoreboard show(Player player, Placeholder... placeholders) {
+        Message title = this.title.clone();
+        title.addPlaceholders(placeholders);
+        List<Message> elements = new ArrayList<>();
+        for (Message element : this.elements) {
+            Message clone = element.clone();
+            clone.addPlaceholders(placeholders);
+            elements.add(clone);
+        }
         switch (type) {
             case STATIC:
-                return this.hook.createStaticScoreboard(player, this.title, this.elements);
+                return this.hook.createStaticScoreboard(player, title, elements);
             case DYNAMIC:
-                return this.hook.createDynamicScoreboard(player, this.title, this.elements, this.updateInterval == null ? Duration.ofTicks(5) : this.updateInterval);
+                return this.hook.createDynamicScoreboard(player, title, elements, this.updateInterval == null ? Duration.ofTicks(5) : this.updateInterval);
         }
         return null;
+    }
+
+    @Override
+    public ScoreboardData clone() {
+        return new ScoreboardData(this.hook, this.type, this.title.clone(), this.elements.stream().map(Message::clone).collect(ArrayList::new, ArrayList::add, ArrayList::addAll));
     }
 
     public enum Type {

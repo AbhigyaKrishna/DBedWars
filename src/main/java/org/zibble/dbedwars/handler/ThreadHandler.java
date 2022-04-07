@@ -14,13 +14,11 @@ import java.util.concurrent.ExecutorService;
 
 public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHandler {
 
-    private final DBedwars plugin;
     private final TaskQueueHandler handler;
     private final UpdateTask updater;
     private Task task, updaterTask;
 
     public ThreadHandler(DBedwars plugin) {
-        this.plugin = plugin;
         this.handler = new TaskQueueHandler("DBedWars Thread %d");
         this.updater = new UpdateTask(plugin);
     }

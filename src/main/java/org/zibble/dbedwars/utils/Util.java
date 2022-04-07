@@ -23,12 +23,9 @@ import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
-import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
-import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.utils.reflection.bukkit.BukkitReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
@@ -144,25 +141,6 @@ public class Util {
         fieldFireballDirX.set(handle, direction.getX() * 0.10D);
         fieldFireballDirY.set(handle, direction.getY() * 0.10D);
         fieldFireballDirZ.set(handle, direction.getZ() * 0.10D);
-    }
-
-    public static String getConfigCode(Color color) {
-        if (ConfigLang.getTranslator() instanceof MiniMessageTranslator) {
-            return color.getMiniCode();
-        } else if (ConfigLang.getTranslator() instanceof LegacyTranslator) {
-            return "" + ((LegacyTranslator) ConfigLang.getTranslator()).getCHAR() + color.getChatColor().getChar();
-        }
-        return null;
-    }
-
-    public static String getChatColor(Message message, Color color) {
-        if (message instanceof ConfigMessage) {
-            return getConfigCode(color);
-        } else if (message instanceof LegacyMessage) {
-            return new String(new char[]{'&', color.getChatColor().getChar()});
-        } else {
-            return color.getMiniCode();
-        }
     }
 
     public static <T extends Message> T convertMessage(Message message, T newMessage) {

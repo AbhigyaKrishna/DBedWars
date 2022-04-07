@@ -106,9 +106,14 @@ public final class PacketUtils {
     public static void updateFakeEntityCustomName(Player player, Component name, int entityId) {
         Validate.notNull(player);
         Validate.notNull(name);
-        String legacyName = AdventureUtils.toVanillaString(name);
-        EntityData customName = new EntityData(2, EntityDataTypes.STRING, legacyName);
-        EntityData customNameVisible = new EntityData(3, EntityDataTypes.BYTE, legacyName);
+        EntityData customName;
+        if (EntityDataTypes.OPTIONAL_COMPONENT.getId() != -1) {
+            customName = new EntityData(2, EntityDataTypes.OPTIONAL_COMPONENT, Optional.of(name));
+        } else {
+            String legacyName = AdventureUtils.toVanillaString(name);
+            customName = new EntityData(2, EntityDataTypes.STRING, legacyName);
+        }
+        EntityData customNameVisible = new EntityData(3, EntityDataTypes.BYTE, (byte) 1);
         WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(entityId, Arrays.asList(customName, customNameVisible));
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }

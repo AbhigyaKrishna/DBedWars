@@ -1,10 +1,12 @@
 package org.zibble.dbedwars.api.feature;
 
 import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-public abstract class BedWarsFeature implements Initializable, Tickable, Validable, Keyed<String> {
+public abstract class BedWarsFeature implements Initializable, Tickable, Validable, Keyed {
 
-    protected final Key<String> key;
+    protected final Key key;
     protected boolean enabled = true;
 
     public BedWarsFeature(String key) {
@@ -12,7 +14,7 @@ public abstract class BedWarsFeature implements Initializable, Tickable, Validab
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return key;
     }
 

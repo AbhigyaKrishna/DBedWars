@@ -6,7 +6,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeature;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.features.*;
 import org.zibble.dbedwars.utils.Debugger;
 
@@ -16,7 +16,7 @@ import java.util.EnumMap;
 
 public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureManager {
 
-    private final Multimap<Key<String>, BedWarsFeature> features = ArrayListMultimap.create();
+    private final Multimap<Key, BedWarsFeature> features = ArrayListMultimap.create();
 
     private final DBedwars plugin;
 
@@ -47,12 +47,12 @@ public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureMa
     }
 
     @Override
-    public Collection<BedWarsFeature> unregisterAllFeature(Key<String> featureKey) {
+    public Collection<BedWarsFeature> unregisterAllFeature(Key featureKey) {
         return this.features.removeAll(featureKey);
     }
 
     @Override
-    public Collection<BedWarsFeature> getFeature(Key<String> featureName) {
+    public Collection<BedWarsFeature> getFeature(Key featureName) {
         return this.features.get(featureName);
     }
 
@@ -62,12 +62,12 @@ public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureMa
     }
 
     @Override
-    public boolean hasFeature(Key<String> featureKey) {
+    public boolean hasFeature(Key featureKey) {
         return this.features.containsKey(featureKey);
     }
 
     @Override
-    public <T extends BedWarsFeature> void runFeature(Key<String> featureKey, Class<T> type, Acceptor<T> trigger) {
+    public <T extends BedWarsFeature> void runFeature(Key featureKey, Class<T> type, Acceptor<T> trigger) {
         EnumMap<FeaturePriority, Collection<BedWarsFeature>> map = new EnumMap<>(FeaturePriority.class);
         for (BedWarsFeature feature : this.getFeature(featureKey)) {
             if (!map.containsKey(feature.getPriority()) || map.get(feature.getPriority()) == null) {

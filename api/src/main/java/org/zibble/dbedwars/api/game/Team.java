@@ -10,6 +10,8 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 
+import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +38,12 @@ public interface Team extends AbstractMessaging {
     Set<ArenaPlayer> getPlayers();
 
     Set<Spawner> getSpawners();
+
+    List<Trap> getTraps();
+
+    Instant getLastTrapTriggered();
+
+    void setLastTrapTriggered(Instant lastTrapTriggered);
 
     boolean isBedBroken();
 

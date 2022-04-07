@@ -12,7 +12,7 @@ import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
-import org.zibble.dbedwars.utils.ConfigurationUtils;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -260,7 +260,7 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
         public static SpawnerDataHolderImpl fromConfig(String cfg) {
             SpawnerDataHolderImpl data = new SpawnerDataHolderImpl();
-            Pair<DropInfo, LocationXYZ> pair = ConfigurationUtils.parseSpawner(cfg);
+            Pair<DropInfo, LocationXYZ> pair = ConfigurationUtil.parseSpawner(cfg);
             data.dropType = pair.getKey();
             data.location = pair.getValue();
             return data;

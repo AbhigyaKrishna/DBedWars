@@ -8,11 +8,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
 import java.util.Collection;
 
-public abstract class BedWarsActionItem extends ActionItemBase implements Keyed<String> {
+public abstract class BedWarsActionItem extends ActionItemBase implements Keyed {
 
     public BedWarsActionItem(String display_name, Collection<String> lore, XMaterial material) {
         this(display_name, lore, material, EventPriority.NORMAL);

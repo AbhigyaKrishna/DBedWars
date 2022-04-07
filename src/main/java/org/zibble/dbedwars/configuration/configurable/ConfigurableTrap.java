@@ -1,10 +1,8 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.configuration.util.Loadable;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableCollectionEntry;
-import org.zibble.dbedwars.configuration.util.annotations.LoadableEntry;
-import org.zibble.dbedwars.game.arena.traps.TrapEnum;
+import org.zibble.dbedwars.configuration.framework.Loadable;
+import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,13 +12,13 @@ public class ConfigurableTrap implements Loadable {
 
     private final String key;
 
-    @LoadableEntry(key = "id")
+    @ConfigPath
     private String id;
 
-    @LoadableEntry(key = "trigger")
+    @ConfigPath
     private String trigger;
 
-    @LoadableCollectionEntry(subsection = "actions")
+    @ConfigPath("actions")
     private List<ConfigurableTrapAction> trapActions;
 
     public ConfigurableTrap(String key) {
@@ -29,8 +27,8 @@ public class ConfigurableTrap implements Loadable {
     }
 
     @Override
-    public Loadable load(ConfigurationSection section) {
-        return this.loadEntries(section);
+    public void load(ConfigurationSection section) {
+        this.loadEntries(section);
     }
 
     @Override
@@ -54,8 +52,8 @@ public class ConfigurableTrap implements Loadable {
         return id;
     }
 
-    public TrapEnum.TriggerType getTrigger() {
-        return TrapEnum.TriggerType.matchTrigger(this.trigger);
+    public String getTrigger() {
+        return this.trigger;
     }
 
     public List<ConfigurableTrapAction> getTrapActions() {
@@ -64,10 +62,10 @@ public class ConfigurableTrap implements Loadable {
 
     public static class ConfigurableTrapAction implements Loadable {
 
-        @LoadableEntry(key = "target")
+        @ConfigPath
         private String target;
 
-        @LoadableEntry(key = "executable")
+        @ConfigPath("executable")
         private List<String> executables;
 
         protected ConfigurableTrapAction() {
@@ -75,8 +73,8 @@ public class ConfigurableTrap implements Loadable {
         }
 
         @Override
-        public Loadable load(ConfigurationSection section) {
-            return this.loadEntries(section);
+        public void load(ConfigurationSection section) {
+            this.loadEntries(section);
         }
 
         @Override

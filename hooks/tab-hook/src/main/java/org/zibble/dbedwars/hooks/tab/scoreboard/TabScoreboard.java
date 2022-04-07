@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.adventure.AdventureUtils;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.*;
 
@@ -118,7 +118,7 @@ public class TabScoreboard implements Scoreboard {
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of(this.tabScoreboard.getName());
     }
 

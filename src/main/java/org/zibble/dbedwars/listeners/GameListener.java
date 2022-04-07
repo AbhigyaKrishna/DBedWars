@@ -21,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.PlayerBaseEnterEvent;
+import org.zibble.dbedwars.api.events.PlayerBaseExitEvent;
+import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
@@ -29,13 +31,16 @@ import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.plugin.PluginHandler;
+import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
-import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
+import org.zibble.dbedwars.game.arena.TeamImpl;
+import org.zibble.dbedwars.game.arena.traps.TriggerType;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -82,7 +87,7 @@ public class GameListener extends PluginHandler {
                 return;
             }
             if (event.getBlock().getType() == XMaterial.SPONGE.parseMaterial())
-                ((Sponge) this.plugin.getCustomItemHandler().getItem("SPONGE")).onSpongeBreak(event);
+                ((Sponge) this.plugin.getCustomItemHandler().getItem(Sponge.KEY)).onSpongeBreak(event);
         } else if (Util.isBed(event.getBlock())) {
             event.setCancelled(true);
 
@@ -128,20 +133,20 @@ public class GameListener extends PluginHandler {
         block.setMetadata("placed", new FixedMetadataValue(this.plugin, this.arena.getName()));
         // TODO ADDITIONAL CHECK FOR TNT
         if (block.getType() == XMaterial.TNT.parseMaterial()
-                && this.plugin.getCustomItemHandler().getItem("TNT").isThis(player.getPlayer().getItemInHand())) {
-            ((TNTItem) this.plugin.getCustomItemHandler().getItem("TNT")).onTNTPlace(event);
+                && this.plugin.getCustomItemHandler().getItem(TNTItem.KEY).isThis(player.getPlayer().getItemInHand())) {
+            ((TNTItem) this.plugin.getCustomItemHandler().getItem(TNTItem.KEY)).onTNTPlace(event);
         }
         if (block.getType() == XMaterial.SPONGE.parseMaterial()
-                && this.plugin.getCustomItemHandler().getItem("SPONGE").isThis(player.getPlayer().getItemInHand())) {
-            ((Sponge) this.plugin.getCustomItemHandler().getItem("SPONGE")).onSpongePlace(event);
+                && this.plugin.getCustomItemHandler().getItem(Sponge.KEY).isThis(player.getPlayer().getItemInHand())) {
+            ((Sponge) this.plugin.getCustomItemHandler().getItem(Sponge.KEY)).onSpongePlace(event);
         }
         if (block.getType() == XMaterial.TRAPPED_CHEST.parseMaterial()
-                && this.plugin.getCustomItemHandler().getItem("POPUP_TOWER").isThis(player.getPlayer().getItemInHand())) {
-            ((PopupTowerChestItem) this.plugin.getCustomItemHandler().getItem("POPUP_TOWER")).onChestPlace(event, player);
+                && this.plugin.getCustomItemHandler().getItem(PopupTowerChestItem.KEY).isThis(player.getPlayer().getItemInHand())) {
+            ((PopupTowerChestItem) this.plugin.getCustomItemHandler().getItem(PopupTowerChestItem.KEY)).onChestPlace(event, player);
         }
         // TODO REFERENCE
         if (NBTUtils.hasNBTData(event.getItemInHand(), "")) {
-            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onPlace(event);
+            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem(BlastProofGlass.KEY)).onPlace(event);
         }
     }
 
@@ -174,7 +179,7 @@ public class GameListener extends PluginHandler {
 
         if (entity.getType() == EntityType.IRON_GOLEM
                 && Util.hasMetaData(entity, "isDBedwarsGolem", DreamDefenderSpawnEgg.DREAM_DEFENDER_SPAWN_EGG_META)) {
-            ((DreamDefenderSpawnEgg) this.plugin.getCustomItemHandler().getItem("DREAM_DEFENDER")).onDeath(event);
+            ((DreamDefenderSpawnEgg) this.plugin.getCustomItemHandler().getItem(DreamDefenderSpawnEgg.KEY)).onDeath(event);
         }
     }
 
@@ -197,13 +202,13 @@ public class GameListener extends PluginHandler {
 
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.FIREBALL) {
-            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onFireballExplode(event);
+            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem(BlastProofGlass.KEY)).onFireballExplode(event);
             if (Util.hasMetaData(entity, "isDBedwarsFireball", FireballItem.FIREBALL_META))
-                ((FireballItem) this.plugin.getCustomItemHandler().getItem("FIREBALL")).onFireBallExplode(event);
+                ((FireballItem) this.plugin.getCustomItemHandler().getItem(FireballItem.KEY)).onFireBallExplode(event);
         } else if (entity.getType() == EntityType.PRIMED_TNT) {
-            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem("BLAST_PROOF_GLASS")).onTNTExplode(event);
+            ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem(BlastProofGlass.KEY)).onTNTExplode(event);
             if (Util.hasMetaData(entity, "isDBedwarsTNT", TNTItem.TNT_PRIMED_META))
-                ((TNTItem) this.plugin.getCustomItemHandler().getItem("TNT")).onTNTExplode(event);
+                ((TNTItem) this.plugin.getCustomItemHandler().getItem(TNTItem.KEY)).onTNTExplode(event);
         }
 
         event.blockList().removeIf(block -> !block.hasMetadata("placed"));
@@ -294,8 +299,8 @@ public class GameListener extends PluginHandler {
     public void handleWaterBucketPlace(PlayerBucketEmptyEvent event) {
         if (!event.getPlayer().getWorld().equals(this.arena.getWorld())) return;
 
-        if (event.getItemStack().isSimilar(this.plugin.getCustomItemHandler().getItem("WATER_BUCKET").asItemStack())) {
-            ((WaterBucket) this.plugin.getCustomItemHandler().getItem("WATER_BUCKET")).onWaterBucketUse(event);
+        if (event.getItemStack().isSimilar(this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY).asItemStack())) {
+            ((WaterBucket) this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY)).onWaterBucketUse(event);
         }
     }
 
@@ -307,7 +312,7 @@ public class GameListener extends PluginHandler {
 
         if (event.getEntityType() == EntityType.SNOWBALL) {
             if (Util.hasMetaData(entity, "isDBedWarsBedBugBall", BedBugSnowball.BED_BUG_BALL_META)) {
-                ((BedBugSnowball) this.plugin.getCustomItemHandler().getItem("BED_BUG")).onLand(event);
+                ((BedBugSnowball) this.plugin.getCustomItemHandler().getItem(BedBugSnowball.KEY)).onLand(event);
             }
         }
     }
@@ -323,9 +328,53 @@ public class GameListener extends PluginHandler {
                 if (team.getIslandArea().contains(event.getTo().toVector()) && !team.getIslandArea().contains(event.getFrom().toVector())) {
                     PlayerBaseEnterEvent e = new PlayerBaseEnterEvent(p, this.arena, team);
                     e.call();
+
+                    if (e.isCancelled()) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    if (e.getTeam().getLastTrapTriggered().until(Instant.now(), ChronoUnit.MILLIS) >= this.arena.getSettings().getTrapTriggerDelay().toMillis()) {
+                        if (e.getPlayer().getTeam().equals(e.getTeam())) {
+                            this.runTrap(e.getTeam(), TriggerType.TEAMMATE_BASE_ENTER_EVENT, e.getPlayer(), true);
+                        } else {
+                            this.runTrap(e.getTeam(), TriggerType.ENEMY_BASE_ENTER_EVENT, e.getPlayer(), true);
+                        }
+                    }
+                } else if (!team.getIslandArea().contains(event.getTo().toVector()) && team.getIslandArea().contains(event.getFrom().toVector())) {
+                    PlayerBaseExitEvent e = new PlayerBaseExitEvent(p, this.arena, team);
+                    e.call();
+
+                    if (e.isCancelled()) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    if (e.getPlayer().getTeam().equals(e.getTeam())) {
+                        this.runTrap(e.getTeam(), TriggerType.TEAMMATE_BASE_EXIT_EVENT, e.getPlayer(), true);
+                    } else {
+                        this.runTrap(e.getTeam(), TriggerType.ENEMY_BASE_EXIT_EVENT, e.getPlayer(), true);
+                    }
+                } else if (team.getIslandArea().contains(event.getTo().toVector())) {
+                    if (team.getLastTrapTriggered().until(Instant.now(), ChronoUnit.MILLIS) >= this.arena.getSettings().getTrapTriggerDelay().toMillis()) {
+                        if (p.getTeam().equals(team)) {
+                            this.runTrap(team, TriggerType.TEAMMATE_BASE_ENTER_EVENT, p, false);
+                        } else {
+                            this.runTrap(team, TriggerType.ENEMY_BASE_ENTER_EVENT, p, false);
+                        }
+                    }
                 }
             }
         });
+    }
+
+    private void runTrap(Team team, TriggerType type, ArenaPlayer trigger, boolean queue) {
+        if (team.getLastTrapTriggered().until(Instant.now(), ChronoUnit.MILLIS) >= this.arena.getSettings().getTrapTriggerDelay().toMillis()) {
+            ActionFuture.runAsync(() -> ((TeamImpl) team).triggerTrap(type, trigger));
+        } else if (queue) {
+            ActionFuture.runAsync(() -> ((TeamImpl) team).triggerTrap(type, trigger),
+                    Duration.ofMilliseconds(team.getLastTrapTriggered().until(Instant.now(), ChronoUnit.MILLIS)));
+        }
     }
 
     @Override

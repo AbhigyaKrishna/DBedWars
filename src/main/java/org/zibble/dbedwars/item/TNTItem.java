@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
@@ -20,6 +20,8 @@ import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import java.util.List;
 
 public class TNTItem extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("TNT");
 
     public static final FixedMetadataValue TNT_PRIMED_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final ConfigurableCustomItems.ConfigurableTNT cfgTNT;
@@ -72,8 +74,8 @@ public class TNTItem extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("TNT");
+    public Key getKey() {
+        return KEY;
     }
 
 }

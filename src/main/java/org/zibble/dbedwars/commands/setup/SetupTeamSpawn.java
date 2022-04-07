@@ -51,8 +51,10 @@ public class SetupTeamSpawn extends SetupSessionOptionalTeamCommand {
                 bed.ifPresent(block -> setupSession.setupTeamBed(color, block.getLocation()));
             }
 
-            GenDetection.detect(player.getLocation(), 15).ifPresent(block ->
-                    SchedulerUtils.runTask(() -> player.teleport(block.getLocation().add(0, 1, 0))));
+            GenDetection.detect(player.getLocation(), 15).ifPresent(block -> {
+                SchedulerUtils.runTask(() -> player.teleport(block.getLocation().add(0, 1, 0)));
+                member.sendMessage(PluginLang.SETUP_SESSION_FOUND_GENERATOR_LOCATION.asMessage());
+            });
         });
     }
 

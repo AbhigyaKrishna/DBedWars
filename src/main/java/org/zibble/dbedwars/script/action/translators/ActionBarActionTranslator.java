@@ -3,7 +3,7 @@ package org.zibble.dbedwars.script.action.translators;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 import org.zibble.dbedwars.script.action.impl.ActionBarAction;
@@ -21,9 +21,9 @@ public class ActionBarActionTranslator implements ActionTranslator<AbstractMessa
             if (variable.isNull()) continue;
             if (variable.isAssignableFrom(AbstractMessaging.class)) {
                 messaging = (AbstractMessaging) variable.value();
-            } else if (variable.getKey().equals("MESSAGE_PLACEHOLDER")) {
+            } else if (variable.getKey().get().equals("MESSAGE_PLACEHOLDER")) {
                 entries.add((PlaceholderEntry) variable.value());
-            } else if (variable.getKey().equals("PLACEHOLDER")) {
+            } else if (variable.getKey().get().equals("PLACEHOLDER")) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);
             }
         }
@@ -36,7 +36,7 @@ public class ActionBarActionTranslator implements ActionTranslator<AbstractMessa
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of("ACTION_BAR");
     }
 

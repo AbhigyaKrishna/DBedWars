@@ -13,7 +13,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.ArenaStatus;
 import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.EventUtils;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
@@ -60,7 +60,7 @@ public class BridgeEgg extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of("BRIDGE_EGG");
     }
 

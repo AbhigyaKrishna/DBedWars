@@ -7,7 +7,7 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertyName;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
@@ -20,9 +20,9 @@ import java.util.Map;
 
 public class DropInfoImpl implements DropInfo {
 
-    private final Key<String> key;
+    private final Key key;
 
-    private Key<BwItemStack> icon;
+    private Key icon;
     private int radius;
     private SoundVP soundEffect;
     private ParticleEffectASC particleEffect;
@@ -52,7 +52,7 @@ public class DropInfoImpl implements DropInfo {
     }
 
     @Override
-    public Key<BwItemStack> getIcon() {
+    public Key getIcon() {
         return this.icon.clone();
     }
 
@@ -156,14 +156,14 @@ public class DropInfoImpl implements DropInfo {
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return key;
     }
 
     public static class Tier implements DropInfo.Tier {
 
         @PropertyName("key")
-        private final Key<Integer> key;
+        private final Key key;
         @PropertyName("delay")
         private double delay;
         @PropertyName("upgrade-sound")
@@ -201,7 +201,7 @@ public class DropInfoImpl implements DropInfo {
         }
 
         @Override
-        public Key<Integer> getKey() {
+        public Key getKey() {
             return this.key;
         }
 
@@ -289,7 +289,7 @@ public class DropInfoImpl implements DropInfo {
     public static class Drop implements DropInfo.Drop {
 
         @PropertyName("key")
-        private final Key<String> key;
+        private final Key key;
         @PropertyName("item")
         private BwItemStack item;
         @PropertyName("delay")
@@ -317,7 +317,7 @@ public class DropInfoImpl implements DropInfo {
         }
 
         @Override
-        public Key<String> getKey() {
+        public Key getKey() {
             return this.key;
         }
 

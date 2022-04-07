@@ -107,6 +107,9 @@ public class MainConfiguration implements Loadable {
         @ConfigPath("disable-hunger")
         private boolean disableHunger;
 
+        @ConfigPath("game-lobby-scoreboard")
+        private String gameLobbyScoreboard;
+
         public ArenaSection() {
         }
 
@@ -180,6 +183,11 @@ public class MainConfiguration implements Loadable {
         public boolean isDisableHunger() {
             return disableHunger;
         }
+
+        public String getGameLobbyScoreboard() {
+            return gameLobbyScoreboard;
+        }
+
     }
 
     public static class RespawnItemsSection implements Loadable {

@@ -1,11 +1,9 @@
 package org.zibble.dbedwars.api.messaging.member;
 
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-import java.util.UUID;
-
-public interface PlayerMember extends MessagingMember, Keyed<UUID> {
+public interface PlayerMember extends MessagingMember, Keyed {
 
     Player getPlayer();
 

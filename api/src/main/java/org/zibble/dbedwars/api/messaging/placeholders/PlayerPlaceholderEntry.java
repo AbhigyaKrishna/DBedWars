@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.messaging.placeholders;
 
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.function.Function;
 
@@ -10,7 +10,7 @@ public interface PlayerPlaceholderEntry extends Placeholder {
     static PlayerPlaceholderEntry of(String placeholder, Function<Player, String> replacement) {
         return new PlayerPlaceholderEntry() {
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(placeholder);
             }
 
@@ -25,7 +25,7 @@ public interface PlayerPlaceholderEntry extends Placeholder {
     static PlayerPlaceholderEntry of(String placeholder, String replacement) {
         return new PlayerPlaceholderEntry() {
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(placeholder);
             }
 
@@ -46,7 +46,7 @@ public interface PlayerPlaceholderEntry extends Placeholder {
     }
 
     @Override
-    Key<String> getKey();
+    Key getKey();
 
     String getPlaceholder(Player player);
 

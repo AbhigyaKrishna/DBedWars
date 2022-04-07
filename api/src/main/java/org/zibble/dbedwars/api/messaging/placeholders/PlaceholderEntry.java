@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.messaging.placeholders;
 
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.function.Supplier;
 
@@ -9,7 +9,7 @@ public interface PlaceholderEntry extends Placeholder {
     static PlaceholderEntry of(String placeholder, Supplier<String> replacement) {
         return new PlaceholderEntry() {
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(placeholder);
             }
 
@@ -24,7 +24,7 @@ public interface PlaceholderEntry extends Placeholder {
     static PlaceholderEntry of(String placeholder, String replacement) {
         return new PlaceholderEntry() {
             @Override
-            public Key<String> getKey() {
+            public Key getKey() {
                 return Key.of(placeholder);
             }
 

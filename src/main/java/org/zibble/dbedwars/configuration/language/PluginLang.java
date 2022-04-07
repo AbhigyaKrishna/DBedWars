@@ -63,6 +63,7 @@ public enum PluginLang implements Lang {
     SETUP_SESSION_TEAM_UPGRADE_USAGE(),
     SETUP_SESSION_TEAM_SHOP_NOT_FOUND(),
     SETUP_SESSION_TEAM_BED_NOT_FOUND(),
+    SETUP_SESSION_FOUND_GENERATOR_LOCATION(),
     ;
 
     private final Message message;

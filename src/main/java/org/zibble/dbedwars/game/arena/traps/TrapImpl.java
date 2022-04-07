@@ -1,33 +1,37 @@
 package org.zibble.dbedwars.game.arena.traps;
 
-import org.zibble.dbedwars.api.script.ScriptVariable;
-import org.zibble.dbedwars.script.action.ActionPreProcessor;
-import org.zibble.dbedwars.script.action.ActionProcessor;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import org.zibble.dbedwars.api.events.TrapTriggerEvent;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.game.trap.Target;
+import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.script.ScriptVariable;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.script.action.ActionPreProcessor;
+import org.zibble.dbedwars.script.action.ActionProcessor;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
-public class TrapImpl implements org.zibble.dbedwars.api.game.trap.Trap {
+public class TrapImpl implements Trap {
 
-    private Key<String> key;
+    private final Key key;
     private final ArenaPlayer buyer;
-    private TrapEnum.TriggerType triggerType;
+    private TriggerType triggerType;
 
-    private Map<TrapEnum.TargetType, org.zibble.dbedwars.api.game.trap.Trap.TrapAction> actions;
+    private Set<TrapAction> actions;
 
-    public TrapImpl(String key, ArenaPlayer buyer, TrapEnum.TriggerType trigger, Set<TrapEnum.TargetType> targetTypes) {
+    public TrapImpl(String key, ArenaPlayer buyer, TriggerType trigger) {
         this.key = Key.of(key);
         this.triggerType = trigger;
         this.buyer = buyer;
-        this.actions = new HashMap<>();
+        this.actions = new HashSet<>();
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return this.key;
     }
 
@@ -42,96 +46,71 @@ public class TrapImpl implements org.zibble.dbedwars.api.game.trap.Trap {
     }
 
     @Override
-    public void trigger(ArenaPlayer target) {
-        for (org.zibble.dbedwars.api.game.trap.Trap.TrapAction value : this.actions.values()) {
-            value.execute(value.getActionTarget(target));
-            break;
-        }
+    public Set<TrapAction> getActions() {
+        return this.actions;
     }
 
-    public TrapEnum.TriggerType getTriggerType() {
+    @Override
+    public void addAction(TrapAction action) {
+        this.actions.add(action);
+    }
+
+    @Override
+    public boolean trigger(ArenaPlayer trigger) {
+        TrapTriggerEvent event = new TrapTriggerEvent(this, trigger);
+        event.call();
+
+        if (event.isCancelled()) return false;
+
+        Cache<Target, Collection<? extends ArenaPlayer>> cache = CacheBuilder.newBuilder().build();
+        for (TrapAction value : this.actions) {
+            Target target = value.getTarget();
+            if (target == null) continue;
+            Collection<? extends ArenaPlayer> targets = cache.getIfPresent(target);
+            if (targets == null) {
+                targets = target.getTargets(this, trigger);
+                cache.put(target, targets);
+            }
+            value.execute(targets);
+        }
+        cache.invalidateAll();
+
+        return true;
+    }
+
+    public TriggerType getTriggerType() {
         return triggerType;
     }
 
-    public class TrapAction implements org.zibble.dbedwars.api.game.trap.Trap.TrapAction {
+    public class TrapActionImpl implements TrapAction {
 
-        private TrapEnum.TargetType targetType;
-        private String[] actions;
+        private final Target target;
+        private final String action;
 
-        public TrapAction(TrapEnum.TargetType targetType, String[] actions) {
-            this.targetType = targetType;
-            this.actions = actions;
+        public TrapActionImpl(Target target, String action) {
+            this.target = target;
+            this.action = action;
         }
 
         @Override
-        public org.zibble.dbedwars.api.game.trap.Trap getTrap() {
+        public TrapImpl getTrap() {
             return TrapImpl.this;
         }
 
         @Override
-        public Collection<ArenaPlayer> getActionTarget(ArenaPlayer target) {
-            switch (this.targetType) {
-                case TRAP_BUYER: {
-                    return Collections.singleton(this.getTrap().getTrapBuyer());
-                }
-                case TEAM: {
-                    return this.getTrap().getTrapOwner().getPlayers();
-                }
-                case ENEMY_TEAM: {
-                    return target.getTeam().getPlayers();
-                }
-                case ENEMY_AT_BASE: {
-                    Set<ArenaPlayer> set = new HashSet<>();
-                    for (ArenaPlayer player : target.getArena().getPlayers()) {
-                        if (this.getTrap().getTrapOwner().getIslandArea().contains(player.getPlayer().getLocation().toVector()))
-                            set.add(player);
-                    }
-                    return set;
-                }
-                case TEAM_AT_BASE: {
-                    Set<ArenaPlayer> set = new HashSet<>();
-                    for (ArenaPlayer player : this.getTrap().getTrapOwner().getPlayers()) {
-                        if (this.getTrap().getTrapOwner().getIslandArea().contains(player.getPlayer().getLocation().toVector()))
-                            set.add(player);
-                    }
-                    return set;
-                }
-                case RANDOM_TEAM_PLAYER: {
-                    return Collections.singleton(new ArrayList<>(this.getTrap().getTrapOwner().getPlayers())
-                            .get(ThreadLocalRandom.current().nextInt(this.getTrap().getTrapOwner().getPlayers().size())));
-                }
-                case RANDOM_ENEMY_PLAYER: {
-                    return Collections.singleton(new ArrayList<>(target.getTeam().getPlayers())
-                            .get(ThreadLocalRandom.current().nextInt(target.getTeam().getPlayers().size())));
-                }
-                case ALL_PLAYER: {
-                    return this.getTrap().getTrapOwner().getArena().getPlayers();
-                }
-                case ALL_ENEMY: {
-                    Set<ArenaPlayer> players = new HashSet<>();
-                    for (Team team : target.getArena().getTeams()) {
-                        players.addAll(team.getPlayers());
-                    }
-                    players.removeAll(this.getTrap().getTrapOwner().getPlayers());
-                    return players;
-                }
-            }
-            return Collections.emptyList();
+        public Target getTarget() {
+            return this.target;
         }
 
         @Override
-        public void execute(Collection<ArenaPlayer> targets) {
+        public void execute(Collection<? extends ArenaPlayer> targets) {
             for (ArenaPlayer target : targets) {
-                for (String executable : this.actions) {
-                    for (ArenaPlayer actionTarget : this.getActionTarget(target)) {
-                        List<ScriptVariable<?>> variables = new ArrayList<>();
-                        variables.add(ScriptVariable.of("ARENA_PLAYER", actionTarget));
-                        variables.add(ScriptVariable.of("PLAYER", actionTarget.getPlayer()));
-                        variables.addAll(Arrays.asList(this.getStandardPlaceholders(actionTarget)));
-                        ActionProcessor holder = ActionPreProcessor.process(executable, variables.toArray(new ScriptVariable<?>[0]));
-                        holder.execute();
-                    }
-                }
+                List<ScriptVariable<?>> variables = new ArrayList<>();
+                variables.add(ScriptVariable.of("ARENA_PLAYER", target));
+                variables.add(ScriptVariable.of("PLAYER", target.getPlayer()));
+                variables.addAll(Arrays.asList(this.getStandardPlaceholders(target)));
+                ActionProcessor holder = ActionPreProcessor.process(Key.of("traps"), action, variables.toArray(new ScriptVariable<?>[0]));
+                holder.execute();
             }
         }
 

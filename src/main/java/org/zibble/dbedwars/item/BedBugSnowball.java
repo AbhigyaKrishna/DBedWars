@@ -12,17 +12,18 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.BedBugChaseFeature;
 import org.zibble.dbedwars.api.feature.custom.BedBugDisplayNameUpdateFeature;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.util.EventUtils;
-import org.zibble.dbedwars.api.util.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
 
 import java.util.Optional;
 
 public class BedBugSnowball extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("BED_BUG");
 
     public static final FixedMetadataValue BED_BUG_BALL_META = new FixedMetadataValue(DBedwars.getInstance(), true);
     private final DBedwars plugin;
@@ -38,9 +39,7 @@ public class BedBugSnowball extends BedWarsActionItem {
     @Override
     public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
         if (!EventUtils.isRightClick(playerInteractEvent.getAction())) return;
-        Arena arena = plugin.getGameManager().getArena(player.getWorld().getName());
-        if (arena == null) return;
-        Optional<ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = this.plugin.getGameManager().getArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
         //TODO SPECTATOR CHECK
@@ -56,7 +55,7 @@ public class BedBugSnowball extends BedWarsActionItem {
         Silverfish bedBug = bedBugBall.getWorld().spawn(bedBugBall.getLocation().clone().add(0, 1, 0), Silverfish.class);
         ArenaPlayer thrower = null;
         String name = bedBugBall.getMetadata("thrower").get(0).asString();
-        for (ArenaPlayer player : this.plugin.getGameManager().getArena(bedBugBall.getWorld().getName()).getPlayers()) {
+        for (ArenaPlayer player : this.plugin.getGameManager().getArena(bedBugBall.getWorld()).getPlayers()) {
             if (player.getName().equals(name)) {
                 thrower = player;
                 break;
@@ -75,8 +74,8 @@ public class BedBugSnowball extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("BED_BUG");
+    public Key getKey() {
+        return KEY;
     }
 
 }

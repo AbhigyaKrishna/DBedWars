@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.action.impl.CommandAction;
 
 public class CommandActionTranslator implements ActionTranslator<CommandSender, CommandAction> {
@@ -28,7 +28,7 @@ public class CommandActionTranslator implements ActionTranslator<CommandSender, 
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of("COMMAND");
     }
 

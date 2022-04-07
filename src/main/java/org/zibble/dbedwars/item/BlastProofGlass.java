@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.util.Key;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class BlastProofGlass extends BedWarsActionItem {
+
+    public static final Key KEY = Key.of("BLAST_PROOF_GLASS");
 
     private final DBedwars plugin;
 
@@ -208,8 +210,8 @@ public class BlastProofGlass extends BedWarsActionItem {
     }
 
     @Override
-    public Key<String> getKey() {
-        return Key.of("BLAST_PROOF_GLASS");
+    public Key getKey() {
+        return KEY;
     }
 
 }

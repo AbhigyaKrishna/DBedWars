@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.api.script;
 
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-public interface Translator<T> extends Keyed<String> {
+public interface Translator<T> extends Keyed {
 
     T serialize(String condition, ScriptVariable<?>... variables);
 

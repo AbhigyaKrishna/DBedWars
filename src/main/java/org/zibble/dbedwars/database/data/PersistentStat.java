@@ -3,15 +3,15 @@ package org.zibble.dbedwars.database.data;
 import com.google.gson.JsonElement;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.zibble.dbedwars.api.util.DataType;
-import org.zibble.dbedwars.api.util.Key;
-import org.zibble.dbedwars.api.util.Keyed;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.key.Keyed;
 import org.zibble.dbedwars.api.util.json.JSONBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
 
-public class PersistentStat<T extends Number> implements DataCache, Keyed<String> {
+public class PersistentStat<T extends Number> implements DataCache, Keyed {
 
     public static <T extends Number> PersistentStat<T> from(String key, Json json, java.util.function.Function<JsonElement, T> mapper) {
         PersistentStat<T> stat = new PersistentStat<>(key);
@@ -35,7 +35,7 @@ public class PersistentStat<T extends Number> implements DataCache, Keyed<String
     }
 
     @Override
-    public Key<String> getKey() {
+    public Key getKey() {
         return Key.of(this.key);
     }
 

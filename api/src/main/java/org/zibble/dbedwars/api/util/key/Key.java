@@ -1,18 +1,18 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.util.key;
 
-public class Key<T> implements Cloneable {
+public class Key implements Cloneable {
 
-    protected final T key;
+    protected final String key;
 
-    protected Key(T key) {
+    protected Key(String key) {
         this.key = key;
     }
 
-    public static <T> Key<T> of(T key) {
-        return new Key<>(key);
+    public static Key of(String key) {
+        return new Key(key);
     }
 
-    public T get() {
+    public Object get() {
         return key;
     }
 
@@ -22,8 +22,8 @@ public class Key<T> implements Cloneable {
     }
 
     @Override
-    public Key<T> clone() {
-        return new Key<>(this.key);
+    public Key clone() {
+        return new Key(this.key);
     }
 
     @Override

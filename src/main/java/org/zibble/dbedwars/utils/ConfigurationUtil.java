@@ -6,6 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
+import org.zibble.dbedwars.api.game.trap.Target;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
@@ -21,7 +22,13 @@ import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableTrap;
+import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
+import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
 import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
+import org.zibble.dbedwars.game.arena.traps.TrapImpl;
+import org.zibble.dbedwars.game.arena.traps.TriggerType;
 import org.zibble.dbedwars.game.arena.view.ShopView;
 import org.zibble.dbedwars.io.GameProfileFetcher;
 import org.zibble.dbedwars.io.MineSkinAPI;
@@ -32,9 +39,8 @@ import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
-public class ConfigurationUtils {
+public class ConfigurationUtil {
 
     public static String serializeSpawner(DropInfo drop, LocationXYZ location) {
         return drop.getKey().get() + "#" + location.toString();
@@ -64,6 +70,15 @@ public class ConfigurationUtils {
         s = s.replace("STAINED_GLASS", "GLASS");
         s = s.replace("GLASS", "STAINED_GLASS");
         return BwItemStack.valueOf(s);
+    }
+
+    public static String getConfigCode(Color color) {
+        if (ConfigLang.getTranslator() instanceof MiniMessageTranslator) {
+            return color.getMiniCode();
+        } else if (ConfigLang.getTranslator() instanceof LegacyTranslator) {
+            return "" + ((LegacyTranslator) ConfigLang.getTranslator()).getCHAR() + color.getChatColor().getChar();
+        }
+        return "";
     }
 
     public static Json createJson(ConfigurationSection section) {
@@ -165,11 +180,27 @@ public class ConfigurationUtils {
         return npc;
     }
 
-    public ScoreboardData createScoreboard(ConfigurableScoreboard config) {
+    public static ScoreboardData createScoreboard(ConfigurableScoreboard config) {
         List<Message> lines = new ArrayList<>(config.getContent().size());
         for (List<String> list : config.getContent()) {
             lines.add(ConfigMessage.from(list));
         }
         return DBedwars.getInstance().getHookManager().getScoreboardHook().createScoreboardData(ScoreboardData.Type.DYNAMIC, ConfigMessage.from(config.getTitle()), lines, Duration.ofTicks(config.getUpdateTick()));
+    }
+
+    public static TrapImpl createTrap(ConfigurableTrap config, ArenaPlayerImpl buyer) {
+        TriggerType triggerType = EnumUtil.matchEnum(config.getTrigger(), TriggerType.values());
+        if (triggerType == null)
+            return null;
+        TrapImpl trap = new TrapImpl(config.getId(), buyer, triggerType);
+        for (ConfigurableTrap.ConfigurableTrapAction cfg : config.getTrapActions()) {
+            Target target = DBedwars.getInstance().getGameManager().getTargetRegistry().get(cfg.getTarget());
+            if (target == null) continue;
+            for (String executable : cfg.getExecutables()) {
+                TrapImpl.TrapActionImpl action = trap.new TrapActionImpl(target, executable);
+                trap.addAction(action);
+            }
+        }
+        return trap;
     }
 }
