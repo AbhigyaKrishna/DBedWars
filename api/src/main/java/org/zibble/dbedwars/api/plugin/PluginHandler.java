@@ -18,9 +18,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class PluginHandler implements Listener {
 
-    /** Map for storing handler instances. */
+    /**
+     * Map for storing handler instances.
+     */
     protected static final Map<Class<? extends PluginHandler>, PluginHandler> HANDLER_INSTANCES = new ConcurrentHashMap<>();
-    /** The handling plugin */
+    /**
+     * The handling plugin
+     */
     protected final Plugin plugin;
 
     /**
@@ -43,7 +47,7 @@ public abstract class PluginHandler implements Listener {
      *
      * <p>
      *
-     * @param <T> Class that extends PluginHandler
+     * @param <T>   Class that extends PluginHandler
      * @param clazz Class desired
      * @return Instance of the plugin handle that provided the class
      */
@@ -73,13 +77,17 @@ public abstract class PluginHandler implements Listener {
      */
     protected abstract boolean isAllowMultipleInstances();
 
-    /** Registers events in this class. */
+    /**
+     * Registers events in this class.
+     */
     protected void register() {
         HandlerList.unregisterAll(this);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    /** Unregisters events in this class. */
+    /**
+     * Unregisters events in this class.
+     */
     protected void unregister() {
         HandlerList.unregisterAll(this);
     }

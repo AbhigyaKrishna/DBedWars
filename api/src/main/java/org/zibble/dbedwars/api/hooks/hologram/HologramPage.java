@@ -1,25 +1,25 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
 import java.util.List;
 import java.util.Set;
 
 public interface HologramPage {
-    
+
     Hologram getParent();
 
     List<HologramLine<?>> getLines();
 
     HologramLine.Text addNewTextLine(Message text);
 
-    HologramLine.Head addNewHeadLine(ItemStack itemStack);
+    HologramLine.Head addNewHeadLine(BwItemStack itemStack);
 
-    HologramLine.SmallHead addNewSmallHeadLine(ItemStack itemStack);
+    HologramLine.SmallHead addNewSmallHeadLine(BwItemStack itemStack);
 
-    HologramLine.Icon addNewIconLine(ItemStack itemStack);
+    HologramLine.Icon addNewIconLine(BwItemStack itemStack);
 
     HologramLine.Entity addNewEntityLine(HologramEntityType entityType);
 
@@ -27,11 +27,11 @@ public interface HologramPage {
 
     HologramLine.Text insertNewTextLine(int index, Message text);
 
-    HologramLine.Head insertNewHeadLine(int index, ItemStack itemStack);
+    HologramLine.Head insertNewHeadLine(int index, BwItemStack itemStack);
 
-    HologramLine.SmallHead insertNewSmallHeadLine(int index, ItemStack itemStack);
+    HologramLine.SmallHead insertNewSmallHeadLine(int index, BwItemStack itemStack);
 
-    HologramLine.Icon insertNewIconLine(int index, ItemStack itemStack);
+    HologramLine.Icon insertNewIconLine(int index, BwItemStack itemStack);
 
     HologramLine.Entity insertNewEntityLine(int index, HologramEntityType entityType);
 
@@ -40,5 +40,5 @@ public interface HologramPage {
     boolean addAction(ClickAction clickAction);
 
     boolean removeAction(ClickAction clickAction);
-    
+
 }

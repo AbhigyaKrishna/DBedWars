@@ -35,6 +35,7 @@ respawn-items:
 # Traps
 
 traps:
+  trap-trigger-meantime: 5 # in seconds
   trap-queue:
     enabled: true
     queue-limit: 3

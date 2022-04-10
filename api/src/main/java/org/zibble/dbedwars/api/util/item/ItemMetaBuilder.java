@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/** Represents a class for building {@link ItemMeta} */
+/**
+ * Represents a class for building {@link ItemMeta}
+ */
 public final class ItemMetaBuilder {
 
     private final Material material;
@@ -111,7 +113,7 @@ public final class ItemMetaBuilder {
      * <p>
      *
      * @param material Material of ItemStack
-     * @param meta Meta of ItemStack
+     * @param meta     Meta of ItemStack
      * @return {@link ItemMetaBuilder} instance
      */
     public static ItemMetaBuilder of(Material material, ItemMeta meta) {
@@ -268,8 +270,8 @@ public final class ItemMetaBuilder {
      *
      * <p>
      *
-     * @param enchantment Enchantment
-     * @param level Level of enchantment
+     * @param enchantment      Enchantment
+     * @param level            Level of enchantment
      * @param ignore_max_level Ignore max level cap?
      * @return This Object, for chaining
      */
@@ -285,7 +287,7 @@ public final class ItemMetaBuilder {
      * <p>
      *
      * @param enchantment Enchantment
-     * @param level Level of enchantment
+     * @param level       Level of enchantment
      * @return This Object, for chaining
      */
     public ItemMetaBuilder withEnchantment(Enchantment enchantment, int level) {
@@ -298,7 +300,7 @@ public final class ItemMetaBuilder {
      * <p>
      *
      * @param enchantment Enchantment
-     * @param level Level of enchantment
+     * @param level       Level of enchantment
      * @return This Object, for chaining
      */
     public ItemMetaBuilder withEnchantment(XEnchantment enchantment, int level) {

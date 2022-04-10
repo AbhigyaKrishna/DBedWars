@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.script.action.impl;
 
 import org.bukkit.entity.LivingEntity;
-import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
+import org.zibble.dbedwars.api.script.action.Action;
 
 public class PotionAction implements Action<LivingEntity> {
 
@@ -27,4 +27,5 @@ public class PotionAction implements Action<LivingEntity> {
     public PotionEffectAT getPotionEffectAT() {
         return this.potionEffectAT;
     }
+
 }

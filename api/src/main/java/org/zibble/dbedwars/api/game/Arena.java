@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.api.game;
 
 import com.cryptomorin.xseries.XMaterial;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -16,13 +15,14 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.KickReason;
+import org.zibble.dbedwars.api.util.mixin.Tickable;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface Arena extends AbstractMessaging {
+public interface Arena extends AbstractMessaging, Tickable {
 
     String getName();
 
@@ -33,6 +33,8 @@ public interface Arena extends AbstractMessaging {
     World getWorld();
 
     ArenaDataHolder getDataHolder();
+
+    ArenaCategory getCategory();
 
     ArenaStatus getStatus();
 
@@ -125,4 +127,5 @@ public interface Arena extends AbstractMessaging {
     boolean stop();
 
     String toString();
+
 }

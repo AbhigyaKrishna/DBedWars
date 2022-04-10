@@ -136,5 +136,7 @@ public class TrapImpl implements Trap {
                     ScriptVariable.of("PLACEHOLDER", PlaceholderEntry.symbol("arena_name", arenaPlayer.getArena().getName()))
             };
         }
+
     }
+
 }

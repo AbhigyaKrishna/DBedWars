@@ -4,16 +4,14 @@ import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.SpawnerDropItemEvent;
 import org.zibble.dbedwars.api.events.SpawnerUpgradeEvent;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
-import org.zibble.dbedwars.api.util.Initializable;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.game.arena.TeamImpl;
 
 import java.time.Instant;
@@ -24,23 +22,19 @@ import java.util.Optional;
 
 public class SpawnerImpl implements Spawner, Initializable {
 
-    private final DBedwars plugin;
-    private final Key key;
+    private final DropInfo dropType;
     private final Arena arena;
     private final Optional<TeamImpl> optionalTeam;
+    private final Map<DropInfo.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
     private Location location;
     private BoundingBox box;
-
     private DropInfo.Tier currentTier;
-
     private boolean initialized;
     private Instant start;
     private Instant lastUpgrade;
-    private final Map<DropInfo.Drop, Instant> dropTime = Collections.synchronizedMap(new HashMap<>());
 
-    public SpawnerImpl(DBedwars plugin, DropInfo dropType, Arena arena, TeamImpl team) {
-        this.plugin = plugin;
-        this.key = Key.of(dropType);
+    public SpawnerImpl(DropInfo dropType, Arena arena, TeamImpl team) {
+        this.dropType = dropType;
         this.arena = arena;
         this.optionalTeam = Optional.ofNullable(team);
     }
@@ -58,7 +52,8 @@ public class SpawnerImpl implements Spawner, Initializable {
         this.currentTier = this.getDropType().getTier(defaultLevel);
 
         if (this.getDropType().getHologram() != null) {
-            // TODO Do hologram stuff
+            this.getDropType().getHologram().createHologram(this.location.add(0, 1, 0));
+            this.getDropType().getHologram().startTask();
         }
 
         this.initialized = true;
@@ -83,8 +78,8 @@ public class SpawnerImpl implements Spawner, Initializable {
                     for (Entity entity : this.location.getWorld().getNearbyEntities(this.location, this.getDropType().getSpawnRadius(), this.getDropType().getSpawnRadius(), this.getDropType().getSpawnRadius())) {
                         if (!(entity instanceof Item)) continue;
                         Item item = (Item) entity;
-                        if (XMaterial.matchXMaterial(item.getItemStack()) != entry.getKey().getItem().getType()) continue;
-                        if (!NBTUtils.hasPluginData(item.getItemStack())) continue;
+                        if (XMaterial.matchXMaterial(item.getItemStack()) != entry.getKey().getItem().getType())
+                            continue;
                         count += item.getItemStack().getAmount();
                     }
                     if (count >= entry.getKey().getMaxSpawn()) return;
@@ -148,7 +143,7 @@ public class SpawnerImpl implements Spawner, Initializable {
     }
 
     public DropInfo getDropType() {
-        return key.get();
+        return dropType;
     }
 
     @Override
@@ -198,7 +193,7 @@ public class SpawnerImpl implements Spawner, Initializable {
 
     @Override
     public Key getKey() {
-        return key;
+        return this.dropType.getKey();
     }
 
     @Override

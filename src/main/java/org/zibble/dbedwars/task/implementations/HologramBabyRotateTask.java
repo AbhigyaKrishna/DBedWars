@@ -1,29 +1,30 @@
 package org.zibble.dbedwars.task.implementations;
 
-import com.pepedevs.radium.holograms.object.Hologram;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 
 public class HologramBabyRotateTask extends HologramRotateTask {
 
+    private final DBedwars plugin;
     private final float degreeRotatedPerCycle;
     private final int ticksPerAnimationCycle;
-    private final String onAnimationEnd;
     private final boolean slowDownAtEnd;
     private final float verticalMovement;
 
     public HologramBabyRotateTask(
             DBedwars plugin,
             Hologram hologram,
+            TaskEndAction endAction,
             float degreeRotatedPerCycle,
             int ticksPerAnimationCycle,
-            String onAnimationEnd,
             boolean slowDownAtEnd,
             float verticalMovement) {
-        super(plugin, hologram);
+        super(hologram, endAction);
+        this.plugin = plugin;
         this.degreeRotatedPerCycle = degreeRotatedPerCycle;
         this.ticksPerAnimationCycle = ticksPerAnimationCycle;
-        this.onAnimationEnd = onAnimationEnd;
         this.slowDownAtEnd = slowDownAtEnd;
         this.verticalMovement = verticalMovement;
     }
@@ -68,7 +69,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
             this.timestamp = System.currentTimeMillis();
             if (this.tick >= this.task.ticksPerAnimationCycle) {
                 this.tick = 0;
-                if (this.task.onAnimationEnd.equalsIgnoreCase("reverse")) {
+                if (this.task.endAction == TaskEndAction.REVERSE) {
                     if (this.revert == 1) {
                         this.revert = -1;
                     } else if (this.revert == -1) {
@@ -97,6 +98,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.timestamp >= 50;
         }
+
     }
 
     private class HologramRotateNoSlow extends CancellableWorkload {
@@ -127,7 +129,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
                     0);
             if (this.tick >= this.task.ticksPerAnimationCycle) {
                 this.tick = 0;
-                if (this.task.onAnimationEnd.equalsIgnoreCase("reverse")) {
+                if (this.task.endAction == TaskEndAction.REVERSE) {
                     if (this.revert == 1) {
                         this.revert = -1;
                     } else if (this.revert == -1) {
@@ -141,5 +143,7 @@ public class HologramBabyRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return System.currentTimeMillis() - this.lastExec >= 50;
         }
+
     }
+
 }

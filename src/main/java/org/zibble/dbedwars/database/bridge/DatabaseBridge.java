@@ -1,15 +1,13 @@
 package org.zibble.dbedwars.database.bridge;
 
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.util.Duration;
-import org.zibble.dbedwars.api.util.Initializable;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
 import org.zibble.dbedwars.database.data.ArenaHistory;
 import org.zibble.dbedwars.database.data.PlayerDataCache;
 import org.zibble.dbedwars.database.data.table.DataTable;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 public interface DatabaseBridge extends Initializable {
 

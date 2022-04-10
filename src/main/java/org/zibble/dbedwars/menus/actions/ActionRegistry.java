@@ -24,47 +24,51 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
         doDefaultRegistration();
     }
 
+    public static Optional<MenuAction> getIfPresent(@NotNull String tag) {
+        return Optional.ofNullable(actionRegister.get(tag));
+    }
+
     @Override
     public void register(@NotNull MenuAction menuActions) throws DuplicateActionDefinitionException {
-        if(actionRegister.containsKey(menuActions.tag()))
-            throw new DuplicateActionDefinitionException("Tag for action ["+menuActions.tag()+" , "+menuActions.description()+"] is already definied!");
+        if (actionRegister.containsKey(menuActions.tag()))
+            throw new DuplicateActionDefinitionException("Tag for action [" + menuActions.tag() + " , " + menuActions.description() + "] is already definied!");
 
         actionRegister.put(menuActions.tag(), menuActions);
     }
 
     @Override
     public void register(@NotNull MenuAction... menuActions) throws DuplicateActionDefinitionException {
-        for(MenuAction actions : menuActions){
+        for (MenuAction actions : menuActions) {
             this.register(actions);
         }
     }
 
     @Override
-    public void unregister(@NotNull String tag){
+    public void unregister(@NotNull String tag) {
         actionRegister.remove(tag);
     }
 
     @Override
-    public void unregister(@NotNull MenuAction actions){
+    public void unregister(@NotNull MenuAction actions) {
         actionRegister.remove(actions.tag());
     }
 
     @Override
-    public boolean isRegistered(@NotNull String tag){
+    public boolean isRegistered(@NotNull String tag) {
         return actionRegister.containsKey(tag);
     }
 
     @Override
-    public boolean isRegistered(@NotNull MenuAction actions){
+    public boolean isRegistered(@NotNull MenuAction actions) {
         return actionRegister.containsKey(actions.tag());
     }
 
     @Override
-    public Optional<MenuAction> getOptionalMenu(@NotNull String tag){
+    public Optional<MenuAction> getOptionalMenu(@NotNull String tag) {
         return Optional.ofNullable(actionRegister.get(tag));
     }
 
-    private void doDefaultRegistration(){
+    private void doDefaultRegistration() {
         try {
             register(
                     new SendMessageActionImpl(),
@@ -78,7 +82,4 @@ public class ActionRegistry implements org.zibble.dbedwars.api.menu.ActionRegist
         }
     }
 
-    public static Optional<MenuAction> getIfPresent(@NotNull String tag){
-        return Optional.ofNullable(actionRegister.get(tag));
-    }
 }

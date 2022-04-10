@@ -12,8 +12,8 @@ import org.zibble.dbedwars.database.data.PersistentStat;
 import org.zibble.dbedwars.database.jooq.DBedWarsSchema;
 import org.zibble.dbedwars.database.jooq.Keys;
 import org.zibble.dbedwars.database.jooq.binding.PersistentStatConverter;
-import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
 import org.zibble.dbedwars.database.jooq.binding.UUIDBinding;
+import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
 
 import java.util.Collections;
 import java.util.List;

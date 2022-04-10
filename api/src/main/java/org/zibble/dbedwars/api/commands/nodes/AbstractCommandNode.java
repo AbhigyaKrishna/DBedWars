@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 
 public abstract class AbstractCommandNode {
 
-    protected AbstractCommandNode() {}
+    protected AbstractCommandNode() {
+    }
 
     public abstract boolean accept(CommandSender sender, String[] args);
 

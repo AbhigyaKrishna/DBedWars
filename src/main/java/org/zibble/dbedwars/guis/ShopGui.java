@@ -2,7 +2,7 @@ package org.zibble.dbedwars.guis;
 
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.guis.component.PaginatedGuiComponent;
+import org.zibble.dbedwars.api.guis.component.PaginatedGuiComponent;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
 
 import java.util.Map;
@@ -11,6 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ShopGui extends PaginatedGuiComponent<Key, ChestMenu, ShopGui> {
 
     private static final Map<Player, ShopGui> OPEN_GUIS = new ConcurrentHashMap<>();
+
+    protected ShopGui(Player player) {
+        super(player);
+    }
 
     public static ShopGui creator(Player player) {
         return new ShopGui(player);
@@ -22,10 +26,6 @@ public class ShopGui extends PaginatedGuiComponent<Key, ChestMenu, ShopGui> {
 
     public static ShopGui get(Player player) {
         return OPEN_GUIS.get(player);
-    }
-
-    protected ShopGui(Player player) {
-        super(player);
     }
 
     @Override

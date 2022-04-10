@@ -60,4 +60,5 @@ public class NBTString extends NBT {
     public NBTString clone() {
         return new NBTString(this.value);
     }
+
 }

@@ -7,7 +7,6 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.zibble.dbedwars.database.jooq.tables.PlayerStatTable;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 public class CreateTableSQL implements ISQL {
@@ -66,12 +65,13 @@ public class CreateTableSQL implements ISQL {
     }
 
     private static class Table {
+
         public static final String PLAYER_STATS = "dbedwars_player_stats";
         public static final String ARENA = "dbedwars_arena_history";
         public static final String QUICK_BUY = "dbedwars_quick_buy";
 
         static class PlayerStats {
-            
+
 
             public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.notNull());
             public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).notNull());
@@ -87,9 +87,11 @@ public class CreateTableSQL implements ISQL {
             public static final Field<?> BED_LOST = DSL.field(DSL.name("BED_LOST"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
             public static final Field<?> WINS = DSL.field(DSL.name("WINS"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
             public static final Field<?> PLAYED = DSL.field(DSL.name("PLAYED"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+
         }
 
         static class Arena {
+
             public static final Field<?> ID = DSL.field(DSL.name("ID"), SQLDataType.VARCHAR(20).notNull());
             public static final Field<?> GAME_ID = DSL.field(DSL.name("GAME_ID"), SQLDataType.VARCHAR(50).notNull());
             public static final Field<?> TEAMS = DSL.field(DSL.name("TEAMS"), SQLDataType.JSON.notNull());
@@ -99,13 +101,17 @@ public class CreateTableSQL implements ISQL {
             public static final Field<?> ITEM_PICKUP = DSL.field(DSL.name("ITEM_PICKUP"), SQLDataType.JSON.notNull());
             public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.notNull());
             public static final Field<?> BEDS_BROKEN = DSL.field(DSL.name("BEDS_BROKEN"), SQLDataType.JSON.notNull());
+
         }
 
         static class QuickBuy {
+
             public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.notNull());
             public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).notNull());
             public static final Field<?> DATA = DSL.field(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.notNull());
+
         }
+
     }
 
 }

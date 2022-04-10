@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.game;
 
 import org.bukkit.World;
+import org.zibble.dbedwars.api.game.ArenaCategory;
 import org.zibble.dbedwars.api.game.ArenaDataHolder;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -11,6 +12,7 @@ import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
+import org.zibble.dbedwars.game.arena.ArenaCategoryImpl;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.utils.ConfigurationUtil;
 
@@ -22,23 +24,29 @@ import java.util.Set;
 public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     private final String id;
+    private final Map<Color, TeamDataHolderImpl> teams;
+    private final Set<SpawnerDataHolderImpl> spawners;
     private String worldFileName;
     private Message customName;
+    private ArenaCategoryImpl category;
     private int maxPlayersPerTeam;
     private int minPlayersToStart;
     private boolean enabled;
     private World.Environment environment;
-
     private LocationXYZYP waitingLocation;
     private LocationXYZYP spectatorLocation;
     private BoundingBox lobbyArea;
 
-    private final Map<Color, TeamDataHolderImpl> teams;
-    private final Set<SpawnerDataHolderImpl> spawners;
+    private ArenaDataHolderImpl(String id) {
+        this.id = id;
+        this.teams = new EnumMap<>(Color.class);
+        this.spawners = new HashSet<>();
+    }
 
-    public static ArenaDataHolderImpl fromConfig(ConfigurableArena config) {
+    public static ArenaDataHolderImpl fromConfig(GameManagerImpl gameManager, ConfigurableArena config) {
         ArenaDataHolderImpl holder = new ArenaDataHolderImpl(config.getIdentifier());
         holder.setCustomName(ConfigMessage.from(config.getCustomName()));
+        holder.setCategory(gameManager.getCategory(config.getCategory()));
         holder.setMaxPlayersPerTeam(config.getPlayerInTeam());
         holder.setMinPlayersToStart(config.getMinPlayers());
         holder.setEnabled(config.isEnabled());
@@ -57,12 +65,6 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         }
 
         return holder;
-    }
-
-    private ArenaDataHolderImpl(String id) {
-        this.id = id;
-        this.teams = new EnumMap<>(Color.class);
-        this.spawners = new HashSet<>();
     }
 
     public static ArenaDataHolderImpl create(String id) {
@@ -90,6 +92,16 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     @Override
     public void setCustomName(Message customName) {
         this.customName = customName;
+    }
+
+    @Override
+    public ArenaCategoryImpl getCategory() {
+        return category;
+    }
+
+    @Override
+    public void setCategory(ArenaCategory category) {
+        this.category = (ArenaCategoryImpl) category;
     }
 
     @Override
@@ -193,11 +205,10 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
     public static class TeamDataHolderImpl implements ArenaDataHolder.TeamDataHolder {
 
         private final Color color;
-        private LocationXYZYP spawnLocation;
-        private LocationXYZ bed;
-
         private final Set<ShopDataHolderImpl> shops;
         private final Set<SpawnerDataHolderImpl> spawners;
+        private LocationXYZYP spawnLocation;
+        private LocationXYZ bed;
 
         public TeamDataHolderImpl(Color color) {
             this.color = color;
@@ -258,6 +269,9 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private DropInfo dropType;
         private LocationXYZ location;
 
+        private SpawnerDataHolderImpl() {
+        }
+
         public static SpawnerDataHolderImpl fromConfig(String cfg) {
             SpawnerDataHolderImpl data = new SpawnerDataHolderImpl();
             Pair<DropInfo, LocationXYZ> pair = ConfigurationUtil.parseSpawner(cfg);
@@ -272,8 +286,6 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
             data.location = location;
             return data;
         }
-
-        private SpawnerDataHolderImpl() {}
 
         @Override
         public DropInfo getDropType() {
@@ -302,14 +314,15 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
         private ShopInfoImpl shopType;
         private LocationXYZYP location;
 
+        private ShopDataHolderImpl() {
+        }
+
         public static ShopDataHolderImpl of(ShopInfoImpl shopType, LocationXYZYP location) {
             ShopDataHolderImpl data = new ShopDataHolderImpl();
             data.shopType = shopType;
             data.location = location;
             return data;
         }
-
-        private ShopDataHolderImpl() {}
 
         @Override
         public ShopInfoImpl getShopType() {

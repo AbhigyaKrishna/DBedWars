@@ -19,10 +19,10 @@ import java.util.*;
 
 public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingScoreboard {
 
+    private final CancellableWorkload task;
     private int titleCursor;
     private List<Integer> lineCursor;
     private Duration delay;
-    private final CancellableWorkload task;
 
     public UpdatingScoreBoardImpl(Player player, Message title, Duration delay) {
         super(player, title);
@@ -42,7 +42,7 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
                     UpdatingScoreBoardImpl.this.titleCursor = 0;
                 }
 
-                for (int i = 0; i < UpdatingScoreBoardImpl.this.getLines().size(); i++){
+                for (int i = 0; i < UpdatingScoreBoardImpl.this.getLines().size(); i++) {
                     if (UpdatingScoreBoardImpl.this.lineCursor.get(i) + 1 >= UpdatingScoreBoardImpl.this.getLines().get(i).getLines().size()) {
                         UpdatingScoreBoardImpl.this.lineCursor.set(i, 0);
                     } else {
@@ -53,7 +53,7 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
             }
 
             @Override
-            public boolean shouldExecute(){
+            public boolean shouldExecute() {
                 if (isCancelled())
                     return false;
 

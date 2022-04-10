@@ -85,4 +85,5 @@ public class NBTDouble extends NBTNumber {
     public NBTDouble clone() {
         return new NBTDouble(this.value);
     }
+
 }

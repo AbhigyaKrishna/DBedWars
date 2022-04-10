@@ -107,6 +107,7 @@ public class Defaults {
         java.lang.String value();
 
         SaveActionType saveAction() default SaveActionType.NOT_SET;
+
     }
 
 }

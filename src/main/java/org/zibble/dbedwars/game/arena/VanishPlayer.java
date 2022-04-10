@@ -23,8 +23,8 @@ public class VanishPlayer {
 
     private final Player player;
     private final WrapperPlayServerPlayerInfo.PlayerData data;
-    private boolean vanishFromAll;
     private final Set<UUID> vanishedFrom;
+    private boolean vanishFromAll;
 
     public VanishPlayer(Player player) {
         this.player = player;

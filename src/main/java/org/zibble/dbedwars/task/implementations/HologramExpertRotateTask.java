@@ -1,26 +1,28 @@
 package org.zibble.dbedwars.task.implementations;
 
-import com.pepedevs.radium.holograms.object.Hologram;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 
-import java.util.AbstractMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class HologramExpertRotateTask extends HologramRotateTask {
 
+    private final DBedwars plugin;
     private final ConcurrentLinkedQueue<Map.Entry<LocationXYZYP, Integer>> frames;
     private final short delayMillis;
 
     public HologramExpertRotateTask(
             DBedwars plugin,
             Hologram hologram,
+            TaskEndAction endAction,
             LinkedHashMap<LocationXYZYP, Integer> frames,
             short delayMillis) {
-        super(plugin, hologram);
+        super(hologram, endAction);
+        this.plugin = plugin;
         this.frames = new ConcurrentLinkedQueue<>(frames.entrySet());
         this.delayMillis = delayMillis;
     }
@@ -38,6 +40,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         private final HologramExpertRotateTask task;
         private final short delayMillis;
         private Map.Entry<LocationXYZYP, Integer> frame;
+        private int currentFrame;
         private int frameParts;
         private int partMove;
 
@@ -48,6 +51,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
             this.task = HologramExpertRotateTask.this;
             this.delayMillis = delayMillis;
             this.frame = new AbstractMap.SimpleEntry<>(null, 0);
+            this.currentFrame = 0;
             this.frameParts = 1;
         }
 
@@ -60,7 +64,19 @@ public class HologramExpertRotateTask extends HologramRotateTask {
             if (this.lastExec - this.frameStart >= this.frame.getValue() * 50) {
                 if (this.frame.getKey() != null) this.task.frames.add(this.frame);
 
+                if (this.currentFrame == this.task.frames.size()) {
+                    if (this.task.endAction == TaskEndAction.REVERSE) {
+                        List<Map.Entry<LocationXYZYP, Integer>> l = new ArrayList<>(this.task.frames);
+                        Collections.reverse(l);
+                        this.task.frames.clear();
+                        this.task.frames.addAll(l);
+
+                        this.currentFrame = 0;
+                    }
+                }
+
                 this.frame = this.task.frames.poll();
+                this.currentFrame++;
                 this.frameParts = (int) Math.ceil(this.frame.getValue() * 50 / this.delayMillis);
                 this.partMove = 1;
                 this.frameStart = System.currentTimeMillis();
@@ -80,5 +96,7 @@ public class HologramExpertRotateTask extends HologramRotateTask {
         public boolean shouldExecute() {
             return !this.isCancelled() && System.currentTimeMillis() - lastExec > this.delayMillis;
         }
+
     }
+
 }

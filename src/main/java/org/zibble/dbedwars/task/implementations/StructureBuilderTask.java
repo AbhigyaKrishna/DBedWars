@@ -42,8 +42,8 @@ public class StructureBuilderTask implements Workload {
     @Override
     public void compute() {
         for (int blocksToPlacePerSecond = structure.getBlocksToPlacePerSecond();
-                blocksToPlacePerSecond > 0;
-                blocksToPlacePerSecond--) {
+             blocksToPlacePerSecond > 0;
+             blocksToPlacePerSecond--) {
             if (!blockIterator.hasNext()) break;
 
             Map.Entry<Block, XMaterial> entry = blockIterator.next();
@@ -71,4 +71,5 @@ public class StructureBuilderTask implements Workload {
 
         return blockIterator.hasNext();
     }
+
 }

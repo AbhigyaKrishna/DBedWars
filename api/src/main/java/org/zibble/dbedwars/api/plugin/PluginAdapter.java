@@ -30,4 +30,5 @@ public abstract class PluginAdapter extends Plugin {
     protected boolean setUpListeners() {
         return true;
     }
+
 }

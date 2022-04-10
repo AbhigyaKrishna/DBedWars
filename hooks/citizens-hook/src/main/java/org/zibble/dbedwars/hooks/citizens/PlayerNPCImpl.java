@@ -70,4 +70,5 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     public NPC createNPC() {
         return CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "");
     }
+
 }

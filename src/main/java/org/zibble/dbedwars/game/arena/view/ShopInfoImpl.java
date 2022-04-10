@@ -6,10 +6,10 @@ import org.zibble.dbedwars.api.game.view.ShopInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
-import org.zibble.dbedwars.api.util.ArrayFunction;
+import org.zibble.dbedwars.api.util.function.ArrayFunction;
 import org.zibble.dbedwars.api.util.BwItemStack;
-import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.json.Json;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
 
@@ -22,6 +22,10 @@ public class ShopInfoImpl implements ShopInfo {
     private PageInfoImpl defaultPage;
     private Map<Key, PageInfoImpl> pages = new HashMap<>();
 
+    public ShopInfoImpl(String key) {
+        this.key = Key.of(key);
+    }
+
     public static ShopInfoImpl fromConfig(ConfigurableShop config) {
         ShopInfoImpl shopType = new ShopInfoImpl(config.getName());
         for (Map.Entry<String, ConfigurableShop.ConfigurablePage> entry : config.getPages().entrySet()) {
@@ -29,10 +33,6 @@ public class ShopInfoImpl implements ShopInfo {
         }
         shopType.defaultPage = shopType.pages.getOrDefault(Key.of(config.getDefaultPage()), shopType.pages.values().iterator().next());
         return shopType;
-    }
-
-    public ShopInfoImpl(String key) {
-        this.key = Key.of(key);
     }
 
     @Override
@@ -58,6 +58,14 @@ public class ShopInfoImpl implements ShopInfo {
         private String mask[];
         private Map<Character, ItemInfoImpl> items;
 
+        public PageInfoImpl(String key, int row, Message title, String[] mask) {
+            this.key = key;
+            this.row = row;
+            this.title = title;
+            this.mask = mask;
+            this.items = new HashMap<>();
+        }
+
         public static PageInfoImpl fromConfig(String key, ConfigurableShop.ConfigurablePage config) {
             String[] mask = new String[config.getPattern().size()];
             for (int i = 0; i < config.getPattern().size(); i++) {
@@ -68,14 +76,6 @@ public class ShopInfoImpl implements ShopInfo {
                 page.items.put(entry.getKey().charAt(0), ItemInfoImpl.fromConfig(entry.getValue()));
             }
             return page;
-        }
-
-        public PageInfoImpl(String key, int row, Message title, String[] mask) {
-            this.key = key;
-            this.row = row;
-            this.title = title;
-            this.mask = mask;
-            this.items = new HashMap<>();
         }
 
         @Override
@@ -112,6 +112,20 @@ public class ShopInfoImpl implements ShopInfo {
         private Set<String> useConditions;
         private Set<String> actions;
 
+        public ItemInfoImpl(Json item) {
+            this((placeholders) -> BwItemStack.fromJson(item, placeholders));
+        }
+
+        public ItemInfoImpl(BwItemStack item) {
+            this((placeholders) -> item);
+        }
+
+        public ItemInfoImpl(ArrayFunction<Placeholder, BwItemStack> item) {
+            this.item = item;
+            this.useConditions = new HashSet<>();
+            this.actions = new HashSet<>();
+        }
+
         public static ItemInfoImpl fromConfig(ConfigurableShop.ConfigurablePage.ConfigurableItem config) {
             Matcher matcher = BwItemStack.JSON_MATCHER.matcher(config.getMaterial());
             ItemInfoImpl item;
@@ -140,20 +154,6 @@ public class ShopInfoImpl implements ShopInfo {
             item.useConditions.addAll(config.getConditions());
             item.actions.addAll(config.getActions());
             return item;
-        }
-
-        public ItemInfoImpl(Json item) {
-            this((placeholders) -> BwItemStack.fromJson(item, placeholders));
-        }
-
-        public ItemInfoImpl(BwItemStack item) {
-            this((placeholders) -> item);
-        }
-
-        public ItemInfoImpl(ArrayFunction<Placeholder, BwItemStack> item) {
-            this.item = item;
-            this.useConditions = new HashSet<>();
-            this.actions = new HashSet<>();
         }
 
         @Override

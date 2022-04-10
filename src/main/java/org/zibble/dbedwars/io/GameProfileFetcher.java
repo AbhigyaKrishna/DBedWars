@@ -14,7 +14,10 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class GameProfileFetcher {
@@ -22,7 +25,7 @@ public class GameProfileFetcher {
     private static final String SERVICE_URL = "https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false";
     private static final String JSON_SKIN = "{\"timestamp\":%d,\"profileId\":\"%s\",\"profileName\":\"%s\",\"isPublic\":true,\"textures\":{\"SKIN\":{\"url\":\"%s\"}}}";
     private static final String JSON_CAPE = "{\"timestamp\":%d,\"profileId\":\"%s\",\"profileName\":\"%s\",\"isPublic\":true,\"textures\":{\"SKIN\":{\"url\":\"%s\"},\"CAPE\":{\"url\":\"%s\"}}}";
-
+    private static final GameProfileFetcher INSTANCE = new GameProfileFetcher();
     private final Gson gson = new GsonBuilder()
             .disableHtmlEscaping()
             .registerTypeAdapter(UUID.class, new UUIDTypeAdaptor())
@@ -30,7 +33,9 @@ public class GameProfileFetcher {
             .create();
     private final Cache<UUID, PlayerGameProfile> cache = CacheBuilder.newBuilder().expireAfterWrite(120, TimeUnit.MINUTES).build();
 
-    private static final GameProfileFetcher INSTANCE = new GameProfileFetcher();
+    public static GameProfileFetcher getInstance() {
+        return INSTANCE;
+    }
 
     public PlayerGameProfile fetch(UUID uuid) {
         return fetch(uuid, false);
@@ -90,10 +95,6 @@ public class GameProfileFetcher {
         return profile;
     }
 
-    public static GameProfileFetcher getInstance() {
-        return INSTANCE;
-    }
-
     private static class GameProfileSerializer implements JsonSerializer<PlayerGameProfile>, JsonDeserializer<PlayerGameProfile> {
 
         @Override
@@ -127,7 +128,7 @@ public class GameProfileFetcher {
         private List<Property> deserializeProperties(JsonElement json, Type type, JsonDeserializationContext context) {
             List<Property> result = new ArrayList<>();
             if (json instanceof JsonObject) {
-                JsonObject object = (JsonObject)json;
+                JsonObject object = (JsonObject) json;
                 for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
                     if (!(entry.getValue() instanceof JsonArray)) continue;
 
@@ -151,5 +152,7 @@ public class GameProfileFetcher {
             }
             return result;
         }
+
     }
+
 }

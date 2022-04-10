@@ -4,7 +4,9 @@ import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 
 import java.lang.reflect.Method;
 
-/** Resolver for methods */
+/**
+ * Resolver for methods
+ */
 public class MethodResolver extends MemberResolver<Method> {
 
     public MethodResolver(Class<?> clazz) {
@@ -118,7 +120,7 @@ public class MethodResolver extends MemberResolver<Method> {
         for (Method method : this.clazz.getDeclaredMethods()) {
             if (method.getName().equals(query.getName())
                     && (query.getTypes().length == 0
-                            || classListEqual(query.getTypes(), method.getParameterTypes()))) {
+                    || classListEqual(query.getTypes(), method.getParameterTypes()))) {
                 method.setAccessible(true);
                 return method;
             }
@@ -131,4 +133,5 @@ public class MethodResolver extends MemberResolver<Method> {
         return new NoSuchMethodException(
                 "Could not resolve method for " + joinedNames + " in class " + this.clazz);
     }
+
 }

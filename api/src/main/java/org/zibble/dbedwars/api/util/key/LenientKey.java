@@ -2,12 +2,12 @@ package org.zibble.dbedwars.api.util.key;
 
 public class LenientKey extends Key {
 
-    public static LenientKey of(String key) {
-        return new LenientKey(key);
-    }
-
     protected LenientKey(String key) {
         super(key);
+    }
+
+    public static LenientKey of(String key) {
+        return new LenientKey(key);
     }
 
     @Override

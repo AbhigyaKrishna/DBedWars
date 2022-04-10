@@ -1,7 +1,8 @@
 diamond-spawner:
   mode: 'baby'
   animation-cycle-end-control: 'reverse' #repeat/reverse
-  text:
+  update-delay: 100 #in ticks
+  content:
     - ''
     - ''
     - ''
@@ -13,15 +14,17 @@ diamond-spawner:
 emerald-spawner:
   mode: 'expert'
   animation-cycle-end-control: 'reverse' #repeat/reverse
-  text:
+  update-delay: 100 #in ticks
+  content:
     - ''
     - ''
     - ''
   keyframes:
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
-    - '[TICKS:10] 0:0:0:90:0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+    - '[10] 0::0::0::90::0'
+  frame-tick-delay: 5

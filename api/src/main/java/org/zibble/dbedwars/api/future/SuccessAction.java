@@ -16,18 +16,6 @@ public abstract class SuccessAction<K, V> implements Runnable {
         this.newFuture = newFuture;
     }
 
-    public SuccessActionType getType() {
-        return type;
-    }
-
-    public ActionFuture<K> getFuture() {
-        return future;
-    }
-
-    public ActionFuture<V> getNewFuture() {
-        return newFuture;
-    }
-
     static <K, V> SuccessAction<K, V> of(ActionFuture<K> future, ActionFuture<V> newFuture, Consumer<? super K> fn) {
         return new SuccessAction<K, V>(SuccessActionType.ACCEPT, future, newFuture) {
             @Override
@@ -77,6 +65,28 @@ public abstract class SuccessAction<K, V> implements Runnable {
         return new ComposeSuccessAction<>(future, newFuture, fn);
     }
 
+    public SuccessActionType getType() {
+        return type;
+    }
+
+    public ActionFuture<K> getFuture() {
+        return future;
+    }
+
+    public ActionFuture<V> getNewFuture() {
+        return newFuture;
+    }
+
+    protected enum SuccessActionType {
+        ACCEPT,
+        APPLY,
+        RUN,
+        HANDLE,
+        EXCEPTION,
+        COMPOSE,
+        ;
+    }
+
     protected static class ComposeSuccessAction<K, V> extends SuccessAction<K, V> {
 
         private final Function<? super K, ? extends ActionFuture<V>> fn;
@@ -96,16 +106,6 @@ public abstract class SuccessAction<K, V> implements Runnable {
             return composedFuture;
         }
 
-    }
-
-    protected enum SuccessActionType {
-        ACCEPT,
-        APPLY,
-        RUN,
-        HANDLE,
-        EXCEPTION,
-        COMPOSE,
-        ;
     }
 
 }

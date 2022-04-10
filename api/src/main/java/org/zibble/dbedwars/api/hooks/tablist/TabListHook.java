@@ -15,7 +15,7 @@ public interface TabListHook extends Hook {
 
     void resetTab(@NotNull Arena arena);
 
-    default void updateTeamElimination(@NotNull Team team){
+    default void updateTeamElimination(@NotNull Team team) {
         team.getPlayers().iterator().forEachRemaining(arenaPlayer -> {
             updatePlayer(arenaPlayer.getPlayer().getUniqueId(), true);
         });

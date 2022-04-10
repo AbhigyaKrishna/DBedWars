@@ -3,8 +3,8 @@ package org.zibble.dbedwars.configuration;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 
 import java.util.ArrayList;
@@ -12,6 +12,18 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class ConfigMessage extends Message {
+
+    protected ConfigMessage(String message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected ConfigMessage(Collection<String> message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected ConfigMessage(String[] message, Placeholder... placeholders) {
+        super(new ArrayList<>(Arrays.asList(message)), placeholders);
+    }
 
     public static ConfigMessage empty() {
         return new ConfigMessage("");
@@ -29,14 +41,6 @@ public class ConfigMessage extends Message {
         return new ConfigMessage(message, placeholders);
     }
 
-    protected ConfigMessage(String message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
-    protected ConfigMessage(Collection<String> message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
     @Override
     public ConfigMessage[] splitToLineMessage() {
         ConfigMessage[] messages = new ConfigMessage[this.message.size()];
@@ -44,10 +48,6 @@ public class ConfigMessage extends Message {
             messages[i] = new ConfigMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
         }
         return messages;
-    }
-
-    protected ConfigMessage(String[] message, Placeholder... placeholders) {
-        super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
 
     @Override

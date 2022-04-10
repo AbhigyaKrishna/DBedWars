@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.game.Arena;
@@ -14,7 +13,7 @@ public class ArenaStartEvent extends CustomEventCancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private Arena arena;
-    private Set<ArenaPlayer> players;
+    private Set<? extends ArenaPlayer> players;
 
     public ArenaStartEvent(Arena arena) {
         this.arena = arena;
@@ -47,4 +46,5 @@ public class ArenaStartEvent extends CustomEventCancellable {
                 ", cancelled=" + cancelled +
                 '}';
     }
+
 }

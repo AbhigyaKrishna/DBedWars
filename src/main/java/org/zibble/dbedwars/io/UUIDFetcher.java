@@ -18,12 +18,16 @@ public class UUIDFetcher {
 
     private static final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
     private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
+    private static final UUIDFetcher INSTANCE = new UUIDFetcher();
     private final Cache<String, UUID> uuidCache = CacheBuilder.newBuilder().expireAfterAccess(120, TimeUnit.MINUTES).build();
     private final Cache<UUID, String> nameCache = CacheBuilder.newBuilder().expireAfterAccess(120, TimeUnit.MINUTES).build();
 
-    private static final UUIDFetcher INSTANCE = new UUIDFetcher();
+    private UUIDFetcher() {
+    }
 
-    private UUIDFetcher() {}
+    public static UUIDFetcher getInstance() {
+        return INSTANCE;
+    }
 
     public UUID getUUID(String name) {
         return getUUID(name, false);
@@ -99,7 +103,4 @@ public class UUIDFetcher {
         return name;
     }
 
-    public static UUIDFetcher getInstance() {
-        return INSTANCE;
-    }
 }

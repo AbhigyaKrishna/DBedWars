@@ -168,42 +168,6 @@ public enum Color {
         this.javaColor = new java.awt.Color(color.asRGB());
     }
 
-    public byte getData() {
-        return data;
-    }
-
-    public org.bukkit.Color getColor() {
-        return color;
-    }
-
-    public ChatColor getChatColor() {
-        return chatColor;
-    }
-
-    public NamedTextColor getColorComponent() {
-        return colorComponent;
-    }
-
-    public String getMiniCode() {
-        return miniCode;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public DyeColor getDyeColor() {
-        return dyeColor;
-    }
-
-    public java.awt.Color asJavaColor() {
-        return new java.awt.Color(this.javaColor.getRGB());
-    }
-
     public static Optional<Color> from(org.bukkit.Color color) {
         for (Color value : VALUES) {
             if (value.color.equals(color)) return Optional.of(value);
@@ -244,6 +208,42 @@ public enum Color {
             if (value.data == data) return Optional.of(value);
         }
         return Optional.empty();
+    }
+
+    public byte getData() {
+        return data;
+    }
+
+    public org.bukkit.Color getColor() {
+        return color;
+    }
+
+    public ChatColor getChatColor() {
+        return chatColor;
+    }
+
+    public NamedTextColor getColorComponent() {
+        return colorComponent;
+    }
+
+    public String getMiniCode() {
+        return miniCode;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public DyeColor getDyeColor() {
+        return dyeColor;
+    }
+
+    public java.awt.Color asJavaColor() {
+        return new java.awt.Color(this.javaColor.getRGB());
     }
 
 }

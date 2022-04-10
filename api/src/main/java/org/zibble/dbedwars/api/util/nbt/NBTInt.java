@@ -85,4 +85,5 @@ public class NBTInt extends NBTNumber {
     public NBTInt clone() {
         return new NBTInt(this.value);
     }
+
 }

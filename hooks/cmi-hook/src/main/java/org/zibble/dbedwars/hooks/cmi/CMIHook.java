@@ -33,4 +33,5 @@ public class CMIHook extends PluginDependence {
     public CMIVanish getCmiVanish() {
         return cmiVanish;
     }
+
 }

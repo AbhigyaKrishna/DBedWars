@@ -21,4 +21,5 @@ public class EnumReflection {
             throw e;
         }
     }
+
 }

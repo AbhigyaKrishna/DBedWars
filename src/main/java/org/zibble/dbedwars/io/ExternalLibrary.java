@@ -21,6 +21,15 @@ public abstract class ExternalLibrary {
             "mongo-database.jar", "Mongo-Database", "com.mongodb.MongoClient");
     public static final ExternalLibrary HIKARI_CP = ExternalLibrary.declare("https://search.maven.org/remotecontent?filepath=com/zaxxer/HikariCP/3.2.0/HikariCP-3.2.0.jar",
             "hikari-cp.jar", "Hikari-CP", "com.zaxxer.hikari.HikariDataSource");
+    private final String url;
+    private final File file;
+    private final String name;
+
+    public ExternalLibrary(String url, String fileName, String name) {
+        this.url = url;
+        this.file = new File(PluginFiles.Folder.LIBRARIES_CACHE, fileName);
+        this.name = name;
+    }
 
     public static ExternalLibrary declare(String url, String fileName, String name, String testClass) {
         ExternalLibrary lib = new ExternalLibrary(url, fileName, name) {
@@ -48,16 +57,6 @@ public abstract class ExternalLibrary {
             success = success && lib.download();
         }
         return success;
-    }
-
-    private final String url;
-    private final File file;
-    private final String name;
-
-    public ExternalLibrary(String url, String fileName, String name) {
-        this.url = url;
-        this.file = new File(PluginFiles.Folder.LIBRARIES_CACHE, fileName);
-        this.name = name;
     }
 
     public String getUrl() {

@@ -11,7 +11,6 @@ import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
-import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 
 import java.util.HashSet;

@@ -61,4 +61,5 @@ public class ConstructorWrapper<R> extends WrapperAbstract {
     public int hashCode() {
         return constructor != null ? constructor.hashCode() : 0;
     }
+
 }

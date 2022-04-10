@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -19,15 +20,8 @@ public class LocationXYZYP {
     private float yaw = 0.0F;
     private float pitch = 0.0F;
 
-    public static LocationXYZYP of(double x, double y, double z) {
-        return of(x, y, z, 0.0F, 0.0F);
+    public LocationXYZYP() {
     }
-
-    public static LocationXYZYP of(double x, double y, double z, float yaw, float pitch) {
-        return new LocationXYZYP(x, y, z, yaw, pitch);
-    }
-
-    public LocationXYZYP() {}
 
     private LocationXYZYP(double x, double y, double z, float yaw, float pitch) {
         this.x = x;
@@ -35,6 +29,14 @@ public class LocationXYZYP {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    public static LocationXYZYP of(double x, double y, double z) {
+        return of(x, y, z, 0.0F, 0.0F);
+    }
+
+    public static LocationXYZYP of(double x, double y, double z, float yaw, float pitch) {
+        return new LocationXYZYP(x, y, z, yaw, pitch);
     }
 
     public static LocationXYZYP valueOf(Location loc) {
@@ -45,19 +47,18 @@ public class LocationXYZYP {
         return LocationXYZYP.of(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    // Format: x, y, z, y, p
     public static LocationXYZYP valueOf(String str) {
         Matcher matcher = PATTERN.matcher(str);
         if (matcher.matches()) {
-            LocationXYZYP loc = LocationXYZYP.of(Double.parseDouble(matcher.group("x")),
-                    Double.parseDouble(matcher.group("y")),
-                    Double.parseDouble(matcher.group("z")));
+            LocationXYZYP loc = LocationXYZYP.of(NumberUtils.toDouble(matcher.group("x")),
+                    NumberUtils.toDouble(matcher.group("y")),
+                    NumberUtils.toDouble(matcher.group("z")));
 
             if (matcher.groupCount() > 3) {
-                loc.setYaw(Float.parseFloat(matcher.group("yaw")));
+                loc.setYaw(NumberUtils.toFloat(matcher.group("yaw")));
             }
             if (matcher.groupCount() > 4) {
-                loc.setPitch(Float.parseFloat(matcher.group("pitch")));
+                loc.setPitch(NumberUtils.toFloat(matcher.group("pitch")));
             }
             return loc;
         }
@@ -151,4 +152,5 @@ public class LocationXYZYP {
     public LocationXYZYP clone() {
         return new LocationXYZYP(this.x, this.y, this.z, this.yaw, this.pitch);
     }
+
 }

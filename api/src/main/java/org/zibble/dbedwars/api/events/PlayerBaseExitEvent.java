@@ -48,4 +48,5 @@ public class PlayerBaseExitEvent extends CustomEventCancellable {
                 ", team=" + team +
                 '}';
     }
+
 }

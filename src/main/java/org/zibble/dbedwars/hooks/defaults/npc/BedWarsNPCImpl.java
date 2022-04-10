@@ -16,7 +16,7 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
@@ -25,19 +25,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
-
-    private final Hologram hologram;
-    private final String ID;
-    private final NPCData npcData;
-
-    private int entityID;
-    private final UUID uuid;
-    private Location location;
-
     protected final Set<ClickAction> clickActions;
     protected final Set<UUID> shown;
     protected final Set<UUID> outOfRenderDistance;
     protected final NPCTracker npcTracker;
+    private final Hologram hologram;
+    private final String ID;
+    private final NPCData npcData;
+    private final UUID uuid;
+    private int entityID;
+    private Location location;
 
     public BedWarsNPCImpl(String ID, Location location, NPCData npcData) {
         this.ID = ID;
@@ -45,7 +42,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
-        this.hologram = DBedWarsAPI.getApi().getHologramFactory().createHologram(this.location.clone().add(0, 2, 0));
+        this.hologram = DBedWarsAPI.getApi().getHookManager().getHologramFactory().createHologram(this.location.clone().add(0, 2, 0));
         this.hologram.setInverted(true);
         this.hologram.addPage();
         this.clickActions = Collections.synchronizedSet(new HashSet<>());
@@ -260,7 +257,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     protected void changeDirectionPacket(Player player, byte yaw, byte pitch) {
         WrapperPlayServerEntityHeadLook yawPacket = new WrapperPlayServerEntityHeadLook(this.getEntityID(), yaw);
-        WrapperPlayServerEntityRotation pitchPacket = new WrapperPlayServerEntityRotation(this.getEntityID(), yaw, pitch,true);
+        WrapperPlayServerEntityRotation pitchPacket = new WrapperPlayServerEntityRotation(this.getEntityID(), yaw, pitch, true);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, yawPacket);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, pitchPacket);
     }
@@ -269,4 +266,5 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
         WrapperPlayServerDestroyEntities packet = new WrapperPlayServerDestroyEntities(this.entityID);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
+
 }

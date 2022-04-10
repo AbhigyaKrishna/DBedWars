@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface Scoreboard extends Keyed {
 
-    void setTitle(Message title);
-
     Message getTitle();
+
+    void setTitle(Message title);
 
     Message getLine(int index);
 

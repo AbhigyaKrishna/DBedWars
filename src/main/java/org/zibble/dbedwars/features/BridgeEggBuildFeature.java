@@ -35,4 +35,5 @@ public class BridgeEggBuildFeature extends org.zibble.dbedwars.api.feature.custo
     public boolean isInitialized() {
         return false;
     }
+
 }

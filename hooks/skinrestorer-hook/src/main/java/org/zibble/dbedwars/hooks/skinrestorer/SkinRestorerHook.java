@@ -2,14 +2,12 @@ package org.zibble.dbedwars.hooks.skinrestorer;
 
 import net.skinsrestorer.api.bukkit.events.SkinApplyBukkitEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.hooks.Hook;
-import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.plugin.PluginDependence;

@@ -340,4 +340,5 @@ public class JSONBuilder implements Cloneable {
     public JSONBuilder clone() {
         return new JSONBuilder(this.json);
     }
+
 }

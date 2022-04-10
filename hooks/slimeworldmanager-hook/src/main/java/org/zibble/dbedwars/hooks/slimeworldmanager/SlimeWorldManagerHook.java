@@ -25,16 +25,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class SlimeWorldManagerHook extends PluginDependence implements WorldAdaptor {
 
     private final File file;
+    private final World defaultWorld;
     private YamlConfiguration config;
-
     private SlimePlugin slimePlugin;
     private SlimeLoader loader;
-    private final World defaultWorld;
 
     public SlimeWorldManagerHook(File hookFile, World defaultWorld) {
         super("SlimeWorldManager");
@@ -54,7 +52,8 @@ public class SlimeWorldManagerHook extends PluginDependence implements WorldAdap
     }
 
     @Override
-    public void disable() {}
+    public void disable() {
+    }
 
     @Override
     public ActionFuture<World> createWorld(String worldName, World.Environment environment) {

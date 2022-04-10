@@ -89,4 +89,5 @@ public class NBTByte extends NBTNumber {
     public NBTByte clone() {
         return new NBTByte(this.value);
     }
+
 }

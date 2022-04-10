@@ -2,7 +2,7 @@ package org.zibble.dbedwars.api.hooks.hologram;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.Duration;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface Hologram {
-    
+
     HologramPage addPage();
 
     List<HologramPage> getHologramPages();
@@ -40,6 +40,8 @@ public interface Hologram {
 
     Set<ClickAction> getClickActions();
 
+    void addClickAction(ClickAction action);
+
     boolean isVisible(Player player);
 
     boolean isClickRegistered();
@@ -57,4 +59,5 @@ public interface Hologram {
     long getLastUpdate();
 
     void despawn();
+
 }

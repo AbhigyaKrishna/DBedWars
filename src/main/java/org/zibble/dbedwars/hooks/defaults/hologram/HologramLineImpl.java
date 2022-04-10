@@ -1,19 +1,18 @@
 package org.zibble.dbedwars.hooks.defaults.hologram;
 
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.BwItemStack;
 
 public abstract class HologramLineImpl<C> implements HologramLine<C> {
 
     private final HologramManager manager;
     private final HologramPageImpl parent;
     private final int[] entityIds = new int[]{PacketUtils.getFreeEntityId(), PacketUtils.getFreeEntityId()};
-    private C content;
-
     private final float height;
+    private C content;
 
     private HologramLineImpl(HologramManager manager, HologramPageImpl parent, C content, float height) {
         this.manager = manager;
@@ -69,33 +68,44 @@ public abstract class HologramLineImpl<C> implements HologramLine<C> {
         }
     }
 
-    public static class Head extends HologramLineImpl<ItemStack> implements HologramLine.Head {
-        public Head(HologramManager manager, HologramPageImpl parent, ItemStack content) {
+    public static class Head extends HologramLineImpl<BwItemStack> implements HologramLine.Head {
+
+        public Head(HologramManager manager, HologramPageImpl parent, BwItemStack content) {
             super(manager, parent, content, Height.TEXT);
         }
+
     }
 
     public static class Text extends HologramLineImpl<Message> implements HologramLine.Text {
+
         public Text(HologramManager manager, HologramPageImpl parent, Message content) {
             super(manager, parent, content, Height.TEXT);
         }
+
     }
 
-    public static class SmallHead extends HologramLineImpl<ItemStack> implements HologramLine.SmallHead {
-        public SmallHead(HologramManager manager, HologramPageImpl parent, ItemStack content) {
+    public static class SmallHead extends HologramLineImpl<BwItemStack> implements HologramLine.SmallHead {
+
+        public SmallHead(HologramManager manager, HologramPageImpl parent, BwItemStack content) {
             super(manager, parent, content, Height.SMALL_HEAD);
         }
+
     }
 
-    public static class Icon extends HologramLineImpl<ItemStack> implements HologramLine.Icon {
-        public Icon(HologramManager manager, HologramPageImpl parent, ItemStack content) {
+    public static class Icon extends HologramLineImpl<BwItemStack> implements HologramLine.Icon {
+
+        public Icon(HologramManager manager, HologramPageImpl parent, BwItemStack content) {
             super(manager, parent, content, Height.ICON);
         }
+
     }
 
     public static class Entity extends HologramLineImpl<HologramEntityType> implements HologramLine.Entity {
+
         public Entity(HologramManager manager, HologramPageImpl parent, HologramEntityType content) {
             super(manager, parent, content, content.getHeight());
         }
+
     }
+
 }

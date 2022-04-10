@@ -14,8 +14,8 @@ import java.util.*;
 public class QuickScoreboard implements Scoreboard {
 
     protected final UUID player;
-    protected Message title;
     protected final List<Message> lines;
+    protected Message title;
     protected PlayerBoard board;
 
     public QuickScoreboard(Message title, List<Message> lines, Player player) {
@@ -34,16 +34,16 @@ public class QuickScoreboard implements Scoreboard {
     }
 
     @Override
+    public Message getTitle() {
+        return this.title;
+    }
+
+    @Override
     public void setTitle(Message title) {
         this.title = title;
         if (!this.isShown()) return;
         this.board.getTitle().clear();
         this.board.getTitle().add(AdventureUtils.toVanillaString(title.asComponentWithPAPI(this.board.getPlayer())[0]));
-    }
-
-    @Override
-    public Message getTitle() {
-        return this.title;
     }
 
     @Override
@@ -119,4 +119,5 @@ public class QuickScoreboard implements Scoreboard {
     public Key getKey() {
         return Key.of(this.board.toString());
     }
+
 }

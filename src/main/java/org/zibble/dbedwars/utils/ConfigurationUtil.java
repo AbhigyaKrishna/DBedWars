@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.utils;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -7,19 +8,27 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.trap.Target;
+import org.zibble.dbedwars.api.hooks.hologram.Hologram;
+import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
+import org.zibble.dbedwars.api.objects.hologram.AnimatedHologramModel;
+import org.zibble.dbedwars.api.objects.hologram.HologramModel;
+import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
 import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.objects.profile.Skin;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
+import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.util.*;
 import org.zibble.dbedwars.api.util.json.JSONBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableTrap;
@@ -29,18 +38,29 @@ import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
 import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 import org.zibble.dbedwars.game.arena.traps.TrapImpl;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
-import org.zibble.dbedwars.game.arena.view.ShopView;
+import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.io.GameProfileFetcher;
 import org.zibble.dbedwars.io.MineSkinAPI;
 import org.zibble.dbedwars.io.UUIDFetcher;
 import org.zibble.dbedwars.io.UUIDTypeAdaptor;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
+import org.zibble.dbedwars.task.implementations.HologramBabyRotateTask;
+import org.zibble.dbedwars.task.implementations.HologramExpertRotateTask;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConfigurationUtil {
+
+    private static final Pattern HEAD_PATTERN = Pattern.compile("\\[HEAD=(?<head>\\d+)]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SMALL_HEAD_PATTERN = Pattern.compile("\\[SMALL_HEAD=(?<smallHead>\\d+)]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ICON_PATTERN = Pattern.compile("\\[ICON=(?<icon>\\d+)]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ENTITY_PATTERN = Pattern.compile("\\[ENTITY=(?<entity>\\d+)]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern FRAME_PATTERN = Pattern.compile("^\\[(?<ticks>\\d+)] ?+(?<loc>.+?)$", Pattern.CASE_INSENSITIVE);
 
     public static String serializeSpawner(DropInfo drop, LocationXYZ location) {
         return drop.getKey().get() + "#" + location.toString();
@@ -161,7 +181,7 @@ public class ConfigurationUtil {
 
         if (config.getShop() != null) {
             npc.addClickAction((player, clickType) -> DBedwars.getInstance().getGameManager().getArenaPlayer(player).ifPresent(arenaPlayer -> {
-                ShopView shop = ((ArenaPlayerImpl) arenaPlayer).getShop(config.getShop());
+                ShopViewImpl shop = ((ArenaPlayerImpl) arenaPlayer).getShop(config.getShop());
                 if (shop != null) {
                     shop.getGui().open(shop.getDefaultPage().getKey());
                 }
@@ -188,6 +208,96 @@ public class ConfigurationUtil {
         return DBedwars.getInstance().getHookManager().getScoreboardHook().createScoreboardData(ScoreboardData.Type.DYNAMIC, ConfigMessage.from(config.getTitle()), lines, Duration.ofTicks(config.getUpdateTick()));
     }
 
+    public static AnimatedHologramModel createHologram(ConfigurableHologram.HologramConfig config, Placeholder... placeholders) {
+        return new AnimatedHologramModel(createLines(config.getContent(), placeholders),
+                Duration.ofTicks(config.getUpdateDelay()),
+                config.getAnimationEndTask(),
+                (hologram, model) -> createHologramTask(hologram, model, config));
+
+    }
+
+    private static HologramRotateTask createHologramTask(Hologram hologram, AnimatedHologramModel model, ConfigurableHologram.HologramConfig config) {
+        HologramRotateTask task;
+        if (config instanceof ConfigurableHologram.ConfigurableBabyHologram) {
+            ConfigurableHologram.ConfigurableBabyHologram baby = (ConfigurableHologram.ConfigurableBabyHologram) config;
+            task = new HologramBabyRotateTask(DBedwars.getInstance(),
+                    hologram,
+                    model.getEndAction(),
+                    baby.getDegreeRotatedPerCycle(),
+                    baby.getTicksPerAnimationCycle(),
+                    baby.isSlowAtEndEnabled(),
+                    baby.getVerticalDisplacement());
+        } else {
+            ConfigurableHologram.ConfigurableAdvancedHologram advanced = (ConfigurableHologram.ConfigurableAdvancedHologram) config;
+            LinkedHashMap<LocationXYZYP, Integer> frames = new LinkedHashMap<>();
+            for (String frame : advanced.getFrames()) {
+                Matcher matcher = FRAME_PATTERN.matcher(frame);
+                if (matcher.matches()) {
+                    LocationXYZYP location = LocationXYZYP.valueOf(matcher.group("loc"));
+                    int delay = NumberUtils.toInt(matcher.group("ticks"));
+                    frames.put(location, delay);
+                }
+            }
+            task = new HologramExpertRotateTask(DBedwars.getInstance(),
+                    hologram,
+                    model.getEndAction(),
+                    frames,
+                    advanced.getFrameTickDelay());
+
+        }
+        return task;
+    }
+
+    private static List<HologramModel.ModelLine> createLines(List<String> content, Placeholder... placeholders) {
+        List<HologramModel.ModelLine> lines = new ArrayList<>(content.size());
+        for (String s : content) {
+            Matcher matcher = HEAD_PATTERN.matcher(s);
+            if (matcher.matches()) {
+                String head = matcher.group("head");
+                BwItemStack itemStack = BwItemStack.valueOf(head, placeholders);
+                if (itemStack != null) {
+                    lines.add(HologramModel.ModelLine.ofHead(itemStack));
+                    continue;
+                }
+            }
+
+            matcher = SMALL_HEAD_PATTERN.matcher(s);
+            if (matcher.matches()) {
+                String smallHead = matcher.group("smallHead");
+                BwItemStack itemStack = BwItemStack.valueOf(smallHead, placeholders);
+                if (itemStack != null) {
+                    lines.add(HologramModel.ModelLine.ofSmallHead(itemStack));
+                    continue;
+                }
+            }
+
+            matcher = ICON_PATTERN.matcher(s);
+            if (matcher.matches()) {
+                String icon = matcher.group("icon");
+                BwItemStack itemStack = BwItemStack.valueOf(icon, placeholders);
+                if (itemStack != null) {
+                    lines.add(HologramModel.ModelLine.ofItem(itemStack));
+                    continue;
+                }
+            }
+
+            matcher = ENTITY_PATTERN.matcher(s);
+            if (matcher.matches()) {
+                String entity = matcher.group("entity");
+                //TODO REWORK GETTING ENTITY TYPE
+                HologramEntityType mapped = EnumUtil.matchEnum(entity, HologramEntityType.values());
+                if (mapped != null) {
+                    lines.add(HologramModel.ModelLine.ofEntity(mapped));
+                    continue;
+                }
+            }
+
+            lines.add(HologramModel.ModelLine.ofText(ConfigMessage.from(s, placeholders)));
+        }
+
+        return lines;
+    }
+
     public static TrapImpl createTrap(ConfigurableTrap config, ArenaPlayerImpl buyer) {
         TriggerType triggerType = EnumUtil.matchEnum(config.getTrigger(), TriggerType.values());
         if (triggerType == null)
@@ -203,4 +313,5 @@ public class ConfigurationUtil {
         }
         return trap;
     }
+
 }

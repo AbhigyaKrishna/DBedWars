@@ -25,4 +25,5 @@ public class CMIVanish implements VanishHook {
     public void unVanish(@NotNull Player player) {
         CMI.getInstance().getPlayerManager().getUser(player).setVanished(false);
     }
+
 }

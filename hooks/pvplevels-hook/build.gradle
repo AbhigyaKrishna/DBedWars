@@ -1,4 +1,3 @@
-
 dependencies {
     implementation project(':api')
     compileOnly 'me.MathiasMC.PvPLevels:PvPLevels:2.2.4'

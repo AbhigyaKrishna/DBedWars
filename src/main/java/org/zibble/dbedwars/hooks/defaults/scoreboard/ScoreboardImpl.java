@@ -74,13 +74,13 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     @Override
-    public void setTitle(Message title) {
-        this.title = title;
+    public Message getTitle() {
+        return this.title;
     }
 
     @Override
-    public Message getTitle() {
-        return this.title;
+    public void setTitle(Message title) {
+        this.title = title;
     }
 
     @Override
@@ -283,4 +283,5 @@ public class ScoreboardImpl implements Scoreboard {
     public Key getKey() {
         return Key.of(this.id);
     }
+
 }

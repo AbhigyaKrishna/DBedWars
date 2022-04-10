@@ -9,20 +9,26 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TitleST {
-
-    private static final Pattern PATTERN = Pattern.compile("^(?<title>.+?(?=::|$))(?:::[+-]?(?<fadein>\\d*\\.?\\d*)::[+-]?(?<stay>\\d*\\.?\\d*)::[+-]?(?<fadeout>\\d*\\.?\\d*))?$", Pattern.CASE_INSENSITIVE);
-    private static final Pattern MESSAGE_PATTERN = Pattern.compile("^(?<title>.+?(?=\\\\n|$))(?:\\\\n(?<subtitle>.*))?$", Pattern.CASE_INSENSITIVE);
+public class TitleST implements Cloneable {
 
     public static final long DEFAULT_FADE_IN = 10L;
-    public static final long DEFAULT_STAY =  70L;
+    public static final long DEFAULT_STAY = 70L;
     public static final long DEFAULT_FADE_OUT = 20L;
-
+    private static final Pattern PATTERN = Pattern.compile("^(?<title>.+?(?=::|$))(?:::[+-]?(?<fadein>\\d*\\.?\\d*)::[+-]?(?<stay>\\d*\\.?\\d*)::[+-]?(?<fadeout>\\d*\\.?\\d*))?$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MESSAGE_PATTERN = Pattern.compile("^(?<title>.+?(?=\\\\n|$))(?:\\\\n(?<subtitle>.*))?$", Pattern.CASE_INSENSITIVE);
     private Message title;
     private Message subTitle;
     private long fadeIn;
     private long stay;
     private long fadeOut;
+
+    private TitleST(Message title, Message subTitle, long fadeIn, long stay, long fadeOut) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.fadeIn = fadeIn;
+        this.stay = stay;
+        this.fadeOut = fadeOut;
+    }
 
     public static TitleST of(Message title) {
         return of(title, null);
@@ -34,14 +40,6 @@ public class TitleST {
 
     public static TitleST of(Message title, Message subTitle, long fadeIn, long stay, long fadeOut) {
         return new TitleST(title, subTitle, fadeIn, stay, fadeOut);
-    }
-
-    private TitleST(Message title, Message subTitle, long fadeIn, long stay, long fadeOut) {
-        this.title = title;
-        this.subTitle = subTitle;
-        this.fadeIn = fadeIn;
-        this.stay = stay;
-        this.fadeOut = fadeOut;
     }
 
     public static TitleST valueOf(String str) {
@@ -122,6 +120,11 @@ public class TitleST {
         } else {
             member.sendTitle(this.title, this.subTitle, Title.Times.times(Ticks.duration(this.fadeIn), Ticks.duration(this.stay), Ticks.duration(this.fadeOut)));
         }
+    }
+
+    @Override
+    public TitleST clone() {
+        return new TitleST(this.title, this.subTitle, this.fadeIn, this.stay, this.fadeOut);
     }
 
 }

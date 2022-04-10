@@ -25,7 +25,8 @@ public class FireballLaunchFeature extends org.zibble.dbedwars.api.feature.custo
     public void launch(Fireball fireball, ArenaPlayer launcher) {
         ConfigurableCustomItems.ConfigurableFireball cfgFireball = this.plugin.getConfigHandler().getCustomItems().getFireball();
         fireball.setVelocity(fireball.getVelocity().multiply(cfgFireball.getSpeedMultiplier()));
-        if (cfgFireball.isFixDirectionEnabled()) Util.setDirection(fireball, launcher.getPlayer().getEyeLocation().getDirection());
+        if (cfgFireball.isFixDirectionEnabled())
+            Util.setDirection(fireball, launcher.getPlayer().getEyeLocation().getDirection());
         fireball.setYield(cfgFireball.getExplosionYield());
         for (String s : cfgFireball.getThrowEffects()) {
             if (s == null || s.trim().equals("")) return;

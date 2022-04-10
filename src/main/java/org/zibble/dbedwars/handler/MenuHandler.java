@@ -28,4 +28,5 @@ public class MenuHandler implements org.zibble.dbedwars.api.handler.MenuHandler 
     public MenuPlayerProvider getPlayerProvider() {
         return playerProvider;
     }
+
 }

@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Various settings for controlling the input and output of a {@link YamlConfigurationComments} */
+/**
+ * Various settings for controlling the input and output of a {@link YamlConfigurationComments}
+ */
 public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
 
     public static final String PATH_COMMENT_PREFIX = "## ";
@@ -65,7 +67,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * <p>
      *
      * @param section Section where the value of the given path is located
-     * @param path Path of the set object
+     * @param path    Path of the set object
      * @param comment The comment
      * @return This object, for chaining
      */
@@ -105,7 +107,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      *
      * <p>
      *
-     * @param path Path to comment.
+     * @param path    Path to comment.
      * @param comment Text of the comment.
      * @return Object, for chaining.
      */
@@ -133,7 +135,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * <p>
      *
      * @param section Section where the value of the given path is located.
-     * @param path Path of the set object.
+     * @param path    Path of the set object.
      * @return true if commented.
      */
     public boolean isCommented(ConfigurationSection section, String path) {
@@ -149,7 +151,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * <p>
      *
      * @param section Section where the value of the given path is located.
-     * @param path Path of the set object.
+     * @param path    Path of the set object.
      * @return Comment of the given path or null if not commented.
      */
     public String getComment(ConfigurationSection section, String path) {
@@ -196,4 +198,5 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
         this.copy_comments = copy;
         return this;
     }
+
 }

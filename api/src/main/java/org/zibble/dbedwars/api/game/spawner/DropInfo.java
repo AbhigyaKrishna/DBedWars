@@ -3,6 +3,7 @@ package org.zibble.dbedwars.api.game.spawner;
 import com.pepedevs.radium.particles.ParticleEffect;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.hologram.AnimatedHologramModel;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.BwItemStack;
@@ -14,7 +15,7 @@ import java.util.Collection;
 
 public interface DropInfo extends Cloneable, Keyed {
 
-    Key getIcon();
+    BwItemStack getIcon();
 
     void setIcon(BwItemStack icon);
 
@@ -30,9 +31,9 @@ public interface DropInfo extends Cloneable, Keyed {
 
     void setSpawnRadius(int radius);
 
-    Hologram getHologram();
+    AnimatedHologramModel getHologram();
 
-    void setHologram(Hologram hologram);
+    void setHologram(AnimatedHologramModel hologram);
 
     boolean isTeamSpawner();
 
@@ -99,5 +100,7 @@ public interface DropInfo extends Cloneable, Keyed {
         Drop clone();
 
         String toString();
+
     }
+
 }

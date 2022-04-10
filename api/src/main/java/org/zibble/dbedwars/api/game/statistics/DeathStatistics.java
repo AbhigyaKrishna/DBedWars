@@ -16,16 +16,15 @@ public class DeathStatistics extends Statistics<Arena, ArenaPlayer, DeathStatist
 
     public static class DeathData {
 
-        public static DeathData of(ArenaPlayer killer, DeathCause cause) {
-            return new DeathData(killer, cause);
-        }
-
         private ArenaPlayer killer;
         private DeathCause cause;
-
         private DeathData(ArenaPlayer killer, DeathCause cause) {
             this.killer = killer;
             this.cause = cause;
+        }
+
+        public static DeathData of(ArenaPlayer killer, DeathCause cause) {
+            return new DeathData(killer, cause);
         }
 
         public ArenaPlayer getKiller() {

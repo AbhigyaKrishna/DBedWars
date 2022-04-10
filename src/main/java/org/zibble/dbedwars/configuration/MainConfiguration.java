@@ -241,6 +241,10 @@ public class MainConfiguration implements Loadable {
 
     public static class TrapSection implements Loadable {
 
+        @Defaults.Integer(5)
+        @ConfigPath
+        private int trapTriggerMeantime;
+
         @ConfigPath("trap-queue.enabled")
         private boolean trapQueueEnabled;
 
@@ -269,6 +273,10 @@ public class MainConfiguration implements Loadable {
             return false;
         }
 
+        public int getTrapTriggerMeantime() {
+            return trapTriggerMeantime;
+        }
+
         public boolean isTrapQueueEnabled() {
             return this.trapQueueEnabled;
         }
@@ -280,20 +288,19 @@ public class MainConfiguration implements Loadable {
         public List<String> getQueueCost() {
             return this.queueCost;
         }
+
     }
 
     public static class LangSection implements Loadable {
 
+        private final LegacySettingsSection legacySettings;
+        private final ModernSettingsSection modernSettings;
         @Defaults.String("modern")
         @ConfigPath("parse-type")
         private String parseType;
-
         @Defaults.String("en_US")
         @ConfigPath("server-language")
         private String serverLanguage;
-
-        private final LegacySettingsSection legacySettings;
-        private final ModernSettingsSection modernSettings;
 
         public LangSection() {
             this.legacySettings = new LegacySettingsSection();
@@ -352,6 +359,7 @@ public class MainConfiguration implements Loadable {
             public char getTranslationChar() {
                 return this.character;
             }
+
         }
 
         public static class ModernSettingsSection implements Loadable {

@@ -85,4 +85,5 @@ public class NBTFloat extends NBTNumber {
     public NBTFloat clone() {
         return new NBTFloat(this.value);
     }
+
 }

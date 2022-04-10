@@ -45,4 +45,5 @@ public class ClassResolver extends ResolverAbstract<Class> {
     protected ClassNotFoundException notFoundException(String joinedNames) {
         return new ClassNotFoundException("Could not resolve class for " + joinedNames);
     }
+
 }

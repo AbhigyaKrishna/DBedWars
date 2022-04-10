@@ -34,8 +34,6 @@ public abstract class DBedWarsAPI {
 
     public abstract MenuHandler getMenuHandler();
 
-    public abstract HologramFactory getHologramFactory();
-
     public abstract NMSAdaptor getNMS();
 
     public abstract BwItemStack getConfiguredItem(String key, Placeholder... placeholders);
@@ -43,4 +41,5 @@ public abstract class DBedWarsAPI {
     public abstract Version getVersion();
 
     public abstract Plugin getPlugin();
+
 }

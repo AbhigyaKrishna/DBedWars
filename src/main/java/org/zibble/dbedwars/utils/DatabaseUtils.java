@@ -3,7 +3,6 @@ package org.zibble.dbedwars.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.Team;
@@ -44,10 +43,10 @@ public class DatabaseUtils {
 
     public static UUID fromByteArray(byte[] byteArray, int offset) {
         return new UUID(longFromBytes(
-                        byteArray[offset], byteArray[offset + 1],
-                        byteArray[offset + 2], byteArray[offset + 3],
-                        byteArray[offset + 4], byteArray[offset + 5],
-                        byteArray[offset + 6], byteArray[offset + 7]),
+                byteArray[offset], byteArray[offset + 1],
+                byteArray[offset + 2], byteArray[offset + 3],
+                byteArray[offset + 4], byteArray[offset + 5],
+                byteArray[offset + 6], byteArray[offset + 7]),
                 longFromBytes(
                         byteArray[offset + 8], byteArray[offset + 9],
                         byteArray[offset + 10], byteArray[offset + 11],

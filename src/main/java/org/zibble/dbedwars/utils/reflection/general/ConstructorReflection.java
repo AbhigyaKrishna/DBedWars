@@ -69,4 +69,5 @@ public class ConstructorReflection {
     public static <T> Constructor<T> setAccessible(Constructor<T> constructor) throws SecurityException, IllegalArgumentException {
         return setAccessible(constructor, true);
     }
+
 }

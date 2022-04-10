@@ -3,6 +3,7 @@ package org.zibble.dbedwars.game;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.Arena;
@@ -10,11 +11,11 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.handler.GameManager;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableArena;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableScoreboard;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableShop;
+import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.configuration.configurable.*;
+import org.zibble.dbedwars.game.arena.ArenaCategoryImpl;
 import org.zibble.dbedwars.game.arena.ArenaImpl;
+import org.zibble.dbedwars.game.arena.GameEvent;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.game.arena.spawner.DropInfoImpl;
 import org.zibble.dbedwars.game.arena.traps.TargetRegistryImpl;
@@ -29,13 +30,14 @@ public class GameManagerImpl implements GameManager {
     private static final String GAME_ID_FORMAT = "bw_arena_%s_%d";
 
     private final DBedwars plugin;
-
-    private Location lobbySpawn;
     private final Set<ArenaDataHolderImpl> arenaDataHolders;
     private final Set<DropInfo> dropTypes;
     private final Set<ShopInfoImpl> shops;
     private final Multimap<String, Arena> arenas;
     private final Map<String, ScoreboardData> scoreboardData;
+    private final Set<ArenaCategoryImpl> categories;
+    private final List<GameEvent> events;
+    private Location lobbySpawn;
     private ArenaSettingsImpl defaultSettings;
     private TargetRegistryImpl targetRegistry;
 
@@ -44,16 +46,18 @@ public class GameManagerImpl implements GameManager {
         this.lobbySpawn = lobbySpawn;
         this.arenaDataHolders = new HashSet<>();
         this.dropTypes = new HashSet<>();
+        this.categories = new HashSet<>();
         this.arenas = ArrayListMultimap.create();
         this.shops = new HashSet<>();
         this.scoreboardData = new HashMap<>();
         this.targetRegistry = new TargetRegistryImpl();
+        this.events = new ArrayList<>();
     }
 
     public void load() {
         ConfigHandler configHandler = this.plugin.getConfigHandler();
-        for (ConfigurableArena cfg : configHandler.getArenas()) {
-            this.arenaDataHolders.add(ArenaDataHolderImpl.fromConfig(cfg));
+        for (ConfigurableScoreboard scoreboard : configHandler.getScoreboards()) {
+            this.scoreboardData.put(scoreboard.getKey(), ConfigurationUtil.createScoreboard(scoreboard));
         }
 
         for (ConfigurableItemSpawner cfg : configHandler.getDropTypes()) {
@@ -64,8 +68,18 @@ public class GameManagerImpl implements GameManager {
             this.shops.add(ShopInfoImpl.fromConfig(entry.getValue()));
         }
 
-        for (ConfigurableScoreboard scoreboard : configHandler.getScoreboards()) {
-            this.scoreboardData.put(scoreboard.getKey(), ConfigurationUtil.createScoreboard(scoreboard));
+        for (ConfigurableArenaCategory category : configHandler.getCategories()) {
+            this.categories.add(ArenaCategoryImpl.fromConfig(this, category));
+        }
+
+        for (ConfigurableArena cfg : configHandler.getArenas()) {
+            this.arenaDataHolders.add(ArenaDataHolderImpl.fromConfig(this, cfg));
+        }
+
+        for (String s : configHandler.getEvent().getOrder()) {
+            ConfigurableEvents.Event config = configHandler.getEvent().getEvents().get(s);
+            if (config == null) continue;
+            this.events.add(GameEvent.fromConfig(config));
         }
 
         this.defaultSettings = new ArenaSettingsImpl();
@@ -80,6 +94,9 @@ public class GameManagerImpl implements GameManager {
         this.defaultSettings.setKillPoint(configHandler.getMainConfiguration().getArenaSection().getKillPoint());
         this.defaultSettings.setFinalKillPoint(configHandler.getMainConfiguration().getArenaSection().getFinalKillPoint());
         this.defaultSettings.setDeathPoint(configHandler.getMainConfiguration().getArenaSection().getDeathPoint());
+        this.defaultSettings.setTrapQueueEnabled(configHandler.getMainConfiguration().getTrapSection().isTrapQueueEnabled());
+        this.defaultSettings.setTrapQueueSize(configHandler.getMainConfiguration().getTrapSection().getTrapQueueLimit());
+        this.defaultSettings.setTrapTriggerDelay(Duration.ofSeconds(configHandler.getMainConfiguration().getTrapSection().getTrapTriggerMeantime()));
 
         this.targetRegistry.registerDefaults();
     }
@@ -94,12 +111,30 @@ public class GameManagerImpl implements GameManager {
         return arena;
     }
 
+    public Arena getArena(World world) {
+        for (Arena arena : this.arenas.values()) {
+            if (arena.getWorld().equals(world)) return arena;
+        }
+        return null;
+    }
+
     public Set<DropInfo> getDropTypes() {
         return Collections.unmodifiableSet(this.dropTypes);
     }
 
     public Set<ArenaDataHolderImpl> getArenaDataHolders() {
         return arenaDataHolders;
+    }
+
+    public Set<ArenaCategoryImpl> getCategories() {
+        return categories;
+    }
+
+    public ArenaCategoryImpl getCategory(String name) {
+        for (ArenaCategoryImpl category : categories) {
+            if (category.getName().equalsIgnoreCase(name)) return category;
+        }
+        return null;
     }
 
     public ArenaDataHolderImpl getDataHolder(String id) {
@@ -111,6 +146,10 @@ public class GameManagerImpl implements GameManager {
 
     public Set<ShopInfoImpl> getShops() {
         return shops;
+    }
+
+    public List<GameEvent> getEvents() {
+        return events;
     }
 
     public Location getLobbySpawn() {

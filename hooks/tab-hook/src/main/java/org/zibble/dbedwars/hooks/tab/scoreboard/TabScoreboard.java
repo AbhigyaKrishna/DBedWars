@@ -38,15 +38,15 @@ public class TabScoreboard implements Scoreboard {
     }
 
     @Override
+    public Message getTitle() {
+        return this.title;
+    }
+
+    @Override
     public void setTitle(Message title) {
         this.title = title;
         if (!this.isShown()) return;
         this.tabScoreboard.setTitle(AdventureUtils.toVanillaString(title.asComponentWithPAPI(this.getViewer())[0]));
-    }
-
-    @Override
-    public Message getTitle() {
-        return this.title;
     }
 
     @Override
@@ -125,4 +125,5 @@ public class TabScoreboard implements Scoreboard {
     public ScoreboardImpl getTabScoreboard() {
         return tabScoreboard;
     }
+
 }

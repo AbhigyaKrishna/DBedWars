@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.Duration;
 
 import java.util.*;
@@ -18,15 +18,13 @@ public class HologramImpl implements Hologram {
     private final List<HologramPageImpl> hologramPages;
     private final Map<UUID, Integer> viewerPages;
     private final Set<UUID> viewers;
-    private Location location;
-
     private final Set<ClickAction> clickActions;
-
+    private Location location;
     private int displayRange = 48;
     private int updateRange = 48;
     private Duration updateInterval = Duration.ofSeconds(20);
 
-    private boolean inverted  = false;
+    private boolean inverted = false;
     private boolean hasChangedContentType = false;
 
     private boolean clickRegistered;
@@ -122,6 +120,11 @@ public class HologramImpl implements Hologram {
     }
 
     @Override
+    public void addClickAction(ClickAction action) {
+        this.clickActions.add(action);
+    }
+
+    @Override
     public boolean isVisible(Player player) {
         return this.viewers.contains(player.getUniqueId());
     }
@@ -177,7 +180,7 @@ public class HologramImpl implements Hologram {
         for (UUID viewer : this.viewers) {
             Player player = Bukkit.getPlayer(viewer);
             if (player != null) players.add(player);
-            else  {
+            else {
                 this.viewers.remove(viewer);
                 this.viewerPages.remove(viewer);
             }
@@ -205,6 +208,11 @@ public class HologramImpl implements Hologram {
         return lastUpdate;
     }
 
+    @Override
+    public void despawn() {
+        this.destroy();
+    }
+
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
@@ -216,4 +224,5 @@ public class HologramImpl implements Hologram {
     public void setHasChangedContentType(boolean hasChangedContentType) {
         this.hasChangedContentType = hasChangedContentType;
     }
+
 }

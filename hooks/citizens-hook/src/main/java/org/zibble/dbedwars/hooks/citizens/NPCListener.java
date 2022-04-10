@@ -4,7 +4,7 @@ import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.ClickType;
 
 public class NPCListener implements Listener {

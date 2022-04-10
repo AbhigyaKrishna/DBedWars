@@ -8,9 +8,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.util.Acceptor;
-import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.function.Acceptor;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.features.PopupTowerBuildFeature;
@@ -472,5 +472,7 @@ public class PopupTowerChestItem extends BedWarsActionItem {
             blocks.put(centre.getRelative(-2, 6, 2), material.parseMaterial());
             return blocks;
         }
+
     }
+
 }

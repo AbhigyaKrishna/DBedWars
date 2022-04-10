@@ -6,14 +6,14 @@ public class Property {
     private String value;
     private String signature;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public Property(String name, String value, String signature) {
         this.name = name;
         this.value = value;
         this.signature = signature;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getName() {
@@ -40,7 +40,7 @@ public class Property {
         this.signature = signature;
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<Property> {
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<Property> {
 
         private String name;
         private String value;
@@ -65,6 +65,7 @@ public class Property {
         public Property build() {
             return new Property(this.name, this.value, this.signature);
         }
+
     }
 
 }

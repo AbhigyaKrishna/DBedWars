@@ -1,9 +1,13 @@
 package org.zibble.dbedwars.api.task;
 
-/** An interface to determine works. */
+/**
+ * An interface to determine works.
+ */
 public interface Workload {
 
-    /** Computes a piece of the work. */
+    /**
+     * Computes a piece of the work.
+     */
     void compute();
 
     /**
@@ -39,4 +43,5 @@ public interface Workload {
     default boolean shouldExecute() {
         return true;
     }
+
 }

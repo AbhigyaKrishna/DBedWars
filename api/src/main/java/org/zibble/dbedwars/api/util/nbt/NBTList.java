@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class NBTList<T extends NBT> extends NBT {
 
-    private NBTType<T> type;
     protected final List<T> tags = new ArrayList<>();
+    private NBTType<T> type;
 
     public NBTList(NBTType<T> type) {
         this.type = type;
@@ -131,4 +131,5 @@ public class NBTList<T extends NBT> extends NBT {
         }
         return new NBTList<>(type, newTags);
     }
+
 }

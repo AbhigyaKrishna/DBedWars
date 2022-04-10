@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.handler.HookManager;
 import org.zibble.dbedwars.api.hooks.Hook;
+import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
@@ -17,6 +18,7 @@ import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
 import org.zibble.dbedwars.hooks.betternick.BetterNickHook;
 import org.zibble.dbedwars.hooks.citizens.CitizensHook;
 import org.zibble.dbedwars.hooks.cmi.CMIHook;
+import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
 import org.zibble.dbedwars.hooks.defaults.npc.NPCFactoryImpl;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
@@ -38,7 +40,10 @@ import org.zibble.dbedwars.hooks.tab.TabHook;
 import org.zibble.dbedwars.hooks.vault.VaultHook;
 import org.zibble.dbedwars.hooks.viphide.VIPHideHook;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.function.Function;
 
 public class HookManagerImpl implements HookManager {
@@ -50,6 +55,7 @@ public class HookManagerImpl implements HookManager {
     private ScoreboardHook scoreboardHook;
     private PlaceholderHook placeholderHook;
     private NPCFactory npcFactory;
+    private HologramFactory hologramFactory;
     private AreaSelectionHook areaSelectionHook;
     private MultiOptionalHookImpl<VanishHook> vanishHook;
     private MultiOptionalHookImpl<NickNameHook> nickNameHooks;
@@ -95,6 +101,7 @@ public class HookManagerImpl implements HookManager {
             this.placeholderHook = new PlaceholderHookImpl();
 
         this.npcFactory = new NPCFactoryImpl();
+        this.hologramFactory = new HologramManager();
         this.areaSelectionHook = new AreaSelectionHookImpl();
 
         this.vanishHook = new MultiOptionalHookImpl<>();
@@ -130,6 +137,7 @@ public class HookManagerImpl implements HookManager {
         this.scoreboardHook.init();
         this.placeholderHook.init();
         this.npcFactory.init();
+        this.hologramFactory.init();
         this.areaSelectionHook.init();
         this.vanishHook.init();
         this.nickNameHooks.init();
@@ -194,6 +202,16 @@ public class HookManagerImpl implements HookManager {
     }
 
     @Override
+    public HologramFactory getHologramFactory() {
+        return hologramFactory;
+    }
+
+    @Override
+    public void setHologramFactory(HologramFactory hologramFactory) {
+        this.hologramFactory = hologramFactory;
+    }
+
+    @Override
     public AreaSelectionHook getAreaSelectionHook() {
         return areaSelectionHook;
     }
@@ -250,6 +268,7 @@ public class HookManagerImpl implements HookManager {
                 hook.init();
             }
         }
+
     }
 
 }

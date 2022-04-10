@@ -72,14 +72,13 @@ public class BedwarsGolem implements IGolem {
         @Override
         protected boolean a(EntityLiving entityLiving, boolean b) {
             if (!(entityLiving instanceof EntityPlayer)) return false;
-            Optional<ArenaPlayer> optionalPlayer =
+            Optional<? extends ArenaPlayer> optionalPlayer =
                     spawningTeam
                             .getArena()
                             .getAsArenaPlayer(((EntityPlayer) entityLiving).getBukkitEntity());
-            if (!optionalPlayer.isPresent()) return false;
-            //TODO
-            /*if (optionalPlayer.get().isSpectator()) return false;*/
-            return !spawningTeam.getPlayers().contains(optionalPlayer.get());
+            return optionalPlayer.filter(player -> !spawningTeam.getPlayers().contains(player)).isPresent();
         }
+
     }
+
 }

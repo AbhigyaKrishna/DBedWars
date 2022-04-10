@@ -5,8 +5,10 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-/** Encapsulates an immutable ray having a starting position and a unit length direction. */
-public class Ray implements Cloneable {
+/**
+ * Encapsulates an immutable ray having a starting position and a unit length direction.
+ */
+public class Ray {
 
     protected final Vector origin;
     protected final Vector direction;
@@ -16,7 +18,7 @@ public class Ray implements Cloneable {
      *
      * <p>
      *
-     * @param origin Starting position
+     * @param origin    Starting position
      * @param direction Direction
      */
     public Ray(final Vector origin, final Vector direction) {
@@ -29,7 +31,7 @@ public class Ray implements Cloneable {
      *
      * <p>
      *
-     * @param origin Starting position
+     * @param origin    Starting position
      * @param direction Direction
      */
     public Ray(final Location origin, final Vector direction) {
@@ -103,11 +105,6 @@ public class Ray implements Cloneable {
         result = prime * result + this.direction.hashCode();
         result = prime * result + this.origin.hashCode();
         return result;
-    }
-
-    @Override
-    public Ray clone() {
-        return new Ray(this.origin, this.direction);
     }
 
 }

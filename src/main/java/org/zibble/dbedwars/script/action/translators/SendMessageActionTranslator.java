@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendMessageActionTranslator implements ActionTranslator<AbstractMessaging, SendMessageAction> {
+
     @Override
     public SendMessageAction serialize(String untranslated, ScriptVariable<?>... variables) {
         AbstractMessaging messaging = null;
@@ -35,4 +36,5 @@ public class SendMessageActionTranslator implements ActionTranslator<AbstractMes
     public Key getKey() {
         return Key.of("SEND_MESSAGE");
     }
+
 }

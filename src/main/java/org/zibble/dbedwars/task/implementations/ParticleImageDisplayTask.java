@@ -66,4 +66,5 @@ public class ParticleImageDisplayTask implements Workload {
         timestamp = System.currentTimeMillis();
         return tick < ticksToDisplayFor;
     }
+
 }

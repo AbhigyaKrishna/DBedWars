@@ -2,7 +2,9 @@ package org.zibble.dbedwars.api.util;
 
 import org.bukkit.event.block.Action;
 
-/** Class for dealing with events */
+/**
+ * Class for dealing with events
+ */
 public class EventUtils {
 
     /**
@@ -56,4 +58,5 @@ public class EventUtils {
     public static boolean isClickingAir(Action action) {
         return action != null && (action.name().contains("_AIR"));
     }
+
 }

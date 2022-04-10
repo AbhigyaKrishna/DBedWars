@@ -1,6 +1,8 @@
 package org.zibble.dbedwars.api.feature;
 
-import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
+import org.zibble.dbedwars.api.util.mixin.Tickable;
+import org.zibble.dbedwars.api.util.mixin.Validable;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.key.Keyed;
 

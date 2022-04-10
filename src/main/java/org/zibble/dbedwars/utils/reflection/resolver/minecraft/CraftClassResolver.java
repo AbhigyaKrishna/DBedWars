@@ -14,4 +14,5 @@ public class CraftClassResolver extends ClassResolver {
         }
         return super.resolve(names);
     }
+
 }

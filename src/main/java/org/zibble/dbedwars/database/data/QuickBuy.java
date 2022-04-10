@@ -69,7 +69,8 @@ public class QuickBuy implements PlayerDataCache {
         for (int i = 0; i < this.data.size(); i++) {
             try {
                 this.data.set(i, reader.readString(String.valueOf(i)));
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 

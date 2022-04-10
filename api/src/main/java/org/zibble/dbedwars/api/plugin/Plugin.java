@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-/** An implementation of {@link JavaPlugin} that adds some useful utilities. */
+/**
+ * An implementation of {@link JavaPlugin} that adds some useful utilities.
+ */
 public abstract class Plugin extends JavaPlugin {
 
     protected PluginDependence[] dependencies;
@@ -187,17 +189,17 @@ public abstract class Plugin extends JavaPlugin {
      * <p>
      *
      * @param resource_path The embedded resource path to look for within the plugin's .jar file.
-     *     (No preceding slash).
+     *                      (No preceding slash).
      * @param out_directory The directory into which the resource will be saved.
-     * @param replace If true, the embedded resource will overwrite the contents of an existing
-     *     file.
+     * @param replace       If true, the embedded resource will overwrite the contents of an existing
+     *                      file.
      */
     public void saveResource(String resource_path, File out_directory, boolean replace) {
         URL url = this.getClassLoader().getResource(resource_path = resource_path.replace('\\', '/'));
         if (url != null) {
             File out = new File(out_directory, resource_path.lastIndexOf('/') != -1
-                                    ? resource_path.substring(resource_path.lastIndexOf('/') + 1)
-                                    : resource_path);
+                    ? resource_path.substring(resource_path.lastIndexOf('/') + 1)
+                    : resource_path);
 
             if (!out.exists() || replace) {
                 try {
@@ -211,4 +213,5 @@ public abstract class Plugin extends JavaPlugin {
             throw new IllegalArgumentException("The embedded resource '" + resource_path + "' cannot be found in " + getFile());
         }
     }
+
 }

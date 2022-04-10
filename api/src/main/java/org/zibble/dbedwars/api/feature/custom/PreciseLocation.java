@@ -16,4 +16,5 @@ public abstract class PreciseLocation extends BedWarsFeature {
     }
 
     public abstract Location getPrecise(Location location);
+
 }

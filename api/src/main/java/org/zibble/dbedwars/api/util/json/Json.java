@@ -12,7 +12,9 @@ import java.io.*;
 import java.util.Map;
 import java.util.Set;
 
-/** Represents a utility class for handling Json. */
+/**
+ * Represents a utility class for handling Json.
+ */
 public final class Json {
 
     public static final Gson GSON = new GsonBuilder().serializeNulls().create();
@@ -28,7 +30,7 @@ public final class Json {
      * <p>
      *
      * @param handle {@link JsonObject} to handle
-     * @param root Root Json Object
+     * @param root   Root Json Object
      */
     private Json(JsonObject handle, Json root) {
         this.handle = handle;
@@ -58,7 +60,7 @@ public final class Json {
      *
      * <p>
      *
-     * @param json_file File to parse to Json
+     * @param json_file       File to parse to Json
      * @param check_encrypted Whether to check encryption
      * @return This class instance
      * @throws MalformedJsonException if the json file is corrupted or cannot be parsed
@@ -98,7 +100,7 @@ public final class Json {
      *
      * <p>
      *
-     * @param contents String to parse to Json
+     * @param contents        String to parse to Json
      * @param check_encrypted Whether to check encryption
      * @return This class instance
      */
@@ -200,7 +202,7 @@ public final class Json {
      * <p>
      *
      * @param property Key of the element
-     * @param value Value of the element
+     * @param value    Value of the element
      */
     public void add(String property, JsonElement value) {
         getHandle().add(property, value);
@@ -224,7 +226,7 @@ public final class Json {
      * <p>
      *
      * @param property Property key
-     * @param value String Value of the property
+     * @param value    String Value of the property
      */
     public void addProperty(String property, String value) {
         getHandle().addProperty(property, value);
@@ -236,7 +238,7 @@ public final class Json {
      * <p>
      *
      * @param property Property key
-     * @param value Number Value of the property
+     * @param value    Number Value of the property
      */
     public void addProperty(String property, Number value) {
         getHandle().addProperty(property, value);
@@ -248,7 +250,7 @@ public final class Json {
      * <p>
      *
      * @param property Property key
-     * @param value Boolean Value of the property
+     * @param value    Boolean Value of the property
      */
     public void addProperty(String property, Boolean value) {
         getHandle().addProperty(property, value);
@@ -260,7 +262,7 @@ public final class Json {
      * <p>
      *
      * @param property Property key
-     * @param value Character Value of the property
+     * @param value    Character Value of the property
      */
     public void addProperty(String property, Character value) {
         getHandle().addProperty(property, value);
@@ -359,7 +361,7 @@ public final class Json {
      * <p>
      *
      * @param json_file File to save to
-     * @param encrypt Whether to encrypt data
+     * @param encrypt   Whether to encrypt data
      * @throws IOException thrown while performing I/O
      */
     public void save(File json_file, boolean encrypt) throws IOException {
@@ -418,4 +420,5 @@ public final class Json {
     public int hashCode() {
         return getHandle().hashCode();
     }
+
 }

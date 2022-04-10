@@ -3,11 +3,15 @@ package org.zibble.dbedwars.api.events;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-/** A player related event that implements {@link Cancellable}, allowing its cancellation. */
+/**
+ * A player related event that implements {@link Cancellable}, allowing its cancellation.
+ */
 public abstract class CustomPlayerEventCancellable extends CustomPlayerEvent
         implements Cancellable {
 
-    /** Whether the event is cancelled or not */
+    /**
+     * Whether the event is cancelled or not
+     */
     protected boolean cancelled;
 
     /**
@@ -16,8 +20,8 @@ public abstract class CustomPlayerEventCancellable extends CustomPlayerEvent
      * <p>
      *
      * @param player Player involved in this event.
-     * @param async true indicates the event will fire asynchronously, false by default from default
-     *     constructor
+     * @param async  true indicates the event will fire asynchronously, false by default from default
+     *               constructor
      */
     public CustomPlayerEventCancellable(Player player, boolean async) {
         super(player, async);
@@ -43,4 +47,5 @@ public abstract class CustomPlayerEventCancellable extends CustomPlayerEvent
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

@@ -7,6 +7,7 @@ import org.zibble.dbedwars.api.menu.MenuAction;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 
 public class PlayerCommandActionImpl implements MenuAction {
+
     @Override
     public String tag() {
         return "[PLAYER]";
@@ -19,8 +20,8 @@ public class PlayerCommandActionImpl implements MenuAction {
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull String[] args) {
-        if(args.length <= 1){
-            DBedwars.getInstance().getLogger().warning("The action of "+tag()+" didn't provide a statement to execute player command on... Skipping!");
+        if (args.length <= 1) {
+            DBedwars.getInstance().getLogger().warning("The action of " + tag() + " didn't provide a statement to execute player command on... Skipping!");
             return false;
         }
 
@@ -28,4 +29,5 @@ public class PlayerCommandActionImpl implements MenuAction {
         player.performCommand(PlaceholderEntry.symbol("name", player.getName()).apply(command));
         return true;
     }
+
 }

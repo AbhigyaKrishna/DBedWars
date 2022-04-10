@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadFactory;
 
-/** A class that stores and distributes {@link WorkloadThread} instances. */
+/**
+ * A class that stores and distributes {@link WorkloadThread} instances.
+ */
 public class WorkloadDistributor implements Task {
 
     private final Map<Integer, WorkloadThread> tasks = new ConcurrentHashMap<>();
@@ -79,4 +81,5 @@ public class WorkloadDistributor implements Task {
     public void submit(Workload workload) {
         this.getLeastWorker().submit(workload);
     }
+
 }

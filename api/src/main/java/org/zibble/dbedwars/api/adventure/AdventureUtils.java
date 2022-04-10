@@ -14,12 +14,11 @@ import java.util.*;
 
 public class AdventureUtils {
 
-    private static Class<?> I_CHAT_BASE_COMPONENT_CLASS = null;
-
-    private static Gson NMS_GSON;
     private static final GsonComponentSerializer GSON = GsonComponentSerializer.gson();
     private static final LegacyComponentSerializer LEGACY_SECTION = LegacyComponentSerializer.legacySection();
     private static final EnumMap<ChatColor, NamedTextColor> COLOR_MAP = new EnumMap<>(ChatColor.class);
+    private static Class<?> I_CHAT_BASE_COMPONENT_CLASS = null;
+    private static Gson NMS_GSON;
 
     static {
         Class<?> I_CHAT_BASE_COMPONENT_CHAT_SERIALIZER = null;

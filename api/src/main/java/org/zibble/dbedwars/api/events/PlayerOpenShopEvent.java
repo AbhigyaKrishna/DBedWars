@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.CustomEventCancellable;
 import org.bukkit.event.HandlerList;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
@@ -50,4 +49,5 @@ public class PlayerOpenShopEvent extends CustomEventCancellable {
                 ", cancelled=" + cancelled +
                 '}';
     }
+
 }

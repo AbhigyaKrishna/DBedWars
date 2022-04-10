@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.script.action.impl;
 
 import org.bukkit.Location;
-import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
+import org.zibble.dbedwars.api.script.action.Action;
 
 public class FireworkAction implements Action<Location> {
 

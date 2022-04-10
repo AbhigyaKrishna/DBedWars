@@ -52,8 +52,23 @@ public class Util {
     private static final MethodWrapper<?> NMS_ITEM_C;
     private static final MethodWrapper<?> CRAFT_ITEM_STACK_AS_BUKKIT_COPY;
 
-    public static boolean isUnMergeable(ItemStack item) {
-        return NBTUtils.hasNBTData(item, "unmerge") && new NBTItem(item).getBoolean("unmerge");
+    static {
+        NMSClassResolver NMS_CLASS_RESOLVER = new NMSClassResolver();
+        CraftClassResolver CRAFT_CLASS_RESOLVER = new CraftClassResolver();
+
+        ClassWrapper<?> ENTITY_FIREBALL_CLASS = NMS_CLASS_RESOLVER.resolveWrapper("EntityFireball", "net.minecraft.world.entity.projectile.EntityFireball");
+        ClassWrapper<?> CRAFT_ITEM_STACK = CRAFT_CLASS_RESOLVER.resolveWrapper("inventory.CraftItemStack");
+        ClassWrapper<?> NMS_ITEM_STACK = NMS_CLASS_RESOLVER.resolveWrapper("ItemStack", "net.minecraft.world.item.ItemStack");
+        ClassWrapper<?> NMS_ITEM = NMS_CLASS_RESOLVER.resolveWrapper("Item", "net.minecraft.world.item.Item");
+
+        CRAFT_ITEM_STACK_AS_NMS_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asNMSCopy", ItemStack.class).build());
+        NMS_ITEM_STACK_GET_ITEM = new MethodResolver(NMS_ITEM_STACK.getClazz()).resolveWrapper("getItem");
+        NMS_ITEM_C = new MethodResolver(NMS_ITEM.getClazz()).resolveWrapper(ResolverQuery.builder().with("c", int.class).build());
+        CRAFT_ITEM_STACK_AS_BUKKIT_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asBukkitCopy", NMS_ITEM_STACK.getClazz()).build());
+
+        fieldFireballDirX = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirX", "b");
+        fieldFireballDirY = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirY", "c");
+        fieldFireballDirZ = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirZ", "d");
     }
 
     public static ItemStack setMaxStackSize(ItemStack stack, int stackSize) {
@@ -192,11 +207,11 @@ public class Util {
     public static boolean playerHasItem(Player player, ItemStack item) {
         ItemStack[] items = player.getInventory().getContents();
         int num = Arrays.stream(items)
-                        .filter(Objects::nonNull)
-                        .filter(i -> i.getType() == item.getType() && i.getDurability() == item.getDurability())
-                        .filter(NBTUtils::hasPluginData)
-                        .mapToInt(ItemStack::getAmount)
-                        .sum();
+                .filter(Objects::nonNull)
+                .filter(i -> i.getType() == item.getType() && i.getDurability() == item.getDurability())
+                .filter(NBTUtils::hasPluginData)
+                .mapToInt(ItemStack::getAmount)
+                .sum();
         return num >= item.getAmount();
     }
 
@@ -263,22 +278,4 @@ public class Util {
         }
     }
 
-    static {
-        NMSClassResolver NMS_CLASS_RESOLVER = new NMSClassResolver();
-        CraftClassResolver CRAFT_CLASS_RESOLVER = new CraftClassResolver();
-
-        ClassWrapper<?> ENTITY_FIREBALL_CLASS = NMS_CLASS_RESOLVER.resolveWrapper("EntityFireball", "net.minecraft.world.entity.projectile.EntityFireball");
-        ClassWrapper<?> CRAFT_ITEM_STACK = CRAFT_CLASS_RESOLVER.resolveWrapper("inventory.CraftItemStack");
-        ClassWrapper<?> NMS_ITEM_STACK = NMS_CLASS_RESOLVER.resolveWrapper("ItemStack", "net.minecraft.world.item.ItemStack");
-        ClassWrapper<?> NMS_ITEM = NMS_CLASS_RESOLVER.resolveWrapper("Item", "net.minecraft.world.item.Item");
-
-        CRAFT_ITEM_STACK_AS_NMS_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asNMSCopy", ItemStack.class).build());
-        NMS_ITEM_STACK_GET_ITEM = new MethodResolver(NMS_ITEM_STACK.getClazz()).resolveWrapper("getItem");
-        NMS_ITEM_C = new MethodResolver(NMS_ITEM.getClazz()).resolveWrapper(ResolverQuery.builder().with("c", int.class).build());
-        CRAFT_ITEM_STACK_AS_BUKKIT_COPY = new MethodResolver(CRAFT_ITEM_STACK.getClazz()).resolveWrapper(ResolverQuery.builder().with("asBukkitCopy", NMS_ITEM_STACK.getClazz()).build());
-
-        fieldFireballDirX = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirX", "b");
-        fieldFireballDirY = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirY", "c");
-        fieldFireballDirZ = new FieldResolver(ENTITY_FIREBALL_CLASS.getClazz()).resolveWrapper("dirZ", "d");
-    }
 }

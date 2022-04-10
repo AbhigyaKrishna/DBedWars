@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.messaging.Messaging;
-import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NBTItem;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
@@ -40,18 +40,56 @@ public class BwItemStack implements Cloneable {
             "CraftMetaItem",
             "GlowMetaItem"
     };
-
+    private final Set<LEnchant> enchantments;
     private XMaterial material;
     private int amount;
-
     private Message displayName;
     private Message lore;
-
     private int data;
-    private final Set<LEnchant> enchantments;
     private Map<String, NBT> nbt;
 
     private ItemMeta meta;
+
+    public BwItemStack(XMaterial material) {
+        this(material, 1);
+    }
+
+    public BwItemStack(XMaterial material, int amount) {
+        if (!material.isSupported()) {
+            throw new IllegalArgumentException("Material " + material.name() + " is not supported");
+        }
+        this.material = material;
+        this.amount = amount;
+        this.enchantments = new HashSet<>();
+        this.data = -1;
+        this.meta = material.parseItem().getItemMeta();
+        this.nbt = new HashMap<>();
+    }
+
+    public BwItemStack(ItemStack item) {
+        this(item, item.getAmount());
+    }
+
+    public BwItemStack(ItemStack itemStack, int amount) {
+        this.material = XMaterial.matchXMaterial(itemStack);
+        this.amount = amount;
+        this.meta = itemStack.getItemMeta();
+        this.data = itemStack.getDurability();
+        this.enchantments = new HashSet<>();
+        if (this.meta == null) return;
+        if (this.meta.hasDisplayName()) this.displayName = LegacyMessage.from(this.meta.getDisplayName());
+        if (this.meta.hasLore()) this.lore = LegacyMessage.from(this.meta.getLore());
+        if (this.meta.hasEnchants()) {
+            for (Map.Entry<Enchantment, Integer> entry : this.meta.getEnchants().entrySet()) {
+                this.enchantments.add(LEnchant.of(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue()));
+                this.meta.removeEnchant(entry.getKey());
+            }
+        }
+        this.nbt = DBedWarsAPI.getApi().getNMS().getNBTItem(itemStack).getTags();
+
+        this.meta.setDisplayName(null);
+        this.meta.setLore(null);
+    }
 
     public static BwItemStack valueOf(String str, Placeholder... placeholders) {
         Messaging messaging = Messaging.get();
@@ -231,47 +269,6 @@ public class BwItemStack implements Cloneable {
         }
 
         return item;
-    }
-
-    public BwItemStack(XMaterial material) {
-        this(material, 1);
-    }
-
-    public BwItemStack(XMaterial material, int amount) {
-        if (!material.isSupported()) {
-            throw new IllegalArgumentException("Material " + material.name() + " is not supported");
-        }
-        this.material = material;
-        this.amount = amount;
-        this.enchantments = new HashSet<>();
-        this.data = -1;
-        this.meta = material.parseItem().getItemMeta();
-        this.nbt = new HashMap<>();
-    }
-
-    public BwItemStack(ItemStack item) {
-        this(item, item.getAmount());
-    }
-
-    public BwItemStack(ItemStack itemStack, int amount) {
-        this.material = XMaterial.matchXMaterial(itemStack);
-        this.amount = amount;
-        this.meta = itemStack.getItemMeta();
-        this.data = itemStack.getDurability();
-        this.enchantments = new HashSet<>();
-        if (this.meta == null) return;
-        if (this.meta.hasDisplayName()) this.displayName = LegacyMessage.from(this.meta.getDisplayName());
-        if (this.meta.hasLore()) this.lore = LegacyMessage.from(this.meta.getLore());
-        if (this.meta.hasEnchants()) {
-            for (Map.Entry<Enchantment, Integer> entry : this.meta.getEnchants().entrySet()) {
-                this.enchantments.add(LEnchant.of(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue()));
-                this.meta.removeEnchant(entry.getKey());
-            }
-        }
-        this.nbt = DBedWarsAPI.getApi().getNMS().getNBTItem(itemStack).getTags();
-
-        this.meta.setDisplayName(null);
-        this.meta.setLore(null);
     }
 
     public XMaterial getType() {
@@ -469,4 +466,5 @@ public class BwItemStack implements Cloneable {
         this.enchantments.forEach(enchant -> returnVal.enchantments.add(enchant.clone()));
         return returnVal;
     }
+
 }

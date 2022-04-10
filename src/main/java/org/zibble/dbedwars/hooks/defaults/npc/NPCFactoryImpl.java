@@ -9,7 +9,6 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
-import org.zibble.dbedwars.api.messaging.message.Message;
 
 import java.util.Map;
 import java.util.UUID;

@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public class QuickBuyRecord extends UpdatableRecordImpl<QuickBuyRecord> {
 
+    public QuickBuyRecord() {
+        super(QuickBuyTable.QUICK_BUY);
+    }
+
     public static QuickBuyRecord newRecord(UUID uuid, String name) {
         QuickBuyTable table = QuickBuyTable.QUICK_BUY;
         QuickBuyRecord record = new QuickBuyRecord();
@@ -25,10 +29,6 @@ public class QuickBuyRecord extends UpdatableRecordImpl<QuickBuyRecord> {
         record.set(table.NAME, quickBuy.getName());
         record.set(table.QUICK_BUY_DATA, quickBuy.getData());
         return record;
-    }
-
-    public QuickBuyRecord() {
-        super(QuickBuyTable.QUICK_BUY);
     }
 
     public QuickBuy toDataCache() {

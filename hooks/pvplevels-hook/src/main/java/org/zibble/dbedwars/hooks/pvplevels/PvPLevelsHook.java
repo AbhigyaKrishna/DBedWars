@@ -20,7 +20,7 @@ public class PvPLevelsHook extends PluginDependence implements PointsHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             api = PvPLevelsAPI.getInstance();
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into PvPLevels!"));
         }
@@ -30,7 +30,7 @@ public class PvPLevelsHook extends PluginDependence implements PointsHook {
     @Override
     public long getCurrentXP(@NotNull Player player) {
         PlayerConnect playerConnect = api.getPlayerConnect(player.getUniqueId().toString());
-        if(playerConnect == null)
+        if (playerConnect == null)
             return 0L;
 
         return playerConnect.getXp();
@@ -39,7 +39,7 @@ public class PvPLevelsHook extends PluginDependence implements PointsHook {
     @Override
     public void addXP(@NotNull Player player, long toAdd) {
         PlayerConnect playerConnect = api.getPlayerConnect(player.getUniqueId().toString());
-        if(playerConnect == null)
+        if (playerConnect == null)
             return;
 
         playerConnect.setXp(playerConnect.getXp() + toAdd);
@@ -48,13 +48,14 @@ public class PvPLevelsHook extends PluginDependence implements PointsHook {
     @Override
     public void reduceXP(@NotNull Player player, long toReduce) {
         PlayerConnect playerConnect = api.getPlayerConnect(player.getUniqueId().toString());
-        if(playerConnect == null)
+        if (playerConnect == null)
             return;
 
         long xpPos = playerConnect.getXp() - toReduce;
-        if(xpPos <= 0)
+        if (xpPos <= 0)
             playerConnect.setXp(0);
         else
             playerConnect.setXp(playerConnect.getXp() - toReduce);
     }
+
 }

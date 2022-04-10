@@ -1,7 +1,5 @@
 package org.zibble.dbedwars.api.game;
 
-import com.google.common.collect.Multimap;
-import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
@@ -11,7 +9,6 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
 
 import java.time.Instant;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

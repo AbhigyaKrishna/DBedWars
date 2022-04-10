@@ -87,6 +87,21 @@ public class ConfigurableCustomItems implements Loadable {
         return blastProofGlass;
     }
 
+    @Override
+    public String toString() {
+        return "ConfigurableCustomItems{" +
+                "fireball=" + fireball +
+                ", TNT=" + tnt +
+                ", popupTower=" + popupTower +
+                ", bridgeEgg=" + bridgeEgg +
+                ", waterBucket=" + waterBucket +
+                ", sponge=" + sponge +
+                ", dreamDefender=" + dreamDefender +
+                ", bedBug=" + bedBug +
+                ", blastProofGlass=" + blastProofGlass +
+                '}';
+    }
+
     public static class ConfigurablePopupTower implements Loadable {
 
         @ConfigPath
@@ -149,6 +164,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", mainBlock='" + mainBlock + '\'' +
                     '}';
         }
+
     }
 
     public static class ConfigurableTNT implements Loadable {
@@ -239,6 +255,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", knockBack=" + knockback +
                     '}';
         }
+
     }
 
     public static class ConfigurableFireball implements Loadable {
@@ -346,6 +363,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", knockBack=" + knockback +
                     '}';
         }
+
     }
 
     public static class ConfigurableBridgeEgg implements Loadable {
@@ -431,6 +449,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", flipBridgeEnabled=" + flipBridge +
                     '}';
         }
+
     }
 
     public static class ConfigurableWaterBucket implements Loadable {
@@ -485,6 +504,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", removeOnUse=" + removeOnUse +
                     '}';
         }
+
     }
 
     public static class ConfigurableSponge implements Loadable {
@@ -593,6 +613,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", breakTryMessage='" + breakTryMessage + '\'' +
                     '}';
         }
+
     }
 
     public static class ConfigurableDreamDefender implements Loadable {
@@ -692,6 +713,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", ticksUntilDespawn=" + ticksUntilDespawn +
                     '}';
         }
+
     }
 
     public static class ConfigurableBedBug implements Loadable {
@@ -800,6 +822,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", ticksUntilDespawn=" + ticksUntilDespawn +
                     '}';
         }
+
     }
 
     public static class ConfigurableBlastProofGlass implements Loadable {
@@ -845,6 +868,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", glassItemLore=" + lore +
                     '}';
         }
+
     }
 
     public static class ConfigurableKnockBack implements Loadable {
@@ -917,20 +941,7 @@ public class ConfigurableCustomItems implements Loadable {
                     ", horizontalForce=" + horizontalForce +
                     '}';
         }
+
     }
 
-    @Override
-    public String toString() {
-        return "ConfigurableCustomItems{" +
-                "fireball=" + fireball +
-                ", TNT=" + tnt +
-                ", popupTower=" + popupTower +
-                ", bridgeEgg=" + bridgeEgg +
-                ", waterBucket=" + waterBucket +
-                ", sponge=" + sponge +
-                ", dreamDefender=" + dreamDefender +
-                ", bedBug=" + bedBug +
-                ", blastProofGlass=" + blastProofGlass +
-                '}';
-    }
 }

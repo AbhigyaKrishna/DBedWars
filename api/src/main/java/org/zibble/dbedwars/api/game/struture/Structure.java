@@ -20,4 +20,5 @@ public interface Structure {
     void setCentre(Block centre);
 
     String toString();
+
 }

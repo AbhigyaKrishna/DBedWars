@@ -23,4 +23,5 @@ public class ByteUtil {
         if (data.isHatEnabled()) a = (byte) (a | (byte) 0x40);
         return a;
     }
+
 }

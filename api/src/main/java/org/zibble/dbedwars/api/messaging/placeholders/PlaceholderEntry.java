@@ -49,4 +49,5 @@ public interface PlaceholderEntry extends Placeholder {
     default String apply(String message) {
         return message.replace(this.getKey().get(), this.getPlaceholder().get());
     }
+
 }

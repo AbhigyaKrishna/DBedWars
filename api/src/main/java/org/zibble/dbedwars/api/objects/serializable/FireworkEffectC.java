@@ -6,28 +6,43 @@ import org.bukkit.Location;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.Contract;
+import org.zibble.dbedwars.api.util.EnumUtil;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class FireworkEffectC {
+public class FireworkEffectC implements Cloneable {
 
-    // FIREWORK[SMALL/LARGE/STAR/CREEPEER/BURST:NONE/TWINKLE/TRAIL:BASECOLORS:FADECOLORS]
-
-    private static final String SEPERATOR = ":";
-    private static final String SEPERATOR_2 = ",";
+    private static final String SEPERATOR = "::";
+    private static final String SEPERATOR_2 = ":";
 
     private final FireworkEffect.Builder builder;
 
-    public FireworkEffectC(FireworkEffect.Type type, List<Color> baseColors) {
+    public static FireworkEffectC of(FireworkEffect.Builder builder) {
+        return new FireworkEffectC(builder);
+    }
+
+    public static FireworkEffectC of(FireworkEffect.Type type, Collection<Color> baseColors) {
+        return new FireworkEffectC(type, baseColors);
+    }
+
+    public static FireworkEffectC of(FireworkEffect.Type type, boolean twinkle, boolean trail, Collection<Color> baseColors, Collection<Color> fadeColors) {
+        return new FireworkEffectC(type, twinkle, trail, baseColors, fadeColors);
+    }
+
+    private FireworkEffectC(FireworkEffect.Builder builder) {
+        this.builder = builder;
+    }
+
+    private FireworkEffectC(FireworkEffect.Type type, Collection<Color> baseColors) {
         this.builder = FireworkEffect.builder().with(type);
         for (Color color : baseColors) {
             builder.withColor(color);
         }
     }
 
-    public FireworkEffectC(FireworkEffect.Type type, boolean twinkle, boolean trail, Collection<Color> baseColors, Collection<Color> fadeColors) {
+    private FireworkEffectC(FireworkEffect.Type type, boolean twinkle, boolean trail, Collection<Color> baseColors, Collection<Color> fadeColors) {
         this.builder = FireworkEffect.builder().with(type).flicker(twinkle).trail(trail);
         for (Color color : baseColors) {
             builder.withColor(color);
@@ -40,13 +55,13 @@ public class FireworkEffectC {
     public static FireworkEffectC valueOf(String firework) {
         String[] params = firework.split(SEPERATOR);
         if (params.length < 1) return null;
-        FireworkEffect.Type type = EnumReflection.getEnumConstant(FireworkEffect.Type.class, params[0]);
+        FireworkEffect.Type type = EnumUtil.matchEnum(params[0], FireworkEffect.Type.values());
         FireworkEffectC returnVal = new FireworkEffectC((type == null ? FireworkEffect.Type.BALL : type), Collections.emptyList());
         if (params.length < 2) return returnVal;
         String[] p = params[1].split(SEPERATOR_2);
         for (String s : p) {
-            if (s.equals("TWINKLE")) returnVal.builder.withFlicker();
-            if (s.equals("TRAIL")) returnVal.builder.withTrail();
+            if (s.equalsIgnoreCase("TWINKLE")) returnVal.builder.withFlicker();
+            if (s.equalsIgnoreCase("TRAIL")) returnVal.builder.withTrail();
         }
         if (params.length < 3) return returnVal;
         String[] p2 = params[2].split(SEPERATOR_2);
@@ -59,6 +74,19 @@ public class FireworkEffectC {
             returnVal.builder.withFade(getColor(s));
         }
         return returnVal;
+    }
+
+    private static Color getColor(String color) {
+        org.zibble.dbedwars.api.util.Color color1 = EnumUtil.matchEnum(color, org.zibble.dbedwars.api.util.Color.VALUES);
+        if (color1 != null) return color1.getColor();
+        return Color.fromRGB(java.awt.Color.decode(color).getRGB());
+    }
+
+    private static String getString(Color color) {
+        for (org.zibble.dbedwars.api.util.Color value : org.zibble.dbedwars.api.util.Color.VALUES) {
+            if (value.getColor().equals(color)) return value.name();
+        }
+        return "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
     }
 
     public FireworkEffect getEffect() {
@@ -81,34 +109,34 @@ public class FireworkEffectC {
         return builder.build().getFadeColors();
     }
 
-    @Contract
-    public void setType(FireworkEffect.Type type) {
-        builder.with(type);
-    }
-
     public FireworkEffect.Type getType() {
         return builder.build().getType();
     }
 
-    public void setTwinkling(boolean twinkle) {
-        builder.flicker(twinkle);
+    @Contract
+    public void setType(FireworkEffect.Type type) {
+        builder.with(type);
     }
 
     public boolean isTwinkling() {
         return builder.build().hasFlicker();
     }
 
-    public void setTrailing(boolean trail) {
-        builder.trail(trail);
+    public void setTwinkling(boolean twinkle) {
+        builder.flicker(twinkle);
     }
 
     public boolean isTrailing() {
         return builder.build().hasTrail();
     }
 
+    public void setTrailing(boolean trail) {
+        builder.trail(trail);
+    }
+
     public void spawn(Location location) {
         Firework firework = location.getWorld().spawn(location, Firework.class);
-        applyEffects(firework);
+        this.applyEffects(firework);
         firework.detonate();
     }
 
@@ -139,9 +167,9 @@ public class FireworkEffectC {
         List<Color> colors = (base ? effect.getColors() : effect.getFadeColors());
         if (colors.size() == 0) {
             returnVal.append(SEPERATOR);
-        }else if (colors.size() == 1) {
+        } else if (colors.size() == 1) {
             returnVal.append(getString(colors.get(0))).append(SEPERATOR);
-        }else {
+        } else {
             for (Color color : colors) {
                 returnVal.append(getString(color)).append(SEPERATOR_2);
             }
@@ -149,16 +177,9 @@ public class FireworkEffectC {
         }
     }
 
-    private static Color getColor(String color) {
-        org.zibble.dbedwars.api.util.Color color1 = EnumReflection.getEnumConstant(org.zibble.dbedwars.api.util.Color.class, color);
-        if (color1 != null) return color1.getColor();
-        return Color.fromRGB(java.awt.Color.decode(color).getRGB());
+    @Override
+    public FireworkEffectC clone() {
+        return new FireworkEffectC(this.builder);
     }
 
-    private static String getString(Color color) {
-        for (org.zibble.dbedwars.api.util.Color value : org.zibble.dbedwars.api.util.Color.VALUES) {
-            if (value.getColor().equals(color)) return value.name();
-        }
-        return "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
-    }
 }

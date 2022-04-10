@@ -1,4 +1,3 @@
-
 dependencies {
     implementation project(':api')
     compileOnly 'net.dev.eazynick:EazyNick:3.11'

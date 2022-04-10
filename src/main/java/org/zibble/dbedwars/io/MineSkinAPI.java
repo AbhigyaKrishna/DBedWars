@@ -24,6 +24,10 @@ public class MineSkinAPI {
     private MineSkinAPI() {
     }
 
+    public static MineSkinAPI getInstance() {
+        return INSTANCE;
+    }
+
     public Skin getSkin(String id) {
         return this.getSkin(id, false);
     }
@@ -64,10 +68,6 @@ public class MineSkinAPI {
         }
 
         return Skin.empty();
-    }
-
-    public static MineSkinAPI getInstance() {
-        return INSTANCE;
     }
 
 }

@@ -1,17 +1,18 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
 import com.pepedevs.radium.particles.ParticleEffect;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
-import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.hologram.AnimatedHologramModel;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
-import org.zibble.dbedwars.api.util.properies.PropertyName;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,24 +23,30 @@ public class DropInfoImpl implements DropInfo {
 
     private final Key key;
 
-    private Key icon;
+    private BwItemStack icon;
     private int radius;
     private SoundVP soundEffect;
     private ParticleEffectASC particleEffect;
-    private Hologram hologram;
+    private AnimatedHologramModel hologram;
     private boolean teamSpawner, merging, spliting;
 
-    private Map<Integer, DropInfo.Tier> tiers = new HashMap<>();
+    private final Map<Integer, DropInfo.Tier> tiers = new HashMap<>();
+
+    public DropInfoImpl(String key) {
+        this.key = Key.of(key);
+    }
 
     public static DropInfoImpl fromConfig(ConfigurableItemSpawner cfg) {
         DropInfoImpl dropType = new DropInfoImpl(cfg.getId());
         dropType.radius = cfg.getRadius();
-        dropType.icon = Key.of(cfg.getIcon());
+        dropType.icon = cfg.getIcon();
         dropType.soundEffect = cfg.getSpawnSound();
         dropType.particleEffect = cfg.getSpawnEffect();
         dropType.teamSpawner = cfg.isTeamSpawner();
         dropType.merging = cfg.isMerge();
         dropType.spliting = cfg.isSplit();
+        dropType.hologram = cfg.isHologramEnabled() ? DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().containsKey(cfg.getHologramId()) ?
+                ConfigurationUtil.createHologram(DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().get(cfg.getHologramId())) : null : null;
 
         for (Map.Entry<Integer, ConfigurableItemSpawner.ConfigurableTiers> entry : cfg.getTiers().entrySet()) {
             dropType.tiers.put(entry.getKey(), Tier.fromConfig(entry.getKey(), entry.getValue()));
@@ -47,18 +54,14 @@ public class DropInfoImpl implements DropInfo {
         return dropType;
     }
 
-    public DropInfoImpl(String key) {
-        this.key = Key.of(key);
-    }
-
     @Override
-    public Key getIcon() {
+    public BwItemStack getIcon() {
         return this.icon.clone();
     }
 
     @Override
     public void setIcon(BwItemStack viewItem) {
-        this.icon = Key.of(viewItem);
+        this.icon = viewItem;
     }
 
     @Override
@@ -92,12 +95,12 @@ public class DropInfoImpl implements DropInfo {
     }
 
     @Override
-    public Hologram getHologram() {
+    public AnimatedHologramModel getHologram() {
         return this.hologram;
     }
 
     @Override
-    public void setHologram(Hologram hologram) {
+    public void setHologram(AnimatedHologramModel hologram) {
         this.hologram = hologram;
     }
 
@@ -162,18 +165,25 @@ public class DropInfoImpl implements DropInfo {
 
     public static class Tier implements DropInfo.Tier {
 
-        @PropertyName("key")
         private final Key key;
-        @PropertyName("delay")
         private double delay;
-        @PropertyName("upgrade-sound")
         private SoundVP upgradeSound;
-        @PropertyName("upgrade-effect")
         private ParticleEffect upgradeEffect;
-        @PropertyName("upgrade-message")
         private Message upgradeMessage;
-        @PropertyName("upgrade-item")
         private Map<String, DropInfo.Drop> drops = new HashMap<>();
+
+        public Tier(int key) {
+            this.key = Key.of(String.valueOf(key));
+        }
+
+        public Tier(NamedProperties properties) {
+            this.key = properties.getValue("key");
+            this.delay = properties.getValue("delay", 5);
+            this.upgradeSound = properties.getValue("upgrade-sound");
+            this.upgradeEffect = properties.getValue("upgrade-effect");
+            this.upgradeMessage = properties.getValue("upgrade-message");
+            this.drops = properties.getValue("upgrade-item");
+        }
 
         public static Tier fromConfig(int key, ConfigurableItemSpawner.ConfigurableTiers cfg) {
             Tier tier = new Tier(key);
@@ -185,19 +195,6 @@ public class DropInfoImpl implements DropInfo {
                 tier.drops.put(entry.getKey(), Drop.fromConfig(entry.getValue()));
             }
             return tier;
-        }
-
-        public Tier(int key) {
-            this.key = Key.of(key);
-        }
-
-        public Tier(NamedProperties properties) {
-            this.key = properties.getValue("key");
-            this.delay = properties.getValue("delay", 5);
-            this.upgradeSound = properties.getValue("upgrade-sound");
-            this.upgradeEffect = properties.getValue("upgrade-effect");
-            this.upgradeMessage = properties.getValue("upgrade-message");
-            this.drops = properties.getValue("upgrade-item");
         }
 
         @Override
@@ -252,7 +249,7 @@ public class DropInfoImpl implements DropInfo {
 
         @Override
         public Tier clone() {
-            Tier tier = new Tier(this.key.get());
+            Tier tier = new Tier(Integer.parseInt(this.key.get()));
             tier.delay = this.delay;
             tier.upgradeSound = this.upgradeSound;
             tier.upgradeEffect = this.upgradeEffect;
@@ -288,22 +285,10 @@ public class DropInfoImpl implements DropInfo {
 
     public static class Drop implements DropInfo.Drop {
 
-        @PropertyName("key")
         private final Key key;
-        @PropertyName("item")
         private BwItemStack item;
-        @PropertyName("delay")
         private double delay;
-        @PropertyName("max-spawn")
         private int maxSpawn;
-
-        public static Drop fromConfig(ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop cfg) {
-            Drop drop = new Drop(cfg.getKey());
-            drop.item = cfg.getMaterial();
-            drop.delay = cfg.getDelay();
-            drop.maxSpawn = cfg.getLimit();
-            return drop;
-        }
 
         public Drop(String key) {
             this.key = Key.of(key);
@@ -314,6 +299,14 @@ public class DropInfoImpl implements DropInfo {
             this.item = properties.getValue("item");
             this.delay = properties.getValue("delay");
             this.maxSpawn = properties.getValue("max-spawn");
+        }
+
+        public static Drop fromConfig(ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop cfg) {
+            Drop drop = new Drop(cfg.getKey());
+            drop.item = BwItemStack.valueOf(cfg.getItem());
+            drop.delay = cfg.getDelay();
+            drop.maxSpawn = cfg.getLimit();
+            return drop;
         }
 
         @Override

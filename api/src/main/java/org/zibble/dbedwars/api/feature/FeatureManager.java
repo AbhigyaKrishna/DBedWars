@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.feature;
 
-import org.zibble.dbedwars.api.util.Acceptor;
+import org.zibble.dbedwars.api.util.function.Acceptor;
 import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.Collection;

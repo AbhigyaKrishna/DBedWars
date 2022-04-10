@@ -78,4 +78,5 @@ public class ScoreboardData implements Cloneable {
         STATIC,
         DYNAMIC
     }
+
 }

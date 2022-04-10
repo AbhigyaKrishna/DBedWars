@@ -93,12 +93,12 @@ public class TeamImpl extends AbstractMessaging implements Team {
         this.setBedLocation(teamData.getBed());
 
         this.islandArea = new BoundingBox(
-                        this.spawn.getX() - this.arena.getSettings().getIslandRadius(),
-                        this.spawn.getY() - 50,
-                        this.spawn.getZ() - this.arena.getSettings().getIslandRadius(),
-                        this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
-                        this.spawn.getY() + 50,
-                        this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
+                this.spawn.getX() - this.arena.getSettings().getIslandRadius(),
+                this.spawn.getY() - 50,
+                this.spawn.getZ() - this.arena.getSettings().getIslandRadius(),
+                this.spawn.getX() + this.arena.getSettings().getIslandRadius(),
+                this.spawn.getY() + 50,
+                this.spawn.getZ() + this.arena.getSettings().getIslandRadius());
     }
 
     @Override
@@ -247,7 +247,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
                 break;
             }
         }
-        
+
         if (cfg == null) return;
 
         BedwarsNPC npc = ConfigurationUtil.createNpc(shopData.getLocation().toBukkit(this.arena.getWorld()), cfg);

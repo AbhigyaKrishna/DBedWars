@@ -2,7 +2,9 @@ package org.zibble.dbedwars.api.version;
 
 import org.bukkit.Bukkit;
 
-/** An enumeration for most server versions, that implements some methods for comparing versions. */
+/**
+ * An enumeration for most server versions, that implements some methods for comparing versions.
+ */
 public enum Version {
 
     /* legacy versions */

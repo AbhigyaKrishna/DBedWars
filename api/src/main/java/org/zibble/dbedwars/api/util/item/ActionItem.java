@@ -1,14 +1,11 @@
 package org.zibble.dbedwars.api.util.item;
 
 import com.cryptomorin.xseries.XMaterial;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.messaging.message.Message;
-
-import java.util.List;
 
 public interface ActionItem {
 
@@ -74,11 +71,13 @@ public interface ActionItem {
      *
      * @param player Player who performs the action
      * @param action {@link EnumAction} performed on this item
-     * @param event {@link PlayerInteractEvent} triggered in the action event
+     * @param event  {@link PlayerInteractEvent} triggered in the action event
      */
     void onActionPerform(Player player, EnumAction action, PlayerInteractEvent event);
 
-    /** Enumeration for actions defined for an item. */
+    /**
+     * Enumeration for actions defined for an item.
+     */
     enum EnumAction {
         LEFT_CLICK,
         LEFT_CLICK_SNEAKING,
@@ -89,4 +88,5 @@ public interface ActionItem {
         RIGHT_CLICK_SPRINTING,
         ;
     }
+
 }

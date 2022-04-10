@@ -8,7 +8,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
-import org.zibble.dbedwars.api.messaging.message.Message;
 
 import java.util.ArrayList;
 
@@ -40,4 +39,5 @@ public class EntityNPCImpl extends BedWarsNPCImpl implements EntityNPC {
     public EntityType getEntityType() {
         return this.entityType;
     }
+
 }

@@ -47,4 +47,5 @@ public class TNTPlaceFeature extends org.zibble.dbedwars.api.feature.custom.TNTP
     public boolean isInitialized() {
         return false;
     }
+
 }

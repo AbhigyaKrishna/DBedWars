@@ -11,7 +11,9 @@ import java.sql.SQLException;
 
 public class PostGreSQL extends SQLDatabase {
 
-    /** Connection URL format. */
+    /**
+     * Connection URL format.
+     */
     private static final String URL_FORMAT =
             "jdbc:postgresql://"
                     + "%s" // host

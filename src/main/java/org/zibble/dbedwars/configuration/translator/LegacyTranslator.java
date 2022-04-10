@@ -2,9 +2,9 @@ package org.zibble.dbedwars.configuration.translator;
 
 import net.kyori.adventure.text.Component;
 import org.zibble.dbedwars.api.adventure.AdventureUtils;
-import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 
 import java.util.Collection;
 import java.util.List;
@@ -55,4 +55,5 @@ public class LegacyTranslator implements ConfigTranslator {
     public char getCHAR() {
         return CHAR;
     }
+
 }

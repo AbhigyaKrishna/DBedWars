@@ -6,17 +6,17 @@ import java.util.UUID;
 
 public class PlayerGameProfile {
 
+    private final List<Property> textureProperties = new ArrayList<>();
     private UUID uuid;
     private String name;
-    private final List<Property> textureProperties = new ArrayList<>();
-
-    public static Builder builder() {
-        return new Builder();
-    }
 
     public PlayerGameProfile(UUID uuid, String name) {
         this.uuid = uuid;
         this.name = name;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public UUID getUuid() {
@@ -39,7 +39,7 @@ public class PlayerGameProfile {
         return textureProperties;
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<PlayerGameProfile> {
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<PlayerGameProfile> {
 
         private UUID uuid;
         private String name;
@@ -71,5 +71,7 @@ public class PlayerGameProfile {
             profile.textureProperties.addAll(properties);
             return profile;
         }
+
     }
+
 }

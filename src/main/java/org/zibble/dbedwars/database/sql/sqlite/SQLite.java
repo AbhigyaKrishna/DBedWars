@@ -10,10 +10,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-/** Class for interacting with a SQLite database. */
+/**
+ * Class for interacting with a SQLite database.
+ */
 public class SQLite extends SQLDatabase {
 
-    /** The JDBC driver class. */
+    /**
+     * The JDBC driver class.
+     */
     private static final String DRIVER_CLASS = "org.sqlite.JDBC";
 
     private final File db;

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.ClickType;
 
 import java.util.UUID;
@@ -38,7 +38,8 @@ public class NPCListener extends PacketListenerAbstract implements Listener {
                     && COOLDOWN.asMap().getOrDefault(player.getUniqueId(), -1) == packet.getEntityId()) return;
             for (BedWarsNPCImpl npc : factory.getNpcs().values()) {
                 if (npc.getEntityID() == packet.getEntityId()) {
-                    if (!npc.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
+                    if (!npc.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName()))
+                        continue;
                     for (ClickAction clickAction : npc.getClickActions()) {
                         clickAction.onClick(player, this.getClickType(player, packet.getAction()));
                         COOLDOWN.put(player.getUniqueId(), packet.getEntityId());

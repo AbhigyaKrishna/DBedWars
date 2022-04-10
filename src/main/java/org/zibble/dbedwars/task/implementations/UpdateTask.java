@@ -1,12 +1,8 @@
 package org.zibble.dbedwars.task.implementations;
 
 import org.bukkit.scheduler.BukkitTask;
-import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.ArenaStatus;
-import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
-import org.zibble.dbedwars.api.util.Tickable;
+import org.zibble.dbedwars.api.util.mixin.Tickable;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -17,7 +13,6 @@ import java.util.function.Predicate;
 public final class UpdateTask implements Runnable {
 
     private static final List<Tickable> TICKABLES = Collections.synchronizedList(new LinkedList<>());
-    private final DBedwars plugin;
 
     private BukkitTask task;
     private Instant started;
@@ -25,8 +20,20 @@ public final class UpdateTask implements Runnable {
 
     private Instant current;
 
-    public UpdateTask(DBedwars plugin) {
-        this.plugin = plugin;
+    public static void addTickable(Tickable tickable) {
+        TICKABLES.add(tickable);
+    }
+
+    public static void removeTickable(Tickable tickable) {
+        TICKABLES.remove(tickable);
+    }
+
+    public static void removeTickableIf(Predicate<Tickable> predicate) {
+        TICKABLES.removeIf(predicate);
+    }
+
+    public static List<Tickable> getTickables() {
+        return TICKABLES;
     }
 
     public boolean start() {
@@ -49,17 +56,6 @@ public final class UpdateTask implements Runnable {
     public void run() {
         this.current = Instant.now();
         try {
-            // TODO have to remove
-            this.plugin
-                    .getThreadHandler()
-                    .submitAsync(
-                            () -> {
-                                for (Arena a : this.plugin.getGameManager().getArenas().values()) {
-                                    if (a.isEnabled() && a.getStatus() == ArenaStatus.RUNNING) {
-                                        a.getSpawners().forEach(Spawner::tick);
-                                    }
-                                }
-                            });
             for (Tickable tickable : TICKABLES) {
                 try {
                     tickable.tick();
@@ -67,7 +63,6 @@ public final class UpdateTask implements Runnable {
                     e.printStackTrace();
                 }
             }
-
         } catch (Exception ignored) {
         }
     }
@@ -86,22 +81,6 @@ public final class UpdateTask implements Runnable {
 
     public Instant getCurrent() {
         return current;
-    }
-
-    public static void addTickable(Tickable tickable) {
-        TICKABLES.add(tickable);
-    }
-
-    public static void removeTickable(Tickable tickable) {
-        TICKABLES.remove(tickable);
-    }
-
-    public static void removeTickableIf(Predicate<Tickable> predicate) {
-        TICKABLES.removeIf(predicate);
-    }
-
-    public static List<Tickable> getTickables() {
-        return TICKABLES;
     }
 
 }

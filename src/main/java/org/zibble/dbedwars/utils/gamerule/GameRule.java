@@ -2,7 +2,7 @@ package org.zibble.dbedwars.utils.gamerule;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
-import org.zibble.dbedwars.api.util.Validable;
+import org.zibble.dbedwars.api.util.mixin.Validable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,4 +52,5 @@ public class GameRule implements Validable {
     public boolean isValid() {
         return this.getType() != null && this.getValue() != null && this.getType().isSameDataType(getValue());
     }
+
 }

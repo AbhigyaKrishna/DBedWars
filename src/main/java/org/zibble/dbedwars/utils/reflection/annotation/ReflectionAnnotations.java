@@ -33,7 +33,8 @@ public class ReflectionAnnotations {
     }
 
     public <T> void load(Class<T> clazz, T object) {
-        fields: for (Field declaredField : clazz.getDeclaredFields()) {
+        fields:
+        for (Field declaredField : clazz.getDeclaredFields()) {
             FieldWrapper field = new FieldWrapper(declaredField);
 
             if (declaredField.isAnnotationPresent(ClassRef.class)) {

@@ -53,7 +53,7 @@ public class SetupUtil {
     }
 
     public static CancellableWorkload createParticleSpawningTask(Location location, Player player, java.awt.Color color) {
-        ParticleEffectASC particleEffect = new ParticleEffectASC(ParticleEffect.REDSTONE,1, 0, color);
+        ParticleEffectASC particleEffect = ParticleEffectASC.of(ParticleEffect.REDSTONE, 1, 0, color);
         ParticleBuilder builder = particleEffect.build().setLocation(location.clone().add(0, 1, 0));
         return PLUGIN.getThreadHandler().runTaskTimer(() -> builder.display(player), Duration.ofMilliseconds(50));
     }
@@ -63,7 +63,7 @@ public class SetupUtil {
     }
 
     public static Hologram createHologram(Location location, Player player, Message text) {
-        Hologram hologram = PLUGIN.getHologramManager().createHologram(location.clone().add(0, 2, 0));
+        Hologram hologram = PLUGIN.getHookManager().getHologramFactory().createHologram(location.clone().add(0, 2, 0));
         HologramPage page = hologram.addPage();
         for (Message message : text.splitToLineMessage()) {
             page.addNewTextLine(message);

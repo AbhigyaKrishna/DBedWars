@@ -2,12 +2,12 @@ package org.zibble.dbedwars.configuration.framework;
 
 import com.google.common.collect.Multimap;
 import org.bukkit.configuration.ConfigurationSection;
+import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.api.util.Pair;
-import org.zibble.dbedwars.api.util.TriFunction;
+import org.zibble.dbedwars.api.util.function.TriFunction;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.configuration.util.YamlUtils;
-import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
@@ -47,9 +47,6 @@ public interface ConfigSaver<T> {
     });
 
     List<ConfigSaver<?>> PRIMITIVE_SAVER = Arrays.asList(CHAR_SAVER, INT_SAVER, LONG_SAVER, FLOAT_SAVER, DOUBLE_SAVER, BOOLEAN_SAVER, STRING_SAVER, UUID_SAVER, CONFIGURATION_SAVER, ENUM_SAVER, SAVEABLE_SAVER);
-
-    ConfigSaver<Collection> COLLECTION_SAVER = declare(Collection.class, (pair, section, saveFunction) ->
-            saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
     ConfigSaver<Map> MAP_SAVER = declare(Map.class, (pair, section, saveFunction) -> {
         int count = 0;
         for (Object o : pair.getValue().entrySet()) {
@@ -61,6 +58,8 @@ public interface ConfigSaver<T> {
         }
         return count;
     });
+    ConfigSaver<Collection> COLLECTION_SAVER = declare(Collection.class, (pair, section, saveFunction) ->
+            saveFunction.apply(pair.getKey(), pair.getValue(), section) ? 1 : 0);
     ConfigSaver<Multimap> MUlTIMAP_SAVER = declare(Multimap.class, (pair, section, saveFunction) -> {
         int count = 0;
         for (Object o : pair.getValue().asMap().entrySet()) {

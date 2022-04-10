@@ -20,7 +20,7 @@ public class MiniMessageUtils {
     }
 
     public static Component translate(MiniMessage miniMessage, String string) {
-       return miniMessage.deserialize(string);
+        return miniMessage.deserialize(string);
     }
 
     public static Component translate(MiniMessage miniMessage, String string, TagResolver resolver) {

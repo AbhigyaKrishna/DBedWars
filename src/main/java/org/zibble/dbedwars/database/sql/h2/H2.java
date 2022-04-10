@@ -12,7 +12,9 @@ import java.sql.SQLException;
 
 public class H2 extends SQLDatabase {
 
-    /** The JDBC driver class. */
+    /**
+     * The JDBC driver class.
+     */
     private static final String DRIVER_CLASS = "org.h2.Driver";
 
     private final File db;

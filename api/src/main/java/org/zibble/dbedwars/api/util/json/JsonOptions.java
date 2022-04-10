@@ -1,13 +1,17 @@
 package org.zibble.dbedwars.api.util.json;
 
-/** Represents options for Json. */
+/**
+ * Represents options for Json.
+ */
 public class JsonOptions {
 
     private boolean html_safe;
     private String indent;
     private boolean serialize_nulls;
 
-    /** Constructs the {@link JsonOptions}. */
+    /**
+     * Constructs the {@link JsonOptions}.
+     */
     public JsonOptions() {
         this.html_safe = false;
         this.indent = null;
@@ -85,4 +89,5 @@ public class JsonOptions {
         this.serialize_nulls = serialize_nulls;
         return this;
     }
+
 }

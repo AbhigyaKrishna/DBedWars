@@ -3,7 +3,6 @@ package org.zibble.dbedwars.hooks.citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -12,8 +11,7 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
-import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
 import java.util.*;
 
@@ -21,12 +19,11 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     //TODO INIT
     private final CitizensHook hook;
+    private final NPCData npcData;
+    private final Set<ClickAction> clickActions;
     private Hologram hologram;
     private Location location;
-    private final NPCData npcData;
-
     private NPC citizensNPC;
-    private final Set<ClickAction> clickActions;
 
     public BedWarsNPCImpl(Location location, NPCData npcData) {
         this.hook = CitizensHook.get();

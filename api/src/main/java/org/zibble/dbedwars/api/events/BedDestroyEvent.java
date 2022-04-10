@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.CustomEventCancellable;
+
 import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -97,4 +97,5 @@ public class BedDestroyEvent extends CustomEventCancellable {
                 ", cancelled=" + cancelled +
                 '}';
     }
+
 }

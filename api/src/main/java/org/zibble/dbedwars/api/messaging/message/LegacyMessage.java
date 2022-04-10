@@ -11,6 +11,18 @@ import java.util.Collection;
 
 public class LegacyMessage extends Message {
 
+    protected LegacyMessage(String message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected LegacyMessage(Collection<String> message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected LegacyMessage(String[] message, Placeholder... placeholders) {
+        super(new ArrayList<>(Arrays.asList(message)), placeholders);
+    }
+
     public static LegacyMessage empty() {
         return new LegacyMessage("");
     }
@@ -27,14 +39,6 @@ public class LegacyMessage extends Message {
         return new LegacyMessage(message, placeholders);
     }
 
-    protected LegacyMessage(String message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
-    protected LegacyMessage(Collection<String> message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
     @Override
     public Message[] splitToLineMessage() {
         LegacyMessage[] messages = new LegacyMessage[this.message.size()];
@@ -42,10 +46,6 @@ public class LegacyMessage extends Message {
             messages[i] = new LegacyMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
         }
         return messages;
-    }
-
-    protected LegacyMessage(String[] message, Placeholder... placeholders) {
-        super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
 
     @Override

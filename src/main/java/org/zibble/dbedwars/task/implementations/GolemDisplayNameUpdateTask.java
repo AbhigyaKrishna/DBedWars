@@ -80,4 +80,5 @@ public class GolemDisplayNameUpdateTask implements Workload {
         tick++;
         return golem != null && !golem.isDead();
     }
+
 }

@@ -11,10 +11,6 @@ public abstract class Message implements Cloneable {
     protected List<String> message;
     protected transient List<Placeholder> placeholders;
 
-    public static Message empty() {
-        return new EmptyMessage();
-    }
-
     protected Message(String message, Placeholder... placeholders) {
         this.message = Collections.synchronizedList(new ArrayList<>());
         this.message.add(message);
@@ -28,8 +24,18 @@ public abstract class Message implements Cloneable {
         this.placeholders.addAll(Arrays.asList(placeholders));
     }
 
+    public static Message empty() {
+        return new EmptyMessage();
+    }
+
     public String getMessage() {
         return String.join("\n", this.message);
+    }
+
+    public void setMessage(String... message) {
+        List<String> newMessage = new ArrayList<>(message.length);
+        newMessage.addAll(Arrays.asList(message));
+        this.message = newMessage;
     }
 
     public int size() {
@@ -42,12 +48,6 @@ public abstract class Message implements Cloneable {
 
     public void concatLine(int index, String line) {
         this.message.set(index, this.message.get(index) + line);
-    }
-
-    public void setMessage(String... message) {
-        List<String> newMessage = new ArrayList<>(message.length);
-        newMessage.addAll(Arrays.asList(message));
-        this.message = newMessage;
     }
 
     public Message addLine(String line) {

@@ -38,6 +38,7 @@ import org.zibble.dbedwars.listeners.ArenaListener;
 import org.zibble.dbedwars.listeners.GameListener;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 import org.zibble.dbedwars.task.implementations.ArenaStartTask;
+import org.zibble.dbedwars.task.implementations.UpdateTask;
 import org.zibble.dbedwars.utils.ConfigurationUtil;
 import org.zibble.dbedwars.utils.DatabaseUtils;
 import org.zibble.dbedwars.utils.Util;
@@ -55,13 +56,6 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     private final String gameId;
     private final ArenaDataHolderImpl dataHolder;
     private final ArenaSettingsImpl settings;
-    private ArenaStatus status;
-    private ArenaStartTask startTask;
-    private ScoreboardData gameLobbyScoreboard;
-    private ScoreboardData gameScoreboard;
-
-    private World world;
-    private Instant startTime;
     private final ArenaListener arenaHandler;
     private final GameListener gameHandler;
     private final List<Spawner> spawners;
@@ -69,6 +63,13 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     private final Set<ArenaPlayerImpl> players;
     private final List<ArenaSpectatorImpl> spectators;
     private final Map<ArenaPlayerImpl, KickReason> removed;
+    private final GameEventModel gameEvent;
+    private ArenaStatus status;
+    private ArenaStartTask startTask;
+    private ScoreboardData gameLobbyScoreboard;
+    private ScoreboardData gameScoreboard;
+    private World world;
+    private Instant startTime;
     private DeathStatistics deathStatistics;
     private BedBrokenStatistics bedBrokenStatistics;
 
@@ -89,6 +90,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.removed = new HashMap<>(0);
         this.arenaHandler = new ArenaListener(this.plugin, this);
         this.gameHandler = new GameListener(this.plugin, this);
+        this.gameEvent = new GameEventModel(this.plugin.getGameManager().getEvents());
         this.gameLobbyScoreboard = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getGameLobbyScoreboard() == null ? null :
                 this.plugin.getGameManager().getScoreboardData().get(this.plugin.getConfigHandler().getMainConfiguration().getArenaSection().getGameLobbyScoreboard());
     }
@@ -116,6 +118,11 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     @Override
     public ArenaDataHolderImpl getDataHolder() {
         return dataHolder;
+    }
+
+    @Override
+    public ArenaCategoryImpl getCategory() {
+        return this.getDataHolder().getCategory();
     }
 
     @Override
@@ -277,7 +284,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         for (TeamImpl team : this.teams) {
             ArenaDataHolderImpl.TeamDataHolderImpl teamData = this.getDataHolder().getTeamData().get(team.getColor());
             for (ArenaDataHolderImpl.SpawnerDataHolderImpl spawnerData : teamData.getSpawners()) {
-                SpawnerImpl spawner = new SpawnerImpl(this.plugin, spawnerData.getDropType(), this, team);
+                SpawnerImpl spawner = new SpawnerImpl(spawnerData.getDropType(), this, team);
                 spawner.init(spawnerData.getLocation().toBukkit(this.world), 1);
                 this.spawners.add(spawner);
             }
@@ -288,8 +295,11 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
             player.showScoreboard(this.gameScoreboard, this.getRunningScoreboardPlaceholders());
         }
 
+        this.gameEvent.nextEvent();
+
         this.startTime = Instant.now();
         this.startTask = null;
+        UpdateTask.addTickable(this);
 
         return true;
     }
@@ -309,6 +319,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         if (event.isCancelled()) return false;
 
         this.status = ArenaStatus.ENDING;
+        UpdateTask.removeTickable(this);
 
         this.plugin.getDatabaseBridge().insertArenaHistory(DatabaseUtils.createHistory(this, event.getWinner().getColor()));
         return true;
@@ -585,6 +596,29 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     @Override
+    public void tick() {
+        if (this.checkState(ArenaStatus.RUNNING)) {
+            if (this.gameEvent.getRemainingTime().toSeconds() <= 0) {
+                if (this.gameEvent.hasNextEvent()) {
+                    this.gameEvent.nextEvent();
+                } else {
+                    this.end();
+                    return;
+                }
+            }
+
+            for (Spawner spawner : this.spawners) {
+                spawner.tick();
+            }
+            for (TeamImpl team : this.teams) {
+                for (Spawner spawner : team.getSpawners()) {
+                    spawner.tick();
+                }
+            }
+        }
+    }
+
+    @Override
     protected Collection<MessagingMember> getMembers() {
         Collection<MessagingMember> members = new ArrayList<>();
         members.addAll(this.players);
@@ -601,28 +635,28 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     }
 
     final Placeholder[] getPlaceholders(Player player) {
-        // TODO: 06-04-2022 category placeholder
         return new Placeholder[]{
                 PlaceholderEntry.symbol("player_name", player.getName()),
-                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("current_players", () -> String.valueOf(this.getPlayers().size())),
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_category", this.getCategory().getName())
         };
     }
 
     final Placeholder[] getWaitingScoreboardPlaceholders() {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
                 PlayerPlaceholderEntry.symbol("player_name", HumanEntity::getName),
-                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("current_players", () -> String.valueOf(this.getPlayers().size())),
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
                 PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
                 PlaceholderEntry.symbol("start_countdown", () -> this.startTask == null ? "" : "in " + this.startTask.getCountdown().get()),
-                PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date()))
+                PlaceholderEntry.symbol("arena_category", this.getCategory().getName())
         ));
         for (Color value : Color.VALUES) {
             placeholders.add(PlaceholderEntry.symbol("color" + value.name().toLowerCase(), value.getName()));
@@ -634,16 +668,19 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
     final Placeholder[] getRunningScoreboardPlaceholders() {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
                 PlayerPlaceholderEntry.symbol("player_name", HumanEntity::getName),
-                PlaceholderEntry.symbol("current_players", String.valueOf(this.getPlayers().size())),
+                PlaceholderEntry.symbol("current_players", () -> String.valueOf(this.getPlayers().size())),
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
                 PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
                 PlayerPlaceholderEntry.symbol("current_player_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.KILLS)) : "N/A"),
                 PlayerPlaceholderEntry.symbol("current_player_final_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.FINAL_KILLS)) : "N/A"),
                 PlayerPlaceholderEntry.symbol("current_player_beds", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS)) : "N/A"),
-                PlayerPlaceholderEntry.symbol("current_player_deaths", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.DEATH)) : "N/A")
+                PlayerPlaceholderEntry.symbol("current_player_deaths", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.DEATH)) : "N/A"),
+                PlaceholderEntry.symbol("game_event", () -> this.gameEvent.getCurrentEvent().getEventName().getMessage()),
+                PlaceholderEntry.symbol("game_event_time", () -> String.valueOf(this.gameEvent.getRemainingTime().toSeconds())),
+                PlaceholderEntry.symbol("arena_category", this.getCategory().getDisplayName().getMessage())
         ));
         for (TeamImpl team : this.teams) {
             placeholders.add(PlaceholderEntry.symbol("team_" + team.getName().toLowerCase() + "_existence", () -> {

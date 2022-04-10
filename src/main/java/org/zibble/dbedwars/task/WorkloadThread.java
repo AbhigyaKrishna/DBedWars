@@ -9,7 +9,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadFactory;
 
-/** A class that stores and computes {@link Workload} instances. */
+/**
+ * A class that stores and computes {@link Workload} instances.
+ */
 public class WorkloadThread implements Runnable, Task {
 
     private final Queue<Workload> deque = new ConcurrentLinkedQueue<>();
@@ -95,4 +97,5 @@ public class WorkloadThread implements Runnable, Task {
     public boolean isRunning() {
         return this.thread != null && !this.isCancelled();
     }
+
 }

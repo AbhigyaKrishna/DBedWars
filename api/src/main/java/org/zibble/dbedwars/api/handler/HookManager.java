@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.api.handler;
 
 import org.zibble.dbedwars.api.hooks.Hook;
+import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.nickname.NickNameHook;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.placholder.PlaceholderHook;
@@ -31,6 +32,10 @@ public interface HookManager {
     NPCFactory getNpcFactory();
 
     void setNpcFactory(NPCFactory npcFactory);
+
+    HologramFactory getHologramFactory();
+
+    void setHologramFactory(HologramFactory hologramFactory);
 
     AreaSelectionHook getAreaSelectionHook();
 

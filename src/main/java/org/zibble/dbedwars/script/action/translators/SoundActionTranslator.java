@@ -32,4 +32,5 @@ public class SoundActionTranslator implements ActionTranslator<PlayerMember, Sou
     public Key getKey() {
         return Key.of("SOUND");
     }
+
 }

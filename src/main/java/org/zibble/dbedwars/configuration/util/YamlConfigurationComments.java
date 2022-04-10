@@ -132,9 +132,9 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
                     if (line_back.trim().startsWith(COMMENT_PREFIX)
                             || line_back
-                                    .trim()
-                                    .startsWith(
-                                            YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX)) {
+                            .trim()
+                            .startsWith(
+                                    YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX)) {
                         continue;
                     }
 
@@ -160,7 +160,7 @@ public class YamlConfigurationComments extends YamlConfiguration {
                     node.isEmpty()
                             ? this
                             : getConfigurationSection(
-                                    node.substring(0, node.lastIndexOf(options().pathSeparator())));
+                            node.substring(0, node.lastIndexOf(options().pathSeparator())));
 
             if (section != null) {
                 //				System.out.println ( ">>>> 0" );
@@ -283,10 +283,10 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
                         if (line_back.trim().startsWith(COMMENT_PREFIX)
                                 || line_back
-                                        .trim()
-                                        .startsWith(
-                                                YamlConfigurationCommentsOptions
-                                                        .PATH_COMMENT_PREFIX)) {
+                                .trim()
+                                .startsWith(
+                                        YamlConfigurationCommentsOptions
+                                                .PATH_COMMENT_PREFIX)) {
                             continue;
                         }
 
@@ -312,9 +312,9 @@ public class YamlConfigurationComments extends YamlConfiguration {
                                         .endsWith(options().pathSeparator() + line_back_path)) {
                                     node =
                                             last_node.substring(
-                                                            0,
-                                                            last_node.lastIndexOf(
-                                                                    options().pathSeparator()))
+                                                    0,
+                                                    last_node.lastIndexOf(
+                                                            options().pathSeparator()))
                                                     + options().pathSeparator()
                                                     + line_path;
                                 }
@@ -337,10 +337,10 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
             String comment_line = lines[i - 1];
             if (!comment_line
-                            .trim()
-                            .startsWith(YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX)
+                    .trim()
+                    .startsWith(YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX)
                     || comment_line.trim().length()
-                            == YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX.length()) {
+                    == YamlConfigurationCommentsOptions.PATH_COMMENT_PREFIX.length()) {
                 continue;
             }
 
@@ -387,4 +387,5 @@ public class YamlConfigurationComments extends YamlConfiguration {
                         ? (options = new YamlConfigurationCommentsOptions(this))
                         : options);
     }
+
 }

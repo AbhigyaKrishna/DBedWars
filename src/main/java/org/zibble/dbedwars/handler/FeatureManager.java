@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeature;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
-import org.zibble.dbedwars.api.util.Acceptor;
+import org.zibble.dbedwars.api.util.function.Acceptor;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.features.*;
 import org.zibble.dbedwars.utils.Debugger;
@@ -87,4 +87,5 @@ public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureMa
             }
         }
     }
+
 }

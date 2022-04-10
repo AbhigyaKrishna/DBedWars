@@ -10,7 +10,9 @@ import org.zibble.dbedwars.api.util.BwItemStack;
 
 import java.util.Collection;
 
-/** Abstract class to be used for creating Action Items. */
+/**
+ * Abstract class to be used for creating Action Items.
+ */
 public abstract class ActionItemBase implements ActionItem {
 
     protected final Message display_name;
@@ -24,9 +26,9 @@ public abstract class ActionItemBase implements ActionItem {
      * <p>
      *
      * @param display_name Display name of the Action Item
-     * @param lore Lore of the Action Item
-     * @param material Material of the Action Item
-     * @param priority {@link EventPriority} of the Action Item
+     * @param lore         Lore of the Action Item
+     * @param material     Material of the Action Item
+     * @param priority     {@link EventPriority} of the Action Item
      */
     public ActionItemBase(Message display_name, Message lore, XMaterial material, EventPriority priority) {
         this.display_name = display_name;
@@ -41,9 +43,9 @@ public abstract class ActionItemBase implements ActionItem {
      * <p>
      *
      * @param display_name Display name of the Action Item
-     * @param lore Lore of the Action Item
-     * @param material Material of the Action Item
-     * @param priority {@link EventPriority} of the Action Item
+     * @param lore         Lore of the Action Item
+     * @param material     Material of the Action Item
+     * @param priority     {@link EventPriority} of the Action Item
      */
     public ActionItemBase(String display_name, Collection<String> lore, XMaterial material, EventPriority priority) {
         this.display_name = AdventureMessage.from(display_name);
@@ -58,8 +60,8 @@ public abstract class ActionItemBase implements ActionItem {
      * <p>
      *
      * @param display_name Display name of the Action Item
-     * @param lore Lore of the Action Item
-     * @param material Material of the Action Item
+     * @param lore         Lore of the Action Item
+     * @param material     Material of the Action Item
      */
     public ActionItemBase(Component display_name, Collection<Component> lore, XMaterial material, EventPriority priority) {
         this(AdventureMessage.from(display_name), AdventureMessage.from(lore.toArray(new Component[0])), material, priority);

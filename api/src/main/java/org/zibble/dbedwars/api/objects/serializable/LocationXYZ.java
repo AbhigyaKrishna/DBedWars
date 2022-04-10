@@ -17,16 +17,17 @@ public class LocationXYZ implements Cloneable {
     private double y = 0.0D;
     private double z = 0.0D;
 
-    public static LocationXYZ of(double x, double y, double z) {
-        return new LocationXYZ(x, y, z);
+    public LocationXYZ() {
     }
-
-    public LocationXYZ() {}
 
     private LocationXYZ(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public static LocationXYZ of(double x, double y, double z) {
+        return new LocationXYZ(x, y, z);
     }
 
     public static LocationXYZ valueOf(Location loc) {
@@ -134,4 +135,5 @@ public class LocationXYZ implements Cloneable {
     public LocationXYZ clone() {
         return new LocationXYZ(this.x, this.y, this.z);
     }
+
 }

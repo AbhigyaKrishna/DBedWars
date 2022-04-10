@@ -21,9 +21,9 @@ public class NameTagEditHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             nametagApi = NametagEdit.getApi();
-            if(nametagApi == null){
+            if (nametagApi == null) {
                 enabled = false;
                 return true;
             }

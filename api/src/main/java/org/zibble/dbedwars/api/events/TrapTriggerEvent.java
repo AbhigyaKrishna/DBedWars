@@ -42,4 +42,5 @@ public class TrapTriggerEvent extends CustomEventCancellable {
                 ", cancelled=" + cancelled +
                 '}';
     }
+
 }

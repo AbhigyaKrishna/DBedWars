@@ -159,7 +159,7 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
                 }
                 case v1_16_R1:
                 case v1_16_R2:
-                case v1_16_R3:{
+                case v1_16_R3: {
                     entityData.setIndex(16);
                 }
                 case v1_17_R1:
@@ -189,4 +189,5 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         );
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, spawnPacket);
     }
+
 }

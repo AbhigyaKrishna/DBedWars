@@ -16,12 +16,13 @@ public abstract class ConditionalCommandNode extends AbstractCommandNode {
     }
 
     @Override
-    public final void accept(CommandSender sender, String[] args) {
+    public final boolean accept(CommandSender sender, String[] args) {
         if (this.predicate != null && !this.predicate.test(sender)) {
             if (this.noHandler != null) this.noHandler.accept(sender);
-            return;
+            return false;
         }
         this.execute(sender, args);
+        return true;
     }
 
     public abstract void execute(CommandSender sender, String[] args);

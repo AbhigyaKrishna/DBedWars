@@ -36,7 +36,7 @@ public class ArenaEndFireworkFeature extends org.zibble.dbedwars.api.feature.cus
 
     @Override
     public void spawn(Team winner, Arena arena) {
-        FireworkEffectC effect = new FireworkEffectC(FireworkEffect.Type.BALL, true, false, Collections.singletonList(winner.getColor().getColor()), Collections.singletonList(Color.YELLOW));
+        FireworkEffectC effect = FireworkEffectC.of(FireworkEffect.Type.BALL, true, false, Collections.singletonList(winner.getColor().getColor()), Collections.singletonList(Color.YELLOW));
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

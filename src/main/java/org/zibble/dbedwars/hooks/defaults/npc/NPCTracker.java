@@ -50,7 +50,8 @@ public class NPCTracker {
     public void onMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
-        if (!npc.shown.contains(player.getUniqueId()) || !npc.outOfRenderDistance.contains(player.getUniqueId())) return;
+        if (!npc.shown.contains(player.getUniqueId()) || !npc.outOfRenderDistance.contains(player.getUniqueId()))
+            return;
         if (!this.canSee(player)) return;
         npc.forceShow(player);
         npc.outOfRenderDistance.remove(player.getUniqueId());

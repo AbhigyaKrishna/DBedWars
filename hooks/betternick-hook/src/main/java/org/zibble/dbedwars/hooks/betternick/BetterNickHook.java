@@ -17,7 +17,7 @@ public class BetterNickHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into BetterNick!"));
         }
         return true;
@@ -30,7 +30,7 @@ public class BetterNickHook extends PluginDependence implements NickNameHook {
 
     @Override
     public void nick(@NotNull Player player, @NotNull String nick) {
-        BetterNick.setNick(player,nick);
+        BetterNick.setNick(player, nick);
     }
 
     @Override
@@ -42,4 +42,5 @@ public class BetterNickHook extends PluginDependence implements NickNameHook {
     public String getNickName(@NotNull Player player) {
         return isPlayerNicked(player) ? BetterNick.getRealName(player.getUniqueId().toString()) : getRealName(player);
     }
+
 }

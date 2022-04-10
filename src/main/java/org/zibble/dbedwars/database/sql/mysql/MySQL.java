@@ -10,10 +10,14 @@ import org.zibble.dbedwars.database.sql.SQLDatabase;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-/** Class for interacting with a MySQL database. */
+/**
+ * Class for interacting with a MySQL database.
+ */
 public class MySQL extends SQLDatabase {
 
-    /** Connection URL format. */
+    /**
+     * Connection URL format.
+     */
     private static final String URL_FORMAT =
             "jdbc:mysql://"
                     + "%s" // host
@@ -23,7 +27,9 @@ public class MySQL extends SQLDatabase {
                     + "%s" // database
             ;
 
-    /** The JDBC driver class. */
+    /**
+     * The JDBC driver class.
+     */
     private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     private static final String LEGACY_DRIVER_CLASS = "com.mysql.jdbc.Driver";
 
@@ -55,8 +61,8 @@ public class MySQL extends SQLDatabase {
      *
      * <p>
      *
-     * @param host Host name
-     * @param port Port number
+     * @param host     Host name
+     * @param port     Port number
      * @param database Database name
      * @param username User name
      * @param password User password
@@ -71,9 +77,9 @@ public class MySQL extends SQLDatabase {
      * <p>
      *
      * @throws IllegalStateException if the JDBC drivers is unavailable.
-     * @throws SQLException if a database access error occurs.
-     * @throws SQLTimeoutException when the driver has determined that the timeout has been exceeded
-     *     and has at least tried to cancel the current database connection attempt.
+     * @throws SQLException          if a database access error occurs.
+     * @throws SQLTimeoutException   when the driver has determined that the timeout has been exceeded
+     *                               and has at least tried to cancel the current database connection attempt.
      */
     @Override
     public synchronized void connect() throws IllegalStateException, SQLException, SQLTimeoutException {

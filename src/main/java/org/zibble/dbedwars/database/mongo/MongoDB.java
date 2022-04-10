@@ -17,19 +17,20 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Class for interacting with a Mongo database. */
+/**
+ * Class for interacting with a Mongo database.
+ */
 public class MongoDB extends Database {
 
     private final String ip;
     private final int port;
-    private MongoClientOptions options;
     private final String dbname;
     private final String userName;
     private final String password;
-
+    private final Set<MongoCollection<?>> collections = new HashSet<>();
+    private MongoClientOptions options;
     private MongoClient client;
     private MongoDatabase database;
-    private final Set<MongoCollection<?>> collections = new HashSet<>();
 
     public MongoDB(String host, int port, String dbname) {
         this(host, port, dbname, MongoClientOptions.builder().build(), null, null);
@@ -55,20 +56,24 @@ public class MongoDB extends Database {
         return this.client != null && this.database != null;
     }
 
-    /** Starts the connection with MongoDB. */
+    /**
+     * Starts the connection with MongoDB.
+     */
     @Override
     public synchronized void connect() {
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         if (userName == null || password == null) {
             this.client = new MongoClient(new ServerAddress(this.ip, this.port), this.options);
-        }else {
+        } else {
             this.client = new MongoClient(new ServerAddress(this.ip, this.port), MongoCredential.createCredential(this.userName, this.dbname, this.password.toCharArray()), this.options);
         }
 
         this.database = client.getDatabase(this.dbname);
     }
 
-    /** Closes the connection with MongoDB. */
+    /**
+     * Closes the connection with MongoDB.
+     */
     @Override
     public void disconnect() {
         this.client.close();
@@ -112,4 +117,5 @@ public class MongoDB extends Database {
     public MongoClient getClient() {
         return client;
     }
+
 }

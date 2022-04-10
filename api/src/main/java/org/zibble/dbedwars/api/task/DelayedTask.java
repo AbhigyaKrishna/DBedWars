@@ -2,17 +2,17 @@ package org.zibble.dbedwars.api.task;
 
 public abstract class DelayedTask implements Workload {
 
-    private boolean run;
     private final long firstTry;
     private final long delay;
-
-    public abstract void run();
+    private boolean run;
 
     public DelayedTask(long delay) {
         this.run = false;
         this.firstTry = System.currentTimeMillis();
         this.delay = delay;
     }
+
+    public abstract void run();
 
     @Override
     public final void compute() {

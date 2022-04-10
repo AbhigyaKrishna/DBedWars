@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.handler;
 
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
@@ -10,7 +9,6 @@ import org.zibble.dbedwars.task.TaskQueueHandler;
 import org.zibble.dbedwars.task.implementations.UpdateTask;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
 
 public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHandler {
 
@@ -18,9 +16,9 @@ public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHand
     private final UpdateTask updater;
     private Task task, updaterTask;
 
-    public ThreadHandler(DBedwars plugin) {
+    public ThreadHandler() {
         this.handler = new TaskQueueHandler("DBedWars Thread %d");
-        this.updater = new UpdateTask(plugin);
+        this.updater = new UpdateTask();
     }
 
     public void runThreads(int threadCount) {

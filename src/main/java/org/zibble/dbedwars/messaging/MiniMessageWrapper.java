@@ -22,7 +22,7 @@ public class MiniMessageWrapper {
                         .add(TransformationType.GRADIENT)
                         .add(TransformationType.RAINBOW)
                         .build()
-                ).build();
+        ).build();
     }
 
     public static void importConfig(MainConfiguration.LangSection.ModernSettingsSection settings) {
@@ -51,4 +51,5 @@ public class MiniMessageWrapper {
     public static MiniMessage getConfigInstance() {
         return CONFIG;
     }
+
 }

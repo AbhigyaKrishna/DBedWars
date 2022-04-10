@@ -3,15 +3,25 @@ package org.zibble.dbedwars.database.data;
 import com.google.gson.JsonElement;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.zibble.dbedwars.api.util.DataType;
-import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.api.util.key.Keyed;
 import org.zibble.dbedwars.api.util.json.JSONBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.key.Keyed;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
 
 public class PersistentStat<T extends Number> implements DataCache, Keyed {
+
+    @BsonIgnore
+    private final String key;
+    private T total;
+    private T monthly;
+    private T weekly;
+    private T daily;
+    public PersistentStat(String key) {
+        this.key = key;
+    }
 
     public static <T extends Number> PersistentStat<T> from(String key, Json json, java.util.function.Function<JsonElement, T> mapper) {
         PersistentStat<T> stat = new PersistentStat<>(key);
@@ -20,18 +30,6 @@ public class PersistentStat<T extends Number> implements DataCache, Keyed {
         stat.weekly = mapper.apply(json.get("weekly"));
         stat.daily = mapper.apply(json.get("daily"));
         return stat;
-    }
-
-    @BsonIgnore
-    private final String key;
-
-    private T total;
-    private T monthly;
-    private T weekly;
-    private T daily;
-
-    public PersistentStat(String key) {
-        this.key = key;
     }
 
     @Override

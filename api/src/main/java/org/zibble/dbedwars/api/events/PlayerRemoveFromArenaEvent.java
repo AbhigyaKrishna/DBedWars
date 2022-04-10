@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.player.CustomPlayerEventCancellable;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -68,4 +68,5 @@ public class PlayerRemoveFromArenaEvent extends CustomPlayerEventCancellable {
                 ", player=" + player +
                 '}';
     }
+
 }

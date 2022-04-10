@@ -11,6 +11,18 @@ import java.util.Collection;
 
 public class AdventureMessage extends Message {
 
+    protected AdventureMessage(String message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected AdventureMessage(Collection<String> message, Placeholder... placeholders) {
+        super(message, placeholders);
+    }
+
+    protected AdventureMessage(String[] message, Placeholder... placeholders) {
+        super(new ArrayList<>(Arrays.asList(message)), placeholders);
+    }
+
     public static AdventureMessage empty() {
         return new AdventureMessage("");
     }
@@ -39,14 +51,6 @@ public class AdventureMessage extends Message {
         return new AdventureMessage(s, placeholders);
     }
 
-    protected AdventureMessage(String message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
-    protected AdventureMessage(Collection<String> message, Placeholder... placeholders) {
-        super(message, placeholders);
-    }
-
     @Override
     public AdventureMessage[] splitToLineMessage() {
         AdventureMessage[] messages = new AdventureMessage[this.message.size()];
@@ -54,10 +58,6 @@ public class AdventureMessage extends Message {
             messages[i] = new AdventureMessage(this.message.get(i), this.placeholders.toArray(new Placeholder[0]));
         }
         return messages;
-    }
-
-    protected AdventureMessage(String[] message, Placeholder... placeholders) {
-        super(new ArrayList<>(Arrays.asList(message)), placeholders);
     }
 
     @Override

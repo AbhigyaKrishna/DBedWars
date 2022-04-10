@@ -78,4 +78,5 @@ public class BedBugDisplayNameUpdateTask implements Workload {
         tick++;
         return silverfish != null && !silverfish.isDead();
     }
+
 }

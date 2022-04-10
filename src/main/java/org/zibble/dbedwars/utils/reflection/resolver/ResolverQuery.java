@@ -72,11 +72,12 @@ public class ResolverQuery {
                 + '}';
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<ResolverQuery[]> {
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<ResolverQuery[]> {
 
         private final List<ResolverQuery> queryList = new ArrayList<>();
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public Builder with(String name, Class<?>... types) {
             queryList.add(new ResolverQuery(name, types));
@@ -96,5 +97,7 @@ public class ResolverQuery {
         public ResolverQuery[] build() {
             return queryList.toArray(new ResolverQuery[0]);
         }
+
     }
+
 }

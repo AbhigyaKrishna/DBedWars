@@ -22,35 +22,40 @@ import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.points.IntegerCount;
 import org.zibble.dbedwars.api.objects.points.Points;
-import org.zibble.dbedwars.api.util.*;
+import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.Pair;
+import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.cache.InventoryData;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
-import org.zibble.dbedwars.game.arena.view.ShopView;
+import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
 import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
 
     private final DBedwars plugin;
-
+    private final Points points;
+    private final InventoryData respawnItems;
+    private final ResourceStatistics resourceStatistics;
     private Color team;
     private Scoreboard scoreboard;
-    private final Points points;
     private boolean finalKilled;
     private boolean respawning;
     private Pair<ArenaPlayer, Instant> lastHit;
     private InventoryData inventoryBackup;
-    private Map<Key, ShopView> shops;
-    private final InventoryData respawnItems;
-    private final ResourceStatistics resourceStatistics;
+    private Map<Key, ShopViewImpl> shops;
 
     public ArenaPlayerImpl(DBedwars plugin, Player player, Arena arena) {
         super(player, arena);
@@ -103,7 +108,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     public void kill(DeathCause reason) {
         PlayerKillEvent event;
         ArenaPlayer killer = this.getLastHitTagged();
-        Message deathMessage = Util.getDeathMessage(reason, killer == null? null : killer.getPlayer());
+        Message deathMessage = Util.getDeathMessage(reason, killer == null ? null : killer.getPlayer());
         if (this.getTeam().isBedBroken()) {
             deathMessage.concatLine(0, Util.convertMessage(ConfigLang.FINAL_KILL.asMessage(),
                     deathMessage instanceof ConfigMessage ? ConfigMessage.empty() : AdventureMessage.empty()).getMessage());
@@ -182,7 +187,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         return Bukkit.getPlayer(this.getUUID());
     }
 
-    public ShopView getShop(String key) {
+    public ShopViewImpl getShop(String key) {
         return this.shops.get(Key.of(key));
     }
 
@@ -253,7 +258,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     }
 
     public void addShop(ShopInfoImpl cfg) {
-        this.shops.put(cfg.getKey(), new ShopView(this, cfg));
+        this.shops.put(cfg.getKey(), new ShopViewImpl(this, cfg));
     }
 
     public void startRespawn() {

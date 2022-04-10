@@ -57,4 +57,5 @@ public class ClassWrapper<R> extends WrapperAbstract {
     public int hashCode() {
         return clazz != null ? clazz.hashCode() : 0;
     }
+
 }

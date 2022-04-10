@@ -20,8 +20,8 @@ public class CommandConsoleActionImpl implements MenuAction {
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull String[] args) {
-        if(args.length <= 1){
-            DBedwars.getInstance().getLogger().warning("The action of "+tag()+" didn't provide a statement to execute console command on... Skipping!");
+        if (args.length <= 1) {
+            DBedwars.getInstance().getLogger().warning("The action of " + tag() + " didn't provide a statement to execute console command on... Skipping!");
             return false;
         }
 
@@ -32,4 +32,5 @@ public class CommandConsoleActionImpl implements MenuAction {
         );
         return true;
     }
+
 }

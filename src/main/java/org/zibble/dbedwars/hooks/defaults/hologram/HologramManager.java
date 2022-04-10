@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
@@ -16,6 +15,7 @@ import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
+import org.zibble.dbedwars.api.util.BwItemStack;
 import org.zibble.dbedwars.task.TaskQueueHandler;
 
 import java.util.*;
@@ -31,7 +31,6 @@ public class HologramManager implements HologramFactory {
         this.plugin = DBedwars.getInstance();
         this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
         this.holograms = new ConcurrentHashMap<>();
-        HologramUtil.init(this);
         HologramPacketListener packetListener = new HologramPacketListener(this);
         PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
         packetEventsAPI.getEventManager().registerListener(packetListener);
@@ -50,17 +49,17 @@ public class HologramManager implements HologramFactory {
             }
             if (entry.getKey().getContent() instanceof HologramLine.Head) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, false, true);
-                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                PacketUtils.helmetFakeEntity(player, ((BwItemStack) entry.getKey().getContent()).asItemStack(player), entry.getKey().getEntityIds()[0]);
                 continue;
             }
             if (entry.getKey().getContent() instanceof HologramLine.SmallHead) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.helmetFakeEntity(player, (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[0]);
+                PacketUtils.helmetFakeEntity(player, ((BwItemStack) entry.getKey().getContent()).asItemStack(player), entry.getKey().getEntityIds()[0]);
                 continue;
             }
             if (entry.getKey().getContent() instanceof HologramLine.Icon) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), entry.getKey().getEntityIds()[0], true, true, true);
-                PacketUtils.showFakeEntityItem(player, entry.getValue(), (ItemStack) entry.getKey().getContent(), entry.getKey().getEntityIds()[1]);
+                PacketUtils.showFakeEntityItem(player, entry.getValue(), ((BwItemStack) entry.getKey().getContent()).asItemStack(player), entry.getKey().getEntityIds()[1]);
                 PacketUtils.attachFakeEntity(player, entry.getKey().getEntityIds()[0], entry.getKey().getEntityIds()[1]);
                 continue;
             }
@@ -164,7 +163,8 @@ public class HologramManager implements HologramFactory {
                 this.lastRun = System.currentTimeMillis();
                 for (HologramImpl value : HologramManager.this.holograms.values()) {
                     if (!value.isUpdateRegistered()) continue;
-                    if (System.currentTimeMillis() - value.getLastUpdate() < value.getUpdateInterval().toMillis()) continue;
+                    if (System.currentTimeMillis() - value.getLastUpdate() < value.getUpdateInterval().toMillis())
+                        continue;
                     if (value.hasChangedContentType()) {
                         HologramManager.this.updateHologram(value);
                     } else {

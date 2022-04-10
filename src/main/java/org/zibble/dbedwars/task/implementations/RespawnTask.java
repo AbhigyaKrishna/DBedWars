@@ -18,8 +18,8 @@ public class RespawnTask extends CancellableWorkload implements Listener {
     private final DBedwars plugin;
     private final ArenaPlayer player;
     private final AtomicInteger time;
-    private long lastExecuted;
     Message message;
+    private long lastExecuted;
 
     public RespawnTask(DBedwars plugin, ArenaPlayer player) {
         this.plugin = plugin;
@@ -59,4 +59,5 @@ public class RespawnTask extends CancellableWorkload implements Listener {
         this.setCancelled(true);
         HandlerList.unregisterAll(this);
     }
+
 }

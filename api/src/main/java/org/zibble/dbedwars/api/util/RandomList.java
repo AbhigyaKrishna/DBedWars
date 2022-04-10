@@ -36,7 +36,7 @@ public class RandomList<T> extends ArrayList<T> {
     public T randomValue(Random random, Predicate<T> predicate) {
         T value;
         do {
-            value = this.get(random.nextInt(size()));
+            value = this.get(random.nextInt(this.size()));
         } while (predicate != null && !predicate.test(value));
         return value;
     }

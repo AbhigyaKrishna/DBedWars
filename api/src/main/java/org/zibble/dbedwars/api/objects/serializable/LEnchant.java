@@ -15,6 +15,11 @@ public class LEnchant implements Cloneable {
     private XEnchantment enchantment;
     private int level;
 
+    private LEnchant(XEnchantment enchantment, int level) {
+        this.enchantment = enchantment;
+        this.level = level;
+    }
+
     public static LEnchant of(Enchantment enchantment) {
         return of(XEnchantment.matchXEnchantment(enchantment));
     }
@@ -29,11 +34,6 @@ public class LEnchant implements Cloneable {
 
     public static LEnchant of(XEnchantment enchantment, int level) {
         return new LEnchant(enchantment, level);
-    }
-
-    private LEnchant(XEnchantment enchantment, int level) {
-        this.enchantment = enchantment;
-        this.level = level;
     }
 
     public static LEnchant valueOf(String str) {
@@ -98,11 +98,12 @@ public class LEnchant implements Cloneable {
 
     @Override
     public String toString() {
-        return this.enchantment.name() + ":" + this.level;
+        return this.enchantment.name() + "::" + this.level;
     }
 
     @Override
     public LEnchant clone() {
         return new LEnchant(this.enchantment, this.level);
     }
+
 }

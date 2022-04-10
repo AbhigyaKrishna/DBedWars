@@ -7,28 +7,28 @@ import org.bukkit.util.NumberConversions;
 
 public class GameRuleMetadata extends FixedMetadataValue {
 
-    protected final org.zibble.dbedwars.utils.gamerule.GameRuleType type;
-    
-    public GameRuleMetadata(Plugin owning_plugin, org.zibble.dbedwars.utils.gamerule.GameRuleType type, Object value) {
+    protected final GameRuleType type;
+
+    public GameRuleMetadata(Plugin owning_plugin, GameRuleType type, Object value) {
         super(owning_plugin, value);
         Validate.isTrue(type.isSameDataType(value));
         this.type = type;
     }
-    
+
     public GameRuleType getType() {
         return this.type;
     }
-    
+
     public int asInt() {
         validateNumericValue();
         return NumberConversions.toInt(this.value());
     }
-    
+
     public float asFloat() {
         validateNumericValue();
         return NumberConversions.toFloat(this.value());
     }
-    
+
     public double asDouble() {
         validateNumericValue();
         return NumberConversions.toDouble(this.value());

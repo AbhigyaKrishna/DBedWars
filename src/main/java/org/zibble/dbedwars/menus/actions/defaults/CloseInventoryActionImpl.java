@@ -21,4 +21,5 @@ public class CloseInventoryActionImpl implements MenuAction {
         player.closeInventory();
         return true;
     }
+
 }

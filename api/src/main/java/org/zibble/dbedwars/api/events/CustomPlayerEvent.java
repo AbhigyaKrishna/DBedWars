@@ -1,12 +1,15 @@
 package org.zibble.dbedwars.api.events;
 
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.events.CustomEvent;
 
-/** A player related {@link CustomEvent} */
+/**
+ * A player related {@link CustomEvent}
+ */
 public abstract class CustomPlayerEvent extends CustomEvent {
 
-    /** The player involved in this event. */
+    /**
+     * The player involved in this event.
+     */
     protected final Player player;
 
     /**
@@ -15,8 +18,8 @@ public abstract class CustomPlayerEvent extends CustomEvent {
      * <p>
      *
      * @param player Player involved in this event.
-     * @param async true indicates the event will fire asynchronously, false by default from default
-     *     constructor
+     * @param async  true indicates the event will fire asynchronously, false by default from default
+     *               constructor
      */
     public CustomPlayerEvent(Player player, boolean async) {
         super(async);
@@ -44,4 +47,5 @@ public abstract class CustomPlayerEvent extends CustomEvent {
     public Player getPlayer() {
         return player;
     }
+
 }

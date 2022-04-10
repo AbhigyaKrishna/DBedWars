@@ -64,4 +64,5 @@ public class NBTByteArray extends NBT {
         System.arraycopy(this.array, 0, abyte, 0, this.array.length);
         return new NBTByteArray(abyte);
     }
+
 }

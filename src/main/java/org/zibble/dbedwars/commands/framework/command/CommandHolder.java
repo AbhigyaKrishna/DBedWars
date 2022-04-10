@@ -8,8 +8,6 @@ import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
-import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 

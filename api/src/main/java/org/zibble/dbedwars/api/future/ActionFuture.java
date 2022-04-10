@@ -12,6 +12,19 @@ import java.util.function.Supplier;
 
 public class ActionFuture<T> {
 
+    protected T result = null;
+    protected Throwable throwable;
+    protected boolean completed = false;
+    protected Duration delay;
+    protected SuccessAction<?, ?> successAction;
+
+    public ActionFuture() {
+    }
+    public ActionFuture(T value) {
+        this.result = value;
+        this.completed = true;
+    }
+
     public static <T> ActionFuture<T> supplyAsync(Supplier<? extends T> supplier) {
         return supplyAsync(supplier, null);
     }
@@ -34,20 +47,6 @@ public class ActionFuture<T> {
 
     public static <T> ActionFuture<T> completedFuture(T value) {
         return new ActionFuture<>(value);
-    }
-
-    protected T result = null;
-    protected Throwable throwable;
-    protected boolean completed = false;
-    protected Duration delay;
-    protected SuccessAction<?, ?> successAction;
-
-    public ActionFuture() {
-    }
-
-    public ActionFuture(T value) {
-        this.result = value;
-        this.completed = true;
     }
 
     public void complete(T value) {
@@ -199,16 +198,15 @@ public class ActionFuture<T> {
     static final class ComposeFuture<V> extends CancellableWorkload {
 
         final long start = System.currentTimeMillis();
-        private boolean delayed = false;
-
         ActionFuture<V> dep;
         SuccessAction.ComposeSuccessAction<?, V> fn;
         Duration delay;
+        private boolean delayed = false;
 
         ComposeFuture(ActionFuture<V> dep, SuccessAction<?, ?> fn, Duration delay) {
             this.dep = dep;
             this.fn = (SuccessAction.ComposeSuccessAction<?, V>) fn;
-            this.delay = delay == null ? Duration.zero() : delay;
+            this.delay = delay == null ? Duration.ZERO : delay;
         }
 
         @Override

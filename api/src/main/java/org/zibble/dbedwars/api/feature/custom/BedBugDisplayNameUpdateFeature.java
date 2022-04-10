@@ -12,4 +12,5 @@ public abstract class BedBugDisplayNameUpdateFeature extends BedWarsFeature {
     }
 
     public abstract void start(Silverfish bedBug, ArenaPlayer thrower);
+
 }

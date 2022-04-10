@@ -12,12 +12,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.PlayerBaseEnterEvent;
@@ -161,8 +159,7 @@ public class GameListener extends PluginHandler {
 
         if (((Player) event.getEntity()).getHealth() - event.getFinalDamage() <= 0) {
             event.setCancelled(true);
-            // TODO: 28-03-2022 match death cause
-            player.get().kill(DeathCause.ATTACK);
+            player.get().kill(DeathCause.getCause(event.getCause()));
         }
     }
 
@@ -184,7 +181,7 @@ public class GameListener extends PluginHandler {
     }
 
     @EventHandler
-    public void handlePlayerDamageTag(EntityDamageByEntityEvent event) {
+    public void handlePlayerDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player))
             return;
 
@@ -269,18 +266,6 @@ public class GameListener extends PluginHandler {
                     }
                 }
             });
-        }
-    }
-
-    @EventHandler
-    public void handleInventoryAdd(InventoryPickupItemEvent event) {
-        if (!event.getItem().getWorld().equals(this.arena.getWorld())) return;
-
-        if (NBTUtils.hasNBTData(event.getItem().getItemStack(), "split")) {
-            ItemStack item = NBTUtils.removeNBTData(event.getItem().getItemStack(), "split");
-            event.setCancelled(true);
-            event.getItem().remove();
-            event.getInventory().addItem(item);
         }
     }
 

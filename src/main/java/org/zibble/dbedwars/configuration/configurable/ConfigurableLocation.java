@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.api.util.Initializable;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
 import org.zibble.dbedwars.configuration.framework.Configurable;
 import org.zibble.dbedwars.configuration.util.YamlUtils;
 
@@ -23,12 +23,16 @@ public class ConfigurableLocation extends Location implements Configurable, Init
     public static final String YAW_KEY = "yaw";
     public static final String PITCH_KEY = "pitch";
     public static final String[] CONFIGURABLE_LOCATION_KEYS = {
-        WORLD_UID_KEY, X_KEY, Y_KEY, Z_KEY, YAW_KEY, PITCH_KEY
+            WORLD_UID_KEY, X_KEY, Y_KEY, Z_KEY, YAW_KEY, PITCH_KEY
     };
-    /** Whether {@link #load(ConfigurationSection)} method has been called. */
+    /**
+     * Whether {@link #load(ConfigurationSection)} method has been called.
+     */
     protected boolean initialized;
 
-    /** Constructs a uninitialized {@link ConfigurableLocation}. */
+    /**
+     * Constructs a uninitialized {@link ConfigurableLocation}.
+     */
     public ConfigurableLocation() { // uninitialized
         super(null, 0, 0, 0, 0, 0);
     }
@@ -39,10 +43,10 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * <p>
      *
      * @param world World
-     * @param x X-axis
-     * @param y Y-axis
-     * @param z Z-axis
-     * @param yaw Yaw
+     * @param x     X-axis
+     * @param y     Y-axis
+     * @param z     Z-axis
+     * @param yaw   Yaw
      * @param pitch Pitch
      */
     public ConfigurableLocation(World world, double x, double y, double z, float yaw, float pitch) {
@@ -56,9 +60,9 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * <p>
      *
      * @param world World
-     * @param x X-axis
-     * @param y Y-axis
-     * @param z Z-axis
+     * @param x     X-axis
+     * @param y     Y-axis
+     * @param z     Z-axis
      */
     public ConfigurableLocation(World world, double x, double y, double z) {
         this(world, x, y, z, 0.0F, 0.0F);
@@ -104,7 +108,7 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * <p>
      *
      * @param section {@link ConfigurationSection} where the supposed {@link ConfigurableLocation}
-     *     is stored
+     *                is stored
      * @return true if is
      */
     public static boolean isConfigurableLocation(ConfigurationSection section) {
@@ -176,4 +180,5 @@ public class ConfigurableLocation extends Location implements Configurable, Init
     public ConfigurableLocation clone() {
         return (ConfigurableLocation) super.clone();
     }
+
 }

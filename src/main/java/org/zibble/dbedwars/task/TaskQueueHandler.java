@@ -14,10 +14,8 @@ public class TaskQueueHandler {
 
     public static final int MAX_QUEUING_POOL_CONSTRAIN = 30 * 1000000;
     public static final int DEFAULT_QUEUING_POOL_CONSTRAIN = 30 * 1000000;
-
-    private final ThreadFactory threadFactory;
     protected final Map<Integer, Task> queueingPool;
-
+    private final ThreadFactory threadFactory;
     private int queueID;
 
     public TaskQueueHandler() {
@@ -126,4 +124,5 @@ public class TaskQueueHandler {
         Task task = this.queueingPool.remove(poolID);
         task.cancel();
     }
+
 }

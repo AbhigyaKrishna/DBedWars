@@ -10,11 +10,11 @@ import java.util.concurrent.ThreadFactory;
 
 public class RepeatingThread implements Runnable, Task {
 
-    protected Future<Void> task;
     protected final int id;
-    protected long interval;
     protected final ExecutorService executor;
     protected final Runnable runnable;
+    protected Future<Void> task;
+    protected long interval;
     protected boolean cancelled = false;
 
     public RepeatingThread(int id, long interval, ThreadFactory threadFactory, Runnable runnable) {
@@ -39,7 +39,8 @@ public class RepeatingThread implements Runnable, Task {
 
     @Deprecated
     @Override
-    public void submit(Workload workload) {}
+    public void submit(Workload workload) {
+    }
 
     @Override
     public void cancel() {
@@ -62,23 +63,24 @@ public class RepeatingThread implements Runnable, Task {
     @Override
     public void run() {
         this.task = (Future<Void>) this.executor.submit(
-                                () -> {
-                                    long nextLoop = System.currentTimeMillis() - this.interval;
-                                    while (true) {
-                                        try {
-                                            nextLoop += this.interval;
-                                            long sleep = nextLoop - System.currentTimeMillis();
-                                            if (sleep > interval) sleep = interval;
-                                            if (sleep > 0) Thread.sleep(sleep);
-                                            runnable.run();
-                                        } catch (InterruptedException pluginDisabled) {
-                                            Thread.currentThread().interrupt();
-                                            break;
-                                        } catch (Exception | NoClassDefFoundError e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    this.executor.shutdown();
-                                });
+                () -> {
+                    long nextLoop = System.currentTimeMillis() - this.interval;
+                    while (true) {
+                        try {
+                            nextLoop += this.interval;
+                            long sleep = nextLoop - System.currentTimeMillis();
+                            if (sleep > interval) sleep = interval;
+                            if (sleep > 0) Thread.sleep(sleep);
+                            runnable.run();
+                        } catch (InterruptedException pluginDisabled) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        } catch (Exception | NoClassDefFoundError e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    this.executor.shutdown();
+                });
     }
+
 }

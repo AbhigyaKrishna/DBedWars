@@ -17,4 +17,5 @@ public abstract class SpongePlaceFeature extends BedWarsFeature {
     }
 
     public abstract void onPlace(Block sponge, ArenaPlayer placer);
+
 }

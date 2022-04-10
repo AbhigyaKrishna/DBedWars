@@ -22,6 +22,10 @@ public class PlayerRejoinArenaEvent extends CustomPlayerEventCancellable {
         this.joinMessage = joinMessage;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
+
     public Arena getArena() {
         return arena;
     }
@@ -40,10 +44,6 @@ public class PlayerRejoinArenaEvent extends CustomPlayerEventCancellable {
 
     public void setJoinMessage(Message joinMessage) {
         this.joinMessage = joinMessage;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
     }
 
     @NotNull

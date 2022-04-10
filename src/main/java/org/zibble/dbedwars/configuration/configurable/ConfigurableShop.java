@@ -54,6 +54,15 @@ public class ConfigurableShop implements Loadable {
         return pages;
     }
 
+    @Override
+    public String toString() {
+        return "ConfigurableShop{" +
+                "defaultPage='" + defaultPage + '\'' +
+                ", pages=" + pages +
+                ", commonItems=" + commonItems +
+                '}';
+    }
+
     public static class ConfigurablePage implements Loadable {
 
         @ConfigPath
@@ -164,7 +173,9 @@ public class ConfigurableShop implements Loadable {
             public String getTierGroup() {
                 return tierGroup;
             }
+
         }
+
     }
 
     public static class ConfigurableAttribute implements Loadable {
@@ -242,6 +253,20 @@ public class ConfigurableShop implements Loadable {
 
         public List<String> getCommand() {
             return command;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurableAttribute{" +
+                    "type='" + type + '\'' +
+                    ", pageToChangeTo='" + pageToChangeTo + '\'' +
+                    ", cost='" + cost + '\'' +
+                    ", nextTier='" + nextTier + '\'' +
+                    ", previousTier='" + previousTier + '\'' +
+                    ", downgradeEvent='" + downgradeEvent + '\'' +
+                    ", command=" + command +
+                    ", itemsToGive=" + itemsToGive +
+                    '}';
         }
 
         public static class AttributeItems implements Loadable {
@@ -327,29 +352,9 @@ public class ConfigurableShop implements Loadable {
                         ", autoEquipSlot=" + autoEquipSlot +
                         '}';
             }
+
         }
 
-        @Override
-        public String toString() {
-            return "ConfigurableAttribute{" +
-                    "type='" + type + '\'' +
-                    ", pageToChangeTo='" + pageToChangeTo + '\'' +
-                    ", cost='" + cost + '\'' +
-                    ", nextTier='" + nextTier + '\'' +
-                    ", previousTier='" + previousTier + '\'' +
-                    ", downgradeEvent='" + downgradeEvent + '\'' +
-                    ", command=" + command +
-                    ", itemsToGive=" + itemsToGive +
-                    '}';
-        }
     }
 
-    @Override
-    public String toString() {
-        return "ConfigurableShop{" +
-                "defaultPage='" + defaultPage + '\'' +
-                ", pages=" + pages +
-                ", commonItems=" + commonItems +
-                '}';
-    }
 }

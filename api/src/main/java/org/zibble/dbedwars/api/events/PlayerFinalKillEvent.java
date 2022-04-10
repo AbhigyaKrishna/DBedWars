@@ -41,4 +41,5 @@ public class PlayerFinalKillEvent extends PlayerKillEvent {
                 ", cancelled=" + this.isCancelled() +
                 '}';
     }
+
 }

@@ -2,20 +2,20 @@ package org.zibble.dbedwars.hooks.defaults.hologram;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
 import java.util.*;
 
 public class HologramPageImpl implements HologramPage {
 
-    private final HologramManager manager;
     protected final HologramImpl parent;
+    private final HologramManager manager;
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
@@ -48,7 +48,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Head addNewHeadLine(ItemStack itemStack) {
+    public HologramLine.Head addNewHeadLine(BwItemStack itemStack) {
         HologramLineImpl.Head line = new HologramLineImpl.Head(this.manager, this, itemStack);
         this.lines.add(line);
         this.parent.setHasChangedContentType(true);
@@ -57,7 +57,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.SmallHead addNewSmallHeadLine(ItemStack itemStack) {
+    public HologramLine.SmallHead addNewSmallHeadLine(BwItemStack itemStack) {
         HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this.manager, this, itemStack);
         this.lines.add(line);
         this.parent.setHasChangedContentType(true);
@@ -66,7 +66,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Icon addNewIconLine(ItemStack itemStack) {
+    public HologramLine.Icon addNewIconLine(BwItemStack itemStack) {
         HologramLineImpl.Icon line = new HologramLineImpl.Icon(this.manager, this, itemStack);
         this.lines.add(line);
         this.parent.setHasChangedContentType(true);
@@ -103,7 +103,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Head insertNewHeadLine(int index, ItemStack itemStack) {
+    public HologramLine.Head insertNewHeadLine(int index, BwItemStack itemStack) {
         HologramLineImpl.Head line = new HologramLineImpl.Head(this.manager, this, itemStack);
         this.lines.add(index, line);
         this.parent.setHasChangedContentType(true);
@@ -112,7 +112,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.SmallHead insertNewSmallHeadLine(int index, ItemStack itemStack) {
+    public HologramLine.SmallHead insertNewSmallHeadLine(int index, BwItemStack itemStack) {
         HologramLineImpl.SmallHead line = new HologramLineImpl.SmallHead(this.manager, this, itemStack);
         this.lines.add(index, line);
         this.parent.setHasChangedContentType(true);
@@ -121,7 +121,7 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
-    public HologramLine.Icon insertNewIconLine(int index, ItemStack itemStack) {
+    public HologramLine.Icon insertNewIconLine(int index, BwItemStack itemStack) {
         HologramLineImpl.Icon line = new HologramLineImpl.Icon(this.manager, this, itemStack);
         this.lines.add(index, line);
         this.parent.setHasChangedContentType(true);
@@ -160,4 +160,5 @@ public class HologramPageImpl implements HologramPage {
     public void setLineGap(double lineGap) {
         this.lineGap = lineGap;
     }
+
 }

@@ -4,10 +4,14 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public enum SaveActionType {
 
-    /** Saves the entry normally. */
+    /**
+     * Saves the entry normally.
+     */
     NORMAL,
 
-    /** Saves the entry only if it have not already set. */
+    /**
+     * Saves the entry only if it have not already set.
+     */
     NOT_SET,
 
     /**

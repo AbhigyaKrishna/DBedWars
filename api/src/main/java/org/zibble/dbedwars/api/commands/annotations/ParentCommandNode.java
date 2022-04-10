@@ -12,5 +12,5 @@ public @interface ParentCommandNode {
     String value();
 
     String[] aliases() default {};
-    
+
 }

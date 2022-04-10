@@ -104,4 +104,5 @@ public class ConstructorResolver extends MemberResolver<Constructor> {
     protected NoSuchMethodException notFoundException(String joinedNames) {
         return new NoSuchMethodException("Could not resolve constructor for " + joinedNames + " in class " + this.clazz);
     }
+
 }

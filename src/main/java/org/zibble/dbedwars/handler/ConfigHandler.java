@@ -24,6 +24,7 @@ public class ConfigHandler {
 
     private final DBedwars plugin;
     private final Set<ConfigurableItemSpawner> dropTypes;
+    private final Set<ConfigurableArenaCategory> categories;
     private final Set<ConfigurableArena> arenas;
     private final Set<ConfigurableTrap> traps;
     private final Set<ConfigurableScoreboard> scoreboards;
@@ -35,10 +36,12 @@ public class ConfigHandler {
     private ConfigurableCustomItems customItems;
     private ConfigurableHologram holograms;
     private ConfigurableLocation lobbyLocation;
+    private ConfigurableEvents event;
 
     public ConfigHandler(DBedwars plugin) {
         this.plugin = plugin;
         this.dropTypes = new HashSet<>();
+        this.categories = new HashSet<>();
         this.arenas = new HashSet<>();
         this.traps = new HashSet<>();
         this.scoreboards = new HashSet<>();
@@ -102,12 +105,15 @@ public class ConfigHandler {
         this.loadItemSpawners();
         this.loadTraps();
         this.loadScoreBoards();
+        this.loadShops();
         this.database = new ConfigurableDatabase();
         this.database.load(YamlConfiguration.loadConfiguration(PluginFiles.DATABASE));
         this.customItems = new ConfigurableCustomItems();
         this.customItems.load(YamlConfiguration.loadConfiguration(PluginFiles.CUSTOM_ITEMS));
         this.holograms = new ConfigurableHologram();
         this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
+        this.event = new ConfigurableEvents();
+        this.event.load(YamlConfiguration.loadConfiguration(PluginFiles.EVENT));
 
         if (PluginFiles.Data.LOBBY_SPAWN.exists()) {
             FileConfiguration configuration = YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN);
@@ -131,8 +137,14 @@ public class ConfigHandler {
     }
 
     private void loadArena() {
-        File folder = PluginFiles.Folder.ARENA_DATA_SETTINGS;
-        for (File file : folder.listFiles()) {
+        for (File file : PluginFiles.Folder.CATEGORY.listFiles()) {
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            ConfigurableArenaCategory cfg = new ConfigurableArenaCategory();
+            cfg.load(config);
+            this.categories.add(cfg);
+        }
+
+        for (File file : PluginFiles.Folder.ARENA_DATA_SETTINGS.listFiles()) {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             ConfigurableArena cfg = new ConfigurableArena();
             cfg.load(config);
@@ -209,6 +221,10 @@ public class ConfigHandler {
         return this.dropTypes;
     }
 
+    public Set<ConfigurableArenaCategory> getCategories() {
+        return categories;
+    }
+
     public Set<ConfigurableArena> getArenas() {
         return this.arenas;
     }
@@ -243,6 +259,10 @@ public class ConfigHandler {
 
     public ConfigurableHologram getHolograms() {
         return holograms;
+    }
+
+    public ConfigurableEvents getEvent() {
+        return event;
     }
 
     public ConfigurableLocation getLobbyLocation() {

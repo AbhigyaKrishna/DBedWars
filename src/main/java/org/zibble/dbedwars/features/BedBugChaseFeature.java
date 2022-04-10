@@ -36,4 +36,5 @@ public class BedBugChaseFeature extends org.zibble.dbedwars.api.feature.custom.B
     public boolean isInitialized() {
         return false;
     }
+
 }

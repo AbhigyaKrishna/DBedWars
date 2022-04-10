@@ -46,4 +46,5 @@ public class NBTEnd extends NBT {
     public NBTEnd clone() {
         return this;
     }
+
 }

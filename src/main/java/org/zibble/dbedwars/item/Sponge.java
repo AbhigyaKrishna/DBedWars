@@ -11,7 +11,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.SpongePlaceFeature;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
-import org.zibble.dbedwars.api.util.Acceptor;
+import org.zibble.dbedwars.api.util.function.Acceptor;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
@@ -39,7 +39,8 @@ public class Sponge extends BedWarsActionItem {
 
     @Override
     public void onActionPerform(
-            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+            Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    }
 
     public void onSpongePlace(BlockPlaceEvent event) {
         event.getBlock().setMetadata("isBedwarsSponge", SPONGE_META);

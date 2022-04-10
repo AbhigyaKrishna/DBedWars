@@ -23,4 +23,5 @@ public class ConsoleMember extends MessagingMember
     public ConsoleCommandSender getConsole() {
         return (ConsoleCommandSender) this.getSender();
     }
+
 }

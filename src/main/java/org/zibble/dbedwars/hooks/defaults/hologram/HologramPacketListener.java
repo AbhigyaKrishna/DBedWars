@@ -8,7 +8,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
-import org.zibble.dbedwars.api.util.ClickAction;
+import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.ClickType;
 
 import java.util.UUID;
@@ -36,7 +36,8 @@ public class HologramPacketListener extends PacketListenerAbstract {
                     == packet.getEntityId()) return;
             for (HologramImpl hologram : this.manager.getHolograms().values()) {
                 if (!hologram.isClickRegistered()) continue;
-                if (!hologram.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName())) continue;
+                if (!hologram.getLocation().getWorld().getName().equals(player.getLocation().getWorld().getName()))
+                    continue;
                 Player clicker = (Player) event.getPlayer();
                 HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().getOrDefault(clicker.getUniqueId(), 0));
                 boolean hologramMatch = false;
@@ -68,7 +69,6 @@ public class HologramPacketListener extends PacketListenerAbstract {
         else
             return player.isSneaking() ? ClickType.SHIFT_RIGHT_CLICK : ClickType.RIGHT_CLICK;
     }
-
 
 
 }

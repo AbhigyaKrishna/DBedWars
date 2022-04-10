@@ -1,0 +1,12 @@
+order:
+  - 'diamond-2'
+
+events:
+  diamond-2:
+    name: 'Diamond 2'
+    on-start:
+      - ''
+    per-tick:
+      - ''
+    on-end:
+      - '[UPGRADE-SPAWNER] diamond 2'

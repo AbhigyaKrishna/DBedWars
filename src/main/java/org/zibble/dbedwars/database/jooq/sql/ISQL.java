@@ -11,14 +11,14 @@ public interface ISQL {
 
     class Stage<T> {
 
-        public static <T> Stage<T> of(Supplier<T> supplier) {
-            return new Stage<>(supplier);
-        }
-
         private final Supplier<T> supplier;
 
         private Stage(Supplier<T> supplier) {
             this.supplier = supplier;
+        }
+
+        public static <T> Stage<T> of(Supplier<T> supplier) {
+            return new Stage<>(supplier);
         }
 
         public ActionFuture<T> executeAsync() {

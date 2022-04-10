@@ -9,7 +9,7 @@ import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.plugin.PluginHandler;
 import org.zibble.dbedwars.api.util.EventHandler;
 import org.zibble.dbedwars.api.util.EventUtils;
-import org.zibble.dbedwars.api.util.Initializable;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
 import org.zibble.dbedwars.api.util.item.ActionItem;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.api.util.key.Key;

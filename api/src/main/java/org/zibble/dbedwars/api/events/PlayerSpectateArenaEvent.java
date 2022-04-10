@@ -19,6 +19,10 @@ public class PlayerSpectateArenaEvent extends CustomPlayerEventCancellable {
         this.location = location;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
+
     public Arena getArena() {
         return arena;
     }
@@ -29,10 +33,6 @@ public class PlayerSpectateArenaEvent extends CustomPlayerEventCancellable {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
     }
 
     @NotNull

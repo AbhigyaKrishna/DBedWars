@@ -10,14 +10,13 @@ import java.util.Map;
 
 public class PopupTowerStructure implements DirectionalStructure {
 
+    private final XMaterial baseMat;
     private Map<Block, XMaterial> northBlocks;
     private Map<Block, XMaterial> westBlocks;
     private Map<Block, XMaterial> eastBlocks;
     private Map<Block, XMaterial> southBlocks;
-
     private int blocksPerSecond;
     private Block centre;
-    private final XMaterial baseMat;
 
     public PopupTowerStructure(Block centre, XMaterial baseMat) {
 
@@ -107,6 +106,19 @@ public class PopupTowerStructure implements DirectionalStructure {
 
     private void initWestBlocks() {
         this.westBlocks = PopupTowerBlocks.getWestBlocks(this.centre, this.baseMat);
+    }
+
+    @Override
+    public String toString() {
+        return "PopupTowerStructure{" +
+                "northBlocks=" + northBlocks +
+                ", westBlocks=" + westBlocks +
+                ", eastBlocks=" + eastBlocks +
+                ", southBlocks=" + southBlocks +
+                ", blocksPerSecond=" + blocksPerSecond +
+                ", centre=" + centre +
+                ", baseMat=" + baseMat +
+                '}';
     }
 
     private static class PopupTowerBlocks {
@@ -605,18 +617,7 @@ public class PopupTowerStructure implements DirectionalStructure {
             blocks.put(layerCentre.getRelative(-2, 0, 2), material);
             return blocks;
         }
+
     }
 
-    @Override
-    public String toString() {
-        return "PopupTowerStructure{" +
-                "northBlocks=" + northBlocks +
-                ", westBlocks=" + westBlocks +
-                ", eastBlocks=" + eastBlocks +
-                ", southBlocks=" + southBlocks +
-                ", blocksPerSecond=" + blocksPerSecond +
-                ", centre=" + centre +
-                ", baseMat=" + baseMat +
-                '}';
-    }
 }

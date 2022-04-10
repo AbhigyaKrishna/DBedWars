@@ -597,8 +597,7 @@ public enum HologramEntityType {
         public float height(Version version) {
             return 0.8F;
         }
-    }
-    ;
+    };
 
     private final float height;
 

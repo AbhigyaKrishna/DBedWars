@@ -1,11 +1,13 @@
 package org.zibble.dbedwars.database.hikaricp;
 
 import com.zaxxer.hikari.HikariConfig;
-import org.zibble.dbedwars.api.util.Builder;
+import org.zibble.dbedwars.api.util.mixin.Builder;
 
 import java.util.Properties;
 
-/** Class for creating Hikari client. */
+/**
+ * Class for creating Hikari client.
+ */
 public class HikariConfigBuilder implements Builder<HikariConfig> {
 
     private final HikariConfig config;
@@ -19,7 +21,7 @@ public class HikariConfigBuilder implements Builder<HikariConfig> {
      *
      * <p>
      *
-     * @param key The name of property
+     * @param key   The name of property
      * @param value Value of the property
      * @return This Object, for chaining
      * @see HikariConfig#addDataSourceProperty(String, Object)

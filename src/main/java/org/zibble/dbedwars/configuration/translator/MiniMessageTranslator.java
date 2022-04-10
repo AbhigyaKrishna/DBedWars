@@ -3,9 +3,9 @@ package org.zibble.dbedwars.configuration.translator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.zibble.dbedwars.api.adventure.MiniMessageUtils;
-import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 
 import java.util.Collection;
 import java.util.List;
@@ -52,4 +52,5 @@ public class MiniMessageTranslator implements ConfigTranslator {
     public Message asMessage(String text, PlaceholderEntry... entries) {
         return AdventureMessage.from(text, entries);
     }
+
 }

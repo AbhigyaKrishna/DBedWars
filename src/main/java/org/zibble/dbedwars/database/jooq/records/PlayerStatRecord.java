@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public class PlayerStatRecord extends UpdatableRecordImpl<PlayerStatRecord> {
 
+    public PlayerStatRecord() {
+        super(PlayerStatTable.PLAYER_STAT);
+    }
+
     public static PlayerStatRecord newRecord(UUID uuid, String name) {
         PlayerStatTable table = PlayerStatTable.PLAYER_STAT;
         PlayerStatRecord record = new PlayerStatRecord();
@@ -47,10 +51,6 @@ public class PlayerStatRecord extends UpdatableRecordImpl<PlayerStatRecord> {
         record.set(table.WINS, data.getWins());
         record.set(table.PLAYED, data.getPlayed());
         return record;
-    }
-
-    public PlayerStatRecord() {
-        super(PlayerStatTable.PLAYER_STAT);
     }
 
     public PlayerStats toDataCache() {

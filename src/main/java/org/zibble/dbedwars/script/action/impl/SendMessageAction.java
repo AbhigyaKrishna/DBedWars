@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.script.action.impl;
 
-import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 public class SendMessageAction implements Action<AbstractMessaging> {
@@ -27,4 +27,5 @@ public class SendMessageAction implements Action<AbstractMessaging> {
     public Message getMessage() {
         return message;
     }
+
 }

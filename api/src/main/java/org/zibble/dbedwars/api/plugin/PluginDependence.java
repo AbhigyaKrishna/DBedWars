@@ -21,7 +21,9 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
 
     private static PluginDependence instance;
 
-    /** The name of the depending plugin */
+    /**
+     * The name of the depending plugin
+     */
     protected final String name;
 
     protected boolean enabled;
@@ -38,6 +40,10 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
         instance = this;
         this.name = name;
         this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
+    }
+
+    public static <T extends PluginDependence> T get() {
+        return (T) instance;
     }
 
     public void disable() {
@@ -66,7 +72,4 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
         return this.enabled;
     }
 
-    public static <T extends PluginDependence> T get() {
-        return (T) instance;
-    }
 }

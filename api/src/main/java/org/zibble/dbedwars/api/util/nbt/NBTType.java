@@ -28,6 +28,13 @@ public class NBTType<T extends NBT> {
         this.id = id;
     }
 
+    public static NBTType<?> fromId(int id) {
+        if (id < 0 || id >= VALUES.length) {
+            return null;
+        }
+        return VALUES[id];
+    }
+
     public int getId() {
         return this.id;
     }
@@ -52,13 +59,6 @@ public class NBTType<T extends NBT> {
     @Override
     public String toString() {
         return this.clazz.getSimpleName();
-    }
-
-    public static NBTType<?> fromId(int id) {
-        if (id < 0 || id >= VALUES.length) {
-            return null;
-        }
-        return VALUES[id];
     }
 
 }

@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.events;
 
-import com.pepedevs.radium.events.CustomEventCancellable;
+
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.game.Arena;
@@ -76,4 +76,5 @@ public class SpawnerDropItemEvent extends CustomEventCancellable {
                 ", cancelled=" + cancelled +
                 '}';
     }
+
 }

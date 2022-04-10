@@ -153,7 +153,8 @@ public class NBTItemImpl implements NBTItem {
                 e.printStackTrace();
             }
 
-            try (ByteArrayInputStream in = new ByteArrayInputStream(bytes)) {;
+            try (ByteArrayInputStream in = new ByteArrayInputStream(bytes)) {
+                ;
                 NBTTagCompound compound = NBTCompressedStreamTools.a(in);
                 this.nbt = compound.get("nbt");
             } catch (IOException e) {
@@ -183,7 +184,8 @@ public class NBTItemImpl implements NBTItem {
                 e.printStackTrace();
             }
 
-            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))))) {;
+            try (DataInputStream in = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))))) {
+                ;
                 NBTCompound compound = new NBTCompound(in);
                 return compound.getTagOrNull("nbt");
             } catch (IOException e) {
@@ -192,6 +194,7 @@ public class NBTItemImpl implements NBTItem {
 
             return null;
         }
+
     }
 
     public static class NbtTagCompoundImpl extends NbtImpl implements INbtCompound {

@@ -35,4 +35,5 @@ public class DreamDefenderDisplayNameUpdateFeature extends org.zibble.dbedwars.a
     public boolean isInitialized() {
         return false;
     }
+
 }

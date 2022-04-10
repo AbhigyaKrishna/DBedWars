@@ -76,4 +76,5 @@ public class BedwarsCommand extends BaseCommand {
         }
         player.sendMessage("COULD NOT FIND!!!");
     }
+
 }

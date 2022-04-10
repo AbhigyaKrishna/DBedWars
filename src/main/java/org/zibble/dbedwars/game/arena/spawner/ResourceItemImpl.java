@@ -19,12 +19,12 @@ public class ResourceItemImpl implements ResourceItem {
 
     private Item itemEntity;
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public ResourceItemImpl(BwItemStack item) {
         this.item = item;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ResourceItemImpl implements ResourceItem {
         this.splittable = splittable;
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<ResourceItemImpl> {
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<ResourceItemImpl> {
 
         private BwItemStack item;
         private boolean mergeable = true;

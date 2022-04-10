@@ -19,7 +19,7 @@ public class VIPHideHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             hookAPI = (VIPHide) plugin;
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into VIPHide!"));
         }
@@ -45,4 +45,5 @@ public class VIPHideHook extends PluginDependence implements NickNameHook {
     public String getNickName(@NotNull Player player) {
         return isPlayerNicked(player) ? this.hookAPI.getName(player) : getRealName(player);
     }
+
 }

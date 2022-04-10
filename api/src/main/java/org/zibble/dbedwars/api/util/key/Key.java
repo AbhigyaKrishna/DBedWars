@@ -12,7 +12,7 @@ public class Key implements Cloneable {
         return new Key(key);
     }
 
-    public Object get() {
+    public String get() {
         return key;
     }
 

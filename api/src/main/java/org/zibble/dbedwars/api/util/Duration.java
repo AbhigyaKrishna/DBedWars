@@ -1,9 +1,20 @@
 package org.zibble.dbedwars.api.util;
 
+import java.time.DateTimeException;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.concurrent.TimeUnit;
 
-/** A duration that can be converted to milliseconds, seconds, minutes, hours or days. */
+/**
+ * A duration that can be converted to milliseconds, seconds, minutes, hours or days.
+ */
 public class Duration {
+
+    /**
+     * Represents the zero in the {@link Duration}
+     */
+    public static final Duration ZERO = new Duration(0L, TimeUnit.NANOSECONDS);
 
     protected long duration;
     protected TimeUnit unit;
@@ -14,7 +25,7 @@ public class Duration {
      * <p>
      *
      * @param duration Duration
-     * @param unit Time unit
+     * @param unit     Time unit
      */
     public Duration(long duration, TimeUnit unit) {
         if (duration <= 0L || unit == null) {
@@ -37,9 +48,24 @@ public class Duration {
         this(millis, TimeUnit.MILLISECONDS);
     }
 
-    /** Represents the zero in the {@link Duration} */
-    public static Duration zero() {
-        return new Duration(0L, TimeUnit.NANOSECONDS);
+    public static Duration between(Temporal startInclusive, Temporal endExclusive) {
+        try {
+            return ofNanos(startInclusive.until(endExclusive, ChronoUnit.NANOS));
+        } catch (DateTimeException | ArithmeticException ex) {
+            long secs = startInclusive.until(endExclusive, ChronoUnit.SECONDS);
+            long nanos;
+            try {
+                nanos = endExclusive.getLong(ChronoField.NANO_OF_SECOND) - startInclusive.getLong(ChronoField.NANO_OF_SECOND);
+                if (secs > 0 && nanos < 0) {
+                    secs++;
+                } else if (secs < 0 && nanos > 0) {
+                    secs--;
+                }
+            } catch (DateTimeException ex2) {
+                nanos = 0;
+            }
+            return ofNanos(TimeUnit.SECONDS.toNanos(secs) + nanos);
+        }
     }
 
     /**
@@ -47,7 +73,7 @@ public class Duration {
      *
      * <p>
      *
-     * @param unit Time unit of the duration
+     * @param unit     Time unit of the duration
      * @param duration the time
      * @return {@link Duration} in the given unit
      */
@@ -278,7 +304,7 @@ public class Duration {
      * @return true if duration is zero, else false
      */
     public boolean isZero() {
-        return Duration.zero().equals(this);
+        return Duration.ZERO.equals(this);
     }
 
     @Override
@@ -302,4 +328,5 @@ public class Duration {
             return false;
         }
     }
+
 }

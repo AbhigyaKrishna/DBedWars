@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/** Class for dealing with {@link YamlConfiguration} */
+/**
+ * Class for dealing with {@link YamlConfiguration}
+ */
 public class YamlUtils {
 
     /**
@@ -25,8 +27,8 @@ public class YamlUtils {
      * <p>
      *
      * @param section Configuration section to set
-     * @param path Path of the object to set
-     * @param value Value to set the path to
+     * @param path    Path of the object to set
+     * @param value   Value to set the path to
      * @return true if set successfully, else false
      */
     public static boolean setNotSet(ConfigurationSection section, String path, Object value) {
@@ -53,8 +55,8 @@ public class YamlUtils {
      * <p>
      *
      * @param section Configuration section to set
-     * @param path Path of the object to set
-     * @param value Value to set the path to
+     * @param path    Path of the object to set
+     * @param value   Value to set the path to
      * @return true if set successfully, else false
      */
     public static boolean setNotEqual(ConfigurationSection section, String path, Object value) {
@@ -76,7 +78,7 @@ public class YamlUtils {
      * <p>
      *
      * @param section Section at which the new section will be created
-     * @param name Name for the section
+     * @param name    Name for the section
      * @return Newly created section, or the already existing section
      */
     public static ConfigurationSection createNotExisting(
@@ -109,9 +111,9 @@ public class YamlUtils {
      *
      * <p>
      *
-     * @param key Key that contains the separator to replace
+     * @param key            Key that contains the separator to replace
      * @param path_separator Path separator to replace
-     * @param alt_char Path separator to use instead the current one
+     * @param alt_char       Path separator to use instead the current one
      * @return Key containing the new path separator
      */
     public static String alternatePathSeparator(String key, char path_separator, char alt_char) {
@@ -123,11 +125,12 @@ public class YamlUtils {
      *
      * <p>
      *
-     * @param key Key that contains the common separator to replace
+     * @param key      Key that contains the common separator to replace
      * @param alt_char Path separator to use instead the common one
      * @return Key containing the new path separator
      */
     public static String alternatePathSeparator(String key, char alt_char) {
         return alternatePathSeparator(key, '.', alt_char);
     }
+
 }

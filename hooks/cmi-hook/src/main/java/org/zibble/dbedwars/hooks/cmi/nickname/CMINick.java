@@ -12,7 +12,7 @@ public class CMINick implements NickNameHook {
     public boolean isPlayerNicked(@NotNull Player player) {
         final CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
 
-        if(cmiUser == null)
+        if (cmiUser == null)
             return false;
 
         return cmiUser.getNickName() != null || !cmiUser.getNickName().equals(player.getName());
@@ -22,27 +22,27 @@ public class CMINick implements NickNameHook {
     public void nick(@NotNull Player player, @NotNull String nick) {
         final CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
 
-        if(cmiUser == null)
+        if (cmiUser == null)
             return;
 
-        cmiUser.setNickName(nick,true);
+        cmiUser.setNickName(nick, true);
     }
 
     @Override
     public void unNick(@NotNull Player player) {
         final CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
 
-        if(cmiUser == null)
+        if (cmiUser == null)
             return;
 
-        cmiUser.setNickName(null,false);
+        cmiUser.setNickName(null, false);
     }
 
     @Override
     public String getNickName(@NotNull Player player) {
         final CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
 
-        if(cmiUser == null)
+        if (cmiUser == null)
             return getRealName(player);
         return isPlayerNicked(player) ? cmiUser.getNickName() : getRealName(player);
     }

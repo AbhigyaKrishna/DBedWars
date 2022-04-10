@@ -72,7 +72,8 @@ public class CommandRegistryImpl implements CommandRegistry {
         TreeSet<Class<?>> subNodes = new TreeSet<>((a, b) -> {
             SubCommandNode o1 = a.getAnnotation(SubCommandNode.class);
             SubCommandNode o2 = b.getAnnotation(SubCommandNode.class);
-            if (o1 == null || o2 == null) throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
+            if (o1 == null || o2 == null)
+                throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
             String[] aRoute = o1.parent().split("\\.");
             String[] bRoute = o2.parent().split("\\.");
             return Integer.compare(aRoute.length, bRoute.length);
@@ -134,7 +135,8 @@ public class CommandRegistryImpl implements CommandRegistry {
     }
 
     private AbstractCommandNode createObject(Class<?> clazz) {
-        constructor: for (Constructor<?> constructor : clazz.getConstructors()) {
+        constructor:
+        for (Constructor<?> constructor : clazz.getConstructors()) {
             ConstructorWrapper<?> wrapper = new ConstructorWrapper<>(constructor);
             Class<?>[] parameterTypes = wrapper.getParameterTypes();
             for (Class<?> type : parameterTypes) {
@@ -144,7 +146,7 @@ public class CommandRegistryImpl implements CommandRegistry {
             for (int i = 0; i < parameters.length; i++) {
                 parameters[i] = this.availableParameters.get(parameterTypes[i]);
             }
-            return  (AbstractCommandNode) wrapper.newInstance(parameters);
+            return (AbstractCommandNode) wrapper.newInstance(parameters);
         }
 
         return null;

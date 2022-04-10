@@ -1,4 +1,3 @@
-
 dependencies {
     implementation project(':api')
     compileOnly 'me.BukkitPVP:VIPHide:2.0.4'

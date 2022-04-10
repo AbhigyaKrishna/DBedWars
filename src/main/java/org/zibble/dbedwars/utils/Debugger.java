@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class Debugger {
 
-    private static boolean ENABLED;
     private static final Logger LOGGER = Logger.getLogger("DBedWars");
+    private static boolean ENABLED;
 
     public static void debug(Object object) {
         debug(object.toString());
@@ -83,4 +83,5 @@ public class Debugger {
     public static void setEnabled(boolean enabled) {
         ENABLED = enabled;
     }
+
 }

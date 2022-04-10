@@ -91,5 +91,6 @@ public class SkinDataImpl extends SkinData {
     protected void setHatEnabled(boolean hatEnabled) {
         this.hatEnabled = hatEnabled;
     }
+
 }
 

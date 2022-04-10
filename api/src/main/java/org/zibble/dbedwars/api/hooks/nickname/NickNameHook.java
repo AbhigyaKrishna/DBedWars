@@ -14,7 +14,8 @@ public interface NickNameHook extends Hook {
 
     String getNickName(@NotNull final Player player);
 
-    default String getRealName(@NotNull final Player player){
+    default String getRealName(@NotNull final Player player) {
         return player.getName();
     }
+
 }

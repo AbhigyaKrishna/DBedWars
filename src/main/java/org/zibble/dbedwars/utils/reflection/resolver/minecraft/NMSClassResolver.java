@@ -15,4 +15,5 @@ public class NMSClassResolver extends ClassResolver {
         }
         return super.resolve(names);
     }
+
 }

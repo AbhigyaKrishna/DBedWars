@@ -11,4 +11,5 @@ public interface VanishHook extends Hook {
     void vanish(@NotNull Player player);
 
     void unVanish(@NotNull Player player);
+
 }

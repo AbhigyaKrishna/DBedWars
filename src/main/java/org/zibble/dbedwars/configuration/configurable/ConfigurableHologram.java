@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
-import org.zibble.dbedwars.task.implementations.HologramRotateTask;
+import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,14 +48,20 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
                 .build();
     }
 
+    public enum HologramConfigMode {
+        ADVANCED, BABY;
+    }
+
     public interface HologramConfig extends Loadable, PropertySerializable {
 
         HologramConfigMode getMode();
 
-    }
+        List<String> getContent();
 
-    public enum HologramConfigMode {
-        ADVANCED, BABY;
+        long getUpdateDelay();
+
+        HologramRotateTask.TaskEndAction getAnimationEndTask();
+
     }
 
     public static class ConfigurableAdvancedHologram implements HologramConfig {
@@ -64,11 +70,17 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         private HologramRotateTask.TaskEndAction animationEndTask;
 
         @ConfigPath
-        private String text;
+        private long updateDelay;
+
+        @ConfigPath
+        private List<String> content;
 
         @ConfigPath("keyframes")
         private List<String> frames;
-        
+
+        @ConfigPath
+        private short frameTickDelay;
+
         @Override
         public void load(ConfigurationSection section) {
             this.loadEntries(section);
@@ -83,6 +95,17 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return HologramConfigMode.ADVANCED;
         }
 
+        @Override
+        public List<String> getContent() {
+            return this.content;
+        }
+
+        @Override
+        public long getUpdateDelay() {
+            return this.updateDelay;
+        }
+
+        @Override
         public HologramRotateTask.TaskEndAction getAnimationEndTask() {
             return animationEndTask;
         }
@@ -91,12 +114,16 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return frames;
         }
 
+        public short getFrameTickDelay() {
+            return frameTickDelay;
+        }
+
         @Override
         public NamedProperties toProperties() {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
                     .add("animation-end", animationEndTask)
-                    .add("text", text)
+                    .add("content", content)
                     .add("frames", frames)
                     .build();
         }
@@ -109,15 +136,18 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
         private HologramRotateTask.TaskEndAction animationEndTask;
 
         @ConfigPath
-        private String text;
+        private long updateDelay;
+
+        @ConfigPath
+        private List<String> content;
 
         @Defaults.Double(540)
         @ConfigPath("rotation.degree-rotated-per-cycle")
-        private double degreeRotatedPerCycle;
+        private float degreeRotatedPerCycle;
 
         @Defaults.Double(0.5)
         @ConfigPath("rotation.vertical-bobbing-per-cycle")
-        private double verticalDisplacement;
+        private float verticalDisplacement;
 
         @Defaults.Integer(60)
         @ConfigPath("rotation.ticks-per-animation-cycle")
@@ -142,6 +172,17 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return HologramConfigMode.BABY;
         }
 
+        @Override
+        public List<String> getContent() {
+            return this.content;
+        }
+
+        @Override
+        public long getUpdateDelay() {
+            return this.updateDelay;
+        }
+
+        @Override
         public HologramRotateTask.TaskEndAction getAnimationEndTask() {
             return animationEndTask;
         }
@@ -150,11 +191,11 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return slowAtEndEnabled;
         }
 
-        public double getDegreeRotatedPerCycle() {
+        public float getDegreeRotatedPerCycle() {
             return degreeRotatedPerCycle;
         }
 
-        public double getVerticalDisplacement() {
+        public float getVerticalDisplacement() {
             return verticalDisplacement;
         }
 
@@ -167,7 +208,7 @@ public class ConfigurableHologram implements Loadable, PropertySerializable {
             return NamedProperties.builder()
                     .add("mode", this.getMode())
                     .add("animation-end", animationEndTask)
-                    .add("text", text)
+                    .add("content", content)
                     .add("degreeRotatedPerCycle", degreeRotatedPerCycle)
                     .add("verticalBobbingPerCycle", verticalDisplacement)
                     .add("ticksPerAnimationCycle", ticksPerAnimationCycle)

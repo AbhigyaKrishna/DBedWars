@@ -11,15 +11,15 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public abstract class DataWriter <T> {
+public abstract class DataWriter<T> {
 
     protected T data;
 
-    public DataWriter(T data){
+    public DataWriter(T data) {
         this.data = data;
     }
 
-    public T getData(){
+    public T getData() {
         return data;
     }
 

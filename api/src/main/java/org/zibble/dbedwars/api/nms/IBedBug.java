@@ -13,4 +13,5 @@ public interface IBedBug {
     IBedBug setChaseRadius(float radius);
 
     Silverfish getSilverFish();
+
 }

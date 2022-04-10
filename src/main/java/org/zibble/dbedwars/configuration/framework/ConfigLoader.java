@@ -3,10 +3,10 @@ package org.zibble.dbedwars.configuration.framework;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import org.bukkit.configuration.ConfigurationSection;
+import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
-import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.utils.reflection.general.FieldReflection;
 import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
 import org.zibble.dbedwars.utils.reflection.resolver.MethodResolver;
@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 public interface ConfigLoader<T> {
 
     Set<ConfigLoader<?>> LOADERS = new HashSet<>();
-    
+
     ConfigLoader<Character> CHAR_LOADER = declare(DataType.CHARACTER::isType, (field, value) -> ((String) value).charAt(0));
     ConfigLoader<Integer> INT_LOADER = declare(DataType.INTEGER::isType, (field, value) -> (int) value);
     ConfigLoader<Long> LONG_LOADER = declare(DataType.LONG::isType, (field, value) -> (long) value);
@@ -98,7 +98,7 @@ public interface ConfigLoader<T> {
         }
         return multimap;
     });
-    
+
     static <T> ConfigLoader<T> declare(Class<T> clazz, BiFunction<FieldWrapper, Object, ? extends T> encoder) {
         ConfigLoader<T> loader = new ConfigLoader<T>() {
             @Override
@@ -177,7 +177,7 @@ public interface ConfigLoader<T> {
     }
 
     boolean isAssignable(Class<?> clazz);
-    
+
     T load(FieldWrapper field, Object object);
 
     default void write(FieldWrapper field, Object loadable, Object value) {

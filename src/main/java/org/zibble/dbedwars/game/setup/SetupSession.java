@@ -32,7 +32,7 @@ import java.util.Map;
 public class SetupSession {
 
     private static final Messaging MESSAGING = Messaging.get();
-    
+
     private static final Key WAITING_LOCATION = Key.of("waiting_loc");
     private static final Key SPECTATOR_LOCATION = Key.of("spectator_loc");
 
@@ -334,10 +334,10 @@ public class SetupSession {
 
     protected static class TeamTracker<T> {
 
-        private T bed;
-        private T spawn;
         private final List<T> spawners = new ArrayList<>();
         private final List<T> shops = new ArrayList<>();
+        private T bed;
+        private T spawn;
 
         public T getBed() {
             return bed;

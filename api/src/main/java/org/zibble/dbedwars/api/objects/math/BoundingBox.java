@@ -12,32 +12,17 @@ import java.util.Set;
  * Encapsulates an axis aligned bounding box represented by a minimum and a maximum Vector.
  * Additionally, you can query for the bounding box's center, dimensions and corner points.
  */
-public class BoundingBox implements Cloneable {
+public class BoundingBox {
 
-    private static final BoundingBox ZERO = new BoundingBox(new Vector(0D, 0D, 0D), new Vector(0D, 0D, 0D));
-    private static final BoundingBox BLOCK = new BoundingBox(new Vector(0D, 0D, 0D), new Vector(1D, 1D, 1D));
-    private static final BoundingBox INFINITY = new BoundingBox(
+    public static final BoundingBox ZERO = new BoundingBox(new Vector(0D, 0D, 0D), new Vector(0D, 0D, 0D));
+    public static final BoundingBox BLOCK = new BoundingBox(new Vector(0D, 0D, 0D), new Vector(1D, 1D, 1D));
+    public static final BoundingBox INFINITY = new BoundingBox(
             new Vector(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY),
             new Vector(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY));
-
-    public static BoundingBox zero() {
-        return ZERO.clone();
-    }
-
-    public static BoundingBox block() {
-        return BLOCK.clone();
-    }
-
-    public static BoundingBox infinity() {
-        return INFINITY.clone();
-    }
-
     protected final Vector minimum;
     protected final Vector maximum;
-
     protected final Vector center;
     protected final Vector dimensions;
-
     /**
      * Constructs the new bounding box using the provided minimum and maximum vector.
      *
@@ -87,7 +72,6 @@ public class BoundingBox implements Cloneable {
     public BoundingBox(double minimum_x, double minimum_y, double minimum_z, double maximum_x, double maximum_y, double maximum_z) {
         this(new Vector(minimum_x, minimum_y, minimum_z), new Vector(maximum_x, maximum_y, maximum_z));
     }
-
     /**
      * Constructs the new bounding box incorporating the provided points to calculate the minimum
      * and maximum.
@@ -97,7 +81,7 @@ public class BoundingBox implements Cloneable {
      * @param points the points to incorporate.
      */
     public BoundingBox(Vector... points) {
-        BoundingBox temp = infinity();
+        BoundingBox temp = INFINITY;
         for (Vector point : points) {
             temp = temp.extend(point);
         }
@@ -524,11 +508,6 @@ public class BoundingBox implements Cloneable {
         }
 
         return this.center.equals(other.center) && this.dimensions.equals(other.dimensions);
-    }
-
-    @Override
-    public BoundingBox clone() {
-        return new BoundingBox(this.minimum.clone(), this.maximum.clone());
     }
 
 }

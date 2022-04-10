@@ -20,6 +20,10 @@ public interface ArenaDataHolder {
 
     void setCustomName(Message customName);
 
+    ArenaCategory getCategory();
+
+    void setCategory(ArenaCategory category);
+
     int getMaxPlayersPerTeam();
 
     void setMaxPlayersPerTeam(int maxPlayersPerTeam);

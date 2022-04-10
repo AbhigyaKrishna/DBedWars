@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.task;
 
-import org.zibble.dbedwars.api.util.Cancellable;
+import org.zibble.dbedwars.api.util.mixin.Cancellable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -22,12 +22,13 @@ public abstract class CancellableWorkload implements Workload, Cancellable {
     }
 
     @Override
+    public boolean isCancelled() {
+        return this.cancelled.get();
+    }
+
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled.set(cancelled);
     }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled.get();
-    }
 }

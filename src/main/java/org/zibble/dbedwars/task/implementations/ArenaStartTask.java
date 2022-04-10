@@ -12,16 +12,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArenaStartTask extends CancellableWorkload {
 
-    private static final int[] TRIGGERS = new int[] {1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
-
+    private static final int[] TRIGGERS = new int[]{1, 2, 3, 4, 5, 10, 20, 30, 45, 60, 90, 120};
+    private final Arena arena;
+    private final AtomicInteger countdown;
     // TODO Message config
     private final Message TITLE_MESSAGE = AdventureMessage.from("<yellow><countdown>",
             PlaceholderEntry.symbol("countdown", () -> String.valueOf(ArenaStartTask.this.countdown.get())));
     private final Message TRIGGER_MESSAGE = AdventureMessage.from("<grey>Match starting in <red><countdown> <grey>seconds.",
             PlaceholderEntry.symbol("countdown", () -> String.valueOf(ArenaStartTask.this.countdown.get())));
-
-    private final Arena arena;
-    private final AtomicInteger countdown;
     private boolean started;
 
     private long lastExecute;
@@ -88,4 +86,5 @@ public class ArenaStartTask extends CancellableWorkload {
             this.arena.sendMessage(TRIGGER_MESSAGE);
         }
     }
+
 }

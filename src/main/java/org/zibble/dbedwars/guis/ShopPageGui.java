@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.guis;
 
-import org.zibble.dbedwars.game.arena.view.ShopItem;
-import org.zibble.dbedwars.game.arena.view.ShopView;
-import org.zibble.dbedwars.guis.component.GuiComponent;
+import org.zibble.dbedwars.game.arena.view.ShopItemImpl;
+import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
+import org.zibble.dbedwars.api.guis.component.GuiComponent;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
@@ -41,11 +41,11 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
         return super.item(c, item, clickAction);
     }
 
-    public ShopPageGui shopItem(char c, ShopItem item, ShopView shopView) {
+    public ShopPageGui shopItem(char c, ShopItemImpl item, ShopViewImpl shopView) {
         return super.item(c, item.asMenuItem(shopView));
     }
 
-    public ShopPageGui shopItem(char c, Supplier<ShopItem> item, ShopView shopView) {
+    public ShopPageGui shopItem(char c, Supplier<ShopItemImpl> item, ShopViewImpl shopView) {
         return this.shopItem(c, item.get(), shopView);
     }
 
@@ -64,7 +64,7 @@ public class ShopPageGui extends GuiComponent<ChestMenu, ShopPageGui> {
         return super.overrideSlot(slot, item);
     }
 
-    public final ShopPageGui overrideSlot(int slot, ShopItem item, ShopView shopView) {
+    public final ShopPageGui overrideSlot(int slot, ShopItemImpl item, ShopViewImpl shopView) {
         return super.overrideSlot(slot, item.asMenuItem(shopView));
     }
 

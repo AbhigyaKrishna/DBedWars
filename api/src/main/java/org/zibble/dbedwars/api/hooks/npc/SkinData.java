@@ -39,4 +39,5 @@ public abstract class SkinData {
         RIGHT_PANTS,
         HAT_ENABLED
     }
+
 }

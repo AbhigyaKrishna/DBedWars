@@ -19,4 +19,5 @@ public interface WorldAdaptor extends Hook {
     void unloadWorld(String worldName, boolean save);
 
     void deleteWorld(String worldName);
+
 }

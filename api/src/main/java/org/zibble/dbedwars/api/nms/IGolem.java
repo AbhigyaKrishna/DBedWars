@@ -9,4 +9,5 @@ public interface IGolem {
     IGolem initTargets(double reachModifier);
 
     IGolem setChaseRadius(float radius);
+
 }

@@ -16,6 +16,12 @@ public class SoundVP implements Cloneable {
     private float volume;
     private float pitch;
 
+    private SoundVP(XSound sound, float volume, float pitch) {
+        this.sound = sound;
+        this.volume = volume;
+        this.pitch = pitch;
+    }
+
     public static SoundVP of(Sound sound) {
         return of(XSound.matchXSound(sound));
     }
@@ -30,12 +36,6 @@ public class SoundVP implements Cloneable {
 
     public static SoundVP of(XSound sound, float volume, float pitch) {
         return new SoundVP(sound, volume, pitch);
-    }
-
-    private SoundVP(XSound sound, float volume, float pitch) {
-        this.sound = sound;
-        this.volume = volume;
-        this.pitch = pitch;
     }
 
     public static SoundVP valueOf(String str) {
@@ -92,4 +92,5 @@ public class SoundVP implements Cloneable {
     protected SoundVP clone() {
         return new SoundVP(this.sound, this.volume, this.pitch);
     }
+
 }

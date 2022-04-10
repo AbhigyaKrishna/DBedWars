@@ -6,36 +6,12 @@ import java.io.File;
 
 public class PluginFiles {
 
-    public static class Folder {
-
-        public static final File PLUGIN_DATA_FOLDER = DBedwars.getInstance().getDataFolder();
-        public static final File ARENA = new File(PLUGIN_DATA_FOLDER, "arena");
-        public static final File DATA = new File(ARENA, "data");
-        public static final File ARENA_DATA_ARENACACHE = new File(DATA, "arenacache");
-        public static final File ARENA_DATA_SETTINGS = new File(DATA, "settings");
-        public static final File HOOKS = new File(PLUGIN_DATA_FOLDER, "hooks");
-        public static final File LANGUAGES = new File(PLUGIN_DATA_FOLDER, "languages");
-        public static final File CACHE = new File(PLUGIN_DATA_FOLDER, ".cache");
-        public static final File LIBRARIES_CACHE = new File(CACHE, ".libraries");
-        public static final File ITEMS = new File(PLUGIN_DATA_FOLDER, "items");
-        public static final File SHOPS = new File(PLUGIN_DATA_FOLDER, "shops");
-
-    }
-
-    public static class Data {
-
-        public static final File LOBBY_SPAWN = new File(Folder.DATA, "lobbyspawnlocation.yml");
-
-    }
-
     /* Hook Files */
     public static final File MULTIVERSE_CORE_HOOK = new File(Folder.HOOKS, "Multiverse-Core-Hook.yml");
     public static final File SLIME_WORLD_MANAGER_HOOK = new File(Folder.HOOKS, "SlimeWorldManager-Hook.yml");
-
     /* Language Files */
     public static final File EN_US = new File(Folder.LANGUAGES, "en_US.yml");
-    public static final File ACTION_MESSAGES_EN_US = new File(Folder.LANGUAGES,"action_messages_en_US.yml");
-
+    public static final File ACTION_MESSAGES_EN_US = new File(Folder.LANGUAGES, "action_messages_en_US.yml");
     /* Files */
     public static final File CONFIG = new File(Folder.PLUGIN_DATA_FOLDER, "config.yml");
     public static final File ITEM_SPAWNERS = new File(Folder.PLUGIN_DATA_FOLDER, "itemspawner.yml");
@@ -44,7 +20,7 @@ public class PluginFiles {
     public static final File HOLOGRAM = new File(Folder.PLUGIN_DATA_FOLDER, "hologram.yml");
     public static final File SCOREBOARD = new File(Folder.PLUGIN_DATA_FOLDER, "scoreboard.yml");
     public static final File NPC = new File(Folder.PLUGIN_DATA_FOLDER, "npc.yml");
-
+    public static final File EVENT = new File(Folder.PLUGIN_DATA_FOLDER, "event.yml");
     /* Database */
     public static final File DATABASE = new File(Folder.PLUGIN_DATA_FOLDER, "database.yml");
 
@@ -60,7 +36,8 @@ public class PluginFiles {
                 Folder.CACHE,
                 Folder.LIBRARIES_CACHE,
                 Folder.ITEMS,
-                Folder.SHOPS
+                Folder.SHOPS,
+                Folder.CATEGORY
         };
     }
 
@@ -71,23 +48,46 @@ public class PluginFiles {
     }
 
     public static File[] getLanguageFiles() {
-        return new File[] {
+        return new File[]{
                 EN_US,
                 ACTION_MESSAGES_EN_US
         };
     }
 
     public static File[] getFiles() {
-        return new File[] {
-            CONFIG,
-            ITEM_SPAWNERS,
-            TRAPS,
-            CUSTOM_ITEMS,
-            HOLOGRAM,
-            SCOREBOARD,
-            NPC,
-            DATABASE
+        return new File[]{
+                CONFIG,
+                ITEM_SPAWNERS,
+                TRAPS,
+                CUSTOM_ITEMS,
+                HOLOGRAM,
+                SCOREBOARD,
+                NPC,
+                DATABASE
         };
+    }
+
+    public static class Folder {
+
+        public static final File PLUGIN_DATA_FOLDER = DBedwars.getInstance().getDataFolder();
+        public static final File ARENA = new File(PLUGIN_DATA_FOLDER, "arena");
+        public static final File DATA = new File(ARENA, "data");
+        public static final File ARENA_DATA_ARENACACHE = new File(DATA, "arenacache");
+        public static final File ARENA_DATA_SETTINGS = new File(DATA, "settings");
+        public static final File HOOKS = new File(PLUGIN_DATA_FOLDER, "hooks");
+        public static final File LANGUAGES = new File(PLUGIN_DATA_FOLDER, "languages");
+        public static final File CACHE = new File(PLUGIN_DATA_FOLDER, ".cache");
+        public static final File LIBRARIES_CACHE = new File(CACHE, ".libraries");
+        public static final File ITEMS = new File(PLUGIN_DATA_FOLDER, "items");
+        public static final File SHOPS = new File(PLUGIN_DATA_FOLDER, "shops");
+        public static final File CATEGORY = new File(PLUGIN_DATA_FOLDER, "category");
+
+    }
+
+    public static class Data {
+
+        public static final File LOBBY_SPAWN = new File(Folder.DATA, "lobbyspawnlocation.yml");
+
     }
 
 }

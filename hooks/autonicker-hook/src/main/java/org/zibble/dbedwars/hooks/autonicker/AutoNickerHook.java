@@ -26,7 +26,7 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
     @Override
     public boolean isPlayerNicked(@NotNull Player player) {
         final NickSession session = NickAPI.getSession(player);
-        if(session == null)
+        if (session == null)
             return false;
 
         return session.isNicked();
@@ -35,7 +35,7 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
     @Override
     public void nick(@NotNull Player player, @NotNull String nick) {
         final NickSession session = NickAPI.getSession(player);
-        if(session == null)
+        if (session == null)
             return;
 
         //NEVER RUN THIS ON SYNC. This guy uses Thread#sleep()
@@ -45,7 +45,7 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
     @Override
     public void unNick(@NotNull Player player) {
         final NickSession session = NickAPI.getSession(player);
-        if(session == null)
+        if (session == null)
             return;
 
         //NEVER RUN THIS ON SYNC. This guy uses Thread#sleep()
@@ -54,6 +54,7 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
 
     @Override
     public String getNickName(@NotNull Player player) {
-       return isPlayerNicked(player) ? NickAPI.getSession(player).current_nick : getRealName(player);
+        return isPlayerNicked(player) ? NickAPI.getSession(player).current_nick : getRealName(player);
     }
+
 }

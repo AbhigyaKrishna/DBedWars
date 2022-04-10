@@ -44,13 +44,14 @@ public class UpdatingTabScoreboard extends TabScoreboard implements UpdatingScor
 
                 if (++UpdatingTabScoreboard.this.titleCursor >= UpdatingTabScoreboard.this.title.getLines().size()) {
                     UpdatingTabScoreboard.this.titleCursor = 0;
-                };
+                }
+                ;
                 UpdatingTabScoreboard.this.tabScoreboard.setTitle(AdventureUtils.toVanillaString(
                         title.asComponentWithPAPI(UpdatingTabScoreboard.this.getViewer())[UpdatingTabScoreboard.this.titleCursor]));
 
                 UpdatingTabScoreboard.this.tabScoreboard.getLines().clear();
                 int x;
-                for (int i = 0; i < UpdatingTabScoreboard.this.getLines().size(); i++){
+                for (int i = 0; i < UpdatingTabScoreboard.this.getLines().size(); i++) {
                     if (UpdatingTabScoreboard.this.lineCursor.get(i) + 1 >= UpdatingTabScoreboard.this.getLines().get(i).getLines().size()) {
                         x = UpdatingTabScoreboard.this.lineCursor.set(i, 0);
                     } else {
@@ -63,8 +64,8 @@ public class UpdatingTabScoreboard extends TabScoreboard implements UpdatingScor
             }
 
             @Override
-            public boolean shouldExecute(){
-                if(isCancelled())
+            public boolean shouldExecute() {
+                if (isCancelled())
                     return false;
 
                 return System.currentTimeMillis() - updatedLastAt >= delayDuration.toMillis();

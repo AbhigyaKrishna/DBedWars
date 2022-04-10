@@ -17,7 +17,7 @@ public class PremiumVanishHook extends PluginDependence implements VanishHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into PremiumVanish!"));
         }
         return true;
@@ -37,4 +37,5 @@ public class PremiumVanishHook extends PluginDependence implements VanishHook {
     public void unVanish(@NotNull Player player) {
         VanishAPI.showPlayer(player);
     }
+
 }

@@ -13,4 +13,5 @@ public interface DirectionalStructure extends Structure {
     void setBlocks(BlockFace face, Map<Block, XMaterial> blocks);
 
     String toString();
+
 }

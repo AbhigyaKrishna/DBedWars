@@ -8,13 +8,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.feature.custom.BridgeEggBuildFeature;
-import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.ArenaStatus;
-import org.zibble.dbedwars.api.util.Acceptor;
 import org.zibble.dbedwars.api.util.EventUtils;
-import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.utils.Util;
 
@@ -39,23 +37,17 @@ public class BridgeEgg extends BedWarsActionItem {
         if (!EventUtils.isRightClick(event.getAction())) {
             return;
         }
-        if (!plugin.getGameManager().containsArena(player.getWorld().getName())) return;
-        Arena arena = plugin.getGameManager().getArena(player.getWorld().getName());
-        if (arena.getStatus() != ArenaStatus.RUNNING) return;
-        Optional<ArenaPlayer> optionalArenaPlayer = arena.getAsArenaPlayer(player);
+        Optional<? extends ArenaPlayer> optionalArenaPlayer = this.plugin.getGameManager().getArenaPlayer(player);
         if (!optionalArenaPlayer.isPresent()) return;
         ArenaPlayer arenaPlayer = optionalArenaPlayer.get();
-        //TODO USELESS SPECTATOR CHECK :P
+        if (arenaPlayer.getArena().getStatus() != ArenaStatus.RUNNING) return;
         event.setCancelled(true);
         Util.removeItem(player, this.asItemStack());
         Egg egg = player.launchProjectile(Egg.class);
         egg.setMetadata("isDBedwarsEgg", BRIDGE_EGG_META);
-        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE, BridgeEggBuildFeature.class, new Acceptor<BridgeEggBuildFeature>() {
-            @Override
-            public boolean accept(BridgeEggBuildFeature bridgeEggBuildFeature) {
-                bridgeEggBuildFeature.startBuilding(egg, arenaPlayer);
-                return true;
-            }
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE, BridgeEggBuildFeature.class, bridgeEggBuildFeature -> {
+            bridgeEggBuildFeature.startBuilding(egg, arenaPlayer);
+            return true;
         });
     }
 

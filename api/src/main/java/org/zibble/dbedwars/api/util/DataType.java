@@ -3,7 +3,9 @@ package org.zibble.dbedwars.api.util;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Represents an enumeration of Java data types with corresponding classes */
+/**
+ * Represents an enumeration of Java data types with corresponding classes
+ */
 public enum DataType {
     BYTE(byte.class, Byte.class),
     SHORT(short.class, Short.class),
@@ -151,7 +153,7 @@ public enum DataType {
      *
      * <p>
      *
-     * @param primary Primary class array
+     * @param primary   Primary class array
      * @param secondary Class array which is compared to the primary array
      * @return Whether these arrays are equal or not
      */

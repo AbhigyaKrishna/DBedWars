@@ -10,13 +10,14 @@ import org.zibble.dbedwars.api.plugin.PluginDependence;
 import xyz.haoshoku.nick.api.NickAPI;
 
 public class NickAPIHook extends PluginDependence implements NickNameHook {
+
     public NickAPIHook() {
         super("NickAPI");
     }
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into NickAPI!"));
         }
         return true;
@@ -29,7 +30,7 @@ public class NickAPIHook extends PluginDependence implements NickNameHook {
 
     @Override
     public void nick(@NotNull Player player, @NotNull String nick) {
-        NickAPI.nick(player,nick);
+        NickAPI.nick(player, nick);
     }
 
     @Override
@@ -41,4 +42,5 @@ public class NickAPIHook extends PluginDependence implements NickNameHook {
     public String getNickName(@NotNull Player player) {
         return isPlayerNicked(player) ? NickAPI.getName(player) : getRealName(player);
     }
+
 }

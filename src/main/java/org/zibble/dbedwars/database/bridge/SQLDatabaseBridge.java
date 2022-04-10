@@ -3,7 +3,6 @@ package org.zibble.dbedwars.database.bridge;
 import com.zaxxer.hikari.HikariConfig;
 import org.jooq.SQLDialect;
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.data.ArenaHistory;
 import org.zibble.dbedwars.database.data.PlayerDataCache;
@@ -25,18 +24,33 @@ import org.zibble.dbedwars.database.sql.SQLDatabase;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
 public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     private final SQLDatabase database;
-    private boolean initialized;
     private final JooqContext context;
+    private boolean initialized;
 
     public SQLDatabaseBridge(SQLDatabase database) {
         this.database = database;
         this.context = new JooqContext(this.getDialect(this.database.getDatabaseType()));
+    }
+
+    protected static HikariConfig createHikariConfig() {
+        return new HikariConfigBuilder()
+                .addProperty("cachePrepStmts", "true")
+                .addProperty("prepStmtCacheSize", "250")
+                .addProperty("prepStmtCacheSqlLimit", "2048")
+                .addProperty("useServerPrepStmts", "true")
+                .addProperty("useLocalSessionState", "true")
+                .addProperty("rewriteBatchedStatements", "true")
+                .addProperty("cacheResultSetMetadata", "true")
+                .addProperty("cacheServerConfiguration", "true")
+                .addProperty("elideSetAutoCommits", "true")
+                .addProperty("maintainTimeStats", "false")
+                .addProperty("keepaliveTime", "30000ms")
+                .build();
     }
 
     @Override
@@ -160,22 +174,6 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     public SQLDatabase getDatabase() {
         return this.database;
-    }
-
-    protected static HikariConfig createHikariConfig() {
-        return new HikariConfigBuilder()
-                .addProperty("cachePrepStmts", "true")
-                .addProperty("prepStmtCacheSize", "250")
-                .addProperty("prepStmtCacheSqlLimit", "2048")
-                .addProperty("useServerPrepStmts", "true")
-                .addProperty("useLocalSessionState", "true")
-                .addProperty("rewriteBatchedStatements", "true")
-                .addProperty("cacheResultSetMetadata", "true")
-                .addProperty("cacheServerConfiguration", "true")
-                .addProperty("elideSetAutoCommits", "true")
-                .addProperty("maintainTimeStats", "false")
-                .addProperty("keepaliveTime", "30000ms")
-                .build();
     }
 
     private SQLDialect getDialect(DatabaseType type) {

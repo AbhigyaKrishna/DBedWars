@@ -40,4 +40,5 @@ public class BedBugDisplayNameUpdateFeature extends org.zibble.dbedwars.api.feat
     public boolean isInitialized() {
         return false;
     }
+
 }

@@ -32,6 +32,9 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     @ConfigPath
     private String icon;
 
+    @ConfigPath
+    private String category;
+
     @ConfigPath("lobby.location")
     private String lobbyLoc;
 
@@ -61,9 +64,6 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
 
     @ConfigPath
     private List<String> spawners;
-
-    @ConfigPath
-    private ConfigurableArenaOverride override;
 
     public ConfigurableArena() {
     }
@@ -106,6 +106,14 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
 
     public void setWorldEnv(World.Environment worldEnv) {
         this.environment = worldEnv;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getIcon() {
@@ -196,14 +204,6 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
         this.spawners = spawners;
     }
 
-    public ConfigurableArenaOverride getOverride() {
-        return override;
-    }
-
-    public void setOverride(ConfigurableArenaOverride override) {
-        this.override = override;
-    }
-
     @Override
     public NamedProperties toProperties() {
         return NamedProperties
@@ -230,22 +230,17 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     public static class ConfigurableTeam implements Configurable {
 
         @ConfigPath
+        public List<String> spawners;
+        @ConfigPath
         private Color color;
-
         @ConfigPath("bed")
         private String bedLocation;
-
         @ConfigPath
         private String spawn;
-
         @ConfigPath("shop")
         private String shopNpc;
-
         @ConfigPath("upgrades")
         private String upgradesNpc;
-
-        @ConfigPath
-        public List<String> spawners;
 
         public ConfigurableTeam() {
         }

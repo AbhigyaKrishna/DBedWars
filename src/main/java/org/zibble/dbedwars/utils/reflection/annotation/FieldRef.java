@@ -16,4 +16,5 @@ public @interface FieldRef {
     VersionControl[] versionPolicy() default {};
 
     boolean ignoreExceptions() default true;
+
 }

@@ -1,10 +1,10 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
-import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.BwItemStack;
 
 public interface HologramLine<C> {
-    
+
     HologramPage getParent();
 
     C getContent();
@@ -13,14 +13,24 @@ public interface HologramLine<C> {
 
     float getHeight();
 
-    interface Text extends HologramLine<Message> {}
+    interface Text extends HologramLine<Message> {
 
-    interface Head extends HologramLine<ItemStack> {}
+    }
 
-    interface SmallHead extends HologramLine<ItemStack> {}
+    interface Head extends HologramLine<BwItemStack> {
 
-    interface Icon extends HologramLine<ItemStack> {}
+    }
 
-    interface Entity extends HologramLine<HologramEntityType> {}
+    interface SmallHead extends HologramLine<BwItemStack> {
+
+    }
+
+    interface Icon extends HologramLine<BwItemStack> {
+
+    }
+
+    interface Entity extends HologramLine<HologramEntityType> {
+
+    }
 
 }

@@ -52,7 +52,7 @@ public class ActionPreProcessor {
             String delayValue = matcher.group("delayValue");
             return TimeUtil.parse(delayValue);
         }
-        return Duration.zero();
+        return Duration.ZERO;
     }
 
     private static int getRepeats(String input) {

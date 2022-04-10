@@ -1,7 +1,9 @@
 package org.zibble.dbedwars.database.jooq.binding;
 
 import org.jetbrains.annotations.NotNull;
-import org.jooq.*;
+import org.jooq.Converter;
+import org.jooq.Field;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.zibble.dbedwars.utils.DatabaseUtils;

@@ -34,4 +34,5 @@ public class DreamDefenderChaseFeature extends org.zibble.dbedwars.api.feature.c
     public boolean isInitialized() {
         return false;
     }
+
 }

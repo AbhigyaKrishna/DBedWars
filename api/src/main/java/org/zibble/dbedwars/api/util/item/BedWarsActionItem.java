@@ -49,6 +49,7 @@ public abstract class BedWarsActionItem extends ActionItemBase implements Keyed 
     }
 
     @Override
-    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {}
+    public void onActionPerform(Player player, EnumAction enumAction, PlayerInteractEvent playerInteractEvent) {
+    }
 
 }

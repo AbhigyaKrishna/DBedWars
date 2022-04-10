@@ -18,7 +18,7 @@ public class NickNamerHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        if(plugin != null){
+        if (plugin != null) {
             pluginHook = NickNamerAPI.getNickManager();
         }
         return true;
@@ -43,4 +43,5 @@ public class NickNamerHook extends PluginDependence implements NickNameHook {
     public String getNickName(@NotNull Player player) {
         return isPlayerNicked(player) ? this.pluginHook.getNick(player.getUniqueId()) : getRealName(player);
     }
+
 }

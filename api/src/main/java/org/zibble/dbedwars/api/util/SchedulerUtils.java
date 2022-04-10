@@ -27,7 +27,7 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be executed
+     * @param task  Task to be executed
      * @param delay Delay in server ticks before executing task
      * @return Task id number (-1 if scheduling failed)
      */
@@ -56,8 +56,8 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be executed
-     * @param delay Delay in server ticks before executing first repeat
+     * @param task   Task to be executed
+     * @param delay  Delay in server ticks before executing first repeat
      * @param period Period in server ticks of the task
      * @return Task id number (-1 if scheduling failed)
      */
@@ -75,7 +75,7 @@ public class SchedulerUtils {
      *       true.
      * </ul>
      *
-     * @param <T> The callable's return type
+     * @param <T>  The callable's return type
      * @param task Task to be executed
      * @return Future Future object related to the task
      */
@@ -194,7 +194,7 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be run
+     * @param task  Task to be run
      * @param delay Ticks to wait before running the task
      * @return BukkitTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
@@ -212,7 +212,7 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be run
+     * @param task  Task to be run
      * @param delay Ticks to wait before running the task
      * @return BukkitTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
@@ -228,8 +228,8 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be run
-     * @param delay Ticks to wait before running the task
+     * @param task   Task to be run
+     * @param delay  Ticks to wait before running the task
      * @param period Ticks to wait between runs
      * @return BukkitTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
@@ -248,8 +248,8 @@ public class SchedulerUtils {
      *
      * <p>
      *
-     * @param task Task to be run
-     * @param delay Ticks to wait before running the task for the first time
+     * @param task   Task to be run
+     * @param delay  Ticks to wait before running the task for the first time
      * @param period Ticks to wait between runs
      * @return BukkitTask that contains the id number
      * @throws IllegalArgumentException if plugin is null

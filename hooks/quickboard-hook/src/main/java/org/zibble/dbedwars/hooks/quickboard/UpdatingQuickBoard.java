@@ -51,7 +51,7 @@ public class UpdatingQuickBoard extends QuickScoreboard implements UpdatingScore
 
                 List<String> lines = new ArrayList<>();
                 int x;
-                for (int i = 0; i < UpdatingQuickBoard.this.getLines().size(); i++){
+                for (int i = 0; i < UpdatingQuickBoard.this.getLines().size(); i++) {
                     if (UpdatingQuickBoard.this.lineCursor.get(i) + 1 >= UpdatingQuickBoard.this.getLines().get(i).getLines().size()) {
                         x = UpdatingQuickBoard.this.lineCursor.set(i, 0);
                     } else {
@@ -66,8 +66,8 @@ public class UpdatingQuickBoard extends QuickScoreboard implements UpdatingScore
             }
 
             @Override
-            public boolean shouldExecute(){
-                if(isCancelled())
+            public boolean shouldExecute() {
+                if (isCancelled())
                     return false;
 
                 return System.currentTimeMillis() - this.updatedLastAt >= UpdatingQuickBoard.this.delay.toMillis();
@@ -132,4 +132,5 @@ public class UpdatingQuickBoard extends QuickScoreboard implements UpdatingScore
     public void setDelay(Duration delay) {
         this.delay = delay;
     }
+
 }

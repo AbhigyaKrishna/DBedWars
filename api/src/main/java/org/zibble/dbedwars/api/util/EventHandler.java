@@ -35,4 +35,5 @@ public interface EventHandler extends Listener, EventExecutor {
     default void unregister() {
         HandlerList.unregisterAll(this);
     }
+
 }

@@ -210,7 +210,7 @@ public abstract class AbstractMessaging implements org.zibble.dbedwars.api.messa
     public void sendTitle(Message title, Message subtitle, Title.Times times, boolean papiParsed, Predicate<MessagingMember> except) {
         for (MessagingMember member : this.getMembers()) {
             Title t = Title.title(papiParsed && member.isPlayerMember() ?
-                    title.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : title.asComponent()[0],
+                            title.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : title.asComponent()[0],
                     papiParsed && member.isPlayerMember() ?
                             subtitle.asComponentWithPAPI(((PlayerMember) member).getPlayer())[0] : subtitle.asComponent()[0],
                     times);

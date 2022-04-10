@@ -60,6 +60,16 @@ public class ConfigurableTrap implements Loadable {
         return trapActions;
     }
 
+    @Override
+    public String toString() {
+        return "ConfigurableTrap{" +
+                "key='" + key + '\'' +
+                ", id='" + id + '\'' +
+                ", trigger='" + trigger + '\'' +
+                ", trapActions=" + trapActions +
+                '}';
+    }
+
     public static class ConfigurableTrapAction implements Loadable {
 
         @ConfigPath
@@ -102,15 +112,7 @@ public class ConfigurableTrap implements Loadable {
                     ", executables=" + executables +
                     '}';
         }
+
     }
 
-    @Override
-    public String toString() {
-        return "ConfigurableTrap{" +
-                "key='" + key + '\'' +
-                ", id='" + id + '\'' +
-                ", trigger='" + trigger + '\'' +
-                ", trapActions=" + trapActions +
-                '}';
-    }
 }

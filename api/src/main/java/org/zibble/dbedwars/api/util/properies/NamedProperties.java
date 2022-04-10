@@ -1,24 +1,15 @@
 package org.zibble.dbedwars.api.util.properies;
 
 import org.jetbrains.annotations.NotNull;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.key.NamedKey;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
-    private final Set<NamedKey<?>> properties = Collections.synchronizedSet(new TreeSet<>(Comparator.comparing(new Function<NamedKey<?>, String>() {
-        @Override
-        public String apply(NamedKey<?> key) {
-            return key.getValue();
-        }
-    })));
-
-    public static Builder builder() {
-        return new Builder();
-    }
+    private final Set<NamedKey<?>> properties = Collections.synchronizedSet(new TreeSet<>(Comparator.comparing(Key::get)));
 
     public NamedProperties() {
     }
@@ -29,6 +20,10 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public NamedProperties(Collection<NamedKey<?>> keys) {
         this.properties.addAll(keys);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public <T> void add(String name, T value) {
@@ -144,7 +139,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
                 '}';
     }
 
-    public static class Builder implements org.zibble.dbedwars.api.util.Builder<NamedProperties> {
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<NamedProperties> {
 
         private final ArrayList<NamedKey<?>> keys = new ArrayList<>();
 

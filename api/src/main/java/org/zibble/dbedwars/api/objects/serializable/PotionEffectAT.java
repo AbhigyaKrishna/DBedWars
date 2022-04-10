@@ -9,7 +9,7 @@ import org.zibble.dbedwars.api.version.Version;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PotionEffectAT {
+public class PotionEffectAT implements Cloneable {
 
     static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z0-9_\\-]+?)(?:::(?<amplifier>[+-]?\\d*\\.?\\d*)(?:::[+-]?(?<duration>max|\\d*\\.?\\d*)(?:::(?<particle>.*))?)?)?$", Pattern.CASE_INSENSITIVE);
 
@@ -17,6 +17,12 @@ public class PotionEffectAT {
     private int amplifier;
     private int duration;
     private boolean particleOff;
+
+    private PotionEffectAT(XPotion potion, int amplifier, int duration) {
+        this.potion = potion;
+        this.amplifier = amplifier;
+        this.duration = duration;
+    }
 
     public static PotionEffectAT of(PotionEffectType potion) {
         return of(XPotion.matchXPotion(potion));
@@ -32,12 +38,6 @@ public class PotionEffectAT {
 
     public static PotionEffectAT of(XPotion potion, int amplifier, int duration) {
         return new PotionEffectAT(potion, amplifier, duration);
-    }
-
-    private PotionEffectAT(XPotion potion, int amplifier, int duration) {
-        this.potion = potion;
-        this.amplifier = amplifier;
-        this.duration = duration;
     }
 
     public static PotionEffectAT valueOf(PotionEffect potion) {
@@ -112,4 +112,12 @@ public class PotionEffectAT {
     public String toString() {
         return this.potion.name() + "::" + (this.amplifier - 1) + "::" + (this.duration == Integer.MAX_VALUE ? "max" : this.duration) + (this.particleOff ? "::true" : "");
     }
+
+    @Override
+    public PotionEffectAT clone() {
+        PotionEffectAT effect = new PotionEffectAT(this.potion, this.amplifier, this.duration);
+        effect.setParticle(this.particleOff);
+        return effect;
+    }
+
 }

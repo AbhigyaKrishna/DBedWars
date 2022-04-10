@@ -22,4 +22,5 @@ public class UpdateInventoryActionImpl implements MenuAction {
 
         return true;
     }
+
 }

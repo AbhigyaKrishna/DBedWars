@@ -6,6 +6,10 @@ import org.zibble.dbedwars.database.jooq.tables.ArenaHistoryTable;
 
 public class ArenaHistoryRecord extends TableRecordImpl<ArenaHistoryRecord> {
 
+    public ArenaHistoryRecord() {
+        super(ArenaHistoryTable.ARENA_HISTORY);
+    }
+
     public static ArenaHistoryRecord from(ArenaHistory data) {
         ArenaHistoryTable table = ArenaHistoryTable.ARENA_HISTORY;
         ArenaHistoryRecord record = new ArenaHistoryRecord();
@@ -19,10 +23,6 @@ public class ArenaHistoryRecord extends TableRecordImpl<ArenaHistoryRecord> {
         record.set(table.DEATHS, data.getDeaths());
         record.set(table.BEDS_BROKEN, data.getBedsBroken());
         return record;
-    }
-
-    public ArenaHistoryRecord() {
-        super(ArenaHistoryTable.ARENA_HISTORY);
     }
 
     public ArenaHistory toDataCache() {

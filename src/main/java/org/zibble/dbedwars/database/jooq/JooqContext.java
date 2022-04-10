@@ -27,11 +27,11 @@ public class JooqContext {
         return DSL.using(connection, dialect, new Settings()
                 .withRenderSchema(false)
                 .withRenderMapping(new RenderMapping()
-                                .withSchemata(new MappedSchema()
-                                        .withInputExpression(MATCH_ALL_EXCEPT_INFORMATION_SCHEMA)
-                                        .withTables(new MappedTable()
-                                                .withInputExpression(MATCH_ALL)
-                                                .withOutput(REPLACEMENT)))));
+                        .withSchemata(new MappedSchema()
+                                .withInputExpression(MATCH_ALL_EXCEPT_INFORMATION_SCHEMA)
+                                .withTables(new MappedTable()
+                                        .withInputExpression(MATCH_ALL)
+                                        .withOutput(REPLACEMENT)))));
     }
 
     public SQLDialect getDialect() {

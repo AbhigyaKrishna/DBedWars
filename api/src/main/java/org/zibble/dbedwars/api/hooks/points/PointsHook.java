@@ -11,4 +11,5 @@ public interface PointsHook extends Hook {
     void addXP(@NotNull final Player player, long toAdd);
 
     void reduceXP(@NotNull final Player player, long toReduce);
+
 }
