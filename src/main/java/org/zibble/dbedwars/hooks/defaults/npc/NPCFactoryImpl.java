@@ -9,6 +9,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NPCFactoryImpl implements NPCFactory {
 
-    private final Map<String, BedWarsNPCImpl> npcs = new ConcurrentHashMap<>();
+    private final Map<Key, BedWarsNPCImpl> npcs = new ConcurrentHashMap<>();
     private NPCListener listener;
 
     @Override
@@ -27,19 +28,19 @@ public class NPCFactoryImpl implements NPCFactory {
 
     @Override
     public EntityNPC createEntityNPC(Location location, EntityType type) {
-        EntityNPCImpl npc = new EntityNPCImpl(UUID.randomUUID().toString().substring(0, 8), type, location, new NPCDataImpl());
-        npcs.put(npc.getID(), npc);
+        EntityNPCImpl npc = new EntityNPCImpl(this, Key.of(UUID.randomUUID().toString().substring(0, 8)), type, location);
+        npcs.put(npc.getKey(), npc);
         return npc;
     }
 
     @Override
     public PlayerNPC createPlayerNPC(Location location) {
-        PlayerNPCImpl npc = new PlayerNPCImpl(UUID.randomUUID().toString().substring(0, 8), location, new NPCDataImpl(), new SkinDataImpl());
-        npcs.put(npc.getID(), npc);
+        PlayerNPCImpl npc = new PlayerNPCImpl(this, Key.of(UUID.randomUUID().toString().substring(0, 8)), location);
+        npcs.put(npc.getKey(), npc);
         return npc;
     }
 
-    public Map<String, BedWarsNPCImpl> getNpcs() {
+    public Map<Key, BedWarsNPCImpl> getNpcs() {
         return npcs;
     }
 

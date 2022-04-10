@@ -16,29 +16,33 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.util.key.Keyed;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class BedWarsNPCImpl implements BedwarsNPC {
+public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
 
     protected static final PacketEventsAPI<?> PACKET_EVENTS_API = PacketEvents.getAPI();
+    protected final NPCFactoryImpl factory;
     protected final Set<ClickAction> clickActions;
     protected final Set<UUID> shown;
     protected final Set<UUID> outOfRenderDistance;
     protected final NPCTracker npcTracker;
     private final Hologram hologram;
-    private final String ID;
+    private final Key key;
     private final NPCData npcData;
     private final UUID uuid;
     private int entityID;
     private Location location;
 
-    public BedWarsNPCImpl(String ID, Location location, NPCData npcData) {
-        this.ID = ID;
-        this.npcData = npcData;
+    public BedWarsNPCImpl(NPCFactoryImpl factory, Key key, Location location) {
+        this.factory = factory;
+        this.key = key;
+        this.npcData = new NPCDataImpl();
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
@@ -63,22 +67,23 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     public ActionFuture<BedwarsNPC> setEntityID(int id) {
         return ActionFuture.supplyAsync(() -> {
-            BedWarsNPCImpl.this.entityID = id;
-            return BedWarsNPCImpl.this;
+            this.entityID = id;
+            return this;
         });
     }
 
-    public String getID() {
-        return this.ID;
+    @Override
+    public Key getKey() {
+        return this.key;
     }
 
     @Override
     public ActionFuture<BedwarsNPC> spawn() {
         return ActionFuture.supplyAsync(() -> {
-            if (BedWarsNPCImpl.this.location.getWorld() == null) throw new NullPointerException("World can't be null");
-            for (Player player : BedWarsNPCImpl.this.location.getWorld().getPlayers()) {
-                BedWarsNPCImpl.this.viewPacket(player);
-                BedWarsNPCImpl.this.shown.add(player.getUniqueId());
+            if (this.location.getWorld() == null) throw new NullPointerException("World can't be null");
+            for (Player player : this.location.getWorld().getPlayers()) {
+                this.viewPacket(player);
+                this.shown.add(player.getUniqueId());
             }
             return this;
         });
@@ -87,20 +92,20 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     @Override
     public ActionFuture<BedwarsNPC> teleport(Location location) {
         return ActionFuture.supplyAsync(() -> {
-            if (BedWarsNPCImpl.this.location.equals(location))
-                return BedWarsNPCImpl.this;
+            if (this.location.equals(location))
+                return this;
 
-            BedWarsNPCImpl.this.location = location;
-            for (UUID uuid : BedWarsNPCImpl.this.shown) {
+            this.location = location;
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
-                    BedWarsNPCImpl.this.changeLocationPacket(player);
+                    this.changeLocationPacket(player);
                 } else {
-                    BedWarsNPCImpl.this.shown.remove(uuid);
-                    BedWarsNPCImpl.this.outOfRenderDistance.remove(uuid);
+                    this.shown.remove(uuid);
+                    this.outOfRenderDistance.remove(uuid);
                 }
             }
-            return BedWarsNPCImpl.this;
+            return this;
         });
     }
 
@@ -114,17 +119,17 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
         byte yawByte = (byte) MathUtil.floor(yaw * 256.0F / 360.0F);
         byte pitchByte = (byte) MathUtil.floor(pitch * 256.0F / 360.0F);
         return ActionFuture.supplyAsync(() -> {
-            BedWarsNPCImpl.this.location.setYaw(yaw);
-            BedWarsNPCImpl.this.location.setPitch(pitch);
-            for (UUID uuid : BedWarsNPCImpl.this.shown) {
+            this.location.setYaw(yaw);
+            this.location.setPitch(pitch);
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
-                if (player != null) BedWarsNPCImpl.this.changeDirectionPacket(player, yawByte, pitchByte);
+                if (player != null) this.changeDirectionPacket(player, yawByte, pitchByte);
                 else {
-                    BedWarsNPCImpl.this.shown.remove(uuid);
-                    BedWarsNPCImpl.this.outOfRenderDistance.remove(uuid);
+                    this.shown.remove(uuid);
+                    this.outOfRenderDistance.remove(uuid);
                 }
             }
-            return BedWarsNPCImpl.this;
+            return this;
         });
     }
 
@@ -137,21 +142,23 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> lookAt(Location location) {
-        return BedWarsNPCImpl.this.lookAt(location.getYaw(), location.getPitch());
+        return this.lookAt(location.getYaw(), location.getPitch());
     }
 
     @Override
     public ActionFuture<BedwarsNPC> destroy() {
         return ActionFuture.supplyAsync(() -> {
-            for (UUID uuid : BedWarsNPCImpl.this.shown) {
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
-                    BedWarsNPCImpl.this.destroyPacket(player);
+                    this.destroyPacket(player);
                 }
             }
-            BedWarsNPCImpl.this.shown.clear();
-            BedWarsNPCImpl.this.outOfRenderDistance.clear();
-            return BedWarsNPCImpl.this;
+            this.shown.clear();
+            this.outOfRenderDistance.clear();
+            this.npcTracker.stop();
+            this.factory.getNpcs().remove(this.key);
+            return this;
         });
     }
 
@@ -163,48 +170,48 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     @Override
     public ActionFuture<BedwarsNPC> hide(Player player) {
         return ActionFuture.supplyAsync(() -> {
-            if (!BedWarsNPCImpl.this.shown.contains(player.getUniqueId()))
-                return BedWarsNPCImpl.this;
+            if (!this.shown.contains(player.getUniqueId()))
+                return this;
 
-            BedWarsNPCImpl.this.destroyPacket(player);
-            BedWarsNPCImpl.this.shown.remove(player.getUniqueId());
-            BedWarsNPCImpl.this.outOfRenderDistance.remove(player.getUniqueId());
-            return BedWarsNPCImpl.this;
+            this.destroyPacket(player);
+            this.shown.remove(player.getUniqueId());
+            this.outOfRenderDistance.remove(player.getUniqueId());
+            return this;
         });
     }
 
 
     public ActionFuture<BedwarsNPC> silentHide(Player player) {
         return ActionFuture.supplyAsync(() -> {
-            BedWarsNPCImpl.this.destroyPacket(player);
-            return BedWarsNPCImpl.this;
+            this.destroyPacket(player);
+            return this;
         });
     }
 
     @Override
     public ActionFuture<BedwarsNPC> show(Player player) {
         return ActionFuture.supplyAsync(() -> {
-            if (BedWarsNPCImpl.this.shown.contains(player.getUniqueId()))
-                return BedWarsNPCImpl.this;
+            if (this.shown.contains(player.getUniqueId()))
+                return this;
 
-            BedWarsNPCImpl.this.viewPacket(player);
-            BedWarsNPCImpl.this.shown.add(player.getUniqueId());
-            return BedWarsNPCImpl.this;
+            this.viewPacket(player);
+            this.shown.add(player.getUniqueId());
+            return this;
         });
     }
 
 
     public ActionFuture<BedwarsNPC> forceShow(Player player) {
         return ActionFuture.supplyAsync(() -> {
-            BedWarsNPCImpl.this.viewPacket(player);
-            return BedWarsNPCImpl.this;
+            this.viewPacket(player);
+            return this;
         });
     }
 
     public ActionFuture<BedwarsNPC> addInShownList(Player player) {
         return ActionFuture.supplyAsync(() -> {
-            BedWarsNPCImpl.this.shown.add(player.getUniqueId());
-            return BedWarsNPCImpl.this;
+            this.shown.add(player.getUniqueId());
+            return this;
         });
     }
 
@@ -226,13 +233,13 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     @Override
     public ActionFuture<BedwarsNPC> updateNPCData() {
         return ActionFuture.supplyAsync(() -> {
-            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(BedWarsNPCImpl.this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildNPCDataByte(BedWarsNPCImpl.this.npcData))));
-            for (UUID uuid : BedWarsNPCImpl.this.shown) {
+            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildNPCDataByte(this.npcData))));
+            for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) continue;
                 PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
             }
-            return BedWarsNPCImpl.this;
+            return this;
         });
     }
 

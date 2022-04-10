@@ -9,7 +9,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
-import com.pepedevs.radium.utils.version.Version;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,6 +17,8 @@ import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.objects.profile.Skin;
+import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.api.version.Version;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,9 +31,9 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     private final UserProfile userProfile;
     private final WrapperPlayServerPlayerInfo.PlayerData info;
 
-    public PlayerNPCImpl(String ID, Location location, NPCData npcData, SkinDataImpl skinData) {
-        super(ID, location, npcData);
-        this.skinData = skinData;
+    public PlayerNPCImpl(NPCFactoryImpl factory, Key key, Location location) {
+        super(factory, key, location);
+        this.skinData = new SkinDataImpl();
         this.userProfile = new UserProfile(this.getUUID(), "");
         this.info = new WrapperPlayServerPlayerInfo.PlayerData(
                 Component.empty(),

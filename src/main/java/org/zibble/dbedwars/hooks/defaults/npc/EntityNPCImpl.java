@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,8 @@ public class EntityNPCImpl extends BedWarsNPCImpl implements EntityNPC {
 
     private final EntityType entityType;
 
-    public EntityNPCImpl(String ID, EntityType entityType, Location location, NPCData npcData) {
-        super(ID, location, npcData);
+    public EntityNPCImpl(NPCFactoryImpl factory, Key key, EntityType entityType, Location location) {
+        super(factory, key, location);
         this.entityType = entityType;
     }
 
