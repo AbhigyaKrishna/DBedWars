@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DatabaseUtils {
+public class DatabaseUtil {
 
     public static byte[] toByteArray(UUID uuid) {
         byte[] result = new byte[16];

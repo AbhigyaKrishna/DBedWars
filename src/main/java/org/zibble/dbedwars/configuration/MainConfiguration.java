@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.configuration;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.exceptions.IllegalConfigException;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
@@ -12,7 +11,13 @@ import java.util.List;
 
 public class MainConfiguration implements Loadable {
 
-    private final DBedwars plugin;
+    @Defaults.Boolean(false)
+    @ConfigPath
+    private boolean debug;
+
+    @Defaults.Boolean(false)
+    @ConfigPath
+    private boolean preciseLocation;
 
     @ConfigPath("arena")
     private ArenaSection arenaSection;
@@ -26,8 +31,7 @@ public class MainConfiguration implements Loadable {
     @ConfigPath("lang")
     private LangSection langSection;
 
-    public MainConfiguration(DBedwars plugin) {
-        this.plugin = plugin;
+    public MainConfiguration() {
     }
 
     @Override
@@ -40,9 +44,12 @@ public class MainConfiguration implements Loadable {
         return true;
     }
 
-    @Override
-    public boolean isInvalid() {
-        return false;
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public boolean isPreciseLocation() {
+        return preciseLocation;
     }
 
     public ArenaSection getArenaSection() {

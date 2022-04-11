@@ -15,11 +15,6 @@ public class BedBugChaseFeature extends org.zibble.dbedwars.api.feature.custom.B
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public FeaturePriority getPriority() {
         return FeaturePriority.NORMAL;
     }
@@ -34,7 +29,7 @@ public class BedBugChaseFeature extends org.zibble.dbedwars.api.feature.custom.B
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

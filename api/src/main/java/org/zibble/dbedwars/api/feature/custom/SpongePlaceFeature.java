@@ -8,12 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class SpongePlaceFeature extends BedWarsFeature {
 
     public SpongePlaceFeature() {
-        super(BedWarsFeatures.SPONGE_PLACE_FEATURE.get());
-    }
-
-    @Override
-    public boolean isTickable() {
-        return false;
+        super(BedWarsFeatures.SPONGE_PLACE_FEATURE);
     }
 
     public abstract void onPlace(Block sponge, ArenaPlayer placer);

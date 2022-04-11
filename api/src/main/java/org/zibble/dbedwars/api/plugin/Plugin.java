@@ -1,12 +1,13 @@
 package org.zibble.dbedwars.api.plugin;
 
-import com.pepedevs.radium.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 /**
  * An implementation of {@link JavaPlugin} that adds some useful utilities.
@@ -203,7 +204,7 @@ public abstract class Plugin extends JavaPlugin {
 
             if (!out.exists() || replace) {
                 try {
-                    FileUtils.copyURLToFile(url, out);
+                    Files.copy(url.openStream(), out.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException ex) {
                     this.getLogger().severe("Couldn't save resource " + resource_path + " to " + out);
                     ex.printStackTrace();

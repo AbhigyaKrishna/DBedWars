@@ -9,12 +9,7 @@ public abstract class PopupTowerBuildFeature extends BedWarsFeature {
 
 
     public PopupTowerBuildFeature() {
-        super(BedWarsFeatures.POPUP_TOWER_BUILD_FEATURE.get());
-    }
-
-    @Override
-    public boolean isTickable() {
-        return false;
+        super(BedWarsFeatures.POPUP_TOWER_BUILD_FEATURE);
     }
 
     public abstract void build(Chest chest, ArenaPlayer placer);

@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.utils;
 
-import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
@@ -14,11 +13,12 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class PluginFileUtils {
+public class PluginFileUtil {
 
     @MethodRef(clazz = URLClassLoader.class, value = "addURL(java.net.URL)")
     public static final MethodWrapper<Void> ADD_URL_METHOD = null;
@@ -27,7 +27,7 @@ public class PluginFileUtils {
     public static final String REGION_FOLDER_NAME = "region";
 
     static {
-        ReflectionAnnotations.INSTANCE.load(PluginFileUtils.class);
+        ReflectionAnnotations.INSTANCE.load(PluginFileUtil.class);
     }
 
     public static FileConfiguration set(File file, String key, Object value) {
@@ -59,7 +59,7 @@ public class PluginFileUtils {
                     if (current.getName().endsWith(".mca")) {
                         try {
                             zip.putNextEntry(new ZipEntry(current.getName()));
-                            FileUtils.copyFile(current, zip);
+                            Files.copy(current.toPath(), zip);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -74,7 +74,7 @@ public class PluginFileUtils {
                     if (current.getName().endsWith(".mca")) {
                         try {
                             zip.putNextEntry(new ZipEntry("poi/" + current.getName()));
-                            FileUtils.copyFile(current, zip);
+                            Files.copy(current.toPath(), zip);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -85,7 +85,7 @@ public class PluginFileUtils {
             File worldFolder = new File(worldName);
             for (File current : worldFolder.listFiles()) {
                 if (!current.isFile() && current.getName().startsWith("DIM")) {
-                    PluginFileUtils.saveZip(current, worldFolder, zip);
+                    PluginFileUtil.saveZip(current, worldFolder, zip);
                 }
             }
 
@@ -103,12 +103,8 @@ public class PluginFileUtils {
         File region_dbw = new File(worldName, "region_dbw/");
         File poi = new File(worldName, "poi/");
 
-        try {
-            FileUtils.deleteDirectory(region);
-            FileUtils.deleteDirectory(region_dbw);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        deleteDirectory(region);
+        deleteDirectory(region_dbw);
 
         if (DBedwars.getInstance().getServerVersion().isNewerEquals(Version.v1_14_R1)
                 && poi.exists()) {
@@ -122,11 +118,7 @@ public class PluginFileUtils {
         File worldFolder = new File(worldName);
         for (File current : worldFolder.listFiles()) {
             if (!current.isFile() && current.getName().startsWith("DIM")) {
-                try {
-                    FileUtils.deleteDirectory(current);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                deleteDirectory(current);
             }
         }
 
@@ -156,7 +148,7 @@ public class PluginFileUtils {
                 outputStream.close();
             }
 
-            FileUtils.deleteDirectory(region);
+            deleteDirectory(region);
             if (region_dbw.exists()) {
                 region_dbw.renameTo(region);
             }
@@ -172,7 +164,7 @@ public class PluginFileUtils {
             else {
                 try {
                     zip.putNextEntry(new ZipEntry(current.getAbsolutePath().replace(worldFolder.getAbsolutePath(), "")));
-                    FileUtils.copyFile(current, zip);
+                    Files.copy(current.toPath(), zip);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -211,6 +203,15 @@ public class PluginFileUtils {
             return dat.exists() && region.exists();
         } else {
             return false;
+        }
+    }
+
+    public static void deleteDirectory(File file) {
+        for (File subfile : file.listFiles()) {
+            if (subfile.isDirectory()) {
+                deleteDirectory(subfile);
+            }
+            subfile.delete();
         }
     }
 

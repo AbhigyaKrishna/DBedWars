@@ -7,7 +7,7 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
-import org.zibble.dbedwars.api.feature.custom.PreciseLocation;
+import org.zibble.dbedwars.api.feature.custom.PreciseLocationFeature;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
@@ -37,7 +37,7 @@ public class SetupUtil {
 
     public static Location precise(Location location) {
         AtomicReference<Location> loc = new AtomicReference<>(location);
-        PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION, PreciseLocation.class, value -> {
+        PLUGIN.getFeatureManager().runFeature(BedWarsFeatures.PRECISE_LOCATION_FEATURE, PreciseLocationFeature.class, value -> {
             loc.set(value.getPrecise(location));
             return true;
         });

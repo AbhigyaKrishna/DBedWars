@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class DreamDefenderChaseFeature extends BedWarsFeature {
 
     public DreamDefenderChaseFeature() {
-        super(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE.get());
+        super(BedWarsFeatures.DREAM_DEFENDER_CHASE_FEATURE);
     }
 
     public abstract void startChasing(IronGolem ironGolem, ArenaPlayer spawningPlayer);

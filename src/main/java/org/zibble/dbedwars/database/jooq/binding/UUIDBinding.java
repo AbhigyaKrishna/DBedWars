@@ -6,7 +6,7 @@ import org.jooq.Field;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
-import org.zibble.dbedwars.utils.DatabaseUtils;
+import org.zibble.dbedwars.utils.DatabaseUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +26,7 @@ public class UUIDBinding extends BindingBase<UUID, UUID> {
         if (supportsUUID(dialect)) {
             statement.setObject(index, value);
         } else {
-            statement.setBytes(index, DatabaseUtils.toByteArray(value));
+            statement.setBytes(index, DatabaseUtil.toByteArray(value));
         }
     }
 
@@ -35,7 +35,7 @@ public class UUIDBinding extends BindingBase<UUID, UUID> {
         if (supportsUUID(dialect)) {
             return resultSet.getObject(index, UUID.class);
         } else {
-            return DatabaseUtils.fromByteArray(resultSet.getBytes(index));
+            return DatabaseUtil.fromByteArray(resultSet.getBytes(index));
         }
     }
 
@@ -44,7 +44,7 @@ public class UUIDBinding extends BindingBase<UUID, UUID> {
         if (supportsUUID(dialect)) {
             return DSL.inline(value, SQLDataType.UUID);
         } else {
-            return DSL.inline(DatabaseUtils.toByteArray(value), SQLDataType.BINARY(16));
+            return DSL.inline(DatabaseUtil.toByteArray(value), SQLDataType.BINARY(16));
         }
     }
 

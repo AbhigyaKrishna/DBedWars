@@ -12,7 +12,7 @@ import org.zibble.dbedwars.api.util.Duration;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.utils.PluginFileUtils;
+import org.zibble.dbedwars.utils.PluginFileUtil;
 
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
@@ -62,7 +62,7 @@ public class WorldAdaptorImpl implements WorldAdaptor {
         ActionFuture<World> future = this.createWorld(worldName, environment);
 
         return future.thenApply(world -> {
-            PluginFileUtils.copyWorldRegion(worldName, fileName);
+            PluginFileUtil.copyWorldRegion(worldName, fileName);
 
             this.plugin.getNMSAdaptor().clearRegionFileCache(world);
             this.plugin.getNMSAdaptor().clearChunkCache(world);
@@ -80,7 +80,7 @@ public class WorldAdaptorImpl implements WorldAdaptor {
     public boolean saveWorld(String worldName, String fileName) {
         this.unloadWorld(worldName, true);
 
-        return PluginFileUtils.saveWorldRegions(worldName, fileName);
+        return PluginFileUtil.saveWorldRegions(worldName, fileName);
     }
 
     @Override

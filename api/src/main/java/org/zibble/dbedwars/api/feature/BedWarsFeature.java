@@ -15,6 +15,10 @@ public abstract class BedWarsFeature implements Initializable, Tickable, Validab
         this.key = Key.of(key);
     }
 
+    public BedWarsFeature(Key key) {
+        this.key = key;
+    }
+
     @Override
     public Key getKey() {
         return key;
@@ -54,7 +58,9 @@ public abstract class BedWarsFeature implements Initializable, Tickable, Validab
 
     }
 
-    public abstract boolean isTickable();
+    public boolean isTickable() {
+        return false;
+    }
 
     public abstract FeaturePriority getPriority();
 

@@ -13,6 +13,7 @@ import org.zibble.dbedwars.api.hooks.selection.AreaSelectionHook;
 import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
+import org.zibble.dbedwars.api.util.mixin.Initializable;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
 import org.zibble.dbedwars.hooks.betternick.BetterNickHook;
@@ -198,7 +199,11 @@ public class HookManagerImpl implements HookManager {
 
     @Override
     public void setNpcFactory(NPCFactory npcFactory) {
+        synchronized (this) {
+            this.npcFactory.disable();
+        }
         this.npcFactory = npcFactory;
+        this.npcFactory.init();
     }
 
     @Override
@@ -208,7 +213,11 @@ public class HookManagerImpl implements HookManager {
 
     @Override
     public void setHologramFactory(HologramFactory hologramFactory) {
+        synchronized (this) {
+            this.hologramFactory.disable();
+        }
         this.hologramFactory = hologramFactory;
+        this.hologramFactory.init();
     }
 
     @Override
@@ -218,7 +227,11 @@ public class HookManagerImpl implements HookManager {
 
     @Override
     public void setAreaSelectionHook(AreaSelectionHook areaSelectionHook) {
+        synchronized (this) {
+            this.areaSelectionHook.disable();
+        }
         this.areaSelectionHook = areaSelectionHook;
+        this.areaSelectionHook.init();
     }
 
     @Override
@@ -234,9 +247,10 @@ public class HookManagerImpl implements HookManager {
         return this.dependencies;
     }
 
-    public static class MultiOptionalHookImpl<T extends Hook> implements MultiOptionalHook<T> {
+    public static class MultiOptionalHookImpl<T extends Hook> implements MultiOptionalHook<T>, Initializable {
 
         private final Collection<T> hooks;
+        private boolean initialized;
 
         public MultiOptionalHookImpl() {
             this.hooks = Collections.synchronizedSet(new HashSet<>());
@@ -255,18 +269,28 @@ public class HookManagerImpl implements HookManager {
 
         @Override
         public void add(T hook) {
+            if (this.isInitialized()) {
+                hook.init();
+            }
             this.hooks.add(hook);
         }
 
         @Override
         public void remove(T hook) {
             this.hooks.remove(hook);
+            hook.disable();
         }
 
         public void init() {
             for (T hook : this.hooks) {
                 hook.init();
             }
+            this.initialized = true;
+        }
+
+        @Override
+        public boolean isInitialized() {
+            return this.initialized;
         }
 
     }

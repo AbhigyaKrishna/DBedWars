@@ -1,12 +1,14 @@
 package org.zibble.dbedwars.messaging.member;
 
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 import org.zibble.dbedwars.messaging.Messaging;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Function;
 
 public abstract class MessagingMember extends AbstractMessaging implements org.zibble.dbedwars.api.messaging.member.MessagingMember {
 
@@ -15,8 +17,8 @@ public abstract class MessagingMember extends AbstractMessaging implements org.z
 
     private Collection<org.zibble.dbedwars.api.messaging.member.MessagingMember> members = Collections.singleton(this);
 
-    protected MessagingMember(CommandSender sender) {
-        this.audienceMember = Messaging.getInstance().getAdventure().sender(sender);
+    protected MessagingMember(CommandSender sender, Function<BukkitAudiences, Audience> fn) {
+        this.audienceMember = fn.apply(Messaging.getInstance().getAdventure());
         this.sender = sender;
     }
 

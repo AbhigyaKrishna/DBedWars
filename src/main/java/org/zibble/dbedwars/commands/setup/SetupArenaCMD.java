@@ -15,7 +15,7 @@ import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.configuration.language.PluginLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.setup.SetupSession;
-import org.zibble.dbedwars.utils.PluginFileUtils;
+import org.zibble.dbedwars.utils.PluginFileUtil;
 
 import java.io.File;
 
@@ -54,7 +54,7 @@ public class SetupArenaCMD extends CommandNode {
         }
 
         String identifier = args[0];
-        if (!PluginFileUtils.checkWorldFolder(new File(identifier))) {
+        if (!PluginFileUtil.checkWorldFolder(new File(identifier))) {
             member.sendMessage(AdventureMessage.from("<red>The world you specified does not exist!"));
             return false;
         }

@@ -168,6 +168,22 @@ public class ConfigurableDatabase implements Loadable {
             return true;
         }
 
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public String getPruneTime() {
+            return pruneTime;
+        }
+
+        public void setPruneTime(String pruneTime) {
+            this.pruneTime = pruneTime;
+        }
+
     }
 
 }

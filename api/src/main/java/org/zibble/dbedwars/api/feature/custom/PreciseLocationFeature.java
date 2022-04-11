@@ -4,15 +4,10 @@ import org.bukkit.Location;
 import org.zibble.dbedwars.api.feature.BedWarsFeature;
 import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 
-public abstract class PreciseLocation extends BedWarsFeature {
+public abstract class PreciseLocationFeature extends BedWarsFeature {
 
-    public PreciseLocation() {
-        super(BedWarsFeatures.PRECISE_LOCATION.get());
-    }
-
-    @Override
-    public boolean isTickable() {
-        return false;
+    public PreciseLocationFeature() {
+        super(BedWarsFeatures.PRECISE_LOCATION_FEATURE);
     }
 
     public abstract Location getPrecise(Location location);

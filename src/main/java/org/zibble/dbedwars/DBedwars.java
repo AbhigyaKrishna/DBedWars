@@ -11,6 +11,8 @@ import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.api.DBedWarsAPI;
+import org.zibble.dbedwars.api.feature.BedWarsFeature;
+import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.plugin.PluginAdapter;
@@ -19,10 +21,11 @@ import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.commands.framework.CommandRegistryImpl;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
+import org.zibble.dbedwars.features.PreciseLocationFeature;
+import org.zibble.dbedwars.features.SaveArenaHistoryFeature;
 import org.zibble.dbedwars.game.GameManagerImpl;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
 import org.zibble.dbedwars.handler.*;
-import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.listeners.VanishListener;
@@ -72,18 +75,9 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUp() {
-        Debugger.setEnabled(true); // TODO remove this
         this.serverVersion = Version.getServerVersion();
         this.threadHandler = new ThreadHandler();
         this.threadHandler.runThreads(4);
-        this.nmsAdaptor = this.registerNMSAdaptor();
-        this.hookManager = new HookManagerImpl(this);
-        this.hookManager.load();
-        this.featureManager = new FeatureManager(this);
-        this.featureManager.registerDefaults();
-        this.scriptRegistry = new ScriptRegistryImpl();
-        this.scriptRegistry.registerDefaults();
-        this.commandRegistry = new CommandRegistryImpl(this);
         this.messaging = new Messaging(this);
         this.messaging.init(this.getServer().getConsoleSender());
 
@@ -122,6 +116,14 @@ public final class DBedwars extends PluginAdapter {
         this.configHandler.initMainConfig();
         this.configHandler.initLanguage();
 
+        this.threadHandler.submitAsync(() -> {
+            this.configHandler.loadConfigurations();
+            this.configHandler.loadItems();
+
+            this.registerCustomItems();
+            this.initDatabase();
+        });
+
         return true;
     }
 
@@ -131,14 +133,15 @@ public final class DBedwars extends PluginAdapter {
         this.customItemHandler = new CustomItemHandler(this);
         this.setupSessionManager = new SetupSessionManager();
         this.menuHandler = new MenuHandler(this);
+        this.nmsAdaptor = this.registerNMSAdaptor();
+        this.hookManager = new HookManagerImpl(this);
+        this.hookManager.load();
+        this.featureManager = new FeatureManager(this);
+        this.featureManager.registerDefaults();
 
-        this.threadHandler.submitAsync(() -> {
-            this.configHandler.loadConfigurations();
-            this.configHandler.loadItems();
-
-            this.registerCustomItems();
-            this.initDatabase();
-        });
+        this.scriptRegistry = new ScriptRegistryImpl();
+        this.scriptRegistry.registerDefaults();
+        this.commandRegistry = new CommandRegistryImpl(this);
 
         return true;
     }

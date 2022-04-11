@@ -2,7 +2,6 @@ package org.zibble.dbedwars.task.implementations;
 
 import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;
-import com.pepedevs.radium.particles.ParticleBuilder;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +10,7 @@ import org.bukkit.material.Colorable;
 import org.bukkit.material.Directional;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.Team;
+import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.task.Workload;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
@@ -23,7 +23,7 @@ public class PopupTowerWorkload implements Workload {
 
     private final XMaterial material;
     private final SoundVP sound;
-    private final ParticleBuilder particle;
+    private final ParticleEffectASC particle;
     private final Block chest;
     private final DyeColor color;
     private final BlockFace face;
@@ -37,7 +37,7 @@ public class PopupTowerWorkload implements Workload {
     public PopupTowerWorkload(
             XMaterial material,
             SoundVP soundVP,
-            ParticleBuilder particleWithoutLocation,
+            ParticleEffectASC particleWithoutLocation,
             Block chest,
             Team team,
             int blocksPerTick) {
@@ -93,7 +93,7 @@ public class PopupTowerWorkload implements Workload {
                     }
                 });
                 sound.play(block.getLocation());
-                particle.setLocation(block.getLocation()).display();
+                particle.build().setLocation(block.getLocation()).display();
             }
         }
     }

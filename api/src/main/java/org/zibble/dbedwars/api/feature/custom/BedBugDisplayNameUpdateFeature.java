@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class BedBugDisplayNameUpdateFeature extends BedWarsFeature {
 
     public BedBugDisplayNameUpdateFeature() {
-        super(BedWarsFeatures.BED_BUG_DISPLAY_NAME_UPDATE_FEATURE.get());
+        super(BedWarsFeatures.BED_BUG_DISPLAY_NAME_UPDATE_FEATURE);
     }
 
     public abstract void start(Silverfish bedBug, ArenaPlayer thrower);

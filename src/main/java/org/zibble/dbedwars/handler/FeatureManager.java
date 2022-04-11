@@ -26,12 +26,16 @@ public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureMa
 
     public void registerDefaults() {
         this.registerFeature(new ArenaEndFireworkFeature(this.plugin));
-        this.registerFeature(new DeathAnimationFeature(this.plugin));
         this.registerFeature(new BedBugChaseFeature(this.plugin));
         this.registerFeature(new BedBugDisplayNameUpdateFeature(this.plugin));
+        this.registerFeature(new BridgeEggBuildFeature(this.plugin));
+        this.registerFeature(new DeathAnimationFeature(this.plugin));
         this.registerFeature(new DreamDefenderChaseFeature(this.plugin));
         this.registerFeature(new DreamDefenderDisplayNameUpdateFeature(this.plugin));
         this.registerFeature(new FireballLaunchFeature(this.plugin));
+        this.registerFeature(new PopupTowerBuildFeature(this.plugin));
+        this.registerFeature(new PreciseLocationFeature());
+        this.registerFeature(new SaveArenaHistoryFeature(this.plugin));
         this.registerFeature(new SpongePlaceFeature(this.plugin));
         this.registerFeature(new TNTPlaceFeature(this.plugin));
     }
@@ -81,6 +85,7 @@ public class FeatureManager implements org.zibble.dbedwars.api.feature.FeatureMa
                 for (BedWarsFeature feature : map.get(priority)) {
                     if (!feature.getClass().equals(type)) continue;
                     if (!feature.isEnabled()) continue;
+                    if (!feature.isInitialized()) continue;
                     Debugger.debug("Running feature " + feature.getKey() + " with priority " + priority.name());
                     trigger.accept((T) feature);
                 }

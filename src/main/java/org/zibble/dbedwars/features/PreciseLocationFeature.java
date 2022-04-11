@@ -1,9 +1,14 @@
 package org.zibble.dbedwars.features;
 
 import org.bukkit.Location;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 
-public class PreciseLocation extends org.zibble.dbedwars.api.feature.custom.PreciseLocation {
+public class PreciseLocationFeature extends org.zibble.dbedwars.api.feature.custom.PreciseLocationFeature {
+
+    public PreciseLocationFeature() {
+        this.enabled = DBedwars.getInstance().getConfigHandler().getMainConfiguration().isPreciseLocation();
+    }
 
     @Override
     public FeaturePriority getPriority() {

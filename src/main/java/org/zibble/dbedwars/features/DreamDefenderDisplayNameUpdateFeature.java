@@ -16,11 +16,6 @@ public class DreamDefenderDisplayNameUpdateFeature extends org.zibble.dbedwars.a
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public FeaturePriority getPriority() {
         return FeaturePriority.NORMAL;
     }
@@ -33,7 +28,7 @@ public class DreamDefenderDisplayNameUpdateFeature extends org.zibble.dbedwars.a
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

@@ -21,11 +21,6 @@ public class BridgeEggBuildFeature extends org.zibble.dbedwars.api.feature.custo
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public void startBuilding(Egg egg, ArenaPlayer arenaPlayer) {
         Workload workload = new BridgeEggWorkloadTask(this.plugin, arenaPlayer, egg, this.plugin.getConfigHandler().getCustomItems().getBridgeEgg());
         this.plugin.getThreadHandler().submitAsync(workload);
@@ -33,7 +28,7 @@ public class BridgeEggBuildFeature extends org.zibble.dbedwars.api.feature.custo
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

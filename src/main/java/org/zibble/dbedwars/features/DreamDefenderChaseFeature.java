@@ -15,11 +15,6 @@ public class DreamDefenderChaseFeature extends org.zibble.dbedwars.api.feature.c
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public FeaturePriority getPriority() {
         return FeaturePriority.NORMAL;
     }
@@ -32,7 +27,7 @@ public class DreamDefenderChaseFeature extends org.zibble.dbedwars.api.feature.c
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

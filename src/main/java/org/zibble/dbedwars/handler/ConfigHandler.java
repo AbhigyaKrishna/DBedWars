@@ -12,6 +12,7 @@ import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.io.ExternalLibrary;
+import org.zibble.dbedwars.utils.Debugger;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,9 +81,10 @@ public class ConfigHandler {
     }
 
     public void initMainConfig() {
-        this.mainConfiguration = new MainConfiguration(this.plugin);
+        this.mainConfiguration = new MainConfiguration();
         this.mainConfiguration.load(YamlConfiguration.loadConfiguration(PluginFiles.CONFIG));
         this.mainConfiguration.isValid();
+        Debugger.setEnabled(this.mainConfiguration.isDebug());
     }
 
     public void initLanguage() {

@@ -6,6 +6,8 @@
 #                ██║  ██║██║  ██║███████╗██║ ╚████║██║  ██║                 #
 #                ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝                 #
 #############################################################################
+debug: false
+
 arena:
   start-timer: 30
   respawn-delay: 5
@@ -22,6 +24,8 @@ arena:
 
   disable-hunger: true
   game-lobby-scoreboard: 'game-lobby'
+
+precise-location: false
 
 # Respawning
 respawn-items:

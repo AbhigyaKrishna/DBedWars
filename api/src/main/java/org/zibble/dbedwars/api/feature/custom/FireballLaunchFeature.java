@@ -8,12 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class FireballLaunchFeature extends BedWarsFeature {
 
     public FireballLaunchFeature() {
-        super(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE.get());
-    }
-
-    @Override
-    public boolean isTickable() {
-        return false;
+        super(BedWarsFeatures.FIREBALL_LAUNCH_FEATURE);
     }
 
     public abstract void launch(Fireball fireball, ArenaPlayer launcher);

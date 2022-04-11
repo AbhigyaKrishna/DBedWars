@@ -100,6 +100,9 @@ public enum ConfigLang implements Lang {
     //Explosion Death
     DEATH_MESSAGE_EXPLOSION_BY_PLAYER("death-messages.explosion-death.by-player", "<victim_color><victim_player> <white> exploded into million pieces by <attacker_color><attacker_player><white>but couldn't handle it and died."),
     DEATH_MESSAGE_EXPLOSION_NO_PLAYER("death-messages.explosion-death.no-player", "<victim_color><victim_player> <white> exploded into million pieces."),
+    //Projectile Death
+    DEATH_MESSAGE_PROJECTILE_BY_PLAYER("death-messages.projectile-death.by-player", "<victim_color><victim_player> <white> was shot by <attacker_color><attacker_player><white> but couldn't handle it and died."),
+    DEATH_MESSAGE_PROJECTILE_NO_PLAYER("death-messages.projectile-death.no-player", "<victim_color><victim_player> <white> was shot by a projectile but couldn't handle it and died."),
     //Suffocation Death
     DEATH_MESSAGE_SUFFOCATION_BY_PLAYER("death-messages.suffocation-death.by-player", "<victim_color><victim_player> <white>was suffocated as there was no oxygen left due to pollution caused by <attacker_color><attacker_player><white>."),
     DEATH_MESSAGE_SUFFOCATION_NO_PLAYER("death-messages.suffocation-death.no-player", "<victim_color><victim_player> <white>was suffocated as there was no oxygen left due to pollution."),
@@ -115,12 +118,21 @@ public enum ConfigLang implements Lang {
     //Void Death
     DEATH_MESSAGE_VOID_BY_PLAYER("death-messages.death-by-void.by-player", "<victim_color><victim_player> <white>was pushed into void by <attacker_color><attacker_player><white>like your parents push you to study."),
     DEATH_MESSAGE_VOID_NO_PLAYER("death-messages.death-by-void.no-player", "<victim_color><victim_player> <white>was pressurised by the society so he killed himself."),
+    //Lightening Death
+    DEATH_MESSAGE_LIGHTENING_BY_PLAYER("death-messages.death-by-lightening.by-player", "<victim_color><victim_player> <white>was struck by <attacker_color><attacker_player><white>'s lightning."),
+    DEATH_MESSAGE_LIGHTENING_NO_PLAYER("death-messages.death-by-lightening.no-player", "<victim_color><victim_player> <white>was struck by lightning."),
+    //Hunger Death
+    DEATH_MESSAGE_HUNGER_BY_PLAYER("death-messages.death-by-hunger.by-player", "<victim_color><victim_player> <white>was killed by <attacker_color><attacker_player><white>'s hunger."),
+    DEATH_MESSAGE_HUNGER_NO_PLAYER("death-messages.death-by-hunger.no-player", "<victim_color><victim_player> <white>was killed by hunger."),
     //Cramming Death
     DEATH_MESSAGE_CRAMMING_BY_PLAYER("death-messages.death-by-cramming.by-player", "<victim_color><victim_player> <white>was squished by <attacker_color><attacker_player><white>."),
     DEATH_MESSAGE_CRAMMING_NO_PLAYER("death-messages.death-by-cramming.no-player", "<victim_color><victim_player> <white>had no place to exist."),
     //Crushed Death
     DEATH_MESSAGE_CRUSHED_BY_PLAYER("death-messages.crushed.by-player", "<victim_color><victim_player> <white>was crushed by <attacker_color><attacker_player><white>."),
     DEATH_MESSAGE_CRUSHED_NO_PLAYER("death-messages.crushed.no-player", "<victim_color><victim_player> <white>got pressed like a bottle of sauce."),
+    //Pricked Death
+    DEATH_MESSAGE_PRICKED_BY_PLAYER("death-messages.death-by-pricking.by-player", "<victim_color><victim_player> <white>was pricked by <attacker_color><attacker_player><white>."),
+    DEATH_MESSAGE_PRICKED_NO_PLAYER("death-messages.death-by-pricking.no-player", ""),
 
     LOBBY_LOCATION_SET("", ""),
 

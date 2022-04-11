@@ -37,8 +37,14 @@ allprojects {
     }
 
     dependencies {
-        compileOnly 'com.pepedevs:radium-spigot:1.2.0-BETA-1.9-SNAPSHOT'
         implementation 'org.zibble:if-spigot:1.1-SNAPSHOT'
+        implementation 'net.kyori:adventure-api:4.10.1'
+        implementation 'net.kyori:adventure-text-minimessage:4.10.1'
+        implementation 'net.kyori:adventure-text-serializer-gson:4.10.1'
+        implementation 'net.kyori:adventure-text-serializer-gson-legacy-impl:4.10.1'
+        implementation 'net.kyori:adventure-text-serializer-legacy:4.10.1'
+        implementation 'net.kyori:adventure-text-serializer-plain:4.10.1'
+        implementation 'net.kyori:adventure-platform-bukkit:4.1.0'
         compileOnly 'com.github.retrooper.packetevents:api:2.0-SNAPSHOT'
     }
 
@@ -47,10 +53,6 @@ allprojects {
     }
 
     shadowJar {
-        relocate 'de.tr7zw.changeme.nbtapi', 'org.zibble.dbedwars.libraries.nbtapi'
-        relocate 'de.tr7zw.annotations', 'org.zibble.dbedwars.libraries.nbtapi.annotations'
-        relocate 'de.tr7zw.nbtinjector', 'org.zibble.dbedwars.libraries.nbtapi.nbtinjector'
-
         relocate 'redis.clients.jedis', 'org.zibble.dbedwars.libraries.jedis'
         relocate 'redis.clients.util', 'org.zibble.dbedwars.libraries.jedis.util'
 
@@ -132,8 +134,6 @@ dependencies {
     implementation project(':hooks:vault-hook')
     implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.10.2'
-    implementation 'de.tr7zw:item-nbt-api:2.8.0'
-    implementation 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     implementation 'com.github.cryptomorin:XSeries:8.6.2'

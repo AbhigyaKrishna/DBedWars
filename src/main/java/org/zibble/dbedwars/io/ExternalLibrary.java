@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.io;
 
 import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.utils.PluginFileUtils;
+import org.zibble.dbedwars.utils.PluginFileUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -76,14 +76,14 @@ public abstract class ExternalLibrary {
     }
 
     public boolean download() {
-        return PluginFileUtils.downloadFile(url, file);
+        return PluginFileUtil.downloadFile(url, file);
     }
 
     public void load() {
         if (!exists()) {
             throw new IllegalStateException("Library " + name + " does not exist!");
         }
-        PluginFileUtils.loadJar(file);
+        PluginFileUtil.loadJar(file);
     }
 
     public abstract boolean isLoaded();

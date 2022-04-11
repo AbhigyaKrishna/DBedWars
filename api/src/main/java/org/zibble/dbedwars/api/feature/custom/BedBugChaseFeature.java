@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class BedBugChaseFeature extends BedWarsFeature {
 
     public BedBugChaseFeature() {
-        super(BedWarsFeatures.BED_BUG_CHASE_FEATURE.get());
+        super(BedWarsFeatures.BED_BUG_CHASE_FEATURE);
     }
 
     public abstract void startChase(Silverfish bedBug, ArenaPlayer throwingPlayer);

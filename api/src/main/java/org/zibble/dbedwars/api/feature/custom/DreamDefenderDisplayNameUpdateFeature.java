@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class DreamDefenderDisplayNameUpdateFeature extends BedWarsFeature {
 
     public DreamDefenderDisplayNameUpdateFeature() {
-        super(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE.get());
+        super(BedWarsFeatures.DREAM_DEFENDER_DISPLAY_NAME_UPDATE_FEATURE);
     }
 
     public abstract void start(IronGolem ironGolem, ArenaPlayer spawningPlayer);

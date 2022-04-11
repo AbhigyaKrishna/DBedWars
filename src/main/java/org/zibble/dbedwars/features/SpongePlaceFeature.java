@@ -37,7 +37,7 @@ public class SpongePlaceFeature extends org.zibble.dbedwars.api.feature.custom.S
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

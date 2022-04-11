@@ -3,8 +3,6 @@ package org.zibble.dbedwars.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
-import com.pepedevs.radium.adventure.MiniMessageUtils;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.adventure.MiniMessageUtils;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
@@ -112,8 +111,7 @@ public class Util {
         return temp.size() >= 1;
     }
 
-    public static LinkedHashMap<ArenaPlayer, Integer> getGameLeaderBoard(
-            Collection<ArenaPlayer> players) {
+    public static LinkedHashMap<ArenaPlayer, Integer> getGameLeaderBoard(Collection<ArenaPlayer> players) {
         LinkedHashMap<ArenaPlayer, Integer> map = new LinkedHashMap<>();
         players.stream()
                 .sorted(
@@ -256,6 +254,8 @@ public class Util {
                 return player != null ? ConfigLang.DEATH_MESSAGE_VELOCITY_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_VELOCITY_NO_PLAYER.asMessage();
             case EXPLOSION:
                 return player != null ? ConfigLang.DEATH_MESSAGE_EXPLOSION_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_EXPLOSION_NO_PLAYER.asMessage();
+            case PROJECTILE:
+                return player != null ? ConfigLang.DEATH_MESSAGE_PROJECTILE_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_PROJECTILE_NO_PLAYER.asMessage();
             case SUFFOCATION:
                 return player != null ? ConfigLang.DEATH_MESSAGE_SUFFOCATION_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_SUFFOCATION_NO_PLAYER.asMessage();
             case DROWN:
@@ -266,12 +266,18 @@ public class Util {
                 return player != null ? ConfigLang.DEATH_MESSAGE_MAGIC_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_MAGIC_NO_PLAYER.asMessage();
             case VOID:
                 return player != null ? ConfigLang.DEATH_MESSAGE_VOID_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_VOID_NO_PLAYER.asMessage();
+            case LIGHTENING:
+                return player != null ? ConfigLang.DEATH_MESSAGE_LIGHTENING_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_LIGHTENING_NO_PLAYER.asMessage();
+            case HUNGER:
+                return player != null ? ConfigLang.DEATH_MESSAGE_HUNGER_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_HUNGER_NO_PLAYER.asMessage();
             case SUICIDE:
                 return ConfigLang.DEATH_MESSAGE_SUICIDE.asMessage();
             case ENTITY_CRAMMED:
                 return player != null ? ConfigLang.DEATH_MESSAGE_CRAMMING_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_CRAMMING_NO_PLAYER.asMessage();
             case CRUSHED:
                 return player != null ? ConfigLang.DEATH_MESSAGE_CRUSHED_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_CRUSHED_NO_PLAYER.asMessage();
+            case PRICKED:
+                return player != null ? ConfigLang.DEATH_MESSAGE_PRICKED_BY_PLAYER.asMessage() : ConfigLang.DEATH_MESSAGE_PRICKED_NO_PLAYER.asMessage();
             case UNKNOWN:
             default:
                 return ConfigLang.DEATH_MESSAGE_UNKNOWN_REASON.asMessage();

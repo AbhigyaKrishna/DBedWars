@@ -53,8 +53,6 @@ public class SetupSession {
     private final Map<Color, TeamTracker<CancellableWorkload>> teamWorkloads;
     private final Map<Color, TeamTracker<Hologram>> teamHolograms;
 
-    private boolean isPreciseEnabled;
-
     public SetupSession(World world, Player player, ArenaDataHolderImpl arenaDataHolder) {
         this.world = world;
         this.player = player;
@@ -67,8 +65,6 @@ public class SetupSession {
         this.spawnerHolograms = new ArrayList<>();
         this.teamWorkloads = new HashMap<>();
         this.teamHolograms = new HashMap<>();
-
-        this.isPreciseEnabled = true;
     }
 
     public void promptWholeList() {
@@ -306,14 +302,6 @@ public class SetupSession {
 
     public void save() {
 
-    }
-
-    public boolean isPreciseEnabled() {
-        return isPreciseEnabled;
-    }
-
-    public void setPreciseEnabled(boolean preciseEnabled) {
-        isPreciseEnabled = preciseEnabled;
     }
 
     public ArenaDataHolderImpl getArenaDataHolder() {

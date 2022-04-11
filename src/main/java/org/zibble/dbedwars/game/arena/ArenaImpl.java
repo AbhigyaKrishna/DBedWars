@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.*;
+import org.zibble.dbedwars.api.feature.BedWarsFeatures;
+import org.zibble.dbedwars.api.feature.custom.SaveArenaHistoryFeature;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
@@ -40,7 +42,6 @@ import org.zibble.dbedwars.messaging.AbstractMessaging;
 import org.zibble.dbedwars.task.implementations.ArenaStartTask;
 import org.zibble.dbedwars.task.implementations.UpdateTask;
 import org.zibble.dbedwars.utils.ConfigurationUtil;
-import org.zibble.dbedwars.utils.DatabaseUtils;
 import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.gamerule.GameRuleDisableDaylightCycle;
 import org.zibble.dbedwars.utils.gamerule.GameRuleType;
@@ -321,7 +322,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         this.status = ArenaStatus.ENDING;
         UpdateTask.removeTickable(this);
 
-        this.plugin.getDatabaseBridge().insertArenaHistory(DatabaseUtils.createHistory(this, event.getWinner().getColor()));
+        this.plugin.getFeatureManager().runFeature(BedWarsFeatures.SAVE_ARENA_HISTORY_FEATURE, SaveArenaHistoryFeature.class,
+                feature -> feature.save(this, event.getWinner().getColor()));
         return true;
     }
 
@@ -488,7 +490,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
 
     @Override
     public Duration getRunningTime() {
-        return Duration.ofMilliseconds(Instant.now().toEpochMilli() - this.startTime.toEpochMilli());
+        return Duration.between(Instant.now(), this.startTime);
     }
 
     @Override

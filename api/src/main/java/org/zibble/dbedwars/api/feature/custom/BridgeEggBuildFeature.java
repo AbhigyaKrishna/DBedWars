@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class BridgeEggBuildFeature extends BedWarsFeature {
 
     public BridgeEggBuildFeature() {
-        super(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE.get());
+        super(BedWarsFeatures.BRIDGE_EGG_BUILD_FEATURE);
     }
 
     public abstract void startBuilding(Egg egg, ArenaPlayer arenaPlayer);

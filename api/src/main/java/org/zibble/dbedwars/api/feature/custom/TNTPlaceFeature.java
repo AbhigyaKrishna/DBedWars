@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 public abstract class TNTPlaceFeature extends BedWarsFeature {
 
     public TNTPlaceFeature() {
-        super(BedWarsFeatures.TNT_PLACE_FEATURE.get());
+        super(BedWarsFeatures.TNT_PLACE_FEATURE);
     }
 
     public abstract void onPlace(Block block, ArenaPlayer placer);

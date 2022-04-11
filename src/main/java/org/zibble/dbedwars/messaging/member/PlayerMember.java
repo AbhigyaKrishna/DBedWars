@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.util.key.Key;
 public class PlayerMember extends MessagingMember implements org.zibble.dbedwars.api.messaging.member.PlayerMember {
 
     public PlayerMember(Player player) {
-        super(player);
+        super(player, audience -> audience.player(player));
     }
 
     @Override

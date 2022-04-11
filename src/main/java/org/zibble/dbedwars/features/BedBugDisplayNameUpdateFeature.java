@@ -22,11 +22,6 @@ public class BedBugDisplayNameUpdateFeature extends org.zibble.dbedwars.api.feat
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public void start(Silverfish silverfish, ArenaPlayer thrower) {
         IBedBug bedBug = this.plugin.getNMSAdaptor().getAsBedwarsBedBug(silverfish, thrower.getTeam());
         Workload workload = new BedBugDisplayNameUpdateTask(
@@ -38,7 +33,7 @@ public class BedBugDisplayNameUpdateFeature extends org.zibble.dbedwars.api.feat
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

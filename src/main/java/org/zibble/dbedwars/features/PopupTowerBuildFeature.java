@@ -1,16 +1,17 @@
 package org.zibble.dbedwars.features;
 
+import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
-import com.pepedevs.radium.particles.ParticleBuilder;
-import com.pepedevs.radium.particles.ParticleEffect;
 import org.bukkit.block.Chest;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
 import org.zibble.dbedwars.task.implementations.PopupTowerWorkload;
+import xyz.xenondevs.particle.ParticleEffect;
 
 public class PopupTowerBuildFeature extends org.zibble.dbedwars.api.feature.custom.PopupTowerBuildFeature {
 
@@ -35,23 +36,16 @@ public class PopupTowerBuildFeature extends org.zibble.dbedwars.api.feature.cust
                         : cfgPopupTower.getSound().equals("")
                         ? SoundVP.of(XSound.ENTITY_CHICKEN_EGG, 0, 0)
                         : SoundVP.valueOf(cfgPopupTower.getSound())),
-                new ParticleBuilder(ParticleEffect.CLOUD)
-                        .setAmount(1)
-                        .setSpeed(0.2F),
+                ParticleEffectASC.of(ParticleEffect.CLOUD, 1, 0.2F),
                 chest.getBlock(),
                 placer.getTeam(),
                 2));
-        this.plugin.getThreadHandler().submitSync(new Runnable() {
-            @Override
-            public void run() {
-                chest.getBlock().setType(XMaterial.AIR.parseMaterial());
-            }
-        });
+        this.plugin.getThreadHandler().submitSync(() -> XBlock.setType(chest.getBlock(), XMaterial.AIR));
     }
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

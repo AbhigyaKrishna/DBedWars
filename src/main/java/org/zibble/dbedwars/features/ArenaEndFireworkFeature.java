@@ -25,11 +25,6 @@ public class ArenaEndFireworkFeature extends org.zibble.dbedwars.api.feature.cus
     }
 
     @Override
-    public boolean isTickable() {
-        return false;
-    }
-
-    @Override
     public FeaturePriority getPriority() {
         return FeaturePriority.NORMAL;
     }
@@ -61,7 +56,7 @@ public class ArenaEndFireworkFeature extends org.zibble.dbedwars.api.feature.cus
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

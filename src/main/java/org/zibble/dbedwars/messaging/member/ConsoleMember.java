@@ -1,12 +1,12 @@
 package org.zibble.dbedwars.messaging.member;
 
+import net.kyori.adventure.platform.AudienceProvider;
 import org.bukkit.command.ConsoleCommandSender;
 
-public class ConsoleMember extends MessagingMember
-        implements org.zibble.dbedwars.api.messaging.member.ConsoleMember {
+public class ConsoleMember extends MessagingMember implements org.zibble.dbedwars.api.messaging.member.ConsoleMember {
 
     public ConsoleMember(ConsoleCommandSender sender) {
-        super(sender);
+        super(sender, AudienceProvider::console);
     }
 
     @Override

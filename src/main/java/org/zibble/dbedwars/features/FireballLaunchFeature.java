@@ -38,7 +38,7 @@ public class FireballLaunchFeature extends org.zibble.dbedwars.api.feature.custo
 
     @Override
     public boolean isInitialized() {
-        return false;
+        return true;
     }
 
 }

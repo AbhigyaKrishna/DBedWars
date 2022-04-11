@@ -11,12 +11,7 @@ import java.util.Collection;
 public abstract class DeathAnimationFeature extends BedWarsFeature {
 
     public DeathAnimationFeature() {
-        super(BedWarsFeatures.DEATH_ANIMATION_FEATURE.get());
-    }
-
-    @Override
-    public boolean isTickable() {
-        return false;
+        super(BedWarsFeatures.DEATH_ANIMATION_FEATURE);
     }
 
     @Override
