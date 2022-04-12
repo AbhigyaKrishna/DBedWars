@@ -17,7 +17,6 @@ include(':hooks:betternick-hook')
 include(':hooks:eazynick-hook')
 include(':hooks:pvplevels-hook')
 include(':hooks:citizens-hook')
-include 'hooks:placeholderapi-hook'
-include(':hooks:sternalboard-hook')
+include('hooks:placeholderapi-hook')
 include(':hooks:skinrestorer-hook')
 include(':hooks:vanish-hook')

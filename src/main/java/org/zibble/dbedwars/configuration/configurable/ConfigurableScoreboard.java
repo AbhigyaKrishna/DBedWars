@@ -5,6 +5,7 @@ import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class ConfigurableScoreboard implements Loadable {
         } else {
             this.title = Collections.singletonList(section.getString("title"));
         }
+        this.content = new ArrayList<>();
         if (section.isList("content")) {
             for (String s : section.getStringList("content")) {
                 this.content.add(Collections.singletonList(s));
@@ -46,7 +48,7 @@ public class ConfigurableScoreboard implements Loadable {
 
     @Override
     public boolean isValid() {
-        return this.title != null;
+        return !this.title.isEmpty();
     }
 
     public String getKey() {

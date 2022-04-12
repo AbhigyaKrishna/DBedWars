@@ -11,10 +11,10 @@ public enum PluginLang implements Lang {
     DISABLE_MOB_SPAWNING_PROMPT(),
     DISABLE_MOB_SPAWNING_DONE(),
     ENTITY_CLEANUP_PROMPT(),
-    ENTITY_CLEANUP_DONE(),
+    ENTITY_CLEANUP_DONE("<green>Cleaned up <count> entities!"),
     SETUP_WAITING_LOCATION_PROMPT(),
     SETUP_WAITING_LOCATION_DONE(),
-    SETUP_WAITING_LOCATION_HOLOGRAM(),
+    SETUP_WAITING_LOCATION_HOLOGRAM("<yellow>Waiting for players to join!"),
     SETUP_SPECTATOR_LOCATION_PROMPT(),
     SETUP_SPECTATOR_LOCATION_DONE(),
     SETUP_SPECTATOR_LOCATION_HOLOGRAM(),
@@ -78,12 +78,12 @@ public enum PluginLang implements Lang {
 
     @Override
     public Message asMessage() {
-        return this.message;
+        return this.message.clone();
     }
 
     @Override
     public Message asMessage(Placeholder... placeholders) {
-        Message msg = this.message.clone();
+        Message msg = this.asMessage();
         msg.addPlaceholders(placeholders);
         return msg;
     }

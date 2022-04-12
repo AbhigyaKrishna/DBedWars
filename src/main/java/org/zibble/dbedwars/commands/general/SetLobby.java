@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.commands;
+package org.zibble.dbedwars.commands.general;
 
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;

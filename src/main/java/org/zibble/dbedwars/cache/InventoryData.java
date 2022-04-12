@@ -2,7 +2,7 @@ package org.zibble.dbedwars.cache;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 
 public class InventoryData {
 

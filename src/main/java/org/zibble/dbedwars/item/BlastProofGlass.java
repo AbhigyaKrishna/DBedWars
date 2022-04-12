@@ -36,7 +36,7 @@ public class BlastProofGlass extends BedWarsActionItem {
     @Override
     public void give(Player player) {
         // TODO Get ArenaPlayer then set type
-        super.give(player);
+        this.plugin.getGameManager().getArenaPlayer(player).ifPresent(ap -> super.give(player));
     }
 
     public void onPlace(BlockPlaceEvent event) {

@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.future;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.task.Workload;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -11,6 +11,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ActionFuture<T> {
+
+    private static boolean LOG_EXCEPTION = false;
+
+    public static void setLogException(boolean logException) {
+        LOG_EXCEPTION = logException;
+    }
 
     protected T result = null;
     protected Throwable throwable;
@@ -152,6 +158,8 @@ public class ActionFuture<T> {
                     this.fn.run();
                 } catch (Throwable throwable) {
                     this.dep.completeExceptionally(throwable);
+                    if (LOG_EXCEPTION)
+                        throwable.printStackTrace();
                 }
             }
             this.dep.postComplete();
@@ -188,6 +196,8 @@ public class ActionFuture<T> {
                     this.dep.complete(this.fn.get());
                 } catch (Throwable throwable) {
                     this.dep.completeExceptionally(throwable);
+                    if (LOG_EXCEPTION)
+                        throwable.printStackTrace();
                 }
             }
             this.dep.postComplete();
@@ -220,6 +230,8 @@ public class ActionFuture<T> {
                 this.setCancelled(true);
                 this.dep.complete(this.fn.getComposedFuture().getResult());
                 this.dep.throwable = this.fn.getComposedFuture().throwable;
+                if (LOG_EXCEPTION && this.fn.getComposedFuture().throwable != null)
+                    this.fn.getComposedFuture().throwable.printStackTrace();
                 this.dep.postComplete();
             }
         }

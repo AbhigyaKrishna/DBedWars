@@ -29,7 +29,7 @@ import org.zibble.dbedwars.api.messaging.placeholders.PlayerPlaceholderEntry;
 import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.KickReason;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;

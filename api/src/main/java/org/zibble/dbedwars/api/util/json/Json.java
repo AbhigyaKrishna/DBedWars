@@ -4,9 +4,9 @@ import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.MalformedJsonException;
-import com.pepedevs.radium.utils.StringUtils;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.*;
 import java.util.Map;
@@ -69,11 +69,7 @@ public final class Json {
         try {
             StringBuilder contents = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(json_file));
-            reader.lines()
-                    .forEach(
-                            line -> {
-                                contents.append(line + StringUtils.LINE_SEPARATOR);
-                            });
+            reader.lines().forEach(line -> contents.append(line).append(System.lineSeparator()));
 
             reader.close();
             return loadFromString(contents.toString(), check_encrypted);
@@ -108,7 +104,7 @@ public final class Json {
         if (check_encrypted) {
             if (StringEscapeUtils.escapeJava(StringUtils.deleteWhitespace(contents))
                     .equals(StringUtils.deleteWhitespace(contents))) { // if encrypted
-                contents = new String(Base64.decodeBase64(contents)); // decode!
+                contents = Base64Coder.decodeString(contents); // decode!
             }
         }
 
@@ -367,7 +363,7 @@ public final class Json {
     public void save(File json_file, boolean encrypt) throws IOException {
         String contents = toString();
         if (encrypt) { // encrypting!
-            contents = Base64.encodeBase64String(contents.getBytes());
+            contents = Base64Coder.encodeString(contents);
         }
 
         FileWriter writer = new FileWriter(json_file);

@@ -6,9 +6,9 @@ import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.Collection;
 import java.util.HashSet;

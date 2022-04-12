@@ -37,7 +37,7 @@ public class SetupSession {
     private static final Key SPECTATOR_LOCATION = Key.of("spectator_loc");
 
     private static final SoundVP PROMPT_SOUND = SoundVP.of(XSound.BLOCK_NOTE_BLOCK_BASEDRUM);
-    private static final SoundVP TASK_DONE_SOUND = SoundVP.of(XSound.BLOCK_NETHER_BRICKS_BREAK);
+    private static final SoundVP TASK_DONE_SOUND = SoundVP.of(XSound.BLOCK_NOTE_BLOCK_PLING);
 
     private final World world;
     private final Player player;
@@ -95,7 +95,7 @@ public class SetupSession {
             entity.remove();
             count++;
         }
-        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_DONE.asMessage(PlaceholderEntry.of("count", String.valueOf(count))));
+        this.playerMember.sendMessage(PluginLang.ENTITY_CLEANUP_DONE.asMessage(PlaceholderEntry.symbol("count", String.valueOf(count))));
         TASK_DONE_SOUND.play(this.player);
     }
 

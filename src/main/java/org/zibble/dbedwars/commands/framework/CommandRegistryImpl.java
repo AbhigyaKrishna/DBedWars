@@ -12,15 +12,25 @@ import org.zibble.dbedwars.api.commands.annotations.SubCommandNode;
 import org.zibble.dbedwars.api.commands.nodes.AbstractCommandNode;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.commands.framework.command.CommandHolder;
+import org.zibble.dbedwars.game.setup.SetupSessionManager;
+import org.zibble.dbedwars.utils.Debugger;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ClassWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.ConstructorWrapper;
 
 import java.lang.reflect.Constructor;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class CommandRegistryImpl implements CommandRegistry {
+
+    private static final Comparator<Class<?>> NODES_SORTER = (a, b) -> {
+        SubCommandNode o1 = a.getAnnotation(SubCommandNode.class);
+        SubCommandNode o2 = b.getAnnotation(SubCommandNode.class);
+        if (o1 == null || o2 == null)
+            throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
+        String[] aRoute = o1.parent().split("\\.");
+        String[] bRoute = o2.parent().split("\\.");
+        return Integer.compare(aRoute.length, bRoute.length);
+    };
 
     private final BukkitRegistryHandler bukkitRegistryHandler;
     private final Map<Class<?>, Object> availableParameters;
@@ -33,6 +43,7 @@ public class CommandRegistryImpl implements CommandRegistry {
                 .put(DBedwars.class, plugin)
                 .put(DBedWarsAPI.class, DBedWarsAPI.getApi())
                 .put(Messaging.class, Messaging.get())
+                .put(SetupSessionManager.class, plugin.getSetupSessionManager())
                 .build();
     }
 
@@ -63,23 +74,15 @@ public class CommandRegistryImpl implements CommandRegistry {
 
     @Override
     public void registerPackage(String packageName) {
+        Debugger.debug("Registering commands from package: " + packageName);
         Reflections reflections = new Reflections(packageName);
         Set<Class<?>> baseNodes = new HashSet<>(reflections.getTypesAnnotatedWith(ParentCommandNode.class));
         for (Class<?> baseNode : baseNodes) {
             this.registerClass(baseNode);
         }
 
-        TreeSet<Class<?>> subNodes = new TreeSet<>((a, b) -> {
-            SubCommandNode o1 = a.getAnnotation(SubCommandNode.class);
-            SubCommandNode o2 = b.getAnnotation(SubCommandNode.class);
-            if (o1 == null || o2 == null)
-                throw new IllegalArgumentException("Classes must be annotated with @SubCommandNode");
-            String[] aRoute = o1.parent().split("\\.");
-            String[] bRoute = o2.parent().split("\\.");
-            return Integer.compare(aRoute.length, bRoute.length);
-        });
-
-        subNodes.addAll(reflections.getTypesAnnotatedWith(SubCommandNode.class));
+        List<Class<?>> subNodes = new LinkedList<>(reflections.getTypesAnnotatedWith(SubCommandNode.class));
+        subNodes.sort(NODES_SORTER);
 
         for (Class<?> subNode : subNodes) {
             this.registerClass(subNode);
@@ -116,6 +119,7 @@ public class CommandRegistryImpl implements CommandRegistry {
 
     private void registerBaseNodes(AbstractCommandNode node) {
         Class<?> clazz = node.getClass();
+        Debugger.debug("Registering parent node: " + clazz.getSimpleName());
         ParentCommandNode parent = clazz.getAnnotation(ParentCommandNode.class);
         Permission permission = clazz.getAnnotation(Permission.class);
         PlayerOnly playerOnly = clazz.getAnnotation(PlayerOnly.class);
@@ -124,6 +128,7 @@ public class CommandRegistryImpl implements CommandRegistry {
 
     private void registerSubNode(AbstractCommandNode node) {
         Class<?> clazz = node.getClass();
+        Debugger.debug("Registering sub node: " + clazz.getSimpleName());
         SubCommandNode subCommandNode = clazz.getAnnotation(SubCommandNode.class);
         CommandHolder currentParent = this.getNode(subCommandNode.parent());
         if (currentParent == null)
@@ -135,6 +140,9 @@ public class CommandRegistryImpl implements CommandRegistry {
     }
 
     private AbstractCommandNode createObject(Class<?> clazz) {
+        if (clazz.getConstructors().length == 0)
+            return (AbstractCommandNode) new ClassWrapper<>(clazz).newInstance();
+
         constructor:
         for (Constructor<?> constructor : clazz.getConstructors()) {
             ConstructorWrapper<?> wrapper = new ConstructorWrapper<>(constructor);

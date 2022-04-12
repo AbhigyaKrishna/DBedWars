@@ -79,7 +79,7 @@ public class HookManagerImpl implements HookManager {
                 new PvPLevelsHook(),
                 new QuickBoardHook(),
                 new SkinRestorerHook(),
-                new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
+//                new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
                 new SuperVanishHook(),
                 new TabHook(),
                 new VaultHook(),
@@ -88,15 +88,15 @@ public class HookManagerImpl implements HookManager {
     }
 
     public void load() {
-        if (SlimeWorldManagerHook.get().isEnabled())
-            this.worldAdaptor = SlimeWorldManagerHook.get();
-        else
-            this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
+//        if (this.getDependency(SlimeWorldManagerHook.class).isEnabled())
+//            this.worldAdaptor = SlimeWorldManagerHook.get();
+//        else
+        this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
 
         this.scoreboardHook = new ScoreboardHookImpl();
-        this.skinRestorerHook = SkinRestorerHook.get();
+        this.skinRestorerHook = this.getDependency(SkinRestorerHook.class);
 
-        if (PlaceholderAPIHook.get().isEnabled())
+        if (this.getDependency(PlaceholderAPIHook.class).isEnabled())
             this.placeholderHook = new PlaceholderAPIHook();
         else
             this.placeholderHook = new PlaceholderHookImpl();
@@ -108,28 +108,28 @@ public class HookManagerImpl implements HookManager {
         this.vanishHook = new MultiOptionalHookImpl<>();
         this.nickNameHooks = new MultiOptionalHookImpl<>();
 
-        if (AutoNickerHook.get().isEnabled())
-            nickNameHooks.add(AutoNickerHook.get());
-        if (BetterNickHook.get().isEnabled())
-            nickNameHooks.add(BetterNickHook.get());
-        if (EazyNickHook.get().isEnabled())
-            nickNameHooks.add(EazyNickHook.get());
-        if (NameTagEditHook.get().isEnabled())
-            nickNameHooks.add(NameTagEditHook.get());
-        if (NickAPIHook.get().isEnabled())
-            nickNameHooks.add(NickAPIHook.get());
-        if (NickNamerHook.get().isEnabled())
-            nickNameHooks.add(NickNamerHook.get());
-        if (VIPHideHook.get().isEnabled())
-            nickNameHooks.add(VIPHideHook.get());
+        if (this.getDependency(AutoNickerHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(AutoNickerHook.class));
+        if (this.getDependency(BetterNickHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(BetterNickHook.class));
+        if (this.getDependency(EazyNickHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(EazyNickHook.class));
+        if (this.getDependency(NameTagEditHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(NameTagEditHook.class));
+        if (this.getDependency(NickAPIHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(NickAPIHook.class));
+        if (this.getDependency(NickNamerHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(NickNamerHook.class));
+        if (this.getDependency(VIPHideHook.class).isEnabled())
+            nickNameHooks.add(this.getDependency(VIPHideHook.class));
 
-        if (PremiumVanishHook.get().isEnabled())
-            vanishHook.add(PremiumVanishHook.get());
-        if (SuperVanishHook.get().isEnabled())
-            vanishHook.add(SuperVanishHook.get());
+        if (this.getDependency(PremiumVanishHook.class).isEnabled())
+            vanishHook.add(this.getDependency(PremiumVanishHook.class));
+        if (this.getDependency(SuperVanishHook.class).isEnabled())
+            vanishHook.add(this.getDependency(SuperVanishHook.class));
 
-        if (CMIHook.get().isEnabled()) {
-            CMIHook hook = CMIHook.get();
+        if (this.getDependency(CMIHook.class).isEnabled()) {
+            CMIHook hook = this.getDependency(CMIHook.class);
             nickNameHooks.add(hook.getCmiNick());
             vanishHook.add(hook.getCmiVanish());
         }
@@ -142,6 +142,17 @@ public class HookManagerImpl implements HookManager {
         this.areaSelectionHook.init();
         this.vanishHook.init();
         this.nickNameHooks.init();
+
+        if (this.skinRestorerHook.isEnabled())
+            this.scoreboardHook.init();
+    }
+
+    public <T extends PluginDependence>  T getDependency(Class<T> clazz) {
+        for (PluginDependence dependence : this.dependencies) {
+            if (dependence.getClass().equals(clazz))
+                return (T) dependence;
+        }
+        return null;
     }
 
     @Override

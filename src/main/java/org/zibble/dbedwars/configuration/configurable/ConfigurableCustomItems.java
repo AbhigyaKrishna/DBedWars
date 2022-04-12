@@ -3,6 +3,7 @@ package org.zibble.dbedwars.configuration.configurable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
+import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -873,27 +874,27 @@ public class ConfigurableCustomItems implements Loadable {
 
     public static class ConfigurableKnockBack implements Loadable {
 
+        @Defaults.Boolean(true)
         @ConfigPath
         private boolean enabled;
 
+        @Defaults.Integer(3)
         @ConfigPath
         private int radiusEntities;
 
+        @Defaults.Double(16)
         @ConfigPath
         private double distanceModifier;
 
+        @Defaults.Double(1.5)
         @ConfigPath
         private double heightForce;
 
+        @Defaults.Double(3)
         @ConfigPath
         private double horizontalForce;
 
         protected ConfigurableKnockBack() {
-            enabled = true;
-            radiusEntities = 3;
-            distanceModifier = 16;
-            heightForce = 1.5;
-            horizontalForce = 3;
         }
 
         @Override

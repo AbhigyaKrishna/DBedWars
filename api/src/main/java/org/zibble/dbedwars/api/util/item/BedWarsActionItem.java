@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.key.Keyed;
 
 import java.util.Collection;

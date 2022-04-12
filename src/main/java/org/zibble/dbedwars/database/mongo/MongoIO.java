@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.database.data.PersistentStat;
 import org.zibble.dbedwars.database.data.io.DataReader;

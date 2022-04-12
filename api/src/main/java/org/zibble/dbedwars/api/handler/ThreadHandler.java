@@ -2,7 +2,7 @@ package org.zibble.dbedwars.api.handler;
 
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.task.Workload;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.Collection;
 

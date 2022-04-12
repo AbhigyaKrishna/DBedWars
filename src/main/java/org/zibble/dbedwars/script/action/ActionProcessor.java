@@ -2,7 +2,7 @@ package org.zibble.dbedwars.script.action;
 
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.script.action.Action;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 public class ActionProcessor {
 

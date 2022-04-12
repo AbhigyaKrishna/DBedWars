@@ -29,7 +29,7 @@ tnt:
     height-force: 1.5
     horizontal-force: 3
 popup-tower:
-  name: "&bCompact Pop-up Tower"
+  name: "<aqua>Compact Pop-up Tower"
   lore: [ ]
   sound: ''
   particle: ''
@@ -59,9 +59,9 @@ sponge:
 dream-defender:
   name: ''
   lore: [ ]
-  golem-display-name: '&f%time_left% &0[ &l%health_bar% &0]' # %time_left%, %team_color%, %health_bar%
+  golem-display-name: '<white><time_left> <black>[ <bold><health_bar> <black>]' # <time_left>, <team_color>, <health_bar>
   health-symbol: '● ' #add intentional space to add space between health symbols
-  health-color-codes: '%team_color%:8'
+  health-color-codes: '<team_color>:dark_gray'
   health-indicator-count: 10
   potion-effects:
     - ''
@@ -69,9 +69,9 @@ dream-defender:
 bed-bug:
   name: ''
   lore: [ ]
-  bed-bug-display-name: '&0[ %health_bar% &0]'
+  bed-bug-display-name: '<black>[ <health_bar> <black>]'
   health-symbol: '● ' #add intentional space to add space between health symbols
-  health-color-codes: '%team_color%:8'
+  health-color-codes: '<team_color>:dark_gray'
   health-indicator-count: 5
   potion-effects: [ ]
   time-until-despawn: 300

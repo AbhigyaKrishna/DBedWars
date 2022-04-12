@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.item;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.pepedevs.radium.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -16,6 +15,7 @@ import org.zibble.dbedwars.api.util.item.BedWarsActionItem;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableCustomItems;
+import org.zibble.dbedwars.messaging.Messaging;
 
 import java.util.Optional;
 
@@ -63,7 +63,7 @@ public class Sponge extends BedWarsActionItem {
                 && event.getBlock().getMetadata("isBedwarsSponge").contains(SPONGE_META)) {
             event.setCancelled(true);
             if (cfgSponge.getBreakTryMessage() != null && !cfgSponge.getBreakTryMessage().trim().equals(""))
-                event.getPlayer().sendMessage(StringUtils.translateAlternateColorCodes(cfgSponge.getBreakTryMessage()));
+                Messaging.getInstance().getMessagingMember(event.getPlayer()).sendMessage(ConfigMessage.from(cfgSponge.getBreakTryMessage()));
         }
     }
 

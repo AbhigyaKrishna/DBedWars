@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
+import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
@@ -85,6 +86,8 @@ public class ConfigHandler {
         this.mainConfiguration.load(YamlConfiguration.loadConfiguration(PluginFiles.CONFIG));
         this.mainConfiguration.isValid();
         Debugger.setEnabled(this.mainConfiguration.isDebug());
+        ActionFuture.setLogException(this.mainConfiguration.isDebug());
+        Debugger.debug("Debugging is enabled!");
     }
 
     public void initLanguage() {
@@ -211,7 +214,13 @@ public class ConfigHandler {
                 e.printStackTrace();
             }
         }
-        cfg.save(YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN));
+        YamlConfiguration section = YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN);
+        cfg.save(section);
+        try {
+            section.save(PluginFiles.Data.LOBBY_SPAWN);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.lobbyLocation = cfg;
     }
 

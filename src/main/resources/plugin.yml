@@ -1,11 +1,26 @@
 name: DBedwars
-version: ${project.version}
-main: com.pepedevs.dbedwars.DBedwars
+version: 1.0
+main: org.zibble.dbedwars.DBedwars
 softdepend:
-  - radium
-  - Multiverse-Core
-  - SlimeWorldManager
+  - AutoNicker
+  - BetterNick
+  - Citizens
+  - CMI
+  - EazyNick
+  - FeatherBoard
+  - NametagEdit
+  - NickAPI
+  - NickNamer
   - PlaceholderAPI
+  - PremiumVanish
+  - PvPLevels
+  - QuickBoard
+  - SkinsRestorer
+  - SlimeWorldManager
+  - SuperVanish
+  - TAB
+  - Vault
+  - VIPHide
 commands:
   bedwars:
     aliases:

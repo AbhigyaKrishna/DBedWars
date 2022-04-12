@@ -300,26 +300,23 @@ public class MainConfiguration implements Loadable {
 
     public static class LangSection implements Loadable {
 
-        private final LegacySettingsSection legacySettings;
-        private final ModernSettingsSection modernSettings;
+        private LegacySettingsSection legacySettings;
+        private ModernSettingsSection modernSettings;
         @Defaults.String("modern")
-        @ConfigPath("parse-type")
+        @ConfigPath
         private String parseType;
         @Defaults.String("en_US")
-        @ConfigPath("server-language")
+        @ConfigPath
         private String serverLanguage;
-
-        public LangSection() {
-            this.legacySettings = new LegacySettingsSection();
-            this.modernSettings = new ModernSettingsSection();
-        }
 
         @Override
         public void load(ConfigurationSection section) {
             this.loadEntries(section);
             if (this.parseType.equalsIgnoreCase("legacy")) {
+                this.legacySettings = new LegacySettingsSection();
                 this.legacySettings.load(section.getConfigurationSection("legacy-settings"));
             } else {
+                this.modernSettings = new ModernSettingsSection();
                 this.modernSettings.load(section.getConfigurationSection("modern-settings"));
             }
         }

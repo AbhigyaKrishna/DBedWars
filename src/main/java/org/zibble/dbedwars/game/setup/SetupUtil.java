@@ -18,7 +18,7 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.utils.Util;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
@@ -32,7 +32,7 @@ public class SetupUtil {
     private static final DBedwars PLUGIN = DBedwars.getInstance();
 
     public static boolean isAllowedEntity(Entity entity) {
-        return entity instanceof Painting || entity instanceof ItemFrame;
+        return entity instanceof Painting || entity instanceof ItemFrame || entity instanceof Player;
     }
 
     public static Location precise(Location location) {
@@ -53,9 +53,9 @@ public class SetupUtil {
     }
 
     public static CancellableWorkload createParticleSpawningTask(Location location, Player player, java.awt.Color color) {
-        ParticleEffectASC particleEffect = ParticleEffectASC.of(ParticleEffect.REDSTONE, 1, 0, color);
+        ParticleEffectASC particleEffect = ParticleEffectASC.of(ParticleEffect.REDSTONE, 25, 0, color);
         ParticleBuilder builder = particleEffect.build().setLocation(location.clone().add(0, 1, 0));
-        return PLUGIN.getThreadHandler().runTaskTimer(() -> builder.display(player), Duration.ofMilliseconds(50));
+        return PLUGIN.getThreadHandler().runTaskTimer(() -> builder.display(player), Duration.ofTicks(1));
     }
 
     public static CancellableWorkload createParticleSpawningTask(Location location, Player player, Color color) {
@@ -64,11 +64,12 @@ public class SetupUtil {
 
     public static Hologram createHologram(Location location, Player player, Message text) {
         Hologram hologram = PLUGIN.getHookManager().getHologramFactory().createHologram(location.clone().add(0, 2, 0));
+        hologram.show(player);
         HologramPage page = hologram.addPage();
         for (Message message : text.splitToLineMessage()) {
             page.addNewTextLine(message);
         }
-        hologram.changeViewerPage(player.getUniqueId(), 0);
+        hologram.changeViewerPage(player, page.getPageNumber());
         return hologram;
     }
 
@@ -122,7 +123,7 @@ public class SetupUtil {
                 "<yellow><hover:show_text:'/bw setup addshop <gold>[shop] (color)</gold>'><click:suggest_command:'/bw setup addshop '>Set team shop</click></hover></yellow>",
                 "<yellow><hover:show_text:'/bw setup addspawner <gold>[spawner] (color)</gold>'><click:suggest_command:'/bw setup addspawner '>Add spawners</click></hover></yellow>",
         };
-        return AdventureMessage.from(lines, PlaceholderEntry.symbol("custom_name", Util.convertMessage(session.getArenaDataHolder().getCustomName(), AdventureMessage.empty()).getMessage()));
+        return AdventureMessage.from(lines, PlaceholderEntry.symbol("custom_name", session.getArenaDataHolder().getCustomName() != null ? Util.convertMessage(session.getArenaDataHolder().getCustomName(), AdventureMessage.empty()).getMessage() : ""));
     }
 
     private static String createPatternForTeams(char c, Set<Color> teams) {

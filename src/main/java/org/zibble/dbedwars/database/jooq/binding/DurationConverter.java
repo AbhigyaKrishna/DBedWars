@@ -3,7 +3,7 @@ package org.zibble.dbedwars.database.jooq.binding;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.Converter;
 import org.jooq.types.YearToSecond;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 public class DurationConverter implements Converter<YearToSecond, Duration> {
 

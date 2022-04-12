@@ -1,18 +1,18 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
-import com.pepedevs.radium.particles.ParticleEffect;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.hologram.AnimatedHologramModel;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableItemSpawner;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.ConfigurationUtil;
+import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +48,8 @@ public class DropInfoImpl implements DropInfo {
         dropType.hologram = cfg.isHologramEnabled() ? DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().containsKey(cfg.getHologramId()) ?
                 ConfigurationUtil.createHologram(DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().get(cfg.getHologramId())) : null : null;
 
-        for (Map.Entry<Integer, ConfigurableItemSpawner.ConfigurableTiers> entry : cfg.getTiers().entrySet()) {
-            dropType.tiers.put(entry.getKey(), Tier.fromConfig(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableTiers> entry : cfg.getTiers().entrySet()) {
+            dropType.tiers.put(Integer.parseInt(entry.getKey()), Tier.fromConfig(Integer.parseInt(entry.getKey()), entry.getValue()));
         }
         return dropType;
     }

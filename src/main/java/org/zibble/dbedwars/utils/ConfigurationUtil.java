@@ -21,6 +21,8 @@ import org.zibble.dbedwars.api.objects.hologram.HologramModel;
 import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
 import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.objects.profile.Skin;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.script.ScriptVariable;

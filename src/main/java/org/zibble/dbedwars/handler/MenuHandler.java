@@ -8,12 +8,10 @@ public class MenuHandler implements org.zibble.dbedwars.api.handler.MenuHandler 
 
     private final DBedwars plugin;
     private final ActionRegistry actionRegistry;
-    private final MenuPlayerProvider playerProvider;
 
     public MenuHandler(DBedwars plugin) {
         this.plugin = plugin;
         this.actionRegistry = new ActionRegistry(this);
-        this.playerProvider = new MenuPlayerProvider(this);
     }
 
     public DBedwars getPlugin() {
@@ -23,10 +21,6 @@ public class MenuHandler implements org.zibble.dbedwars.api.handler.MenuHandler 
     @Override
     public ActionRegistry getActionRegistry() {
         return actionRegistry;
-    }
-
-    public MenuPlayerProvider getPlayerProvider() {
-        return playerProvider;
     }
 
 }

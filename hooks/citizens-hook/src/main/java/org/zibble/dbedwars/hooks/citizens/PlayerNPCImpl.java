@@ -14,8 +14,8 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
 
     private final SkinData skinData;
 
-    public PlayerNPCImpl(Location location, NPCData npcData, SkinData skinData) {
-        super(location, npcData);
+    public PlayerNPCImpl(CitizensHook hook, Location location, NPCData npcData, SkinData skinData) {
+        super(hook, location, npcData);
         this.skinData = skinData;
     }
 

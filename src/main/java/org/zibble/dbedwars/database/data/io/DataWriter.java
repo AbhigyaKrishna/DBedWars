@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.database.data.io;
 
 import com.google.common.collect.Multimap;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.database.data.PersistentStat;
 
 import java.time.Instant;

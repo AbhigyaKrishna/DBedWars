@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,7 +45,7 @@ public class HologramImpl implements Hologram {
 
     @Override
     public HologramPage addPage() {
-        HologramPageImpl hologramPage = new HologramPageImpl(this.manager, this);
+        HologramPageImpl hologramPage = new HologramPageImpl(this.manager, this.hologramPages.size(), this);
         this.hologramPages.add(hologramPage);
         return hologramPage;
     }
@@ -61,16 +61,21 @@ public class HologramImpl implements Hologram {
     }
 
     @Override
-    public void changeViewerPage(UUID viewer, int page) {
-        this.viewerPages.put(viewer, page);
-        Player player = Bukkit.getPlayer(viewer);
-        if (player != null)
-            this.show(player);
+    public void changeViewerPage(Player viewer, int page) {
+        if (!this.isVisible(viewer)) return;
+        HologramPageImpl currentPage = this.getCurrentPage(viewer);
+        this.viewerPages.put(viewer.getUniqueId(), page);
+        if (currentPage != null) {
+            this.manager.respawnHologram(this, viewer);
+        } else {
+            this.manager.spawnHologram(this, viewer);
+        }
     }
 
     @Override
-    public int getCurrentPage(UUID viewer) {
-        return this.viewerPages.get(viewer);
+    public HologramPageImpl getCurrentPage(Player viewer) {
+        int i = this.viewerPages.getOrDefault(viewer.getUniqueId(), -1);
+        return i != -1 ? this.hologramPages.get(i) : null;
     }
 
     @Override
@@ -149,24 +154,30 @@ public class HologramImpl implements Hologram {
         this.updateRegistered = updateRegistered;
     }
 
+    @Override
     public void show(Player... players) {
         for (Player player : players) {
-            this.manager.respawnHologram(this, player);
+            if (this.isVisible(player)) continue;
+            this.viewers.add(player.getUniqueId());
+            this.manager.spawnHologram(this, player);
         }
     }
 
+    @Override
     public void updateContent(Player... players) {
         for (Player player : players) {
             this.manager.updateContent(this, player);
         }
     }
 
+    @Override
     public void updateLocation(Player... players) {
         for (Player player : players) {
             this.manager.updateLocation(this, player);
         }
     }
 
+    @Override
     public void hide(Player... players) {
         for (Player player : players) {
             this.viewerPages.remove(player.getUniqueId());
@@ -175,6 +186,7 @@ public class HologramImpl implements Hologram {
         }
     }
 
+    @Override
     public void hideAll() {
         List<Player> players = new ArrayList<>();
         for (UUID viewer : this.viewers) {

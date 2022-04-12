@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.hooks.scoreboard;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.ArrayList;
 import java.util.List;

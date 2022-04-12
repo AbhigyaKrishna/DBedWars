@@ -60,8 +60,10 @@ public class SetupArenaCMD extends CommandNode {
         }
 
         this.plugin.getHookManager().getWorldAdaptor().loadWorldFromFolder(identifier, World.Environment.NORMAL).thenAccept(world -> {
-            world.setKeepSpawnInMemory(true);
-            SchedulerUtils.runTask(() -> player.teleport(world.getSpawnLocation()));
+            SchedulerUtils.runTask(() -> {
+                world.setKeepSpawnInMemory(true);
+                player.teleport(world.getSpawnLocation());
+            });
             ArenaDataHolderImpl dataHolder = this.plugin.getGameManager().getDataHolder(identifier);
             if (dataHolder == null) {
                 dataHolder = ArenaDataHolderImpl.create(identifier);

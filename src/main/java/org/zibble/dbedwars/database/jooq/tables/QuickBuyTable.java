@@ -21,9 +21,9 @@ public class QuickBuyTable extends TableImpl<QuickBuyRecord> {
 
     public static final QuickBuyTable QUICK_BUY = new QuickBuyTable();
 
-    public final TableField<QuickBuyRecord, UUID> UUID = createField(DSL.name("UUID"), SQLDataType.UUID.notNull(), this, "", new UUIDBinding());
-    public final TableField<QuickBuyRecord, String> NAME = createField(DSL.name("NAME"), SQLDataType.VARCHAR(36).notNull(), this);
-    public final TableField<QuickBuyRecord, QuickBuyData> QUICK_BUY_DATA = createField(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.notNull(), this, "", new QuickBuyConverter());
+    public final TableField<QuickBuyRecord, UUID> UUID = createField(DSL.name("UUID"), SQLDataType.UUID.nullable(false), this, "", new UUIDBinding());
+    public final TableField<QuickBuyRecord, String> NAME = createField(DSL.name("NAME"), SQLDataType.VARCHAR(36).nullable(false), this);
+    public final TableField<QuickBuyRecord, QuickBuyData> QUICK_BUY_DATA = createField(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.nullable(false), this, "", new QuickBuyConverter());
 
     private QuickBuyTable() {
         super(DSL.name("dbedwars_quickbuy"));

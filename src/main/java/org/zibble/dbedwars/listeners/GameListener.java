@@ -27,10 +27,9 @@ import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.spawner.Spawner;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.plugin.PluginHandler;
-import org.zibble.dbedwars.api.util.Duration;
-import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.TeamImpl;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
@@ -142,8 +141,7 @@ public class GameListener extends PluginHandler {
                 && this.plugin.getCustomItemHandler().getItem(PopupTowerChestItem.KEY).isThis(player.getPlayer().getItemInHand())) {
             ((PopupTowerChestItem) this.plugin.getCustomItemHandler().getItem(PopupTowerChestItem.KEY)).onChestPlace(event, player);
         }
-        // TODO REFERENCE
-        if (NBTUtils.hasNBTData(event.getItemInHand(), "")) {
+        if (this.plugin.getCustomItemHandler().getItem(BlastProofGlass.KEY).isThis(player.getPlayer().getItemInHand())) {
             ((BlastProofGlass) this.plugin.getCustomItemHandler().getItem(BlastProofGlass.KEY)).onPlace(event);
         }
     }
@@ -174,8 +172,7 @@ public class GameListener extends PluginHandler {
 
         Entity entity = event.getEntity();
 
-        if (entity.getType() == EntityType.IRON_GOLEM
-                && Util.hasMetaData(entity, "isDBedwarsGolem", DreamDefenderSpawnEgg.DREAM_DEFENDER_SPAWN_EGG_META)) {
+        if (entity.getType() == EntityType.IRON_GOLEM && Util.hasMetaData(entity, "isDBedwarsGolem", DreamDefenderSpawnEgg.DREAM_DEFENDER_SPAWN_EGG_META)) {
             ((DreamDefenderSpawnEgg) this.plugin.getCustomItemHandler().getItem(DreamDefenderSpawnEgg.KEY)).onDeath(event);
         }
     }

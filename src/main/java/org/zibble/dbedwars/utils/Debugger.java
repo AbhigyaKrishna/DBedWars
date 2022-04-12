@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 public class Debugger {
 
     private static final Logger LOGGER = Logger.getLogger("DBedWars");
+    public static final String PREFIX = "[BEDWARS-DEBUG] ";
     private static boolean ENABLED;
 
     public static void debug(Object object) {
@@ -65,19 +66,11 @@ public class Debugger {
     }
 
     public static void debug(String s) {
-        if (ENABLED) LOGGER.info(s);
+        if (ENABLED) LOGGER.info(PREFIX + s);
     }
 
     public static void debug(String s, Level level) {
-        if (ENABLED) LOGGER.log(level, s);
-    }
-
-    public static void debug(String prefix, String s) {
-        debug(prefix, s, Level.INFO);
-    }
-
-    public static void debug(String prefix, String s, Level level) {
-        if (ENABLED) LOGGER.log(level, "[" + prefix + "] " + s);
+        if (ENABLED) LOGGER.log(level, PREFIX + s);
     }
 
     public static void setEnabled(boolean enabled) {

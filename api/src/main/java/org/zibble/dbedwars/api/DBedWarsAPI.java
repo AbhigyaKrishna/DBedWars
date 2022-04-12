@@ -1,11 +1,10 @@
 package org.zibble.dbedwars.api;
 
 import org.zibble.dbedwars.api.handler.*;
-import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.version.Version;
 
 public abstract class DBedWarsAPI {

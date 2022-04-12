@@ -38,7 +38,8 @@ public class CreateTableSQL implements ISQL {
                 .column(Table.PlayerStats.BED_LOST)
                 .column(Table.PlayerStats.WINS)
                 .column(Table.PlayerStats.PLAYED)
-                .primaryKey(Table.PlayerStats.UUID)
+                .constraint(DSL.constraint("PK_PLAYER_STATS").primaryKey(Table.PlayerStats.UUID))
+//                .primaryKey(Table.PlayerStats.UUID)
                 .execute());
     }
 
@@ -60,7 +61,8 @@ public class CreateTableSQL implements ISQL {
                 .column(Table.QuickBuy.UUID)
                 .column(Table.QuickBuy.NAME)
                 .column(Table.QuickBuy.DATA)
-                .primaryKey(Table.QuickBuy.UUID)
+                .constraint(DSL.constraint("PK_QUICK_BUY").primaryKey(Table.QuickBuy.UUID))
+//                .primaryKey(Table.QuickBuy.UUID)
                 .execute());
     }
 
@@ -73,42 +75,42 @@ public class CreateTableSQL implements ISQL {
         static class PlayerStats {
 
 
-            public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.notNull());
-            public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).notNull());
-            public static final Field<?> LEVEL = DSL.field(DSL.name("LEVEL"), SQLDataType.INTEGER.notNull().defaultValue(0));
-            public static final Field<?> LEVEL_PROGRESS = DSL.field(DSL.name("LEVEL_PROGRESS"), SQLDataType.DOUBLE.notNull().defaultValue(0.0));
-            public static final Field<?> COINS = DSL.field(DSL.name("COINS"), SQLDataType.DOUBLE.notNull().defaultValue(0.0));
-            public static final Field<?> WINSTREAK = DSL.field(DSL.name("WINSTREAK"), SQLDataType.SMALLINT.notNull().defaultValue((short) 0));
-            public static final Field<?> POINTS = DSL.field(DSL.name("POINTS"), SQLDataType.DOUBLE.notNull().defaultValue(0.0));
-            public static final Field<?> KILLS = DSL.field(DSL.name("KILLS"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> FINAL_KILLS = DSL.field(DSL.name("FINAL_KILLS"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> BED_BROKEN = DSL.field(DSL.name("BED_BROKEN"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> BED_LOST = DSL.field(DSL.name("BED_LOST"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> WINS = DSL.field(DSL.name("WINS"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
-            public static final Field<?> PLAYED = DSL.field(DSL.name("PLAYED"), SQLDataType.JSON.notNull().defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.nullable(false));
+            public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).nullable(false));
+            public static final Field<?> LEVEL = DSL.field(DSL.name("LEVEL"), SQLDataType.INTEGER.nullable(false).defaultValue(0));
+            public static final Field<?> LEVEL_PROGRESS = DSL.field(DSL.name("LEVEL_PROGRESS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0));
+            public static final Field<?> COINS = DSL.field(DSL.name("COINS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0));
+            public static final Field<?> WINSTREAK = DSL.field(DSL.name("WINSTREAK"), SQLDataType.SMALLINT.nullable(false).defaultValue((short) 0));
+            public static final Field<?> POINTS = DSL.field(DSL.name("POINTS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0));
+            public static final Field<?> KILLS = DSL.field(DSL.name("KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> FINAL_KILLS = DSL.field(DSL.name("FINAL_KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> BED_BROKEN = DSL.field(DSL.name("BED_BROKEN"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> BED_LOST = DSL.field(DSL.name("BED_LOST"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> WINS = DSL.field(DSL.name("WINS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
+            public static final Field<?> PLAYED = DSL.field(DSL.name("PLAYED"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(PlayerStatTable.DEFAULT_JSON)));
 
         }
 
         static class Arena {
 
-            public static final Field<?> ID = DSL.field(DSL.name("ID"), SQLDataType.VARCHAR(20).notNull());
-            public static final Field<?> GAME_ID = DSL.field(DSL.name("GAME_ID"), SQLDataType.VARCHAR(50).notNull());
-            public static final Field<?> TEAMS = DSL.field(DSL.name("TEAMS"), SQLDataType.JSON.notNull());
-            public static final Field<?> WINNER = DSL.field(DSL.name("WINNER"), SQLDataType.TINYINT.notNull());
-            public static final Field<?> RUNTIME = DSL.field(DSL.name("RUNTIME"), SQLDataType.INTERVAL.notNull());
-            public static final Field<?> TIMESTAMP = DSL.field(DSL.name("TIMESTAMP"), SQLDataType.INSTANT.notNull().defaultValue(Instant.now()));
-            public static final Field<?> ITEM_PICKUP = DSL.field(DSL.name("ITEM_PICKUP"), SQLDataType.JSON.notNull());
-            public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.notNull());
-            public static final Field<?> BEDS_BROKEN = DSL.field(DSL.name("BEDS_BROKEN"), SQLDataType.JSON.notNull());
+            public static final Field<?> ID = DSL.field(DSL.name("ID"), SQLDataType.VARCHAR(20).nullable(false));
+            public static final Field<?> GAME_ID = DSL.field(DSL.name("GAME_ID"), SQLDataType.VARCHAR(50).nullable(false));
+            public static final Field<?> TEAMS = DSL.field(DSL.name("TEAMS"), SQLDataType.JSON.nullable(false));
+            public static final Field<?> WINNER = DSL.field(DSL.name("WINNER"), SQLDataType.TINYINT.nullable(false));
+            public static final Field<?> RUNTIME = DSL.field(DSL.name("RUNTIME"), SQLDataType.INTERVAL.nullable(false));
+            public static final Field<?> TIMESTAMP = DSL.field(DSL.name("TIMESTAMP"), SQLDataType.INSTANT.nullable(false).defaultValue(Instant.now()));
+            public static final Field<?> ITEM_PICKUP = DSL.field(DSL.name("ITEM_PICKUP"), SQLDataType.JSON.nullable(false));
+            public static final Field<?> DEATHS = DSL.field(DSL.name("DEATHS"), SQLDataType.JSON.nullable(false));
+            public static final Field<?> BEDS_BROKEN = DSL.field(DSL.name("BEDS_BROKEN"), SQLDataType.JSON.nullable(false));
 
         }
 
         static class QuickBuy {
 
-            public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.notNull());
-            public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).notNull());
-            public static final Field<?> DATA = DSL.field(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.notNull());
+            public static final Field<?> UUID = DSL.field(DSL.name("UUID"), SQLDataType.UUID.nullable(false));
+            public static final Field<?> NAME = DSL.field(DSL.name("NAME"), SQLDataType.VARCHAR(16).nullable(false));
+            public static final Field<?> DATA = DSL.field(DSL.name("QUICK_BUY_DATA"), SQLDataType.JSON.nullable(false));
 
         }
 

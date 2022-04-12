@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.game.spawner;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.jetbrains.annotations.Nullable;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 
 public interface ResourceItem {
 

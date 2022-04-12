@@ -15,7 +15,7 @@ public class H2 extends SQLDatabase {
     /**
      * The JDBC driver class.
      */
-    private static final String DRIVER_CLASS = "org.h2.Driver";
+    private static final String DRIVER_CLASS = "org.h2.jdbcx.JdbcDataSource";
 
     private final File db;
 
@@ -41,13 +41,12 @@ public class H2 extends SQLDatabase {
         try {
             Class.forName(DRIVER_CLASS);
         } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException(
-                    "Could not connect to H2! The H2 driver is unavailable!");
+            throw new IllegalStateException("Could not connect to H2! The H2 driver is unavailable!");
         }
 
         if (this.dataSource == null) {
             this.config.setDataSourceClassName(DRIVER_CLASS);
-            this.config.setJdbcUrl("jdbc:h2:" + this.db.getAbsolutePath());
+            this.config.setJdbcUrl("jdbc:h2:" + this.db.getPath());
             this.dataSource = new HikariDataSource(this.config);
         }
 

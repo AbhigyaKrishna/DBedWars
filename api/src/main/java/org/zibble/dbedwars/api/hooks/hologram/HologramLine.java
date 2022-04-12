@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 
 public interface HologramLine<C> {
 

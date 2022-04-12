@@ -22,7 +22,7 @@ import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.points.IntegerCount;
 import org.zibble.dbedwars.api.objects.points.Points;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.SchedulerUtils;

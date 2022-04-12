@@ -6,7 +6,7 @@ import org.zibble.dbedwars.api.game.view.ShopItem;
 import org.zibble.dbedwars.api.game.view.ShopView;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.script.condition.Condition;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.script.action.ActionProcessor;
 import org.zibble.dbedwars.script.condition.ConditionPreProcessor;

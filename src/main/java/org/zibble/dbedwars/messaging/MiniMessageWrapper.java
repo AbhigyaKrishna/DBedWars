@@ -1,6 +1,8 @@
 package org.zibble.dbedwars.messaging;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 
 public class MiniMessageWrapper {
@@ -9,38 +11,27 @@ public class MiniMessageWrapper {
     private static MiniMessage CONFIG;
 
     static {
-        FULL_MINI = MiniMessage.builder().transformations(
-                TransformationRegistry.builder()
-                        .add(TransformationType.COLOR)
-                        .add(TransformationType.DECORATION)
-                        .add(TransformationType.HOVER_EVENT)
-                        .add(TransformationType.CLICK_EVENT)
-                        .add(TransformationType.KEYBIND)
-                        .add(TransformationType.TRANSLATABLE)
-                        .add(TransformationType.INSERTION)
-                        .add(TransformationType.FONT)
-                        .add(TransformationType.GRADIENT)
-                        .add(TransformationType.RAINBOW)
-                        .build()
-        ).build();
+        FULL_MINI = MiniMessage.builder()
+                .tags(TagResolver.standard())
+                .build();
     }
 
     public static void importConfig(MainConfiguration.LangSection.ModernSettingsSection settings) {
         MiniMessage.Builder miniBuilder = MiniMessage.builder();
 
         MainConfiguration.LangSection.ModernSettingsSection.TransformationsSection transformations = settings.getTransformations();
-        TransformationRegistry.Builder builder = TransformationRegistry.builder();
-        if (transformations.isClickEvent()) builder.add(TransformationType.CLICK_EVENT);
-        if (transformations.isColor()) builder.add(TransformationType.COLOR);
-        if (transformations.isDecoration()) builder.add(TransformationType.DECORATION);
-        if (transformations.isFont()) builder.add(TransformationType.FONT);
-        if (transformations.isGradient()) builder.add(TransformationType.GRADIENT);
-        if (transformations.isHoverEvent()) builder.add(TransformationType.HOVER_EVENT);
-        if (transformations.isInsertion()) builder.add(TransformationType.INSERTION);
-        if (transformations.isKeybind()) builder.add(TransformationType.KEYBIND);
-        if (transformations.isRainbow()) builder.add(TransformationType.RAINBOW);
-        if (transformations.isTranslatable()) builder = builder.add(TransformationType.TRANSLATABLE);
-        miniBuilder.transformations(builder.build());
+        TagResolver.Builder builder = TagResolver.builder();
+        if (transformations.isClickEvent()) builder.resolver(StandardTags.clickEvent());
+        if (transformations.isColor()) builder.resolver(StandardTags.color());
+        if (transformations.isDecoration()) builder.resolver(StandardTags.decorations());
+        if (transformations.isFont()) builder.resolver(StandardTags.font());
+        if (transformations.isGradient()) builder.resolver(StandardTags.gradient());
+        if (transformations.isHoverEvent()) builder.resolver(StandardTags.hoverEvent());
+        if (transformations.isInsertion()) builder.resolver(StandardTags.insertion());
+        if (transformations.isKeybind()) builder.resolver(StandardTags.keybind());
+        if (transformations.isRainbow()) builder.resolver(StandardTags.rainbow());
+        if (transformations.isTranslatable()) builder = builder.resolver(StandardTags.translatable());
+        miniBuilder.tags(builder.build());
         CONFIG = miniBuilder.build();
     }
 

@@ -7,7 +7,7 @@ import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
 import java.util.*;
@@ -15,14 +15,16 @@ import java.util.*;
 public class HologramPageImpl implements HologramPage {
 
     protected final HologramImpl parent;
+    private final int page;
     private final HologramManager manager;
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
     private double lineGap = 0.1;
 
-    public HologramPageImpl(HologramManager manager, HologramImpl parent) {
+    public HologramPageImpl(HologramManager manager, int page, HologramImpl parent) {
         this.manager = manager;
+        this.page = page;
         this.parent = parent;
         this.lines = Collections.synchronizedList(new ArrayList<>());
         this.actions = Collections.synchronizedSet(new java.util.HashSet<>());
@@ -31,6 +33,11 @@ public class HologramPageImpl implements HologramPage {
     @Override
     public Hologram getParent() {
         return parent;
+    }
+
+    @Override
+    public int getPageNumber() {
+        return this.page;
     }
 
     @Override

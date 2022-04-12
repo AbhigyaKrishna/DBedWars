@@ -4,9 +4,8 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.utils.TimeUtil;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
@@ -50,7 +49,7 @@ public class ActionPreProcessor {
         Matcher matcher = DELAY_PATTERN.matcher(input);
         if (matcher.matches()) {
             String delayValue = matcher.group("delayValue");
-            return TimeUtil.parse(delayValue);
+            return Duration.valueOf(delayValue);
         }
         return Duration.ZERO;
     }

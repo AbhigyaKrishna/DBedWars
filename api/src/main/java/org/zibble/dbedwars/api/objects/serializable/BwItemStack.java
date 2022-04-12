@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
@@ -18,13 +18,10 @@ import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NBTItem;
-import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
-import org.zibble.dbedwars.api.objects.serializable.LEnchant;
-import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
+import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
-import org.zibble.dbedwars.api.util.nbt.NBT;
-import org.zibble.dbedwars.api.util.nbt.NBTType;
+import org.zibble.dbedwars.api.util.nbt.NBTCompound;
 import org.zibble.dbedwars.api.util.nbt.serializer.JsonNbtSerializer;
 
 import java.util.*;
@@ -46,7 +43,7 @@ public class BwItemStack implements Cloneable {
     private Message displayName;
     private Message lore;
     private int data;
-    private Map<String, NBT> nbt;
+    private NBTCompound nbtCompound;
 
     private ItemMeta meta;
 
@@ -63,7 +60,7 @@ public class BwItemStack implements Cloneable {
         this.enchantments = new HashSet<>();
         this.data = -1;
         this.meta = material.parseItem().getItemMeta();
-        this.nbt = new HashMap<>();
+        this.nbtCompound = new NBTCompound();
     }
 
     public BwItemStack(ItemStack item) {
@@ -82,13 +79,9 @@ public class BwItemStack implements Cloneable {
         if (this.meta.hasEnchants()) {
             for (Map.Entry<Enchantment, Integer> entry : this.meta.getEnchants().entrySet()) {
                 this.enchantments.add(LEnchant.of(XEnchantment.matchXEnchantment(entry.getKey()), entry.getValue()));
-                this.meta.removeEnchant(entry.getKey());
             }
         }
-        this.nbt = DBedWarsAPI.getApi().getNMS().getNBTItem(itemStack).getTags();
-
-        this.meta.setDisplayName(null);
-        this.meta.setLore(null);
+        this.nbtCompound = new NBTCompound(DBedWarsAPI.getApi().getNMS().getNBTItem(itemStack).getTags());
     }
 
     public static BwItemStack valueOf(String str, Placeholder... placeholders) {
@@ -178,7 +171,7 @@ public class BwItemStack implements Cloneable {
         if (json.has("nbt")) {
             Json array = json.getAsJson("nbt");
             for (Map.Entry<String, JsonElement> entry : array.entrySet()) {
-                item.addNbt(entry.getKey(), JsonNbtSerializer.deserialize(entry.getValue()));
+                item.nbtCompound.setTag(entry.getKey(), JsonNbtSerializer.deserialize(entry.getValue()));
             }
         }
 
@@ -378,28 +371,8 @@ public class BwItemStack implements Cloneable {
         return 0;
     }
 
-    public void addNbt(String key, NBT value) {
-        this.nbt.put(key, value);
-    }
-
-    public <T extends NBT> T getNbt(String key, NBTType<T> type) {
-        return (T) this.nbt.get(key);
-    }
-
-    public void removeNbt(String key) {
-        this.nbt.remove(key);
-    }
-
-    public void removeAllNbt() {
-        this.nbt.clear();
-    }
-
-    public Map<String, NBT> getNbt() {
-        return Collections.unmodifiableMap(this.nbt);
-    }
-
-    public boolean hasNbt(String key) {
-        return this.nbt.containsKey(key);
+    public NBTCompound getNbtCompound() {
+        return this.nbtCompound;
     }
 
     public ItemStack asItemStack(Player player) {
@@ -415,7 +388,7 @@ public class BwItemStack implements Cloneable {
             item.setDurability((short) this.data);
         }
         NBTItem nbtItem = DBedWarsAPI.getApi().getNMS().getNBTItem(item);
-        nbtItem.applyTags(this.nbt);
+        nbtItem.applyTags(this.nbtCompound.getTags());
         return nbtItem.getItem();
     }
 
@@ -432,7 +405,7 @@ public class BwItemStack implements Cloneable {
             item.setDurability((short) this.data);
         }
         NBTItem nbtItem = DBedWarsAPI.getApi().getNMS().getNBTItem(item);
-        nbtItem.applyTags(this.nbt);
+        nbtItem.applyTags(this.nbtCompound.getTags());
         return nbtItem.getItem();
     }
 
@@ -451,7 +424,7 @@ public class BwItemStack implements Cloneable {
                 && ((item.displayName == null && this.displayName == null) || displayName.equals(item.displayName))
                 && ((item.lore == null && this.lore == null) || lore.equals(item.lore))
                 && enchantments.equals(item.enchantments)
-                && nbt.equals(item.nbt)
+                && nbtCompound.equals(item.nbtCompound)
                 && meta.equals(item.meta);
     }
 
@@ -462,7 +435,7 @@ public class BwItemStack implements Cloneable {
         returnVal.lore = this.lore.clone();
         returnVal.meta = this.meta.clone();
         returnVal.data = this.data;
-        this.nbt.forEach((key, value) -> returnVal.nbt.put(key, value.clone()));
+        returnVal.nbtCompound = this.nbtCompound.clone();
         this.enchantments.forEach(enchant -> returnVal.enchantments.add(enchant.clone()));
         return returnVal;
     }

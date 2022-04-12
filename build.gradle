@@ -53,9 +53,6 @@ allprojects {
     }
 
     shadowJar {
-        relocate 'redis.clients.jedis', 'org.zibble.dbedwars.libraries.jedis'
-        relocate 'redis.clients.util', 'org.zibble.dbedwars.libraries.jedis.util'
-
         relocate 'org.reflections', 'org.zibble.dbedwars.libraries.reflections'
         relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
         /*relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
@@ -136,10 +133,12 @@ dependencies {
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
-    implementation 'com.github.cryptomorin:XSeries:8.6.2'
+    implementation 'com.github.cryptomorin:XSeries:8.7.0'
     implementation 'xyz.xenondevs:particle:1.7'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-    compileOnly 'org.jooq:jooq:3.15.0'
+    compileOnly 'org.jooq:jooq:3.14.15'
+    compileOnly 'com.zaxxer:HikariCP:4.0.3'
+    compileOnly 'org.mongodb:mongo-java-driver:3.12.10'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
 }

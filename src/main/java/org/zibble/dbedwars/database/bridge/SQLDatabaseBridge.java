@@ -37,20 +37,24 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
         this.context = new JooqContext(this.getDialect(this.database.getDatabaseType()));
     }
 
-    protected static HikariConfig createHikariConfig() {
-        return new HikariConfigBuilder()
-                .addProperty("cachePrepStmts", "true")
-                .addProperty("prepStmtCacheSize", "250")
-                .addProperty("prepStmtCacheSqlLimit", "2048")
-                .addProperty("useServerPrepStmts", "true")
-                .addProperty("useLocalSessionState", "true")
-                .addProperty("rewriteBatchedStatements", "true")
-                .addProperty("cacheResultSetMetadata", "true")
-                .addProperty("cacheServerConfiguration", "true")
-                .addProperty("elideSetAutoCommits", "true")
-                .addProperty("maintainTimeStats", "false")
-                .addProperty("keepaliveTime", "30000ms")
-                .build();
+    protected static HikariConfig createHikariConfig(DatabaseType type) {
+        HikariConfigBuilder builder = new HikariConfigBuilder();
+
+        if (type != DatabaseType.H2 && type != DatabaseType.SQLite) {
+            builder.addProperty("keepaliveTime", "30000ms")
+                    .addProperty("useLocalSessionState", "true")
+                    .addProperty("rewriteBatchedStatements", "true")
+                    .addProperty("cachePrepStmts", "true")
+                    .addProperty("prepStmtCacheSize", "250")
+                    .addProperty("prepStmtCacheSqlLimit", "2048")
+                    .addProperty("useServerPrepStmts", "true")
+                    .addProperty("cacheServerConfiguration", "true")
+                    .addProperty("elideSetAutoCommits", "true")
+                    .addProperty("cacheResultSetMetadata", "true")
+                    .addProperty("maintainTimeStats", "false");
+        }
+
+        return builder.build();
     }
 
     @Override

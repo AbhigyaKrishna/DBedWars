@@ -11,7 +11,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.handler.GameManager;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.configuration.configurable.*;
 import org.zibble.dbedwars.game.arena.ArenaCategoryImpl;
 import org.zibble.dbedwars.game.arena.ArenaImpl;

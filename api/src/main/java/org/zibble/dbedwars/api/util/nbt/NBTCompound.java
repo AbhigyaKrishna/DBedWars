@@ -16,6 +16,10 @@ public class NBTCompound extends NBT {
     public NBTCompound() {
     }
 
+    public NBTCompound(Map<String, NBT> tags) {
+        this.tags.putAll(tags);
+    }
+
     public NBTCompound(DataInput input) throws IOException {
         super(input);
     }

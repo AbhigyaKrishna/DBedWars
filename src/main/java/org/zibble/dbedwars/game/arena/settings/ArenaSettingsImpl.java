@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.game.arena.settings;
 
 import org.zibble.dbedwars.api.game.settings.ArenaSettings;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 
 public class ArenaSettingsImpl implements ArenaSettings {

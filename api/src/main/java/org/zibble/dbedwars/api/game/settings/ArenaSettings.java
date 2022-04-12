@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.game.settings;
 
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 
 public interface ArenaSettings extends PropertySerializable, Cloneable {

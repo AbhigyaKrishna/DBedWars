@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
-import com.pepedevs.radium.utils.version.Version;
+import org.zibble.dbedwars.api.version.Version;
 
 public enum HologramEntityType {
 

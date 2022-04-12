@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.task.implementations;
 
 import org.bukkit.scheduler.BukkitTask;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.api.util.mixin.Tickable;
 
@@ -14,6 +15,7 @@ public final class UpdateTask implements Runnable {
 
     private static final List<Tickable> TICKABLES = Collections.synchronizedList(new LinkedList<>());
 
+    private final DBedwars plugin;
     private BukkitTask task;
     private Instant started;
     private long startedMillis;
@@ -36,12 +38,16 @@ public final class UpdateTask implements Runnable {
         return TICKABLES;
     }
 
+    public UpdateTask(DBedwars plugin) {
+        this.plugin = plugin;
+    }
+
     public boolean start() {
         if (this.task != null) return false;
 
         this.started = Instant.now();
         this.startedMillis = this.started.toEpochMilli();
-        this.task = SchedulerUtils.runTaskTimerAsynchronously(this, 0L, 1L);
+        this.task = this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(DBedwars.getInstance(), this, 0L, 1L);
         return true;
     }
 

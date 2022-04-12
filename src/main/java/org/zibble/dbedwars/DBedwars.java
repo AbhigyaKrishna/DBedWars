@@ -76,7 +76,7 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUp() {
         this.serverVersion = Version.getServerVersion();
-        this.threadHandler = new ThreadHandler();
+        this.threadHandler = new ThreadHandler(this);
         this.threadHandler.runThreads(4);
         this.messaging = new Messaging(this);
         this.messaging.init(this.getServer().getConsoleSender());
@@ -106,6 +106,8 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     public PluginDependence[] getDependences() {
+        this.hookManager = new HookManagerImpl(this);
+        this.hookManager.load();
         return this.hookManager.getDependencies();
     }
 
@@ -116,13 +118,10 @@ public final class DBedwars extends PluginAdapter {
         this.configHandler.initMainConfig();
         this.configHandler.initLanguage();
 
-        this.threadHandler.submitAsync(() -> {
-            this.configHandler.loadConfigurations();
-            this.configHandler.loadItems();
+        this.configHandler.loadConfigurations();
+        this.configHandler.loadItems();
 
-            this.registerCustomItems();
-            this.initDatabase();
-        });
+        this.initDatabase();
 
         return true;
     }
@@ -131,11 +130,10 @@ public final class DBedwars extends PluginAdapter {
     protected boolean setUpHandlers() {
         this.gameManager = new GameManagerImpl(this, this.configHandler.getLobbyLocation());
         this.customItemHandler = new CustomItemHandler(this);
+        this.registerCustomItems();
         this.setupSessionManager = new SetupSessionManager();
         this.menuHandler = new MenuHandler(this);
         this.nmsAdaptor = this.registerNMSAdaptor();
-        this.hookManager = new HookManagerImpl(this);
-        this.hookManager.load();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
 
@@ -217,30 +215,28 @@ public final class DBedwars extends PluginAdapter {
         else type = DatabaseType.SQLite;
 
 
+        if (type != DatabaseType.MongoDB) {
+            ExternalLibrary.JOOQ.loadSafely();
+            ExternalLibrary.HIKARI_CP.loadSafely();
+        }
+
         if (type == DatabaseType.MYSQL) {
             this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.MongoDB) {
-            this.loadLibrary(ExternalLibrary.MONGO_DATABASE);
+            ExternalLibrary.MONGO_DATABASE.loadSafely();
             this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongoDB());
         } else if (type == DatabaseType.H2) {
-            this.loadLibrary(ExternalLibrary.H2_DATABASE);
+            ExternalLibrary.H2_DATABASE.loadSafely();
             this.database = new H2DatabaseBridge();
         } else if (type == DatabaseType.PostGreSQL) {
-            this.loadLibrary(ExternalLibrary.POSTGRESQL_DATABASE);
+            ExternalLibrary.POSTGRESQL_DATABASE.loadSafely();
             this.database = new PostGreSqlBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else {
-            this.loadLibrary(ExternalLibrary.SQLITE_DATABASE);
+            ExternalLibrary.SQLITE_DATABASE.loadSafely();
             this.database = new SQLiteBridge();
         }
 
         this.database.init();
-    }
-
-    private void loadLibrary(ExternalLibrary library) {
-        if (!library.exists()) {
-            library.download();
-        }
-        library.load();
     }
 
     private NMSAdaptor registerNMSAdaptor() {

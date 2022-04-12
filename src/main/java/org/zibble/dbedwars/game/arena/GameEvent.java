@@ -4,12 +4,11 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.script.ScriptVariable;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableEvents;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
-import org.zibble.dbedwars.utils.TimeUtil;
 
 public class GameEvent {
 
@@ -23,7 +22,7 @@ public class GameEvent {
     }
 
     public static GameEvent fromConfig(ConfigurableEvents.Event config) {
-        GameEvent event = new GameEvent(ConfigMessage.from(config.getName()), TimeUtil.parse(config.getDuration()));
+        GameEvent event = new GameEvent(ConfigMessage.from(config.getName()), Duration.valueOf(config.getDuration()));
         event.actions.putAll(Event.ON_START, config.getOnStart());
         event.actions.putAll(Event.PER_TICK, config.getPerTick());
         event.actions.putAll(Event.ON_END, config.getOnEnd());

@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.game.arena;
 
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.time.Instant;
 import java.util.Collection;

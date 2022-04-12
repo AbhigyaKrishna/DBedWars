@@ -12,7 +12,7 @@ import org.zibble.dbedwars.api.adventure.AdventureUtils;
 import org.zibble.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.version.Version;
 
 import java.util.*;

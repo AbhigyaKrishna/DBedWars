@@ -4,7 +4,7 @@ import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.version.Version;
 
 public final class APIImpl extends DBedWarsAPI {

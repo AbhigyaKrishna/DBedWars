@@ -13,12 +13,12 @@ import com.github.retrooper.packetevents.protocol.player.Equipment;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
-import com.pepedevs.radium.adventure.AdventureUtils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.zibble.dbedwars.api.adventure.AdventureUtils;
 import org.zibble.dbedwars.utils.reflection.bukkit.EntityReflection;
 
 import java.util.*;
@@ -107,12 +107,8 @@ public final class PacketUtils {
         Validate.notNull(player);
         Validate.notNull(name);
         EntityData customName;
-        if (EntityDataTypes.OPTIONAL_COMPONENT.getId() != -1) {
-            customName = new EntityData(2, EntityDataTypes.OPTIONAL_COMPONENT, Optional.of(name));
-        } else {
-            String legacyName = AdventureUtils.toVanillaString(name);
-            customName = new EntityData(2, EntityDataTypes.STRING, legacyName);
-        }
+        String legacyName = AdventureUtils.toVanillaString(name); // TODO: 11-04-2022 support latest version
+        customName = new EntityData(2, EntityDataTypes.STRING, legacyName);
         EntityData customNameVisible = new EntityData(3, EntityDataTypes.BYTE, (byte) 1);
         WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(entityId, Arrays.asList(customName, customNameVisible));
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);

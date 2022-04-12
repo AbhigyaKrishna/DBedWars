@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.configuration.translator;
 
-import com.pepedevs.radium.adventure.MiniMessageUtils;
 import net.kyori.adventure.text.Component;
+import org.zibble.dbedwars.api.adventure.MiniMessageUtils;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 

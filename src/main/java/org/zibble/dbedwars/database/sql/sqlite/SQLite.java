@@ -7,6 +7,8 @@ import org.zibble.dbedwars.database.sql.SQLDatabase;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
@@ -22,20 +24,16 @@ public class SQLite extends SQLDatabase {
 
     private final File db;
 
-    public SQLite(File db, HikariConfig config) {
-        super(DatabaseType.SQLite, config);
+    public SQLite(File db) {
+        super(DatabaseType.SQLite, new HikariConfig());
 
         if (db == null) throw new IllegalArgumentException("The database file cannot be null!");
 
         this.db = db;
     }
 
-    public SQLite(File db) {
-        this(db, new HikariConfig());
-    }
-
     @Override
-    public synchronized void connect() throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
+    public synchronized void connect() throws IOException, IllegalStateException, SQLException {
         if (!this.db.getName().endsWith(".db"))
             throw new IllegalStateException("The database file should have '.db' extension.");
 
@@ -48,13 +46,22 @@ public class SQLite extends SQLDatabase {
             throw new IllegalStateException("Could not connect to SQLite! The JDBC driver is unavailable!");
         }
 
-        if (this.dataSource == null) {
-            this.config.setDataSourceClassName(DRIVER_CLASS);
-            this.config.setJdbcUrl("jdbc:sqlite:" + this.db.getAbsolutePath());
-            this.dataSource = new HikariDataSource(this.config);
+        this.connection = this.getConnection();
+    }
+
+    @Override
+    public Connection getConnection() throws IllegalStateException, SQLException {
+        return this.connection = this.isConnected() ? this.connection : DriverManager.getConnection("jdbc:sqlite:" + this.db);
+    }
+
+    @Override
+    public void disconnect() throws SQLException {
+        if (!isConnected()) {
+            throw new IllegalStateException("Not connected!");
         }
 
-        this.connection = this.dataSource.getConnection();
+        this.connection.close();
+        this.connection = null;
     }
 
 }

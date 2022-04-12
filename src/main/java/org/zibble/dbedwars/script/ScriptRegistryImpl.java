@@ -126,7 +126,7 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
 
     }
 
-    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<?, ? extends Condition<?>>> {
+    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<?, ? extends Condition>> {
 
         private final Map<Key, ConditionTranslator<?, ? extends Condition>> registeredConditions;
 
@@ -139,12 +139,12 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public void registerTranslation(ConditionTranslator<?, ? extends Condition<?>> translator) {
+        public void registerTranslation(ConditionTranslator<?, ? extends Condition> translator) {
             this.registeredConditions.put(translator.getKey(), translator);
         }
 
         @Override
-        public Collection<ConditionTranslator<?, ? extends Condition<?>>> getRegisteredTranslations() {
+        public Collection<ConditionTranslator<?, ? extends Condition>> getRegisteredTranslations() {
             return Collections.unmodifiableCollection(this.registeredConditions.values());
         }
 

@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.hooks.hologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +18,9 @@ public interface Hologram {
 
     Map<UUID, Integer> getViewerPages();
 
-    void changeViewerPage(UUID viewer, int page);
+    void changeViewerPage(Player viewer, int page);
 
-    int getCurrentPage(UUID viewer);
+    HologramPage getCurrentPage(Player viewer);
 
     int getDisplayRange();
 
@@ -51,6 +51,16 @@ public interface Hologram {
     boolean isUpdateRegistered();
 
     void setUpdateRegistered(boolean updateRegistered);
+
+    void show(Player... players);
+
+    void updateContent(Player... players);
+
+    void updateLocation(Player... players);
+
+    void hide(Player... players);
+
+    void hideAll();
 
     Location getLocation();
 

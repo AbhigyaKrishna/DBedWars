@@ -1,7 +1,7 @@
 package org.zibble.dbedwars.api.hooks.hologram;
 
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
 import java.util.List;
@@ -10,6 +10,8 @@ import java.util.Set;
 public interface HologramPage {
 
     Hologram getParent();
+
+    int getPageNumber();
 
     List<HologramLine<?>> getLines();
 

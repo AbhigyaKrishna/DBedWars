@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':api')
-    compileOnly 'me.neznamy:tab:3.0.2'
+    compileOnly 'me.neznamy:tab:3.1.1'
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

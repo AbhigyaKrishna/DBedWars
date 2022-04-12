@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 import org.zibble.dbedwars.api.version.Version;
 import org.zibble.dbedwars.configuration.PluginFiles;

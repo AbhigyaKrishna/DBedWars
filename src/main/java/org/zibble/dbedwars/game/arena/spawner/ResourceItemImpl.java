@@ -8,7 +8,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.spawner.ResourceItem;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.SchedulerUtils;
 
 public class ResourceItemImpl implements ResourceItem {

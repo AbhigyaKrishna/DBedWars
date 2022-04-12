@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.hooks.scoreboard;
 
-import org.zibble.dbedwars.api.util.Duration;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 public interface UpdatingScoreboard extends Scoreboard {
 

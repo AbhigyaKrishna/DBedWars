@@ -4,7 +4,6 @@ import com.github.retrooper.packetevents.netty.buffer.ByteBufHelper;
 import com.github.retrooper.packetevents.netty.buffer.UnpooledByteBufAllocationHelper;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.mojang.authlib.GameProfile;
-import com.pepedevs.radium.utils.reflection.general.FieldReflection;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
@@ -32,6 +31,7 @@ import org.zibble.dbedwars.api.util.nbt.NBTType;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +41,12 @@ public class NMSUtils implements NMSAdaptor {
     public void clearRegionFileCache(World world) {
         try {
             ChunkProviderServer chunkProviderServer = ((CraftWorld) world).getHandle().chunkProviderServer;
-            IChunkLoader chunkLoader = FieldReflection.getValue(chunkProviderServer, "chunkLoader");
-            File file = FieldReflection.getValue(chunkLoader, "d");
+            Field chunkLoaderField = ChunkProviderServer.class.getDeclaredField("chunkLoader");
+            chunkLoaderField.setAccessible(true);
+            IChunkLoader chunkLoader = (IChunkLoader) chunkLoaderField.get(chunkProviderServer);
+            Field fileField = ChunkRegionLoader.class.getDeclaredField("d");
+            fileField.setAccessible(true);
+            File file = (File) fileField.get(chunkLoader);
             file = new File(file, "region");
             if (!file.exists()) {
                 return;
@@ -91,10 +95,21 @@ public class NMSUtils implements NMSAdaptor {
     public void clearDefaultPathFinding(Object entityCreature) {
         EntityCreature creature = (EntityCreature) entityCreature;
         try {
-            FieldReflection.setValue(creature.goalSelector, "b", new UnsafeList());
-            FieldReflection.setValue(creature.goalSelector, "c", new UnsafeList());
-            FieldReflection.setValue(creature.targetSelector, "b", new UnsafeList());
-            FieldReflection.setValue(creature.targetSelector, "c", new UnsafeList());
+            Field f = PathfinderGoalSelector.class.getDeclaredField("b");
+            f.setAccessible(true);
+            f.set(creature.goalSelector, new UnsafeList());
+
+            f = PathfinderGoalSelector.class.getDeclaredField("c");
+            f.setAccessible(true);
+            f.set(creature.goalSelector, new UnsafeList());
+
+            f = PathfinderGoalSelector.class.getDeclaredField("b");
+            f.setAccessible(true);
+            f.set(creature.targetSelector, new UnsafeList());
+
+            f = PathfinderGoalSelector.class.getDeclaredField("c");
+            f.setAccessible(true);
+            f.set(creature.targetSelector, new UnsafeList());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -104,8 +119,9 @@ public class NMSUtils implements NMSAdaptor {
     public void setBlockResistance(Block block, Float resistance) {
         net.minecraft.server.v1_8_R3.Block nmsBlock = CraftMagicNumbers.getBlock(block);
         try {
-            FieldReflection.getAccessible(net.minecraft.server.v1_8_R3.Block.class, "durability")
-                    .set(nmsBlock, Float.MAX_VALUE / 5);
+            Field durability = net.minecraft.server.v1_8_R3.Block.class.getDeclaredField("durability");
+            durability.setAccessible(true);
+            durability.set(nmsBlock, Float.MAX_VALUE / 5);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }

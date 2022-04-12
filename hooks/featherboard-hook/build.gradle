@@ -1,12 +1,6 @@
-repositories {
-    maven {
-        url = uri("https://papermc.io/repo/repository/maven-public/")
-    }
-}
-
 dependencies {
     implementation project(':api')
-    compileOnly 'be.maximvdw:featherboard:5.0.1a'
+    compileOnly 'be.maximvdw:featherboard:4.30.0'
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

@@ -3,7 +3,10 @@ package org.zibble.dbedwars.utils;
 import com.cryptomorin.xseries.XMaterial;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.google.common.base.Strings;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +25,6 @@ import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
-import org.zibble.dbedwars.api.util.NBTUtils;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.messaging.Messaging;
@@ -207,7 +209,6 @@ public class Util {
         int num = Arrays.stream(items)
                 .filter(Objects::nonNull)
                 .filter(i -> i.getType() == item.getType() && i.getDurability() == item.getDurability())
-                .filter(NBTUtils::hasPluginData)
                 .mapToInt(ItemStack::getAmount)
                 .sum();
         return num >= item.getAmount();
@@ -220,8 +221,7 @@ public class Util {
             ItemStack itemStack = items[b];
             if (itemStack != null
                     && itemStack.getType() == item.getType()
-                    && itemStack.getDurability() == item.getDurability()
-                    && NBTUtils.hasPluginData(itemStack)) {
+                    && itemStack.getDurability() == item.getDurability()) {
                 if (itemStack.getAmount() <= amount) {
                     amount -= itemStack.getAmount();
                     items[b] = null;
@@ -237,9 +237,7 @@ public class Util {
 
     public static int getMissing(Player player, Material material, int amount) {
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (itemStack != null
-                    && itemStack.getType() == material
-                    && NBTUtils.hasPluginData(itemStack)) amount -= itemStack.getAmount();
+            if (itemStack != null && itemStack.getType() == material) amount -= itemStack.getAmount();
         }
         return amount;
     }
@@ -282,6 +280,14 @@ public class Util {
             default:
                 return ConfigLang.DEATH_MESSAGE_UNKNOWN_REASON.asMessage();
         }
+    }
+
+    public static Component getProgressBar(double current, double max, int totalBars, String symbol, TextColor completedColor, TextColor notCompletedColor) {
+        float percent = (float) ((float) current / max);
+        int progressBars = (int) (totalBars * percent);
+
+        return Component.text(Strings.repeat(symbol, progressBars), completedColor)
+                .append(Component.text(Strings.repeat(symbol, totalBars - progressBars), notCompletedColor));
     }
 
 }

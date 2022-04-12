@@ -19,7 +19,9 @@ public class AutoNickerHook extends PluginDependence implements NickNameHook {
 
     @Override
     public Boolean apply(Plugin plugin) {
-        Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into AutoNicker!"));
+        if (plugin != null) {
+            Messaging.get().getConsole().sendMessage(AdventureMessage.from("<green>Hooked into AutoNicker!"));
+        }
         return true;
     }
 

@@ -1,15 +1,27 @@
-package org.zibble.dbedwars.api.util;
+package org.zibble.dbedwars.api.objects.serializable;
 
 import java.time.DateTimeException;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A duration that can be converted to milliseconds, seconds, minutes, hours or days.
  */
 public class Duration {
+
+    private static final Pattern YEARS = Pattern.compile("(?<years>\\d+)[y]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MONTHS = Pattern.compile("(?<months>\\d+)mo", Pattern.CASE_INSENSITIVE);
+    private static final Pattern WEEKS = Pattern.compile("(?<weeks>\\d+)[w]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DAYS = Pattern.compile("(?<days>\\d+)[d]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern HOURS = Pattern.compile("(?<hours>\\d+)[h]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MINUTES = Pattern.compile("(?<minutes>\\d+)m[^o,s]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SECONDS = Pattern.compile("(?<seconds>\\d+)[s]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TICKS = Pattern.compile("(?<ticks>\\d+)[t]", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MILLISECONDS = Pattern.compile("(?<milliseconds>\\d+)ms", Pattern.CASE_INSENSITIVE);
 
     /**
      * Represents the zero in the {@link Duration}
@@ -19,6 +31,68 @@ public class Duration {
     protected long duration;
     protected TimeUnit unit;
 
+    public static Duration valueOf(String str) {
+        long years = 0;
+        long months = 0;
+        long weeks = 0;
+        long days = 0;
+        long hours = 0;
+        long minutes = 0;
+        long seconds = 0;
+        long ticks = 0;
+        long millis = 0;
+
+        Matcher matcher = YEARS.matcher(str);
+        if (matcher.find()) {
+            years = Integer.parseInt(matcher.group("years"));
+        }
+
+        matcher = MONTHS.matcher(str);
+        if (matcher.find()) {
+            months = Integer.parseInt(matcher.group("months"));
+        }
+
+        matcher = WEEKS.matcher(str);
+        if (matcher.find()) {
+            weeks = Integer.parseInt(matcher.group("weeks"));
+        }
+
+        matcher = DAYS.matcher(str);
+        if (matcher.find()) {
+            days = Integer.parseInt(matcher.group("days"));
+        }
+
+        matcher = HOURS.matcher(str);
+        if (matcher.find()) {
+            hours = Integer.parseInt(matcher.group("hours"));
+        }
+
+        matcher = MINUTES.matcher(str);
+        if (matcher.find()) {
+            minutes = Integer.parseInt(matcher.group("minutes"));
+        }
+
+        matcher = SECONDS.matcher(str);
+        if (matcher.find()) {
+            seconds = Integer.parseInt(matcher.group("seconds"));
+        }
+
+        matcher = TICKS.matcher(str);
+        if (matcher.find()) {
+            ticks = Integer.parseInt(matcher.group("ticks"));
+        }
+
+        matcher = MILLISECONDS.matcher(str);
+        if (matcher.find()) {
+            millis = Integer.parseInt(matcher.group("milliseconds"));
+        }
+        return Duration.ofMilliseconds(years * 31536000000L + months * 2628000000L + weeks * 604800000L + days * 86400000L + hours * 3600000L + minutes * 60000L + seconds * 1000L + ticks * 50L + millis);
+    }
+
+    public static Duration of(long duration, TimeUnit unit) {
+        return new Duration(duration, unit);
+    }
+
     /**
      * Construct duration.
      *
@@ -27,7 +101,7 @@ public class Duration {
      * @param duration Duration
      * @param unit     Time unit
      */
-    public Duration(long duration, TimeUnit unit) {
+    private Duration(long duration, TimeUnit unit) {
         if (duration <= 0L || unit == null) {
             this.duration = 0L;
             this.unit = TimeUnit.NANOSECONDS;
@@ -35,17 +109,6 @@ public class Duration {
             this.duration = duration;
             this.unit = unit;
         }
-    }
-
-    /**
-     * Construct duration from milliseconds.
-     *
-     * <p>
-     *
-     * @param millis Duration in milliseconds.
-     */
-    public Duration(long millis) {
-        this(millis, TimeUnit.MILLISECONDS);
     }
 
     public static Duration between(Temporal startInclusive, Temporal endExclusive) {

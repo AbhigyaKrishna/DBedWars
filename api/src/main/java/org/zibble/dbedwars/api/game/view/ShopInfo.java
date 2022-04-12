@@ -3,7 +3,7 @@ package org.zibble.dbedwars.api.game.view;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.util.function.ArrayFunction;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.key.Keyed;
 

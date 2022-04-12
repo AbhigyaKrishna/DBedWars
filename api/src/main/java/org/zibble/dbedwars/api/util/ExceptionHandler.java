@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.util;
 
-import com.pepedevs.radium.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;

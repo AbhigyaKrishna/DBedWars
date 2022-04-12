@@ -49,7 +49,7 @@ public class PopupTowerWorkload implements Workload {
         this.blocksPerTick = blocksPerTick;
         this.face = (((Directional) chest.getState().getData()).getFacing().getOppositeFace());
         this.arena = team.getArena();
-        initBlockMap();
+        this.initBlockMap();
     }
 
     private void initBlockMap() {
@@ -92,8 +92,8 @@ public class PopupTowerWorkload implements Workload {
                         }
                     }
                 });
-                sound.play(block.getLocation());
-                particle.build().setLocation(block.getLocation()).display();
+                this.sound.play(block.getLocation());
+                this.particle.build().setLocation(block.getLocation()).display();
             }
         }
     }
@@ -105,10 +105,10 @@ public class PopupTowerWorkload implements Workload {
 
     @Override
     public boolean shouldExecute() {
-        if (System.currentTimeMillis() - timestamp <= 50) {
+        if (System.currentTimeMillis() - this.timestamp <= 50) {
             return false;
         }
-        timestamp = System.currentTimeMillis();
+        this.timestamp = System.currentTimeMillis();
         t++;
         return t * blocksPerTick < blocks.length + blocksPerTick;
     }

@@ -1,17 +1,17 @@
 package org.zibble.dbedwars.configuration.configurable;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.pepedevs.radium.particles.ParticleEffect;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.objects.serializable.ParticleEffectASC;
 import org.zibble.dbedwars.api.objects.serializable.SoundVP;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
+import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -57,7 +57,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
     private String hologramId;
 
     @ConfigPath
-    private Map<Integer, ConfigurableTiers> tiers;
+    private Map<String, ConfigurableTiers> tiers;
 
     public ConfigurableItemSpawner(DBedwars plugin, String key) {
         this.plugin = plugin;
@@ -134,7 +134,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         return hologramId;
     }
 
-    public Map<Integer, ConfigurableTiers> getTiers() {
+    public Map<String, ConfigurableTiers> getTiers() {
         return tiers;
     }
 
@@ -181,8 +181,6 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
     public static class ConfigurableTiers implements Loadable, PropertySerializable {
 
-        private String key;
-
         @ConfigPath("time")
         private double seconds;
 
@@ -197,8 +195,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
         private Map<String, ConfigurableDrop> actions;
 
-        protected ConfigurableTiers(String key) {
-            this.key = key;
+        protected ConfigurableTiers() {
             this.seconds = -1;
             this.actions = new HashMap<>();
         }
@@ -218,21 +215,12 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
         @Override
         public boolean isValid() {
-            try {
-                Integer.parseInt(this.key);
-                return true;
-            } catch (NumberFormatException ignored) {
-            }
-            return false;
+            return true;
         }
 
         @Override
         public boolean isInvalid() {
             return !this.isValid();
-        }
-
-        public String getKey() {
-            return key;
         }
 
         public double getSeconds() {
@@ -264,7 +252,6 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         @Override
         public NamedProperties toProperties() {
             return NamedProperties.builder()
-                    .add("key", key)
                     .add("time", seconds)
                     .add("upgradeEffect", upgradeEffect)
                     .add("upgradeSound", upgradeSound)
@@ -276,7 +263,6 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         @Override
         public String toString() {
             return "ConfigurableTiers{" +
-                    "key='" + key + '\'' +
                     ", seconds=" + seconds +
                     ", upgradeEffect='" + upgradeEffect + '\'' +
                     ", upgradeSound='" + upgradeSound + '\'' +

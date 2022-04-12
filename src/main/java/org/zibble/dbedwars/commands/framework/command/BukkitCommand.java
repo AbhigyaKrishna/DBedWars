@@ -6,7 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zibble.dbedwars.utils.Debugger;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BukkitCommand implements CommandExecutor, TabCompleter {
@@ -19,6 +21,7 @@ public class BukkitCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        Debugger.debug("Running command `" + command.getName() + "` with args " + Arrays.toString(args));
         this.holder.execute(sender, args);
         return true;
     }

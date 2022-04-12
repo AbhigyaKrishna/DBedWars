@@ -2,7 +2,7 @@ package org.zibble.dbedwars.api.game;
 
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.util.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 
 public interface ArenaCategory {
 
