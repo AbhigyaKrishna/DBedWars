@@ -49,16 +49,10 @@ public class ConfigurableNpc implements Loadable {
     public static class ConfigurableTexture implements Loadable {
 
         @ConfigPath
-        private String owner;
-
-        @ConfigPath
         private String value;
 
         @ConfigPath
         private String signature;
-
-        @ConfigPath
-        private String mineskin;
 
         @Override
         public void load(ConfigurationSection section) {
@@ -70,20 +64,12 @@ public class ConfigurableNpc implements Loadable {
             return true;
         }
 
-        public String getOwner() {
-            return owner;
-        }
-
         public String getValue() {
             return value;
         }
 
         public String getSignature() {
             return signature;
-        }
-
-        public String getMineskin() {
-            return mineskin;
         }
 
     }

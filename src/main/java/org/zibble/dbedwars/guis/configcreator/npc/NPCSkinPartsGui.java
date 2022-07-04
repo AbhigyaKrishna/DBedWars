@@ -3,6 +3,7 @@ package org.zibble.dbedwars.guis.configcreator.npc;
 import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.guis.component.GuiComponent;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
@@ -10,6 +11,7 @@ import org.zibble.dbedwars.api.hooks.npc.model.Attributes;
 import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
 
 import java.util.Optional;
@@ -37,7 +39,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 .material(XMaterial.ARROW)
                 .displayName(AdventureMessage.from("<aqua>Back"))
                 .lore(AdventureMessage.from("<gray>Click to go back!"))
-                .build(), (protocolPlayer, clickType) -> new NPCCreator(this.model, this.npc.orElse(null)).setupForPlayerNpc().open((Player) protocolPlayer.handle()));
+                .build(), (protocolPlayer, clickType) -> new NPCCreatorGui(this.model, this.npc.orElse(null)).setupForPlayerNpc().open((Player) protocolPlayer.handle()));
         this.updateButtons();
     }
 
@@ -58,7 +60,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('B', BwItemStack.builder()
                 .material(data.isHatEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -71,7 +73,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('C', BwItemStack.builder()
                 .material(data.isJacketEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -84,7 +86,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('D', BwItemStack.builder()
                 .material(data.isLeftSleeveEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -97,7 +99,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('E', BwItemStack.builder()
                 .material(data.isRightSleeveEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -110,7 +112,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('F', BwItemStack.builder()
                 .material(data.isLeftPantsLegEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -123,7 +125,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
         this.item('G', BwItemStack.builder()
                 .material(data.isRightPantsLegEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
@@ -136,7 +138,7 @@ public class NPCSkinPartsGui extends GuiComponent<ChestMenu, NPCSkinPartsGui> {
                 npc.updateNPCData();
             });
             this.updateButtons();
-            this.update();
+            ActionFuture.runAsync(this::update, Duration.ofTicks(5));
         });
     }
 

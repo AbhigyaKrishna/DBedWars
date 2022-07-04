@@ -26,6 +26,7 @@ import org.zibble.dbedwars.game.setup.SetupSessionManager;
 import org.zibble.dbedwars.handler.*;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.item.*;
+import org.zibble.dbedwars.listeners.ConverseReplyHandler;
 import org.zibble.dbedwars.listeners.VanishListener;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
@@ -155,7 +156,7 @@ public final class DBedwars extends PluginAdapter {
 
     @Override
     protected boolean setUpListeners() {
-        this.listeners = new Listener[]{new VanishListener(), new GameRuleHandler(this)};
+        this.listeners = new Listener[]{new VanishListener(), new GameRuleHandler(this), ConverseReplyHandler.INSTANCE};
         for (Listener listener : this.listeners) {
             this.getServer().getPluginManager().registerEvents(listener, this);
         }

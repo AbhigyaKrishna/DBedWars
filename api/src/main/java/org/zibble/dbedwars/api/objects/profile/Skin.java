@@ -18,4 +18,8 @@ public class Skin extends Property {
         return new Skin(value, null);
     }
 
+    public static Skin from(Property property) {
+        return new Skin(property.getValue(), property.getSignature());
+    }
+
 }

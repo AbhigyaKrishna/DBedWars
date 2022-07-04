@@ -46,6 +46,11 @@ public class HologramPageImpl implements HologramPage {
     }
 
     @Override
+    public void clearLines() {
+        this.lines.clear();
+    }
+
+    @Override
     public HologramLine.Text addNewTextLine(Message text) {
         HologramLineImpl.Text line = new HologramLineImpl.Text(this.manager, this, text);
         this.lines.add(line);

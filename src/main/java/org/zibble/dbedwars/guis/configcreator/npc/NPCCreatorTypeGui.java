@@ -36,7 +36,7 @@ public class NPCCreatorTypeGui extends GuiComponent<ChestMenu, NPCCreatorTypeGui
                 .material(XMaterial.PLAYER_HEAD)
                 .displayName(AdventureMessage.from("<yellow>Player npc"))
                 .lore(AdventureMessage.from("<gray>Click to create a player npc"))
-                .build(), (protocolPlayer, clickType) -> NPCCreator.creator(new NPCModel()).setupForPlayerNpc().open((Player) protocolPlayer.handle()));
+                .build(), (protocolPlayer, clickType) -> NPCCreatorGui.creator(new NPCModel()).setupForPlayerNpc().open((Player) protocolPlayer.handle()));
         this.item('Y', BwItemStack.builder()
                 .material(XMaterial.ZOMBIE_HEAD)
                 .displayName(AdventureMessage.from("<yellow>Entity npc"))

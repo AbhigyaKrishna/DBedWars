@@ -9,7 +9,9 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,16 +34,28 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     private final SkinData skinData;
     private final UserProfile userProfile;
     private final WrapperPlayServerPlayerInfo.PlayerData info;
+    private final String teamName;
+    private final WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo;
 
     public PlayerNPCImpl(NPCFactoryImpl factory, Key key, Location location) {
         super(factory, key, location);
         this.skinData = new SkinData();
-        this.userProfile = new UserProfile(this.getUUID(), "");
+        this.teamName = "NPC_0000" + this.getUUID().toString().substring(0, 8);
+        this.userProfile = new UserProfile(this.getUUID(), this.teamName);
         this.info = new WrapperPlayServerPlayerInfo.PlayerData(
                 Component.empty(),
                 this.userProfile,
                 GameMode.CREATIVE,
                 0
+        );
+        this.teamInfo = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+                Component.empty(),
+                null,
+                null,
+                WrapperPlayServerTeams.NameTagVisibility.NEVER,
+                WrapperPlayServerTeams.CollisionRule.ALWAYS,
+                NamedTextColor.WHITE,
+                WrapperPlayServerTeams.OptionData.NONE
         );
     }
 
@@ -49,7 +63,7 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     public ActionFuture<PlayerNPC> setSkin(Skin skin) {
         return ActionFuture.supplyAsync(() -> {
             this.userProfile.getTextureProperties().clear();
-            this.userProfile.getTextureProperties().add(new TextureProperty("textures", skin.getValue(), skin.getSignature()));
+            this.userProfile.getTextureProperties().add(new TextureProperty(skin.getName(), skin.getValue(), skin.getSignature()));
             return this;
         });
     }
@@ -58,23 +72,35 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     public ActionFuture<PlayerNPC> setSkin(ActionFuture<Skin> skin) {
         return skin.thenApply(s -> {
             this.userProfile.getTextureProperties().clear();
-            this.userProfile.getTextureProperties().add(new TextureProperty("textures", s.getValue(), s.getSignature()));
+            this.userProfile.getTextureProperties().add(new TextureProperty(s.getName(), s.getValue(), s.getSignature()));
             return this;
         });
     }
 
     @Override
-    public ActionFuture<PlayerNPC> hideNameTag() {
+    public ActionFuture<PlayerNPC> setNameTagVisibility(boolean visible) {
         return ActionFuture.supplyAsync(() -> {
-            this.hideNameTagPacket();
+            this.teamInfo.setTagVisibility(visible ? WrapperPlayServerTeams.NameTagVisibility.ALWAYS : WrapperPlayServerTeams.NameTagVisibility.NEVER);
+            for (UUID uid : this.shown) {
+                Player player = Bukkit.getPlayer(uid);
+                if (player != null) {
+                    this.sendTeamPacket(player);
+                }
+            }
             return this;
         });
     }
 
     @Override
-    public ActionFuture<PlayerNPC> showNameTag() {
+    public ActionFuture<PlayerNPC> setCollision(boolean collision) {
         return ActionFuture.supplyAsync(() -> {
-            this.showNameTagPacket();
+            this.teamInfo.setCollisionRule(collision ? WrapperPlayServerTeams.CollisionRule.ALWAYS : WrapperPlayServerTeams.CollisionRule.NEVER);
+            for (UUID uid : this.shown) {
+                Player player = Bukkit.getPlayer(uid);
+                if (player != null) {
+                    this.sendTeamPacket(player);
+                }
+            }
             return this;
         });
     }
@@ -150,18 +176,15 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
 
     @Override
     public ActionFuture<BedwarsNPC> show(Player player) {
+        if (this.shown.contains(player.getUniqueId()))
+            return ActionFuture.completedFuture(this);
+
         return this.showInTab(player).thenApply(npc -> {
-            if (this.shown.contains(player.getUniqueId()))
-                return this;
-
             this.viewPacket(player);
+            this.hologram.show(player);
             this.shown.add(player.getUniqueId());
-
             return this;
-        }).thenApply(npc -> {
-            this.hideNameTagPacket();
-            return this;
-        }).delay(Duration.ofTicks(3)).thenApply(npc -> {
+        }).delay(Duration.ofTicks(5)).thenApply(npc -> {
             this.sendTabHidePacket(player);
             return this;
         });
@@ -171,9 +194,7 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     public ActionFuture<BedwarsNPC> forceShow(Player player) {
         return this.showInTab(player).thenApply(npc -> {
             this.viewPacket(player);
-            return this;
-        }).thenApply(npc -> {
-            this.hideNameTagPacket();
+            this.hologram.show(player);
             return this;
         }).delay(Duration.ofTicks(2)).thenApply(npc -> {
             this.sendTabHidePacket(player);
@@ -186,12 +207,13 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         WrapperPlayServerSpawnPlayer spawnPacket = new WrapperPlayServerSpawnPlayer(
                 this.getEntityID(),
                 this.getUUID(),
-                super.convert(this.getLocation()),
+                SpigotConversionUtil.fromBukkitLocation(this.getLocation()).getPosition(),
                 this.getLocation().getYaw(),
                 this.getLocation().getPitch(),
                 new ArrayList<>()
         );
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, spawnPacket);
+        this.sendTeamPacket(player);
     }
 
     private void sendTabShowPacket(Player... players) {
@@ -214,28 +236,9 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         }
     }
 
-    private void showNameTagPacket() {
-        WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.getUUID().toString().substring(0, 8),
-                WrapperPlayServerTeams.TeamMode.CREATE,
-                Optional.empty(),
-                this.userProfile.getName());
-        for (UUID uuid : this.shown) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
-        }
-    }
-
-    private void hideNameTagPacket() {
-        WrapperPlayServerTeams packet = new WrapperPlayServerTeams("NPC_0000" + this.getUUID().toString().substring(0, 8),
-                WrapperPlayServerTeams.TeamMode.REMOVE,
-                Optional.empty(),
-                this.userProfile.getName());
-        for (UUID uuid : this.shown) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player == null) continue;
-            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
-        }
+    private void sendTeamPacket(Player player) {
+        WrapperPlayServerTeams packet = new WrapperPlayServerTeams(this.teamName, WrapperPlayServerTeams.TeamMode.CREATE, Optional.of(this.teamInfo), this.userProfile.getName());
+        PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
 }

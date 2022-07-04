@@ -110,45 +110,7 @@ public class ConfigurationUtil {
             npc = new NPCModel();
             if (config.getTexture() != null) {
                 ConfigurableNpc.ConfigurableTexture texture = config.getTexture();
-                ActionFuture<Skin> skin = null;
-                if (texture.getOwner() != null) {
-                    if (texture.getOwner().length() == 32) {
-                        skin = ActionFuture.supplyAsync(() -> {
-                            for (Property property : GameProfileFetcher.getInstance().fetch(UUIDTypeAdaptor.fromString(texture.getOwner())).getProperties()) {
-                                if (property.getName().equals("textures")) {
-                                    return Skin.from(property.getValue(), property.getSignature());
-                                }
-                            }
-                            return null;
-                        });
-                    } else if (texture.getOwner().length() == 36) {
-                        skin = ActionFuture.supplyAsync(() -> {
-                            for (Property property : GameProfileFetcher.getInstance().fetch(UUID.fromString(texture.getOwner())).getProperties()) {
-                                if (property.getName().equals("textures")) {
-                                    return Skin.from(property.getValue(), property.getSignature());
-                                }
-                            }
-                            return null;
-                        });
-                    } else {
-                        skin = ActionFuture.supplyAsync(() -> {
-                            UUID uuid = UUIDFetcher.getInstance().getUUID(texture.getOwner());
-                            if (uuid == null) return null;
-                            for (Property property : GameProfileFetcher.getInstance().fetch(uuid).getProperties()) {
-                                if (property.getName().equals("textures")) {
-                                    return Skin.from(property.getValue(), property.getSignature());
-                                }
-                            }
-                            return null;
-                        });
-                    }
-                } else if (texture.getValue() != null) {
-                    skin = ActionFuture.supplyAsync(() -> Skin.from(texture.getValue(), texture.getSignature()));
-                } else if (texture.getMineskin() != null) {
-                    skin = ActionFuture.supplyAsync(() -> MineSkinAPI.getInstance().getSkin(texture.getMineskin()));
-                }
-
-                npc.addAttribute(Attributes.FUTURE_SKIN, skin);
+                npc.addAttribute(Attributes.SKIN, Skin.from(texture.getValue(), texture.getSignature()));
             }
         } else {
             EntityType type = EnumUtil.matchEnum(config.getType(), EntityType.values());

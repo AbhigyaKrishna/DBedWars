@@ -89,10 +89,6 @@ public class Duration {
         return Duration.ofMilliseconds(years * 31536000000L + months * 2628000000L + weeks * 604800000L + days * 86400000L + hours * 3600000L + minutes * 60000L + seconds * 1000L + ticks * 50L + millis);
     }
 
-    public static Duration of(long duration, TimeUnit unit) {
-        return new Duration(duration, unit);
-    }
-
     /**
      * Construct duration.
      *

@@ -6,6 +6,8 @@ import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.SkinData;
+import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
@@ -21,11 +23,14 @@ public class NPCModel {
 
     public NPCModel() {
         this.type = Type.PLAYER;
+        this.name = AdventureMessage.from(UUID.randomUUID().toString());
+        this.addAttribute(Attributes.SKIN_DATA, new SkinData());
     }
 
     public NPCModel(EntityType entityType) {
         this.type = Type.ENTITY;
         this.entityType = entityType;
+        this.name = AdventureMessage.from(UUID.randomUUID().toString());
     }
 
     public EntityType getEntityType() {
