@@ -44,7 +44,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> NamedKey<T> getProperty(String name) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getValue().equals(name)) {
+            if (property.get().equals(name)) {
                 return (NamedKey<T>) property;
             }
         }
@@ -53,7 +53,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> NamedKey<T> getProperty(String name, T defaultValue) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getValue().equals(name)) {
+            if (property.get().equals(name)) {
                 return (NamedKey<T>) property;
             }
         }
@@ -62,7 +62,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> T getValue(String name) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getValue().equals(name)) {
+            if (property.get().equals(name)) {
                 return (T) property.get();
             }
         }
@@ -71,7 +71,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public <T> T getValue(String name, T defaultValue) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getValue().equals(name)) {
+            if (property.get().equals(name)) {
                 return (T) property.get();
             }
         }
@@ -110,7 +110,7 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
     public boolean contains(String key) {
         for (NamedKey<?> property : this.properties) {
-            if (property.getValue().equals(key)) {
+            if (property.get().equals(key)) {
                 return true;
             }
         }

@@ -42,6 +42,11 @@ public class NBTByteArray extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTByteArray= " + Arrays.toString(array);
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.array = new byte[input.readInt()];
         input.readFully(this.array);

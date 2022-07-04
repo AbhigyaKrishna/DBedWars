@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.api.game.view;
 
 import org.zibble.dbedwars.api.game.ArenaPlayer;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.messaging.message.Message;
 
 public interface ShopView {
@@ -10,6 +11,8 @@ public interface ShopView {
     ShopPage getDefaultPage();
 
     void setDefaultPage(ShopPage page);
+
+    BedwarsNPC getNpc();
 
     ShopPage createPage(String key, int row, Message title);
 

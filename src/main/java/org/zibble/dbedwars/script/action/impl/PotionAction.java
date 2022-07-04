@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.zibble.dbedwars.api.objects.serializable.PotionEffectAT;
 import org.zibble.dbedwars.api.script.action.Action;
 
-public class PotionAction implements Action<LivingEntity> {
+public class PotionAction implements Action {
 
     private final LivingEntity entity;
     private final PotionEffectAT potionEffectAT;
@@ -16,11 +16,10 @@ public class PotionAction implements Action<LivingEntity> {
 
     @Override
     public void execute() {
-        this.potionEffectAT.applyTo(this.getHandle());
+        this.potionEffectAT.applyTo(this.getEntity());
     }
 
-    @Override
-    public LivingEntity getHandle() {
+    public LivingEntity getEntity() {
         return this.entity;
     }
 

@@ -71,4 +71,15 @@ public class ConfigurableArenaCategory implements Loadable {
         this.scoreboard = scoreboard;
     }
 
+    @Override
+    public String toString() {
+        return "ConfigurableArenaCategory{" +
+                "name='" + name + '\'' +
+                ", customName='" + customName + '\'' +
+                ", description='" + description + '\'' +
+                ", icon='" + icon + '\'' +
+                ", scoreboard='" + scoreboard + '\'' +
+                '}';
+    }
+
 }

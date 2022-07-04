@@ -599,6 +599,8 @@ public enum HologramEntityType {
         }
     };
 
+    public static final HologramEntityType[] VALUES = values();
+
     private final float height;
 
     HologramEntityType() {

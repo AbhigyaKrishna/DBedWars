@@ -8,7 +8,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
-import io.github.retrooper.packetevents.util.SpigotDataHelper;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class VanishPlayer {
         this.data = new WrapperPlayServerPlayerInfo.PlayerData(
                 Component.text(this.getPlayer().getName()), // TODO: Name
                 profile,
-                SpigotDataHelper.fromBukkitGameMode(this.getPlayer().getGameMode()),
+                SpigotConversionUtil.fromBukkitGameMode(this.getPlayer().getGameMode()),
                 PacketEvents.getAPI().getPlayerManager().getPing(this.getPlayer())
         );
         this.vanishedFrom = Collections.synchronizedSet(new HashSet<>());
@@ -89,7 +89,7 @@ public class VanishPlayer {
         this.vanishFromAll = false;
         EntityData data = new EntityData(10, EntityDataTypes.BYTE, (byte) 0x7f);
         WrapperPlayServerSpawnPlayer packet = new WrapperPlayServerSpawnPlayer(this.getPlayer().getEntityId(), this.getPlayer().getUniqueId(),
-                SpigotDataHelper.fromBukkitLocation(this.getPlayer().getLocation()), data);
+                SpigotConversionUtil.fromBukkitLocation(this.getPlayer().getLocation()), data);
         WrapperPlayServerPlayerInfo infoPacket = new WrapperPlayServerPlayerInfo(WrapperPlayServerPlayerInfo.Action.ADD_PLAYER, this.data);
         for (Player worldPlayer : players) {
             if (worldPlayer.equals(this.getPlayer()))

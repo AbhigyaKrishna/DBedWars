@@ -72,6 +72,11 @@ public class NBTDouble extends NBTNumber {
     }
 
     @Override
+    public String toString() {
+        return "NBTDouble= " + value;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.value = input.readDouble();
     }

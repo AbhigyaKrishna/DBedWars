@@ -1,13 +1,29 @@
 package org.zibble.dbedwars.api.hooks.npc;
 
-public abstract class NPCData {
+public class NPCData {
 
-    public abstract boolean isOnFire();
+    private boolean isOnFire;
+    private boolean isCrouched;
 
-    protected abstract void setOnFire(boolean onFire);
+    public NPCData() {
+        this.isOnFire = false;
+        this.isCrouched = false;
+    }
 
-    public abstract boolean isCrouched();
+    public boolean isOnFire() {
+        return isOnFire;
+    }
 
-    protected abstract void setCrouched(boolean isCrouched);
+    protected void setOnFire(boolean onFire) {
+        isOnFire = onFire;
+    }
+
+    public boolean isCrouched() {
+        return isCrouched;
+    }
+
+    protected void setCrouched(boolean crouched) {
+        isCrouched = crouched;
+    }
 
 }

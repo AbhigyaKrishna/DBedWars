@@ -63,7 +63,7 @@ public class MissingArenaData {
     public Set<Color> getTeamsWithMissingBed() {
         Set<Color> missingBed = new HashSet<>();
         for (Map.Entry<Color, ArenaDataHolderImpl.TeamDataHolderImpl> team : this.session.getArenaDataHolder().getTeamData().entrySet()) {
-            if (team.getValue().getBed() != null) {
+            if (team.getValue().getBed() == null) {
                 missingBed.add(team.getKey());
             }
         }
@@ -77,7 +77,7 @@ public class MissingArenaData {
     public Set<Color> getTeamsWithMissingSpawn() {
         Set<Color> missingSpawn = new HashSet<>();
         for (Map.Entry<Color, ArenaDataHolderImpl.TeamDataHolderImpl> team : this.session.getArenaDataHolder().getTeamData().entrySet()) {
-            if (team.getValue().getSpawnLocation() != null) {
+            if (team.getValue().getSpawnLocation() == null) {
                 missingSpawn.add(team.getKey());
             }
         }

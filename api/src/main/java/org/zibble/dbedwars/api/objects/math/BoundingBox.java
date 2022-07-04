@@ -4,9 +4,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Encapsulates an axis aligned bounding box represented by a minimum and a maximum Vector.
@@ -470,6 +468,31 @@ public class BoundingBox {
         return blocks;
     }
 
+    public List<Vector> getOutline(double skipDistance) {
+        List<Vector> vectors = new ArrayList<>();
+        double x, y, z;
+        for (x = this.minimum.getX() + skipDistance; x < this.maximum.getX(); x += skipDistance) {
+            vectors.add(new Vector(x, this.minimum.getY(), this.minimum.getZ()));
+            vectors.add(new Vector(x, this.maximum.getZ(), this.minimum.getZ()));
+            vectors.add(new Vector(x, this.minimum.getY(), this.maximum.getZ()));
+            vectors.add(new Vector(x, this.maximum.getY(), this.maximum.getZ()));
+        }
+        for (y = this.minimum.getY() + skipDistance; y < this.maximum.getY(); y += skipDistance) {
+            vectors.add(new Vector(this.minimum.getX(), y, this.minimum.getZ()));
+            vectors.add(new Vector(this.maximum.getX(), y, this.minimum.getZ()));
+            vectors.add(new Vector(this.minimum.getX(), y, this.maximum.getZ()));
+            vectors.add(new Vector(this.maximum.getX(), y, this.maximum.getZ()));
+        }
+        for (z = this.minimum.getZ() + skipDistance; z < this.maximum.getZ(); z += skipDistance) {
+            vectors.add(new Vector(this.minimum.getX(), this.minimum.getY(), z));
+            vectors.add(new Vector(this.maximum.getX(), this.minimum.getY(), z));
+            vectors.add(new Vector(this.minimum.getX(), this.maximum.getY(), z));
+            vectors.add(new Vector(this.maximum.getX(), this.maximum.getY(), z));
+        }
+        vectors.addAll(Arrays.asList(this.getCorners()));
+        return vectors;
+    }
+
     public boolean isValid() {
         return this.minimum.getX() <= this.maximum.getX()
                 && this.minimum.getY() <= this.maximum.getY()
@@ -478,7 +501,7 @@ public class BoundingBox {
 
     @Override
     public String toString() {
-        return "box [ " + this.minimum.toString() + " -> " + this.maximum.toString() + " ]";
+        return "Box [ " + this.minimum.toString().replace(",", "::") + " -> " + this.maximum.toString().replace(",", "::") + " ]";
     }
 
     @Override

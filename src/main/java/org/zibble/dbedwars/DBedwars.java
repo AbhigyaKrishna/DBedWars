@@ -1,8 +1,8 @@
 package org.zibble.dbedwars;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.google.gson.stream.MalformedJsonException;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.World;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -11,18 +11,16 @@ import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zibble.dbedwars.api.DBedWarsAPI;
-import org.zibble.dbedwars.api.feature.BedWarsFeature;
-import org.zibble.dbedwars.api.feature.BedWarsFeatures;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.plugin.PluginAdapter;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.api.version.Version;
+import org.zibble.dbedwars.cache.Cache;
 import org.zibble.dbedwars.commands.framework.CommandRegistryImpl;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.bridge.*;
-import org.zibble.dbedwars.features.PreciseLocationFeature;
-import org.zibble.dbedwars.features.SaveArenaHistoryFeature;
 import org.zibble.dbedwars.game.GameManagerImpl;
 import org.zibble.dbedwars.game.setup.SetupSessionManager;
 import org.zibble.dbedwars.handler.*;
@@ -54,7 +52,6 @@ public final class DBedwars extends PluginAdapter {
     private CustomItemHandler customItemHandler;
     private ThreadHandler threadHandler;
     private HookManagerImpl hookManager;
-    private MenuHandler menuHandler;
     private SetupSessionManager setupSessionManager;
 
     private Messaging messaging;
@@ -122,6 +119,11 @@ public final class DBedwars extends PluginAdapter {
         this.configHandler.loadItems();
 
         this.initDatabase();
+        try {
+            Cache.load();
+        } catch (MalformedJsonException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }
@@ -129,10 +131,10 @@ public final class DBedwars extends PluginAdapter {
     @Override
     protected boolean setUpHandlers() {
         this.gameManager = new GameManagerImpl(this, this.configHandler.getLobbyLocation());
+        this.getGameManager().load();
         this.customItemHandler = new CustomItemHandler(this);
         this.registerCustomItems();
         this.setupSessionManager = new SetupSessionManager();
-        this.menuHandler = new MenuHandler(this);
         this.nmsAdaptor = this.registerNMSAdaptor();
         this.featureManager = new FeatureManager(this);
         this.featureManager.registerDefaults();
@@ -204,10 +206,6 @@ public final class DBedwars extends PluginAdapter {
         return hookManager;
     }
 
-    public MenuHandler getMenuHandler() {
-        return menuHandler;
-    }
-
     private void initDatabase() {
         DatabaseType type;
         if (this.getConfigHandler().getDatabase().getDatabase() != null)
@@ -220,11 +218,11 @@ public final class DBedwars extends PluginAdapter {
             ExternalLibrary.HIKARI_CP.loadSafely();
         }
 
-        if (type == DatabaseType.MYSQL) {
-            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
-        } else if (type == DatabaseType.MongoDB) {
+        if (type == DatabaseType.MongoDB) {
             ExternalLibrary.MONGO_DATABASE.loadSafely();
             this.database = new MongoDBBridge(this.getConfigHandler().getDatabase().getMongoDB());
+        } else if (type == DatabaseType.MYSQL) {
+            this.database = new MySQLBridge(this.getConfigHandler().getDatabase().getMySQL());
         } else if (type == DatabaseType.H2) {
             ExternalLibrary.H2_DATABASE.loadSafely();
             this.database = new H2DatabaseBridge();

@@ -138,8 +138,8 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
 
     public R open(Player player) {
         this.close();
-        if (this.title != null)
-            this.title(this.title.asComponentWithPAPI(player)[0]);
+        if (this.title != null && this.menu instanceof NameableMenu)
+            ((NameableMenu) this.menu).title(this.title.asComponentWithPAPI(player)[0]);
         menu.open(MenuPlayer.of(player));
         this.player = player;
         return (R) this;

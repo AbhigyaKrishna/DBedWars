@@ -1,11 +1,13 @@
 package org.zibble.dbedwars.messaging;
 
+import com.google.common.base.Preconditions;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang.Validate;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
@@ -13,6 +15,7 @@ import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.messaging.placeholders.PlayerPlaceholderEntry;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.messaging.member.ConsoleMember;
+import org.zibble.dbedwars.messaging.member.MessagingMember;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
 public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
@@ -23,8 +26,7 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
     private ConsoleMember consoleMessagingMember;
     private LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder().character('&').build();
 
-    public Messaging(DBedwars plugin) {
-        Validate.notNull(plugin, "plugin cannot be null");
+    public Messaging(@NotNull DBedwars plugin) {
         this.plugin = plugin;
         server = this;
     }
@@ -39,7 +41,7 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
     }
 
     public void sendToConsole(Message message) {
-        Validate.notNull(message, "message cannot be null");
+        Preconditions.checkNotNull(message, "message cannot be null");
         for (Component component : message.asComponent()) {
             this.consoleMessagingMember.getAudienceMember().sendMessage(component);
         }
@@ -50,8 +52,13 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
         return new PlayerMember(player);
     }
 
-    public BukkitAudiences getAdventure() {
-        return this.adventure;
+    @Override
+    public MessagingMember getMemberOf(CommandSender sender) {
+        if (sender instanceof Player) {
+            return this.getMessagingMember((Player) sender);
+        } else {
+            return this.getConsole();
+        }
     }
 
     @Override
@@ -67,6 +74,10 @@ public class Messaging extends org.zibble.dbedwars.api.messaging.Messaging {
     @Override
     public Component parseMini(String message) {
         return MiniMessageWrapper.getFullInstance().deserialize(message);
+    }
+
+    public BukkitAudiences getAdventure() {
+        return this.adventure;
     }
 
     @Override

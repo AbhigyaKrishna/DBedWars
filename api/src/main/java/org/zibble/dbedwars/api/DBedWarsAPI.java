@@ -31,8 +31,6 @@ public abstract class DBedWarsAPI {
 
     public abstract HookManager getHookManager();
 
-    public abstract MenuHandler getMenuHandler();
-
     public abstract NMSAdaptor getNMS();
 
     public abstract BwItemStack getConfiguredItem(String key, Placeholder... placeholders);

@@ -27,6 +27,10 @@ public class LegacyMessage extends Message {
         return new LegacyMessage("");
     }
 
+    public static LegacyMessage blank() {
+        return new LegacyMessage(" ");
+    }
+
     public static LegacyMessage from(String message, Placeholder... placeholders) {
         return new LegacyMessage(message, placeholders);
     }

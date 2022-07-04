@@ -4,7 +4,7 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
-public class ActionBarAction implements Action<AbstractMessaging> {
+public class ActionBarAction implements Action {
 
     private final AbstractMessaging messaging;
     private final Message message;
@@ -16,11 +16,10 @@ public class ActionBarAction implements Action<AbstractMessaging> {
 
     @Override
     public void execute() {
-        this.getHandle().sendActionBar(this.getMessage());
+        this.getMessaging().sendActionBar(this.getMessage());
     }
 
-    @Override
-    public AbstractMessaging getHandle() {
+    public AbstractMessaging getMessaging() {
         return this.messaging;
     }
 

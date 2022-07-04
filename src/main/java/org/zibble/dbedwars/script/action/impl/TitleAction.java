@@ -4,7 +4,7 @@ import org.zibble.dbedwars.api.objects.serializable.TitleST;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
-public class TitleAction implements Action<AbstractMessaging> {
+public class TitleAction implements Action {
 
     private final TitleST title;
     private final AbstractMessaging abstractMessaging;
@@ -19,8 +19,7 @@ public class TitleAction implements Action<AbstractMessaging> {
         this.title.send(this.abstractMessaging);
     }
 
-    @Override
-    public AbstractMessaging getHandle() {
+    public AbstractMessaging getMessaging() {
         return this.abstractMessaging;
     }
 

@@ -1,12 +1,12 @@
 package org.zibble.dbedwars.database.mongo.codec;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.database.data.QuickBuyData;
 
 import java.util.Map;

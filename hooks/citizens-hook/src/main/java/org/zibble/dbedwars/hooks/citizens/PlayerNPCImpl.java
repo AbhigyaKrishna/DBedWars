@@ -4,8 +4,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.future.ActionFuture;
-import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
 import org.zibble.dbedwars.api.objects.profile.Skin;
@@ -14,9 +14,9 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
 
     private final SkinData skinData;
 
-    public PlayerNPCImpl(CitizensHook hook, Location location, NPCData npcData, SkinData skinData) {
-        super(hook, location, npcData);
-        this.skinData = skinData;
+    public PlayerNPCImpl(CitizensHook hook, Location location) {
+        super(hook, location);
+        this.skinData = new SkinData();
     }
 
     @Override
@@ -44,13 +44,13 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     }
 
     @Override
-    public ActionFuture<PlayerNPC> showInTab() {
+    public ActionFuture<PlayerNPC> showInTab(Player... players) {
         //TODO
         return null;
     }
 
     @Override
-    public ActionFuture<PlayerNPC> hideFromTab() {
+    public ActionFuture<PlayerNPC> hideFromTab(Player... players) {
         //TODO
         return null;
     }

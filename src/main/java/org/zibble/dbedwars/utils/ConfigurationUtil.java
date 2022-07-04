@@ -1,8 +1,5 @@
 package org.zibble.dbedwars.utils;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -10,9 +7,8 @@ import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.trap.Target;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramEntityType;
-import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
-import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
-import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.hooks.npc.model.Attributes;
+import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
@@ -26,9 +22,10 @@ import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.script.ScriptVariable;
-import org.zibble.dbedwars.api.util.*;
-import org.zibble.dbedwars.api.util.json.JSONBuilder;
-import org.zibble.dbedwars.api.util.json.Json;
+import org.zibble.dbedwars.api.util.Color;
+import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.NumberUtils;
+import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableHologram;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
@@ -37,10 +34,10 @@ import org.zibble.dbedwars.configuration.configurable.ConfigurableTrap;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.configuration.translator.LegacyTranslator;
 import org.zibble.dbedwars.configuration.translator.MiniMessageTranslator;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 import org.zibble.dbedwars.game.arena.traps.TrapImpl;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
-import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.io.GameProfileFetcher;
 import org.zibble.dbedwars.io.MineSkinAPI;
 import org.zibble.dbedwars.io.UUIDFetcher;
@@ -66,6 +63,10 @@ public class ConfigurationUtil {
 
     public static String serializeSpawner(DropInfo drop, LocationXYZ location) {
         return drop.getKey().get() + "#" + location.toString();
+    }
+
+    public static String serializeShop(ArenaDataHolderImpl.ShopDataHolderImpl shop) {
+        return shop.getShopType().getKey().get() + "#" + shop.getLocation().toString();
     }
 
     public static String[][] parseGuiPattern(List<String> lines) {
@@ -103,59 +104,42 @@ public class ConfigurationUtil {
         return "";
     }
 
-    public static Json createJson(ConfigurationSection section) {
-        JSONBuilder builder = new JSONBuilder();
-        for (String key : section.getKeys(false)) {
-            if (section.isConfigurationSection(key)) {
-                builder.add(key, createJson(section.getConfigurationSection(key)).getHandle());
-            } else {
-                builder.add(key, section.get(key));
-            }
-        }
-
-        return builder.toJson();
-    }
-
-    public static BedwarsNPC createNpc(Location location, ConfigurableNpc config) {
-        BedwarsNPC npc;
+    public static NPCModel createNpcModel(ConfigurableNpc config) {
+        NPCModel npc;
         if (config.getType().equalsIgnoreCase("player")) {
-            npc = DBedwars.getInstance().getHookManager().getNpcFactory().createPlayerNPC(location);
+            npc = new NPCModel();
             if (config.getTexture() != null) {
                 ConfigurableNpc.ConfigurableTexture texture = config.getTexture();
                 ActionFuture<Skin> skin = null;
                 if (texture.getOwner() != null) {
                     if (texture.getOwner().length() == 32) {
                         skin = ActionFuture.supplyAsync(() -> {
-                            Skin s = null;
                             for (Property property : GameProfileFetcher.getInstance().fetch(UUIDTypeAdaptor.fromString(texture.getOwner())).getProperties()) {
                                 if (property.getName().equals("textures")) {
-                                    s = Skin.from(property.getValue(), property.getSignature());
-                                    break;
+                                    return Skin.from(property.getValue(), property.getSignature());
                                 }
                             }
-                            return s;
+                            return null;
                         });
                     } else if (texture.getOwner().length() == 36) {
                         skin = ActionFuture.supplyAsync(() -> {
-                            Skin s = null;
                             for (Property property : GameProfileFetcher.getInstance().fetch(UUID.fromString(texture.getOwner())).getProperties()) {
                                 if (property.getName().equals("textures")) {
-                                    s = Skin.from(property.getValue(), property.getSignature());
-                                    break;
+                                    return Skin.from(property.getValue(), property.getSignature());
                                 }
                             }
-                            return s;
+                            return null;
                         });
                     } else {
                         skin = ActionFuture.supplyAsync(() -> {
-                            Skin s = null;
-                            for (Property property : GameProfileFetcher.getInstance().fetch(UUIDFetcher.getInstance().getUUID(texture.getOwner())).getProperties()) {
+                            UUID uuid = UUIDFetcher.getInstance().getUUID(texture.getOwner());
+                            if (uuid == null) return null;
+                            for (Property property : GameProfileFetcher.getInstance().fetch(uuid).getProperties()) {
                                 if (property.getName().equals("textures")) {
-                                    s = Skin.from(property.getValue(), property.getSignature());
-                                    break;
+                                    return Skin.from(property.getValue(), property.getSignature());
                                 }
                             }
-                            return s;
+                            return null;
                         });
                     }
                 } else if (texture.getValue() != null) {
@@ -164,31 +148,17 @@ public class ConfigurationUtil {
                     skin = ActionFuture.supplyAsync(() -> MineSkinAPI.getInstance().getSkin(texture.getMineskin()));
                 }
 
-                if (skin != null) {
-                    ((PlayerNPC) npc).setSkin(skin.thenApply(s -> s == null ? Skin.empty() : s));
-                }
+                npc.addAttribute(Attributes.FUTURE_SKIN, skin);
             }
         } else {
             EntityType type = EnumUtil.matchEnum(config.getType(), EntityType.values());
             if (type == null) {
                 throw new IllegalArgumentException("No match for npc type " + config.getType() + " found!");
             }
-            npc = DBedwars.getInstance().getHookManager().getNpcFactory().createEntityNPC(location, type);
+            npc = new NPCModel(type);
         }
 
-        HologramPage page = npc.getNameHologram().getHologramPages().get(0);
-        for (ConfigMessage message : ConfigMessage.from(config.getName()).splitToLineMessage()) {
-            page.addNewTextLine(message);
-        }
-
-        if (config.getShop() != null) {
-            npc.addClickAction((player, clickType) -> DBedwars.getInstance().getGameManager().getArenaPlayer(player).ifPresent(arenaPlayer -> {
-                ShopViewImpl shop = ((ArenaPlayerImpl) arenaPlayer).getShop(config.getShop());
-                if (shop != null) {
-                    shop.getGui().open(shop.getDefaultPage().getKey());
-                }
-            }));
-        }
+        npc.setName(ConfigMessage.from(config.getName()));
 
         if (config.getActions() != null && !config.getActions().isEmpty()) {
             npc.addClickAction((player, clickType) -> {
@@ -287,7 +257,7 @@ public class ConfigurationUtil {
             if (matcher.matches()) {
                 String entity = matcher.group("entity");
                 //TODO REWORK GETTING ENTITY TYPE
-                HologramEntityType mapped = EnumUtil.matchEnum(entity, HologramEntityType.values());
+                HologramEntityType mapped = EnumUtil.matchEnum(entity, HologramEntityType.VALUES);
                 if (mapped != null) {
                     lines.add(HologramModel.ModelLine.ofEntity(mapped));
                     continue;

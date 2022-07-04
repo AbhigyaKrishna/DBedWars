@@ -2,7 +2,8 @@ package org.zibble.dbedwars.game.arena;
 
 import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Strings;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
@@ -643,7 +644,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, this.getStatus().name().toLowerCase())),
                 PlaceholderEntry.symbol("arena_category", this.getCategory().getName())
         };
     }
@@ -655,7 +656,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, this.getStatus().name().toLowerCase())),
                 PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
                 PlaceholderEntry.symbol("start_countdown", () -> this.startTask == null ? "" : "in " + this.startTask.getCountdown().get()),
                 PlaceholderEntry.symbol("arena_category", this.getCategory().getName())
@@ -674,7 +675,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
                 PlaceholderEntry.symbol("max_players", String.valueOf(this.getDataHolder().getMaxPlayersPerTeam())),
                 PlaceholderEntry.symbol("arena_name", this.getName()),
                 PlaceholderEntry.symbol("game_id", this.getGameId()),
-                PlaceholderEntry.symbol("arena_status", () -> StringUtils.capitalize(this.getStatus().name().toLowerCase())),
+                PlaceholderEntry.symbol("arena_status", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, this.getStatus().name().toLowerCase())),
                 PlaceholderEntry.symbol("date", new SimpleDateFormat("dd/MM/yyyy").format(new Date())),
                 PlayerPlaceholderEntry.symbol("current_player_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.KILLS)) : "N/A"),
                 PlayerPlaceholderEntry.symbol("current_player_final_kills", player -> this.isArenaPlayer(player) ? String.valueOf(this.getAsArenaPlayer(player).get().getPoints().getCount(ArenaPlayer.PlayerPoints.FINAL_KILLS)) : "N/A"),

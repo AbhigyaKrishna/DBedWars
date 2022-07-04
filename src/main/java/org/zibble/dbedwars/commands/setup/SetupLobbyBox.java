@@ -20,6 +20,11 @@ public class SetupLobbyBox extends SetupSessionCommand {
 
     @Override
     protected void execute(PlayerMember member, Player player, SetupSession setupSession, String[] args) {
+        if (args.length < 1) {
+            setupSession.setupWaitingBoxArea();
+            return;
+        }
+
         switch (args[0]) {
             case "1":
                 setupSession.setupWaitingBoxCorner1(player.getLocation());

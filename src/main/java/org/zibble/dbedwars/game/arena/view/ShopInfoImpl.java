@@ -1,11 +1,12 @@
 package org.zibble.dbedwars.game.arena.view;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.game.view.ShopInfo;
+import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.objects.serializable.LEnchant;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.api.util.function.ArrayFunction;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.util.json.Json;
@@ -19,6 +20,7 @@ import java.util.regex.Matcher;
 public class ShopInfoImpl implements ShopInfo {
 
     private final Key key;
+    private NPCModel npc;
     private PageInfoImpl defaultPage;
     private Map<Key, PageInfoImpl> pages = new HashMap<>();
 
@@ -31,6 +33,7 @@ public class ShopInfoImpl implements ShopInfo {
         for (Map.Entry<String, ConfigurableShop.ConfigurablePage> entry : config.getPages().entrySet()) {
             shopType.pages.put(Key.of(entry.getKey()), PageInfoImpl.fromConfig(entry.getKey(), entry.getValue()));
         }
+        shopType.npc = DBedwars.getInstance().getGameManager().getNpcs().get(config.getNpc());
         shopType.defaultPage = shopType.pages.getOrDefault(Key.of(config.getDefaultPage()), shopType.pages.values().iterator().next());
         return shopType;
     }
@@ -43,6 +46,11 @@ public class ShopInfoImpl implements ShopInfo {
     @Override
     public PageInfo getDefaultPage() {
         return this.defaultPage;
+    }
+
+    @Override
+    public NPCModel getNpc() {
+        return npc;
     }
 
     @Override
@@ -199,6 +207,13 @@ public class ShopInfoImpl implements ShopInfo {
             return this.tiers.keySet().toArray(new Integer[0]);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "ShopInfoImpl{" +
+                "key=" + key +
+                '}';
     }
 
 }

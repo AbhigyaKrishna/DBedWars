@@ -28,6 +28,11 @@ public class NBTEnd extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTEnd";
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
 
     }

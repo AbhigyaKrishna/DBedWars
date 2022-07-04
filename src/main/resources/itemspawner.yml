@@ -1,5 +1,5 @@
 team-spawner:
-  id: 'Team spawner'
+  id: 'team-spawner'
   icon: IRON_INGOT:0
   spawn-sound: DIG_WOOD
   spawn-effect: CRIT
@@ -38,7 +38,7 @@ team-spawner:
           limit: 12
 
 diamond-spawner:
-  id: 'Diamond Spawner'
+  id: 'diamond-spawner'
   icon: DIAMOND:0
   spawn-sound: NOTE_PLING
   spawn-effect: FIREWORKS_SPARK

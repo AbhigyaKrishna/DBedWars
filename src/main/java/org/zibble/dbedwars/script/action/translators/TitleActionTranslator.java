@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 import org.zibble.dbedwars.script.action.impl.TitleAction;
 
-public class TitleActionTranslator implements ActionTranslator<AbstractMessaging, TitleAction> {
+public class TitleActionTranslator implements ActionTranslator<TitleAction> {
 
     @Override
     public TitleAction serialize(String untranslated, ScriptVariable<?>... variables) {

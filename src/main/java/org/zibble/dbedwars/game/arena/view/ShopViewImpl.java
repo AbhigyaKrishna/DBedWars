@@ -4,6 +4,7 @@ import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.view.ItemTierGroup;
 import org.zibble.dbedwars.api.game.view.ShopPage;
 import org.zibble.dbedwars.api.game.view.ShopView;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.guis.ShopGui;
@@ -19,6 +20,7 @@ public class ShopViewImpl implements ShopView {
     private final Map<Key, ShopPage> pages;
     private final DataTracker dataTracker;
     private ShopPage defaultPage;
+    private BedwarsNPC npc;
 
     public ShopViewImpl(ArenaPlayer player, ShopInfoImpl type) {
         this.player = player;
@@ -29,6 +31,10 @@ public class ShopViewImpl implements ShopView {
         }
         this.defaultPage = this.pages.get(type.getDefaultPage().getKey());
         this.dataTracker = new DataTracker();
+    }
+
+    public void setNpc(BedwarsNPC npc) {
+        this.npc = npc;
     }
 
     @Override
@@ -44,6 +50,11 @@ public class ShopViewImpl implements ShopView {
     @Override
     public void setDefaultPage(ShopPage defaultPage) {
         this.defaultPage = defaultPage;
+    }
+
+    @Override
+    public BedwarsNPC getNpc() {
+        return npc;
     }
 
     @Override

@@ -1,9 +1,9 @@
 package org.zibble.dbedwars.database.sql.postgresql;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
@@ -35,10 +35,10 @@ public class PostGreSQL extends SQLDatabase {
     public PostGreSQL(String host, int port, String database, String username, String password, String params, HikariConfig config) {
         super(DatabaseType.PostGreSQL, config);
 
-        Validate.isTrue(!StringUtils.isEmpty(host), "The host cannot be null or empty!");
-        Validate.isTrue(!StringUtils.isEmpty(database), "The database cannot be null or empty!");
-        Validate.notNull(username, "The username cannot be null!");
-        Validate.notNull(password, "The password cannot be null!");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(host), "The host cannot be null or empty!");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(database), "The database cannot be null or empty!");
+        Preconditions.checkNotNull(username, "The username cannot be null!");
+        Preconditions.checkNotNull(password, "The password cannot be null!");
 
         this.host = host;
         this.port = port;

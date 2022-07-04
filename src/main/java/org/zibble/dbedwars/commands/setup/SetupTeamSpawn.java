@@ -3,6 +3,9 @@ package org.zibble.dbedwars.commands.setup;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.commands.annotations.Permission;
+import org.zibble.dbedwars.api.commands.annotations.PlayerOnly;
+import org.zibble.dbedwars.api.commands.annotations.SubCommandNode;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.member.PlayerMember;
@@ -19,6 +22,9 @@ import org.zibble.dbedwars.game.setup.detection.GenDetection;
 
 import java.util.Optional;
 
+@PlayerOnly
+@Permission("dbedwars.setup")
+@SubCommandNode(parent = "bw.setup", value = "setspawn")
 public class SetupTeamSpawn extends SetupSessionOptionalTeamCommand {
 
     public SetupTeamSpawn(SetupSessionManager manager, Messaging messaging) {

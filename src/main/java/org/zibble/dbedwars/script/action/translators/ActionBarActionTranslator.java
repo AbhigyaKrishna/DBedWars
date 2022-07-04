@@ -11,7 +11,7 @@ import org.zibble.dbedwars.script.action.impl.ActionBarAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionBarActionTranslator implements ActionTranslator<AbstractMessaging, ActionBarAction> {
+public class ActionBarActionTranslator implements ActionTranslator<ActionBarAction> {
 
     @Override
     public ActionBarAction serialize(String untranslated, ScriptVariable<?>... variables) {

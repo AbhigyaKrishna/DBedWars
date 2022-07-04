@@ -27,6 +27,10 @@ public class AdventureMessage extends Message {
         return new AdventureMessage("");
     }
 
+    public static AdventureMessage blank() {
+        return new AdventureMessage(" ");
+    }
+
     public static AdventureMessage from(String message, Placeholder... placeholders) {
         return new AdventureMessage(message, placeholders);
     }

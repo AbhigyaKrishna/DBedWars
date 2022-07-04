@@ -42,6 +42,11 @@ public class NBTIntArray extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTIntArray= " + Arrays.toString(array);
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.array = new int[input.readInt()];
         for (int i = 0; i < array.length; i++) {

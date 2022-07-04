@@ -29,7 +29,7 @@ public class Key implements Cloneable {
     @Override
     public String toString() {
         return "Key{" +
-                "key=" + key +
+                "key='" + key + '\'' +
                 '}';
     }
 

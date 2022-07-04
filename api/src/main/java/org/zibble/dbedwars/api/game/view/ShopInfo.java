@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.game.view;
 
+import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.util.function.ArrayFunction;
@@ -12,6 +13,8 @@ import java.util.Map;
 public interface ShopInfo extends Keyed {
 
     PageInfo getDefaultPage();
+
+    NPCModel getNpc();
 
     Map<Key, ? extends PageInfo> getPages();
 

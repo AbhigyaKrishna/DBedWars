@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.handler;
 
-import org.bukkit.Bukkit;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.handler.HookManager;
 import org.zibble.dbedwars.api.hooks.Hook;
@@ -14,32 +13,12 @@ import org.zibble.dbedwars.api.hooks.vanish.VanishHook;
 import org.zibble.dbedwars.api.hooks.world.WorldAdaptor;
 import org.zibble.dbedwars.api.plugin.PluginDependence;
 import org.zibble.dbedwars.api.util.mixin.Initializable;
-import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.hooks.autonicker.AutoNickerHook;
-import org.zibble.dbedwars.hooks.betternick.BetterNickHook;
-import org.zibble.dbedwars.hooks.citizens.CitizensHook;
-import org.zibble.dbedwars.hooks.cmi.CMIHook;
 import org.zibble.dbedwars.hooks.defaults.hologram.HologramManager;
 import org.zibble.dbedwars.hooks.defaults.npc.NPCFactoryImpl;
 import org.zibble.dbedwars.hooks.defaults.placeholder.PlaceholderHookImpl;
 import org.zibble.dbedwars.hooks.defaults.scoreboard.ScoreboardHookImpl;
 import org.zibble.dbedwars.hooks.defaults.selection.AreaSelectionHookImpl;
 import org.zibble.dbedwars.hooks.defaults.world.WorldAdaptorImpl;
-import org.zibble.dbedwars.hooks.eazynick.EazyNickHook;
-import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
-import org.zibble.dbedwars.hooks.nametagedit.NameTagEditHook;
-import org.zibble.dbedwars.hooks.nickapi.NickAPIHook;
-import org.zibble.dbedwars.hooks.nicknamer.NickNamerHook;
-import org.zibble.dbedwars.hooks.placeholderapi.PlaceholderAPIHook;
-import org.zibble.dbedwars.hooks.premiumvanish.PremiumVanishHook;
-import org.zibble.dbedwars.hooks.pvplevels.PvPLevelsHook;
-import org.zibble.dbedwars.hooks.quickboard.QuickBoardHook;
-import org.zibble.dbedwars.hooks.skinrestorer.SkinRestorerHook;
-import org.zibble.dbedwars.hooks.slimeworldmanager.SlimeWorldManagerHook;
-import org.zibble.dbedwars.hooks.supervanish.SuperVanishHook;
-import org.zibble.dbedwars.hooks.tab.TabHook;
-import org.zibble.dbedwars.hooks.vault.VaultHook;
-import org.zibble.dbedwars.hooks.viphide.VIPHideHook;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,30 +39,31 @@ public class HookManagerImpl implements HookManager {
     private AreaSelectionHook areaSelectionHook;
     private MultiOptionalHookImpl<VanishHook> vanishHook;
     private MultiOptionalHookImpl<NickNameHook> nickNameHooks;
-    private SkinRestorerHook skinRestorerHook;
+//    private SkinRestorerHook skinRestorerHook;
 
     public HookManagerImpl(DBedwars plugin) {
         this.plugin = plugin;
+        // TODO: 30-06-2022
         this.dependencies = new PluginDependence[]{
-                new AutoNickerHook(),
-                new BetterNickHook(),
-                new CitizensHook(),
-                new CMIHook(),
-                new EazyNickHook(),
-                new FeatherBoardHook(),
-                new NameTagEditHook(),
-                new NickAPIHook(),
-                new NickNamerHook(),
-                new PlaceholderAPIHook(),
-                new PremiumVanishHook(),
-                new PvPLevelsHook(),
-                new QuickBoardHook(),
-                new SkinRestorerHook(),
+//                new AutoNickerHook(),
+//                new BetterNickHook(),
+//                new CitizensHook(),
+//                new CMIHook(),
+//                new EazyNickHook(),
+//                new FeatherBoardHook(),
+//                new NameTagEditHook(),
+//                new NickAPIHook(),
+//                new NickNamerHook(),
+//                new PlaceholderAPIHook(),
+//                new PremiumVanishHook(),
+//                new PvPLevelsHook(),
+//                new QuickBoardHook(),
+//                new SkinRestorerHook(),
 //                new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
-                new SuperVanishHook(),
-                new TabHook(),
-                new VaultHook(),
-                new VIPHideHook(),
+//                new SuperVanishHook(),
+//                new TabHook(),
+//                new VaultHook(),
+//                new VIPHideHook(),
         };
     }
 
@@ -94,11 +74,11 @@ public class HookManagerImpl implements HookManager {
         this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
 
         this.scoreboardHook = new ScoreboardHookImpl();
-        this.skinRestorerHook = this.getDependency(SkinRestorerHook.class);
+//        this.skinRestorerHook = this.getDependency(SkinRestorerHook.class);
 
-        if (this.getDependency(PlaceholderAPIHook.class).isEnabled())
-            this.placeholderHook = new PlaceholderAPIHook();
-        else
+//        if (this.getDependency(PlaceholderAPIHook.class).isEnabled())
+//            this.placeholderHook = new PlaceholderAPIHook();
+//        else
             this.placeholderHook = new PlaceholderHookImpl();
 
         this.npcFactory = new NPCFactoryImpl();
@@ -108,31 +88,31 @@ public class HookManagerImpl implements HookManager {
         this.vanishHook = new MultiOptionalHookImpl<>();
         this.nickNameHooks = new MultiOptionalHookImpl<>();
 
-        if (this.getDependency(AutoNickerHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(AutoNickerHook.class));
-        if (this.getDependency(BetterNickHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(BetterNickHook.class));
-        if (this.getDependency(EazyNickHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(EazyNickHook.class));
-        if (this.getDependency(NameTagEditHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(NameTagEditHook.class));
-        if (this.getDependency(NickAPIHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(NickAPIHook.class));
-        if (this.getDependency(NickNamerHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(NickNamerHook.class));
-        if (this.getDependency(VIPHideHook.class).isEnabled())
-            nickNameHooks.add(this.getDependency(VIPHideHook.class));
+//        if (this.getDependency(AutoNickerHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(AutoNickerHook.class));
+//        if (this.getDependency(BetterNickHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(BetterNickHook.class));
+//        if (this.getDependency(EazyNickHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(EazyNickHook.class));
+//        if (this.getDependency(NameTagEditHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(NameTagEditHook.class));
+//        if (this.getDependency(NickAPIHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(NickAPIHook.class));
+//        if (this.getDependency(NickNamerHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(NickNamerHook.class));
+//        if (this.getDependency(VIPHideHook.class).isEnabled())
+//            nickNameHooks.add(this.getDependency(VIPHideHook.class));
+//
+//        if (this.getDependency(PremiumVanishHook.class).isEnabled())
+//            vanishHook.add(this.getDependency(PremiumVanishHook.class));
+//        if (this.getDependency(SuperVanishHook.class).isEnabled())
+//            vanishHook.add(this.getDependency(SuperVanishHook.class));
 
-        if (this.getDependency(PremiumVanishHook.class).isEnabled())
-            vanishHook.add(this.getDependency(PremiumVanishHook.class));
-        if (this.getDependency(SuperVanishHook.class).isEnabled())
-            vanishHook.add(this.getDependency(SuperVanishHook.class));
-
-        if (this.getDependency(CMIHook.class).isEnabled()) {
-            CMIHook hook = this.getDependency(CMIHook.class);
-            nickNameHooks.add(hook.getCmiNick());
-            vanishHook.add(hook.getCmiVanish());
-        }
+//        if (this.getDependency(CMIHook.class).isEnabled()) {
+//            CMIHook hook = this.getDependency(CMIHook.class);
+//            nickNameHooks.add(hook.getCmiNick());
+//            vanishHook.add(hook.getCmiVanish());
+//        }
 
         this.worldAdaptor.init();
         this.scoreboardHook.init();
@@ -143,8 +123,8 @@ public class HookManagerImpl implements HookManager {
         this.vanishHook.init();
         this.nickNameHooks.init();
 
-        if (this.skinRestorerHook.isEnabled())
-            this.scoreboardHook.init();
+//        if (this.skinRestorerHook.isEnabled())
+//            this.scoreboardHook.init();
     }
 
     public <T extends PluginDependence>  T getDependency(Class<T> clazz) {
@@ -250,9 +230,9 @@ public class HookManagerImpl implements HookManager {
         return this.nickNameHooks;
     }
 
-    public SkinRestorerHook getSkinRestorerHook() {
-        return skinRestorerHook;
-    }
+//    public SkinRestorerHook getSkinRestorerHook() {
+//        return skinRestorerHook;
+//    }
 
     public PluginDependence[] getDependencies() {
         return this.dependencies;

@@ -1,5 +1,7 @@
 package org.zibble.dbedwars.database.mongo;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -7,7 +9,6 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.ListCollectionsIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.apache.commons.lang.Validate;
 import org.bson.Document;
 import org.zibble.dbedwars.database.Database;
 import org.zibble.dbedwars.database.DatabaseType;
@@ -38,7 +39,9 @@ public class MongoDB extends Database {
 
     public MongoDB(String host, int port, String dbname, MongoClientOptions options, String username, String password) {
         super(DatabaseType.MongoDB);
-        Validate.isTrue(!host.isEmpty(), "Host Address cannot be null or empty!");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(host), "Host Address cannot be null or empty!");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(dbname), "Database name cannot be null or empty!");
+
         this.ip = host;
         this.port = port;
         this.dbname = dbname;

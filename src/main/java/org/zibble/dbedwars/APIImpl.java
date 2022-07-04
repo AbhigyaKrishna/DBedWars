@@ -46,11 +46,6 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public MenuHandler getMenuHandler() {
-        return this.plugin.getMenuHandler();
-    }
-
-    @Override
     public NMSAdaptor getNMS() {
         return this.plugin.getNMSAdaptor();
     }

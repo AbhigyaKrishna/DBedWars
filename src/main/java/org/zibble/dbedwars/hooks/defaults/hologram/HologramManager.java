@@ -13,10 +13,10 @@ import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
-import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
-import org.zibble.dbedwars.task.TaskQueueHandler;
+import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,11 +25,11 @@ public class HologramManager implements HologramFactory {
 
     private final DBedwars plugin;
     private final Task thread;
-    private final Map<String, HologramImpl> holograms;
+    private final Map<Key, HologramImpl> holograms;
 
     public HologramManager() {
         this.plugin = DBedwars.getInstance();
-        this.thread = new TaskQueueHandler("Hologram Thread %d").newPool(1, 3 * 1000000L);
+        this.thread = this.plugin.getThreadHandler().getTaskHandler().newPool(1, 3 * 1000000L);
         this.holograms = new ConcurrentHashMap<>();
         HologramPacketListener packetListener = new HologramPacketListener(this);
         PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
@@ -77,8 +77,9 @@ public class HologramManager implements HologramFactory {
 
     @Override
     public Hologram createHologram(Location location) {
-        HologramImpl hologram = new HologramImpl(this, location);
-        this.holograms.put(UUID.randomUUID().toString(), hologram);
+        Key key = Key.of(UUID.randomUUID().toString());
+        HologramImpl hologram = new HologramImpl(this, key, location);
+        this.holograms.put(key, hologram);
         return hologram;
     }
 
@@ -97,7 +98,8 @@ public class HologramManager implements HologramFactory {
     }
 
     public void despawnHologram(HologramImpl hologram, Player player) {
-        HologramPage page = hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
+        HologramPage page = hologram.getCurrentPage(player);
+        if (page == null) return;
         for (HologramLine<?> line : page.getLines()) {
             HologramLineImpl<?> lineImpl = (HologramLineImpl<?>) line;
             PacketUtils.hideFakeEntities(player, lineImpl.getEntityIds());
@@ -200,7 +202,7 @@ public class HologramManager implements HologramFactory {
         return returnMap;
     }
 
-    protected Map<String, HologramImpl> getHolograms() {
+    protected Map<Key, HologramImpl> getHolograms() {
         return holograms;
     }
 

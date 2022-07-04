@@ -19,7 +19,7 @@ public class HologramModel implements Cloneable {
     protected Collection<ModelLine> lines;
     protected Duration updateInterval;
     protected Hologram hologram;
-    private final Set<ClickAction> clickActions;
+    protected final Set<ClickAction> clickActions;
 
     public HologramModel(Collection<ModelLine> lines, Duration updateInterval) {
         this.lines = lines;
@@ -74,6 +74,15 @@ public class HologramModel implements Cloneable {
         HologramModel hologramModel = new HologramModel(this.lines, this.updateInterval);
         hologramModel.getClickActions().addAll(this.clickActions);
         return hologramModel;
+    }
+
+    @Override
+    public String toString() {
+        return "HologramModel{" +
+                "lines=" + lines +
+                ", updateInterval=" + updateInterval +
+                ", hologram=" + hologram +
+                '}';
     }
 
     public static abstract class ModelLine {

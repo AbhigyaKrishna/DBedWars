@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.zibble.dbedwars.api.script.action.Action;
 
-public class TeleportAction implements Action<Entity> {
+public class TeleportAction implements Action {
 
     private final Entity entity;
     private final Location location;
@@ -16,11 +16,10 @@ public class TeleportAction implements Action<Entity> {
 
     @Override
     public void execute() {
-        this.getHandle().teleport(this.location);
+        this.getEntity().teleport(this.location);
     }
 
-    @Override
-    public Entity getHandle() {
+    public Entity getEntity() {
         return this.entity;
     }
 

@@ -8,7 +8,7 @@ import org.zibble.dbedwars.utils.Util;
 
 import java.util.function.BiPredicate;
 
-public class PlayerCondition<T> implements Condition<Player> {
+public class PlayerCondition<T> implements Condition {
 
     private BiPredicate<Player, T> predicate;
     private T value;
@@ -32,14 +32,8 @@ public class PlayerCondition<T> implements Condition<Player> {
         return this.predicate.test(player, value);
     }
 
-    @Override
-    public Player getAcceptor() {
+    public Player getPlayer() {
         return this.player;
-    }
-
-    @Override
-    public void setAcceptor(Player acceptor) {
-        this.player = acceptor;
     }
 
     public static class Type {

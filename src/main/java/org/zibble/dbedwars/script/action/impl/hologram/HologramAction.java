@@ -5,7 +5,7 @@ import org.zibble.dbedwars.api.script.action.Action;
 
 import java.util.function.Consumer;
 
-public class HologramAction implements Action<Hologram> {
+public class HologramAction implements Action {
 
     private final Hologram hologram;
     private final Consumer<Hologram> consumer;
@@ -20,8 +20,7 @@ public class HologramAction implements Action<Hologram> {
         this.consumer.accept(this.hologram);
     }
 
-    @Override
-    public Hologram getHandle() {
+    public Hologram getHologram() {
         return this.hologram;
     }
 

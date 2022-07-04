@@ -45,23 +45,27 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
 
     public static ArenaDataHolderImpl fromConfig(GameManagerImpl gameManager, ConfigurableArena config) {
         ArenaDataHolderImpl holder = new ArenaDataHolderImpl(config.getIdentifier());
-        holder.setCustomName(ConfigMessage.from(config.getCustomName()));
-        holder.setCategory(gameManager.getCategory(config.getCategory()));
+        holder.setCustomName(config.getCustomName() != null ? ConfigMessage.from(config.getCustomName()) : null);
+        holder.setCategory(config.getCategory() != null ? gameManager.getCategory(config.getCategory()) : null);
         holder.setMaxPlayersPerTeam(config.getPlayerInTeam());
         holder.setMinPlayersToStart(config.getMinPlayers());
         holder.setEnabled(config.isEnabled());
         holder.setEnvironment(config.getEnvironment());
-        holder.setWaitingLocation(LocationXYZYP.valueOf(config.getLobbyLocation()));
-        holder.setSpectatorLocation(LocationXYZYP.valueOf(config.getSpectatorLocation()));
-        holder.setLobbyArea(new BoundingBox(LocationXYZ.valueOf(config.getLobbyPosMax()).toVector(), LocationXYZ.valueOf(config.getLobbyPosMin()).toVector()));
+        holder.setWaitingLocation(config.getLobbyLocation() != null ? LocationXYZYP.valueOf(config.getLobbyLocation()) : null);
+        holder.setSpectatorLocation(config.getSpectatorLocation() != null ? LocationXYZYP.valueOf(config.getSpectatorLocation()) : null);
+        holder.setLobbyArea(config.getLobbyPosMax() != null && config.getLobbyPosMin() != null ? new BoundingBox(LocationXYZ.valueOf(config.getLobbyPosMax()).toVector(), LocationXYZ.valueOf(config.getLobbyPosMin()).toVector()) : null);
 
-        for (Map.Entry<String, ConfigurableArena.ConfigurableTeam> entry : config.getTeams().entrySet()) {
-            TeamDataHolderImpl team = TeamDataHolderImpl.fromConfig(entry.getValue());
-            holder.getTeamData().put(team.getColor(), team);
+        if (config.getTeams() != null) {
+            for (Map.Entry<String, ConfigurableArena.ConfigurableTeam> entry : config.getTeams().entrySet()) {
+                TeamDataHolderImpl team = TeamDataHolderImpl.fromConfig(entry.getValue());
+                holder.getTeamData().put(team.getColor(), team);
+            }
         }
 
-        for (String spawner : config.getSpawners()) {
-            holder.getSpawners().add(SpawnerDataHolderImpl.fromConfig(spawner));
+        if (config.getSpawners() != null) {
+            for (String spawner : config.getSpawners()) {
+                holder.getSpawners().add(SpawnerDataHolderImpl.fromConfig(spawner));
+            }
         }
 
         return holder;
@@ -262,6 +266,17 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
             return spawners;
         }
 
+        @Override
+        public String toString() {
+            return "TeamDataHolderImpl{" +
+                    "color=" + color +
+                    ", shops=" + shops +
+                    ", spawners=" + spawners +
+                    ", spawnLocation=" + spawnLocation +
+                    ", bed=" + bed +
+                    '}';
+        }
+
     }
 
     public static class SpawnerDataHolderImpl implements ArenaDataHolder.SpawnerDataHolder {
@@ -307,6 +322,14 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
             this.location = location;
         }
 
+        @Override
+        public String toString() {
+            return "SpawnerDataHolderImpl{" +
+                    "dropType=" + dropType +
+                    ", location=" + location +
+                    '}';
+        }
+
     }
 
     public static class ShopDataHolderImpl implements ArenaDataHolder.ShopDataHolder {
@@ -334,7 +357,33 @@ public class ArenaDataHolderImpl implements ArenaDataHolder {
             return location;
         }
 
+        @Override
+        public String toString() {
+            return "ShopDataHolderImpl{" +
+                    "shopType=" + shopType +
+                    ", location=" + location +
+                    '}';
+        }
+
     }
 
+    @Override
+    public String toString() {
+        return "ArenaDataHolderImpl{" +
+                "id='" + id + '\'' +
+                ", teams=" + teams +
+                ", spawners=" + spawners +
+                ", worldFileName='" + worldFileName + '\'' +
+                ", customName=" + customName +
+                ", category=" + category +
+                ", maxPlayersPerTeam=" + maxPlayersPerTeam +
+                ", minPlayersToStart=" + minPlayersToStart +
+                ", enabled=" + enabled +
+                ", environment=" + environment +
+                ", waitingLocation=" + waitingLocation +
+                ", spectatorLocation=" + spectatorLocation +
+                ", lobbyArea=" + lobbyArea +
+                '}';
+    }
 
 }

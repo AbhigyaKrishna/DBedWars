@@ -10,7 +10,11 @@ import org.zibble.dbedwars.api.util.properies.PropertySerializable;
 import org.zibble.dbedwars.configuration.framework.Configurable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
+import org.zibble.dbedwars.game.ArenaDataHolderImpl;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,9 +72,31 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     public ConfigurableArena() {
     }
 
+    public ConfigurableArena(ArenaDataHolderImpl dataHolder) {
+        this.identifier = dataHolder.getId();
+        this.enabled = dataHolder.isEnabled();
+        this.environment = dataHolder.getEnvironment();
+//        this.icon = dataHolder.getIcon(); // TODO: 15-04-2022 icon
+        this.category = dataHolder.getCategory() == null ? null : dataHolder.getCategory().getName();
+        this.lobbyLoc = dataHolder.getWaitingLocation() == null ? null : dataHolder.getWaitingLocation().toString();
+        this.lobbyPosMax = dataHolder.getLobbyArea() == null ? null : LocationXYZ.valueOf(dataHolder.getLobbyArea().getMaximum()).toString();
+        this.lobbyPosMin = dataHolder.getLobbyArea() == null ? null : LocationXYZ.valueOf(dataHolder.getLobbyArea().getMinimum()).toString();
+        this.spectatorLocation = dataHolder.getSpectatorLocation() == null ? null : dataHolder.getSpectatorLocation().toString();
+        this.playerInTeam = dataHolder.getMaxPlayersPerTeam();
+        this.minPlayers = dataHolder.getMinPlayersToStart();
+        this.customName = dataHolder.getCustomName() == null ? null : dataHolder.getCustomName().getMessage();
+        this.spawners = new ArrayList<>(dataHolder.getSpawners().size());
+        for (ArenaDataHolderImpl.SpawnerDataHolderImpl spawner : dataHolder.getSpawners()) {
+            this.spawners.add(ConfigurationUtil.serializeSpawner(spawner.getDropType(), spawner.getLocation()));
+        }
+        this.teams = new HashMap<>(dataHolder.getTeamData().size());
+        for (Map.Entry<Color, ArenaDataHolderImpl.TeamDataHolderImpl> entry : dataHolder.getTeamData().entrySet()) {
+            this.teams.put(entry.getKey().name(), new ConfigurableTeam(entry.getValue()));
+        }
+    }
+
     @Override
     public void load(ConfigurationSection section) {
-        this.teams.clear();
         this.loadEntries(section);
     }
 
@@ -205,6 +231,27 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     }
 
     @Override
+    public String toString() {
+        return "ConfigurableArena{" +
+                "identifier='" + identifier + '\'' +
+                ", enabled=" + enabled +
+                ", environment=" + environment +
+                ", icon='" + icon + '\'' +
+                ", category='" + category + '\'' +
+                ", lobbyLoc='" + lobbyLoc + '\'' +
+                ", lobbyPosMax='" + lobbyPosMax + '\'' +
+                ", lobbyPosMin='" + lobbyPosMin + '\'' +
+                ", spectatorLocation='" + spectatorLocation + '\'' +
+                ", playerInTeam=" + playerInTeam +
+                ", minPlayers=" + minPlayers +
+                ", customName='" + customName + '\'' +
+                ", scoreboard='" + scoreboard + '\'' +
+                ", teams=" + teams +
+                ", spawners=" + spawners +
+                '}';
+    }
+
+    @Override
     public NamedProperties toProperties() {
         return NamedProperties
                 .builder()
@@ -230,19 +277,32 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
     public static class ConfigurableTeam implements Configurable {
 
         @ConfigPath
-        public List<String> spawners;
+        private List<String> spawners;
+
         @ConfigPath
         private Color color;
+
         @ConfigPath("bed")
         private String bedLocation;
+
         @ConfigPath
         private String spawn;
-        @ConfigPath("shop")
-        private String shopNpc;
-        @ConfigPath("upgrades")
-        private String upgradesNpc;
+
+        @ConfigPath
+        private List<String> npcs;
 
         public ConfigurableTeam() {
+        }
+
+        public ConfigurableTeam(ArenaDataHolderImpl.TeamDataHolderImpl dataHolder) {
+            this.spawners = new ArrayList<>(dataHolder.getSpawners().size());
+            for (ArenaDataHolderImpl.SpawnerDataHolderImpl spawner : dataHolder.getSpawners()) {
+                this.spawners.add(ConfigurationUtil.serializeSpawner(spawner.getDropType(), spawner.getLocation()));
+            }
+
+            this.color = dataHolder.getColor();
+            this.bedLocation = dataHolder.getBed() == null ? null : dataHolder.getBed().toString();
+            this.spawn = dataHolder.getSpawnLocation() == null ? null : dataHolder.getSpawnLocation().toString();
         }
 
         @Override
@@ -292,20 +352,19 @@ public class ConfigurableArena implements Configurable, PropertySerializable {
             this.spawn = spawn;
         }
 
-        public String getShopNpc() {
-            return shopNpc;
+        public List<String> getNpcs() {
+            return npcs;
         }
 
-        public void setShopNpc(String shopNpc) {
-            this.shopNpc = shopNpc;
-        }
-
-        public String getUpgradesNpc() {
-            return upgradesNpc;
-        }
-
-        public void setUpgradesNpc(String upgradesNpc) {
-            this.upgradesNpc = upgradesNpc;
+        @Override
+        public String toString() {
+            return "ConfigurableTeam{" +
+                    "spawners=" + spawners +
+                    ", color=" + color +
+                    ", bedLocation='" + bedLocation + '\'' +
+                    ", spawn='" + spawn + '\'' +
+                    ", npcs=" + npcs +
+                    '}';
         }
 
     }

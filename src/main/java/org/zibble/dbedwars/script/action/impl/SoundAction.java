@@ -4,7 +4,7 @@ import org.zibble.dbedwars.api.objects.serializable.SoundVP;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 
-public class SoundAction implements Action<PlayerMember> {
+public class SoundAction implements Action {
 
     private final PlayerMember member;
     private final SoundVP sound;
@@ -16,11 +16,10 @@ public class SoundAction implements Action<PlayerMember> {
 
     @Override
     public void execute() {
-        this.sound.play(this.getHandle().getPlayer());
+        this.sound.play(this.getMember().getPlayer());
     }
 
-    @Override
-    public PlayerMember getHandle() {
+    public PlayerMember getMember() {
         return this.member;
     }
 

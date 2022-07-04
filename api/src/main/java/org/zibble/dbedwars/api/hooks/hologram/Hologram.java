@@ -2,6 +2,7 @@ package org.zibble.dbedwars.api.hooks.hologram;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.zibble.dbedwars.api.util.key.Keyed;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public interface Hologram {
+public interface Hologram extends Keyed {
 
     HologramPage addPage();
 
@@ -68,6 +69,6 @@ public interface Hologram {
 
     long getLastUpdate();
 
-    void despawn();
+    void destroy();
 
 }

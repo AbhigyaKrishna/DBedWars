@@ -18,9 +18,6 @@ public class ConfigurableNpc implements Loadable {
     private ConfigurableTexture texture;
 
     @ConfigPath
-    private String shop;
-
-    @ConfigPath
     private List<String> actions;
 
     @Override
@@ -43,10 +40,6 @@ public class ConfigurableNpc implements Loadable {
 
     public ConfigurableTexture getTexture() {
         return texture;
-    }
-
-    public String getShop() {
-        return shop;
     }
 
     public List<String> getActions() {

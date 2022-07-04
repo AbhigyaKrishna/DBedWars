@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.zibble.dbedwars.api.util.NumberUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

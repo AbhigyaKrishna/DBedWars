@@ -67,6 +67,11 @@ public class NBTShort extends NBTNumber {
     }
 
     @Override
+    public String toString() {
+        return "NBTShort= " + value;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.value = input.readShort();
     }

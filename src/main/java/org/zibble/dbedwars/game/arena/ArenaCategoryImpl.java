@@ -74,4 +74,15 @@ public class ArenaCategoryImpl implements ArenaCategory {
         this.scoreboardData = scoreboardData;
     }
 
+    @Override
+    public String toString() {
+        return "ArenaCategoryImpl{" +
+                "name='" + name + '\'' +
+                ", displayName=" + displayName +
+                ", description=" + description +
+                ", icon=" + icon +
+                ", scoreboardData=" + scoreboardData +
+                '}';
+    }
+
 }

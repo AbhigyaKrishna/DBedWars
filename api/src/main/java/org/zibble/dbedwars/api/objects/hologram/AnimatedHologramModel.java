@@ -59,4 +59,13 @@ public class AnimatedHologramModel extends HologramModel {
         return new AnimatedHologramModel(new ArrayList<>(this.lines), this.updateInterval, this.endAction, this.taskFunction);
     }
 
+    @Override
+    public String toString() {
+        return "AnimatedHologramModel{" +
+                "lines=" + lines +
+                ", updateInterval=" + updateInterval +
+                ", hologram=" + hologram +
+                '}';
+    }
+
 }

@@ -2,11 +2,15 @@ package org.zibble.dbedwars.script;
 
 import org.zibble.dbedwars.api.script.ScriptTranslationRegistry;
 import org.zibble.dbedwars.api.script.action.Action;
+import org.zibble.dbedwars.api.script.action.ActionProvider;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.script.condition.Condition;
+import org.zibble.dbedwars.api.script.condition.ConditionProvider;
 import org.zibble.dbedwars.api.script.condition.ConditionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.script.action.translators.*;
+import org.zibble.dbedwars.script.condition.ConditionPreProcessor;
 import org.zibble.dbedwars.script.condition.translator.PlayerConditionTranslator;
 
 import java.util.Collection;
@@ -14,7 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScriptRegistryImpl implements ScriptTranslationRegistry {
+public class ScriptRegistryImpl extends ScriptTranslationRegistry {
 
     public static final Key TRAP = Key.of("trap");
 
@@ -54,13 +58,23 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         return this.conditionRegistry.get(key);
     }
 
+    @Override
+    public ActionProvider actionProviderFromString(Key key, String action) {
+        return key != null ? variables -> ActionPreProcessor.process(key, action, variables) : variables -> ActionPreProcessor.process(action, variables);
+    }
+
+    @Override
+    public ConditionProvider conditionProviderFromString(Key key, String condition) {
+        return key != null ? variables -> ConditionPreProcessor.process(key, condition, variables) : variables -> ConditionPreProcessor.process(condition, variables);
+    }
+
     public void addRegistry(Key key, ConditionRegistry registry) {
         this.conditionRegistry.put(key, registry);
     }
 
-    public static class ActionRegistry implements TranslationRegistry<ActionTranslator<?, ? extends Action>> {
+    public static class ActionRegistry implements TranslationRegistry<ActionTranslator<? extends Action>> {
 
-        private final Map<Key, ActionTranslator<?, ? extends Action>> registeredTranslators;
+        private final Map<Key, ActionTranslator<? extends Action>> registeredTranslators;
 
         public ActionRegistry() {
             this.registeredTranslators = Collections.synchronizedMap(new HashMap<>());
@@ -79,12 +93,12 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public void registerTranslation(ActionTranslator<?, ? extends Action> translator) {
+        public void registerTranslation(ActionTranslator<? extends Action> translator) {
             this.registeredTranslators.put(translator.getKey(), translator);
         }
 
         @Override
-        public Collection<ActionTranslator<?, ? extends Action>> getRegisteredTranslations() {
+        public Collection<ActionTranslator<? extends Action>> getRegisteredTranslations() {
             return Collections.unmodifiableCollection(this.registeredTranslators.values());
         }
 
@@ -115,20 +129,20 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public ActionTranslator<?, ? extends Action> getTranslator(Key key) {
+        public ActionTranslator<? extends Action> getTranslator(Key key) {
             return this.registeredTranslators.get(key);
         }
 
         @Override
-        public ActionTranslator<?, ? extends Action> getTranslator(String key) {
+        public ActionTranslator<? extends Action> getTranslator(String key) {
             return this.registeredTranslators.get(Key.of(key));
         }
 
     }
 
-    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<?, ? extends Condition>> {
+    public static class ConditionRegistry implements TranslationRegistry<ConditionTranslator<? extends Condition>> {
 
-        private final Map<Key, ConditionTranslator<?, ? extends Condition>> registeredConditions;
+        private final Map<Key, ConditionTranslator<? extends Condition>> registeredConditions;
 
         public ConditionRegistry() {
             this.registeredConditions = Collections.synchronizedMap(new HashMap<>());
@@ -139,12 +153,12 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public void registerTranslation(ConditionTranslator<?, ? extends Condition> translator) {
+        public void registerTranslation(ConditionTranslator<? extends Condition> translator) {
             this.registeredConditions.put(translator.getKey(), translator);
         }
 
         @Override
-        public Collection<ConditionTranslator<?, ? extends Condition>> getRegisteredTranslations() {
+        public Collection<ConditionTranslator<? extends Condition>> getRegisteredTranslations() {
             return Collections.unmodifiableCollection(this.registeredConditions.values());
         }
 
@@ -175,12 +189,12 @@ public class ScriptRegistryImpl implements ScriptTranslationRegistry {
         }
 
         @Override
-        public ConditionTranslator<?, ? extends Condition> getTranslator(Key key) {
+        public ConditionTranslator<? extends Condition> getTranslator(Key key) {
             return this.registeredConditions.get(key);
         }
 
         @Override
-        public ConditionTranslator<?, ? extends Condition> getTranslator(String key) {
+        public ConditionTranslator<? extends Condition> getTranslator(String key) {
             return this.registeredConditions.get(Key.of(key));
         }
 

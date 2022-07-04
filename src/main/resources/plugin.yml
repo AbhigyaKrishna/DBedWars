@@ -1,6 +1,7 @@
 name: DBedwars
 version: 1.0
 main: org.zibble.dbedwars.DBedwars
+api-version: 1.13
 softdepend:
   - AutoNicker
   - BetterNick
@@ -21,8 +22,3 @@ softdepend:
   - TAB
   - Vault
   - VIPHide
-commands:
-  bedwars:
-    aliases:
-      - bw
-      - bedwar

@@ -18,14 +18,13 @@ import org.zibble.dbedwars.api.objects.math.BoundingBox;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.configuration.configurable.ConfigurableNpc;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.arena.traps.TrapImpl;
 import org.zibble.dbedwars.game.arena.traps.TrapQueue;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
+import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
-import org.zibble.dbedwars.utils.ConfigurationUtil;
 
 import java.time.Instant;
 import java.util.*;
@@ -236,21 +235,18 @@ public class TeamImpl extends AbstractMessaging implements Team {
     }
 
     private void initShop(ArenaDataHolderImpl.ShopDataHolderImpl shopData) {
+        BedwarsNPC npc = shopData.getShopType().getNpc().create(shopData.getLocation().toBukkit(this.arena.getWorld()));
+
         for (ArenaPlayer player : this.players) {
-            ((ArenaPlayerImpl) player).addShop(shopData.getShopType());
+            ((ArenaPlayerImpl) player).addShop(shopData.getShopType(), npc);
         }
 
-        ConfigurableNpc cfg = null;
-        for (ConfigurableNpc npc : this.plugin.getConfigHandler().getNpc()) {
-            if (shopData.getShopType().getKey().get().equals(npc.getShop())) {
-                cfg = npc;
-                break;
+        npc.addClickAction((player, clickType) -> DBedwars.getInstance().getGameManager().getArenaPlayer(player).ifPresent(arenaPlayer -> {
+            ShopViewImpl shop = ((ArenaPlayerImpl) arenaPlayer).getShop(shopData.getShopType().getKey());
+            if (shop != null) {
+                shop.getGui().open(shop.getDefaultPage().getKey());
             }
-        }
-
-        if (cfg == null) return;
-
-        BedwarsNPC npc = ConfigurationUtil.createNpc(shopData.getLocation().toBukkit(this.arena.getWorld()), cfg);
+        }));
         npc.spawn();
         this.npcs.add(npc);
     }

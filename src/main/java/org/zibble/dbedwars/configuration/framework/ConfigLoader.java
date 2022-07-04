@@ -2,10 +2,10 @@ package org.zibble.dbedwars.configuration.framework;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 import org.zibble.dbedwars.configuration.framework.annotations.Defaults;
 import org.zibble.dbedwars.utils.Debugger;

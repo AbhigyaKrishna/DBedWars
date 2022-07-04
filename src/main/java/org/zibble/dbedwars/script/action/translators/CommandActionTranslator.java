@@ -7,7 +7,7 @@ import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.action.impl.CommandAction;
 
-public class CommandActionTranslator implements ActionTranslator<CommandSender, CommandAction> {
+public class CommandActionTranslator implements ActionTranslator<CommandAction> {
 
     @Override
     public CommandAction serialize(String untranslated, ScriptVariable<?>... variables) {

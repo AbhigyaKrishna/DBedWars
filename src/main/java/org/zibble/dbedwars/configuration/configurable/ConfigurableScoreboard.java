@@ -67,4 +67,14 @@ public class ConfigurableScoreboard implements Loadable {
         return this.updateTick;
     }
 
+    @Override
+    public String toString() {
+        return "ConfigurableScoreboard{" +
+                "key='" + key + '\'' +
+                ", title=" + title +
+                ", content=" + content +
+                ", updateTick=" + updateTick +
+                '}';
+    }
+
 }

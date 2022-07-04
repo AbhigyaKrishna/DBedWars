@@ -1,13 +1,12 @@
 package org.zibble.dbedwars.script.action.translators;
 
-import org.bukkit.command.CommandSender;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.action.impl.ConsoleCommandAction;
 
-public class ConsoleCommandActionTranslator implements ActionTranslator<CommandSender, ConsoleCommandAction> {
+public class ConsoleCommandActionTranslator implements ActionTranslator<ConsoleCommandAction> {
 
     @Override
     public ConsoleCommandAction serialize(String untranslated, ScriptVariable<?>... variables) {

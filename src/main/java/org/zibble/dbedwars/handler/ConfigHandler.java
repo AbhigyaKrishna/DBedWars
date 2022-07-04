@@ -32,7 +32,8 @@ public class ConfigHandler {
     private final Set<ConfigurableScoreboard> scoreboards;
     private final Map<String, Json> jsonItem;
     private final Map<String, ConfigurableShop> shops;
-    private final List<ConfigurableNpc> npc;
+
+    private final Map<String, ConfigurableNpc> npc;
     private MainConfiguration mainConfiguration;
     private ConfigurableDatabase database;
     private ConfigurableCustomItems customItems;
@@ -49,7 +50,7 @@ public class ConfigHandler {
         this.scoreboards = new HashSet<>();
         this.jsonItem = new HashMap<>();
         this.shops = new HashMap<>();
-        this.npc = new ArrayList<>();
+        this.npc = new HashMap<>();
     }
 
     public void initFiles() {
@@ -201,7 +202,7 @@ public class ConfigHandler {
             if (!config.isConfigurationSection(key)) continue;
             ConfigurableNpc npc = new ConfigurableNpc();
             npc.load(config.getConfigurationSection(key));
-            this.npc.add(npc);
+            this.npc.put(key, npc);
         }
     }
 
@@ -260,7 +261,7 @@ public class ConfigHandler {
         return this.database;
     }
 
-    public List<ConfigurableNpc> getNpc() {
+    public Map<String, ConfigurableNpc> getNpc() {
         return npc;
     }
 

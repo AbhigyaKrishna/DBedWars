@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.gamerule;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.NumberConversions;
@@ -11,7 +11,7 @@ public class GameRuleMetadata extends FixedMetadataValue {
 
     public GameRuleMetadata(Plugin owning_plugin, GameRuleType type, Object value) {
         super(owning_plugin, value);
-        Validate.isTrue(type.isSameDataType(value));
+        Preconditions.checkArgument(type.isSameDataType(value));
         this.type = type;
     }
 
@@ -55,11 +55,11 @@ public class GameRuleMetadata extends FixedMetadataValue {
     }
 
     protected void validateNumericValue() {
-        Validate.isTrue(this.getType().isNumericalValue() && this.value() instanceof Number, "Wrong value type!");
+        Preconditions.checkArgument(this.getType().isNumericalValue() && this.value() instanceof Number, "Wrong value type!");
     }
 
     protected void validateBooleanValue() {
-        Validate.isTrue(this.getType().isBooleanValue() && this.value() instanceof Boolean, "Wrong value type!");
+        Preconditions.checkArgument(this.getType().isBooleanValue() && this.value() instanceof Boolean, "Wrong value type!");
     }
 
 }

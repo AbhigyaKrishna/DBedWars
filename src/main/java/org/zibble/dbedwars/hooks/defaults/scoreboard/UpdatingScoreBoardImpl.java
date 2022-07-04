@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.hooks.defaults.scoreboard;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.util.AdventureSerializer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,8 +10,8 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.adventure.AdventureUtils;
 import org.zibble.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import org.zibble.dbedwars.api.messaging.message.Message;
-import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
+import org.zibble.dbedwars.api.task.CancellableWorkload;
 import org.zibble.dbedwars.api.version.Version;
 
 import java.util.*;
@@ -127,8 +126,8 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
     @Override
     protected void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode) {
         WrapperPlayServerScoreboardObjective packet = new WrapperPlayServerScoreboardObjective(this.id, mode,
-                Optional.of(AdventureUtils.toVanillaString(this.title.asComponentWithPAPI(this.getViewer())[this.titleCursor])),
-                Optional.of(WrapperPlayServerScoreboardObjective.HealthDisplay.INTEGER));
+                this.title.asComponentWithPAPI(this.getViewer())[this.titleCursor],
+                WrapperPlayServerScoreboardObjective.RenderType.INTEGER);
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
@@ -172,9 +171,9 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
         }
 
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                AdventureSerializer.asAdventure(this.id + ':' + score),
-                AdventureSerializer.asAdventure(prefix),
-                AdventureSerializer.asAdventure(suffix == null ? "" : suffix),
+                AdventureUtils.fromLegacyText(this.id + ':' + score),
+                AdventureUtils.fromLegacyText(prefix),
+                AdventureUtils.fromLegacyText(suffix == null ? "" : suffix),
                 WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
                 WrapperPlayServerTeams.CollisionRule.ALWAYS,
                 NamedTextColor.WHITE,

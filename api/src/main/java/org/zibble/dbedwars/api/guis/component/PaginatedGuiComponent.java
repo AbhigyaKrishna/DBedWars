@@ -54,15 +54,14 @@ public class PaginatedGuiComponent<K, T extends Menu, R extends PaginatedGuiComp
     }
 
     public R open() {
-        return this.open(this.currentPage);
+        return this.open(this.pages.firstKey());
     }
 
     public R nextPage() {
         if (this.player != null) {
             Map.Entry<K, GuiComponent<T, ? extends GuiComponent>> entry = this.pages.higherEntry(this.currentPage);
             if (entry != null) {
-                this.getPage(this.currentPage).close();
-                this.getPage(entry.getKey()).open(this.player);
+                this.open(entry.getKey());
             }
         }
         return (R) this;
@@ -72,8 +71,7 @@ public class PaginatedGuiComponent<K, T extends Menu, R extends PaginatedGuiComp
         if (this.player != null) {
             Map.Entry<K, GuiComponent<T, ? extends GuiComponent>> entry = this.pages.lowerEntry(this.currentPage);
             if (entry != null) {
-                this.getPage(this.currentPage).close();
-                this.getPage(entry.getKey()).open(this.player);
+                this.open(entry.getKey());
             }
         }
         return (R) this;
@@ -81,15 +79,15 @@ public class PaginatedGuiComponent<K, T extends Menu, R extends PaginatedGuiComp
 
     public R page(K key) {
         if (this.player != null) {
-            this.getPage(this.currentPage).close();
-            this.getPage(key).open(this.player);
+            this.open(key);
         }
         return (R) this;
     }
 
     public R close() {
         if (this.player != null) {
-            this.getPage(this.currentPage).close();
+            if (this.currentPage != null)
+                this.getPage(this.currentPage).close();
             this.currentPage = this.pages.firstKey();
         }
         return (R) this;

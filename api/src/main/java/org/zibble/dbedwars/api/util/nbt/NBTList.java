@@ -98,6 +98,11 @@ public class NBTList<T extends NBT> extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTList= " + tags;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         NBTType<T> type = (NBTType<T>) this.readTagType(input);
         int size = input.readInt();

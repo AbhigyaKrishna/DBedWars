@@ -3,12 +3,6 @@ shop-npc:
     - '<yellow>Shop'
     - ''
   type: 'player'
-  texture:
-    owner: ''
-    value: ''
-    signature: ''
-    mineskin: ''
-  shop: 'shop'
   actions: [ ]
 
 upgrades-npc:
@@ -16,5 +10,4 @@ upgrades-npc:
     - '<yellow>Upgrades'
     - ''
   type: 'player'
-  shop: 'upgrades'
   commands: [ ]

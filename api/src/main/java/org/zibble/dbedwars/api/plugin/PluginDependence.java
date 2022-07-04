@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.plugin;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -34,7 +34,7 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
      * @param name Name of the depending plugin.
      */
     public PluginDependence(final String name) {
-        Validate.notNull(name, "the name cannot be null!");
+        Preconditions.checkNotNull(name, "the name cannot be null!");
         this.name = name;
         this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
     }

@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.gamerule;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.World;
 import org.zibble.dbedwars.api.util.mixin.Validable;
 
@@ -14,9 +14,9 @@ public class GameRule implements Validable {
     protected final Set<GameRule> parents;
 
     public GameRule(GameRuleType type, Object value, GameRule... parents) {
-        Validate.notNull(type, "type cannot be null!");
-        Validate.notNull(value, "value cannot be null!");
-        Validate.isTrue(type.isSameDataType(value), "the specified type and value are incompatible!");
+        Preconditions.checkNotNull(type, "type cannot be null!");
+        Preconditions.checkNotNull(value, "value cannot be null!");
+        Preconditions.checkArgument(type.isSameDataType(value), "the specified type and value are incompatible!");
 
         this.type = type;
         this.value = value;

@@ -5,12 +5,12 @@ import com.cryptomorin.xseries.XMaterial;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
+import org.jetbrains.annotations.NotNull;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
@@ -19,16 +19,20 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NBTItem;
 import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.util.json.Json;
 import org.zibble.dbedwars.api.util.nbt.NBTCompound;
 import org.zibble.dbedwars.api.util.nbt.serializer.JsonNbtSerializer;
+import org.zibble.inventoryframework.protocol.Item;
+import org.zibble.inventoryframework.protocol.ProtocolPlayer;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BwItemStack implements Cloneable {
+public class BwItemStack implements Item, Cloneable {
 
     public static final Pattern PATTERN = Pattern.compile("^(?:(?<amount>\\d*)::)?(?<type>[a-zA-Z0-9_\\-]+?)(?:::(?<data>\\d+))?$");
     public static final Pattern JSON_MATCHER = Pattern.compile("^json::(?<item>.+?\\..+?)(?:::(?<amount>\\d*))?$");
@@ -46,6 +50,10 @@ public class BwItemStack implements Cloneable {
     private NBTCompound nbtCompound;
 
     private ItemMeta meta;
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public BwItemStack(XMaterial material) {
         this(material, 1);
@@ -93,8 +101,8 @@ public class BwItemStack implements Cloneable {
             BwItemStack configuredItem = DBedWarsAPI.getApi().getConfiguredItem(item, placeholders);
             String amt = matcher.group("amount");
             if (configuredItem != null && amt != null) {
-                int num = NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders));
-                if (num > 0) {
+                Integer num = NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders));
+                if (num != null && num > 0) {
                     configuredItem.setAmount(num);
                 }
             }
@@ -376,14 +384,17 @@ public class BwItemStack implements Cloneable {
     }
 
     public ItemStack asItemStack(Player player) {
-        ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta)
-                .displayName(this.displayName.asComponentWithPAPI(player)[0])
-                .lore(this.lore.asComponentWithPAPI(player));
+        ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta);
+        if (this.displayName != null)
+            builder.displayName(this.displayName.asComponentWithPAPI(player)[0]);
+        if (this.lore != null)
+            builder.lore(this.lore.asComponentWithPAPI(player));
         for (LEnchant enchant : this.enchantments) {
             if (!enchant.getEnchantment().isSupported()) continue;
             builder.withEnchantment(enchant.getEnchantment(), enchant.getLevel());
         }
-        ItemStack item = builder.toItemStack(this.amount);
+        ItemStack item = builder.applyTo(this.material.parseItem());
+        item.setAmount(this.amount);
         if (this.data > 0) {
             item.setDurability((short) this.data);
         }
@@ -393,14 +404,17 @@ public class BwItemStack implements Cloneable {
     }
 
     public ItemStack asItemStack() {
-        ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta)
-                .displayName(this.displayName.asComponent()[0])
-                .lore(this.lore.asComponent());
+        ItemMetaBuilder builder = ItemMetaBuilder.of(this.material, this.meta);
+        if (this.displayName != null)
+            builder.displayName(this.displayName.asComponent()[0]);
+        if (this.lore != null)
+            builder.lore(this.lore.asComponent());
         for (LEnchant enchant : this.enchantments) {
             if (!enchant.getEnchantment().isSupported()) continue;
             builder.withEnchantment(enchant.getEnchantment(), enchant.getLevel());
         }
-        ItemStack item = builder.toItemStack(this.amount);
+        ItemStack item = builder.applyTo(this.material.parseItem());
+        item.setAmount(this.amount);
         if (this.data > 0) {
             item.setDurability((short) this.data);
         }
@@ -438,6 +452,91 @@ public class BwItemStack implements Cloneable {
         returnVal.nbtCompound = this.nbtCompound.clone();
         this.enchantments.forEach(enchant -> returnVal.enchantments.add(enchant.clone()));
         return returnVal;
+    }
+
+    @Override
+    public String toString() {
+        return "BwItemStack{" +
+                "material=" + material +
+                ", amount=" + amount +
+                ", displayName=" + displayName +
+                ", lore=" + lore +
+                ", data=" + data +
+                ", enchantments=" + enchantments +
+                ", nbtCompound=" + nbtCompound +
+                ", meta=" + meta +
+                '}';
+    }
+
+    @Override
+    public com.github.retrooper.packetevents.protocol.item.@NotNull ItemStack asProtocol(ProtocolPlayer<?> protocolPlayer) {
+        return DBedWarsAPI.getApi().getNMS().asPacketItem(this.asItemStack((Player) protocolPlayer.handle()));
+    }
+
+    public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<BwItemStack> {
+
+        private XMaterial material = XMaterial.AIR;
+        private int amount = 1;
+        private Message displayName;
+        private Message lore;
+        private final Set<LEnchant> enchantments = new HashSet<>();
+        private int data = -1;
+        private final NBTCompound compound = new NBTCompound();
+        private ItemMeta meta = XMaterial.AIR.parseItem().getItemMeta();
+
+        public Builder material(XMaterial material) {
+            this.material = material;
+            this.meta = material.parseItem().getItemMeta();
+            return this;
+        }
+
+        public Builder amount(int amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        public Builder displayName(Message displayName) {
+            this.displayName = displayName;
+            return this;
+        }
+
+        public Builder lore(Message lore) {
+            this.lore = lore;
+            return this;
+        }
+
+        public Builder enchant(LEnchant enchant) {
+            this.enchantments.add(enchant);
+            return this;
+        }
+
+        public Builder data(int data) {
+            this.data = data;
+            return this;
+        }
+
+        public Builder nbt(Consumer<NBTCompound> consumer) {
+            consumer.accept(this.compound);
+            return this;
+        }
+
+        public Builder meta(Consumer<ItemMeta> consumer) {
+            consumer.accept(this.meta);
+            return this;
+        }
+
+        @Override
+        public BwItemStack build() {
+            BwItemStack item = new BwItemStack(this.material, this.amount);
+            item.displayName = this.displayName;
+            item.lore = this.lore;
+            item.enchantments.addAll(this.enchantments);
+            item.data = this.data;
+            item.nbtCompound = this.compound;
+            item.meta = this.meta;
+            return item;
+        }
+
     }
 
 }

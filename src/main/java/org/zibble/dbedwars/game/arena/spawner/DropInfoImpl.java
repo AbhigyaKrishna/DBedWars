@@ -159,6 +159,22 @@ public class DropInfoImpl implements DropInfo {
     }
 
     @Override
+    public String toString() {
+        return "DropInfoImpl{" +
+                "key=" + key +
+                ", icon=" + icon +
+                ", radius=" + radius +
+                ", soundEffect=" + soundEffect +
+                ", particleEffect=" + particleEffect +
+                ", hologram=" + hologram +
+                ", teamSpawner=" + teamSpawner +
+                ", merging=" + merging +
+                ", spliting=" + spliting +
+                ", tiers=" + tiers +
+                '}';
+    }
+
+    @Override
     public Key getKey() {
         return key;
     }
@@ -261,10 +277,11 @@ public class DropInfoImpl implements DropInfo {
         @Override
         public String toString() {
             return "Tier{" +
-                    "delay=" + delay +
+                    "key=" + key +
+                    ", delay=" + delay +
                     ", upgradeSound=" + upgradeSound +
                     ", upgradeEffect=" + upgradeEffect +
-                    ", upgradeMessage='" + upgradeMessage + '\'' +
+                    ", upgradeMessage=" + upgradeMessage +
                     ", drops=" + drops +
                     '}';
         }
@@ -356,7 +373,7 @@ public class DropInfoImpl implements DropInfo {
         @Override
         public String toString() {
             return "Drop{" +
-                    "key='" + key + '\'' +
+                    "key=" + key +
                     ", item=" + item +
                     ", delay=" + delay +
                     ", maxSpawn=" + maxSpawn +

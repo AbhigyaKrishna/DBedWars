@@ -8,19 +8,13 @@ public enum PluginLang implements Lang {
 
     DEFAULT_CONSOLE_TRY("<red>You need to be a player to run this command!"),
 
-    DISABLE_MOB_SPAWNING_PROMPT(),
-    DISABLE_MOB_SPAWNING_DONE(),
-    ENTITY_CLEANUP_PROMPT(),
+    DISABLE_MOB_SPAWNING_DONE("<green>Mob spawning has been disabled for <world>!"),
     ENTITY_CLEANUP_DONE("<green>Cleaned up <count> entities!"),
-    SETUP_WAITING_LOCATION_PROMPT(),
-    SETUP_WAITING_LOCATION_DONE(),
-    SETUP_WAITING_LOCATION_HOLOGRAM("<yellow>Waiting for players to join!"),
-    SETUP_SPECTATOR_LOCATION_PROMPT(),
+    SETUP_WAITING_LOCATION_DONE("<green>Waiting location set to <location>!"),
+    SETUP_WAITING_LOCATION_HOLOGRAM("<yellow>Waiting location for players to join!"),
     SETUP_SPECTATOR_LOCATION_DONE(),
     SETUP_SPECTATOR_LOCATION_HOLOGRAM(),
-    SETUP_WAITING_LOCATION_CORNERS_PROMPT(),
     SETUP_WAITING_LOCATION_CORNERS_DONE(),
-    ADD_TEAMS_PROMPT(),
     ADD_TEAM_DONE(),
     REMOVE_TEAM_DONE(),
     SETUP_CUSTOM_NAME_DONE(),
@@ -64,8 +58,8 @@ public enum PluginLang implements Lang {
     SETUP_SESSION_TEAM_SHOP_NOT_FOUND(),
     SETUP_SESSION_TEAM_BED_NOT_FOUND(),
     SETUP_SESSION_FOUND_GENERATOR_LOCATION(),
+    SETUP_SESSION_ARENA_SAVED_SUCCESSFUL(),
     ;
-
     private final Message message;
 
     PluginLang(String... messages) {

@@ -4,13 +4,14 @@ import com.cryptomorin.xseries.XSound;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
+import org.zibble.dbedwars.api.util.NumberUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SoundVP implements Cloneable {
 
-    static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z0-9_\\-]+?)(?:::[+-]?(?<volume>\\d*\\.?\\d*)(?:::[+-]?(?<pitch>\\d*\\.?\\d*))?)?$", Pattern.CASE_INSENSITIVE);
+    static final Pattern PATTERN = Pattern.compile("^(?<name>[a-zA-Z\\d_\\-]+?)(?:::[+-]?(?<volume>\\d*\\.?\\d*)(?:::[+-]?(?<pitch>\\d*\\.?\\d*))?)?$", Pattern.CASE_INSENSITIVE);
 
     private final XSound sound;
     private float volume;
@@ -44,8 +45,8 @@ public class SoundVP implements Cloneable {
             XSound sound = XSound.matchXSound(matcher.group("name")).orElse(null);
             if (sound == null) return null;
 
-            float volume = matcher.groupCount() > 1 ? Float.parseFloat(matcher.group("volume")) : 1.0F;
-            float pitch = matcher.groupCount() > 2 ? Float.parseFloat(matcher.group("pitch")) : 1.0F;
+            float volume = NumberUtils.toFloat(matcher.group("volume"), 1);
+            float pitch = NumberUtils.toFloat(matcher.group("pitch"), 1);
 
             return new SoundVP(sound, volume, pitch);
         }

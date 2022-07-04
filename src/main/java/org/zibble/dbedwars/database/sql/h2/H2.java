@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.database.sql.h2;
 
+import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.lang.Validate;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
@@ -21,8 +21,8 @@ public class H2 extends SQLDatabase {
 
     public H2(File db, HikariConfig config) {
         super(DatabaseType.H2, config);
+        Preconditions.checkNotNull(db, "The database file cannot be null!");
 
-        Validate.notNull(db, "The database file cannot be null!");
         this.db = db;
     }
 

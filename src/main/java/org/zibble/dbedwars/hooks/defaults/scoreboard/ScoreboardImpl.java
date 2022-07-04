@@ -1,15 +1,14 @@
 package org.zibble.dbedwars.hooks.defaults.scoreboard;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.util.AdventureSerializer;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDisplayScoreboard;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore;
+import com.google.common.base.Preconditions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -38,8 +37,8 @@ public class ScoreboardImpl implements Scoreboard {
     protected boolean shown;
 
     public ScoreboardImpl(Player player, Message title) {
-        Validate.isTrue(!(title.getLines().get(0).length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
-                "Title is longer than 32 chars.");
+        Preconditions.checkArgument(!(title.getLines().get(0).length() > MAX_DISPLAY_NAME_LENGTH && Version.SERVER_VERSION.isOlder(Version.v1_13_R1)),
+                "Title is longer than %s chars.", MAX_DISPLAY_NAME_LENGTH);
         this.id = "bwboard-" + ThreadLocalRandom.current().nextInt(99999);
         this.uuid = player.getUniqueId();
         this.title = title;
@@ -194,15 +193,9 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     private void checkLineNumber(int line, boolean checkInRange, boolean checkMax) {
-        Validate.isTrue(line > 0, "Line number must be positive");
-
-        if (checkInRange && line >= this.elements.size()) {
-            throw new IllegalArgumentException("Line number must be under " + this.elements.size());
-        }
-
-        if (checkMax && line >= 15) {
-            throw new IllegalArgumentException("Line number is too high: " + line);
-        }
+        Preconditions.checkArgument(line > 0, "Line number must be positive");
+        Preconditions.checkArgument(checkInRange && line >= this.elements.size(), "Line number must be under %s", this.elements.size());
+        Preconditions.checkArgument(checkMax && line >= 15, "Line number is too high: %s", line);
     }
 
     private int getLength(Component message) {
@@ -213,8 +206,8 @@ public class ScoreboardImpl implements Scoreboard {
 
     protected void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode) {
         WrapperPlayServerScoreboardObjective packet = new WrapperPlayServerScoreboardObjective(this.id, mode,
-                Optional.of(AdventureUtils.toVanillaString(this.title.asComponentWithPAPI(this.getViewer())[0])),
-                Optional.of(WrapperPlayServerScoreboardObjective.HealthDisplay.INTEGER));
+                this.title.asComponentWithPAPI(this.getViewer())[0],
+                WrapperPlayServerScoreboardObjective.RenderType.INTEGER);
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 
@@ -267,9 +260,9 @@ public class ScoreboardImpl implements Scoreboard {
         }
 
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                AdventureSerializer.asAdventure(this.id + ':' + score),
-                AdventureSerializer.asAdventure(prefix),
-                AdventureSerializer.asAdventure(suffix == null ? "" : suffix),
+                AdventureUtils.fromLegacyText(this.id + ':' + score),
+                AdventureUtils.fromLegacyText(prefix),
+                AdventureUtils.fromLegacyText(suffix == null ? "" : suffix),
                 WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
                 WrapperPlayServerTeams.CollisionRule.ALWAYS,
                 NamedTextColor.WHITE,

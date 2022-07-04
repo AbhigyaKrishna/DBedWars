@@ -75,13 +75,8 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
     public boolean isValid() {
         return this.id != null
                 && !this.tiers.isEmpty()
-                && this.tiers.containsKey(1)
-                && !this.tiers.get(1).getActions().isEmpty();
-    }
-
-    @Override
-    public boolean isInvalid() {
-        return !this.isValid();
+                && this.tiers.containsKey("1")
+                && !this.tiers.get("1").getActions().isEmpty();
     }
 
     public String getKey() {
@@ -141,8 +136,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
     @Override
     public String toString() {
         return "ConfigurableItemSpawner{" +
-                "plugin=" + plugin +
-                ", key='" + key + '\'' +
+                "key='" + key + '\'' +
                 ", id='" + id + '\'' +
                 ", icon='" + icon + '\'' +
                 ", spawnSound='" + spawnSound + '\'' +
@@ -263,7 +257,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
         @Override
         public String toString() {
             return "ConfigurableTiers{" +
-                    ", seconds=" + seconds +
+                    "seconds=" + seconds +
                     ", upgradeEffect='" + upgradeEffect + '\'' +
                     ", upgradeSound='" + upgradeSound + '\'' +
                     ", message='" + message + '\'' +

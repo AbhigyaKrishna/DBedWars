@@ -38,6 +38,8 @@ public class MineSkinAPI {
             return skin;
         } else {
 
+            skin = Skin.empty();
+
             try {
                 // Open http connection
                 HttpURLConnection textureConnection = (HttpURLConnection) new URL(String.format(URL_FORMAT, id)).openConnection();
@@ -57,17 +59,15 @@ public class MineSkinAPI {
 
                         this.cache.put(id, skin);
                     }
-
-                    textureConnection.disconnect();
-
-                    return skin;
                 }
+
+                textureConnection.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return Skin.empty();
+        return skin;
     }
 
 }

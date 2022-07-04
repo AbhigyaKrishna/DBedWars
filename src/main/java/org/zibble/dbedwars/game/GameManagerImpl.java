@@ -10,6 +10,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.handler.GameManager;
+import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.configuration.configurable.*;
@@ -35,6 +36,7 @@ public class GameManagerImpl implements GameManager {
     private final Set<ShopInfoImpl> shops;
     private final Multimap<String, Arena> arenas;
     private final Map<String, ScoreboardData> scoreboardData;
+    private final Map<String, NPCModel> npcs;
     private final Set<ArenaCategoryImpl> categories;
     private final List<GameEvent> events;
     private Location lobbySpawn;
@@ -50,6 +52,7 @@ public class GameManagerImpl implements GameManager {
         this.arenas = ArrayListMultimap.create();
         this.shops = new HashSet<>();
         this.scoreboardData = new HashMap<>();
+        this.npcs = new HashMap<>();
         this.targetRegistry = new TargetRegistryImpl();
         this.events = new ArrayList<>();
     }
@@ -62,6 +65,10 @@ public class GameManagerImpl implements GameManager {
 
         for (ConfigurableItemSpawner cfg : configHandler.getDropTypes()) {
             this.dropTypes.add(DropInfoImpl.fromConfig(cfg));
+        }
+
+        for (Map.Entry<String, ConfigurableNpc> npc : configHandler.getNpc().entrySet()) {
+            this.npcs.put(npc.getKey(), ConfigurationUtil.createNpcModel(npc.getValue()));
         }
 
         for (Map.Entry<String, ConfigurableShop> entry : configHandler.getShops().entrySet()) {
@@ -104,6 +111,7 @@ public class GameManagerImpl implements GameManager {
     public Arena createArena(String name) {
         ArenaDataHolderImpl holder = this.getDataHolder(name);
         if (holder == null) return null;
+        if (!holder.isEnabled()) return null;
         // TODO: 01-04-2022 override
         String gameId = String.format(GAME_ID_FORMAT, name, this.arenas.containsKey(name) ? this.arenas.get(name).size() : 0);
         ArenaImpl arena = new ArenaImpl(this.plugin, gameId, holder, this.defaultSettings.clone());
@@ -170,6 +178,10 @@ public class GameManagerImpl implements GameManager {
 
     public Map<String, ScoreboardData> getScoreboardData() {
         return scoreboardData;
+    }
+
+    public Map<String, NPCModel> getNpcs() {
+        return npcs;
     }
 
     public TargetRegistryImpl getTargetRegistry() {

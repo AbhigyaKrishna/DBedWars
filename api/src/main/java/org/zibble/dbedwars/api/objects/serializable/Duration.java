@@ -392,4 +392,12 @@ public class Duration {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Duration{" +
+                "duration=" + duration +
+                ", unit=" + unit +
+                '}';
+    }
+
 }

@@ -37,15 +37,24 @@ allprojects {
     }
 
     dependencies {
-        implementation 'org.zibble:if-spigot:1.1-SNAPSHOT'
-        implementation 'net.kyori:adventure-api:4.10.1'
-        implementation 'net.kyori:adventure-text-minimessage:4.10.1'
-        implementation 'net.kyori:adventure-text-serializer-gson:4.10.1'
-        implementation 'net.kyori:adventure-text-serializer-gson-legacy-impl:4.10.1'
-        implementation 'net.kyori:adventure-text-serializer-legacy:4.10.1'
-        implementation 'net.kyori:adventure-text-serializer-plain:4.10.1'
-        implementation 'net.kyori:adventure-platform-bukkit:4.1.0'
+        implementation 'org.zibble:if-api:1.1-SNAPSHOT'
+        implementation 'net.kyori:adventure-api:4.11.0'
+        implementation 'net.kyori:adventure-text-minimessage:4.11.0'
+        implementation 'net.kyori:adventure-text-serializer-gson:4.11.0'
+        implementation 'net.kyori:adventure-text-serializer-gson-legacy-impl:4.11.0'
+        implementation 'net.kyori:adventure-text-serializer-legacy:4.11.0'
+        implementation 'net.kyori:adventure-text-serializer-plain:4.11.0'
+        implementation 'net.kyori:adventure-platform-bukkit:4.1.1'
+        implementation 'com.github.cryptomorin:XSeries:8.8.0'
+        implementation 'xyz.xenondevs:particle:1.7.1'
+        compileOnly 'com.google.guava:guava:31.1-jre'
         compileOnly 'com.github.retrooper.packetevents:api:2.0-SNAPSHOT'
+    }
+
+    configurations.implementation {
+        exclude group: 'org.apache', module: 'commons-lang'
+        exclude group: 'org.apache', module: 'commons-lang3'
+        exclude group: 'commons-lang', module: 'commons-lang'
     }
 
     build {
@@ -55,8 +64,8 @@ allprojects {
     shadowJar {
         relocate 'org.reflections', 'org.zibble.dbedwars.libraries.reflections'
         relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
-        /*relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
-        relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'*/
+        relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
+        relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'
     }
     def targetJavaVersion = 8
 
@@ -81,7 +90,6 @@ allprojects {
 }
 
 compileJava {
-
     targetCompatibility = 8
     sourceCompatibility = 8
 
@@ -112,35 +120,37 @@ repositories {
 dependencies {
     implementation project(':api')
     implementation project(':nms-v1_8_R3')
-    implementation project(':hooks:autonicker-hook')
-    implementation project(':hooks:betternick-hook')
-    implementation project(':hooks:citizens-hook')
-    implementation project(':hooks:cmi-hook')
-    implementation project(':hooks:eazynick-hook')
-    implementation project(':hooks:featherboard-hook')
-    implementation project(':hooks:nametagedit-hook')
-    implementation project(':hooks:nickapi-hook')
-    implementation project(':hooks:nicknamer-hook')
-    implementation project(':hooks:placeholderapi-hook')
-    implementation project(':hooks:pvplevels-hook')
-    implementation project(':hooks:quickboard-hook')
-    implementation project(':hooks:skinrestorer-hook')
-    implementation project(':hooks:slimeworldmanager-hook')
-    implementation project(':hooks:tab-hook')
-    implementation project(':hooks:vanish-hook')
-    implementation project(':hooks:vault-hook')
-    implementation project(':hooks:viphide-hook')
+//    implementation project(':hooks:autonicker-hook')
+//    implementation project(':hooks:betternick-hook')
+//    implementation project(':hooks:citizens-hook')
+//    implementation project(':hooks:cmi-hook')
+//    implementation project(':hooks:eazynick-hook')
+//    implementation project(':hooks:featherboard-hook')
+//    implementation project(':hooks:nametagedit-hook')
+//    implementation project(':hooks:nickapi-hook')
+//    implementation project(':hooks:nicknamer-hook')
+//    implementation project(':hooks:placeholderapi-hook')
+//    implementation project(':hooks:pvplevels-hook')
+//    implementation project(':hooks:quickboard-hook')
+//    implementation project(':hooks:skinrestorer-hook')
+//    implementation project(':hooks:slimeworldmanager-hook')
+//    implementation project(':hooks:tab-hook')
+//    implementation project(':hooks:vanish-hook')
+//    implementation project(':hooks:vault-hook')
+//    implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
-    implementation 'com.github.cryptomorin:XSeries:8.7.0'
-    implementation 'xyz.xenondevs:particle:1.7'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'org.jooq:jooq:3.14.15'
     compileOnly 'com.zaxxer:HikariCP:4.0.3'
     compileOnly 'org.mongodb:mongo-java-driver:3.12.10'
     compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
+}
+
+shadowJar {
+    minimize()
 }
 
 build {

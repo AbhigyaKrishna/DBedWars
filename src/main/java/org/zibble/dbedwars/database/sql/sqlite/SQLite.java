@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.database.sql.sqlite;
 
 import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.SQLTimeoutException;
 
 /**
  * Class for interacting with a SQLite database.

@@ -63,7 +63,9 @@ public class PluginFiles {
                 HOLOGRAM,
                 SCOREBOARD,
                 NPC,
-                DATABASE
+                DATABASE,
+
+                CACHE.HEADS
         };
     }
 
@@ -87,6 +89,12 @@ public class PluginFiles {
     public static class Data {
 
         public static final File LOBBY_SPAWN = new File(Folder.DATA, "lobbyspawnlocation.yml");
+
+    }
+
+    public static class CACHE {
+
+        public static final File HEADS = new File(Folder.CACHE, "heads.json");
 
     }
 

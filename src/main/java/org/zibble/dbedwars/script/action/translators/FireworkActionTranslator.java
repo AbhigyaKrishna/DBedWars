@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.action.impl.FireworkAction;
 
-public class FireworkActionTranslator implements ActionTranslator<Location, FireworkAction> {
+public class FireworkActionTranslator implements ActionTranslator<FireworkAction> {
 
     @Override
     public FireworkAction serialize(String untranslated, ScriptVariable<?>... variables) {

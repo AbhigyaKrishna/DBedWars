@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.reflection.general;
 
-import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.zibble.dbedwars.api.version.Version;
 
@@ -34,13 +34,13 @@ public class ClassReflection {
         throw new ClassNotFoundException("The sub class " + name + " doesn't exist!");
     }
 
-    public static Class<?> getCraftClass(String name, String package_name) {
+    public static Class<?> getCraftClass(String name, @NotNull String package_name) {
         try {
-            String id = "craft-" + (StringUtils.isEmpty(package_name) ? "" : package_name.toLowerCase() + ".") + name;
+            String s = package_name.isEmpty() ? "" : package_name.toLowerCase() + ".";
+            String id = "craft-" + s + name;
             if (CACHED_CLASSES.containsKey(id)) return CACHED_CLASSES.get(id);
 
-            Class<?> clazz = Class.forName(Version.SERVER_VERSION.getObcPackage() + "." + (StringUtils.isEmpty(package_name) ?
-                    "" : package_name.toLowerCase() + ".") + name);
+            Class<?> clazz = Class.forName(Version.SERVER_VERSION.getObcPackage() + "." + s + name);
             CACHED_CLASSES.put(id, clazz);
             return clazz;
         } catch (ClassNotFoundException e) {
@@ -49,13 +49,13 @@ public class ClassReflection {
         return null;
     }
 
-    public static Class<?> getNmsClass(String name, String v17Package) {
+    public static Class<?> getNmsClass(String name, @NotNull String v17Package) {
         try {
             if (CACHED_CLASSES.containsKey(name)) return CACHED_CLASSES.get(name);
 
             Class<?> clazz;
             if (Version.SERVER_VERSION.isNewerEquals(Version.v1_17_R1))
-                clazz = Class.forName("net.minecraft." + (StringUtils.isEmpty(v17Package) ? "" : v17Package.toLowerCase() + ".") + name);
+                clazz = Class.forName("net.minecraft." + (v17Package.isEmpty() ? "" : v17Package.toLowerCase() + ".") + name);
             else clazz = Class.forName(Version.SERVER_VERSION.getNmsPackage() + "." + name);
 
             CACHED_CLASSES.put(name, clazz);

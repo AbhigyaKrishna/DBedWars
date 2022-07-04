@@ -76,6 +76,11 @@ public class NBTByte extends NBTNumber {
     }
 
     @Override
+    public String toString() {
+        return "NBTByte= " + value;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.value = input.readByte();
     }

@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramPage;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HologramImpl implements Hologram {
 
     private final HologramManager manager;
+    private final Key key;
 
     private final List<HologramPageImpl> hologramPages;
     private final Map<UUID, Integer> viewerPages;
@@ -31,8 +33,9 @@ public class HologramImpl implements Hologram {
     private boolean updateRegistered;
     private long lastUpdate;
 
-    public HologramImpl(HologramManager manager, Location location) {
+    public HologramImpl(HologramManager manager, Key key, Location location) {
         this.manager = manager;
+        this.key = key;
         this.hologramPages = Collections.synchronizedList(new ArrayList<>(1));
         this.viewerPages = new ConcurrentHashMap<>();
         this.clickActions = Collections.synchronizedSet(new HashSet<>());
@@ -180,9 +183,9 @@ public class HologramImpl implements Hologram {
     @Override
     public void hide(Player... players) {
         for (Player player : players) {
+            this.manager.despawnHologram(this, player);
             this.viewerPages.remove(player.getUniqueId());
             this.viewers.remove(player.getUniqueId());
-            this.manager.despawnHologram(this, player);
         }
     }
 
@@ -200,8 +203,10 @@ public class HologramImpl implements Hologram {
         this.hide(players.toArray(new Player[0]));
     }
 
+    @Override
     public void destroy() {
         this.hideAll();
+        this.manager.getHolograms().remove(this.key);
     }
 
     @Override
@@ -220,11 +225,6 @@ public class HologramImpl implements Hologram {
         return lastUpdate;
     }
 
-    @Override
-    public void despawn() {
-        this.destroy();
-    }
-
     public void setLastUpdate(long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
@@ -235,6 +235,11 @@ public class HologramImpl implements Hologram {
 
     public void setHasChangedContentType(boolean hasChangedContentType) {
         this.hasChangedContentType = hasChangedContentType;
+    }
+
+    @Override
+    public Key getKey() {
+        return this.key;
     }
 
 }

@@ -216,6 +216,11 @@ public class NBTCompound extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTCompound=" + tags;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         NBTType valueType;
         while ((valueType = this.readTagType(input)) != NBTType.END) {

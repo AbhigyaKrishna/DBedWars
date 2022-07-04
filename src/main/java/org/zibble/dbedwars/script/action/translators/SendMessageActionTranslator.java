@@ -11,7 +11,7 @@ import org.zibble.dbedwars.script.action.impl.SendMessageAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SendMessageActionTranslator implements ActionTranslator<AbstractMessaging, SendMessageAction> {
+public class SendMessageActionTranslator implements ActionTranslator<SendMessageAction> {
 
     @Override
     public SendMessageAction serialize(String untranslated, ScriptVariable<?>... variables) {

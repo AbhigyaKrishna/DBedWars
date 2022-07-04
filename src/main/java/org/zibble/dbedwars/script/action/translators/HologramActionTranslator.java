@@ -10,7 +10,7 @@ import org.zibble.dbedwars.script.action.impl.hologram.HologramAction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HologramActionTranslator implements ActionTranslator<Hologram, HologramAction> {
+public class HologramActionTranslator implements ActionTranslator<HologramAction> {
 
     private static final Pattern TELEPORT_ACTION = Pattern.compile("teleport\\{(?<loc>.+)}");
 

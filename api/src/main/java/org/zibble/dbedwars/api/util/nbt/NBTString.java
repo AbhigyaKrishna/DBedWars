@@ -42,6 +42,11 @@ public class NBTString extends NBT {
     }
 
     @Override
+    public String toString() {
+        return "NBTString= " + value;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.value = input.readUTF();
     }

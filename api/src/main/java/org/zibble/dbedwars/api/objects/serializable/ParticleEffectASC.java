@@ -1,11 +1,14 @@
 package org.zibble.dbedwars.api.objects.serializable;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.NumberUtils;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
 import java.awt.*;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,9 +112,24 @@ public class ParticleEffectASC implements Cloneable {
         return builder;
     }
 
+    public void display(Location location) {
+        this.build().setLocation(location).display();
+    }
+
+    public void display(Location location, Collection<Player> players) {
+        this.build().setLocation(location).display(players);
+    }
+
+    public void display(Location location, Player... players) {
+        this.build().setLocation(location).display(players);
+    }
+
     @Override
     public String toString() {
-        return this.effect.toString() + "::" + this.amount + "::" + this.speed + "::R" + this.color.getRed() + "G" + this.color.getGreen() + "B" + this.color.getBlue();
+        String s = this.effect.toString() + "::" + this.amount + "::" + this.speed;
+        if (color != null)
+            s = s + "::R" + this.color.getRed() + "G" + this.color.getGreen() + "B" + this.color.getBlue();
+        return s;
     }
 
     @Override

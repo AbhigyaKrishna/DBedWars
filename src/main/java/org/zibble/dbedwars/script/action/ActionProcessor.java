@@ -4,21 +4,21 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.script.action.Action;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 
-public class ActionProcessor {
+public class ActionProcessor implements Action {
 
-    private final Action<?> action;
+    private final Action action;
     private final boolean shouldExecute;
     private final Duration delay;
     private final int repeats;
 
-    public ActionProcessor(Action<?> action, boolean shouldExecute, Duration delay, int repeats) {
+    public ActionProcessor(Action action, boolean shouldExecute, Duration delay, int repeats) {
         this.action = action;
         this.shouldExecute = shouldExecute;
         this.delay = delay;
         this.repeats = repeats;
     }
 
-    public Action<?> getAction() {
+    public Action getAction() {
         return action;
     }
 
@@ -34,6 +34,7 @@ public class ActionProcessor {
         return repeats;
     }
 
+    @Override
     public void execute() {
         if (!this.shouldExecute()) return;
         DBedwars.getInstance().getThreadHandler().runTaskLater(() -> {

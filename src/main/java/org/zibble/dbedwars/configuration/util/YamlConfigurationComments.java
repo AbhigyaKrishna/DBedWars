@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.configuration.util;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,7 +49,7 @@ public class YamlConfigurationComments extends YamlConfiguration {
      * @throws IllegalArgumentException Thrown if file is null
      */
     public static YamlConfigurationComments loadConfiguration(File file) {
-        Validate.notNull(file, "File cannot be null");
+        Preconditions.checkNotNull(file, "File cannot be null");
 
         YamlConfigurationComments config = new YamlConfigurationComments();
         try {
@@ -74,7 +74,7 @@ public class YamlConfigurationComments extends YamlConfiguration {
      * @throws IllegalArgumentException Thrown if stream is null
      */
     public static YamlConfigurationComments loadConfiguration(Reader reader) {
-        Validate.notNull(reader, "Stream cannot be null");
+        Preconditions.checkNotNull(reader, "Stream cannot be null");
 
         YamlConfigurationComments config = new YamlConfigurationComments();
         try {
@@ -226,7 +226,7 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
     @Override
     public void loadFromString(String contents) throws InvalidConfigurationException {
-        Validate.notNull(contents, "Contents cannot be null");
+        Preconditions.checkNotNull(contents, "Contents cannot be null");
 
         Map<?, ?> input;
         try {

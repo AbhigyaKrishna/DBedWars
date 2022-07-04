@@ -99,6 +99,11 @@ public abstract class Message implements Cloneable {
     @Override
     public abstract Message clone();
 
+    @Override
+    public String toString() {
+        return this.getMessage();
+    }
+
     protected static class EmptyMessage extends Message {
 
         protected EmptyMessage() {

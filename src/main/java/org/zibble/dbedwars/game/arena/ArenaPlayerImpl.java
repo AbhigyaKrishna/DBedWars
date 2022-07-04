@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.game.arena;
 
+import com.google.common.base.CaseFormat;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -14,6 +15,7 @@ import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.game.ArenaPlayer;
 import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.game.statistics.ResourceStatistics;
+import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.hooks.scoreboard.Scoreboard;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
@@ -34,14 +36,12 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
+import org.zibble.dbedwars.utils.ConfigurationUtil;
 import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
 
@@ -109,6 +109,18 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         PlayerKillEvent event;
         ArenaPlayer killer = this.getLastHitTagged();
         Message deathMessage = Util.getDeathMessage(reason, killer == null ? null : killer.getPlayer());
+
+        ArrayList<Placeholder> placeholders = new ArrayList<>();
+        placeholders.add(PlaceholderEntry.symbol("victim_player", () -> this.getPlayer().getName()));
+        placeholders.add(PlaceholderEntry.symbol("victim_team", () -> ConfigurationUtil.getConfigCode(this.team)));
+        placeholders.add(PlaceholderEntry.symbol("timestamp", () -> Instant.now().toString()));
+        placeholders.add(PlaceholderEntry.symbol("reason", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, reason.name().toUpperCase(Locale.ROOT))));
+        if (killer != null) {
+            placeholders.add(PlaceholderEntry.symbol("attacker_player", () -> killer.getPlayer().getName()));
+            placeholders.add(PlaceholderEntry.symbol("attacker_color", () -> ConfigurationUtil.getConfigCode(killer.getTeam().getColor())));
+        }
+        deathMessage.addPlaceholders(placeholders);
+
         if (this.getTeam().isBedBroken()) {
             deathMessage.concatLine(0, Util.convertMessage(ConfigLang.FINAL_KILL.asMessage(),
                     deathMessage instanceof ConfigMessage ? ConfigMessage.empty() : AdventureMessage.empty()).getMessage());
@@ -187,18 +199,23 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         return Bukkit.getPlayer(this.getUUID());
     }
 
-    public ShopViewImpl getShop(String key) {
-        return this.shops.get(Key.of(key));
+    public ShopViewImpl getShop(Key key) {
+        return this.shops.get(key);
     }
 
     @Override
     public void spawn(Location location) {
-        SchedulerUtils.runTask(() -> {
+        Runnable runnable = () -> {
             this.getPlayer().setGameMode(GameMode.SURVIVAL);
             this.respawnItems.applyInventory(this.getPlayer());
             this.getPlayer().teleport(location);
             this.getPlayer().setHealth(20);
-        });
+        };
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+        } else {
+            SchedulerUtils.runTask(runnable);
+        }
     }
 
     @Override
@@ -257,8 +274,10 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         return respawnItems;
     }
 
-    public void addShop(ShopInfoImpl cfg) {
-        this.shops.put(cfg.getKey(), new ShopViewImpl(this, cfg));
+    public void addShop(ShopInfoImpl cfg, BedwarsNPC npc) {
+        ShopViewImpl value = new ShopViewImpl(this, cfg);
+        this.shops.put(cfg.getKey(), value);
+        value.setNpc(npc);
     }
 
     public void startRespawn() {

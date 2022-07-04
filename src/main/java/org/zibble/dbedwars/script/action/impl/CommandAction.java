@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.zibble.dbedwars.api.script.action.Action;
 
-public class CommandAction implements Action<CommandSender> {
+public class CommandAction implements Action {
 
     private final CommandSender sender;
     private final String command;
@@ -16,11 +16,10 @@ public class CommandAction implements Action<CommandSender> {
 
     @Override
     public void execute() {
-        Bukkit.dispatchCommand(this.getHandle(), command);
+        Bukkit.dispatchCommand(this.getSender(), command);
     }
 
-    @Override
-    public CommandSender getHandle() {
+    public CommandSender getSender() {
         return this.sender;
     }
 

@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.configuration.util;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfigurationOptions;
 
@@ -72,9 +71,9 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @return This object, for chaining
      */
     public YamlConfigurationCommentsOptions comment(ConfigurationSection section, String path, String comment) {
-        Validate.notNull(section, "The section cannot be null");
-        Validate.isTrue(!StringUtils.isBlank(path), "Cannot comment an empty path");
-        Validate.isTrue(
+        Preconditions.checkNotNull(section, "The section cannot be null");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(path), "Cannot comment an empty path");
+        Preconditions.checkArgument(
                 !path.contains(String.valueOf(pathSeparator())),
                 "The path cannot contains references to sub-sections (path separator '"
                         + pathSeparator()
@@ -86,7 +85,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
             comments.put(section.getCurrentPath(), sc_comments = new HashMap<String, String>());
         }
 
-        if (StringUtils.isNotBlank(comment)) {
+        if (Strings.isNullOrEmpty(comment)) {
             sc_comments.put(path, comment);
         } else { // if the comment is blank, is the equivalent to use the
             // method: removeComment()
@@ -112,7 +111,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @return Object, for chaining.
      */
     public YamlConfigurationCommentsOptions comment(String path, String comment) {
-        Validate.isTrue(!StringUtils.isBlank(path), "Cannot comment an empty path");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(path), "Cannot comment an empty path");
 
         int index = path.lastIndexOf(pathSeparator());
         if (index == -1) {

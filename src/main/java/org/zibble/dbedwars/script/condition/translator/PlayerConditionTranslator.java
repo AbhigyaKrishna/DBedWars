@@ -35,6 +35,11 @@ public class PlayerConditionTranslator extends IConditionTranslator<Player, Play
     }
 
     @Override
+    public Class<? extends Player> getClazz() {
+        return Player.class;
+    }
+
+    @Override
     public String deserialize(PlayerCondition<?> condition) {
         return condition.getValue().toString();
     }

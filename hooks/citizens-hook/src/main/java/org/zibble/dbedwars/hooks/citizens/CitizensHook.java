@@ -42,14 +42,14 @@ public class CitizensHook extends PluginDependence implements NPCFactory {
 
     @Override
     public EntityNPC createEntityNPC(Location location, EntityType type) {
-        EntityNPCImpl npc = new EntityNPCImpl(this, location, type, new NPCDataImpl());
+        EntityNPCImpl npc = new EntityNPCImpl(this, location, type);
         this.npcs.add(npc);
         return npc;
     }
 
     @Override
     public PlayerNPC createPlayerNPC(Location location) {
-        PlayerNPCImpl npc = new PlayerNPCImpl(this, location, new NPCDataImpl(), new SkinDataImpl());
+        PlayerNPCImpl npc = new PlayerNPCImpl(this, location);
         this.npcs.add(npc);
         return npc;
     }

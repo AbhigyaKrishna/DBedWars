@@ -42,7 +42,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
     public BedWarsNPCImpl(NPCFactoryImpl factory, Key key, Location location) {
         this.factory = factory;
         this.key = key;
-        this.npcData = new NPCDataImpl();
+        this.npcData = new NPCData();
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
@@ -82,8 +82,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
         return ActionFuture.supplyAsync(() -> {
             if (this.location.getWorld() == null) throw new NullPointerException("World can't be null");
             for (Player player : this.location.getWorld().getPlayers()) {
-                this.viewPacket(player);
-                this.shown.add(player.getUniqueId());
+                this.show(player);
             }
             return this;
         });

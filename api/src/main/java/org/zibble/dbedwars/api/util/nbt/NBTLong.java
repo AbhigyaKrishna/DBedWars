@@ -67,6 +67,11 @@ public class NBTLong extends NBTNumber {
     }
 
     @Override
+    public String toString() {
+        return "NBTLong= " + value;
+    }
+
+    @Override
     public void read(DataInput input) throws IOException {
         this.value = input.readLong();
     }

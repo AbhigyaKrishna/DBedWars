@@ -7,7 +7,7 @@ import org.zibble.dbedwars.api.script.condition.ConditionTranslator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class IConditionTranslator<T, R extends Condition> implements ConditionTranslator<T, R> {
+public abstract class IConditionTranslator<T, R extends Condition> implements ConditionTranslator<R> {
 
     private static final Pattern REGEX = Pattern.compile("^(?<key>.*)\\s*\\{(?<value>.*)}$");
 
@@ -21,5 +21,7 @@ public abstract class IConditionTranslator<T, R extends Condition> implements Co
     }
 
     public abstract R serialize(String key, String value, ScriptVariable<?>... variables);
+
+    public abstract Class<? extends T> getClazz();
 
 }

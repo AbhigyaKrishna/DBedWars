@@ -13,7 +13,6 @@ import org.zibble.dbedwars.script.condition.ConditionPreProcessor;
 import org.zibble.inventoryframework.ClickType;
 import org.zibble.inventoryframework.MenuItem;
 import org.zibble.inventoryframework.protocol.Item;
-import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,7 @@ public class ShopItemImpl implements ShopItem {
 
     protected final ArenaPlayer player;
     protected final BwItemStack item;
-    private final Set<Condition<?>> useConditions;
+    private final Set<Condition> useConditions;
     private final Set<ActionProcessor> actions;
     private ItemTierGroup tierGroup;
 
@@ -59,7 +58,7 @@ public class ShopItemImpl implements ShopItem {
 
     @Override
     public boolean canUse() {
-        for (Condition<?> useCondition : this.useConditions) {
+        for (Condition useCondition : this.useConditions) {
             if (!useCondition.test()) return false;
         }
         return true;
@@ -74,7 +73,7 @@ public class ShopItemImpl implements ShopItem {
 
     @Override
     public MenuItem<? extends Item> asMenuItem(ShopView shopView) {
-        MenuItem<SpigotItem> menuItem = MenuItem.of(new SpigotItem(this.item.asItemStack()));
+        MenuItem<BwItemStack> menuItem = MenuItem.of(this.item);
         menuItem.setClickAction((protocolPlayer, clickType) -> {
             if (this.canUse()) {
                 this.use(this.player, clickType);

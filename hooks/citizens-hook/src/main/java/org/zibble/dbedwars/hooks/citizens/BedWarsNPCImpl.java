@@ -25,10 +25,10 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     private Location location;
     private NPC citizensNPC;
 
-    public BedWarsNPCImpl(CitizensHook hook, Location location, NPCData npcData) {
+    public BedWarsNPCImpl(CitizensHook hook, Location location) {
         this.hook = hook;
         this.location = location;
-        this.npcData = npcData;
+        this.npcData = new NPCData();
         this.clickActions = new HashSet<>();
         this.citizensNPC = this.createNPC();
     }

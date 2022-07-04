@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.action.impl.PotionAction;
 
-public class PotionActionTranslator implements ActionTranslator<LivingEntity, PotionAction> {
+public class PotionActionTranslator implements ActionTranslator<PotionAction> {
 
     @Override
     public PotionAction serialize(String untranslated, ScriptVariable<?>... variables) {

@@ -11,8 +11,8 @@ public class EntityNPCImpl extends BedWarsNPCImpl implements EntityNPC {
 
     private final EntityType type;
 
-    public EntityNPCImpl(CitizensHook hook, Location location, EntityType type, NPCData npcData) {
-        super(hook, location, npcData);
+    public EntityNPCImpl(CitizensHook hook, Location location, EntityType type) {
+        super(hook, location);
         this.type = type;
     }
 

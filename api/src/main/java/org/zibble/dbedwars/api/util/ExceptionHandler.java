@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.api.util;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.Strings;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
@@ -33,7 +33,7 @@ public class ExceptionHandler {
     }
 
     public static Message wrap(String message) {
-        String wrapper = "<red>###" + StringUtils.repeat("#", message.length()) + "###";
+        String wrapper = "<red>###" + Strings.repeat("#", message.length()) + "###";
         return AdventureMessage.from(new String[]{wrapper, "<red>## " + message + " ##", wrapper});
     }
 

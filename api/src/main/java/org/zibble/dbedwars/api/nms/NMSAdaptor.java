@@ -8,6 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.util.nbt.NBT;
@@ -41,5 +42,7 @@ public interface NMSAdaptor {
     com.github.retrooper.packetevents.protocol.item.ItemStack asPacketItem(ItemStack item);
 
     ItemStack fromPacketItem(com.github.retrooper.packetevents.protocol.item.ItemStack item);
+
+    SkullMeta setSkullProfile(SkullMeta meta, PlayerGameProfile profile);
 
 }

@@ -1,7 +1,6 @@
 package org.zibble.dbedwars.database.bridge;
 
 import org.zibble.dbedwars.configuration.PluginFiles;
-import org.zibble.dbedwars.database.DatabaseType;
 import org.zibble.dbedwars.database.sql.sqlite.SQLite;
 
 import java.io.File;

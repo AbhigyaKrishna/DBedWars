@@ -74,6 +74,16 @@ public class ScoreboardData implements Cloneable {
         return new ScoreboardData(this.hook, this.type, this.title.clone(), this.elements.stream().map(Message::clone).collect(ArrayList::new, ArrayList::add, ArrayList::addAll));
     }
 
+    @Override
+    public String toString() {
+        return "ScoreboardData{" +
+                "type=" + type +
+                ", title=" + title +
+                ", elements=" + elements +
+                ", updateInterval=" + updateInterval +
+                '}';
+    }
+
     public enum Type {
         STATIC,
         DYNAMIC

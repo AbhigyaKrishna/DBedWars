@@ -1,30 +1,45 @@
 package org.zibble.dbedwars.api.script;
 
 import org.zibble.dbedwars.api.script.action.Action;
+import org.zibble.dbedwars.api.script.action.ActionProvider;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.script.condition.Condition;
+import org.zibble.dbedwars.api.script.condition.ConditionProvider;
 import org.zibble.dbedwars.api.script.condition.ConditionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.Collection;
 
-public interface ScriptTranslationRegistry {
+public abstract class ScriptTranslationRegistry {
 
-    Key GLOBAL = Key.of("global");
+    private static ScriptTranslationRegistry instance;
+    public static final Key GLOBAL = Key.of("global");
 
-    default TranslationRegistry<? extends ActionTranslator<?, ? extends Action>> actionRegistry() {
+    public ScriptTranslationRegistry() {
+        instance = this;
+    }
+
+    public static ScriptTranslationRegistry get() {
+        return instance;
+    }
+
+    public TranslationRegistry<? extends ActionTranslator<? extends Action>> actionRegistry() {
         return actionRegistry(GLOBAL);
     }
 
-    TranslationRegistry<? extends ActionTranslator<?, ? extends Action>> actionRegistry(Key key);
+    public abstract TranslationRegistry<? extends ActionTranslator<? extends Action>> actionRegistry(Key key);
 
-    default TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition>> conditionRegistry() {
+    public TranslationRegistry<? extends ConditionTranslator<? extends Condition>> conditionRegistry() {
         return conditionRegistry(GLOBAL);
     }
 
-    TranslationRegistry<? extends ConditionTranslator<?, ? extends Condition>> conditionRegistry(Key key);
+    public abstract TranslationRegistry<? extends ConditionTranslator<? extends Condition>> conditionRegistry(Key key);
 
-    interface TranslationRegistry<T extends Translator<? extends Translated>> {
+    public abstract ActionProvider actionProviderFromString(Key key, String action);
+
+    public abstract ConditionProvider conditionProviderFromString(Key key, String condition);
+
+    public interface TranslationRegistry<T extends Translator<? extends Translated>> {
 
         void registerTranslation(T translator);
 

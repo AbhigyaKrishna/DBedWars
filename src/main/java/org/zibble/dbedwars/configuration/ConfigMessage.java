@@ -29,6 +29,10 @@ public class ConfigMessage extends Message {
         return new ConfigMessage("");
     }
 
+    public static ConfigMessage blank() {
+        return new ConfigMessage(" ");
+    }
+
     public static ConfigMessage from(String message, Placeholder... placeholders) {
         return new ConfigMessage(message, placeholders);
     }

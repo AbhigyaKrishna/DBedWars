@@ -8,7 +8,7 @@ import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.messaging.member.PlayerMember;
 import org.zibble.dbedwars.script.action.impl.SoundAction;
 
-public class SoundActionTranslator implements ActionTranslator<PlayerMember, SoundAction> {
+public class SoundActionTranslator implements ActionTranslator<SoundAction> {
 
     @Override
     public SoundAction serialize(String untranslated, ScriptVariable<?>... variables) {

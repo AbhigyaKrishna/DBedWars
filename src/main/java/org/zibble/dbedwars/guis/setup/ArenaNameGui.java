@@ -1,13 +1,11 @@
 package org.zibble.dbedwars.guis.setup;
 
-import com.cryptomorin.xseries.XMaterial;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
 import org.zibble.dbedwars.api.guis.component.GuiComponent;
+import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
+import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.inventoryframework.menu.inventory.AnvilMenu;
 import org.zibble.inventoryframework.protocol.Item;
-import org.zibble.inventoryframework.spigot.SpigotItem;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -18,9 +16,9 @@ public class ArenaNameGui extends GuiComponent<AnvilMenu, ArenaNameGui> {
         super(new AnvilMenu());
 
         this.mask("AB")
-                .item(() -> new SpigotItem(ItemMetaBuilder.of(XMaterial.PAPER)
-                        .displayName(Component.text("ARENA DISPLAY NAME"))
-                        .toItemStack()));
+                .item(() -> BwItemStack.builder()
+                        .displayName(AdventureMessage.from("ARENA DISPLAY NAME"))
+                        .build());
     }
 
     public static ArenaNameGui openDefault(Player player) {

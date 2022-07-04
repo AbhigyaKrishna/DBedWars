@@ -4,13 +4,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.zibble.dbedwars.configuration.framework.Loadable;
 import org.zibble.dbedwars.configuration.framework.annotations.ConfigPath;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ConfigurableEvents implements Loadable {
 
     @ConfigPath
-    private List<String> order;
+    private List<String> order = new ArrayList<>();
 
     @ConfigPath
     private Map<String, Event> events;

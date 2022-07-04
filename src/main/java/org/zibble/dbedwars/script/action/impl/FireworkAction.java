@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.zibble.dbedwars.api.objects.serializable.FireworkEffectC;
 import org.zibble.dbedwars.api.script.action.Action;
 
-public class FireworkAction implements Action<Location> {
+public class FireworkAction implements Action {
 
     private final Location location;
     private final FireworkEffectC fireworkEffectAT;
@@ -16,11 +16,10 @@ public class FireworkAction implements Action<Location> {
 
     @Override
     public void execute() {
-        this.fireworkEffectAT.spawn(this.getHandle());
+        this.fireworkEffectAT.spawn(this.getLocation());
     }
 
-    @Override
-    public Location getHandle() {
+    public Location getLocation() {
         return this.location;
     }
 

@@ -1,10 +1,8 @@
 package org.zibble.dbedwars.api.hooks.npc;
 
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.objects.profile.Skin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface PlayerNPC extends BedwarsNPC {
 
@@ -16,9 +14,9 @@ public interface PlayerNPC extends BedwarsNPC {
 
     ActionFuture<PlayerNPC> showNameTag();
 
-    ActionFuture<PlayerNPC> showInTab();
+    ActionFuture<PlayerNPC> showInTab(Player... players);
 
-    ActionFuture<PlayerNPC> hideFromTab();
+    ActionFuture<PlayerNPC> hideFromTab(Player... players);
 
     SkinData getSkinData();
 
@@ -49,7 +47,7 @@ public interface PlayerNPC extends BedwarsNPC {
                     this.getSkinData().setRightPantsLegEnabled(true);
                     continue;
                 }
-                case HAT_ENABLED: {
+                case HAT: {
                     this.getSkinData().setHatEnabled(true);
                 }
             }
@@ -84,24 +82,12 @@ public interface PlayerNPC extends BedwarsNPC {
                     this.getSkinData().setRightPantsLegEnabled(false);
                     continue;
                 }
-                case HAT_ENABLED: {
+                case HAT: {
                     this.getSkinData().setHatEnabled(false);
                 }
             }
         }
         return this.updateSkinData();
-    }
-
-    default SkinData.SkinPart[] getShownSkinParts() {
-        List<SkinData.SkinPart> shownSkinParts = new ArrayList<>();
-        if (this.getSkinData().isCapeEnabled()) shownSkinParts.add(SkinData.SkinPart.CAPE);
-        if (this.getSkinData().isJacketEnabled()) shownSkinParts.add(SkinData.SkinPart.JACKET);
-        if (this.getSkinData().isLeftSleeveEnabled()) shownSkinParts.add(SkinData.SkinPart.LEFT_SLEEVE);
-        if (this.getSkinData().isRightSleeveEnabled()) shownSkinParts.add(SkinData.SkinPart.RIGHT_SLEEVE);
-        if (this.getSkinData().isLeftPantsLegEnabled()) shownSkinParts.add(SkinData.SkinPart.LEFT_PANTS);
-        if (this.getSkinData().isRightPantsLegEnabled()) shownSkinParts.add(SkinData.SkinPart.RIGHT_PANTS);
-        if (this.getSkinData().isHatEnabled()) shownSkinParts.add(SkinData.SkinPart.HAT_ENABLED);
-        return shownSkinParts.toArray(new SkinData.SkinPart[0]);
     }
 
     ActionFuture<PlayerNPC> updateSkinData();

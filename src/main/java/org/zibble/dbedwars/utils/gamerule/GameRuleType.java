@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.utils.gamerule;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 import org.bukkit.World;
 import org.bukkit.metadata.MetadataValue;
 import org.zibble.dbedwars.DBedwars;
@@ -475,7 +475,7 @@ public enum GameRuleType {
     }
 
     public GameRuleMetadata getGameRuleMetadata(World world) {
-        Validate.isTrue(this.getPresentationMode() == GameRulePresentationMode.METADATA,
+        Preconditions.checkArgument(this.getPresentationMode() == GameRulePresentationMode.METADATA,
                 "Wrong presentation mode!");
 
         for (MetadataValue metadata : world.getMetadata(this.getName())) {
@@ -512,7 +512,7 @@ public enum GameRuleType {
 
     @SuppressWarnings({"unchecked", "deprecation"})
     public void apply(World world, Object value) {
-        Validate.isTrue(isSameDataType(value), "wrong value type!");
+        Preconditions.checkArgument(isSameDataType(value), "wrong value type!");
 
         // ordinary presentation mode
         if (getPresentationMode() == GameRulePresentationMode.ORDINARY) {

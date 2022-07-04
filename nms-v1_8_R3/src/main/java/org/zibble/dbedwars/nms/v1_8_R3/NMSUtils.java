@@ -21,6 +21,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.nms.*;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
@@ -202,6 +203,22 @@ public class NMSUtils implements NMSAdaptor {
         }
         ByteBufHelper.release(buffer);
         return CraftItemStack.asBukkitCopy(stack);
+    }
+
+    @Override
+    public SkullMeta setSkullProfile(SkullMeta meta, PlayerGameProfile profile) {
+        GameProfile gameProfile = new GameProfile(profile.getUuid(), profile.getName());
+        for (Property property : profile.getProperties()) {
+            gameProfile.getProperties().put(property.getName(), new com.mojang.authlib.properties.Property(property.getName(), property.getValue(), property.getSignature()));
+        }
+        try {
+            Field field = meta.getClass().getDeclaredField("profile");
+            field.setAccessible(true);
+            field.set(meta, gameProfile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return meta;
     }
 
 }

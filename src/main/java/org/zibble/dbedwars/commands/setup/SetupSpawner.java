@@ -33,35 +33,29 @@ public class SetupSpawner extends SetupSessionCommand {
             return;
         }
 
-        if (args.length == 1) {
-            DropInfo spawner = this.getSpawner(args[0]);
-            if (spawner == null) {
-                member.sendMessage(PluginLang.SETUP_SESSION_TEAM_GEN_INVALID_DROP_TYPE.asMessage());
-            }
+        DropInfo spawner = this.getSpawner(args[0]);
+        if (spawner == null) {
+            member.sendMessage(PluginLang.SETUP_SESSION_TEAM_GEN_INVALID_DROP_TYPE.asMessage());
+            return;
+        }
 
+        if (args.length == 1) {
             setupSession.addCommonSpawner(spawner, player.getLocation());
             return;
         }
 
-        if (args.length > 2) {
-            DropInfo spawner = this.getSpawner(args[0]);
-            if (spawner == null) {
-                member.sendMessage(PluginLang.SETUP_SESSION_TEAM_GEN_INVALID_DROP_TYPE.asMessage());
-            }
-
-            Color color = EnumUtil.matchEnum(args[1], Color.VALUES);
-            if (color == null) {
-                member.sendMessage(PluginLang.SETUP_SESSION_INVALID_COLOR.asMessage());
-                return;
-            }
-
-            if (!setupSession.isValidTeam(color)) {
-                member.sendMessage(PluginLang.SETUP_SESSION_COLOR_NOT_FOUND_AS_TEAM.asMessage());
-                return;
-            }
-
-            setupSession.addTeamSpawner(color, spawner, player.getLocation());
+        Color color = EnumUtil.matchEnum(args[1], Color.VALUES);
+        if (color == null) {
+            member.sendMessage(PluginLang.SETUP_SESSION_INVALID_COLOR.asMessage());
+            return;
         }
+
+        if (!setupSession.isValidTeam(color)) {
+            member.sendMessage(PluginLang.SETUP_SESSION_COLOR_NOT_FOUND_AS_TEAM.asMessage());
+            return;
+        }
+
+        setupSession.addTeamSpawner(color, spawner, player.getLocation());
     }
 
     private DropInfo getSpawner(String s) {

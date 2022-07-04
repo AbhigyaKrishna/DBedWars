@@ -4,8 +4,6 @@ import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.MalformedJsonException;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.*;
@@ -61,34 +59,20 @@ public final class Json {
      * <p>
      *
      * @param json_file       File to parse to Json
-     * @param check_encrypted Whether to check encryption
      * @return This class instance
      * @throws MalformedJsonException if the json file is corrupted or cannot be parsed
      */
-    public static Json load(File json_file, boolean check_encrypted) throws MalformedJsonException {
+    public static Json load(File json_file) throws MalformedJsonException {
         try {
             StringBuilder contents = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(json_file));
             reader.lines().forEach(line -> contents.append(line).append(System.lineSeparator()));
 
             reader.close();
-            return loadFromString(contents.toString(), check_encrypted);
+            return loadFromString(contents.toString());
         } catch (IOException e) {
             throw new MalformedJsonException(e);
         }
-    }
-
-    /**
-     * Loads a File to Json Object.
-     *
-     * <p>
-     *
-     * @param json_file File to parse to Json
-     * @return This class instance
-     * @throws MalformedJsonException if the json file is corrupted or cannot be parsed
-     */
-    public static Json load(File json_file) throws MalformedJsonException {
-        return load(json_file, true);
     }
 
     /**
@@ -97,35 +81,15 @@ public final class Json {
      * <p>
      *
      * @param contents        String to parse to Json
-     * @param check_encrypted Whether to check encryption
      * @return This class instance
      */
-    public static Json loadFromString(String contents, boolean check_encrypted) {
-        if (check_encrypted) {
-            if (StringEscapeUtils.escapeJava(StringUtils.deleteWhitespace(contents))
-                    .equals(StringUtils.deleteWhitespace(contents))) { // if encrypted
-                contents = Base64Coder.decodeString(contents); // decode!
-            }
-        }
-
+    public static Json loadFromString(String contents) {
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(contents);
         if (!element.isJsonObject()) {
             throw new JsonSyntaxException("Illegal syntax!");
         }
         return new Json(element.getAsJsonObject());
-    }
-
-    /**
-     * Loads a String to Json Object.
-     *
-     * <p>
-     *
-     * @param contents String to parse to Json
-     * @return This class instance
-     */
-    public static Json loadFromString(String contents) {
-        return loadFromString(contents, true);
     }
 
     /**

@@ -24,7 +24,7 @@ public class ActionPreProcessor {
         Matcher matcher = ACTION_PATTERN.matcher(input);
         if (!matcher.matches()) throw new IllegalArgumentException("Invalid action format");
         String actionName = matcher.group("action");
-        ActionTranslator<?, ? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry().getTranslator(actionName);
+        ActionTranslator<? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry().getTranslator(actionName);
         return new ActionProcessor(translator.serialize(matcher.group("arguments"), variables), shouldExecute(input), delay(input), getRepeats(input));
     }
 
@@ -32,7 +32,7 @@ public class ActionPreProcessor {
         Matcher matcher = ACTION_PATTERN.matcher(input);
         if (!matcher.matches()) throw new IllegalArgumentException("Invalid action format");
         String actionName = matcher.group("action");
-        ActionTranslator<?, ? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry(registry).getTranslator(actionName);
+        ActionTranslator<? extends Action> translator = PLUGIN.scriptRegistry().actionRegistry(registry).getTranslator(actionName);
         return new ActionProcessor(translator.serialize(matcher.group("arguments"), variables), shouldExecute(input), delay(input), getRepeats(input));
     }
 

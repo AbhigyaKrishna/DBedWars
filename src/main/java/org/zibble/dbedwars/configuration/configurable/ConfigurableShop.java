@@ -18,14 +18,15 @@ public class ConfigurableShop implements Loadable {
     private String defaultPage;
 
     @ConfigPath
+    private String npc;
+
+    @ConfigPath
     private Map<String, ConfigurablePage> pages;
 
     @ConfigPath("common")
     private Map<String, ConfigurablePage.ConfigurableItem> commonItems;
 
     public ConfigurableShop() {
-        this.pages = new HashMap<>();
-        this.commonItems = new HashMap<>();
     }
 
     @Override
@@ -35,7 +36,7 @@ public class ConfigurableShop implements Loadable {
 
     @Override
     public boolean isValid() {
-        return !this.pages.isEmpty();
+        return !this.pages.isEmpty() && this.npc != null;
     }
 
     public String getName() {
@@ -44,6 +45,10 @@ public class ConfigurableShop implements Loadable {
 
     public String getDefaultPage() {
         return defaultPage;
+    }
+
+    public String getNpc() {
+        return npc;
     }
 
     public Map<String, ConfigurablePage.ConfigurableItem> getCommonItems() {
@@ -57,7 +62,9 @@ public class ConfigurableShop implements Loadable {
     @Override
     public String toString() {
         return "ConfigurableShop{" +
-                "defaultPage='" + defaultPage + '\'' +
+                "name='" + name + '\'' +
+                ", defaultPage='" + defaultPage + '\'' +
+                ", npc=" + npc +
                 ", pages=" + pages +
                 ", commonItems=" + commonItems +
                 '}';
@@ -99,6 +106,15 @@ public class ConfigurableShop implements Loadable {
 
         public String getTitle() {
             return title;
+        }
+
+        @Override
+        public String toString() {
+            return "ConfigurablePage{" +
+                    "title='" + title + '\'' +
+                    ", pattern=" + pattern +
+                    ", items=" + items +
+                    '}';
         }
 
         public static class ConfigurableItem implements Loadable {
@@ -172,6 +188,19 @@ public class ConfigurableShop implements Loadable {
 
             public String getTierGroup() {
                 return tierGroup;
+            }
+
+            @Override
+            public String toString() {
+                return "ConfigurableItem{" +
+                        "name='" + name + '\'' +
+                        ", lore=" + lore +
+                        ", material='" + material + '\'' +
+                        ", enchantment=" + enchantment +
+                        ", conditions=" + conditions +
+                        ", actions=" + actions +
+                        ", tierGroup='" + tierGroup + '\'' +
+                        '}';
             }
 
         }
