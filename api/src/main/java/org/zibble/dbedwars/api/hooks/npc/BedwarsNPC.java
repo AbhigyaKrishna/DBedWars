@@ -35,6 +35,10 @@ public interface BedwarsNPC {
 
     ActionFuture<BedwarsNPC> show(Player player);
 
+    ActionFuture<BedwarsNPC> refresh(Player player);
+
+    ActionFuture<BedwarsNPC> refresh();
+
     Collection<ClickAction> getClickActions();
 
     void addClickAction(ClickAction action);

@@ -5,8 +5,8 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.util.MathUtil;
-import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,12 +32,12 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
     protected final Set<UUID> shown;
     protected final Set<UUID> outOfRenderDistance;
     protected final NPCTracker npcTracker;
-    private final Hologram hologram;
-    private final Key key;
-    private final NPCData npcData;
-    private final UUID uuid;
-    private int entityID;
-    private Location location;
+    protected final Hologram hologram;
+    protected final Key key;
+    protected final NPCData npcData;
+    protected final UUID uuid;
+    protected int entityID;
+    protected Location location;
 
     public BedWarsNPCImpl(NPCFactoryImpl factory, Key key, Location location) {
         this.factory = factory;
@@ -104,6 +104,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
                     this.outOfRenderDistance.remove(uuid);
                 }
             }
+            this.hologram.teleport(location.clone().add(0, 2, 0));
             return this;
         });
     }
@@ -154,6 +155,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
                 }
             }
             this.shown.clear();
+            this.hologram.destroy();
             this.outOfRenderDistance.clear();
             this.npcTracker.stop();
             this.factory.getNpcs().remove(this.key);
@@ -173,6 +175,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
                 return this;
 
             this.destroyPacket(player);
+            this.hologram.hide(player);
             this.shown.remove(player.getUniqueId());
             this.outOfRenderDistance.remove(player.getUniqueId());
             return this;
@@ -183,6 +186,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
     public ActionFuture<BedwarsNPC> silentHide(Player player) {
         return ActionFuture.supplyAsync(() -> {
             this.destroyPacket(player);
+            this.hologram.hide(player);
             return this;
         });
     }
@@ -194,15 +198,43 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
                 return this;
 
             this.viewPacket(player);
+            this.hologram.show(player);
             this.shown.add(player.getUniqueId());
             return this;
         });
+    }
+
+    @Override
+    public ActionFuture<BedwarsNPC> refresh(Player player) {
+        return ActionFuture.supplyAsync(() -> this.shown.contains(player.getUniqueId())).thenCompose(isShown -> {
+            if (isShown) {
+                return this.hide(player).thenCompose(npc -> this.show(player));
+            } else {
+                return ActionFuture.completedFuture(this);
+            }
+        });
+    }
+
+    @Override
+    public ActionFuture<BedwarsNPC> refresh() {
+        ActionFuture<BedwarsNPC> future = ActionFuture.completedFuture(this);
+        for (UUID uid : this.shown) {
+            future = future.thenCompose(npc -> {
+                Player player = Bukkit.getPlayer(uid);
+                if (player != null) {
+                    return this.refresh(player);
+                }
+                return ActionFuture.completedFuture(this);
+            });
+        }
+        return future;
     }
 
 
     public ActionFuture<BedwarsNPC> forceShow(Player player) {
         return ActionFuture.supplyAsync(() -> {
             this.viewPacket(player);
+            this.hologram.show(player);
             return this;
         });
     }
@@ -250,15 +282,11 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
 
     protected void changeLocationPacket(Player player) {
         WrapperPlayServerEntityTeleport packet = new WrapperPlayServerEntityTeleport(this.getEntityID(),
-                convert(this.location),
+                SpigotConversionUtil.fromBukkitLocation(this.location).getPosition(),
                 this.location.getYaw(),
                 this.location.getPitch(),
                 true);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
-    }
-
-    protected Vector3d convert(Location location) {
-        return new Vector3d(location.getX(), location.getY(), location.getZ());
     }
 
     protected void changeDirectionPacket(Player player, byte yaw, byte pitch) {

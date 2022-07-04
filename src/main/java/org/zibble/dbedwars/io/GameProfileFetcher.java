@@ -133,7 +133,14 @@ public class GameProfileFetcher {
                     if (!(entry.getValue() instanceof JsonArray)) continue;
 
                     for (JsonElement element : ((JsonArray) entry.getValue())) {
-                        result.add(Property.builder().name(entry.getKey()).value(element.getAsString()).build());
+                        if (element instanceof JsonObject) {
+                            JsonObject property = (JsonObject) element;
+                            String value = property.getAsJsonPrimitive("value").getAsString();
+                            String signature = property.has("signature") ? property.getAsJsonPrimitive("signature").getAsString() : null;
+                            result.add(new Property(entry.getKey(), value, signature));
+                        } else {
+                            result.add(Property.builder().name(entry.getKey()).value(element.getAsString()).build());
+                        }
                     }
                 }
             } else if (json instanceof JsonArray) {

@@ -15,6 +15,8 @@ public interface HologramPage {
 
     List<HologramLine<?>> getLines();
 
+    void clearLines();
+
     HologramLine.Text addNewTextLine(Message text);
 
     HologramLine.Head addNewHeadLine(BwItemStack itemStack);

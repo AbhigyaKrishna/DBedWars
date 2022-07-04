@@ -20,7 +20,6 @@ import org.zibble.inventoryframework.menu.inventory.ChestMenu;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NPCEntityTypeGui extends PaginatedGuiComponent<Integer, ChestMenu, NPCEntityTypeGui> {
@@ -58,10 +57,9 @@ public class NPCEntityTypeGui extends PaginatedGuiComponent<Integer, ChestMenu, 
                             .collect(Collectors.joining(" "))
                             .trim()))
                     .meta(meta -> {
-                        String value = Cache.getHead(entityType);
+                        String value = Cache.getHead(entityType.name());
                         if (value == null) return;
                         DBedwars.getInstance().getNMSAdaptor().setSkullProfile(((SkullMeta) meta), PlayerGameProfile.builder()
-                                .uuid(UUID.randomUUID())
                                 .name(entityType.name())
                                 .property(Property.builder()
                                         .name("textures")
@@ -69,7 +67,7 @@ public class NPCEntityTypeGui extends PaginatedGuiComponent<Integer, ChestMenu, 
                                         .build())
                                 .build());
                     })
-                    .build(), (protocolPlayer, clickType) -> NPCCreator.creator(new NPCModel(entityType)).setupForEntityNPC().open((Player) protocolPlayer.handle()));
+                    .build(), (protocolPlayer, clickType) -> NPCCreatorGui.creator(new NPCModel(entityType)).setupForEntityNPC().open((Player) protocolPlayer.handle()));
         }
 
         BwItemStack background = BwItemStack.builder()

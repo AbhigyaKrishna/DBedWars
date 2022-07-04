@@ -10,9 +10,9 @@ public interface PlayerNPC extends BedwarsNPC {
 
     ActionFuture<PlayerNPC> setSkin(ActionFuture<Skin> skin);
 
-    ActionFuture<PlayerNPC> hideNameTag();
+    ActionFuture<PlayerNPC> setNameTagVisibility(boolean visible);
 
-    ActionFuture<PlayerNPC> showNameTag();
+    ActionFuture<PlayerNPC> setCollision(boolean collision);
 
     ActionFuture<PlayerNPC> showInTab(Player... players);
 
