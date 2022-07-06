@@ -78,7 +78,7 @@ public class HookManagerImpl implements HookManager {
                 new PvPLevelsHook(),
                 new QuickBoardHook(),
                 new SkinRestorerHook(),
-                new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
+//                new SlimeWorldManagerHook(PluginFiles.SLIME_WORLD_MANAGER_HOOK, Bukkit.getWorld(this.plugin.getMainWorld())),
                 new SuperVanishHook(),
                 new TabHook(),
                 new VaultHook(),
@@ -87,9 +87,9 @@ public class HookManagerImpl implements HookManager {
     }
 
     public void load() {
-        if (this.getDependency(SlimeWorldManagerHook.class).isEnabled())
-            this.worldAdaptor = this.getDependency(SlimeWorldManagerHook.class);
-        else
+//        if (this.getDependency(SlimeWorldManagerHook.class).isEnabled())
+//            this.worldAdaptor = this.getDependency(SlimeWorldManagerHook.class);
+//        else
             this.worldAdaptor = new WorldAdaptorImpl(this.plugin);
 
         this.scoreboardHook = new ScoreboardHookImpl();

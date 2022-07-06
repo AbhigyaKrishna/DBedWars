@@ -2,6 +2,7 @@ package org.zibble.dbedwars.guis.reflection;
 
 import org.zibble.dbedwars.api.guis.component.GuiComponent;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 import org.zibble.inventoryframework.ClickAction;
@@ -13,6 +14,8 @@ import java.util.function.Supplier;
 
 public abstract class ReflectiveGui {
 
+    private boolean loaded = false;
+
     final Map<Character, Supplier<BwItemStack>> ITEMS = new HashMap<>();
     final Map<Character, ClickAction> CLICK_ACTIONS = new HashMap<>();
     final Map<Character, MethodWrapper<?>> DYNAMIC_ITEMS = new HashMap<>();
@@ -20,15 +23,15 @@ public abstract class ReflectiveGui {
 
     MethodWrapper<?> postInit;
 
-    protected ReflectiveGui() {
-        ReflectiveGuiProcessor.INSTANCE.process(this);
-    }
-
     public GuiComponent<? extends Menu, ? extends GuiComponent> get(Argument<?>... args) {
+        if (!loaded) {
+            ReflectiveGuiProcessor.INSTANCE.process(this);
+            loaded = true;
+        }
         GuiComponent<? extends Menu, ? extends GuiComponent> menu = this.provide(args);
-        this.update(menu);
+        this.update(menu, args);
         if (this.postInit != null) {
-            this.postInit.invoke(ReflectiveGuiProcessor.INSTANCE.processArgument(this.postInit.getMethod(),
+            this.postInit.invoke(this, ReflectiveGuiProcessor.INSTANCE.processArgument(this.postInit.getMethod(),
                     Util.mergeArray(new Argument[]{Argument.of(GuiComponent.class, menu)}, args)));
         }
         return menu;

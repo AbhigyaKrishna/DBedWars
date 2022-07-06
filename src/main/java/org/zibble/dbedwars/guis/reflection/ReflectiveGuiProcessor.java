@@ -2,6 +2,7 @@ package org.zibble.dbedwars.guis.reflection;
 
 import org.zibble.dbedwars.api.guis.MenuPlayer;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.Util;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
@@ -17,7 +18,7 @@ public class ReflectiveGuiProcessor {
     public static final ReflectiveGuiProcessor INSTANCE = new ReflectiveGuiProcessor();
 
     public void process(ReflectiveGui gui) {
-        for (Method method : gui.getClass().getMethods()) {
+        for (Method method : gui.getClass().getDeclaredMethods()) {
             MethodWrapper<?> wrapper = new MethodWrapper<>(method);
             if (method.isAnnotationPresent(ClickAction.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
@@ -53,7 +54,7 @@ public class ReflectiveGuiProcessor {
             }
         }
 
-        for (Field field : gui.getClass().getFields()) {
+        for (Field field : gui.getClass().getDeclaredFields()) {
             FieldWrapper wrapper = new FieldWrapper(field);
             if (field.isAnnotationPresent(Item.class)) {
                 if (!field.getType().isAssignableFrom(BwItemStack.class))
@@ -74,6 +75,7 @@ public class ReflectiveGuiProcessor {
             for (Argument<?> arg : args) {
                 if (arg.isFor(parameterType)) {
                     matched = arg;
+                    break;
                 }
             }
 

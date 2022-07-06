@@ -2,7 +2,6 @@ package org.zibble.dbedwars.guis.configcreator.npc;
 
 import com.cryptomorin.xseries.XMaterial;
 import net.kyori.adventure.text.Component;
-import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.guis.MenuPlayer;
 import org.zibble.dbedwars.api.guis.component.GuiComponent;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
@@ -11,7 +10,6 @@ import org.zibble.dbedwars.api.hooks.npc.model.Attributes;
 import org.zibble.dbedwars.api.hooks.npc.model.NPCModel;
 import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
-import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.guis.reflection.*;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
 
@@ -45,7 +43,7 @@ public class NPCSkinPartsGui extends ReflectiveGui {
         this.updateButtons(model, npc, menu);
     }
 
-    public void updateButtons(NPCModel model, PlayerNPC playerNPC, GuiComponent<ChestMenu, GuiComponent> menu) {
+    private void updateButtons(NPCModel model, PlayerNPC playerNPC, GuiComponent<ChestMenu, GuiComponent> menu) {
         Optional<PlayerNPC> npc = Optional.ofNullable(playerNPC);
         SkinData data = model.getAttribute(Attributes.SKIN_DATA).orElseGet(() -> {
             SkinData value = new SkinData();
@@ -103,7 +101,7 @@ public class NPCSkinPartsGui extends ReflectiveGui {
             n.updateNPCData();
         });
         this.updateButtons(model, npc.orElse(null), menu);
-        ActionFuture.runAsync(menu::update, Duration.ofTicks(5));
+        menu.update();
     }
 
     @Override

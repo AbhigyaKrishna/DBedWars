@@ -35,6 +35,8 @@ import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.gamerule.GameRuleHandler;
 import org.zibble.inventoryframework.InventoryFramework;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
@@ -86,6 +88,11 @@ public final class DBedwars extends PluginAdapter {
         this.getServer().getServicesManager().register(DBedWarsAPI.class, new APIImpl(this), this, ServicePriority.Highest);
 
         Properties properties = new Properties();
+        try (FileReader reader = new FileReader("server.properties")) {
+            properties.load(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         this.mainWorld = properties.getProperty("level-name", "world");
 

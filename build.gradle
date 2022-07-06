@@ -143,8 +143,6 @@ dependencies {
     compileOnly 'org.jooq:jooq:3.14.15'
     compileOnly 'com.zaxxer:HikariCP:4.0.3'
     compileOnly 'org.mongodb:mongo-java-driver:3.12.10'
-    compileOnly 'com.onarandombox.multiversecore:Multiverse-Core:4.3.1-SNAPSHOT'
-    compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
 }
 
 tasks.register('verifyFileDependency').configure {
@@ -178,7 +176,7 @@ assemble {
 }
 
 bukkit {
-    main = "org.zibble.dbedwars.Dbedwars"
+    main = "org.zibble.dbedwars.DBedwars"
     name = "DBedWars"
     version = "1.0"
     apiVersion = "1.13"
@@ -186,7 +184,6 @@ bukkit {
     author = "Abhigya"
     softDepend = Arrays.asList(
             "AutoNicker",
-            "BetterNick",
             "Citizens",
             "CMI",
             "EazyNick",

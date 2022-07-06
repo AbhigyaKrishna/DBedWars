@@ -202,4 +202,8 @@ public class NPCSkinGui extends ReflectiveGui {
         return component;
     }
 
+    protected NPCSkinGui() {
+        super();
+    }
+
 }
