@@ -29,7 +29,7 @@ import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.listeners.ConverseReplyHandler;
 import org.zibble.dbedwars.listeners.VanishListener;
 import org.zibble.dbedwars.messaging.Messaging;
-import org.zibble.dbedwars.nms.v1_8_R3.NMSUtils;
+import org.zibble.dbedwars.nms.v1_8_R3.Adaptor_v1_8_R3;
 import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.gamerule.GameRuleHandler;
@@ -248,7 +248,7 @@ public final class DBedwars extends PluginAdapter {
     private NMSAdaptor registerNMSAdaptor() {
         switch (this.serverVersion) {
             case v1_8_R3:
-                return new NMSUtils();
+                return new Adaptor_v1_8_R3();
             default:
                 return null;
         }

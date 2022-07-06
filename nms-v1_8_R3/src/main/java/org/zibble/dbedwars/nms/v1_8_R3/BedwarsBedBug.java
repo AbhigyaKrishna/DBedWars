@@ -21,7 +21,7 @@ public class BedwarsBedBug implements IBedBug {
 
     @Override
     public IBedBug clearDefaultPathfinding() {
-        new NMSUtils().clearDefaultPathFinding(bedBug);
+        new Adaptor_v1_8_R3().clearDefaultPathFinding(bedBug);
         return this;
     }
 

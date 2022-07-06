@@ -36,7 +36,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMSUtils implements NMSAdaptor {
+public class Adaptor_v1_8_R3 implements NMSAdaptor {
 
     @Override
     public void clearRegionFileCache(World world) {
@@ -126,13 +126,6 @@ public class NMSUtils implements NMSAdaptor {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public IVillager spawnNPCVillager(Location location) {
-        IVillager villager = new Villager(this, location);
-        villager.spawn();
-        return villager;
     }
 
     @Override

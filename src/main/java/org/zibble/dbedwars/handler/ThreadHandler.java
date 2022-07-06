@@ -35,12 +35,7 @@ public class ThreadHandler implements org.zibble.dbedwars.api.handler.ThreadHand
 
     @Override
     public void submitSync(Runnable runnable) {
-        this.task.submit(new Workload() {
-            @Override
-            public void compute() {
-                SchedulerUtils.runTask(runnable);
-            }
-        });
+        this.task.submit(() -> SchedulerUtils.runTask(runnable));
     }
 
     @Override

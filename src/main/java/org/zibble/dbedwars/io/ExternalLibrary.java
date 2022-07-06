@@ -25,8 +25,6 @@ public abstract class ExternalLibrary {
             "reactive-streams.jar", "Reactive-Streams", "org.reactivestreams.Publisher");
     public static final ExternalLibrary JOOQ = ExternalLibrary.declare("https://repo1.maven.org/maven2/org/jooq/jooq/3.14.15/jooq-3.14.15.jar",
             "jooq.jar", "Jooq", "org.jooq.DSLContext", REACTIVE_STREAMS);
-//    public static final ExternalLibrary GOOGLE_GUAVA = ExternalLibrary.declare("https://repo1.maven.org/maven2/com/google/guava/guava/31.0-jre/guava-31.0-jre.jar",
-//            "guava.jar", "Google-Guava", "com.google.common.primitives.Ints");
 
     private final String url;
     private final File file;

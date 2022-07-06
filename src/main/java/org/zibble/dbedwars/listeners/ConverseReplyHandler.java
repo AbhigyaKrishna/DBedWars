@@ -16,7 +16,7 @@ public class ConverseReplyHandler implements Listener {
 
     private final Map<Player, Function<AsyncPlayerChatEvent, Boolean>> listenableReplies = new ConcurrentHashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void handleChat(AsyncPlayerChatEvent event) {
         if (listenableReplies.containsKey(event.getPlayer())) {
             event.setCancelled(true);

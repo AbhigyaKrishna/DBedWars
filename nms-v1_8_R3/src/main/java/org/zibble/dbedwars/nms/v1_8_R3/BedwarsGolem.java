@@ -23,7 +23,7 @@ public class BedwarsGolem implements IGolem {
 
     @Override
     public IGolem clearDefaultPathfinding() {
-        new NMSUtils().clearDefaultPathFinding(golem);
+        new Adaptor_v1_8_R3().clearDefaultPathFinding(golem);
         return this;
     }
 

@@ -1,6 +1,5 @@
 package org.zibble.dbedwars.api.nms;
 
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.IronGolem;
@@ -26,8 +25,6 @@ public interface NMSAdaptor {
     void clearDefaultPathFinding(Object entityCreature);
 
     void setBlockResistance(Block block, Float resistance);
-
-    IVillager spawnNPCVillager(Location location);
 
     IGolem getBedwarsGolem(IronGolem golem, Team spawningTeam);
 
