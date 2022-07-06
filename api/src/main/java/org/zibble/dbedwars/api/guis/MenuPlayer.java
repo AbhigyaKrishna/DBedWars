@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.api.guis;
 
+import com.google.common.base.Objects;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.zibble.inventoryframework.protocol.ProtocolPlayer;
@@ -36,6 +37,16 @@ public class MenuPlayer implements ProtocolPlayer<Player> {
     @Override
     public void updatePlayerInventory() {
         player.updateInventory();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof MenuPlayer && ((MenuPlayer) obj).player.getUniqueId().equals(this.player.getUniqueId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(player.getUniqueId());
     }
 
 }

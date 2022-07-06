@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':api')
-    compileOnly 'net.dev.eazynick:EazyNick:3.12'
+    compileOnly files(file('../../lib/EazyNick.jar'))
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

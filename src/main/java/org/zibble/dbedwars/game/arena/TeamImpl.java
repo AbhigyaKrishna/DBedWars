@@ -244,7 +244,7 @@ public class TeamImpl extends AbstractMessaging implements Team {
         npc.addClickAction((player, clickType) -> DBedwars.getInstance().getGameManager().getArenaPlayer(player).ifPresent(arenaPlayer -> {
             ShopViewImpl shop = ((ArenaPlayerImpl) arenaPlayer).getShop(shopData.getShopType().getKey());
             if (shop != null) {
-                shop.getGui().open(shop.getDefaultPage().getKey());
+                shop.getGui().open(player.getPlayer(), shop.getDefaultPage().getKey());
             }
         }));
         npc.spawn();

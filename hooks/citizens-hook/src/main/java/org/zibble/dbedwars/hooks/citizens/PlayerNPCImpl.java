@@ -32,14 +32,12 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
     }
 
     @Override
-    public ActionFuture<PlayerNPC> hideNameTag() {
-        //TODO
+    public ActionFuture<PlayerNPC> setNameTagVisibility(boolean visible) {
         return null;
     }
 
     @Override
-    public ActionFuture<PlayerNPC> showNameTag() {
-        //TODO
+    public ActionFuture<PlayerNPC> setCollision(boolean collision) {
         return null;
     }
 

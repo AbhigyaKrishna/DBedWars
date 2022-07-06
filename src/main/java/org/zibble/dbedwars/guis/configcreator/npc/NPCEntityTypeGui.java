@@ -26,12 +26,17 @@ public class NPCEntityTypeGui extends PaginatedGuiComponent<Integer, ChestMenu, 
 
     private static final String SLOTS = "ABCDEFGHIJKLMNOPQRSTUVWYZ123";
 
+    BwItemStack background = BwItemStack.builder()
+            .material(XMaterial.BLACK_STAINED_GLASS_PANE)
+            .displayName(AdventureMessage.blank())
+            .build();
+
     public static NPCEntityTypeGui show(Player player) {
-        return new NPCEntityTypeGui(player).open(0);
+        return new NPCEntityTypeGui().open(player, 0);
     }
 
-    protected NPCEntityTypeGui(Player player) {
-        super(player, Integer::compareTo);
+    protected NPCEntityTypeGui() {
+        super(Integer::compareTo);
 
         this.setUp();
     }
@@ -69,11 +74,6 @@ public class NPCEntityTypeGui extends PaginatedGuiComponent<Integer, ChestMenu, 
                     })
                     .build(), (protocolPlayer, clickType) -> NPCCreatorGui.creator(new NPCModel(entityType)).setupForEntityNPC().open((Player) protocolPlayer.handle()));
         }
-
-        BwItemStack background = BwItemStack.builder()
-                .material(XMaterial.BLACK_STAINED_GLASS_PANE)
-                .displayName(AdventureMessage.blank())
-                .build();
 
         for (Map.Entry<Integer, GuiComponent<ChestMenu, ? extends GuiComponent>> entry : this.pages.entrySet()) {
             entry.getValue().item('9', BwItemStack.builder()

@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class GuiComponent<T extends Menu, R extends GuiComponent> {
+public class GuiComponent<T extends Menu, R extends GuiComponent> implements Gui<T, R> {
 
     protected final T menu;
     private final List<BiConsumer<R, Player>> openActions = new ArrayList<>(1);
@@ -38,7 +38,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         });
     }
 
-    public static <T extends Menu, R extends GuiComponent> GuiComponent<T, R> creator(T menu) {
+    public static <T extends Menu> GuiComponent<T, GuiComponent> creator(T menu) {
         return new GuiComponent<>(menu);
     }
 
@@ -136,6 +136,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return closeActions;
     }
 
+    @Override
     public R open(Player player) {
         this.close();
         if (this.title != null && this.menu instanceof NameableMenu)
@@ -145,6 +146,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
+    @Override
     public R close() {
         if (this.player != null) {
             menu.close(MenuPlayer.of(this.player));
@@ -153,6 +155,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
+    @Override
     public R update() {
         if (this.player != null) {
             this.menu.update(MenuPlayer.of(this.player));
@@ -160,6 +163,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return (R) this;
     }
 
+    @Override
     public R updateSlot(int slot) {
         if (this.player != null) {
             this.menu.updateSlot(slot, MenuPlayer.of(this.player));
@@ -171,6 +175,7 @@ public class GuiComponent<T extends Menu, R extends GuiComponent> {
         return this.menu;
     }
 
+    @Override
     public Player getViewer() {
         return this.player;
     }

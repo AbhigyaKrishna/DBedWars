@@ -18,12 +18,12 @@ import java.util.*;
 public abstract class BedWarsNPCImpl implements BedwarsNPC {
 
     //TODO INIT
-    private final CitizensHook hook;
-    private final NPCData npcData;
-    private final Set<ClickAction> clickActions;
-    private Hologram hologram;
-    private Location location;
-    private NPC citizensNPC;
+    protected final CitizensHook hook;
+    protected final NPCData npcData;
+    protected final Set<ClickAction> clickActions;
+    protected Hologram hologram;
+    protected Location location;
+    protected NPC citizensNPC;
 
     public BedWarsNPCImpl(CitizensHook hook, Location location) {
         this.hook = hook;
@@ -112,6 +112,16 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     @Override
     public ActionFuture<BedwarsNPC> show(Player player) {
         throw new UnsupportedOperationException("This feature is not yet supported in Citizens Hook.");
+    }
+
+    @Override
+    public ActionFuture<BedwarsNPC> refresh(Player player) {
+        return ActionFuture.completedFuture(this);
+    }
+
+    @Override
+    public ActionFuture<BedwarsNPC> refresh() {
+        return ActionFuture.completedFuture(this);
     }
 
     @Override

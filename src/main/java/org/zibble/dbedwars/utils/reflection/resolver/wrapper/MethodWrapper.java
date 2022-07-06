@@ -13,6 +13,9 @@ public class MethodWrapper<R> extends WrapperAbstract {
 
     public MethodWrapper(Method method) {
         this.method = method;
+        if (method != null) {
+            this.method.setAccessible(true);
+        }
     }
 
     public static String getMethodSignature(Method method, boolean fullClassNames) {

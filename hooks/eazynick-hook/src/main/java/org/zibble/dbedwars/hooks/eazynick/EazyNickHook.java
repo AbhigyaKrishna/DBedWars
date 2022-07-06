@@ -1,6 +1,6 @@
 package org.zibble.dbedwars.hooks.eazynick;
 
-import net.dev.eazynick.api.NickManager;
+import com.justixdev.eazynick.api.NickManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

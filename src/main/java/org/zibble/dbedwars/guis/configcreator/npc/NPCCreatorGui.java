@@ -16,6 +16,7 @@ import org.zibble.dbedwars.api.messaging.message.AdventureMessage;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.configuration.ConfigMessage;
+import org.zibble.dbedwars.guis.reflection.Argument;
 import org.zibble.dbedwars.listeners.ConverseReplyHandler;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.inventoryframework.menu.inventory.ChestMenu;
@@ -63,13 +64,13 @@ public class NPCCreatorGui extends GuiComponent<ChestMenu, NPCCreatorGui> {
                 .displayName(AdventureMessage.from("<aqua>Skin"))
                 .lore(AdventureMessage.from("<gray>Click to change NPC skin!"))
                 .build(), (protocolPlayer, clickType) ->
-                new NPCSkinGui(this.model, (PlayerNPC) this.npc.orElse(null)).open((Player) protocolPlayer.handle()));
+                NPCSkinGui.INSTANCE.get(Argument.of(NPCModel.class, this.model), Argument.of(PlayerNPC.class, (PlayerNPC) this.npc.orElse(null))).open((Player) protocolPlayer.handle()));
         this.item('B', BwItemStack.builder()
                 .material(XMaterial.LEATHER_CHESTPLATE)
                 .displayName(AdventureMessage.from("<aqua>Skin Parts"))
                 .lore(AdventureMessage.from("<gray>Click to toggle skin parts!"))
                 .build(), (protocolPlayer, clickType) ->
-                new NPCSkinPartsGui(this.model, (PlayerNPC) this.npc.orElse(null)).open((Player) protocolPlayer.handle()));
+                NPCSkinPartsGui.INSTANCE.get(Argument.of(NPCModel.class, this.model), Argument.of(PlayerNPC.class, (PlayerNPC) this.npc.orElse(null))).open((Player) protocolPlayer.handle()));
         this.item('C', BwItemStack.builder()
                 .material(XMaterial.NAME_TAG)
                 .displayName(AdventureMessage.from("<aqua>Name"))
@@ -77,7 +78,7 @@ public class NPCCreatorGui extends GuiComponent<ChestMenu, NPCCreatorGui> {
                 .build(), (protocolPlayer, clickType) -> {
             Player p = (Player) protocolPlayer.handle();
             this.close();
-            Messaging.get().getMessagingMember(p).sendMessage(AdventureMessage.from("<green>Enter the name of the NPC!"));
+            Messaging.get().getMessagingMember(p).sendMessage(AdventureMessage.from("<green>Enter the name of the NPC! Type \"exit\" to exit"));
             ConverseReplyHandler.INSTANCE.listenForReply(p, new Function<AsyncPlayerChatEvent, Boolean>() {
                 List<String> lines = new ArrayList<>(1);
 

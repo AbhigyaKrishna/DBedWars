@@ -76,7 +76,7 @@ public class ShopViewImpl implements ShopView {
     }
 
     public ShopGui getGui() {
-        ShopGui gui = ShopGui.creator(this.player.getPlayer());
+        ShopGui gui = ShopGui.creator();
         for (Map.Entry<Key, ShopPage> entry : this.pages.entrySet()) {
             gui.addPage(entry.getKey(), entry.getValue().getGuiComponent());
         }

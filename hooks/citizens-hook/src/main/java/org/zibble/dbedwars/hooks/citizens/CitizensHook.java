@@ -19,7 +19,7 @@ import java.util.Set;
 public class CitizensHook extends PluginDependence implements NPCFactory {
 
     private Set<BedWarsNPCImpl> npcs;
-    private NPCListener listener;
+    private NPCListener listener = new NPCListener(this);
 
     public CitizensHook() {
         super("Citizens");
@@ -28,7 +28,7 @@ public class CitizensHook extends PluginDependence implements NPCFactory {
     @Override
     public void init() {
         this.npcs = new HashSet<>();
-        Bukkit.getPluginManager().registerEvents(this.listener = new NPCListener(this), DBedWarsAPI.getApi().getPlugin());
+        Bukkit.getPluginManager().registerEvents(listener, DBedWarsAPI.getApi().getPlugin());
     }
 
     @Override

@@ -24,7 +24,6 @@ import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.version.Version;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -182,6 +181,7 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         return this.showInTab(player).thenApply(npc -> {
             this.viewPacket(player);
             this.hologram.show(player);
+            this.hologram.changeViewerPage(player, 0);
             this.shown.add(player.getUniqueId());
             return this;
         }).delay(Duration.ofTicks(5)).thenApply(npc -> {
@@ -195,6 +195,7 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         return this.showInTab(player).thenApply(npc -> {
             this.viewPacket(player);
             this.hologram.show(player);
+            this.hologram.changeViewerPage(player, 0);
             return this;
         }).delay(Duration.ofTicks(2)).thenApply(npc -> {
             this.sendTabHidePacket(player);
@@ -207,10 +208,8 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         WrapperPlayServerSpawnPlayer spawnPacket = new WrapperPlayServerSpawnPlayer(
                 this.getEntityID(),
                 this.getUUID(),
-                SpigotConversionUtil.fromBukkitLocation(this.getLocation()).getPosition(),
-                this.getLocation().getYaw(),
-                this.getLocation().getPitch(),
-                new ArrayList<>()
+                SpigotConversionUtil.fromBukkitLocation(this.getLocation()),
+                Collections.emptyList()
         );
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, spawnPacket);
         this.sendTeamPacket(player, WrapperPlayServerTeams.TeamMode.CREATE);

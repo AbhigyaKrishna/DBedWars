@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':api')
-    compileOnly 'me.tade:quickboard:4.4.1'
+    compileOnly files(file('../../lib/QuickBoard.jar'))
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly parent
 }

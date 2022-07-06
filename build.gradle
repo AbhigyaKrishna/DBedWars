@@ -1,6 +1,8 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.1'
+    id 'de.undercouch.download' version '5.1.0'
 }
 
 allprojects {
@@ -18,9 +20,6 @@ allprojects {
         }
         maven {
             url 'https://repo.zibble.org/nexus/repository/maven-snapshots/'
-        }
-        maven {
-            url 'https://repo.zibble.org/nexus/repository/public-libs/'
         }
         maven {
             name = 'spigot-snapshots'
@@ -57,7 +56,7 @@ allprojects {
         exclude group: 'commons-lang', module: 'commons-lang'
     }
 
-    build {
+    assemble {
         dependsOn shadowJar
     }
 
@@ -66,6 +65,8 @@ allprojects {
         relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
         relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
         relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'
+
+        minimize()
     }
     def targetJavaVersion = 8
 
@@ -84,8 +85,6 @@ allprojects {
             toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
         }
     }
-
-    shadowJar.shouldRunAfter build
 
 }
 
@@ -120,24 +119,23 @@ repositories {
 dependencies {
     implementation project(':api')
     implementation project(':nms-v1_8_R3')
-//    implementation project(':hooks:autonicker-hook')
-//    implementation project(':hooks:betternick-hook')
-//    implementation project(':hooks:citizens-hook')
-//    implementation project(':hooks:cmi-hook')
-//    implementation project(':hooks:eazynick-hook')
-//    implementation project(':hooks:featherboard-hook')
-//    implementation project(':hooks:nametagedit-hook')
-//    implementation project(':hooks:nickapi-hook')
-//    implementation project(':hooks:nicknamer-hook')
-//    implementation project(':hooks:placeholderapi-hook')
-//    implementation project(':hooks:pvplevels-hook')
-//    implementation project(':hooks:quickboard-hook')
-//    implementation project(':hooks:skinrestorer-hook')
-//    implementation project(':hooks:slimeworldmanager-hook')
-//    implementation project(':hooks:tab-hook')
-//    implementation project(':hooks:vanish-hook')
-//    implementation project(':hooks:vault-hook')
-//    implementation project(':hooks:viphide-hook')
+    implementation project(':hooks:autonicker-hook')
+    implementation project(':hooks:citizens-hook')
+    implementation project(':hooks:cmi-hook')
+    implementation project(':hooks:eazynick-hook')
+    implementation project(':hooks:featherboard-hook')
+    implementation project(':hooks:nametagedit-hook')
+    implementation project(':hooks:nickapi-hook')
+    implementation project(':hooks:nicknamer-hook')
+    implementation project(':hooks:placeholderapi-hook')
+    implementation project(':hooks:pvplevels-hook')
+    implementation project(':hooks:quickboard-hook')
+    implementation project(':hooks:skinrestorer-hook')
+    implementation project(':hooks:slimeworldmanager-hook')
+    implementation project(':hooks:tab-hook')
+    implementation project(':hooks:vanish-hook')
+    implementation project(':hooks:vault-hook')
+    implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.10.2'
     implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
@@ -149,13 +147,63 @@ dependencies {
     compileOnly 'com.grinderwolf:slimeworldmanager-api:2.2.1'
 }
 
-shadowJar {
-    minimize()
+tasks.register('verifyFileDependency').configure {
+    File lib = file('lib')
+    if (!lib.exists()) {
+        lib.mkdirs()
+    }
+
+    Map<String, String> files = new HashMap<>()
+    files.put('AutoNicker.jar', 'https://download943.mediafire.com/sp42fs7mbgfg/6z164f46orsizl4/AutoNicker.jar')
+    files.put('CMI-Api.jar', 'https://github.com/Zrips/CMI-API/releases/download/8.7.8.2/CMIAPI8.7.8.2.jar')
+    files.put('EazyNick.jar', 'https://github.com/JustixDevelopment/EazyNick/releases/download/v3.14.0/EazyNick.jar')
+    files.put('FeatherBoard.jar', 'https://download1074.mediafire.com/e83lsa39yevg/debeey18oxhxoaz/FeatherBoard.jar')
+    files.put('PvPLevels.jar', 'https://download1593.mediafire.com/d7vgmk9po7bg/ytz3cj5ujwp0raj/PvPLevels.jar')
+    files.put('QuickBoard.jar', 'https://download1593.mediafire.com/chxex5e58aqg/6wd8gjcmrfob0au/QuickBoard.jar')
+    files.put('TAB.jar', 'https://download1321.mediafire.com/ssp7spdotrzg/3rumrpkhe8zfhk1/TAB+v3.1.2.jar')
+    files.put('VipHide.jar', 'https://www.mine-home.net/download/VIPHide')
+
+    for (f in files.entrySet()) {
+        download.run {
+            src f.getValue()
+            dest file('lib/' + f.getKey())
+            overwrite false
+        }
+    }
 }
 
-build {
-    dependsOn shadowJar
+assemble {
+    dependsOn verifyFileDependency
+    dependsOn subprojects.assemble
 }
 
-shadowJar.shouldRunAfter build
-build.shouldRunAfter subprojects.build
+bukkit {
+    main = "org.zibble.dbedwars.Dbedwars"
+    name = "DBedWars"
+    version = "1.0"
+    apiVersion = "1.13"
+
+    author = "Abhigya"
+    softDepend = Arrays.asList(
+            "AutoNicker",
+            "BetterNick",
+            "Citizens",
+            "CMI",
+            "EazyNick",
+            "FeatherBoard",
+            "NametagEdit",
+            "NickAPI",
+            "NickNamer",
+            "PlaceholderAPI",
+            "PremiumVanish",
+            "PvPLevels",
+            "QuickBoard",
+            "SkinRestorer",
+            "SlimeWorldManager",
+            "SuperVanish",
+            "Tab",
+            "Vanish",
+            "Vault",
+            "VIPHide"
+    )
+}

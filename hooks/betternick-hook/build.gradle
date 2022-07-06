@@ -1,8 +1,0 @@
-dependencies {
-    implementation project(':api')
-    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    compileOnly 'de.domedd.betternick:BetterNick:1.0'
-    compileOnly parent
-}
-
-description = 'betternick-hook'

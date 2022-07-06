@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':api')
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    compileOnly 'me.blvckbytes:AutoNicker:1.0'
+    compileOnly files(file('../../lib/AutoNicker.jar'))
     compileOnly parent
 }
 

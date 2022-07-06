@@ -14,7 +14,7 @@ public class FieldWrapper extends WrapperAbstract {
 
     public FieldWrapper(Field field) {
         this.field = field;
-        field.setAccessible(true);
+        this.field.setAccessible(true);
     }
 
     private static void setField(Object object, Object value, Field foundField) {

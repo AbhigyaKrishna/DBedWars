@@ -199,6 +199,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
 
             this.viewPacket(player);
             this.hologram.show(player);
+            this.hologram.changeViewerPage(player, 0);
             this.shown.add(player.getUniqueId());
             return this;
         });
@@ -235,6 +236,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
         return ActionFuture.supplyAsync(() -> {
             this.viewPacket(player);
             this.hologram.show(player);
+            this.hologram.changeViewerPage(player, 0);
             return this;
         });
     }
@@ -264,12 +266,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
     @Override
     public ActionFuture<BedwarsNPC> updateNPCData() {
         return ActionFuture.supplyAsync(() -> {
-            WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityID, Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildNPCDataByte(this.npcData))));
-            for (UUID uuid : this.shown) {
-                Player player = Bukkit.getPlayer(uuid);
-                if (player == null) continue;
-                PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
-            }
+            this.sendMetaDataPacket(Collections.singletonList(new EntityData(0, EntityDataTypes.BYTE, ByteUtil.buildNPCDataByte(this.npcData))));
             return this;
         });
     }
@@ -279,6 +276,15 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
     }
 
     protected abstract void viewPacket(Player player);
+
+    protected void sendMetaDataPacket(List<EntityData> data) {
+        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(this.entityID, data);
+        for (UUID uuid : this.shown) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
+        }
+    }
 
     protected void changeLocationPacket(Player player) {
         WrapperPlayServerEntityTeleport packet = new WrapperPlayServerEntityTeleport(this.getEntityID(),
