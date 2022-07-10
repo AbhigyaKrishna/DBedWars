@@ -91,30 +91,55 @@ public class ActionFuture<T> {
     public <U> ActionFuture<U> thenApply(Function<? super T, ? extends U> function) {
         ActionFuture<U> future = new ActionFuture<>();
         this.successAction = SuccessAction.of(this, future, function);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 
     public ActionFuture<Void> thenRun(Runnable runnable) {
         ActionFuture<Void> future = new ActionFuture<>();
         this.successAction = SuccessAction.of(this, future, runnable);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 
     public <U> ActionFuture<U> handle(BiFunction<? super T, Throwable, ? extends U> function) {
         ActionFuture<U> future = new ActionFuture<>();
         this.successAction = SuccessAction.ofThrowable(this, future, function);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 
     public <U> ActionFuture<U> exceptionally(Function<Throwable, ? extends U> function) {
         ActionFuture<U> future = new ActionFuture<>();
         this.successAction = SuccessAction.ofThrowable(this, future, function);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 
     public <U> ActionFuture<U> thenCompose(Function<? super T, ? extends ActionFuture<U>> function) {
         ActionFuture<U> future = new ActionFuture<>();
         this.successAction = SuccessAction.composeFuture(this, future, function);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 
