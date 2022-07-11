@@ -3,26 +3,31 @@ package org.zibble.dbedwars.game.arena;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 
 import java.time.Instant;
+import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Queue;
 
 public class GameEventModel {
 
-    private final Iterator<GameEvent> events;
-    private GameEvent current;
+    private final Queue<GameEventImpl> events;
+    private GameEventImpl current;
     private Instant updated;
 
-    public GameEventModel(Collection<GameEvent> events) {
-        this.events = events.iterator();
+    public GameEventModel(Collection<GameEventImpl> events) {
+        this.events = new ArrayDeque<>(events);
     }
 
-    public GameEvent getCurrentEvent() {
+    public GameEventImpl getCurrentEvent() {
         return this.current;
     }
 
+    public GameEventImpl peek() {
+        return this.events.peek();
+    }
+
     public void nextEvent() {
-        if (this.events.hasNext()) {
-            this.current = this.events.next();
+        if (!this.hasNextEvent()) {
+            this.current = this.events.poll();
             this.updated = Instant.now();
         }
     }
@@ -39,7 +44,7 @@ public class GameEventModel {
     }
 
     public boolean hasNextEvent() {
-        return this.events.hasNext();
+        return !this.events.isEmpty();
     }
 
 }

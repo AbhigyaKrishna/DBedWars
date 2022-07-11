@@ -9,8 +9,9 @@ import org.zibble.dbedwars.api.game.trap.Target;
 import org.zibble.dbedwars.api.game.trap.Trap;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
+import org.zibble.dbedwars.api.script.action.ActionProvider;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.script.action.ActionPreProcessor;
+import org.zibble.dbedwars.script.ScriptRegistryImpl;
 import org.zibble.dbedwars.script.action.ActionProcessor;
 
 import java.util.*;
@@ -85,11 +86,11 @@ public class TrapImpl implements Trap {
     public class TrapActionImpl implements TrapAction {
 
         private final Target target;
-        private final String action;
+        private final ActionProvider provider;
 
         public TrapActionImpl(Target target, String action) {
             this.target = target;
-            this.action = action;
+            this.provider = ActionProvider.fromString(ScriptRegistryImpl.TRAP, action);
         }
 
         @Override
@@ -109,8 +110,7 @@ public class TrapImpl implements Trap {
                 variables.add(ScriptVariable.of("ARENA_PLAYER", target));
                 variables.add(ScriptVariable.of("PLAYER", target.getPlayer()));
                 variables.addAll(Arrays.asList(this.getStandardPlaceholders(target)));
-                ActionProcessor holder = ActionPreProcessor.process(Key.of("traps"), action, variables.toArray(new ScriptVariable<?>[0]));
-                holder.execute();
+                this.provider.execute(variables.toArray(new ScriptVariable<?>[0]));
             }
         }
 

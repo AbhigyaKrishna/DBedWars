@@ -162,9 +162,11 @@ tasks.register('verifyFileDependency').configure {
     files.put('VipHide.jar', 'https://www.mine-home.net/download/VIPHide')
 
     for (f in files.entrySet()) {
+        File file = file('lib/' + f.getKey())
+        if (file.exists()) continue
         download.run {
             src f.getValue()
-            dest file('lib/' + f.getKey())
+            dest file
             overwrite false
         }
     }

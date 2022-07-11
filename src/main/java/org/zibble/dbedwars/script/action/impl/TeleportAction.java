@@ -2,29 +2,50 @@ package org.zibble.dbedwars.script.action.impl;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.zibble.dbedwars.api.script.action.Action;
+import org.zibble.dbedwars.api.script.ScriptVariable;
+import org.zibble.dbedwars.api.script.action.ActionTranslator;
+import org.zibble.dbedwars.api.util.key.Key;
 
-public class TeleportAction implements Action {
+public class TeleportAction implements ActionTranslator<TeleportAction.Action> {
 
-    private final Entity entity;
-    private final Location location;
-
-    public TeleportAction(Location location, Entity entity) {
-        this.entity = entity;
-        this.location = location;
+    @Override
+    public Action serialize(String untranslated, ScriptVariable<?>... variables) {
+        return null;
     }
 
     @Override
-    public void execute() {
-        this.getEntity().teleport(this.location);
+    public String deserialize(Action action) {
+        return null;
     }
 
-    public Entity getEntity() {
-        return this.entity;
+    @Override
+    public Key getKey() {
+        return Key.of("TELEPORT");
     }
 
-    public Location getLocation() {
-        return this.location;
+    public static class Action implements org.zibble.dbedwars.api.script.action.Action {
+
+        private final Entity entity;
+        private final Location location;
+
+        public Action(Location location, Entity entity) {
+            this.entity = entity;
+            this.location = location;
+        }
+
+        @Override
+        public void execute() {
+            this.getEntity().teleport(this.location);
+        }
+
+        public Entity getEntity() {
+            return this.entity;
+        }
+
+        public Location getLocation() {
+            return this.location;
+        }
+
     }
 
 }

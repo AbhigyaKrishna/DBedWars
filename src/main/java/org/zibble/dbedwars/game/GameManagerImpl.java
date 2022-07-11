@@ -16,7 +16,7 @@ import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.configuration.configurable.*;
 import org.zibble.dbedwars.game.arena.ArenaCategoryImpl;
 import org.zibble.dbedwars.game.arena.ArenaImpl;
-import org.zibble.dbedwars.game.arena.GameEvent;
+import org.zibble.dbedwars.game.arena.GameEventImpl;
 import org.zibble.dbedwars.game.arena.settings.ArenaSettingsImpl;
 import org.zibble.dbedwars.game.arena.spawner.DropInfoImpl;
 import org.zibble.dbedwars.game.arena.traps.TargetRegistryImpl;
@@ -38,7 +38,7 @@ public class GameManagerImpl implements GameManager {
     private final Map<String, ScoreboardData> scoreboardData;
     private final Map<String, NPCModel> npcs;
     private final Set<ArenaCategoryImpl> categories;
-    private final List<GameEvent> events;
+    private final List<GameEventImpl> events;
     private Location lobbySpawn;
     private ArenaSettingsImpl defaultSettings;
     private TargetRegistryImpl targetRegistry;
@@ -86,7 +86,7 @@ public class GameManagerImpl implements GameManager {
         for (String s : configHandler.getEvent().getOrder()) {
             ConfigurableEvents.Event config = configHandler.getEvent().getEvents().get(s);
             if (config == null) continue;
-            this.events.add(GameEvent.fromConfig(config));
+            this.events.add(GameEventImpl.fromConfig(s, config));
         }
 
         this.defaultSettings = new ArenaSettingsImpl();
@@ -156,8 +156,15 @@ public class GameManagerImpl implements GameManager {
         return shops;
     }
 
-    public List<GameEvent> getEvents() {
+    public List<GameEventImpl> getEvents() {
         return events;
+    }
+
+    public GameEventImpl getEvent(String key) {
+        for (GameEventImpl event : events) {
+            if (event.getKey().get().equals(key)) return event;
+        }
+        return null;
     }
 
     public Location getLobbySpawn() {

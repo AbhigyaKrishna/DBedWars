@@ -14,6 +14,10 @@ public interface ActionProvider {
         return ScriptTranslationRegistry.get().actionProviderFromString(key, action);
     }
 
+    static ActionProvider from(Action action) {
+        return variables -> action;
+    }
+
     Action provide(ScriptVariable<?>... variables);
 
     default void execute(ScriptVariable<?>... variables) {

@@ -41,10 +41,8 @@ public abstract class DebugBaseCommand extends CommandNode {
     protected String formatColors(String message) {
         Matcher matcher = PATTERN.matcher(message);
         if (matcher.matches()) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("<gold>").append(matcher.group("class")).append("</gold>").append("<gray>{ ");
-            builder.append(this.formatContent(matcher.group("content"))).append("}</gray>");
-            return builder.toString();
+            return "<gold>" + matcher.group("class") + "</gold>" + "<gray>{ " +
+                    this.formatContent(matcher.group("content")) + "}</gray>";
         }
 
         return message;

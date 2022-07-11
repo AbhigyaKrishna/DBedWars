@@ -274,36 +274,8 @@ public class GameListener extends PluginHandler {
 
         if (event.getTo().getY() <= this.arena.getSettings().getMinYAxis()) {
             this.arena.getAsArenaPlayer(event.getPlayer()).ifPresent(p -> p.kill(DeathCause.VOID));
+            return;
         }
-    }
-
-    @EventHandler
-    public void handleWaterBucketPlace(PlayerBucketEmptyEvent event) {
-        if (!event.getPlayer().getWorld().equals(this.arena.getWorld())) return;
-
-        if (event.getItemStack().isSimilar(this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY).asItemStack())) {
-            ((WaterBucket) this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY)).onWaterBucketUse(event);
-        }
-    }
-
-    @EventHandler
-    public void handleProjectileLand(ProjectileHitEvent event) {
-        if (!event.getEntity().getWorld().equals(this.arena.getWorld())) return;
-
-        Entity entity = event.getEntity();
-
-        if (event.getEntityType() == EntityType.SNOWBALL) {
-            if (Util.hasMetaData(entity, "isDBedWarsBedBugBall", BedBugSnowball.BED_BUG_BALL_META)) {
-                ((BedBugSnowball) this.plugin.getCustomItemHandler().getItem(BedBugSnowball.KEY)).onLand(event);
-            }
-        }
-    }
-
-    @EventHandler
-    public void handleTrapTrigger(PlayerMoveEvent event) {
-        if (!event.getPlayer().getWorld().equals(this.arena.getWorld())) return;
-
-        if (event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
         this.arena.getAsArenaPlayer(event.getPlayer()).ifPresent(p -> {
             for (Team team : this.arena.getTeams()) {
@@ -348,6 +320,28 @@ public class GameListener extends PluginHandler {
                 }
             }
         });
+    }
+
+    @EventHandler
+    public void handleWaterBucketPlace(PlayerBucketEmptyEvent event) {
+        if (!event.getPlayer().getWorld().equals(this.arena.getWorld())) return;
+
+        if (event.getItemStack().isSimilar(this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY).asItemStack())) {
+            ((WaterBucket) this.plugin.getCustomItemHandler().getItem(WaterBucket.KEY)).onWaterBucketUse(event);
+        }
+    }
+
+    @EventHandler
+    public void handleProjectileLand(ProjectileHitEvent event) {
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld())) return;
+
+        Entity entity = event.getEntity();
+
+        if (event.getEntityType() == EntityType.SNOWBALL) {
+            if (Util.hasMetaData(entity, "isDBedWarsBedBugBall", BedBugSnowball.BED_BUG_BALL_META)) {
+                ((BedBugSnowball) this.plugin.getCustomItemHandler().getItem(BedBugSnowball.KEY)).onLand(event);
+            }
+        }
     }
 
     private void runTrap(Team team, TriggerType type, ArenaPlayer trigger, boolean queue) {

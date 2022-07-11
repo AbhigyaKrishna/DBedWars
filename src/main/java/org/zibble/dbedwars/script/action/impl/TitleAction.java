@@ -1,30 +1,61 @@
 package org.zibble.dbedwars.script.action.impl;
 
+import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.serializable.TitleST;
-import org.zibble.dbedwars.api.script.action.Action;
+import org.zibble.dbedwars.api.script.ScriptVariable;
+import org.zibble.dbedwars.api.script.action.ActionTranslator;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.messaging.AbstractMessaging;
 
-public class TitleAction implements Action {
+public class TitleAction implements ActionTranslator<TitleAction.Action> {
 
-    private final TitleST title;
-    private final AbstractMessaging abstractMessaging;
-
-    public TitleAction(TitleST title, AbstractMessaging abstractMessaging) {
-        this.title = title;
-        this.abstractMessaging = abstractMessaging;
+    @Override
+    public Action serialize(String untranslated, ScriptVariable<?>... variables) {
+        AbstractMessaging messaging = null;
+        for (ScriptVariable<?> variable : variables) {
+            if (variable.isAssignableFrom(AbstractMessaging.class)) {
+                messaging = (AbstractMessaging) variable.value();
+            } else if (variable.getKey().equals("PLACEHOLDER")) {
+                untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);
+            }
+        }
+        TitleST title = TitleST.valueOf(untranslated.trim());
+        return new Action(title, messaging);
     }
 
     @Override
-    public void execute() {
-        this.title.send(this.abstractMessaging);
+    public String deserialize(Action action) {
+        return action.getTitle().toString();
     }
 
-    public AbstractMessaging getMessaging() {
-        return this.abstractMessaging;
+    @Override
+    public Key getKey() {
+        return Key.of("TITLE");
     }
 
-    public TitleST getTitle() {
-        return title;
+    public static class Action implements org.zibble.dbedwars.api.script.action.Action {
+
+        private final TitleST title;
+        private final AbstractMessaging abstractMessaging;
+
+        public Action(TitleST title, AbstractMessaging abstractMessaging) {
+            this.title = title;
+            this.abstractMessaging = abstractMessaging;
+        }
+
+        @Override
+        public void execute() {
+            this.title.send(this.abstractMessaging);
+        }
+
+        public AbstractMessaging getMessaging() {
+            return this.abstractMessaging;
+        }
+
+        public TitleST getTitle() {
+            return title;
+        }
+
     }
 
 }

@@ -8,8 +8,9 @@ import org.zibble.dbedwars.api.script.condition.Condition;
 import org.zibble.dbedwars.api.script.condition.ConditionProvider;
 import org.zibble.dbedwars.api.script.condition.ConditionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.script.action.ActionPreProcessor;
-import org.zibble.dbedwars.script.action.translators.*;
+import org.zibble.dbedwars.script.action.*;
+import org.zibble.dbedwars.script.action.impl.*;
+import org.zibble.dbedwars.script.action.impl.upgrade.DragonBuffAction;
 import org.zibble.dbedwars.script.condition.ConditionPreProcessor;
 import org.zibble.dbedwars.script.condition.translator.PlayerConditionTranslator;
 
@@ -21,6 +22,8 @@ import java.util.Map;
 public class ScriptRegistryImpl extends ScriptTranslationRegistry {
 
     public static final Key TRAP = Key.of("trap");
+    public static final Key UPGRADE = Key.of("upgrade");
+    public static final Key GAME_EVENT = Key.of("game_event");
 
     private final Map<Key, ActionRegistry> actionRegistry;
     private final Map<Key, ConditionRegistry> conditionRegistry;
@@ -39,9 +42,14 @@ public class ScriptRegistryImpl extends ScriptTranslationRegistry {
         trapActionRegistry.registerDefaults();
         this.addRegistry(TRAP, trapActionRegistry);
 
+        ActionRegistry upgradeActionRegistry = new ActionRegistry();
+        upgradeActionRegistry.registerDefaults();
+        upgradeActionRegistry.registerTranslation(DragonBuffAction.INSTANCE);
+        this.addRegistry(UPGRADE, upgradeActionRegistry);
+
         ConditionRegistry conditionRegistry = new ConditionRegistry();
         conditionRegistry.registerDefaults();
-        this.addRegistry(GLOBAL, conditionRegistry);
+        this.addRegistry(GAME_EVENT, conditionRegistry);
     }
 
     @Override
@@ -81,15 +89,15 @@ public class ScriptRegistryImpl extends ScriptTranslationRegistry {
         }
 
         protected void registerDefaults() {
-            this.registerTranslation(new ActionBarActionTranslator());
-            this.registerTranslation(new CommandActionTranslator());
-            this.registerTranslation(new ConsoleCommandActionTranslator());
-            this.registerTranslation(new FireworkActionTranslator());
-            this.registerTranslation(new PotionActionTranslator());
-            this.registerTranslation(new SendMessageActionTranslator());
-            this.registerTranslation(new SoundActionTranslator());
-            this.registerTranslation(new TeleportActionTranslator());
-            this.registerTranslation(new TitleActionTranslator());
+            this.registerTranslation(new ActionBarAction());
+            this.registerTranslation(new CommandAction());
+            this.registerTranslation(new ConsoleCommandAction());
+            this.registerTranslation(new FireworkAction());
+            this.registerTranslation(new PotionAction());
+            this.registerTranslation(new SendMessageAction());
+            this.registerTranslation(new SoundAction());
+            this.registerTranslation(new TeleportAction());
+            this.registerTranslation(new TitleAction());
         }
 
         @Override

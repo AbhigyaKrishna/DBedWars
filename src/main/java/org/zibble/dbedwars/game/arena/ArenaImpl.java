@@ -3,7 +3,6 @@ package org.zibble.dbedwars.game.arena;
 import com.cryptomorin.xseries.XBlock;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Strings;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
@@ -298,6 +297,7 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         }
 
         this.gameEvent.nextEvent();
+        this.gameEvent.getCurrentEvent().perform(GameEventImpl.Event.ON_START);
 
         this.startTime = Instant.now();
         this.startTask = null;
@@ -311,6 +311,8 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         if (!this.checkState(ArenaStatus.RUNNING)) {
             return false;
         }
+
+        this.gameEvent.getCurrentEvent().perform(GameEventImpl.Event.ON_END);
 
         List<TeamImpl> list = new ArrayList<>(this.teams);
         list.removeIf(TeamImpl::isEliminated);
@@ -603,11 +605,24 @@ public class ArenaImpl extends AbstractMessaging implements Arena {
         if (this.checkState(ArenaStatus.RUNNING)) {
             if (this.gameEvent.getRemainingTime().toSeconds() <= 0) {
                 if (this.gameEvent.hasNextEvent()) {
+                    this.gameEvent.getCurrentEvent().perform(GameEventImpl.Event.ON_END);
+
+                    GameEventChangeEvent event = new GameEventChangeEvent(this, this.gameEvent.getCurrentEvent(), this.gameEvent.peek());
+                    event.call();
+
+                    if (event.isCancelled()) return;
+
                     this.gameEvent.nextEvent();
+                    this.gameEvent.getCurrentEvent().perform(GameEventImpl.Event.ON_START);
+
+                    PostGameEventChangeEvent postEvent = new PostGameEventChangeEvent(this, this.gameEvent.getCurrentEvent(), event.getEvent());
+                    postEvent.call();
                 } else {
                     this.end();
                     return;
                 }
+            } else {
+                this.gameEvent.getCurrentEvent().perform(GameEventImpl.Event.PER_TICK);
             }
 
             for (Spawner spawner : this.spawners) {

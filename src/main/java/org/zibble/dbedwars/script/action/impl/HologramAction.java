@@ -1,21 +1,21 @@
-package org.zibble.dbedwars.script.action.translators;
+package org.zibble.dbedwars.script.action.impl;
 
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.script.action.impl.hologram.HologramAction;
 
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HologramActionTranslator implements ActionTranslator<HologramAction> {
+public class HologramAction implements ActionTranslator<HologramAction.Action> {
 
     private static final Pattern TELEPORT_ACTION = Pattern.compile("teleport\\{(?<loc>.+)}");
 
     @Override
-    public HologramAction serialize(String condition, ScriptVariable<?>... variables) {
+    public Action serialize(String condition, ScriptVariable<?>... variables) {
         Hologram hologram = null;
         for (ScriptVariable<?> variable : variables) {
             if (variable.isAssignableFrom(Hologram.class)) {
@@ -29,7 +29,7 @@ public class HologramActionTranslator implements ActionTranslator<HologramAction
         if (matcher.matches()) {
             LocationXYZYP loc = LocationXYZYP.valueOf(matcher.group("loc"));
             if (loc != null) {
-                return new HologramAction(hologram, holo -> holo.teleport(loc.toBukkit(holo.getLocation().getWorld())));
+                return new Action(hologram, holo -> holo.teleport(loc.toBukkit(holo.getLocation().getWorld())));
             }
         }
 
@@ -37,13 +37,34 @@ public class HologramActionTranslator implements ActionTranslator<HologramAction
     }
 
     @Override
-    public String deserialize(HologramAction condition) {
+    public String deserialize(Action condition) {
         return null;
     }
 
     @Override
     public Key getKey() {
         return Key.of("HOLOGRAM");
+    }
+
+    public static class Action implements org.zibble.dbedwars.api.script.action.Action {
+
+        private final Hologram hologram;
+        private final Consumer<Hologram> consumer;
+
+        public Action(Hologram hologram, Consumer<Hologram> consumer) {
+            this.hologram = hologram;
+            this.consumer = consumer;
+        }
+
+        @Override
+        public void execute() {
+            this.consumer.accept(this.hologram);
+        }
+
+        public Hologram getHologram() {
+            return this.hologram;
+        }
+
     }
 
 }
