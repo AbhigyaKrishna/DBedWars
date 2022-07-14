@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.events.PlayerBaseEnterEvent;
@@ -32,8 +31,10 @@ import org.zibble.dbedwars.api.objects.serializable.LocationXYZ;
 import org.zibble.dbedwars.api.plugin.PluginHandler;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.game.arena.TeamImpl;
+import org.zibble.dbedwars.game.arena.spawner.ResourceItemImpl;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
 import org.zibble.dbedwars.item.*;
+import org.zibble.dbedwars.proxiedevent.EntityItemPickUpEvent;
 import org.zibble.dbedwars.utils.Util;
 
 import java.time.Instant;
@@ -231,19 +232,21 @@ public class GameListener extends PluginHandler {
     }
 
     @EventHandler
-    public void handlePickup(PlayerPickupItemEvent event) {
-        if (!event.getPlayer().getWorld().equals(this.arena.getWorld())) return;
+    public void handlePickup(EntityItemPickUpEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        if (!event.getEntity().getWorld().equals(this.arena.getWorld())) return;
 
-        if (!this.arena.isArenaPlayer(event.getPlayer())) {
+        if (!this.arena.isArenaPlayer((Player) event.getEntity())) {
             event.setCancelled(true);
             return;
         }
 
-        boolean resource = event.getItem().hasMetadata("resource");
-
-        if (resource) {
-            this.arena.getAsArenaPlayer(event.getPlayer()).ifPresent(player ->
+        if (event.getItem().hasMetadata("resource")) {
+            this.arena.getAsArenaPlayer((Player) event.getEntity()).ifPresent(player ->
                     player.getResourceStatistics().add(event.getItem().getItemStack()));
+
+            ResourceItemImpl res = (ResourceItemImpl) event.getItem().getMetadata("resource").get(0).value();
+            res.setPickedUp(true);
         }
 
         if (Util.hasMetaData(event.getItem(), "split", true)) {
@@ -254,7 +257,7 @@ public class GameListener extends PluginHandler {
                         spawner1.getDropType().getSpawnRadius(),
                         spawner1.getDropType().getSpawnRadius(),
                         spawner1.getDropType().getSpawnRadius());
-                entities.remove(event.getPlayer());
+                entities.remove(event.getEntity());
                 for (Entity entity : entities) {
                     if (entity instanceof Player && this.arena.isArenaPlayer((Player) entity)) {
                         ((Player) entity).getInventory().addItem(event.getItem().getItemStack());

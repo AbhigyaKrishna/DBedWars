@@ -16,7 +16,9 @@ import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.task.Workload;
+import org.zibble.dbedwars.api.util.Pair;
 import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.io.UUIDTypeAdaptor;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,30 +43,22 @@ public class HologramManager implements HologramFactory {
         if (!hologram.isVisible(player)) return;
         HologramPageImpl page = hologram.getCurrentPage(player);
         if (page == null) return;
-        Map<HologramLine<?>, Location> map = this.mapLocations(page);
-        for (Map.Entry<HologramLine<?>, Location> entry : map.entrySet()) {
+        List<Pair<HologramLine<?>, Location>> map = this.mapLocations(page);
+        for (Pair<HologramLine<?>, Location> entry : map) {
             if (entry.getKey() instanceof HologramLine.Text) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], true, true, true);
                 PacketUtils.updateFakeEntityCustomName(player, ((Message) entry.getKey().getContent()).asComponentWithPAPI(player)[0], ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey() instanceof HologramLine.Head) {
+            } else if (entry.getKey() instanceof HologramLine.Head) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], true, false, true);
                 PacketUtils.helmetFakeEntity(player, ((BwItemStack) entry.getKey().getContent()).asItemStack(player), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey() instanceof HologramLine.SmallHead) {
+            } else if (entry.getKey() instanceof HologramLine.SmallHead) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], true, true, true);
                 PacketUtils.helmetFakeEntity(player, ((BwItemStack) entry.getKey().getContent()).asItemStack(player), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0]);
-                continue;
-            }
-            if (entry.getKey() instanceof HologramLine.Icon) {
+            } else if (entry.getKey() instanceof HologramLine.Icon) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], true, true, true);
                 PacketUtils.showFakeEntityItem(player, entry.getValue(), ((BwItemStack) entry.getKey().getContent()).asItemStack(player), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[1]);
                 PacketUtils.attachFakeEntity(player, ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[1]);
-                continue;
-            }
-            if (entry.getKey() instanceof HologramLine.Entity) {
+            } else if (entry.getKey() instanceof HologramLine.Entity) {
                 PacketUtils.showFakeEntityArmorStand(player, entry.getValue(), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[0], true, true, true);
                 if (((EntityType) entry.getKey().getContent()).isAlive()) {
                     PacketUtils.showFakeEntityLiving(player, entry.getValue(), SpigotConversionUtil.fromBukkitEntityType((EntityType) entry.getKey().getContent()), ((HologramLineImpl<?>) entry.getKey()).getEntityIds()[1]);
@@ -77,7 +71,7 @@ public class HologramManager implements HologramFactory {
 
     @Override
     public Hologram createHologram(Location location) {
-        Key key = Key.of(UUID.randomUUID().toString());
+        Key key = Key.of(UUIDTypeAdaptor.fromUUID(UUID.randomUUID()));
         HologramImpl hologram = new HologramImpl(this, key, location);
         this.holograms.put(key, hologram);
         return hologram;
@@ -150,8 +144,8 @@ public class HologramManager implements HologramFactory {
 
     public void updateLocation(HologramImpl hologram, Player player) {
         HologramPageImpl page = (HologramPageImpl) hologram.getHologramPages().get(hologram.getViewerPages().get(player.getUniqueId()));
-        Map<HologramLine<?>, Location> map = this.mapLocations(page);
-        for (Map.Entry<HologramLine<?>, Location> entry : map.entrySet())
+        List<Pair<HologramLine<?>, Location>> map = this.mapLocations(page);
+        for (Pair<HologramLine<?>, Location> entry : map)
             for (int entityId : ((HologramLineImpl<?>) entry.getKey()).getEntityIds())
                 PacketUtils.teleportFakeEntity(player, entry.getValue(), entityId);
     }
@@ -189,14 +183,14 @@ public class HologramManager implements HologramFactory {
         });
     }
 
-    private Map<HologramLine<?>, Location> mapLocations(HologramPageImpl page) {
-        Map<HologramLine<?>, Location> returnMap = new HashMap<>();
+    private List<Pair<HologramLine<?>, Location>> mapLocations(HologramPageImpl page) {
+        List<Pair<HologramLine<?>, Location>> returnMap = new ArrayList<>();
         Location l = page.getParent().getLocation();
         List<HologramLine<?>> usedLines = new ArrayList<>(page.getLines());
         if (page.getParent().isInverted()) Collections.reverse(usedLines);
         for (HologramLine<?> line : usedLines) {
-            returnMap.put(line, l);
-            l.add(0, (line.getHeight() + page.getLineGap()) * (page.getParent().isInverted() ? 1 : -1), 0);
+            returnMap.add(Pair.of(line, l));
+            l = l.add(0, line.getHeight() + page.getLineGap(), 0).clone();
         }
         return returnMap;
     }

@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.database.bridge;
 
+import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariConfig;
 import org.jooq.SQLDialect;
 import org.zibble.dbedwars.api.future.ActionFuture;
@@ -59,9 +60,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     @Override
     public void init() {
-        if (this.initialized) {
-            throw new IllegalStateException("Database already initialized!");
-        }
+        Preconditions.checkArgument(!this.initialized, "DatabaseBridge is already initialized");
 
         try {
             this.database.connect();

@@ -3,8 +3,9 @@ package org.zibble.dbedwars.api.game;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.api.util.key.Keyed;
 
-public interface ArenaCategory {
+public interface ArenaCategory extends Keyed {
 
     String getName();
 

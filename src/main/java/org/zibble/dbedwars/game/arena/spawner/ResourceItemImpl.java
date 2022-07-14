@@ -1,5 +1,6 @@
 package org.zibble.dbedwars.game.arena.spawner;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -18,6 +19,7 @@ public class ResourceItemImpl implements ResourceItem {
     private boolean splittable;
 
     private Item itemEntity;
+    private boolean pickedUp = false;
 
     public ResourceItemImpl(BwItemStack item) {
         this.item = item;
@@ -34,9 +36,8 @@ public class ResourceItemImpl implements ResourceItem {
 
     @Override
     public void drop(Location location) {
-        if (this.isDropped()) {
-            throw new IllegalStateException("Tried to drop item which is already dropped on location `" + this.itemEntity.getLocation() + "` !");
-        }
+        Preconditions.checkArgument(!this.isDropped(), "Tried to drop item which is already dropped on location `%s`!", this.itemEntity.getLocation());
+        Preconditions.checkArgument(!this.isPickedUp(), "Tried to drop item which is already picked up!");
 
         if (!Bukkit.isPrimaryThread()) {
             SchedulerUtils.runTask(() -> {
@@ -88,6 +89,18 @@ public class ResourceItemImpl implements ResourceItem {
     @Override
     public void setSplittable(boolean splittable) {
         this.splittable = splittable;
+    }
+
+    @Override
+    public boolean isPickedUp() {
+        return this.pickedUp;
+    }
+
+    public void setPickedUp(boolean pickedUp) {
+        this.pickedUp = pickedUp;
+        if (pickedUp) {
+            this.itemEntity = null;
+        }
     }
 
     public static class Builder implements org.zibble.dbedwars.api.util.mixin.Builder<ResourceItemImpl> {

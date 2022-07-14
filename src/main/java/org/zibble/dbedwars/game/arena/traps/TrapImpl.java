@@ -12,7 +12,6 @@ import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionProvider;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.script.ScriptRegistryImpl;
-import org.zibble.dbedwars.script.action.ActionProcessor;
 
 import java.util.*;
 

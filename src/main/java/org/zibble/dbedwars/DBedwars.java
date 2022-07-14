@@ -29,6 +29,8 @@ import org.zibble.dbedwars.item.*;
 import org.zibble.dbedwars.listeners.ConverseReplyHandler;
 import org.zibble.dbedwars.listeners.DragonBuffListener;
 import org.zibble.dbedwars.listeners.VanishListener;
+import org.zibble.dbedwars.listeners.legacy.LegacyItemPickupEvent;
+import org.zibble.dbedwars.listeners.modern.ModernItemPickupEvent;
 import org.zibble.dbedwars.messaging.Messaging;
 import org.zibble.dbedwars.nms.v1_8_R3.Adaptor_v1_8_R3;
 import org.zibble.dbedwars.script.ScriptRegistryImpl;
@@ -168,7 +170,8 @@ public final class DBedwars extends PluginAdapter {
                 new VanishListener(),
                 new GameRuleHandler(this),
                 ConverseReplyHandler.INSTANCE,
-                new DragonBuffListener()
+                new DragonBuffListener(),
+                Version.SERVER_VERSION.isOlder(Version.v1_12_R1) ? new LegacyItemPickupEvent() : new ModernItemPickupEvent()
         };
         for (Listener listener : this.listeners) {
             this.getServer().getPluginManager().registerEvents(listener, this);

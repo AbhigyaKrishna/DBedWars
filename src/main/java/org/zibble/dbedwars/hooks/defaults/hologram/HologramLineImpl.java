@@ -51,7 +51,7 @@ public abstract class HologramLineImpl<C> implements HologramLine<C> {
     }
 
     public enum Height {
-        TEXT(0.5F),
+        TEXT(0.25F),
         HEAD(2.0F),
         SMALL_HEAD(1.1875F),
         ICON(0.55F),

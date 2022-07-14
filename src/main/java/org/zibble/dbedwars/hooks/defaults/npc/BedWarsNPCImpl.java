@@ -46,7 +46,7 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
         this.location = location;
         this.entityID = EntityReflection.getFreeEntityId();
         this.uuid = new UUID(ThreadLocalRandom.current().nextLong(), 0L);
-        this.hologram = DBedWarsAPI.getApi().getHookManager().getHologramFactory().createHologram(this.location.clone().add(0, 2, 0));
+        this.hologram = DBedWarsAPI.getApi().getHookManager().getHologramFactory().createHologram(this.location.clone().add(0, 0.5, 0));
         this.hologram.setInverted(true);
         this.hologram.addPage();
         this.clickActions = Collections.synchronizedSet(new HashSet<>());

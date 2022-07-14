@@ -4,20 +4,21 @@ import org.zibble.dbedwars.api.game.ArenaCategory;
 import org.zibble.dbedwars.api.hooks.scoreboard.ScoreboardData;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArenaCategory;
 import org.zibble.dbedwars.game.GameManagerImpl;
 
 public class ArenaCategoryImpl implements ArenaCategory {
 
-    private final String name;
+    private final Key key;
     private Message displayName;
     private Message description;
     private BwItemStack icon;
     private ScoreboardData scoreboardData;
 
     public ArenaCategoryImpl(String name, Message displayName) {
-        this.name = name;
+        this.key = Key.of(name);
         this.displayName = displayName;
     }
 
@@ -31,7 +32,7 @@ public class ArenaCategoryImpl implements ArenaCategory {
 
     @Override
     public String getName() {
-        return name;
+        return this.key.get();
     }
 
     @Override
@@ -77,12 +78,17 @@ public class ArenaCategoryImpl implements ArenaCategory {
     @Override
     public String toString() {
         return "ArenaCategoryImpl{" +
-                "name='" + name + '\'' +
+                "key='" + key + '\'' +
                 ", displayName=" + displayName +
                 ", description=" + description +
                 ", icon=" + icon +
                 ", scoreboardData=" + scoreboardData +
                 '}';
+    }
+
+    @Override
+    public Key getKey() {
+        return this.key;
     }
 
 }

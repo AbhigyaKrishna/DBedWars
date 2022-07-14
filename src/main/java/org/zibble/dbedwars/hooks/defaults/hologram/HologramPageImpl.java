@@ -20,7 +20,7 @@ public class HologramPageImpl implements HologramPage {
     private final List<HologramLineImpl<?>> lines;
     private final Set<ClickAction> actions;
 
-    private double lineGap = 0.1;
+    private double lineGap = 0;
 
     public HologramPageImpl(HologramManager manager, int page, HologramImpl parent) {
         this.manager = manager;

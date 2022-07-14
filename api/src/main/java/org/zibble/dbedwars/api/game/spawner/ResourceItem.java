@@ -26,4 +26,6 @@ public interface ResourceItem {
 
     void setSplittable(boolean splittable);
 
+    boolean isPickedUp();
+
 }

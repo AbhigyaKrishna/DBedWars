@@ -1,4 +1,4 @@
-package org.zibble.dbedwars.script.action.impl;
+package org.zibble.dbedwars.script.action.impl.hologram;
 
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.objects.serializable.LocationXYZYP;
