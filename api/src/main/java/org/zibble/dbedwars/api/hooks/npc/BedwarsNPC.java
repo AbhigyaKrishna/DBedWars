@@ -39,6 +39,8 @@ public interface BedwarsNPC {
 
     ActionFuture<BedwarsNPC> refresh();
 
+    ActionFuture<BedwarsNPC> sendAnimate(NPCAnimation animation);
+
     Collection<ClickAction> getClickActions();
 
     void addClickAction(ClickAction action);

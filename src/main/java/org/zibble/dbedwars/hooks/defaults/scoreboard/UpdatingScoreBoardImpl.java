@@ -3,7 +3,7 @@ package org.zibble.dbedwars.hooks.defaults.scoreboard;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
@@ -12,9 +12,11 @@ import org.zibble.dbedwars.api.hooks.scoreboard.UpdatingScoreboard;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.task.CancellableWorkload;
-import org.zibble.dbedwars.api.version.Version;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingScoreboard {
 
@@ -126,7 +128,7 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
     @Override
     protected void sendObjectivePacket(WrapperPlayServerScoreboardObjective.ObjectiveMode mode) {
         WrapperPlayServerScoreboardObjective packet = new WrapperPlayServerScoreboardObjective(this.id, mode,
-                this.title.asComponentWithPAPI(this.getViewer())[this.titleCursor],
+                this.title.asComponentWithPAPI(this.getViewer())[this.titleCursor].compact(),
                 WrapperPlayServerScoreboardObjective.RenderType.INTEGER);
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
@@ -137,7 +139,11 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
             throw new UnsupportedOperationException();
         }
 
-        int maxLength = Version.SERVER_VERSION.isOlder(Version.v1_13_R1) ? 16 : 1024;
+        if (mode == WrapperPlayServerTeams.TeamMode.REMOVE) {
+            WrapperPlayServerTeams packet = new WrapperPlayServerTeams(id, mode, Optional.empty());
+            PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
+            return;
+        }
 
         String line = AdventureUtils.toVanillaString(this.elements.get(this.elements.size() - 1 - score).asComponentWithPAPI(this.getViewer())[this.lineCursor.get(this.elements.size() - 1 - score)]);
         String prefix;
@@ -145,11 +151,11 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
 
         if (line.isEmpty()) {
             prefix = COLOR_CODES[score].toString() + ChatColor.RESET;
-        } else if (line.length() <= maxLength) {
+        } else if (line.length() <= MAX_OBJECTIVES_LENGTH) {
             prefix = line;
         } else {
             // Prevent splitting color codes
-            int index = line.charAt(maxLength - 1) == ChatColor.COLOR_CHAR ? (maxLength - 1) : maxLength;
+            int index = line.charAt(MAX_OBJECTIVES_LENGTH - 1) == ChatColor.COLOR_CHAR ? (MAX_OBJECTIVES_LENGTH - 1) : MAX_OBJECTIVES_LENGTH;
             prefix = line.substring(0, index);
             String suffixTmp = line.substring(index);
             ChatColor chatColor = null;
@@ -164,22 +170,23 @@ public class UpdatingScoreBoardImpl extends ScoreboardImpl implements UpdatingSc
             suffix = (addColor ? (color.isEmpty() ? ChatColor.RESET.toString() : color) : "") + suffixTmp;
         }
 
-        if (prefix.length() > maxLength || (suffix != null && suffix.length() > maxLength)) {
+        if (prefix.length() > MAX_OBJECTIVES_LENGTH || (suffix != null && suffix.length() > MAX_OBJECTIVES_LENGTH)) {
             // Something went wrong, just cut to prevent client crash/kick
-            prefix = prefix.substring(0, maxLength);
-            suffix = (suffix != null) ? suffix.substring(0, maxLength) : null;
+            prefix = prefix.substring(0, MAX_OBJECTIVES_LENGTH);
+            suffix = (suffix != null) ? suffix.substring(0, MAX_OBJECTIVES_LENGTH) : null;
         }
 
         WrapperPlayServerTeams.ScoreBoardTeamInfo info = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                AdventureUtils.fromLegacyText(this.id + ':' + score),
+                Component.text(this.id + ':' + score),
                 AdventureUtils.fromLegacyText(prefix),
                 AdventureUtils.fromLegacyText(suffix == null ? "" : suffix),
                 WrapperPlayServerTeams.NameTagVisibility.ALWAYS,
                 WrapperPlayServerTeams.CollisionRule.ALWAYS,
-                NamedTextColor.WHITE,
+                AdventureUtils.asNamedTextColor(COLOR_CODES[score]),
                 WrapperPlayServerTeams.OptionData.NONE
         );
-        WrapperPlayServerTeams packet = new WrapperPlayServerTeams(id, mode, Optional.of(info), Collections.singletonList(COLOR_CODES[score].toString()));
+
+        WrapperPlayServerTeams packet = new WrapperPlayServerTeams(this.id + ':' + score, mode, Optional.of(info), COLOR_CODES[score].toString());
         PacketEvents.getAPI().getPlayerManager().sendPacket(this.getViewer(), packet);
     }
 

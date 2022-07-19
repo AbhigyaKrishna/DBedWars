@@ -44,4 +44,6 @@ public interface Scoreboard extends Keyed {
 
     boolean isShown();
 
+    void refreshLines();
+
 }

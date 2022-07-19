@@ -35,7 +35,6 @@ public class ScoreboardHookImpl implements ScoreboardHook {
         UpdatingScoreBoardImpl scoreboard = new UpdatingScoreBoardImpl(player, title, delay);
         scoreboard.addLines(lines);
         scoreboard.show();
-        scoreboard.startUpdate();
         return (UpdatingScoreboard) this.scoreboards.put(player.getUniqueId(), scoreboard);
     }
 
