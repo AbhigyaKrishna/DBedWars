@@ -1,47 +1,47 @@
 package org.zibble.dbedwars.database.jooq.tables;
 
-import com.google.gson.JsonElement;
-import org.jooq.JSON;
-import org.jooq.Schema;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.zibble.dbedwars.api.objects.points.IntegerCount;
+import org.zibble.dbedwars.api.objects.points.LongCount;
 import org.zibble.dbedwars.database.data.PersistentStat;
+import org.zibble.dbedwars.database.data.PlayerStats;
+import org.zibble.dbedwars.database.data.table.DataTables;
 import org.zibble.dbedwars.database.jooq.DBedWarsSchema;
 import org.zibble.dbedwars.database.jooq.Keys;
 import org.zibble.dbedwars.database.jooq.binding.PersistentStatConverter;
-import org.zibble.dbedwars.database.jooq.binding.UUIDBinding;
 import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class PlayerStatTable extends TableImpl<PlayerStatRecord> {
 
     public static final String DEFAULT_JSON = "{\"total\": 0, \"monthly\": 0, \"weekly\": 0, \"daily\": 0}";
 
     public static final PlayerStatTable PLAYER_STAT = new PlayerStatTable();
 
-    public final TableField<PlayerStatRecord, UUID> UUID = createField(DSL.name("UUID"), SQLDataType.UUID.nullable(false), this, "", new UUIDBinding());
+    public final TableField<PlayerStatRecord, UUID> UUID = createField(DSL.name("UUID"), SQLDataType.UUID.nullable(false), this);
     public final TableField<PlayerStatRecord, String> NAME = createField(DSL.name("NAME"), SQLDataType.VARCHAR(16).nullable(false), this);
     public final TableField<PlayerStatRecord, Integer> LEVEL = createField(DSL.name("LEVEL"), SQLDataType.INTEGER.nullable(false).defaultValue(0), this);
     public final TableField<PlayerStatRecord, Double> LEVEL_PROGRESS = createField(DSL.name("LEVEL_PROGRESS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0), this);
     public final TableField<PlayerStatRecord, Double> COINS = createField(DSL.name("COINS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0), this);
     public final TableField<PlayerStatRecord, Short> WINSTREAK = createField(DSL.name("WINSTREAK"), SQLDataType.SMALLINT.nullable(false).defaultValue((short) 0), this);
-    public final TableField<PlayerStatRecord, Double> POINTS = createField(DSL.name("KILLS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0), this);
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> KILLS = createField(DSL.name("KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("kills", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> FINAL_KILLS = createField(DSL.name("FINAL_KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("final_kills", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> DEATHS = createField(DSL.name("DEATHS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("deaths", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> BED_BROKEN = createField(DSL.name("BED_BROKEN"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("bed_broken", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> BED_LOST = createField(DSL.name("BED_LOST"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("bed_lost", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Integer>> WINS = createField(DSL.name("WINS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("wins", JsonElement::getAsInt));
-    public final TableField<PlayerStatRecord, PersistentStat<Long>> PLAYED = createField(DSL.name("PLAYED"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>("played", JsonElement::getAsLong));
+    public final TableField<PlayerStatRecord, Double> POINTS = createField(DSL.name("POINTS"), SQLDataType.DOUBLE.nullable(false).defaultValue(0.0), this);
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> KILLS = createField(DSL.name("KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.KILLS, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> FINAL_KILLS = createField(DSL.name("FINAL_KILLS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.FINAL_KILLS, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> DEATHS = createField(DSL.name("DEATHS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.DEATHS, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> BED_BROKEN = createField(DSL.name("BED_BROKEN"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.BED_BROKEN, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> BED_LOST = createField(DSL.name("BED_LOST"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.BED_LOST, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Integer>> WINS = createField(DSL.name("WINS"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.WIN, element -> new IntegerCount(element.getAsInt())));
+    public final TableField<PlayerStatRecord, PersistentStat<Long>> PLAYED = createField(DSL.name("PLAYED"), SQLDataType.JSON.nullable(false).defaultValue(JSON.valueOf(DEFAULT_JSON)), this, "", new PersistentStatConverter<>(PlayerStats.PLAYED, element -> new LongCount(element.getAsLong())));
 
     public PlayerStatTable() {
-        super(DSL.name("dbedwars_player_stats"));
+        super(DSL.name(DataTables.STATS.database()));
     }
 
     @Override
@@ -57,6 +57,16 @@ public class PlayerStatTable extends TableImpl<PlayerStatRecord> {
     @Override
     public List<UniqueKey<PlayerStatRecord>> getKeys() {
         return Collections.singletonList(Keys.KEY_PLAYER_STAT_PRIMARY);
+    }
+
+    @Override
+    public Class<? extends PlayerStatRecord> getRecordType() {
+        return PlayerStatRecord.class;
+    }
+
+    @Override
+    public Row14<UUID, String, Integer, Double, Double, Short, Double, PersistentStat<Integer>, PersistentStat<Integer>, PersistentStat<Integer>, PersistentStat<Integer>, PersistentStat<Integer>, PersistentStat<Integer>, PersistentStat<Long>> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 
 }

@@ -11,15 +11,12 @@ import org.zibble.dbedwars.database.data.PlayerStats;
 import org.zibble.dbedwars.database.data.QuickBuy;
 import org.zibble.dbedwars.database.data.table.DataTable;
 import org.zibble.dbedwars.database.hikaricp.HikariConfigBuilder;
+import org.zibble.dbedwars.database.jooq.DBedWarsSchema;
 import org.zibble.dbedwars.database.jooq.JooqContext;
-import org.zibble.dbedwars.database.jooq.records.ArenaHistoryRecord;
-import org.zibble.dbedwars.database.jooq.records.PlayerStatRecord;
-import org.zibble.dbedwars.database.jooq.records.QuickBuyRecord;
 import org.zibble.dbedwars.database.jooq.sql.CreateTableSQL;
 import org.zibble.dbedwars.database.jooq.sql.FetchDataSQL;
 import org.zibble.dbedwars.database.jooq.sql.InsertDataSQL;
-import org.zibble.dbedwars.database.jooq.tables.PlayerStatTable;
-import org.zibble.dbedwars.database.jooq.tables.QuickBuyTable;
+import org.zibble.dbedwars.database.jooq.sql.UpdateDataSql;
 import org.zibble.dbedwars.database.sql.SQLDatabase;
 
 import java.sql.SQLException;
@@ -107,9 +104,9 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
             InsertDataSQL insertData = new InsertDataSQL(this.context.createContext(this.database.getConnection()));
             switch (dataTable.database()) {
                 case "player_stats":
-                    return insertData.insertNewPlayerStat(dataCache.getUuid(), dataCache.getName()).executeAsync();
+                    return insertData.insertPlayerStat((PlayerStats) dataCache).executeAsync();
                 case "quick_buy":
-                    return insertData.insertNewQuickBuy(dataCache.getUuid(), dataCache.getName()).executeAsync();
+                    return insertData.insertQuickBuy((QuickBuy) dataCache).executeAsync();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,35 +117,16 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
 
     @Override
     public <T extends PlayerDataCache> ActionFuture<Boolean> updatePlayerData(DataTable<T> dataTable, T dataCache) {
-        switch (dataTable.database()) {
-            case "player_stats":
-                return ActionFuture.supplyAsync(() -> {
-                    try {
-                        PlayerStats stats = (PlayerStats) dataCache;
-                        return this.context.createContext(this.database.getConnection())
-                                .update(PlayerStatTable.PLAYER_STAT)
-                                .set(PlayerStatRecord.fromDataCache(stats))
-                                .where(PlayerStatTable.PLAYER_STAT.UUID.eq(stats.getUuid()))
-                                .execute() > 0;
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
-            case "quick_buy":
-                return ActionFuture.supplyAsync(() -> {
-                    try {
-                        QuickBuy quickBuy = (QuickBuy) dataCache;
-                        return this.context.createContext(this.database.getConnection())
-                                .update(QuickBuyTable.QUICK_BUY)
-                                .set(QuickBuyRecord.fromDataCache(quickBuy))
-                                .where(QuickBuyTable.QUICK_BUY.UUID.eq(quickBuy.getUuid()))
-                                .execute() > 0;
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
+        try {
+            UpdateDataSql sql = new UpdateDataSql(this.context.createContext(this.database.getConnection()));
+            switch (dataTable.database()) {
+                case "player_stats":
+                    return sql.updatePlayerStat((PlayerStats) dataCache).executeAsync();
+                case "quick_buy":
+                    return sql.updateQuickBuy((QuickBuy) dataCache).executeAsync();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return ActionFuture.completedFuture(null);
@@ -158,7 +136,7 @@ public abstract class SQLDatabaseBridge implements DatabaseBridge {
     public ActionFuture<Boolean> insertArenaHistory(ArenaHistory history) {
         try {
             InsertDataSQL insertData = new InsertDataSQL(this.context.createContext(this.database.getConnection()));
-            return insertData.insertNewArenaHistory(ArenaHistoryRecord.from(history)).executeAsync();
+            return insertData.insertArenaHistory(history).executeAsync();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -61,7 +61,7 @@ public class PostGreSQL extends SQLDatabase {
         }
 
         if (this.dataSource == null) {
-            this.config.setDataSourceClassName(DRIVER_CLASS);
+            this.config.setDriverClassName(DRIVER_CLASS);
             this.config.setJdbcUrl(String.format(URL_FORMAT, host, port, database) + this.params);
             this.config.setUsername(username);
             this.config.setPassword(password);

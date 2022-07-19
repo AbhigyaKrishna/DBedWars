@@ -7,6 +7,7 @@ import org.zibble.dbedwars.api.game.DeathCause;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
@@ -18,6 +19,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ArenaHistory implements DataCache {
+
+    public static final Key ID = Key.of("id");
+    public static final Key GAME_ID = Key.of("game_id");
+    public static final Key TEAMS = Key.of("teams");
+    public static final Key WINNER = Key.of("winner");
+    public static final Key RUNTIME = Key.of("runtime");
+    public static final Key TIMESTAMP = Key.of("timestamp");
+    public static final Key ITEM_PICKUP = Key.of("item_pickup");
+    public static final Key DEATHS = Key.of("deaths");
+    public static final Key BED_BROKEN = Key.of("bed_broken");
 
     private String id;
     private String gameId;
@@ -110,24 +121,24 @@ public class ArenaHistory implements DataCache {
 
     @Override
     public void load(DataReader<?> reader) throws Exception {
-        this.id = reader.readString("id");
-        this.gameId = reader.readString("game_id");
-        this.teams = reader.readMultiMap("teams", s -> EnumUtil.matchEnum(s, Color.VALUES), s -> {
+        this.id = reader.readString(ID);
+        this.gameId = reader.readString(GAME_ID);
+        this.teams = reader.readMultiMap(TEAMS, s -> EnumUtil.matchEnum(s, Color.VALUES), s -> {
             try {
-                return reader.readList(s, UUID::fromString);
+                return reader.readList(Key.of(s), UUID::fromString);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return new ArrayList<>();
         });
-        this.winner = reader.readEnum("winner", Color.class);
-        this.runtime = reader.readDuration("runtime");
-        this.timestamp = reader.readInstant("timestamp");
-        this.itemPickup = reader.readMap("item_pickup", UUID::fromString, s -> {
+        this.winner = reader.readEnum(WINNER, Color.class);
+        this.runtime = reader.readDuration(RUNTIME);
+        this.timestamp = reader.readInstant(TIMESTAMP);
+        this.itemPickup = reader.readMap(ITEM_PICKUP, UUID::fromString, s -> {
             try {
-                return reader.readMap(s, str -> XMaterial.matchXMaterial(str).get(), str -> {
+                return reader.readMap(Key.of(s), str -> XMaterial.matchXMaterial(str).get(), str -> {
                     try {
-                        return reader.readInt(str);
+                        return reader.readInt(Key.of(str));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -138,7 +149,7 @@ public class ArenaHistory implements DataCache {
             }
             return new HashMap<>();
         });
-        this.deaths = reader.readMap("item_pickup", UUID::fromString, s -> {
+        this.deaths = reader.readMap(DEATHS, UUID::fromString, s -> {
             try {
                 DeathData data = new DeathData();
                 data.load(reader);
@@ -148,9 +159,9 @@ public class ArenaHistory implements DataCache {
             }
             return new DeathData();
         });
-        this.bedsBroken = reader.readMultiMap("beds_broken", UUID::fromString, s -> {
+        this.bedsBroken = reader.readMultiMap(BED_BROKEN, UUID::fromString, s -> {
             try {
-                return reader.readList(s, str -> EnumUtil.matchEnum(str, Color.VALUES));
+                return reader.readList(Key.of(s), str -> EnumUtil.matchEnum(str, Color.VALUES));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -160,23 +171,23 @@ public class ArenaHistory implements DataCache {
 
     @Override
     public void save(DataWriter<?> writer) throws Exception {
-        writer.writeString("id", this.id);
-        writer.writeString("game_id", this.gameId);
-        writer.writeMultiMap("teams", this.teams, Enum::name, (k, v) -> {
+        writer.writeString(ID, this.id);
+        writer.writeString(GAME_ID, this.gameId);
+        writer.writeMultiMap(TEAMS, this.teams, Enum::name, (k, v) -> {
             try {
-                writer.writeList(k, v, UUID::toString);
+                writer.writeList(Key.of(k), v, UUID::toString);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        writer.writeEnum("winner", this.winner);
-        writer.writeDuration("runtime", this.runtime);
-        writer.writeInstant("timestamp", this.timestamp);
-        writer.writeMap("item_pickup", this.itemPickup, UUID::toString, (k, v) -> {
+        writer.writeEnum(WINNER, this.winner);
+        writer.writeDuration(RUNTIME, this.runtime);
+        writer.writeInstant(TIMESTAMP, this.timestamp);
+        writer.writeMap(ITEM_PICKUP, this.itemPickup, UUID::toString, (k, v) -> {
             try {
-                writer.writeMap(k, v, XMaterial::name, (k2, v2) -> {
+                writer.writeMap(Key.of(k), v, XMaterial::name, (k2, v2) -> {
                     try {
-                        writer.writeInt(k2, v2);
+                        writer.writeInt(Key.of(k2), v2);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -185,16 +196,16 @@ public class ArenaHistory implements DataCache {
                 e.printStackTrace();
             }
         });
-        writer.writeMap("deaths", this.deaths, UUID::toString, (k, v) -> {
+        writer.writeMap(DEATHS, this.deaths, UUID::toString, (k, v) -> {
             try {
                 v.save(writer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        writer.writeMultiMap("beds_broken", this.bedsBroken, UUID::toString, (k, v) -> {
+        writer.writeMultiMap(BED_BROKEN, this.bedsBroken, UUID::toString, (k, v) -> {
             try {
-                writer.writeList(k, v, Color::name);
+                writer.writeList(Key.of(k), v, Color::name);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -231,6 +242,9 @@ public class ArenaHistory implements DataCache {
 
     public static class DeathData implements DataCache {
 
+        public static final Key KILLER = Key.of("killer");
+        public static final Key CAUSE = Key.of("cause");
+
         private UUID killer;
         private DeathCause cause = DeathCause.UNKNOWN;
 
@@ -265,21 +279,21 @@ public class ArenaHistory implements DataCache {
 
         @Override
         public void load(DataReader<?> reader) throws Exception {
-            this.killer = reader.readUUID("killer");
-            this.cause = reader.readEnum("cause", DeathCause.class);
+            this.killer = reader.readUUID(KILLER);
+            this.cause = reader.readEnum(CAUSE, DeathCause.class);
         }
 
         @Override
         public void save(DataWriter<?> writer) throws Exception {
-            writer.writeUUID("killer", this.killer);
-            writer.writeEnum("cause", this.cause);
+            writer.writeUUID(KILLER, this.killer);
+            writer.writeEnum(CAUSE, this.cause);
         }
 
         @Override
         public NamedProperties toProperties() {
             return NamedProperties.builder()
-                    .add("killer", this.killer)
-                    .add("cause", this.cause)
+                    .add(KILLER, this.killer)
+                    .add(CAUSE, this.cause)
                     .build();
         }
 

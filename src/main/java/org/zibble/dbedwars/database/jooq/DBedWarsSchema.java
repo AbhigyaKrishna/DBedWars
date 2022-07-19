@@ -12,14 +12,10 @@ import java.util.List;
 
 public class DBedWarsSchema extends SchemaImpl {
 
-    public static DBedWarsSchema SCHEMA;
+    public static DBedWarsSchema SCHEMA = new DBedWarsSchema("DBedWars");
 
     private DBedWarsSchema(String name) {
         super(name, null);
-    }
-
-    public static void init(String database) {
-        SCHEMA = new DBedWarsSchema(database);
     }
 
     @Override

@@ -8,8 +8,14 @@ import org.bson.BsonWriter;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.zibble.dbedwars.api.objects.points.Count;
+import org.zibble.dbedwars.api.objects.points.DoubleCount;
+import org.zibble.dbedwars.api.objects.points.IntegerCount;
+import org.zibble.dbedwars.api.objects.points.LongCount;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
+import org.zibble.dbedwars.api.util.DataType;
 import org.zibble.dbedwars.api.util.EnumUtil;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.database.data.PersistentStat;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
@@ -33,68 +39,94 @@ public class MongoIO {
         }
 
         @Override
-        public void writeChar(String key, char value) {
-            this.data.writeName(key);
+        public void writeChar(Key key, char value) {
+            this.data.writeName(key.get());
             this.data.writeInt32(Character.getNumericValue(value));
         }
 
         @Override
-        public void writeString(String key, String value) {
-            this.data.writeName(key);
+        public void writeString(Key key, String value) {
+            this.data.writeName(key.get());
             this.data.writeString(value);
         }
 
         @Override
-        public void writeBoolean(String key, boolean value) {
-            this.data.writeName(key);
+        public void writeBoolean(Key key, boolean value) {
+            this.data.writeName(key.get());
             this.data.writeBoolean(value);
         }
 
         @Override
-        public void writeByte(String key, byte value) {
-            this.data.writeName(key);
+        public void writeByte(Key key, byte value) {
+            this.data.writeName(key.get());
             this.data.writeInt32(Byte.toUnsignedInt(value));
         }
 
         @Override
-        public void writeInt(String key, int value) {
-            this.data.writeName(key);
+        public void writeInt(Key key, int value) {
+            this.data.writeName(key.get());
             this.data.writeInt32(value);
         }
 
         @Override
-        public void writeLong(String key, long value) {
-            this.data.writeName(key);
+        public void writeLong(Key key, long value) {
+            this.data.writeName(key.get());
             this.data.writeInt64(value);
         }
 
         @Override
-        public void writeShort(String key, short value) {
-            this.data.writeName(key);
+        public void writeShort(Key key, short value) {
+            this.data.writeName(key.get());
             this.data.writeInt32(Short.toUnsignedInt(value));
         }
 
         @Override
-        public void writeFloat(String key, float value) {
-            this.data.writeName(key);
+        public void writeFloat(Key key, float value) {
+            this.data.writeName(key.get());
             this.data.writeInt32(Float.floatToIntBits(value));
         }
 
         @Override
-        public void writeDouble(String key, double value) {
-            this.data.writeName(key);
+        public void writeDouble(Key key, double value) {
+            this.data.writeName(key.get());
             this.data.writeDouble(value);
         }
 
         @Override
-        public void writeUUID(String key, UUID value) {
-            this.data.writeName(key);
+        public <R extends Number> void writeCount(Key key, Count<R> value) throws Exception {
+            switch (value.getType()) {
+                case BYTE:
+                    this.writeByte(key, value.byteValue());
+                    break;
+                case SHORT:
+                    this.writeShort(key, value.shortValue());
+                    break;
+                case INTEGER:
+                    this.writeInt(key, value.intValue());
+                    break;
+                case LONG:
+                    this.writeLong(key, value.longValue());
+                    break;
+                case FLOAT:
+                    this.writeFloat(key, value.floatValue());
+                    break;
+                case DOUBLE:
+                    this.writeDouble(key, value.doubleValue());
+                    break;
+                default:
+                    throw new Exception("Unsupported count type: " + value.getType());
+            }
+        }
+
+        @Override
+        public void writeUUID(Key key, UUID value) {
+            this.data.writeName(key.get());
             this.codecRegistry.get(UUID.class).encode(this.data, value, this.encoderContext);
         }
 
         @Override
-        public <K, V> void writeMap(String key, Map<K, V> value, Function<K, String> keyMapper, BiConsumer<String, V> valueWriter) {
-            this.data.writeName(key);
+        public <K, V> void writeMap(Key key, Map<K, V> value, Function<K, String> keyMapper, BiConsumer<String, V> valueWriter) {
+            this.data.writeName(key.get());
             this.data.writeStartDocument();
             for (Map.Entry<K, V> entry : value.entrySet()) {
                 valueWriter.accept(keyMapper.apply(entry.getKey()), entry.getValue());
@@ -103,8 +135,8 @@ public class MongoIO {
         }
 
         @Override
-        public <K, V> void writeMultiMap(String key, Multimap<K, V> value, Function<K, String> keyMapper, BiConsumer<String, Collection<V>> valueWriter) {
-            this.data.writeName(key);
+        public <K, V> void writeMultiMap(Key key, Multimap<K, V> value, Function<K, String> keyMapper, BiConsumer<String, Collection<V>> valueWriter) {
+            this.data.writeName(key.get());
             this.data.writeStartDocument();
             for (Map.Entry<K, Collection<V>> entry : value.asMap().entrySet()) {
                 valueWriter.accept(keyMapper.apply(entry.getKey()), entry.getValue());
@@ -113,8 +145,8 @@ public class MongoIO {
         }
 
         @Override
-        public <V> void writeList(String key, Collection<V> value, Function<V, String> valueMapper) {
-            this.data.writeName(key);
+        public <V> void writeList(Key key, Collection<V> value, Function<V, String> valueMapper) {
+            this.data.writeName(key.get());
             Collection<String> values = new ArrayList<>();
             for (V v : value) {
                 values.add(valueMapper.apply(v));
@@ -123,27 +155,27 @@ public class MongoIO {
         }
 
         @Override
-        public void writePersistentStat(String key, PersistentStat<? extends Number> value) throws Exception {
-            this.data.writeName(key);
+        public void writePersistentStat(Key key, PersistentStat<? extends Number> value) throws Exception {
+            this.data.writeName(key.get());
             this.data.writeStartDocument();
             value.save(this);
             this.data.writeEndDocument();
         }
 
         @Override
-        public void writeDuration(String key, Duration value) {
-            this.data.writeName(key);
+        public void writeDuration(Key key, Duration value) {
+            this.data.writeName(key.get());
             this.data.writeInt64(value.toMicros());
         }
 
         @Override
-        public void writeInstant(String key, Instant value) {
-            this.data.writeName(key);
+        public void writeInstant(Key key, Instant value) {
+            this.data.writeName(key.get());
             this.codecRegistry.get(Instant.class).encode(this.data, value, this.encoderContext);
         }
 
         @Override
-        public <E extends Enum<E>> void writeEnum(String key, E value) {
+        public <E extends Enum<E>> void writeEnum(Key key, E value) {
             this.writeString(key, value.name());
         }
 
@@ -161,60 +193,76 @@ public class MongoIO {
         }
 
         @Override
-        public char readChar(String key) {
-            return Character.forDigit(this.handle.readInt32(key), 10);
+        public char readChar(Key key) {
+            return Character.forDigit(this.handle.readInt32(key.get()), 10);
         }
 
         @Override
-        public String readString(String key) {
-            return this.handle.readString(key);
+        public String readString(Key key) {
+            return this.handle.readString(key.get());
         }
 
         @Override
-        public boolean readBoolean(String key) {
-            return this.handle.readBoolean(key);
+        public boolean readBoolean(Key key) {
+            return this.handle.readBoolean(key.get());
         }
 
         @Override
-        public byte readByte(String key) {
-            return (byte) this.handle.readInt32(key);
+        public byte readByte(Key key) {
+            return (byte) this.handle.readInt32(key.get());
         }
 
         @Override
-        public int readInt(String key) {
-            return this.handle.readInt32(key);
+        public int readInt(Key key) {
+            return this.handle.readInt32(key.get());
         }
 
         @Override
-        public long readLong(String key) {
-            return this.handle.readInt64(key);
+        public long readLong(Key key) {
+            return this.handle.readInt64(key.get());
         }
 
         @Override
-        public short readShort(String key) {
-            return (short) this.handle.readInt32(key);
+        public short readShort(Key key) {
+            return (short) this.handle.readInt32(key.get());
         }
 
         @Override
-        public float readFloat(String key) {
-            return Float.intBitsToFloat(this.handle.readInt32(key));
+        public float readFloat(Key key) {
+            return Float.intBitsToFloat(this.handle.readInt32(key.get()));
         }
 
         @Override
-        public double readDouble(String key) {
-            return this.handle.readDouble(key);
+        public double readDouble(Key key) {
+            return this.handle.readDouble(key.get());
         }
 
         @Override
-        public UUID readUUID(String key) {
-            this.handle.readName(key);
+        public <R extends Number> Count<R> readCount(Key key, DataType type) throws Exception {
+            switch (type) {
+                case INTEGER:
+                case BYTE:
+                case SHORT:
+                    return (Count<R>) new IntegerCount(this.readInt(key));
+                case LONG:
+                    return (Count<R>) new LongCount(this.readLong(key));
+                case FLOAT:
+                case DOUBLE:
+                    return (Count<R>) new DoubleCount(this.readDouble(key));
+            }
+            throw new IllegalArgumentException("Unsupported data type: " + type);
+        }
+
+        @Override
+        public UUID readUUID(Key key) {
+            this.handle.readName(key.get());
             return this.codecRegistry.get(UUID.class).decode(this.handle, this.decoderContext);
         }
 
         @Override
-        public <K, V> Map<K, V> readMap(String key, Function<String, K> keyMapper, Function<String, V> reader) {
+        public <K, V> Map<K, V> readMap(Key key, Function<String, K> keyMapper, Function<String, V> reader) {
             Map<K, V> map = new HashMap<>();
-            this.handle.readName(key);
+            this.handle.readName(key.get());
             this.handle.readStartDocument();
             while (this.handle.readBsonType() != BsonType.END_OF_DOCUMENT) {
                 String name = this.handle.readName();
@@ -225,9 +273,9 @@ public class MongoIO {
         }
 
         @Override
-        public <K, V> Multimap<K, V> readMultiMap(String key, Function<String, K> keyMapper, Function<String, Collection<V>> reader) throws Exception {
+        public <K, V> Multimap<K, V> readMultiMap(Key key, Function<String, K> keyMapper, Function<String, Collection<V>> reader) throws Exception {
             Multimap<K, V> map = ArrayListMultimap.create();
-            this.handle.readName(key);
+            this.handle.readName(key.get());
             this.handle.readStartDocument();
             while (this.handle.readBsonType() != BsonType.END_OF_DOCUMENT) {
                 String name = this.handle.readName();
@@ -238,8 +286,8 @@ public class MongoIO {
         }
 
         @Override
-        public <V> Collection<V> readList(String key, Function<String, V> valueMapper) {
-            this.handle.readName(key);
+        public <V> Collection<V> readList(Key key, Function<String, V> valueMapper) {
+            this.handle.readName(key.get());
             Collection<V> list = new ArrayList<>();
 
             Collection decode = this.codecRegistry.get(Collection.class).decode(this.handle, this.decoderContext);
@@ -250,26 +298,26 @@ public class MongoIO {
         }
 
         @Override
-        public <N extends Number> PersistentStat<N> readPersistentStat(String key, Class<N> type) throws Exception {
-            this.handle.readName(key);
-            PersistentStat<N> stat = new PersistentStat<>(key);
+        public <N extends Number> PersistentStat<N> readPersistentStat(Key key, Class<N> type) throws Exception {
+            this.handle.readName(key.get());
+            PersistentStat<N> stat = new PersistentStat<>(key, () -> null);
             stat.load(this);
             return stat;
         }
 
         @Override
-        public Duration readDuration(String key) {
+        public Duration readDuration(Key key) {
             return Duration.ofMicroseconds(this.readLong(key));
         }
 
         @Override
-        public Instant readInstant(String key) {
+        public Instant readInstant(Key key) {
             return this.codecRegistry.get(Instant.class).decode(this.handle, this.decoderContext);
         }
 
         @Override
-        public <E extends Enum<E>> E readEnum(String key, Class<E> type) {
-            return EnumUtil.matchEnum(this.handle.readString(key), type.getEnumConstants());
+        public <E extends Enum<E>> E readEnum(Key key, Class<E> type) {
+            return EnumUtil.matchEnum(this.handle.readString(key.get()), type.getEnumConstants());
         }
 
     }

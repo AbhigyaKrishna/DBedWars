@@ -2,24 +2,25 @@ package org.zibble.dbedwars.database.jooq.binding;
 
 import org.jetbrains.annotations.NotNull;
 import org.jooq.Converter;
-import org.jooq.types.YearToSecond;
+import org.jooq.types.UInteger;
+import org.jooq.types.ULong;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
 
-public class DurationConverter implements Converter<YearToSecond, Duration> {
+public class DurationConverter implements Converter<UInteger, Duration> {
 
     @Override
-    public Duration from(YearToSecond databaseObject) {
-        return Duration.fromJava(databaseObject.toDuration());
+    public Duration from(UInteger databaseObject) {
+        return Duration.ofMilliseconds(databaseObject.longValue());
     }
 
     @Override
-    public YearToSecond to(Duration userObject) {
-        return YearToSecond.valueOf(userObject.toMillis());
+    public UInteger to(Duration userObject) {
+        return UInteger.valueOf(userObject.toMillis());
     }
 
     @Override
-    public @NotNull Class<YearToSecond> fromType() {
-        return YearToSecond.class;
+    public @NotNull Class<UInteger> fromType() {
+        return UInteger.class;
     }
 
     @Override

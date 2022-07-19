@@ -97,7 +97,7 @@ public class MySQL extends SQLDatabase {
         }
 
         if (this.dataSource == null) {
-            this.config.setDataSourceClassName(driverClass);
+            this.config.setDriverClassName(driverClass);
             this.config.setJdbcUrl(String.format(URL_FORMAT, host, port, database) + this.params);
             this.config.setUsername(username);
             this.config.setPassword(password);

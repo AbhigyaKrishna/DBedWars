@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class JooqContext {
 
     static final Pattern MATCH_ALL_EXCEPT_INFORMATION_SCHEMA = Pattern.compile("^(?!INFORMATION_SCHEMA)(.*?)$");
-    static final Pattern MATCH_ALL = Pattern.compile("^dbedwars_(.*?)$");
+    static final Pattern MATCH_ALL = Pattern.compile("^(.*?)$");
     static final String REPLACEMENT = "dbedwars_$0";
 
     private final SQLDialect dialect;

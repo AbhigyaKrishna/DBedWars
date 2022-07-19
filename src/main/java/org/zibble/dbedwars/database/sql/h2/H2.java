@@ -45,7 +45,7 @@ public class H2 extends SQLDatabase {
         }
 
         if (this.dataSource == null) {
-            this.config.setDataSourceClassName(DRIVER_CLASS);
+            this.config.setDriverClassName(DRIVER_CLASS);
             this.config.setJdbcUrl("jdbc:h2:" + this.db.getPath());
             this.dataSource = new HikariDataSource(this.config);
         }

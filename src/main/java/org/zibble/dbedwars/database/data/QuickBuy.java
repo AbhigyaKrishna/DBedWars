@@ -1,12 +1,20 @@
 package org.zibble.dbedwars.database.data;
 
+import org.zibble.dbedwars.api.util.NumberUtils;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.properies.NamedProperties;
 import org.zibble.dbedwars.database.data.io.DataReader;
 import org.zibble.dbedwars.database.data.io.DataWriter;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class QuickBuy implements PlayerDataCache {
+
+    public static final Key UUID = Key.of("uuid");
+    public static final Key NAME = Key.of("name");
+    public static final Key DATA = Key.of("data");
 
     private UUID uuid;
     private String name;
@@ -54,23 +62,31 @@ public class QuickBuy implements PlayerDataCache {
 
     @Override
     public void save(DataWriter<?> writer) throws Exception {
-        writer.writeUUID("uuid", this.uuid);
-        writer.writeString("name", this.name);
-        for (int i = 0; i < this.data.size(); i++) {
-            writer.writeString(String.valueOf(i), this.data.get(i));
-        }
+        writer.writeUUID(UUID, this.uuid);
+        writer.writeString(NAME, this.name);
+        writer.writeMap(DATA, this.data.getSlots(), String::valueOf, (k, v) -> {
+            try {
+                writer.writeString(Key.of(k), v);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
     public void load(DataReader<?> reader) throws Exception {
-        this.uuid = reader.readUUID("uuid");
-        this.name = reader.readString("name");
+        this.uuid = reader.readUUID(UUID);
+        this.name = reader.readString(NAME);
         this.data = new QuickBuyData();
-        for (int i = 0; i < this.data.size(); i++) {
+        Map<Integer, String> map = reader.readMap(DATA, NumberUtils::toInt, k -> {
             try {
-                this.data.set(i, reader.readString(String.valueOf(i)));
-            } catch (Exception ignored) {
+                return reader.readString(Key.of(k));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
+        });
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            this.data.set(entry.getKey(), entry.getValue());
         }
     }
 
