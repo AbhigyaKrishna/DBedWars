@@ -39,7 +39,7 @@ public class NPCTracker {
 
             @Override
             public boolean shouldExecute() {
-                return System.currentTimeMillis() - lastRun >= 100;
+                return !this.isCancelled() && System.currentTimeMillis() - lastRun >= 100;
             }
         };
         PLUGIN.getThreadHandler().submitAsync(this.task);
@@ -64,11 +64,10 @@ public class NPCTracker {
     private boolean canSee(Player player) {
         Vector vector = player.getLocation().toVector().subtract(npc.getLocation().toVector());
         int a = Math.min(Math.min(256, (Bukkit.getViewDistance() - 1) * 16), (player.getClientViewDistance() - 1) * 16);
-        return
-                vector.getX() >= -a &&
-                        vector.getX() <= a &&
-                        vector.getZ() >= -a &&
-                        vector.getZ() <= a;
+        return vector.getX() >= -a &&
+                vector.getX() <= a &&
+                vector.getZ() >= -a &&
+                vector.getZ() <= a;
     }
 
 }

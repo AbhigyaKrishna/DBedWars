@@ -9,6 +9,7 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.npc.EntityNPC;
 import org.zibble.dbedwars.api.hooks.npc.NPCFactory;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
+import org.zibble.dbedwars.api.task.Task;
 import org.zibble.dbedwars.api.util.key.Key;
 
 import java.util.Map;
@@ -19,9 +20,11 @@ public class NPCFactoryImpl implements NPCFactory {
 
     private final Map<Key, BedWarsNPCImpl> npcs = new ConcurrentHashMap<>();
     private NPCListener listener;
+    Task thread;
 
     @Override
     public void init() {
+        this.thread = DBedwars.getInstance().getThreadHandler().getTaskHandler().newPool(1, 3 * 1000000L);
         PacketEvents.getAPI().getEventManager().registerListener(listener = new NPCListener(this));
         Bukkit.getPluginManager().registerEvents(this.listener, DBedwars.getInstance());
     }
@@ -50,6 +53,7 @@ public class NPCFactoryImpl implements NPCFactory {
             value.destroy();
         }
         this.npcs.clear();
+        this.thread.cancel();
         PacketEvents.getAPI().getEventManager().unregisterListener(this.listener);
         HandlerList.unregisterAll(this.listener);
     }

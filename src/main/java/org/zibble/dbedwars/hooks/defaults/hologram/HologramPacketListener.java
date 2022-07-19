@@ -7,6 +7,9 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.zibble.dbedwars.api.hooks.hologram.HologramLine;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 import org.zibble.dbedwars.api.util.ClickType;
@@ -14,7 +17,7 @@ import org.zibble.dbedwars.api.util.ClickType;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class HologramPacketListener extends PacketListenerAbstract {
+public class HologramPacketListener extends PacketListenerAbstract implements Listener {
 
     private final Cache<UUID, Integer> cooldown;
     private final HologramManager manager;
@@ -68,6 +71,13 @@ public class HologramPacketListener extends PacketListenerAbstract {
             return player.isSneaking() ? ClickType.SHIFT_LEFT_CLICK : ClickType.LEFT_CLICK;
         else
             return player.isSneaking() ? ClickType.SHIFT_RIGHT_CLICK : ClickType.RIGHT_CLICK;
+    }
+
+    @EventHandler
+    public void handleMove(PlayerMoveEvent event) {
+        for (HologramImpl hologram : this.manager.getHolograms().values()) {
+            hologram.tracker.onMove(event);
+        }
     }
 
 

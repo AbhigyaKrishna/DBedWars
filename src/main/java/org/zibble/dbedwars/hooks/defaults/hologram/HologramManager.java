@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.hologram.HologramFactory;
@@ -25,17 +26,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HologramManager implements HologramFactory {
 
-    private final DBedwars plugin;
-    private final Task thread;
-    private final Map<Key, HologramImpl> holograms;
+    private DBedwars plugin;
+    Task thread;
+    Map<Key, HologramImpl> holograms;
+    HologramPacketListener listener;
 
-    public HologramManager() {
+    @Override
+    public void init() {
         this.plugin = DBedwars.getInstance();
         this.thread = this.plugin.getThreadHandler().getTaskHandler().newPool(1, 3 * 1000000L);
         this.holograms = new ConcurrentHashMap<>();
-        HologramPacketListener packetListener = new HologramPacketListener(this);
-        PacketEventsAPI<?> packetEventsAPI = PacketEvents.getAPI();
-        packetEventsAPI.getEventManager().registerListener(packetListener);
+        this.listener = new HologramPacketListener(this);
+        PacketEvents.getAPI().getEventManager().registerListener(listener);
+        this.plugin.getServer().getPluginManager().registerEvents(listener, this.plugin);
         this.startUpdateTask();
     }
 
@@ -197,6 +200,17 @@ public class HologramManager implements HologramFactory {
 
     protected Map<Key, HologramImpl> getHolograms() {
         return holograms;
+    }
+
+    @Override
+    public void disable() {
+        for (HologramImpl value : this.holograms.values()) {
+            value.destroy();
+        }
+        this.holograms.clear();
+        this.thread.cancel();
+        PacketEvents.getAPI().getEventManager().unregisterListener(this.listener);
+        HandlerList.unregisterAll(this.listener);
     }
 
 }

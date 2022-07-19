@@ -14,24 +14,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class HologramImpl implements Hologram {
 
-    private final HologramManager manager;
-    private final Key key;
+    final HologramManager manager;
+    final Key key;
 
-    private final List<HologramPageImpl> hologramPages;
-    private final Map<UUID, Integer> viewerPages;
-    private final Set<UUID> viewers;
-    private final Set<ClickAction> clickActions;
-    private Location location;
-    private int displayRange = 48;
-    private int updateRange = 48;
-    private Duration updateInterval = Duration.ofSeconds(20);
+    final List<HologramPageImpl> hologramPages;
+    final Map<UUID, Integer> viewerPages;
+    final Set<UUID> viewers;
+    final Set<UUID> outOfRenderDistance;
+    final Set<ClickAction> clickActions;
+    Location location;
+    int displayRange = 48;
+    int updateRange = 48;
+    Duration updateInterval = Duration.ofSeconds(20);
 
-    private boolean inverted = false;
-    private boolean hasChangedContentType = false;
+    boolean inverted = false;
+    boolean hasChangedContentType = false;
 
-    private boolean clickRegistered;
-    private boolean updateRegistered;
-    private long lastUpdate;
+    boolean clickRegistered;
+    boolean updateRegistered;
+    long lastUpdate;
+    HologramTracker tracker;
 
     public HologramImpl(HologramManager manager, Key key, Location location) {
         this.manager = manager;
@@ -40,10 +42,13 @@ public class HologramImpl implements Hologram {
         this.viewerPages = new ConcurrentHashMap<>();
         this.clickActions = Collections.synchronizedSet(new HashSet<>());
         this.viewers = Collections.synchronizedSet(new HashSet<>());
+        this.outOfRenderDistance = Collections.synchronizedSet(new HashSet<>());
         this.location = location;
         this.clickRegistered = true;
         this.updateRegistered = true;
         this.lastUpdate = System.currentTimeMillis();
+        this.tracker = new HologramTracker(this);
+        this.tracker.start();
     }
 
     @Override
@@ -206,6 +211,7 @@ public class HologramImpl implements Hologram {
     @Override
     public void destroy() {
         this.hideAll();
+        this.tracker.stop();
         this.manager.getHolograms().remove(this.key);
     }
 

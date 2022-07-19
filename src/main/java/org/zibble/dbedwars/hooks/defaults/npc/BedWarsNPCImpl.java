@@ -4,7 +4,6 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
-import com.github.retrooper.packetevents.util.MathUtil;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.Bukkit;
@@ -15,6 +14,7 @@ import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.NPCAnimation;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.api.util.key.Keyed;
@@ -65,11 +65,8 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
         return this.entityID;
     }
 
-    public ActionFuture<BedwarsNPC> setEntityID(int id) {
-        return ActionFuture.supplyAsync(() -> {
-            this.entityID = id;
-            return this;
-        });
+    public void setEntityID(int id) {
+        this.entityID = id;
     }
 
     @Override
@@ -116,14 +113,12 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
 
     @Override
     public ActionFuture<BedwarsNPC> lookAt(float yaw, float pitch) {
-        byte yawByte = (byte) MathUtil.floor(yaw * 256.0F / 360.0F);
-        byte pitchByte = (byte) MathUtil.floor(pitch * 256.0F / 360.0F);
         return ActionFuture.supplyAsync(() -> {
             this.location.setYaw(yaw);
             this.location.setPitch(pitch);
             for (UUID uuid : this.shown) {
                 Player player = Bukkit.getPlayer(uuid);
-                if (player != null) this.changeDirectionPacket(player, yawByte, pitchByte);
+                if (player != null) this.changeDirectionPacket(player, yaw, pitch);
                 else {
                     this.shown.remove(uuid);
                     this.outOfRenderDistance.remove(uuid);
@@ -241,6 +236,20 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
         });
     }
 
+    @Override
+    public ActionFuture<BedwarsNPC> sendAnimate(NPCAnimation animation) {
+        return ActionFuture.supplyAsync(() -> {
+            WrapperPlayServerEntityAnimation packet = new WrapperPlayServerEntityAnimation(this.getEntityID(), WrapperPlayServerEntityAnimation.EntityAnimationType.getById(animation.ordinal()));
+            for (UUID uuid : this.shown) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
+                }
+            }
+            return this;
+        });
+    }
+
     public ActionFuture<BedwarsNPC> addInShownList(Player player) {
         return ActionFuture.supplyAsync(() -> {
             this.shown.add(player.getUniqueId());
@@ -288,14 +297,12 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC, Keyed {
 
     protected void changeLocationPacket(Player player) {
         WrapperPlayServerEntityTeleport packet = new WrapperPlayServerEntityTeleport(this.getEntityID(),
-                SpigotConversionUtil.fromBukkitLocation(this.location).getPosition(),
-                this.location.getYaw(),
-                this.location.getPitch(),
+                SpigotConversionUtil.fromBukkitLocation(this.location),
                 true);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, packet);
     }
 
-    protected void changeDirectionPacket(Player player, byte yaw, byte pitch) {
+    protected void changeDirectionPacket(Player player, float yaw, float pitch) {
         WrapperPlayServerEntityHeadLook yawPacket = new WrapperPlayServerEntityHeadLook(this.getEntityID(), yaw);
         WrapperPlayServerEntityRotation pitchPacket = new WrapperPlayServerEntityRotation(this.getEntityID(), yaw, pitch, true);
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, yawPacket);

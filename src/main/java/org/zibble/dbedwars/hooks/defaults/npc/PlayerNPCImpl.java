@@ -5,10 +5,7 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnPlayer;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.NPCAnimation;
 import org.zibble.dbedwars.api.hooks.npc.PlayerNPC;
 import org.zibble.dbedwars.api.hooks.npc.SkinData;
 import org.zibble.dbedwars.api.objects.profile.Skin;
@@ -208,11 +206,18 @@ public class PlayerNPCImpl extends BedWarsNPCImpl implements PlayerNPC {
         WrapperPlayServerSpawnPlayer spawnPacket = new WrapperPlayServerSpawnPlayer(
                 this.getEntityID(),
                 this.getUUID(),
-                SpigotConversionUtil.fromBukkitLocation(this.getLocation()),
-                Collections.emptyList()
+                SpigotConversionUtil.fromBukkitLocation(this.getLocation())
         );
         PACKET_EVENTS_API.getPlayerManager().sendPacket(player, spawnPacket);
         this.sendTeamPacket(player, WrapperPlayServerTeams.TeamMode.CREATE);
+
+        this.changeDirectionPacket(player, this.getLocation().getYaw(), this.getLocation().getPitch());
+    }
+
+    @Override
+    protected void destroyPacket(Player player) {
+        super.destroyPacket(player);
+        this.sendTeamPacket(player, WrapperPlayServerTeams.TeamMode.REMOVE);
     }
 
     private void sendTabShowPacket(Player... players) {

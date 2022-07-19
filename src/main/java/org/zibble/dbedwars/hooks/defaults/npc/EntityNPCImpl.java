@@ -42,7 +42,7 @@ public class EntityNPCImpl extends BedWarsNPCImpl implements EntityNPC {
                 this.getUUID(),
                 SpigotConversionUtil.fromBukkitEntityType(this.entityType),
                 SpigotConversionUtil.fromBukkitLocation(this.getLocation()),
-                this.getLocation().getPitch(),
+                this.getLocation().getYaw(),
                 Vector3d.zero(),
                 Collections.emptyList()
         );
