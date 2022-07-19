@@ -9,6 +9,8 @@ import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.configurable.ConfigurableArenaCategory;
 import org.zibble.dbedwars.game.GameManagerImpl;
 
+import java.util.Optional;
+
 public class ArenaCategoryImpl implements ArenaCategory {
 
     private final Key key;
@@ -25,7 +27,7 @@ public class ArenaCategoryImpl implements ArenaCategory {
     public static ArenaCategoryImpl fromConfig(GameManagerImpl gameManager, ConfigurableArenaCategory config) {
         ArenaCategoryImpl category = new ArenaCategoryImpl(config.getName(), ConfigMessage.from(config.getCustomName()));
         category.setDescription(ConfigMessage.from(config.getDescription()));
-        category.setIcon(BwItemStack.valueOf(config.getIcon()));
+        category.setIcon(BwItemStack.valueOf(config.getIcon(), Optional.empty()));
         category.setScoreboardData(gameManager.getScoreboardData().get(config.getScoreboard()));
         return category;
     }

@@ -13,9 +13,9 @@ public class PlayerConditionTranslator extends IConditionTranslator<Player, Play
     public PlayerCondition<?> serialize(String key, String value, ScriptVariable<?>... variables) {
         Player player = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(Player.class) || variable.getKey().get().equalsIgnoreCase("player")) {
+            if (variable.isSubClassOf(Player.class) || variable.getKey().get().equalsIgnoreCase("player")) {
                 player = (Player) variable.value();
-            } else if (variable.isAssignableFrom(ArenaPlayer.class) || variable.getKey().get().equalsIgnoreCase("arenaplayer")) {
+            } else if (variable.isSubClassOf(ArenaPlayer.class) || variable.getKey().get().equalsIgnoreCase("arenaplayer")) {
                 player = ((ArenaPlayer) variable.value()).getPlayer();
             }
         }

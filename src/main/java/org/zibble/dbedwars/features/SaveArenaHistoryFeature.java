@@ -4,8 +4,6 @@ import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.feature.FeaturePriority;
 import org.zibble.dbedwars.api.game.Arena;
 import org.zibble.dbedwars.api.util.Color;
-import org.zibble.dbedwars.database.data.ArenaHistory;
-import org.zibble.dbedwars.utils.DatabaseUtil;
 
 public class SaveArenaHistoryFeature extends org.zibble.dbedwars.api.feature.custom.SaveArenaHistoryFeature {
 
@@ -23,8 +21,7 @@ public class SaveArenaHistoryFeature extends org.zibble.dbedwars.api.feature.cus
 
     @Override
     public boolean save(Arena arena, Color winner) {
-        ArenaHistory history = DatabaseUtil.createHistory(arena, winner);
-        this.plugin.getDatabaseBridge().insertArenaHistory(history);
+        this.plugin.getDataHandler().saveArenaHistory(arena, winner);
         return true;
     }
 

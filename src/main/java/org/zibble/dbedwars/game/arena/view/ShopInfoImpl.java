@@ -121,7 +121,7 @@ public class ShopInfoImpl implements ShopInfo {
         private Set<String> actions;
 
         public ItemInfoImpl(Json item) {
-            this((placeholders) -> BwItemStack.fromJson(item, placeholders));
+            this((placeholders) -> BwItemStack.fromJson(item, Optional.empty(), placeholders));
         }
 
         public ItemInfoImpl(BwItemStack item) {
@@ -141,14 +141,14 @@ public class ShopInfoImpl implements ShopInfo {
                 Json json = DBedwars.getInstance().getConfigHandler().getJsonItem().get(matcher.group("item"));
                 if (json == null) return null;
                 item = new ItemInfoImpl((placeholders) -> {
-                    BwItemStack i = BwItemStack.fromJson(json);
+                    BwItemStack i = BwItemStack.fromJson(json, Optional.empty());
                     if (matcher.group("amount") != null) {
                         i.setAmount(NumberUtils.toInt(matcher.group("amount")));
                     }
                     return i;
                 });
             } else {
-                BwItemStack itemStack = BwItemStack.valueOf(config.getMaterial());
+                BwItemStack itemStack = BwItemStack.valueOf(config.getMaterial(), Optional.empty());
                 if (itemStack == null) return null;
                 itemStack.setDisplayName(ConfigMessage.from(config.getName()));
                 itemStack.setLore(ConfigMessage.from(config.getLore().toArray(new String[0])));

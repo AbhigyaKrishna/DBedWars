@@ -6,7 +6,6 @@ import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.google.common.base.Strings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -118,25 +117,18 @@ public class Util {
         players.stream()
                 .sorted(
                         (o1, o2) -> {
-                            int p1 = calculatePoint(o1);
-                            int p2 = calculatePoint(o2);
+                            int p1 = (int) o1.getPoints().getTotalPoints();
+                            int p2 = (int) o1.getPoints().getTotalPoints();
 
                             return Integer.compare(p1, p2) * -1;
                         })
                 .forEach(
                         player -> {
-                            int point = calculatePoint(player);
+                            int point = (int) player.getPoints().getTotalPoints();
                             map.put(player, point);
                         });
 
         return map;
-    }
-
-    public static int calculatePoint(ArenaPlayer player) {
-        return (player.getPoints().getCount(ArenaPlayer.PlayerPoints.KILLS).intValue() * player.getArena().getSettings().getKillPoint())
-                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.FINAL_KILLS).intValue() * player.getArena().getSettings().getFinalKillPoint())
-                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.DEATH).intValue() * player.getArena().getSettings().getDeathPoint())
-                + (player.getPoints().getCount(ArenaPlayer.PlayerPoints.BEDS).intValue() * player.getArena().getSettings().getBedDestroyPoint());
     }
 
     public static void useItem(Player player) {

@@ -18,7 +18,7 @@ public interface ScriptVariable<T> extends Keyed {
             }
 
             @Override
-            public boolean isAssignableFrom(Class<?> clazz) {
+            public boolean isSubClassOf(Class<?> clazz) {
                 return false;
             }
 
@@ -32,21 +32,21 @@ public interface ScriptVariable<T> extends Keyed {
     static <T> ScriptVariable<T> of(String key, T value) {
         return new ScriptVariable<T>() {
 
-            private T value;
+            private T scriptValue = value;
 
             @Override
             public T value() {
-                return this.value;
+                return this.scriptValue;
             }
 
             @Override
             public void value(T value) {
-                this.value = value;
+                this.scriptValue = value;
             }
 
             @Override
-            public boolean isAssignableFrom(Class<?> clazz) {
-                return this.value.getClass().isAssignableFrom(clazz);
+            public boolean isSubClassOf(Class<?> clazz) {
+                return clazz.isAssignableFrom(this.value().getClass());
             }
 
             @Override
@@ -69,8 +69,8 @@ public interface ScriptVariable<T> extends Keyed {
             }
 
             @Override
-            public boolean isAssignableFrom(Class<?> clazz) {
-                return value.getClass().isAssignableFrom(clazz);
+            public boolean isSubClassOf(Class<?> clazz) {
+                return clazz.isAssignableFrom(this.value().getClass());
             }
 
             @Override
@@ -84,7 +84,7 @@ public interface ScriptVariable<T> extends Keyed {
 
     void value(T value);
 
-    boolean isAssignableFrom(Class<?> clazz);
+    boolean isSubClassOf(Class<?> clazz);
 
     default boolean isNull() {
         return value() == null;

@@ -13,7 +13,7 @@ public class CommandAction implements ActionTranslator<CommandAction.Action> {
     public Action serialize(String untranslated, ScriptVariable<?>... variables) {
         CommandSender sender = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(CommandSender.class)) {
+            if (variable.isSubClassOf(CommandSender.class)) {
                 sender = (CommandSender) variable.value();
             } else if (variable.getKey().equals("PLACEHOLDER")) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);

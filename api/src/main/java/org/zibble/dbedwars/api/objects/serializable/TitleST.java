@@ -5,6 +5,7 @@ import net.kyori.adventure.util.Ticks;
 import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.messaging.Messaging;
 import org.zibble.dbedwars.api.messaging.message.Message;
+import org.zibble.dbedwars.api.util.NumberUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,19 +51,17 @@ public class TitleST implements Cloneable {
             Matcher msgMatcher = MESSAGE_PATTERN.matcher(title);
             if (msgMatcher.matches()) {
                 title = msgMatcher.group("title");
-                if (msgMatcher.groupCount() > 1) {
-                    subTitle = msgMatcher.group("subtitle");
-                }
+                subTitle = msgMatcher.group("subtitle");
             }
 
             if (matcher.groupCount() > 1) {
                 return TitleST.of(Messaging.get().asConfigMessage(title),
-                        Messaging.get().asConfigMessage(subTitle),
-                        (long) Double.parseDouble(matcher.group("fadein")),
-                        (long) Double.parseDouble(matcher.group("stay")),
-                        (long) Double.parseDouble(matcher.group("fadeout")));
+                        Messaging.get().asConfigMessage(subTitle == null ? "" : subTitle),
+                        (long) NumberUtils.toDouble(matcher.group("fadein"), DEFAULT_FADE_IN),
+                        (long) NumberUtils.toDouble(matcher.group("stay"), DEFAULT_STAY),
+                        (long) NumberUtils.toDouble(matcher.group("fadeout"), DEFAULT_FADE_OUT));
             } else {
-                return TitleST.of(Messaging.get().asConfigMessage(title), Messaging.get().asConfigMessage(subTitle));
+                return TitleST.of(Messaging.get().asConfigMessage(title), Messaging.get().asConfigMessage(subTitle == null ? "" : subTitle));
             }
         }
 

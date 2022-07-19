@@ -1,13 +1,15 @@
 package org.zibble.dbedwars.api.objects.points;
 
+import org.zibble.dbedwars.api.util.DataType;
+
 public class IntegerCount extends Count<Integer> {
 
     public IntegerCount() {
-        super(0);
+        super(0, DataType.INTEGER);
     }
 
     public IntegerCount(Integer value) {
-        super(value);
+        super(value, DataType.INTEGER);
     }
 
     @Override
@@ -43,6 +45,11 @@ public class IntegerCount extends Count<Integer> {
     @Override
     public synchronized void divide(Integer delta) {
         this.value /= delta;
+    }
+
+    @Override
+    public Count<Integer> clone() {
+        return new IntegerCount(this.value);
     }
 
 }

@@ -18,7 +18,7 @@ public class SendMessageAction implements ActionTranslator<SendMessageAction.Act
         AbstractMessaging messaging = null;
         final List<PlaceholderEntry> entries = new ArrayList<>();
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(AbstractMessaging.class)) {
+            if (variable.isSubClassOf(AbstractMessaging.class)) {
                 messaging = (AbstractMessaging) variable.value();
             } else if (variable.getKey().equals("PLACEHOLDER")) {
                 entries.add((PlaceholderEntry) variable.value());

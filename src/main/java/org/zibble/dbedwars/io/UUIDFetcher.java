@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,17 +13,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class UUIDFetcher {
 
     private static final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
     private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
     private static final UUIDFetcher INSTANCE = new UUIDFetcher();
-    private final Cache<String, UUID> uuidCache = CacheBuilder.newBuilder().expireAfterAccess(120, TimeUnit.MINUTES).build();
-    private final Cache<UUID, String> nameCache = CacheBuilder.newBuilder().expireAfterAccess(120, TimeUnit.MINUTES).build();
+    private final Cache<String, UUID> uuidCache = CacheBuilder.newBuilder().build();
+    private final Cache<UUID, String> nameCache = CacheBuilder.newBuilder().build();
 
     private UUIDFetcher() {
+    }
+
+    public void updateCache(Player player) {
+        uuidCache.put(player.getName(), player.getUniqueId());
+        nameCache.put(player.getUniqueId(), player.getName());
     }
 
     public static UUIDFetcher getInstance() {

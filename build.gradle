@@ -63,8 +63,8 @@ allprojects {
     shadowJar {
         relocate 'org.reflections', 'org.zibble.dbedwars.libraries.reflections'
         relocate 'org.bstats', 'org.zibble.dbedwars.libraries.bstats'
-        relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
-        relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'
+//        relocate 'com.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.api'
+//        relocate 'io.github.retrooper.packetevents', 'org.zibble.dbedwars.libraries.packetevents.spigot'
 
         minimize()
     }
@@ -137,7 +137,7 @@ dependencies {
     implementation project(':hooks:vault-hook')
     implementation project(':hooks:viphide-hook')
     implementation 'org.reflections:reflections:0.10.2'
-    implementation 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
+    compileOnly 'com.github.retrooper.packetevents:spigot:2.0-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'org.jooq:jooq:3.14.15'
@@ -193,6 +193,7 @@ bukkit {
             "NametagEdit",
             "NickAPI",
             "NickNamer",
+            "packetevents",
             "PlaceholderAPI",
             "PremiumVanish",
             "PvPLevels",
@@ -203,6 +204,9 @@ bukkit {
             "Tab",
             "Vanish",
             "Vault",
+            "ViaBackwards",
+            "ViaVersion",
+            "ViaRewind",
             "VIPHide"
     )
 }

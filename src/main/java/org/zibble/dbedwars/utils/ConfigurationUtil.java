@@ -1,8 +1,8 @@
 package org.zibble.dbedwars.utils;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.DBedwars;
-import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.game.spawner.DropInfo;
 import org.zibble.dbedwars.api.game.trap.Target;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
@@ -15,7 +15,6 @@ import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.objects.hologram.AnimatedHologramModel;
 import org.zibble.dbedwars.api.objects.hologram.HologramModel;
 import org.zibble.dbedwars.api.objects.hologram.HologramRotateTask;
-import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.objects.profile.Skin;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.objects.serializable.Duration;
@@ -38,10 +37,6 @@ import org.zibble.dbedwars.game.ArenaDataHolderImpl;
 import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 import org.zibble.dbedwars.game.arena.traps.TrapImpl;
 import org.zibble.dbedwars.game.arena.traps.TriggerType;
-import org.zibble.dbedwars.io.GameProfileFetcher;
-import org.zibble.dbedwars.io.MineSkinAPI;
-import org.zibble.dbedwars.io.UUIDFetcher;
-import org.zibble.dbedwars.io.UUIDTypeAdaptor;
 import org.zibble.dbedwars.script.action.ActionPreProcessor;
 import org.zibble.dbedwars.task.implementations.HologramBabyRotateTask;
 import org.zibble.dbedwars.task.implementations.HologramExpertRotateTask;
@@ -49,7 +44,7 @@ import org.zibble.dbedwars.task.implementations.HologramExpertRotateTask;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,14 +80,6 @@ public class ConfigurationUtil {
         }
 
         return null;
-    }
-
-    public static BwItemStack parseItem(Color color, String s) {
-        String replace = color == null ? "" : String.valueOf(color.getData());
-        s = s.replace("%team%", replace);
-        s = s.replace("STAINED_GLASS", "GLASS");
-        s = s.replace("GLASS", "STAINED_GLASS");
-        return BwItemStack.valueOf(s);
     }
 
     public static String getConfigCode(Color color) {
@@ -142,8 +129,8 @@ public class ConfigurationUtil {
         return DBedwars.getInstance().getHookManager().getScoreboardHook().createScoreboardData(ScoreboardData.Type.DYNAMIC, ConfigMessage.from(config.getTitle()), lines, Duration.ofTicks(config.getUpdateTick()));
     }
 
-    public static AnimatedHologramModel createHologram(ConfigurableHologram.HologramConfig config, Placeholder... placeholders) {
-        return new AnimatedHologramModel(createLines(config.getContent(), placeholders),
+    public static AnimatedHologramModel createHologram(ConfigurableHologram.HologramConfig config, Optional<Player> player, Placeholder... placeholders) {
+        return new AnimatedHologramModel(createLines(config.getContent(), player, placeholders),
                 Duration.ofTicks(config.getUpdateDelay()),
                 config.getAnimationEndTask(),
                 (hologram, model) -> createHologramTask(hologram, model, config));
@@ -182,13 +169,13 @@ public class ConfigurationUtil {
         return task;
     }
 
-    private static List<HologramModel.ModelLine> createLines(List<String> content, Placeholder... placeholders) {
+    private static List<HologramModel.ModelLine> createLines(List<String> content, Optional<Player> player, Placeholder... placeholders) {
         List<HologramModel.ModelLine> lines = new ArrayList<>(content.size());
         for (String s : content) {
             Matcher matcher = HEAD_PATTERN.matcher(s);
             if (matcher.matches()) {
                 String head = matcher.group("head");
-                BwItemStack itemStack = BwItemStack.valueOf(head, placeholders);
+                BwItemStack itemStack = BwItemStack.valueOf(head, player, placeholders);
                 if (itemStack != null) {
                     lines.add(HologramModel.ModelLine.ofHead(itemStack));
                     continue;
@@ -198,7 +185,7 @@ public class ConfigurationUtil {
             matcher = SMALL_HEAD_PATTERN.matcher(s);
             if (matcher.matches()) {
                 String smallHead = matcher.group("smallHead");
-                BwItemStack itemStack = BwItemStack.valueOf(smallHead, placeholders);
+                BwItemStack itemStack = BwItemStack.valueOf(smallHead, player, placeholders);
                 if (itemStack != null) {
                     lines.add(HologramModel.ModelLine.ofSmallHead(itemStack));
                     continue;
@@ -208,7 +195,7 @@ public class ConfigurationUtil {
             matcher = ICON_PATTERN.matcher(s);
             if (matcher.matches()) {
                 String icon = matcher.group("icon");
-                BwItemStack itemStack = BwItemStack.valueOf(icon, placeholders);
+                BwItemStack itemStack = BwItemStack.valueOf(icon, player, placeholders);
                 if (itemStack != null) {
                     lines.add(HologramModel.ModelLine.ofItem(itemStack));
                     continue;

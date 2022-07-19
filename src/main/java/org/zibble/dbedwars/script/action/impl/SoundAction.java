@@ -13,7 +13,7 @@ public class SoundAction implements ActionTranslator<SoundAction.Action> {
     public Action serialize(String untranslated, ScriptVariable<?>... variables) {
         PlayerMember member = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(PlayerMember.class)) {
+            if (variable.isSubClassOf(PlayerMember.class)) {
                 member = (PlayerMember) variable.value();
             } else if (variable.getKey().equals(Key.of("PLACEHOLDER"))) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);

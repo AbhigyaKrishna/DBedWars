@@ -10,6 +10,7 @@ import org.bukkit.util.Vector;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.hooks.hologram.Hologram;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
+import org.zibble.dbedwars.api.hooks.npc.NPCAnimation;
 import org.zibble.dbedwars.api.hooks.npc.NPCData;
 import org.zibble.dbedwars.api.util.mixin.ClickAction;
 
@@ -132,6 +133,11 @@ public abstract class BedWarsNPCImpl implements BedwarsNPC {
     @Override
     public void addClickAction(ClickAction action) {
         this.clickActions.add(action);
+    }
+
+    @Override
+    public ActionFuture<BedwarsNPC> sendAnimate(NPCAnimation animation) {
+        return null;
     }
 
     @Override

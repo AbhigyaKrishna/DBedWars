@@ -19,7 +19,7 @@ public class MineSkinAPI {
 
     private static final MineSkinAPI INSTANCE = new MineSkinAPI();
 
-    private final Cache<String, Skin> cache = CacheBuilder.newBuilder().expireAfterWrite(120, TimeUnit.MINUTES).build();
+    private final Cache<String, Skin> CACHE = CacheBuilder.newBuilder().expireAfterWrite(120, TimeUnit.MINUTES).build();
 
     private MineSkinAPI() {
     }
@@ -28,16 +28,17 @@ public class MineSkinAPI {
         return INSTANCE;
     }
 
+    public Skin getIfPresent(String id) {
+        return CACHE.getIfPresent(id);
+    }
+
     public Skin getSkin(String id) {
         return this.getSkin(id, false);
     }
 
     public Skin getSkin(String id, boolean forceNew) {
-        Skin skin = this.cache.getIfPresent(id);
-        if (!forceNew && skin != null) {
-            return skin;
-        } else {
-
+        Skin skin = this.CACHE.getIfPresent(id);
+        if (forceNew || skin == null) {
             skin = Skin.empty();
 
             try {
@@ -57,7 +58,7 @@ public class MineSkinAPI {
                             skin.setSignature(texture.get("signature").getAsString());
                         }
 
-                        this.cache.put(id, skin);
+                        this.CACHE.put(id, skin);
                     }
                 }
 

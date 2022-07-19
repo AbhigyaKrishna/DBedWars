@@ -3,7 +3,9 @@ package org.zibble.dbedwars.io;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.*;
+import org.bukkit.entity.Player;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
 import org.zibble.dbedwars.api.objects.profile.Property;
 import org.zibble.dbedwars.api.objects.profile.Skin;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class GameProfileFetcher {
 
@@ -31,10 +32,18 @@ public class GameProfileFetcher {
             .registerTypeAdapter(UUID.class, new UUIDTypeAdaptor())
             .registerTypeAdapter(PlayerGameProfile.class, new GameProfileSerializer())
             .create();
-    private final Cache<UUID, PlayerGameProfile> cache = CacheBuilder.newBuilder().expireAfterWrite(120, TimeUnit.MINUTES).build();
+    private final Cache<UUID, PlayerGameProfile> CACHE = CacheBuilder.newBuilder().build();
 
     public static GameProfileFetcher getInstance() {
         return INSTANCE;
+    }
+
+    public void updateCache(Player player) {
+        CACHE.put(player.getUniqueId(), DBedwars.getInstance().getNMSAdaptor().getProfile(player));
+    }
+
+    public PlayerGameProfile getIfPresent(UUID uuid) {
+        return CACHE.getIfPresent(uuid);
     }
 
     public PlayerGameProfile fetch(UUID uuid) {
@@ -43,10 +52,8 @@ public class GameProfileFetcher {
 
     public PlayerGameProfile fetch(UUID uuid, boolean forceNew) {
         // Check for cached profile
-        PlayerGameProfile profile = cache.getIfPresent(uuid);
-        if (!forceNew && profile != null)
-            return profile;
-        else {
+        PlayerGameProfile profile = CACHE.getIfPresent(uuid);
+        if (forceNew || profile == null) {
             try {
                 // Open http connection
                 HttpURLConnection connection = (HttpURLConnection) new URL(String.format(SERVICE_URL, UUIDTypeAdaptor.fromUUID(uuid))).openConnection();
@@ -54,13 +61,14 @@ public class GameProfileFetcher {
 
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     // Parse response
-                    String json = "", line;
+                    StringBuilder json = new StringBuilder();
+                    String line;
                     try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                        while ((line = bufferedReader.readLine()) != null) json += line;
+                        while ((line = bufferedReader.readLine()) != null) json.append(line);
 
-                        profile = gson.fromJson(json, PlayerGameProfile.class);
+                        profile = gson.fromJson(json.toString(), PlayerGameProfile.class);
                         // Cache profile
-                        cache.put(uuid, profile);
+                        CACHE.put(uuid, profile);
                     }
 
                     connection.disconnect();
@@ -68,9 +76,8 @@ public class GameProfileFetcher {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            return profile;
         }
+        return profile;
     }
 
     public PlayerGameProfile getProfile(UUID uuid, String name, String skin) {

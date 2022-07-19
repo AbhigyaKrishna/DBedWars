@@ -13,7 +13,7 @@ public class PotionAction implements ActionTranslator<PotionAction.Action> {
     public Action serialize(String untranslated, ScriptVariable<?>... variables) {
         LivingEntity entity = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(LivingEntity.class)) {
+            if (variable.isSubClassOf(LivingEntity.class)) {
                 entity = (LivingEntity) variable.value();
             } else if (variable.getKey().equals(Key.of("PLACEHOLDER"))) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);

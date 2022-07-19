@@ -14,10 +14,7 @@ import org.zibble.dbedwars.configuration.language.ConfigLang;
 import org.zibble.dbedwars.utils.ConfigurationUtil;
 import xyz.xenondevs.particle.ParticleEffect;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DropInfoImpl implements DropInfo {
 
@@ -46,7 +43,7 @@ public class DropInfoImpl implements DropInfo {
         dropType.merging = cfg.isMerge();
         dropType.spliting = cfg.isSplit();
         dropType.hologram = cfg.isHologramEnabled() ? DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().containsKey(cfg.getHologramId()) ?
-                ConfigurationUtil.createHologram(DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().get(cfg.getHologramId())) : null : null;
+                ConfigurationUtil.createHologram(DBedwars.getInstance().getConfigHandler().getHolograms().getConfigs().get(cfg.getHologramId()), Optional.empty()) : null : null;
 
         for (Map.Entry<String, ConfigurableItemSpawner.ConfigurableTiers> entry : cfg.getTiers().entrySet()) {
             dropType.tiers.put(Integer.parseInt(entry.getKey()), Tier.fromConfig(Integer.parseInt(entry.getKey()), entry.getValue()));
@@ -320,7 +317,7 @@ public class DropInfoImpl implements DropInfo {
 
         public static Drop fromConfig(ConfigurableItemSpawner.ConfigurableTiers.ConfigurableDrop cfg) {
             Drop drop = new Drop(cfg.getKey());
-            drop.item = BwItemStack.valueOf(cfg.getItem());
+            drop.item = BwItemStack.valueOf(cfg.getItem(), Optional.empty());
             drop.delay = cfg.getDelay();
             drop.maxSpawn = cfg.getLimit();
             return drop;

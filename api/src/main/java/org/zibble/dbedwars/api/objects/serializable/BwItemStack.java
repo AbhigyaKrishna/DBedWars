@@ -2,9 +2,12 @@ package org.zibble.dbedwars.api.objects.serializable;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -18,6 +21,8 @@ import org.zibble.dbedwars.api.messaging.message.LegacyMessage;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NBTItem;
+import org.zibble.dbedwars.api.objects.profile.PlayerGameProfile;
+import org.zibble.dbedwars.api.objects.profile.Skin;
 import org.zibble.dbedwars.api.util.EnumUtil;
 import org.zibble.dbedwars.api.util.NumberUtils;
 import org.zibble.dbedwars.api.util.item.ItemMetaBuilder;
@@ -29,6 +34,7 @@ import org.zibble.inventoryframework.protocol.ProtocolPlayer;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,9 +66,7 @@ public class BwItemStack implements Item, Cloneable {
     }
 
     public BwItemStack(XMaterial material, int amount) {
-        if (!material.isSupported()) {
-            throw new IllegalArgumentException("Material " + material.name() + " is not supported");
-        }
+        Preconditions.checkArgument(material.isSupported(), "Material " + material.name() + " is not supported");
         this.material = material;
         this.amount = amount;
         this.enchantments = new HashSet<>();
@@ -92,16 +96,19 @@ public class BwItemStack implements Item, Cloneable {
         this.nbtCompound = new NBTCompound(DBedWarsAPI.getApi().getNMS().getNBTItem(itemStack).getTags());
     }
 
-    public static BwItemStack valueOf(String str, Placeholder... placeholders) {
+    public static BwItemStack valueOf(String str, Optional<Player> player, Placeholder... placeholders) {
         Messaging messaging = Messaging.get();
+        Function<String, String> placeholderParser = player.<Function<String, String>>map(p -> s -> messaging.setRegisteredPlaceholders(messaging.setPlaceholders(s, p, placeholders), p))
+                .orElseGet(() -> s -> messaging.setPlaceholders(s, placeholders));
+
         Matcher matcher = JSON_MATCHER.matcher(str);
         if (matcher.matches()) {
-            String item = messaging.setPlaceholders(matcher.group("item"), placeholders);
+            String item = placeholderParser.apply(matcher.group("item"));
 
-            BwItemStack configuredItem = DBedWarsAPI.getApi().getConfiguredItem(item, placeholders);
+            BwItemStack configuredItem = DBedWarsAPI.getApi().getConfiguredItem(item, player, placeholders);
             String amt = matcher.group("amount");
             if (configuredItem != null && amt != null) {
-                Integer num = NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders));
+                Integer num = NumberUtils.toInt(placeholderParser.apply(amt));
                 if (num != null && num > 0) {
                     configuredItem.setAmount(num);
                 }
@@ -116,11 +123,11 @@ public class BwItemStack implements Item, Cloneable {
             BwItemStack itemStack = new BwItemStack(material.get());
             String amt = matcher.group("amount");
             if (amt != null) {
-                itemStack.setAmount(NumberUtils.toInt(messaging.setPlaceholders(amt, placeholders), 1));
+                itemStack.setAmount(NumberUtils.toInt(placeholderParser.apply(amt), 1));
             }
             String data = matcher.group("data");
             if (data != null) {
-                itemStack.setData(NumberUtils.toShort(messaging.setPlaceholders(data, placeholders), (short) 0));
+                itemStack.setData(NumberUtils.toShort(placeholderParser.apply(data), (short) 0));
             }
             return itemStack;
         }
@@ -128,18 +135,21 @@ public class BwItemStack implements Item, Cloneable {
         return null;
     }
 
-    public static BwItemStack fromJson(Json json, Placeholder... placeholders) {
+    public static BwItemStack fromJson(Json json, Optional<Player> player, Placeholder... placeholders) {
         Messaging messaging = Messaging.get();
-        Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(messaging.setPlaceholders(json.get("type").getAsString(), placeholders));
+        Function<String, String> placeholderParser = player.<Function<String, String>>map(p -> s -> messaging.setRegisteredPlaceholders(messaging.setPlaceholders(s, p, placeholders), p))
+                .orElseGet(() -> s -> messaging.setPlaceholders(s, placeholders));
+
+        Optional<XMaterial> optmaterial = XMaterial.matchXMaterial(placeholderParser.apply(json.get("type").getAsString()));
         if (!optmaterial.isPresent()) {
             throw new IllegalArgumentException("Invalid material type: " + json.get("type").getAsString());
         }
         BwItemStack item = new BwItemStack(optmaterial.get());
         if (json.has("amount")) {
-            item.setAmount(NumberUtils.toInt(messaging.setPlaceholders(json.get("amount").getAsString(), placeholders), 1));
+            item.setAmount(NumberUtils.toInt(placeholderParser.apply(json.get("amount").getAsString()), 1));
         }
         if (json.has("data")) {
-            item.setData(NumberUtils.toInt(messaging.setPlaceholders(json.get("data").getAsString(), placeholders), 0));
+            item.setData(NumberUtils.toInt(placeholderParser.apply(json.get("data").getAsString()), 0));
         }
 
         if (json.has("display-name")) {
@@ -161,7 +171,7 @@ public class BwItemStack implements Item, Cloneable {
         if (json.has("enchantments")) {
             JsonArray array = json.get("enchantments").getAsJsonArray();
             for (JsonElement element : array) {
-                LEnchant enchant = LEnchant.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                LEnchant enchant = LEnchant.valueOf(placeholderParser.apply(element.getAsString()));
                 if (enchant != null) {
                     item.addEnchantment(enchant);
                 }
@@ -170,7 +180,7 @@ public class BwItemStack implements Item, Cloneable {
         if (json.has("flags")) {
             JsonArray array = json.getAsJsonArray("flags");
             for (JsonElement element : array) {
-                ItemFlag flag = EnumUtil.matchEnum(messaging.setPlaceholders(element.getAsString(), placeholders), ItemFlag.values());
+                ItemFlag flag = EnumUtil.matchEnum(placeholderParser.apply(element.getAsString()), ItemFlag.values());
                 if (flag != null) {
                     item.getMeta().addItemFlags(flag);
                 }
@@ -194,14 +204,27 @@ public class BwItemStack implements Item, Cloneable {
         Json metaJson = json.getAsJson("item-meta");
 
         if (item.getMeta() instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta) item.getMeta();
             if (metaJson.has("owner")) {
-                ((SkullMeta) item.getMeta()).setOwner(messaging.setPlaceholders(metaJson.get("owner").getAsString(), placeholders));
+                String owner = placeholderParser.apply(metaJson.get("owner").getAsString());
+                try {
+                    skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
+                } catch (NoSuchMethodError e) {
+                    skullMeta.setOwner(owner);
+                }
+            } else if (metaJson.has("texture")) {
+                JsonObject texture = metaJson.getAsJsonObject("texture");
+                Skin value = Skin.from(placeholderParser.apply(texture.get("value").getAsString()));
+                if (texture.has("signature")) {
+                    value.setSignature(placeholderParser.apply(texture.get("signature").getAsString()));
+                }
+                DBedWarsAPI.getApi().getNMS().setSkullProfile(skullMeta, PlayerGameProfile.builder().uuid(null).name("Head-" + UUID.randomUUID()).property(value).build());
             }
         } else if (item.getMeta() instanceof EnchantmentStorageMeta && metaJson.has("stored-enchants")) {
             EnchantmentStorageMeta storage = (EnchantmentStorageMeta) item.getMeta();
             JsonArray array = metaJson.getAsJsonArray("stored-enchants");
             for (JsonElement element : array) {
-                LEnchant enchant = LEnchant.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                LEnchant enchant = LEnchant.valueOf(placeholderParser.apply(element.getAsString()));
                 if (enchant != null && enchant.getEnchantment().isSupported()) {
                     storage.addStoredEnchant(enchant.getEnchantment().getEnchant(), enchant.getLevel(), true);
                 }
@@ -209,22 +232,22 @@ public class BwItemStack implements Item, Cloneable {
         } else if (item.getMeta() instanceof LeatherArmorMeta) {
             if (metaJson.has("color")) {
                 ((LeatherArmorMeta) item.getMeta()).setColor(org.bukkit.Color.fromRGB(Integer.parseInt(
-                        messaging.setPlaceholders(metaJson.get("color").getAsString(), placeholders), 16)));
+                        placeholderParser.apply(metaJson.get("color").getAsString()), 16)));
             }
         } else if (item.getMeta() instanceof BookMeta) {
             BookMeta bookmeta = (BookMeta) item.getMeta();
 
             if (metaJson.has("title")) {
-                bookmeta.setTitle(messaging.setPlaceholders(metaJson.get("title").getAsString(), placeholders));
+                bookmeta.setTitle(placeholderParser.apply(metaJson.get("title").getAsString()));
             }
             if (metaJson.has("author")) {
-                bookmeta.setAuthor(messaging.setPlaceholders(metaJson.get("author").getAsString(), placeholders));
+                bookmeta.setAuthor(placeholderParser.apply(metaJson.get("author").getAsString()));
             }
             if (metaJson.has("pages")) {
                 JsonArray array = metaJson.getAsJsonArray("pages");
                 List<String> pages = new ArrayList<>(array.size());
                 for (JsonElement element : array) {
-                    pages.add(messaging.setPlaceholders(element.getAsString(), placeholders));
+                    pages.add(placeholderParser.apply(element.getAsString()));
                 }
                 bookmeta.setPages(pages);
             }
@@ -234,7 +257,7 @@ public class BwItemStack implements Item, Cloneable {
             if (metaJson.has("potion-effects")) {
                 JsonArray array = metaJson.getAsJsonArray("potion-effects");
                 for (JsonElement element : array) {
-                    PotionEffectAT effect = PotionEffectAT.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                    PotionEffectAT effect = PotionEffectAT.valueOf(placeholderParser.apply(element.getAsString()));
                     if (effect != null) {
                         potionmeta.addCustomEffect(effect.asBukkit(), true);
                     }
@@ -245,7 +268,7 @@ public class BwItemStack implements Item, Cloneable {
             if (metaJson.has("firework-effect")) {
                 JsonArray array = metaJson.getAsJsonArray("firework-effect");
                 for (JsonElement element : array) {
-                    FireworkEffectC effect = FireworkEffectC.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                    FireworkEffectC effect = FireworkEffectC.valueOf(placeholderParser.apply(element.getAsString()));
                     if (effect != null) {
                         fireworkmeta.setEffect(effect.getEffect());
                     }
@@ -255,17 +278,22 @@ public class BwItemStack implements Item, Cloneable {
             FireworkMeta fireworkMeta = (FireworkMeta) item.getMeta();
 
             if (metaJson.has("power")) {
-                fireworkMeta.setPower(NumberUtils.toInt(messaging.setPlaceholders(metaJson.get("power").getAsString(), placeholders)));
+                fireworkMeta.setPower(NumberUtils.toInt(placeholderParser.apply(metaJson.get("power").getAsString())));
             }
 
             if (metaJson.has("firework-effect")) {
                 JsonArray array = metaJson.getAsJsonArray("firework-effect");
                 for (JsonElement element : array) {
-                    FireworkEffectC effect = FireworkEffectC.valueOf(messaging.setPlaceholders(element.getAsString(), placeholders));
+                    FireworkEffectC effect = FireworkEffectC.valueOf(placeholderParser.apply(element.getAsString()));
                     if (effect != null) {
                         fireworkMeta.addEffect(effect.getEffect());
                     }
                 }
+            }
+        } else if (item.getMeta() instanceof MapMeta) {
+            MapMeta mapMeta = (MapMeta) item.getMeta();
+            if (metaJson.has("location-name")) {
+                mapMeta.setLocationName(placeholderParser.apply(metaJson.get("location-name").getAsString()));
             }
         }
 

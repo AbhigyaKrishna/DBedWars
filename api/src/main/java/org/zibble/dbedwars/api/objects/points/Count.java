@@ -1,11 +1,15 @@
 package org.zibble.dbedwars.api.objects.points;
 
-public abstract class Count<T extends Number> extends Number {
+import org.zibble.dbedwars.api.util.DataType;
+
+public abstract class Count<T extends Number> extends Number implements Cloneable {
 
     protected T value;
+    private final DataType type;
 
-    public Count(T value) {
+    public Count(T value, DataType type) {
         this.value = value;
+        this.type = type;
     }
 
     public T get() {
@@ -69,6 +73,10 @@ public abstract class Count<T extends Number> extends Number {
         return oldValue;
     }
 
+    public DataType getType() {
+        return this.type;
+    }
+
     @Override
     public int intValue() {
         return this.value.intValue();
@@ -98,5 +106,8 @@ public abstract class Count<T extends Number> extends Number {
     public String toString() {
         return this.value.toString();
     }
+
+    @Override
+    public abstract Count<T> clone();
 
 }

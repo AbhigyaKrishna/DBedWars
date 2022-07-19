@@ -4,6 +4,9 @@ import org.zibble.dbedwars.api.guis.component.GuiComponent;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.utils.Debugger;
 import org.zibble.dbedwars.utils.Util;
+import org.zibble.dbedwars.utils.reflection.general.ClassReflection;
+import org.zibble.dbedwars.utils.reflection.resolver.FieldResolver;
+import org.zibble.dbedwars.utils.reflection.resolver.wrapper.FieldWrapper;
 import org.zibble.dbedwars.utils.reflection.resolver.wrapper.MethodWrapper;
 import org.zibble.inventoryframework.ClickAction;
 import org.zibble.inventoryframework.menu.Menu;
@@ -14,6 +17,17 @@ import java.util.function.Supplier;
 
 public abstract class ReflectiveGui {
 
+    public static void tryLoadAll() {
+        for (Class<? extends ReflectiveGui> clazz : ClassReflection.getClasses("org.zibble.dbedwars.guis", ReflectiveGui.class)) {
+            FieldResolver resolver = new FieldResolver(clazz);
+            FieldWrapper wrapper = resolver.resolveWrapper("INSTANCE");
+            if (!wrapper.exists()) continue;
+            ReflectiveGui gui = wrapper.getSilent(null);
+            if (gui == null) continue;
+            gui.load();
+        }
+    }
+
     private boolean loaded = false;
 
     final Map<Character, Supplier<BwItemStack>> ITEMS = new HashMap<>();
@@ -23,11 +37,16 @@ public abstract class ReflectiveGui {
 
     MethodWrapper<?> postInit;
 
-    public GuiComponent<? extends Menu, ? extends GuiComponent> get(Argument<?>... args) {
+    public void load() {
         if (!loaded) {
             ReflectiveGuiProcessor.INSTANCE.process(this);
+            Debugger.debug("Loaded GUI: " + getClass().getName());
             loaded = true;
         }
+    }
+
+    public GuiComponent<? extends Menu, ? extends GuiComponent> get(Argument<?>... args) {
+        this.load();
         GuiComponent<? extends Menu, ? extends GuiComponent> menu = this.provide(args);
         this.update(menu, args);
         if (this.postInit != null) {

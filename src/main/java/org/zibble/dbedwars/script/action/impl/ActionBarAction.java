@@ -1,12 +1,12 @@
 package org.zibble.dbedwars.script.action.impl;
 
+import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.ConfigMessage;
-import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ActionBarAction implements ActionTranslator<ActionBarAction.Action>
         final List<PlaceholderEntry> entries = new ArrayList<>();
         for (ScriptVariable<?> variable : variables) {
             if (variable.isNull()) continue;
-            if (variable.isAssignableFrom(AbstractMessaging.class)) {
+            if (variable.isSubClassOf(AbstractMessaging.class)) {
                 messaging = (AbstractMessaging) variable.value();
             } else if (variable.getKey().get().equals("MESSAGE_PLACEHOLDER")) {
                 entries.add((PlaceholderEntry) variable.value());

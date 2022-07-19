@@ -1,11 +1,14 @@
 package org.zibble.dbedwars.api;
 
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.plugin.Plugin;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.version.Version;
+
+import java.util.Optional;
 
 public abstract class DBedWarsAPI {
 
@@ -33,7 +36,7 @@ public abstract class DBedWarsAPI {
 
     public abstract NMSAdaptor getNMS();
 
-    public abstract BwItemStack getConfiguredItem(String key, Placeholder... placeholders);
+    public abstract BwItemStack getConfiguredItem(String key, Optional<Player> player, Placeholder... placeholders);
 
     public abstract Version getVersion();
 

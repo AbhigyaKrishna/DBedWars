@@ -30,6 +30,10 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
         this.properties.add(NamedKey.of(name, value));
     }
 
+    public <T> void add(Key name, T value) {
+        this.properties.add(NamedKey.of(name.get(), value));
+    }
+
     public <T> void add(NamedKey<T> key) {
         this.properties.add(key);
     }
@@ -148,6 +152,11 @@ public class NamedProperties implements Cloneable, Iterable<NamedKey<?>> {
 
         public <T> Builder add(String name, T value) {
             this.keys.add(NamedKey.of(name, value));
+            return this;
+        }
+
+        public <T> Builder add(Key name, T value) {
+            this.keys.add(NamedKey.of(name.get(), value));
             return this;
         }
 

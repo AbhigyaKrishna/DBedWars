@@ -1,11 +1,11 @@
 package org.zibble.dbedwars.script.action.impl;
 
+import org.zibble.dbedwars.api.messaging.AbstractMessaging;
 import org.zibble.dbedwars.api.messaging.placeholders.PlaceholderEntry;
 import org.zibble.dbedwars.api.objects.serializable.TitleST;
 import org.zibble.dbedwars.api.script.ScriptVariable;
 import org.zibble.dbedwars.api.script.action.ActionTranslator;
 import org.zibble.dbedwars.api.util.key.Key;
-import org.zibble.dbedwars.messaging.AbstractMessaging;
 
 public class TitleAction implements ActionTranslator<TitleAction.Action> {
 
@@ -13,7 +13,7 @@ public class TitleAction implements ActionTranslator<TitleAction.Action> {
     public Action serialize(String untranslated, ScriptVariable<?>... variables) {
         AbstractMessaging messaging = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(AbstractMessaging.class)) {
+            if (variable.isSubClassOf(AbstractMessaging.class)) {
                 messaging = (AbstractMessaging) variable.value();
             } else if (variable.getKey().equals("PLACEHOLDER")) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);

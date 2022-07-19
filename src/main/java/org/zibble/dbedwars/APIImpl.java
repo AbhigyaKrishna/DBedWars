@@ -1,11 +1,14 @@
 package org.zibble.dbedwars;
 
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.DBedWarsAPI;
 import org.zibble.dbedwars.api.handler.*;
 import org.zibble.dbedwars.api.messaging.placeholders.Placeholder;
 import org.zibble.dbedwars.api.nms.NMSAdaptor;
 import org.zibble.dbedwars.api.objects.serializable.BwItemStack;
 import org.zibble.dbedwars.api.version.Version;
+
+import java.util.Optional;
 
 public final class APIImpl extends DBedWarsAPI {
 
@@ -51,8 +54,8 @@ public final class APIImpl extends DBedWarsAPI {
     }
 
     @Override
-    public BwItemStack getConfiguredItem(String key, Placeholder... placeholders) {
-        return BwItemStack.fromJson(this.plugin.getConfigHandler().getJsonItem().get(key), placeholders);
+    public BwItemStack getConfiguredItem(String key, Optional<Player> player, Placeholder... placeholders) {
+        return BwItemStack.fromJson(this.plugin.getConfigHandler().getJsonItem().get(key), player, placeholders);
     }
 
     @Override

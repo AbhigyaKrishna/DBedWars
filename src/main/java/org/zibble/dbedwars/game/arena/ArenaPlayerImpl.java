@@ -33,6 +33,7 @@ import org.zibble.dbedwars.cache.InventoryData;
 import org.zibble.dbedwars.configuration.ConfigMessage;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.database.data.QuickBuy;
 import org.zibble.dbedwars.game.arena.view.ShopInfoImpl;
 import org.zibble.dbedwars.game.arena.view.ShopViewImpl;
 import org.zibble.dbedwars.task.implementations.RespawnTask;
@@ -56,18 +57,21 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
     private Pair<ArenaPlayer, Instant> lastHit;
     private InventoryData inventoryBackup;
     private Map<Key, ShopViewImpl> shops;
+    private QuickBuy quickBuy;
 
     public ArenaPlayerImpl(DBedwars plugin, Player player, Arena arena) {
         super(player, arena);
         this.plugin = plugin;
         this.points = new Points();
-        this.points.registerCount(PlayerPoints.KILLS, new IntegerCount());
-        this.points.registerCount(PlayerPoints.DEATH, new IntegerCount());
-        this.points.registerCount(PlayerPoints.BEDS, new IntegerCount());
-        this.points.registerCount(PlayerPoints.FINAL_KILLS, new IntegerCount());
+        MainConfiguration.ArenaSection arenaSection = this.plugin.getConfigHandler().getMainConfiguration().getArenaSection();
+        this.points.registerCount(PlayerPoints.KILLS, new IntegerCount(), arenaSection.getKillPoint());
+        this.points.registerCount(PlayerPoints.DEATH, new IntegerCount(), arenaSection.getDeathPoint());
+        this.points.registerCount(PlayerPoints.BEDS, new IntegerCount(), arenaSection.getBedDestroyPoint());
+        this.points.registerCount(PlayerPoints.FINAL_KILLS, new IntegerCount(), arenaSection.getFinalKillPoint());
         this.shops = new HashMap<>(2);
         this.respawnItems = new InventoryData();
         this.resourceStatistics = new ResourceStatistics(this);
+        this.quickBuy = this.plugin.getDataHandler().getQuickBuy(this.getUUID());
     }
 
     @Override
@@ -114,7 +118,7 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         placeholders.add(PlaceholderEntry.symbol("victim_player", () -> this.getPlayer().getName()));
         placeholders.add(PlaceholderEntry.symbol("victim_team", () -> ConfigurationUtil.getConfigCode(this.team)));
         placeholders.add(PlaceholderEntry.symbol("timestamp", () -> Instant.now().toString()));
-        placeholders.add(PlaceholderEntry.symbol("reason", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, reason.name().toUpperCase(Locale.ROOT))));
+        placeholders.add(PlaceholderEntry.symbol("reason", () -> CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, reason.name().toLowerCase(Locale.ROOT))));
         if (killer != null) {
             placeholders.add(PlaceholderEntry.symbol("attacker_player", () -> killer.getPlayer().getName()));
             placeholders.add(PlaceholderEntry.symbol("attacker_color", () -> ConfigurationUtil.getConfigCode(killer.getTeam().getColor())));
@@ -252,22 +256,26 @@ public class ArenaPlayerImpl extends ArenaSpectatorImpl implements ArenaPlayer {
         };
         MainConfiguration.RespawnItemsSection respawnItemsSection = DBedwars.getInstance().getConfigHandler().getMainConfiguration().getRespawnItemsSection();
         for (String s : respawnItemsSection.getInventory()) {
-            this.respawnItems.addItem(BwItemStack.valueOf(s, placeholders));
+            this.respawnItems.addItem(BwItemStack.valueOf(s, Optional.of(this.getPlayer()), placeholders));
         }
 
         if (respawnItemsSection.getHelmet() != null) {
-            this.respawnItems.setHelmet(BwItemStack.valueOf(respawnItemsSection.getHelmet(), placeholders));
+            this.respawnItems.setHelmet(BwItemStack.valueOf(respawnItemsSection.getHelmet(), Optional.of(this.getPlayer()), placeholders));
         }
         if (respawnItemsSection.getChestplate() != null) {
-            this.respawnItems.setChestPlate(BwItemStack.valueOf(respawnItemsSection.getChestplate(), placeholders));
+            this.respawnItems.setChestPlate(BwItemStack.valueOf(respawnItemsSection.getChestplate(), Optional.of(this.getPlayer()), placeholders));
         }
         if (respawnItemsSection.getLeggings() != null) {
-            this.respawnItems.setLeggings(BwItemStack.valueOf(respawnItemsSection.getLeggings(), placeholders));
+            this.respawnItems.setLeggings(BwItemStack.valueOf(respawnItemsSection.getLeggings(), Optional.of(this.getPlayer()), placeholders));
         }
         if (respawnItemsSection.getBoots() != null) {
-            this.respawnItems.setBoots(BwItemStack.valueOf(respawnItemsSection.getBoots(), placeholders));
+            this.respawnItems.setBoots(BwItemStack.valueOf(respawnItemsSection.getBoots(), Optional.of(this.getPlayer()), placeholders));
         }
 
+    }
+
+    public QuickBuy getQuickBuy() {
+        return quickBuy;
     }
 
     public InventoryData getRespawnItems() {

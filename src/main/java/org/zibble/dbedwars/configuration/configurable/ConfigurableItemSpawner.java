@@ -16,6 +16,7 @@ import xyz.xenondevs.particle.ParticleEffect;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
@@ -89,7 +90,7 @@ public class ConfigurableItemSpawner implements Loadable, PropertySerializable {
 
     public BwItemStack getIcon() {
         return this.icon != null
-                ? BwItemStack.valueOf(this.icon)
+                ? BwItemStack.valueOf(this.icon, Optional.empty())
                 : new BwItemStack(XMaterial.STONE.parseItem());
     }
 

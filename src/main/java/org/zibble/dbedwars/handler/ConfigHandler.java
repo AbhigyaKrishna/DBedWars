@@ -8,16 +8,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.zibble.dbedwars.DBedwars;
 import org.zibble.dbedwars.api.future.ActionFuture;
 import org.zibble.dbedwars.api.util.json.Json;
+import org.zibble.dbedwars.api.util.key.Key;
 import org.zibble.dbedwars.configuration.MainConfiguration;
 import org.zibble.dbedwars.configuration.PluginFiles;
 import org.zibble.dbedwars.configuration.configurable.*;
 import org.zibble.dbedwars.configuration.language.ConfigLang;
+import org.zibble.dbedwars.guis.cfginternal.ConfigGui;
 import org.zibble.dbedwars.io.ExternalLibrary;
 import org.zibble.dbedwars.utils.Debugger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 public class ConfigHandler {
 
@@ -120,6 +124,7 @@ public class ConfigHandler {
         this.holograms.load(YamlConfiguration.loadConfiguration(PluginFiles.HOLOGRAM));
         this.event = new ConfigurableEvents();
         this.event.load(YamlConfiguration.loadConfiguration(PluginFiles.EVENT));
+        this.loadGuis();
 
         if (PluginFiles.Data.LOBBY_SPAWN.exists()) {
             FileConfiguration configuration = YamlConfiguration.loadConfiguration(PluginFiles.Data.LOBBY_SPAWN);
@@ -185,6 +190,20 @@ public class ConfigHandler {
             ConfigurableScoreboard scoreboard = new ConfigurableScoreboard(key);
             scoreboard.load(config.getConfigurationSection(key));
             this.scoreboards.add(scoreboard);
+        }
+    }
+
+    public void loadGuis() {
+        ConfigGui.GUIS.clear();
+        for (File file : PluginFiles.Folder.GUI_INTERNAL.listFiles()) {
+            Key key = Key.of(file.getName().replace(".json", ""));
+            try {
+                new ConfigGui(key, Json.load(file));
+            } catch (Exception e) {
+                Debugger.log(new LogRecord(Level.WARNING, String.format("Failed to load GUI: %s, Skipping it!", file.getName())));
+                e.printStackTrace();
+                ConfigGui.GUIS.remove(key);
+            }
         }
     }
 

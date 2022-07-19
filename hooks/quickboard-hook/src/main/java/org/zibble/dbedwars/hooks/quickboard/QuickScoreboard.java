@@ -114,6 +114,11 @@ public class QuickScoreboard implements Scoreboard {
         return this.board != null && this.getViewer() != null;
     }
 
+    @Override
+    public void refreshLines() {
+        this.update();
+    }
+
 
     @Override
     public Key getKey() {

@@ -18,7 +18,7 @@ public class HologramAction implements ActionTranslator<HologramAction.Action> {
     public Action serialize(String condition, ScriptVariable<?>... variables) {
         Hologram hologram = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(Hologram.class)) {
+            if (variable.isSubClassOf(Hologram.class)) {
                 hologram = (Hologram) variable.value();
             }
         }

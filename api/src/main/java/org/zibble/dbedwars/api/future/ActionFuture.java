@@ -85,6 +85,11 @@ public class ActionFuture<T> {
     public ActionFuture<Void> thenAccept(Consumer<? super T> consumer) {
         ActionFuture<Void> future = new ActionFuture<>();
         this.successAction = SuccessAction.of(this, future, consumer);
+
+        if (this.completed) {
+            this.postComplete();
+        }
+
         return future;
     }
 

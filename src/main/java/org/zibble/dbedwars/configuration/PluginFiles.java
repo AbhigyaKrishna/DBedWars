@@ -37,7 +37,9 @@ public class PluginFiles {
                 Folder.LIBRARIES_CACHE,
                 Folder.ITEMS,
                 Folder.SHOPS,
-                Folder.CATEGORY
+                Folder.CATEGORY,
+                Folder.GUI,
+                Folder.GUI_INTERNAL
         };
     }
 
@@ -83,6 +85,8 @@ public class PluginFiles {
         public static final File ITEMS = new File(PLUGIN_DATA_FOLDER, "items");
         public static final File SHOPS = new File(PLUGIN_DATA_FOLDER, "shops");
         public static final File CATEGORY = new File(PLUGIN_DATA_FOLDER, "category");
+        public static final File GUI = new File(PLUGIN_DATA_FOLDER, "guis");
+        public static final File GUI_INTERNAL = new File(GUI, "internal");
 
     }
 

@@ -118,6 +118,11 @@ public class TabScoreboard implements Scoreboard {
     }
 
     @Override
+    public void refreshLines() {
+        this.update();
+    }
+
+    @Override
     public Key getKey() {
         return Key.of(this.tabScoreboard.getName());
     }

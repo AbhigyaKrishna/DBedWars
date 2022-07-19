@@ -13,7 +13,7 @@ public class FireworkAction implements ActionTranslator<FireworkAction.Action> {
     public Action serialize(String untranslated, ScriptVariable<?>... variables) {
         Location location = null;
         for (ScriptVariable<?> variable : variables) {
-            if (variable.isAssignableFrom(Location.class)) {
+            if (variable.isSubClassOf(Location.class)) {
                 location = (Location) variable.value();
             } else if (variable.getKey().equals(Key.of("PLACEHOLDER"))) {
                 untranslated = ((PlaceholderEntry) variable.value()).apply(untranslated);

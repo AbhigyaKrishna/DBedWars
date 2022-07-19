@@ -9,6 +9,7 @@ import org.zibble.dbedwars.api.game.Team;
 import org.zibble.dbedwars.api.game.statistics.DeathStatistics;
 import org.zibble.dbedwars.api.util.Color;
 import org.zibble.dbedwars.database.data.ArenaHistory;
+import org.zibble.dbedwars.database.data.PlayerStats;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -89,6 +90,13 @@ public class DatabaseUtil {
         history.setBedsBroken(bedBroken);
 
         return history;
+    }
+
+    public void updatePlayerStat(Arena arena, ArenaPlayer player, boolean won, PlayerStats stat) {
+        if (won) {
+            stat.getWinStreak().increment();
+        }
+        stat.getPoints().add(player.getPoints().getTotalPoints());
     }
 
 }

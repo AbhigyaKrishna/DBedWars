@@ -1,6 +1,7 @@
 package org.zibble.dbedwars.utils;
 
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class Debugger {
@@ -71,6 +72,11 @@ public class Debugger {
 
     public static void debug(String s, Level level) {
         if (ENABLED) LOGGER.log(level, PREFIX + s);
+    }
+
+    public static void log(LogRecord record) {
+        record.setMessage("[BEDWARS-LOG] " + record.getMessage());
+        LOGGER.log(record);
     }
 
     public static void setEnabled(boolean enabled) {

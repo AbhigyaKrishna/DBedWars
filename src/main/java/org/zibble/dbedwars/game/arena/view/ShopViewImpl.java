@@ -7,6 +7,7 @@ import org.zibble.dbedwars.api.game.view.ShopView;
 import org.zibble.dbedwars.api.hooks.npc.BedwarsNPC;
 import org.zibble.dbedwars.api.messaging.message.Message;
 import org.zibble.dbedwars.api.util.key.Key;
+import org.zibble.dbedwars.game.arena.ArenaPlayerImpl;
 import org.zibble.dbedwars.guis.ShopGui;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class ShopViewImpl implements ShopView {
     private ShopPage defaultPage;
     private BedwarsNPC npc;
 
-    public ShopViewImpl(ArenaPlayer player, ShopInfoImpl type) {
+    public ShopViewImpl(ArenaPlayerImpl player, ShopInfoImpl type) {
         this.player = player;
         this.type = type;
         this.pages = new LinkedHashMap<>();
