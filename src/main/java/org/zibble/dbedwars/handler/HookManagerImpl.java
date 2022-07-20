@@ -29,6 +29,7 @@ import org.zibble.dbedwars.hooks.featherboard.FeatherBoardHook;
 import org.zibble.dbedwars.hooks.nametagedit.NameTagEditHook;
 import org.zibble.dbedwars.hooks.nickapi.NickAPIHook;
 import org.zibble.dbedwars.hooks.nicknamer.NickNamerHook;
+import org.zibble.dbedwars.hooks.party.PAFHook;
 import org.zibble.dbedwars.hooks.placeholderapi.PlaceholderAPIHook;
 import org.zibble.dbedwars.hooks.premiumvanish.PremiumVanishHook;
 import org.zibble.dbedwars.hooks.pvplevels.PvPLevelsHook;
@@ -73,6 +74,7 @@ public class HookManagerImpl implements HookManager {
                 new NameTagEditHook(),
                 new NickAPIHook(),
                 new NickNamerHook(),
+                new PAFHook(),
                 new PlaceholderAPIHook(),
                 new PremiumVanishHook(),
                 new PvPLevelsHook(),

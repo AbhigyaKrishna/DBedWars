@@ -36,7 +36,7 @@ public class JoinLeaveListener implements Listener {
 
         ScoreboardData scoreboard = this.plugin.getGameManager().getScoreboardData().get("lobby");
         scoreboard.show(player,
-                PlaceholderEntry.symbol("date", SimpleDateFormat.getDateInstance().format(Date.from(Instant.now()))),
+                PlaceholderEntry.symbol("date", () -> SimpleDateFormat.getDateInstance().format(Date.from(Instant.now()))),
                 PlayerPlaceholderEntry.symbol("player_name", HumanEntity::getName),
                 PlayerPlaceholderEntry.symbol("player_uuid", p -> p.getUniqueId().toString())
         );

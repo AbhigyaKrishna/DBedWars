@@ -1,0 +1,12 @@
+repositories {
+    maven {
+        url 'https://simonsator.de/repo'
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    compileOnly 'de.simonsator:DevelopmentPAFSpigot:1.0.67'
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly parent
+}
