@@ -1,25 +1,26 @@
 package org.zibble.dbedwars.api.hooks.tablist;
 
-import org.jetbrains.annotations.NotNull;
-import org.zibble.dbedwars.api.game.Arena;
-import org.zibble.dbedwars.api.game.Team;
+import org.bukkit.entity.Player;
 import org.zibble.dbedwars.api.hooks.Hook;
-
-import java.util.UUID;
 
 public interface TabListHook extends Hook {
 
-    void initTabForGame(@NotNull Arena arena);
+    void setPrefix(Player player, String prefix);
 
-    void updatePlayer(@NotNull UUID uuid, boolean isDead);
+    void setName(Player player, String name);
 
-    void resetTab(@NotNull Arena arena);
+    void setSuffix(Player player, String suffix);
 
-    default void updateTeamElimination(@NotNull Team team) {
-        team.getPlayers().iterator().forEachRemaining(arenaPlayer -> {
-            updatePlayer(arenaPlayer.getPlayer().getUniqueId(), true);
-        });
-    }
+    void resetPrefix(Player player);
 
+    void resetName(Player player);
 
+    void resetSuffix(Player player);
+
+    String getPrefix(Player player);
+
+    String getName(Player player);
+
+    String getSuffix(Player player);
+    
 }
